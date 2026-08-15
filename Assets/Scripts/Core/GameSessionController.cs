@@ -97,12 +97,15 @@ namespace DefenderChronicles.Core
         private Button heroAbilityButton;
         private Button upgradeButton;
         private Button sellButton;
+        private GameObject selectedPanel;
         private GameObject resultPanel;
         private Text resultTitle;
 
-        private readonly Color groundColor = new(0.20f, 0.38f, 0.24f);
-        private readonly Color roadColor = new(0.62f, 0.54f, 0.39f);
-        private readonly Color slotColor = new(0.12f, 0.48f, 0.62f);
+        private readonly Color groundColor = new(0.18f, 0.34f, 0.22f);
+        private readonly Color roadColor = new(0.66f, 0.56f, 0.39f);
+        private readonly Color roadEdgeColor = new(0.34f, 0.29f, 0.22f);
+        private readonly Color stoneColor = new(0.47f, 0.52f, 0.50f);
+        private readonly Color slotColor = new(0.16f, 0.57f, 0.72f);
 
         private void Awake()
         {
@@ -223,10 +226,10 @@ namespace DefenderChronicles.Core
             }
 
             gameCamera.orthographic = true;
-            gameCamera.orthographicSize = 10.5f;
-            gameCamera.transform.position = new Vector3(11f, 18f, -10f);
-            gameCamera.transform.rotation = Quaternion.Euler(48f, 0f, 0f);
-            gameCamera.backgroundColor = new Color(0.07f, 0.13f, 0.20f);
+            gameCamera.orthographicSize = 11.2f;
+            gameCamera.transform.position = new Vector3(11.4f, 18.5f, -11.8f);
+            gameCamera.transform.rotation = Quaternion.Euler(50f, 0f, 0f);
+            gameCamera.backgroundColor = new Color(0.055f, 0.11f, 0.17f);
             gameCamera.clearFlags = CameraClearFlags.SolidColor;
             gameCamera.nearClipPlane = 0.1f;
             gameCamera.farClipPlane = 100f;
@@ -236,7 +239,7 @@ namespace DefenderChronicles.Core
                 var lightObject = new GameObject("Greybox Sun");
                 var light = lightObject.AddComponent<Light>();
                 light.type = LightType.Directional;
-                light.intensity = 1.25f;
+                light.intensity = 1.45f;
                 light.color = new Color(1f, 0.92f, 0.78f);
                 lightObject.transform.rotation = Quaternion.Euler(52f, -32f, 0f);
             }
@@ -245,17 +248,20 @@ namespace DefenderChronicles.Core
         private void BuildWorld()
         {
             var world = new GameObject("Greybox World").transform;
+            CreatePrimitive("Deep Blue Backdrop", PrimitiveType.Cube, new Vector3(11f, -0.72f, 5.5f),
+                new Vector3(33f, 0.24f, 19f), new Color(0.06f, 0.16f, 0.24f), world, false);
             CreatePrimitive("Valley Ground", PrimitiveType.Cube, new Vector3(11f, -0.35f, 5.5f),
-                new Vector3(29f, 0.5f, 15f), groundColor, world, true);
+                new Vector3(27.5f, 0.5f, 14f), groundColor, world, true);
+            CreatePrimitive("North Ridge", PrimitiveType.Cube, new Vector3(11f, 0.02f, 12.78f),
+                new Vector3(28f, 0.62f, 0.75f), new Color(0.23f, 0.31f, 0.27f), world, false);
+            CreatePrimitive("South Ridge", PrimitiveType.Cube, new Vector3(11f, 0.02f, -1.78f),
+                new Vector3(28f, 0.62f, 0.75f), new Color(0.23f, 0.31f, 0.27f), world, false);
 
             for (int i = 0; i < path.Count - 1; i++)
                 CreateRoadSegment(path[i], path[i + 1], world);
 
-            var spawn = CreatePrimitive("Enemy Gate", PrimitiveType.Cube, path[0] + new Vector3(0f, 0.8f, 0f),
-                new Vector3(1.2f, 1.6f, 2.4f), new Color(0.48f, 0.13f, 0.16f), world, false);
-            spawn.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-            CreatePrimitive("Defender Keep", PrimitiveType.Cube, path[^1] + new Vector3(0f, 1.2f, 0f),
-                new Vector3(2.5f, 2.4f, 3.2f), new Color(0.25f, 0.40f, 0.60f), world, false);
+            BuildEnemyGate(world);
+            BuildDefenderKeep(world);
 
             Vector3[] slotPositions =
             {
@@ -266,9 +272,13 @@ namespace DefenderChronicles.Core
             };
             for (int i = 0; i < slotPositions.Length; i++)
             {
-                var go = CreatePrimitive($"Outpost Slot {i + 1}", PrimitiveType.Cylinder, slotPositions[i],
-                    new Vector3(1.15f, 0.18f, 1.15f), slotColor, world, true);
-                var slot = go.AddComponent<GreyboxOutpostSlot>();
+                var slotRoot = CreatePrimitive($"Outpost Slot {i + 1}", PrimitiveType.Cylinder, slotPositions[i],
+                    new Vector3(1.18f, 0.16f, 1.18f), stoneColor, world, true);
+                CreatePrimitive($"Outpost Slot {i + 1} Glow", PrimitiveType.Cylinder, slotPositions[i] + Vector3.up * 0.08f,
+                    new Vector3(0.86f, 0.05f, 0.86f), slotColor, slotRoot.transform, false);
+                CreatePrimitive($"Outpost Slot {i + 1} Peg", PrimitiveType.Cube, slotPositions[i] + new Vector3(0f, 0.22f, 0.42f),
+                    new Vector3(0.12f, 0.28f, 0.12f), new Color(0.08f, 0.24f, 0.32f), slotRoot.transform, false);
+                var slot = slotRoot.AddComponent<GreyboxOutpostSlot>();
                 slot.Configure(this, i, slotColor);
                 slots.Add(slot);
             }
@@ -281,19 +291,36 @@ namespace DefenderChronicles.Core
             for (int i = 0; i < commandPositions.Length; i++)
             {
                 var go = CreatePrimitive($"Command Point {i + 1}", PrimitiveType.Cylinder, commandPositions[i],
-                    new Vector3(0.58f, 0.08f, 0.58f), new Color(0.35f, 0.85f, 0.52f), world, true);
+                    new Vector3(0.72f, 0.07f, 0.72f), new Color(0.22f, 0.70f, 0.42f), world, true);
+                CreatePrimitive($"Command Point {i + 1} Banner Pole", PrimitiveType.Cylinder,
+                    commandPositions[i] + new Vector3(-0.18f, 0.48f, 0f),
+                    new Vector3(0.08f, 0.82f, 0.08f), new Color(0.12f, 0.18f, 0.15f), go.transform, false);
+                CreatePrimitive($"Command Point {i + 1} Banner", PrimitiveType.Cube,
+                    commandPositions[i] + new Vector3(0.12f, 0.82f, 0f),
+                    new Vector3(0.45f, 0.28f, 0.06f), new Color(0.50f, 0.95f, 0.58f), go.transform, false);
                 var point = go.AddComponent<GreyboxCommandPoint>();
                 point.Configure(i);
                 commandPoints.Add(point);
             }
 
             // Low-detail original scenery made only from Unity primitives.
-            for (int i = 0; i < 18; i++)
+            for (int i = 0; i < 24; i++)
             {
-                float x = -0.5f + (i * 1.43f) % 25f;
-                float z = i % 2 == 0 ? -1.1f : 12.4f;
+                float x = -1.2f + (i * 1.18f) % 27f;
+                float z = i % 2 == 0 ? -1.15f : 12.15f;
                 CreatePrimitive($"Boundary Rock {i + 1}", PrimitiveType.Sphere, new Vector3(x, 0.2f, z),
-                    new Vector3(0.65f, 0.45f, 0.65f), new Color(0.33f, 0.37f, 0.34f), world, false);
+                    new Vector3(0.42f + (i % 3) * 0.13f, 0.34f, 0.42f + (i % 4) * 0.08f),
+                    new Color(0.31f, 0.36f, 0.33f), world, false);
+            }
+
+            for (int i = 0; i < 16; i++)
+            {
+                float x = 0.5f + (i * 1.7f) % 22f;
+                float z = i % 3 == 0 ? 0.6f : 11.1f;
+                CreatePrimitive($"Pine Trunk {i + 1}", PrimitiveType.Cylinder, new Vector3(x, 0.28f, z),
+                    new Vector3(0.12f, 0.55f, 0.12f), new Color(0.25f, 0.17f, 0.10f), world, false);
+                CreatePrimitive($"Pine Crown {i + 1}", PrimitiveType.Sphere, new Vector3(x, 0.82f, z),
+                    new Vector3(0.62f, 0.82f, 0.62f), new Color(0.11f, 0.30f, 0.18f), world, false);
             }
         }
 
@@ -301,15 +328,48 @@ namespace DefenderChronicles.Core
         {
             Vector3 delta = to - from;
             Vector3 center = (from + to) * 0.5f + new Vector3(0f, -0.04f, 0f);
-            var road = CreatePrimitive("Road", PrimitiveType.Cube, center,
-                new Vector3(1.4f, 0.18f, delta.magnitude + 1.4f), roadColor, parent, false);
+            var edge = CreatePrimitive("Road Edge", PrimitiveType.Cube, center + Vector3.down * 0.02f,
+                new Vector3(1.92f, 0.16f, delta.magnitude + 1.8f), roadEdgeColor, parent, false);
+            edge.transform.rotation = Quaternion.LookRotation(delta.normalized, Vector3.up);
+            var road = CreatePrimitive("Road Surface", PrimitiveType.Cube, center + Vector3.up * 0.04f,
+                new Vector3(1.42f, 0.12f, delta.magnitude + 1.22f), roadColor, parent, false);
             road.transform.rotation = Quaternion.LookRotation(delta.normalized, Vector3.up);
+        }
+
+        private void BuildEnemyGate(Transform world)
+        {
+            Vector3 origin = path[0];
+            CreatePrimitive("Enemy Gate Base", PrimitiveType.Cube, origin + new Vector3(-0.25f, 0.22f, 0f),
+                new Vector3(1.6f, 0.44f, 2.6f), new Color(0.24f, 0.10f, 0.12f), world, false);
+            CreatePrimitive("Enemy Gate Left Pillar", PrimitiveType.Cube, origin + new Vector3(-0.55f, 1.05f, -0.82f),
+                new Vector3(0.52f, 1.9f, 0.52f), new Color(0.50f, 0.12f, 0.16f), world, false);
+            CreatePrimitive("Enemy Gate Right Pillar", PrimitiveType.Cube, origin + new Vector3(-0.55f, 1.05f, 0.82f),
+                new Vector3(0.52f, 1.9f, 0.52f), new Color(0.50f, 0.12f, 0.16f), world, false);
+            CreatePrimitive("Enemy Gate Beam", PrimitiveType.Cube, origin + new Vector3(-0.55f, 2.02f, 0f),
+                new Vector3(0.62f, 0.42f, 2.26f), new Color(0.63f, 0.18f, 0.20f), world, false);
+        }
+
+        private void BuildDefenderKeep(Transform world)
+        {
+            Vector3 origin = path[^1];
+            CreatePrimitive("Defender Keep Main", PrimitiveType.Cube, origin + new Vector3(0.15f, 1.12f, 0f),
+                new Vector3(2.4f, 2.25f, 3.15f), new Color(0.28f, 0.42f, 0.57f), world, false);
+            CreatePrimitive("Defender Keep Tower North", PrimitiveType.Cylinder, origin + new Vector3(-0.55f, 1.55f, 1.35f),
+                new Vector3(0.72f, 2.6f, 0.72f), new Color(0.34f, 0.50f, 0.66f), world, false);
+            CreatePrimitive("Defender Keep Tower South", PrimitiveType.Cylinder, origin + new Vector3(-0.55f, 1.55f, -1.35f),
+                new Vector3(0.72f, 2.6f, 0.72f), new Color(0.34f, 0.50f, 0.66f), world, false);
+            CreatePrimitive("Defender Keep Banner", PrimitiveType.Cube, origin + new Vector3(-0.95f, 2.95f, 0f),
+                new Vector3(0.12f, 0.7f, 1.05f), new Color(0.25f, 0.75f, 1f), world, false);
         }
 
         private void BuildHero()
         {
             var go = CreatePrimitive("Knight Commander", PrimitiveType.Capsule, commandPoints[0].transform.position + Vector3.up,
                 new Vector3(0.75f, 1f, 0.75f), new Color(0.20f, 0.52f, 1f), transform, true);
+            CreatePrimitive("Knight Shield", PrimitiveType.Cube, go.transform.position + new Vector3(-0.42f, 0.1f, -0.1f),
+                new Vector3(0.16f, 0.58f, 0.42f), new Color(0.70f, 0.84f, 0.92f), go.transform, false);
+            CreatePrimitive("Knight Crest", PrimitiveType.Sphere, go.transform.position + new Vector3(0f, 0.62f, 0f),
+                new Vector3(0.36f, 0.22f, 0.36f), new Color(0.95f, 0.86f, 0.34f), go.transform, false);
             hero = go.AddComponent<GreyboxHero>();
             hero.Configure(this, commandPoints[0].transform.position);
         }
@@ -334,17 +394,17 @@ namespace DefenderChronicles.Core
 
             var topBar = CreatePanel("Top Bar", safeRoot.transform, new Color(0.035f, 0.055f, 0.075f, 0.94f));
             SetAnchors(topBar.GetComponent<RectTransform>(), new Vector2(0f, 1f), new Vector2(1f, 1f),
-                new Vector2(0f, -92f), new Vector2(0f, 0f));
-            goldText = CreateText("Gold", topBar.transform, "ALTIN  200", 32, TextAnchor.MiddleLeft);
-            SetRect(goldText.rectTransform, new Vector2(20f, 10f), new Vector2(300f, 72f), new Vector2(0f, 0f), new Vector2(0f, 0f));
-            livesText = CreateText("Lives", topBar.transform, "KALE  20", 32, TextAnchor.MiddleLeft);
-            SetRect(livesText.rectTransform, new Vector2(320f, 10f), new Vector2(260f, 72f), Vector2.zero, Vector2.zero);
-            waveText = CreateText("Wave", topBar.transform, "DALGA  0 / 7", 30, TextAnchor.MiddleCenter);
-            SetRect(waveText.rectTransform, new Vector2(-190f, 10f), new Vector2(380f, 72f), new Vector2(0.5f, 0f), new Vector2(0.5f, 0f));
-            phaseText = CreateText("Phase", topBar.transform, "HAZIRLIK", 24, TextAnchor.MiddleCenter);
-            SetRect(phaseText.rectTransform, new Vector2(205f, 10f), new Vector2(260f, 72f), new Vector2(0.5f, 0f), new Vector2(0.5f, 0f));
-            pauseButton = CreateButton("Pause", topBar.transform, "DURAKLAT", new Vector2(210f, 58f), OnPausePressed);
-            SetRect(pauseButton.GetComponent<RectTransform>(), new Vector2(-230f, 17f), new Vector2(210f, 58f), new Vector2(1f, 0f), new Vector2(1f, 0f));
+                new Vector2(0f, -76f), new Vector2(0f, 0f));
+            goldText = CreateText("Gold", topBar.transform, "ALTIN  200", 28, TextAnchor.MiddleLeft);
+            SetRect(goldText.rectTransform, new Vector2(20f, 8f), new Vector2(300f, 60f), new Vector2(0f, 0f), new Vector2(0f, 0f));
+            livesText = CreateText("Lives", topBar.transform, "KALE  20", 28, TextAnchor.MiddleLeft);
+            SetRect(livesText.rectTransform, new Vector2(320f, 8f), new Vector2(260f, 60f), Vector2.zero, Vector2.zero);
+            waveText = CreateText("Wave", topBar.transform, "DALGA  0 / 7", 27, TextAnchor.MiddleCenter);
+            SetRect(waveText.rectTransform, new Vector2(-190f, 8f), new Vector2(380f, 60f), new Vector2(0.5f, 0f), new Vector2(0.5f, 0f));
+            phaseText = CreateText("Phase", topBar.transform, "HAZIRLIK", 22, TextAnchor.MiddleCenter);
+            SetRect(phaseText.rectTransform, new Vector2(205f, 8f), new Vector2(260f, 60f), new Vector2(0.5f, 0f), new Vector2(0.5f, 0f));
+            pauseButton = CreateButton("Pause", topBar.transform, "DURAKLAT", new Vector2(190f, 52f), OnPausePressed);
+            SetRect(pauseButton.GetComponent<RectTransform>(), new Vector2(-210f, 12f), new Vector2(190f, 52f), new Vector2(1f, 0f), new Vector2(1f, 0f));
             pauseButtonLabel = pauseButton.GetComponentInChildren<Text>();
 
             previewText = CreateText("Preview", safeRoot.transform, "", 26, TextAnchor.MiddleCenter);
@@ -357,35 +417,36 @@ namespace DefenderChronicles.Core
 
             var bottomBar = CreatePanel("Bottom Bar", safeRoot.transform, new Color(0.035f, 0.055f, 0.075f, 0.95f));
             SetAnchors(bottomBar.GetComponent<RectTransform>(), new Vector2(0f, 0f), new Vector2(1f, 0f),
-                Vector2.zero, new Vector2(0f, 150f));
+                Vector2.zero, new Vector2(0f, 122f));
 
-            var archer = CreateButton("Archer", bottomBar.transform, "OKÇU  75", new Vector2(210f, 74f), () => TryBuildSelected(OutpostKind.Archer));
-            SetRect(archer.GetComponent<RectTransform>(), new Vector2(18f, 38f), new Vector2(210f, 74f), Vector2.zero, Vector2.zero);
-            var barracks = CreateButton("Barracks", bottomBar.transform, "KIŞLA  100", new Vector2(210f, 74f), () => TryBuildSelected(OutpostKind.Barracks));
-            SetRect(barracks.GetComponent<RectTransform>(), new Vector2(242f, 38f), new Vector2(210f, 74f), Vector2.zero, Vector2.zero);
-            var mage = CreateButton("Mage", bottomBar.transform, "BÜYÜ  125", new Vector2(210f, 74f), () => TryBuildSelected(OutpostKind.Mage));
-            SetRect(mage.GetComponent<RectTransform>(), new Vector2(466f, 38f), new Vector2(210f, 74f), Vector2.zero, Vector2.zero);
-            heroAbilityButton = CreateButton("Special", bottomBar.transform, "KALKAN DARBESİ", new Vector2(260f, 74f), UseHeroAbility);
-            SetRect(heroAbilityButton.GetComponent<RectTransform>(), new Vector2(700f, 38f), new Vector2(260f, 74f), Vector2.zero, Vector2.zero);
-            var cancel = CreateButton("Cancel", bottomBar.transform, "İPTAL", new Vector2(170f, 74f), CancelSelection);
-            SetRect(cancel.GetComponent<RectTransform>(), new Vector2(980f, 38f), new Vector2(170f, 74f), Vector2.zero, Vector2.zero);
+            var archer = CreateButton("Archer", bottomBar.transform, "OKÇU  75", new Vector2(190f, 62f), () => TryBuildSelected(OutpostKind.Archer));
+            SetRect(archer.GetComponent<RectTransform>(), new Vector2(18f, 34f), new Vector2(190f, 62f), Vector2.zero, Vector2.zero);
+            var barracks = CreateButton("Barracks", bottomBar.transform, "KIŞLA  100", new Vector2(190f, 62f), () => TryBuildSelected(OutpostKind.Barracks));
+            SetRect(barracks.GetComponent<RectTransform>(), new Vector2(222f, 34f), new Vector2(190f, 62f), Vector2.zero, Vector2.zero);
+            var mage = CreateButton("Mage", bottomBar.transform, "BÜYÜ  125", new Vector2(190f, 62f), () => TryBuildSelected(OutpostKind.Mage));
+            SetRect(mage.GetComponent<RectTransform>(), new Vector2(426f, 34f), new Vector2(190f, 62f), Vector2.zero, Vector2.zero);
+            heroAbilityButton = CreateButton("Special", bottomBar.transform, "KALKAN DARBESİ", new Vector2(238f, 62f), UseHeroAbility);
+            SetRect(heroAbilityButton.GetComponent<RectTransform>(), new Vector2(638f, 34f), new Vector2(238f, 62f), Vector2.zero, Vector2.zero);
+            var cancel = CreateButton("Cancel", bottomBar.transform, "İPTAL", new Vector2(150f, 62f), CancelSelection);
+            SetRect(cancel.GetComponent<RectTransform>(), new Vector2(894f, 34f), new Vector2(150f, 62f), Vector2.zero, Vector2.zero);
 
             heroText = CreateText("Hero Status", bottomBar.transform, "ŞÖVALYE", 21, TextAnchor.MiddleLeft);
-            SetRect(heroText.rectTransform, new Vector2(700f, 6f), new Vector2(300f, 30f), Vector2.zero, Vector2.zero);
+            SetRect(heroText.rectTransform, new Vector2(638f, 4f), new Vector2(300f, 28f), Vector2.zero, Vector2.zero);
 
-            nextWaveButton = CreateButton("Next Wave", bottomBar.transform, "İLK DALGAYI BAŞLAT", new Vector2(330f, 74f), StartNextWave);
-            SetRect(nextWaveButton.GetComponent<RectTransform>(), new Vector2(-348f, 38f), new Vector2(330f, 74f), new Vector2(1f, 0f), new Vector2(1f, 0f));
+            nextWaveButton = CreateButton("Next Wave", bottomBar.transform, "İLK DALGAYI BAŞLAT", new Vector2(310f, 62f), StartNextWave);
+            SetRect(nextWaveButton.GetComponent<RectTransform>(), new Vector2(-328f, 34f), new Vector2(310f, 62f), new Vector2(1f, 0f), new Vector2(1f, 0f));
             nextWaveButtonLabel = nextWaveButton.GetComponentInChildren<Text>();
 
-            var selectedPanel = CreatePanel("Selected", safeRoot.transform, new Color(0.035f, 0.055f, 0.075f, 0.92f));
+            selectedPanel = CreatePanel("Selected", safeRoot.transform, new Color(0.035f, 0.055f, 0.075f, 0.92f));
             SetAnchors(selectedPanel.GetComponent<RectTransform>(), new Vector2(1f, 0.5f), new Vector2(1f, 0.5f),
-                new Vector2(-330f, -120f), new Vector2(-18f, 190f));
+                new Vector2(-320f, -110f), new Vector2(-18f, 168f));
             selectedText = CreateText("Selected Text", selectedPanel.transform, "PLATFORM SEÇİLMEDİ", 24, TextAnchor.UpperLeft);
             Stretch(selectedText.rectTransform, new Vector2(16f, 92f), new Vector2(-16f, -14f));
             upgradeButton = CreateButton("Upgrade", selectedPanel.transform, "YÜKSELT", new Vector2(130f, 58f), UpgradeSelected);
             SetRect(upgradeButton.GetComponent<RectTransform>(), new Vector2(14f, 18f), new Vector2(130f, 58f), Vector2.zero, Vector2.zero);
             sellButton = CreateButton("Sell", selectedPanel.transform, "SAT", new Vector2(130f, 58f), SellSelected);
             SetRect(sellButton.GetComponent<RectTransform>(), new Vector2(168f, 18f), new Vector2(130f, 58f), Vector2.zero, Vector2.zero);
+            selectedPanel.SetActive(false);
 
             resultPanel = CreatePanel("Result", safeRoot.transform, new Color(0f, 0f, 0f, 0.82f));
             Stretch(resultPanel.GetComponent<RectTransform>());
@@ -588,12 +649,44 @@ namespace DefenderChronicles.Core
             };
             var go = CreatePrimitive($"{kind} Outpost", primitive, targetSlot.transform.position + Vector3.up * 0.75f,
                 new Vector3(1.1f, 1.35f, 1.1f), color, transform, true);
+            BuildOutpostSilhouette(kind, go.transform);
             var outpost = go.AddComponent<GreyboxOutpost>();
             outpost.Configure(this, targetSlot, kind, stats);
             targetSlot.SetOccupant(outpost);
             outposts.Add(outpost);
             SelectOutpost(outpost);
             return true;
+        }
+
+        private void BuildOutpostSilhouette(OutpostKind kind, Transform root)
+        {
+            switch (kind)
+            {
+                case OutpostKind.Archer:
+                    CreatePrimitiveLocal("Archer Roof", PrimitiveType.Cube, root,
+                        new Vector3(0f, 0.62f, 0f), new Vector3(0.95f, 0.18f, 0.95f),
+                        new Color(0.50f, 0.28f, 0.12f));
+                    CreatePrimitiveLocal("Archer Bow", PrimitiveType.Cube, root,
+                        new Vector3(0.45f, 0.12f, 0f), new Vector3(0.10f, 0.52f, 0.12f),
+                        new Color(0.95f, 0.85f, 0.42f));
+                    break;
+                case OutpostKind.Barracks:
+                    CreatePrimitiveLocal("Barracks Door", PrimitiveType.Cube, root,
+                        new Vector3(0f, -0.14f, -0.51f), new Vector3(0.34f, 0.42f, 0.08f),
+                        new Color(0.20f, 0.20f, 0.22f));
+                    CreatePrimitiveLocal("Barracks Flag", PrimitiveType.Cube, root,
+                        new Vector3(0.42f, 0.52f, 0f), new Vector3(0.10f, 0.42f, 0.46f),
+                        new Color(0.72f, 0.20f, 0.22f));
+                    break;
+                case OutpostKind.Mage:
+                    CreatePrimitiveLocal("Mage Crystal", PrimitiveType.Sphere, root,
+                        new Vector3(0f, 0.62f, 0f), new Vector3(0.46f, 0.46f, 0.46f),
+                        new Color(0.35f, 0.80f, 1f));
+                    CreatePrimitiveLocal("Mage Base Ring", PrimitiveType.Cylinder, root,
+                        new Vector3(0f, -0.4f, 0f), new Vector3(0.82f, 0.10f, 0.82f),
+                        new Color(0.28f, 0.18f, 0.38f));
+                    break;
+            }
         }
 
         private void UpgradeSelected()
@@ -823,6 +916,7 @@ namespace DefenderChronicles.Core
                 upgradeButton.interactable = false;
                 sellButton.interactable = false;
             }
+            selectedPanel.SetActive(selectedSlot != null || selectedOutpost != null);
         }
 
         private void RefreshUi()
@@ -1057,12 +1151,38 @@ namespace DefenderChronicles.Core
             return go;
         }
 
+        internal static GameObject CreatePrimitiveLocal(string objectName, PrimitiveType primitive, Transform parent,
+            Vector3 localPosition, Vector3 localScale, Color color, bool keepCollider = false)
+        {
+            var go = GameObject.CreatePrimitive(primitive);
+            go.name = objectName;
+            go.transform.SetParent(parent, false);
+            go.transform.localPosition = localPosition;
+            go.transform.localScale = localScale;
+            var renderer = go.GetComponent<Renderer>();
+            if (renderer != null)
+            {
+                renderer.sharedMaterial = CreateMaterial(color);
+                renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+                renderer.receiveShadows = false;
+            }
+            if (!keepCollider)
+            {
+                var collider = go.GetComponent<Collider>();
+                if (collider != null) Destroy(collider);
+            }
+            return go;
+        }
+
         internal static Material CreateMaterial(Color color)
         {
-            Shader shader = Shader.Find("Universal Render Pipeline/Unlit")
+            Shader shader = Shader.Find("Universal Render Pipeline/Lit")
+                            ?? Shader.Find("Universal Render Pipeline/Unlit")
                             ?? Shader.Find("Sprites/Default")
                             ?? Shader.Find("Unlit/Color");
             var material = new Material(shader) { color = color };
+            if (material.HasProperty("_BaseColor"))
+                material.SetColor("_BaseColor", color);
             return material;
         }
 
