@@ -15,6 +15,7 @@ namespace DefenderChronicles.Enemies
         protected override void Update()
         {
             base.Update();
+            if (Data == null || IsDead) return;
 
             attackTimer -= Time.deltaTime;
             if (attackTimer > 0f)

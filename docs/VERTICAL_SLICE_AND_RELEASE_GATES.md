@@ -16,8 +16,10 @@ Tamamlanmis sayilmasi icin:
 
 Mevcut durum:
 
-- Harita slotlari, komuta noktalari, rota ilerlemesi, birlik siniflari ve kahraman komutu icin temel atildi.
-- Bu kapi henuz gercek Unity playtest ile kapatilmis sayilmaz.
+- Final iOS Simulator yapisi iki ayri hizlandirilmis kabul kosusunda 6 normal dalga ve boss zaferiyle tamamlandi.
+- Yenilgi ve temiz sahne restart akisi ayri kabul kosusunda gecti.
+- Development runtime kaydinda yakalanmis error veya exception bulunmadi.
+- **DC-119 gri kutu kapi kapatildi.** Uc ayri strateji dengesi, gercek parmak stres testi ve 8–12 dakika dis oyuncu sure olcumu DC-120/123 altinda acik kalir.
 
 ## Ilk Denge Gecisi Kapisi
 

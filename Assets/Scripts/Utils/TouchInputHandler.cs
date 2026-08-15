@@ -31,6 +31,8 @@ namespace DefenderChronicles.Utils
 
         private void Awake()
         {
+            OnTap ??= new UnityEvent<Vector3>();
+            OnLongPress ??= new UnityEvent<Vector3>();
             if (gameCamera == null)
                 gameCamera = Camera.main;
         }

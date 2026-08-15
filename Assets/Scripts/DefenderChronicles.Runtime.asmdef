@@ -1,0 +1,9 @@
+{
+  "name": "DefenderChronicles.Runtime",
+  "rootNamespace": "DefenderChronicles",
+  "references": [
+    "Unity.InputSystem",
+    "Unity.TextMeshPro"
+  ],
+  "autoReferenced": true
+}

@@ -1,0 +1,10 @@
+<linker>
+  <!-- Runtime greybox primitives add their colliders through GameObject.CreatePrimitive. -->
+  <assembly fullname="UnityEngine.PhysicsModule">
+    <type fullname="UnityEngine.BoxCollider" preserve="all" />
+    <type fullname="UnityEngine.SphereCollider" preserve="all" />
+    <type fullname="UnityEngine.CapsuleCollider" preserve="all" />
+    <type fullname="UnityEngine.Collider" preserve="all" />
+    <type fullname="UnityEngine.Physics" preserve="all" />
+  </assembly>
+</linker>

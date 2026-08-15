@@ -142,23 +142,36 @@ namespace DefenderChronicles.Core
 
         private IEnumerator SpawnWave(WaveData wave)
         {
+            if (wave == null)
+            {
+                Debug.LogError("Cannot start wave: WaveData is missing.");
+                yield break;
+            }
+
             isSpawning = true;
             ResetWaveSpawnTracking(wave);
             OnWaveStarted?.Invoke(wave.waveNumber);
 
-            foreach (var spawnInfo in wave.enemies)
+            if (wave.enemies != null)
             {
-                yield return new WaitForSeconds(spawnInfo.spawnDelay);
-
-                for (int i = 0; i < spawnInfo.count; i++)
+                foreach (var spawnInfo in wave.enemies)
                 {
-                    if (SpawnEnemy(spawnInfo.enemyType))
-                        activeEnemyCount++;
-                    yield return new WaitForSeconds(wave.timeBetweenSpawns);
+                    if (spawnInfo == null || spawnInfo.count <= 0) continue;
+                    yield return new WaitForSeconds(Mathf.Max(0f, spawnInfo.spawnDelay));
+
+                    for (int i = 0; i < spawnInfo.count; i++)
+                    {
+                        if (SpawnEnemy(spawnInfo.enemyType))
+                            activeEnemyCount++;
+                        else
+                            NotifyEnemyRemovedFromWave();
+                        yield return new WaitForSeconds(Mathf.Max(0f, wave.timeBetweenSpawns));
+                    }
                 }
             }
 
             isSpawning = false;
+            TryCompleteWaveIfClear();
         }
 
         private bool SpawnEnemy(EnemyType type)
@@ -194,7 +207,7 @@ namespace DefenderChronicles.Core
         {
             enemy.OnEnemyDied -= HandleEnemyDied;
             enemy.OnEnemyReachedEnd -= HandleEnemyReachedEnd;
-            activeEnemyCount--;
+            activeEnemyCount = Mathf.Max(0, activeEnemyCount - 1);
             NotifyEnemyRemovedFromWave();
 
             TryCompleteWaveIfClear();
@@ -204,7 +217,7 @@ namespace DefenderChronicles.Core
         {
             enemy.OnEnemyDied -= HandleEnemyDied;
             enemy.OnEnemyReachedEnd -= HandleEnemyReachedEnd;
-            activeEnemyCount--;
+            activeEnemyCount = Mathf.Max(0, activeEnemyCount - 1);
             NotifyEnemyRemovedFromWave();
 
             TryCompleteWaveIfClear();
@@ -216,7 +229,7 @@ namespace DefenderChronicles.Core
             if (wave.enemies != null)
             {
                 foreach (var s in wave.enemies)
-                    _waveSpawnPlanned += s.count;
+                    if (s != null) _waveSpawnPlanned += Mathf.Max(0, s.count);
             }
             _waveSpawnRemoved = 0;
             OnWaveClearProgress?.Invoke(0f);

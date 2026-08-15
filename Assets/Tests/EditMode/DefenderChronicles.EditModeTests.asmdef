@@ -1,0 +1,13 @@
+{
+  "name": "DefenderChronicles.EditModeTests",
+  "rootNamespace": "DefenderChronicles.Tests",
+  "references": [
+    "DefenderChronicles.Runtime"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ]
+}

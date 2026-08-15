@@ -9,19 +9,18 @@ namespace DefenderChronicles.UI
     public class TowerWorldTapHandler : MonoBehaviour
     {
         [SerializeField] private float pickRadius = 0.55f;
+        private TouchInputHandler touchInput;
 
-        private void Start()
+        private void OnEnable()
         {
-            var touch = GetComponent<TouchInputHandler>();
-            if (touch != null)
-                touch.OnTap.AddListener(OnWorldTap);
+            touchInput = GetComponent<TouchInputHandler>();
+            touchInput?.OnTap?.AddListener(OnWorldTap);
         }
 
-        private void OnDestroy()
+        private void OnDisable()
         {
-            var touch = GetComponent<TouchInputHandler>();
-            if (touch != null)
-                touch.OnTap.RemoveListener(OnWorldTap);
+            touchInput?.OnTap?.RemoveListener(OnWorldTap);
+            touchInput = null;
         }
 
         private void OnWorldTap(Vector3 world)

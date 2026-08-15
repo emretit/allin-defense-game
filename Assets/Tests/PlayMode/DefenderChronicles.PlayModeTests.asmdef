@@ -1,0 +1,10 @@
+{
+  "name": "DefenderChronicles.PlayModeTests",
+  "rootNamespace": "DefenderChronicles.Tests",
+  "references": [
+    "DefenderChronicles.Runtime"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}

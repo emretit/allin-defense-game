@@ -16,6 +16,7 @@ namespace DefenderChronicles.Enemies
         protected override void Update()
         {
             base.Update();
+            if (Data == null || IsDead) return;
             UpdatePhase();
             TryDisruptOutpost();
         }

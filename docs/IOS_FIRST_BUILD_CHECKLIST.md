@@ -26,16 +26,21 @@ Unity icinde hizli uygulama:
 
 Simulator acikken en hizli yol:
 
-1. Unity'de `Defender Chronicles > Apply iOS Simulator Settings` calistir.
-2. `File > Build Settings > iOS` ekranindan `Build` al.
-3. Cikan Xcode projesini ac.
-4. Xcode ust cihaz seciminden acik Simulator'u sec.
-5. `Run` de.
+1. Terminalde proje kokunden `./tools/build_and_run_ios_simulator.sh` calistir.
+2. Akis Unity export, Xcode Debug build, kurulum ve acilisi otomatik tamamlar.
+3. Release Xcode projesi icin Unity menusunden `Build iOS Simulator Release Xcode Project` kullan.
 
 Not:
 
 - Simulator icin Apple signing genelde fiziksel cihaz kadar ugrasli degildir.
 - Gercek cihaz performansi yerine gecmez; ama UI, yatay ekran, safe area ve temel dokunma hissi icin cok iyi ilk testtir.
+
+15 Agustos 2026 sonucu:
+
+- Development ve Xcode Simulator build gecti.
+- Dynamic Island yatay safe area goruntulendi.
+- Normal acilista yakalanmis error/exception yok.
+- Iki tam zafer ve bir yenilgi/restart kabul kosusu gecti.
 
 ## Xcode Gerekenleri
 

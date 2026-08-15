@@ -11,8 +11,10 @@ namespace DefenderChronicles.Heroes
         [SerializeField] private float explosionRadius = 2.5f;
         [SerializeField] private int explosionDamageMultiplier = 5;
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
+            if (heroData == null) return;
             heroData.attackRange *= 1.5f; // Extra range
         }
 
