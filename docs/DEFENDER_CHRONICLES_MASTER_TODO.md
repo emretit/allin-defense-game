@@ -1,6 +1,6 @@
 # Defender Chronicles — Gerçek Durum Listesi
 
-Son güncelleme: 2026-08-15
+Son güncelleme: 2026-08-16
 
 Bu belge eski “belgelendi = tamamlandı” yaklaşımını kaldırır. Aşağıdaki durumlar kabul kapısının gerçek seviyesini gösterir:
 
@@ -35,10 +35,10 @@ Bu belge eski “belgelendi = tamamlandı” yaklaşımını kaldırır. Aşağ�
 | DC-038–039 | Doğrulandı | Ortak hasar sözleşmesi ve iki engelleyici/yeniden doğan kışla birliği çalışıyor. |
 | DC-040–041 | Tasarlandı | Ayrı menzilli/büyü dost birlikleri revize dikey dilimde yok. |
 | DC-042–044 | Uygulandı | En ileride hedefleme, hasar, yavaşlatma ve stun var; tam strateji/direnç matrisi yok. |
-| DC-045–046 | Tasarlandı | Havuzlu mermi ve gelişmiş kümelenme bu dilimde uygulanmadı. |
+| DC-045–046 | Uygulandı | Hasardan bağımsız kozmetik VFX havuzu var; gelişmiş kümelenme kapsam dışı. |
 | DC-047 | Doğrulandı | Düşman temizliği, birlik yeniden doğması ve Knight geri dönüşü çalışıyor. |
-| DC-048 | Uygulandı | Takım renkleri ve düşman sağlık çubukları var; erişilebilirlik sanat geçişi bekliyor. |
-| DC-049–050 | Tasarlandı | Oyuncu 2× hızı, VFX ve ses geri bildirimi kapsam dışı. |
+| DC-048 | Doğrulandı | Takım rengi, siluet, animasyon ve sağlık çubuğu production sunumunda okunur. |
+| DC-049–050 | Uygulandı | Havuzlu VFX ve ses geri bildirimi var; oyuncu 2× hızı kapsam dışı. |
 | DC-051–055 | Doğrulandı | Knight rolü, komuta hareketi, saldırı, hedeflenme, Shield Bash ve cooldown HUD çalışıyor. |
 | DC-056–060 | Tasarlandı | XP, seviye, ekipman ve yükleme ekranı bu teslimin dışında. |
 
@@ -46,7 +46,7 @@ Bu belge eski “belgelendi = tamamlandı” yaklaşımını kaldırır. Aşağ�
 
 | Maddeler | Durum | Kanıt / kalan iş |
 |---|---|---|
-| DC-061 | Uygulandı | Gri kutu için hızlı, tank, rejenerasyon, destek, kuşatma ve boss rolleri var. |
+| DC-061 | Doğrulandı | Raider, Vanguard, Regenerator, Support, Siege ve boss ayrı production siluetlerine sahip. |
 | DC-062–068 | Doğrulandı | Altı rol ve %66/%33 eşikli boss, geçici karakol bozma ile Simulator’da tamamlandı. |
 | DC-069 | Uygulandı | `WaveDefinition` var; ilk bölüm tanımları şu an kod içi, asset editörü bekliyor. |
 | DC-070 | Tasarlandı | Otomatik tehdit bütçesi uygulanmadı. |
@@ -60,22 +60,22 @@ Bu belge eski “belgelendi = tamamlandı” yaklaşımını kaldırır. Aşağ�
 
 | Maddeler | Durum | Kanıt / kalan iş |
 |---|---|---|
-| DC-083–084 | Uygulandı | Bağımsız gri kutu HUD var; final fantastik tasarım sistemi yok. |
+| DC-083–084 | Doğrulandı | Prefab tabanlı TMP HUD, ortak panel dili, ikon/şekil desteği ve safe-area yerleşimi var. |
 | DC-085–087 | Doğrulandı | Can, altın, dalga, Knight, karakol rol/değer/yükseltme/satış bilgileri çalışıyor. |
 | DC-088 | Uygulandı | Shield Bash önizleme ve cooldown var; ayrı hedefleme/iptal modu yok. |
 | DC-089 | Doğrulandı | İlk üç dalga için kısa oyun içi öğretici mesajları var. |
-| DC-090–094 | Tasarlandı | Menü, bölüm seçimi, ayarlar ve localization bu dilimde yok. |
+| DC-090–094 | Uygulandı | Türkçe kopya katalogda; İngilizce katalog eklemeye hazır. Menü/bölüm seçimi/ayarlar kapsam dışı. |
 | DC-095 | Doğrulandı | HUD ayrı safe-area panelinde ve yatay Dynamic Island Simulator’da görünür. |
 | DC-096 | Uygulandı | Özgün 1024×1024 uygulama ikonu üretildi. |
-| DC-097–105 | Tasarlandı | Final model, animasyon, VFX, ses ve müzik üretimi gri kutu sonrasına bırakıldı. |
+| DC-097–105 | Doğrulandı | Özgün Blender/FBX seti, stilize görsel durumlar, VFX havuzu, 22 ses olayı ve 6 müzik durumu production kataloğunda. |
 
 ## Kalite ve sürüm kapıları
 
 | Maddeler | Durum | Kanıt / kalan iş |
 |---|---|---|
 | DC-106–109 | Tasarlandı | Erişilebilirlik ve performans bütçeleri gerçek cihaz geçişi bekliyor. |
-| DC-110 | Uygulandı | 7 EditMode testi geçti; daha geniş direnç/kayıt kapsamı bekliyor. |
-| DC-111 | Doğrulandı | PlayMode ekonomi/pause testi ve iOS zafer/yenilgi/restart kabul koşuları geçti. |
+| DC-110 | Uygulandı | 9 EditMode testi geçti; katalog ve Türkçe kopya bütünlüğü de kapsanıyor. |
+| DC-111 | Doğrulandı | 2 PlayMode testi ekonomi/pause ve production sunumunu kapsıyor; iOS kabul koşuları geçti. |
 | DC-112 | Tasarlandı | Kalıcı kayıt bu dilimde yok. |
 | DC-113 | Uygulandı | Açılış ve zafer görüntüleri saklandı; otomatik piksel karşılaştırması yok. |
 | DC-114 | Bekliyor | 30–60 dakikalık dayanıklılık testi yapılmadı. |
@@ -85,13 +85,13 @@ Bu belge eski “belgelendi = tamamlandı” yaklaşımını kaldırır. Aşağ�
 | DC-118 | Doğrulandı | Final Development Simulator açılışı ve tam koşularda yakalanmış error/exception yok. |
 | DC-119 | Doğrulandı | Final iOS yapısı iki kez 6 normal dalga + boss zaferiyle baştan sona tamamlandı. |
 | DC-120 | Uygulandı | Karma savunma kazanıyor; üç farklı karakol ağırlıklı strateji manuel kabulü bekliyor. |
-| DC-121 | Bekliyor | Sanatsal dikey dilim ayrı planlanacak. |
+| DC-121 | Doğrulandı | Tek haritanın tüm aktörleri, karakolları, HUD, VFX, ses ve müziği sanatsal dikey dilime taşındı. |
 | DC-122 | Bekliyor | Performans Simulator’da değil gerçek iPhone’da ölçülecek. |
 | DC-123 | Bekliyor | Dış kullanıcı testi yapılacak. |
 | DC-124–128 | Tasarlandı | Sonraki kampanya, hesap, liderlik, gelir ve mağaza belgeleri var; uygulanmadı. |
 
-## Revize gri kutu kabul özeti
+## Sanatsal dikey dilim kabul özeti
 
-- **Geçti:** build, kurulum, yatay açılış, safe area, görünür harita/rota/slot/komuta noktaları, üç karakol, yükseltme/satış, birlik engelleme/yeniden doğma, Knight, 7 dalga, boss, zafer, yenilgi, pause ve restart.
+- **Geçti:** production katalog doğrulaması, özgün görsel set, TMP HUD, Türkçe kopya, havuzlu VFX, mixer/müzik durumları, build, kurulum, yatay açılış, safe area, üç karakol, Knight, 7 dalga, boss, zafer, yenilgi, pause ve restart.
 - **Kısmi:** gerçek parmakla hızlı/çoklu dokunma, üç ayrı strateji dengesi ve 8–12 dakikalık dış oyuncu süre ölçümü.
-- **Sonraki kapı:** final sanat/ses ve gerçek iPhone performans testi.
+- **Sonraki kapı:** fiziksel iPhone'da dokunma, bellek, termal durum ve kesin 30/60 FPS performans testi.

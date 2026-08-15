@@ -1,8 +1,8 @@
 # Defender Chronicles
 
-Bağımsız, mobil öncelikli 3B savunma oyunu gri kutu dikey dilimi.
+Bağımsız, mobil öncelikli stilize 3B savunma oyununun sanatsal dikey dilimi.
 
-Bu proje Age of Arena veya FutbolQuiz’den kod, model, ses, font, ikon ya da UI dosyası kullanmaz. İlk teslimin dünyası Unity primitive’leriyle oluşturulur.
+Bu proje Age of Arena veya FutbolQuiz’den kod, model, ses, font, ikon ya da UI dosyası kullanmaz. Production sunumu özgün Blender kaynakları, paylaşılan URP paleti, proje için üretilen sesler ve lisansı repoda tutulan Noto fontlarından oluşur.
 
 ## Mevcut oynanabilir kapsam
 
@@ -17,6 +17,8 @@ Bu proje Age of Arena veya FutbolQuiz’den kod, model, ses, font, ikon ya da UI
 - 6 normal dalga + 1 boss dalgası
 - Hazırlık, savaş, 8 saniyelik mola, pause, zafer, yenilgi ve restart durumları
 - Safe-area içinde yatay mobil HUD
+- Gece mavisi/turuncu stilize çevre, aktör ve karakol seti
+- Türkçe TextMeshPro HUD, havuzlu VFX ve duruma bağlı müzik sistemi
 
 ## Teknik temel
 
@@ -26,9 +28,10 @@ Bu proje Age of Arena veya FutbolQuiz’den kod, model, ses, font, ikon ya da UI
 - Bundle ID: `com.emreaydin.defenderchronicles`
 - Giriş: Unity Input System
 - Test: Unity Test Framework 1.6.0
-- UI metni: çalışma zamanında TMP’ye bağımlı değildir; Unity’nin yerleşik fontu kullanılır
+- UI metni: prefab tabanlı UGUI + TextMeshPro; Türkçe metinler `UiCopyCatalog` içindedir
+- Production sunumu: doğrulanan `DefenderPresentationCatalog`; eksik varlık/lisans build’i durdurur
 
-Ana akış [GameSessionController.cs](/Users/emreaydin/DefenderChronicles/Assets/Scripts/Core/GameSessionController.cs), savaş aktörleri [GreyboxCombatants.cs](/Users/emreaydin/DefenderChronicles/Assets/Scripts/Core/GreyboxCombatants.cs) içindedir. `GameBootstrap` yalnız oturumu başlatır.
+Ana akış [GameSessionController.cs](/Users/emreaydin/DefenderChronicles/Assets/Scripts/Core/GameSessionController.cs), savaş aktörleri [GreyboxCombatants.cs](/Users/emreaydin/DefenderChronicles/Assets/Scripts/Core/GreyboxCombatants.cs) içindedir. Sunum varlıkları ve doğrulama [DefenderPresentationCatalog.cs](/Users/emreaydin/DefenderChronicles/Assets/Scripts/Presentation/DefenderPresentationCatalog.cs) üzerinden yönetilir.
 
 ## Testler
 
@@ -42,10 +45,10 @@ EditMode:
 
 PlayMode için `-testPlatform PlayMode` kullanılır.
 
-Doğrulanan sonuçlar (15 Ağustos 2026):
+Doğrulanan sonuçlar (16 Ağustos 2026):
 
-- EditMode: 7/7 geçti
-- PlayMode: 1/1 geçti; sahne, içerik, ekonomi ve pause/devam kontrol edildi
+- EditMode: 9/9 geçti
+- PlayMode: 2/2 geçti; sahne, içerik, ekonomi, pause/devam ve production sunumu kontrol edildi
 - iOS Development Simulator build: geçti
 - iOS Xcode Debug build: geçti
 - Normal Simulator açılışı: yakalanmış error/exception yok
@@ -64,8 +67,12 @@ Simulator’da bir iPhone açıkken:
 
 Bu komut Unity’den Xcode projesi üretir, Development yapı alır, açık Simulator’a kurar ve oyunu normal hazırlık ekranında açar. Ayrı Release Xcode çıktısı Unity menüsündeki `Defender Chronicles > Build iOS Simulator Release Xcode Project` komutuyla üretilebilir.
 
+## Varlık kökeni
+
+Blender kaynakları, üretim betikleri, font lisansları ve kullanılan üretim kaynakları [ASSET_PROVENANCE.md](/Users/emreaydin/DefenderChronicles/docs/ASSET_PROVENANCE.md) içinde kayıtlıdır.
+
 ## Kapsam dışı
 
-Catapult, diğer kahramanlar, ekipman, hesap, bulut kayıt, PvP, reklam, IAP, final modeller, animasyon, ses ve müzik bu gri kutu teslimine dahil değildir.
+Yeni kuleler, diğer kahramanlar, ekipman, hesap, bulut kayıt, PvP, reklam, IAP ve kampanya bu teslimin kapsamında değildir. Kesin 30/60 FPS kapısı fiziksel iPhone profil ölçümüne bırakılmıştır.
 
 Güncel ve gerçek durum sınıflandırması: [DEFENDER_CHRONICLES_MASTER_TODO.md](/Users/emreaydin/DefenderChronicles/docs/DEFENDER_CHRONICLES_MASTER_TODO.md).

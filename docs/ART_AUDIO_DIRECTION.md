@@ -1,23 +1,24 @@
 # Defender Chronicles — Art and Audio Direction
 
-Durum: Faz 8 uretim standardi notu
-Son guncelleme: 2026-08-15
+Durum: Sanatsal dikey dilim uygulandı
+Son güncelleme: 2026-08-16
 
 ## Gorsel Konsept Paketi
 
-Ilk konsept paketi su parcalari icerecek:
+Tamamlanan paket:
 
 - 1 harita parcasi
 - 3 karakol
 - 1 kahraman
-- 4 dusman rol ornegi
+- 6 düşman rolü
 - 1 boss silueti
-- 1 savas HUD taslagi
+- 1 production savaş HUD'ı
 
 Hedef:
 
 - Uzaktan okunabilen stylized 3B savunma oyunu.
-- Age of Arena'nin okunabilir izometrik disiplininden faydalanan ama kendi fantastik savunma kimligini kuran bir stil.
+- Gece mavisi, savunma mavisi, taş, orman, düşman kırmızısı, büyü camgöbeği ve ateş/turuncu ortak paleti.
+- Özgün Blender kaynakları ve optimize FBX çıktıları.
 
 ## Varlik Uretim Standardi
 
@@ -28,7 +29,7 @@ Model kurallari:
 - Karakter siluetleri tepeden/izometrik acida okunur.
 - Materyal sayisi sinirli tutulur.
 - Takim rengi icin ayrilmis aksan bolgesi olur.
-- Mobil icin LOD dusunulur.
+- Sabit kamera için düşük poligon bütçesi kullanılır.
 - Collider basit tutulur.
 
 Animasyon adlari:
@@ -119,7 +120,7 @@ Kural:
 
 - Renk korlugu icin yalnizca renge guvenilmez; sekil ve hareket de farkli olur.
 
-## Ses Olay Katalogu
+## Ses Olay Kataloğu
 
 Olay kimlikleri:
 
@@ -134,7 +135,12 @@ Olay kimlikleri:
 - `enemy_defeat`
 - `hero_move`
 - `hero_ability`
-- `hero_level_up`
+- `hero_attack`
+- `outpost_attack`
+- `mage_impact`
+- `heal_pulse`
+- `outpost_disrupted`
+- `slow_applied`
 - `boss_phase`
 - `boss_attack`
 - `wave_start`
@@ -152,10 +158,15 @@ Muzik durumlari:
 - Zafer
 - Yenilgi
 
-Gecis:
+Geçiş:
 
-- Mumkunse crossfade.
+- 1,1 saniyelik crossfade.
 - Boss gecisinde kisa vurgu kullanilabilir.
+- UI, SFX ve müzik ayrı mixer gruplarındadır; pause ayrı snapshot'a geçer.
+
+## Uygulama notu
+
+Aktörlerin mantıksal yaşam döngüsü değişmez. `StylizedActorView` görsel hareket/atak/darbe durumunu oynatır ve ölümde çarpışmasız kısa bir görsel yankı üretir. Hasar, VFX ve ses zamanlamasına bağlı değildir. Tüm kritik görseller ve sesler production kataloğunda doğrulanır.
 
 ## Mobil Ses Butcesi
 
