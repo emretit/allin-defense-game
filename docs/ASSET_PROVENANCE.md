@@ -9,6 +9,7 @@ Production kataloğu bu kayıtların karşılığını doğrular. Zorunlu font l
 | Noto Sans Regular | Noto Fonts | SIL Open Font License 1.1 | https://github.com/notofonts/noto-fonts | 2026-08-16 |
 | Noto Serif SemiBold | Noto Fonts | SIL Open Font License 1.1 | https://github.com/notofonts/noto-fonts | 2026-08-16 |
 | HUD panel dokusu | OpenAI image generation; uygulama ikonu görsel referans alındı | Bu proje için üretilen özgün çıktı | Bu proje oturumu | 2026-08-16 |
+| HUD ikon atlası | OpenAI image generation; HUD paneli görsel referans alındı | Bu proje için üretilen özgün çıktı | Bu proje oturumu | 2026-08-16 |
 | Çevre, aktör ve karakol modelleri | `tools/art_pipeline/generate_lowpoly_assets.py` ile Blender'da üretildi | Defender Chronicles özgün varlığı | `ArtSource/Blender` | 2026-08-16 |
 | SFX | Kenney Interface Sounds, Impact Sounds ve RPG Audio | Creative Commons CC0 1.0 | Kaynaklar `Assets/ThirdParty/Audio/CC0Sources/SOURCES.md` içinde | 2026-08-16 |
 | Müzik | OpenGameArt üzerinde yayımlanan altı eser | Creative Commons CC0 1.0 | Eser adı, sanatçı ve bağlantılar `Assets/ThirdParty/Audio/CC0Sources/SOURCES.md` içinde | 2026-08-16 |

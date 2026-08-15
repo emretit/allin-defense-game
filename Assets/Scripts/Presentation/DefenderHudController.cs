@@ -34,10 +34,10 @@ namespace DefenderChronicles.Presentation
         private GameObject selectedPanel;
         private GameObject resultPanel;
 
-        public void Initialize(UiCopyCatalog uiCopy, Action<OutpostKind> build, Action ability, Action cancel,
+        public void Initialize(DefenderPresentationCatalog catalog, Action<OutpostKind> build, Action ability, Action cancel,
             Action nextWave, Action pause, Action upgrade, Action sell, Action restart, Action uiClick)
         {
-            copy = uiCopy;
+            copy = catalog.uiCopy;
             CacheReferences();
             Bind(archerButton, () => build(OutpostKind.Archer), uiClick);
             Bind(barracksButton, () => build(OutpostKind.Barracks), uiClick);
@@ -49,6 +49,13 @@ namespace DefenderChronicles.Presentation
             Bind(upgradeButton, upgrade, uiClick);
             Bind(sellButton, sell, uiClick);
             Bind(restartButton, restart, uiClick);
+            AddTextIcon(goldText, catalog.goldIcon);
+            AddTextIcon(livesText, catalog.keepIcon);
+            AddTextIcon(waveText, catalog.waveIcon);
+            AddButtonIcon(archerButton, catalog.archerIcon);
+            AddButtonIcon(barracksButton, catalog.barracksIcon);
+            AddButtonIcon(mageButton, catalog.mageIcon);
+            AddButtonIcon(abilityButton, catalog.abilityIcon);
             ApplyStaticCopy();
             selectedPanel.SetActive(false);
             resultPanel.SetActive(false);
@@ -116,9 +123,9 @@ namespace DefenderChronicles.Presentation
 
         private void ApplyStaticCopy()
         {
-            SetButtonLabel(archerButton, $"[A]  {copy.Get(UiTextKey.Archer)}\n75");
-            SetButtonLabel(barracksButton, $"[K]  {copy.Get(UiTextKey.Barracks)}\n100");
-            SetButtonLabel(mageButton, $"[B]  {copy.Get(UiTextKey.Mage)}\n125");
+            SetButtonLabel(archerButton, $"{copy.Get(UiTextKey.Archer)}\n75");
+            SetButtonLabel(barracksButton, $"{copy.Get(UiTextKey.Barracks)}\n100");
+            SetButtonLabel(mageButton, $"{copy.Get(UiTextKey.Mage)}\n125");
             SetButtonLabel(abilityButton, copy.Get(UiTextKey.ShieldBash));
             SetButtonLabel(cancelButton, copy.Get(UiTextKey.Cancel));
             SetButtonLabel(upgradeButton, copy.Get(UiTextKey.Upgrade));
@@ -177,6 +184,47 @@ namespace DefenderChronicles.Presentation
         {
             TMP_Text label = button.GetComponentInChildren<TMP_Text>(true);
             if (label != null) label.text = value;
+        }
+
+        private static void AddTextIcon(TMP_Text text, Sprite sprite)
+        {
+            if (text == null || sprite == null || text.transform.Find("Icon") != null) return;
+            var iconObject = new GameObject("Icon", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+            iconObject.transform.SetParent(text.transform, false);
+            var rect = iconObject.GetComponent<RectTransform>();
+            rect.anchorMin = new Vector2(0f, 0.5f);
+            rect.anchorMax = new Vector2(0f, 0.5f);
+            rect.pivot = new Vector2(0f, 0.5f);
+            rect.anchoredPosition = new Vector2(2f, 0f);
+            rect.sizeDelta = new Vector2(34f, 34f);
+            var image = iconObject.GetComponent<Image>();
+            image.sprite = sprite;
+            image.preserveAspect = true;
+            image.raycastTarget = false;
+            text.margin = new Vector4(text.margin.x + 42f, text.margin.y, text.margin.z, text.margin.w);
+        }
+
+        private static void AddButtonIcon(Button button, Sprite sprite)
+        {
+            if (button == null || sprite == null || button.transform.Find("Icon") != null) return;
+            var iconObject = new GameObject("Icon", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+            iconObject.transform.SetParent(button.transform, false);
+            var rect = iconObject.GetComponent<RectTransform>();
+            rect.anchorMin = new Vector2(0f, 0.5f);
+            rect.anchorMax = new Vector2(0f, 0.5f);
+            rect.pivot = new Vector2(0f, 0.5f);
+            rect.anchoredPosition = new Vector2(8f, 0f);
+            rect.sizeDelta = new Vector2(42f, 42f);
+            var image = iconObject.GetComponent<Image>();
+            image.sprite = sprite;
+            image.preserveAspect = true;
+            image.raycastTarget = false;
+            TMP_Text label = button.GetComponentInChildren<TMP_Text>(true);
+            if (label != null)
+            {
+                RectTransform labelRect = label.rectTransform;
+                labelRect.offsetMin = new Vector2(Mathf.Max(labelRect.offsetMin.x, 48f), labelRect.offsetMin.y);
+            }
         }
     }
 }

@@ -42,9 +42,13 @@ namespace DefenderChronicles.Presentation
                 ? signal.source.GetComponent<StylizedActorView>()
                 : null;
             if (signal.cue is PresentationCue.EnemyHit) view?.Hit();
-            if (signal.cue is PresentationCue.HeroAttacked or PresentationCue.OutpostAttacked or PresentationCue.BossAttack)
+            if (signal.cue is PresentationCue.HeroAttacked or PresentationCue.OutpostAttacked)
                 view?.Attack();
             if (signal.cue == PresentationCue.OutpostDisrupted) view?.Disabled();
+            if (signal.cue == PresentationCue.HeroAbility) view?.Ability();
+            if (signal.cue == PresentationCue.BossPhase) view?.Phase();
+            if (signal.cue == PresentationCue.BossAttack) view?.BossAttack();
+            if (signal.cue == PresentationCue.Victory) session.Hero?.GetComponent<StylizedActorView>()?.Victory();
 
             if (signal.cue is PresentationCue.EnemyDefeated or PresentationCue.UnitDefeated)
             {

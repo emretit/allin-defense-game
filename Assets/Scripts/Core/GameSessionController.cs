@@ -495,7 +495,7 @@ namespace DefenderChronicles.Core
                 artHud = hudObject.GetComponent<DefenderHudController>();
                 if (artHud == null)
                     throw new InvalidOperationException("Presentation HUD prefab has no DefenderHudController.");
-                artHud.Initialize(presentationCatalog.uiCopy, TryBuildSelected, UseHeroAbility, CancelSelection,
+                artHud.Initialize(presentationCatalog, TryBuildSelected, UseHeroAbility, CancelSelection,
                     StartNextWave, OnPausePressed, UpgradeSelected, SellSelected, RestartLevel,
                     () => EmitPresentation(PresentationCue.UiClick, Vector3.zero));
                 return;
@@ -1263,16 +1263,17 @@ namespace DefenderChronicles.Core
         internal void ReplaceOutpostVisual(GreyboxOutpost outpost)
         {
             if (presentationCatalog == null || outpost == null) return;
-            Transform art = outpost.transform.Find("Art");
+            Transform motion = outpost.transform.Find("Motion");
+            Transform art = motion != null ? motion.Find("Art") : outpost.transform.Find("Art");
             if (art != null) Destroy(art.gameObject);
             GameObject visual = StylizedPresentationFactory.SpawnModel(
-                presentationCatalog.OutpostPrefab(outpost.Kind, 2), outpost.transform, presentationCatalog, "Art");
+                presentationCatalog.OutpostPrefab(outpost.Kind, 2), motion != null ? motion : outpost.transform,
+                presentationCatalog, "Art", true);
             if (visual != null)
             {
                 visual.transform.localPosition = Vector3.zero;
                 visual.transform.localRotation = Quaternion.identity;
                 visual.transform.localScale = Vector3.one;
-                outpost.GetComponent<StylizedActorView>()?.Configure(visual.transform);
                 outpost.RefreshPresentationRenderer();
             }
         }

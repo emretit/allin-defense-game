@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using DefenderChronicles.Core;
 using DefenderChronicles.Presentation;
 using NUnit.Framework;
@@ -74,6 +75,11 @@ namespace DefenderChronicles.Tests
             Assert.That(buildSignals, Is.EqualTo(1));
             Assert.That(GameObject.Find("Greenwatch Environment"), Is.Not.Null);
             Assert.That(GameObject.Find("Defender HUD"), Is.Not.Null);
+            Assert.That(session.Hero.GetComponent<StylizedActorView>(), Is.Not.Null);
+            Assert.That(session.Hero.GetComponentInChildren<Animator>(), Is.Not.Null);
+            int heroMaterials = session.Hero.GetComponentsInChildren<Renderer>()
+                .SelectMany(renderer => renderer.sharedMaterials).Where(material => material != null).Distinct().Count();
+            Assert.That(heroMaterials, Is.LessThanOrEqualTo(2));
             LogAssert.NoUnexpectedReceived();
             Object.Destroy(gameObject);
             yield return null;

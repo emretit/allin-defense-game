@@ -101,6 +101,41 @@ def shadow(radius=0.58):
     cylinder("BlobShadow", (0, 0.025, 0), radius, 0.025, "DC_Dark", 16)
 
 
+def add_humanoid_rig():
+    """Add the shared lightweight mobile humanoid skeleton to every actor source."""
+    rig_data = bpy.data.armatures.new("DC_HumanoidRig")
+    rig = bpy.data.objects.new("DC_HumanoidRig", rig_data)
+    bpy.context.collection.objects.link(rig)
+    bpy.context.view_layer.objects.active = rig
+    rig.select_set(True)
+    bpy.ops.object.mode_set(mode="EDIT")
+    bones = {
+        "Root": ((0, 0, 0), (0, 0, 0.55)),
+        "Spine": ((0, 0, 0.55), (0, 0, 1.2)),
+        "Head": ((0, 0, 1.2), (0, 0, 1.7)),
+        "Arm.L": ((0, 0, 1.08), (-0.55, 0, 0.9)),
+        "Arm.R": ((0, 0, 1.08), (0.55, 0, 0.9)),
+        "Leg.L": ((-0.13, 0, 0.58), (-0.13, 0, 0.05)),
+        "Leg.R": ((0.13, 0, 0.58), (0.13, 0, 0.05)),
+    }
+    created = {}
+    for name, (head, tail) in bones.items():
+        bone = rig_data.edit_bones.new(name)
+        bone.head = head
+        bone.tail = tail
+        created[name] = bone
+    created["Spine"].parent = created["Root"]
+    for name in ("Head", "Arm.L", "Arm.R"):
+        created[name].parent = created["Spine"]
+    for name in ("Leg.L", "Leg.R"):
+        created[name].parent = created["Root"]
+    bpy.ops.object.mode_set(mode="OBJECT")
+    for obj in list(bpy.context.scene.objects):
+        if obj.type == "MESH":
+            obj.parent = rig
+    return rig
+
+
 def banner(prefix, location, color="DC_Defender", scale=1.0):
     cylinder(f"{prefix}_Pole", location, 0.035 * scale, 1.15 * scale, "DC_Stone", 8)
     x, y, z = location
@@ -216,6 +251,7 @@ def build_humanoid(kind):
     if kind == "knight":
         box("Cape", (0, 0.92, 0.23), (0.56, 0.82, 0.08), "DC_Defender", 0.03)
         sphere("Crest", (0, 1.9, 0), (0.12, 0.2, 0.12), "DC_Fire")
+    add_humanoid_rig()
 
 
 def build_siege():
@@ -295,10 +331,10 @@ def main():
         reset_scene()
         builder()
         for obj in bpy.context.scene.objects:
-            obj.select_set(obj.type == "MESH")
+            obj.select_set(obj.type in {"MESH", "ARMATURE"})
         bpy.ops.wm.save_as_mainfile(filepath=str(source / f"{asset_name}.blend"))
         bpy.ops.export_scene.fbx(filepath=str(output / f"{asset_name}.fbx"), use_selection=True,
-                                 object_types={"MESH"}, apply_unit_scale=True, apply_scale_options="FBX_SCALE_ALL",
+                                 object_types={"MESH", "ARMATURE"}, apply_unit_scale=True, apply_scale_options="FBX_SCALE_ALL",
                                  bake_anim=False, add_leaf_bones=False, path_mode="AUTO")
         print(f"Generated {asset_name}")
 

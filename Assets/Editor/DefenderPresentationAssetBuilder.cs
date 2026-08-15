@@ -9,6 +9,7 @@ using DefenderChronicles.Data;
 using DefenderChronicles.Presentation;
 using TMPro;
 using UnityEditor;
+using UnityEditor.Animations;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -35,6 +36,7 @@ namespace DefenderChronicles.Editor
             Sprite panelSprite = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/UI/DefenderHudPanel.png");
             TMP_FontAsset bodyFont = CreateFontAsset("Assets/Art/Fonts/NotoSans-Regular.ttf", "NotoSans-DC");
             TMP_FontAsset titleFont = CreateFontAsset("Assets/Art/Fonts/NotoSerif-SemiBold.ttf", "NotoSerif-DC");
+            (RuntimeAnimatorController actorAnimator, AnimationClip[] actorClips) = CreateActorAnimator();
             UiCopyCatalog copy = CreateCopyCatalog();
             var materials = CreatePaletteMaterials();
             Dictionary<string, AudioMixerGroup> mixerGroups = CreateMixer();
@@ -76,6 +78,15 @@ namespace DefenderChronicles.Editor
             catalog.bodyFont = bodyFont;
             catalog.titleFont = titleFont;
             catalog.uiCopy = copy;
+            catalog.goldIcon = Icon("Gold");
+            catalog.keepIcon = Icon("Keep");
+            catalog.waveIcon = Icon("Wave");
+            catalog.archerIcon = Icon("Archer");
+            catalog.barracksIcon = Icon("Barracks");
+            catalog.mageIcon = Icon("Mage");
+            catalog.abilityIcon = Icon("Ability");
+            catalog.actorAnimator = actorAnimator;
+            catalog.actorClips = actorClips;
             catalog.navyMaterial = materials["Navy"];
             catalog.defenderMaterial = materials["Defender"];
             catalog.stoneMaterial = materials["Stone"];
@@ -108,6 +119,8 @@ namespace DefenderChronicles.Editor
                 Provenance("Noto Serif", "Assets/Art/Fonts/NotoSerif-SemiBold.ttf", AssetLicenseKind.OpenFontLicense,
                     "https://github.com/notofonts/noto-fonts", "2026-08-16"),
                 Provenance("HUD panel", "Assets/Art/UI/DefenderHudPanel.png", AssetLicenseKind.OpenAIGenerated,
+                    "OpenAI image generation / this project session", "2026-08-16"),
+                Provenance("HUD icons", "Assets/Art/UI/DefenderIconAtlas.png", AssetLicenseKind.OpenAIGenerated,
                     "OpenAI image generation / this project session", "2026-08-16"),
                 Provenance("Blender source", "ArtSource/Blender", AssetLicenseKind.Original,
                     "Defender Chronicles procedural art pipeline", "2026-08-16"),
@@ -213,6 +226,18 @@ namespace DefenderChronicles.Editor
                 panel.SaveAndReimport();
             }
 
+            foreach (string path in Directory.GetFiles("Assets/Art/UI", "Icon*.png", SearchOption.TopDirectoryOnly))
+            {
+                string assetPath = path.Replace('\\', '/');
+                if (AssetImporter.GetAtPath(assetPath) is not TextureImporter icon) continue;
+                icon.textureType = TextureImporterType.Sprite;
+                icon.spriteImportMode = SpriteImportMode.Single;
+                icon.mipmapEnabled = false;
+                icon.maxTextureSize = 256;
+                icon.textureCompression = TextureImporterCompression.Compressed;
+                icon.SaveAndReimport();
+            }
+
             foreach (string path in Directory.GetFiles("Assets/Audio/Presentation", "*.wav", SearchOption.AllDirectories))
             {
                 string assetPath = path.Replace('\\', '/');
@@ -228,6 +253,103 @@ namespace DefenderChronicles.Editor
                 };
                 importer.SaveAndReimport();
             }
+        }
+
+        private static Sprite Icon(string name)
+        {
+            return AssetDatabase.LoadAssetAtPath<Sprite>($"Assets/Art/UI/Icon{name}.png");
+        }
+
+        private static (RuntimeAnimatorController controller, AnimationClip[] clips) CreateActorAnimator()
+        {
+            string[] names = { "Idle", "Move", "Attack", "Hit", "Defeat", "Ability", "Victory", "Phase", "BossAttack" };
+            var clips = new List<AnimationClip>();
+            foreach (string clipName in names)
+            {
+                string path = $"{GeneratedRoot}/DC_{clipName}.anim";
+                AnimationClip clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(path);
+                if (clip == null)
+                {
+                    clip = CreateMotionClip(clipName);
+                    AssetDatabase.CreateAsset(clip, path);
+                }
+                clip.name = clipName;
+                EditorUtility.SetDirty(clip);
+                clips.Add(clip);
+            }
+
+            string controllerPath = $"{GeneratedRoot}/DC_Actors.controller";
+            AnimatorController controller = AssetDatabase.LoadAssetAtPath<AnimatorController>(controllerPath);
+            if (controller == null)
+            {
+                controller = AnimatorController.CreateAnimatorControllerAtPath(controllerPath);
+                controller.AddParameter("Moving", AnimatorControllerParameterType.Bool);
+                foreach (string trigger in names.Skip(2))
+                    controller.AddParameter(trigger, AnimatorControllerParameterType.Trigger);
+
+                AnimatorStateMachine machine = controller.layers[0].stateMachine;
+                AnimatorState idle = machine.AddState("Idle");
+                idle.motion = clips[0];
+                machine.defaultState = idle;
+                AnimatorState move = machine.AddState("Move");
+                move.motion = clips[1];
+                AnimatorStateTransition toMove = idle.AddTransition(move);
+                toMove.hasExitTime = false;
+                toMove.duration = 0.08f;
+                toMove.AddCondition(AnimatorConditionMode.If, 0f, "Moving");
+                AnimatorStateTransition toIdle = move.AddTransition(idle);
+                toIdle.hasExitTime = false;
+                toIdle.duration = 0.08f;
+                toIdle.AddCondition(AnimatorConditionMode.IfNot, 0f, "Moving");
+
+                for (int i = 2; i < names.Length; i++)
+                {
+                    AnimatorState state = machine.AddState(names[i]);
+                    state.motion = clips[i];
+                    AnimatorStateTransition enter = machine.AddAnyStateTransition(state);
+                    enter.hasExitTime = false;
+                    enter.duration = 0.025f;
+                    enter.AddCondition(AnimatorConditionMode.If, 0f, names[i]);
+                    AnimatorStateTransition exit = state.AddTransition(idle);
+                    exit.hasExitTime = true;
+                    exit.exitTime = 1f;
+                    exit.duration = 0.05f;
+                }
+            }
+            return (controller, clips.ToArray());
+        }
+
+        private static AnimationClip CreateMotionClip(string clipName)
+        {
+            float duration = clipName is "Idle" or "Move" ? 0.8f : clipName == "Defeat" ? 0.58f : 0.34f;
+            float lift = clipName switch
+            {
+                "Idle" => 0.025f, "Move" => 0.09f, "Victory" => 0.15f, "Phase" => 0.12f, _ => 0.04f
+            };
+            float thrust = clipName switch
+            {
+                "Attack" => 0.2f, "Ability" => 0.13f, "BossAttack" => 0.27f, "Hit" => -0.08f, _ => 0f
+            };
+            float scale = clipName switch
+            {
+                "Hit" => 0.9f, "Defeat" => 0.62f, "Ability" => 1.16f, "Victory" => 1.12f,
+                "Phase" => 1.2f, "BossAttack" => 1.14f, _ => 1f
+            };
+            var clip = new AnimationClip { name = clipName, frameRate = 30f };
+            clip.wrapMode = clipName is "Idle" or "Move" ? WrapMode.Loop : WrapMode.Once;
+            clip.SetCurve("", typeof(Transform), "m_LocalPosition.y", new AnimationCurve(
+                new Keyframe(0f, 0f), new Keyframe(duration * 0.5f, lift), new Keyframe(duration, 0f)));
+            clip.SetCurve("", typeof(Transform), "m_LocalPosition.z", new AnimationCurve(
+                new Keyframe(0f, 0f), new Keyframe(duration * 0.45f, thrust), new Keyframe(duration, 0f)));
+            foreach (string axis in new[] { "x", "y", "z" })
+                clip.SetCurve("", typeof(Transform), $"m_LocalScale.{axis}", new AnimationCurve(
+                    new Keyframe(0f, 1f), new Keyframe(duration * 0.55f, scale), new Keyframe(duration, 1f)));
+            AnimationUtility.SetAnimationClipSettings(clip, new AnimationClipSettings
+            {
+                loopTime = clipName is "Idle" or "Move",
+                stopTime = duration
+            });
+            return clip;
         }
 
         private static void EnsureTmpResources()

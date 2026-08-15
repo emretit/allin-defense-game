@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using DefenderChronicles.Core;
 using UnityEngine;
 
@@ -41,36 +42,59 @@ namespace DefenderChronicles.Presentation
 
             if (visualPrefab != null)
             {
-                var visual = Object.Instantiate(visualPrefab, root.transform);
+                var motion = new GameObject("Motion");
+                motion.transform.SetParent(root.transform, false);
+                var visual = Object.Instantiate(visualPrefab, motion.transform);
                 visual.name = "Art";
                 visual.transform.localPosition = Vector3.zero;
                 visual.transform.localRotation = Quaternion.identity;
                 visual.transform.localScale = Vector3.one * visualScale;
-                ApplyPalette(visual, catalog);
-                root.AddComponent<StylizedActorView>().Configure(visual.transform);
+                ApplyPalette(visual, catalog, true);
+                if (collider == PresentationCollider.Capsule)
+                    root.AddComponent<StylizedActorView>().Configure(motion.transform, catalog);
             }
             return root;
         }
 
         public static GameObject SpawnModel(GameObject prefab, Transform parent, DefenderPresentationCatalog catalog,
-            string name = null)
+            string name = null, bool limitToTwoMaterials = false)
         {
             if (prefab == null) return null;
             var instance = Object.Instantiate(prefab, parent);
             if (!string.IsNullOrWhiteSpace(name)) instance.name = name;
-            ApplyPalette(instance, catalog);
+            ApplyPalette(instance, catalog, limitToTwoMaterials);
             return instance;
         }
 
-        public static void ApplyPalette(GameObject instance, DefenderPresentationCatalog catalog)
+        public static void ApplyPalette(GameObject instance, DefenderPresentationCatalog catalog, bool limitToTwoMaterials = false)
         {
             if (instance == null || catalog == null) return;
-            foreach (var renderer in instance.GetComponentsInChildren<Renderer>(true))
+            Renderer[] renderers = instance.GetComponentsInChildren<Renderer>(true);
+            Material teamMaterial = null;
+            if (limitToTwoMaterials)
+            {
+                string allNames = string.Join(" ", renderers.SelectMany(renderer => renderer.sharedMaterials)
+                    .Where(material => material != null).Select(material => material.name.ToLowerInvariant()));
+                teamMaterial = allNames.Contains("magic") ? catalog.magicMaterial
+                    : allNames.Contains("forest") ? catalog.forestMaterial
+                    : allNames.Contains("enemy") ? catalog.enemyMaterial
+                    : allNames.Contains("defender") ? catalog.defenderMaterial
+                    : allNames.Contains("fire") ? catalog.fireMaterial
+                    : catalog.stoneMaterial;
+            }
+            foreach (var renderer in renderers)
             {
                 var source = renderer.sharedMaterials;
                 var mapped = new Material[source.Length];
                 for (int i = 0; i < source.Length; i++)
-                    mapped[i] = catalog.ResolveMaterial(source[i] != null ? source[i].name : renderer.name);
+                {
+                    string sourceName = source[i] != null ? source[i].name : renderer.name;
+                    bool neutral = sourceName.Contains("stone", System.StringComparison.OrdinalIgnoreCase) ||
+                                   sourceName.Contains("dark", System.StringComparison.OrdinalIgnoreCase) ||
+                                   sourceName.Contains("metal", System.StringComparison.OrdinalIgnoreCase);
+                    mapped[i] = limitToTwoMaterials ? (neutral ? catalog.darkMaterial : teamMaterial) :
+                        catalog.ResolveMaterial(sourceName);
+                }
                 renderer.sharedMaterials = mapped;
                 renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
                 renderer.receiveShadows = false;
@@ -80,53 +104,52 @@ namespace DefenderChronicles.Presentation
 
     public sealed class StylizedActorView : MonoBehaviour
     {
-        private Transform visual;
-        private Vector3 restPosition;
-        private Vector3 restScale;
-        private Quaternion restRotation;
+        private Animator animator;
         private Vector3 previousPosition;
-        private float attackPulse;
-        private float hitPulse;
-        private float disabledPulse;
 
-        public void Configure(Transform target)
+        public void Configure(Transform target, DefenderPresentationCatalog catalog)
         {
-            visual = target;
-            restPosition = target.localPosition;
-            restScale = target.localScale;
-            restRotation = target.localRotation;
+            animator = target.gameObject.AddComponent<Animator>();
+            animator.runtimeAnimatorController = catalog.actorAnimator;
             previousPosition = transform.position;
         }
 
-        public void Attack() => attackPulse = 1f;
-        public void Hit() => hitPulse = 1f;
-        public void Disabled() => disabledPulse = 1f;
+        public void Attack() => Trigger("Attack");
+        public void Hit() => Trigger("Hit");
+        public void Disabled() => Trigger("Hit");
+        public void Ability() => Trigger("Ability");
+        public void Victory() => Trigger("Victory");
+        public void Phase() => Trigger("Phase");
+        public void BossAttack() => Trigger("BossAttack");
 
-        private void LateUpdate()
+        private void Update()
         {
-            if (visual == null) return;
+            if (animator == null) return;
             float moved = (transform.position - previousPosition).sqrMagnitude;
             previousPosition = transform.position;
-            attackPulse = Mathf.MoveTowards(attackPulse, 0f, Time.deltaTime * 5.5f);
-            hitPulse = Mathf.MoveTowards(hitPulse, 0f, Time.deltaTime * 7f);
-            disabledPulse = Mathf.MoveTowards(disabledPulse, 0f, Time.deltaTime * 2f);
-            float gait = moved > 0.0001f ? Mathf.Sin(Time.time * 11f) * 0.045f : Mathf.Sin(Time.time * 2.2f) * 0.018f;
-            visual.localPosition = restPosition + Vector3.up * gait + Vector3.forward * (attackPulse * 0.18f);
-            visual.localRotation = restRotation * Quaternion.Euler(hitPulse * -10f, 0f, gait * 32f);
-            float scale = 1f + attackPulse * 0.08f - hitPulse * 0.06f;
-            visual.localScale = restScale * scale;
+            animator.SetBool("Moving", moved > 0.0001f);
+        }
+
+        private void Trigger(string parameter)
+        {
+            if (animator != null) animator.SetTrigger(parameter);
         }
 
         public static void PlayDefeatEcho(GameObject prefab, DefenderPresentationCatalog catalog, Vector3 position,
             float scale = 1f)
         {
             if (prefab == null) return;
-            var echo = Object.Instantiate(prefab);
+            var echo = new GameObject("Defeat Echo");
             echo.name = "Defeat Echo";
             echo.transform.position = position;
-            echo.transform.localScale = Vector3.one * scale;
-            StylizedPresentationFactory.ApplyPalette(echo, catalog);
-            foreach (var collider in echo.GetComponentsInChildren<Collider>()) collider.enabled = false;
+            var visual = Object.Instantiate(prefab, echo.transform);
+            visual.transform.localPosition = Vector3.zero;
+            visual.transform.localRotation = Quaternion.identity;
+            visual.transform.localScale = Vector3.one * scale;
+            StylizedPresentationFactory.ApplyPalette(visual, catalog, true);
+            var animator = echo.AddComponent<Animator>();
+            animator.runtimeAnimatorController = catalog.actorAnimator;
+            animator.Play("Defeat", 0, 0f);
             var host = echo.AddComponent<DefeatEcho>();
             host.Begin();
         }
@@ -134,17 +157,14 @@ namespace DefenderChronicles.Presentation
 
     public sealed class DefeatEcho : MonoBehaviour
     {
-        private Vector3 startScale;
         private float elapsed;
 
-        public void Begin() => startScale = transform.localScale;
+        public void Begin() => elapsed = 0f;
 
         private void Update()
         {
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / 0.58f);
-            transform.rotation = Quaternion.Euler(72f * t, transform.eulerAngles.y, 18f * t);
-            transform.localScale = startScale * (1f - t * 0.35f);
             if (t >= 1f) Destroy(gameObject);
         }
     }

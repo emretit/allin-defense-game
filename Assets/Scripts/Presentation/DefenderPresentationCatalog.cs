@@ -127,6 +127,17 @@ namespace DefenderChronicles.Presentation
         public TMP_FontAsset bodyFont;
         public TMP_FontAsset titleFont;
         public UiCopyCatalog uiCopy;
+        public Sprite goldIcon;
+        public Sprite keepIcon;
+        public Sprite waveIcon;
+        public Sprite archerIcon;
+        public Sprite barracksIcon;
+        public Sprite mageIcon;
+        public Sprite abilityIcon;
+
+        [Header("Animation")]
+        public RuntimeAnimatorController actorAnimator;
+        public AnimationClip[] actorClips = Array.Empty<AnimationClip>();
 
         [Header("Shared Palette")]
         public Material navyMaterial;
@@ -201,6 +212,12 @@ namespace DefenderChronicles.Presentation
             if (panelSprite == null) errors.Add("HUD panel sprite is missing.");
             if (bodyFont == null || titleFont == null) errors.Add("TMP font assets are incomplete.");
             if (uiCopy == null || uiCopy.ValidationErrors().Count > 0) errors.Add("Turkish UI copy is incomplete.");
+            if (new[] { goldIcon, keepIcon, waveIcon, archerIcon, barracksIcon, mageIcon, abilityIcon }
+                .Any(item => item == null)) errors.Add("HUD icon sprites are incomplete.");
+            if (actorAnimator == null) errors.Add("Shared actor AnimatorController is missing.");
+            foreach (string clipName in new[] { "Idle", "Move", "Attack", "Hit", "Defeat", "Ability", "Victory", "Phase", "BossAttack" })
+                if (actorClips.All(clip => clip == null || clip.name != clipName))
+                    errors.Add($"Actor animation clip is missing: {clipName}.");
 
             foreach (PresentationActorKind kind in Enum.GetValues(typeof(PresentationActorKind)))
                 if (ActorPrefab(kind) == null) errors.Add($"Actor prefab is missing: {kind}.");
@@ -219,7 +236,7 @@ namespace DefenderChronicles.Presentation
 
             if (fontLicense == null) errors.Add("Noto font license file is missing.");
             if (audioLicense == null) errors.Add("CC0 audio license file is missing.");
-            foreach (string required in new[] { "Noto Sans", "Noto Serif", "HUD panel", "Blender source", "CC0 sound effects", "CC0 music" })
+            foreach (string required in new[] { "Noto Sans", "Noto Serif", "HUD panel", "HUD icons", "Blender source", "CC0 sound effects", "CC0 music" })
             {
                 AssetProvenanceEntry entry = provenance.FirstOrDefault(item => item != null && item.assetName == required);
                 if (entry == null || string.IsNullOrWhiteSpace(entry.assetPath) || string.IsNullOrWhiteSpace(entry.acquiredOn))

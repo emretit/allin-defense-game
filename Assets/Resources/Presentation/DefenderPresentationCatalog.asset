@@ -68,6 +68,24 @@ MonoBehaviour:
   bodyFont: {fileID: 11400000, guid: 55ffe4fbd2df8412797e0ec01dabc31e, type: 2}
   titleFont: {fileID: 11400000, guid: a5a920af6a43545b7a6375b5e3994f71, type: 2}
   uiCopy: {fileID: 11400000, guid: 0213a3cedcd6c45198b884a9c0577ffe, type: 2}
+  goldIcon: {fileID: 21300000, guid: 77904f3d96ebe4c64b8b350aa172fc60, type: 3}
+  keepIcon: {fileID: 21300000, guid: 60c75de6f2127498698a10372a44a8bd, type: 3}
+  waveIcon: {fileID: 21300000, guid: 0a1ba2de912d1488fad5982f61331420, type: 3}
+  archerIcon: {fileID: 21300000, guid: 5a9b86bf1d46e4a21956691e6c469456, type: 3}
+  barracksIcon: {fileID: 21300000, guid: dfe5224c4b41048a781beb5c939b5e02, type: 3}
+  mageIcon: {fileID: 21300000, guid: 933850c9f3add4fc3b7ba8bca8b39c88, type: 3}
+  abilityIcon: {fileID: 21300000, guid: 8ced09abc30be4d1c95a3e67645a4dc4, type: 3}
+  actorAnimator: {fileID: 9100000, guid: 0288fdeeebb504b70ac1acfc636155f0, type: 2}
+  actorClips:
+  - {fileID: 7400000, guid: 313b9b992f872421a8fa3908d4fa95c7, type: 2}
+  - {fileID: 7400000, guid: 9f5bbe7d3319346a2b9fc4557c90a46d, type: 2}
+  - {fileID: 7400000, guid: b9fc541b5aaa344c693e5b17988486ac, type: 2}
+  - {fileID: 7400000, guid: 8948940ffdee74414a394fbfa38b3998, type: 2}
+  - {fileID: 7400000, guid: 96b575f92586d45d1ba935eff0b12454, type: 2}
+  - {fileID: 7400000, guid: dd519bbdc80d44d60aca3c48131668b4, type: 2}
+  - {fileID: 7400000, guid: 92748c751fa5143008a5c823a82185ab, type: 2}
+  - {fileID: 7400000, guid: 8f474e7f993d1443aae6ee0bb9de5ae8, type: 2}
+  - {fileID: 7400000, guid: 5517c3bd8701241dd8ce339399473897, type: 2}
   navyMaterial: {fileID: 2100000, guid: 6912925e7c35e43a58fa579f1d7b8cfd, type: 2}
   defenderMaterial: {fileID: 2100000, guid: 2028187e5b15c4250a403b69f0cf47c1, type: 2}
   stoneMaterial: {fileID: 2100000, guid: fab36d4ac88b54a1489c1abfcab8019c, type: 2}
@@ -236,6 +254,11 @@ MonoBehaviour:
     acquiredOn: 2026-08-16
   - assetName: HUD panel
     assetPath: Assets/Art/UI/DefenderHudPanel.png
+    license: 3
+    sourceUrl: OpenAI image generation / this project session
+    acquiredOn: 2026-08-16
+  - assetName: HUD icons
+    assetPath: Assets/Art/UI/DefenderIconAtlas.png
     license: 3
     sourceUrl: OpenAI image generation / this project session
     acquiredOn: 2026-08-16
