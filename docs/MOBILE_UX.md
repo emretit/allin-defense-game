@@ -1,0 +1,164 @@
+# Defender Chronicles — Mobile UI and UX
+
+Durum: Faz 7 tasarim ve kismi uygulama notu
+Son guncelleme: 2026-08-15
+
+## Arayuz Tasarim Sistemi
+
+Ilk token seti:
+
+- Panel zemini: koyu yari saydam tas/metal yuzey.
+- Ana vurgu: soguk mavi.
+- Kaynak vurgu: altin.
+- Tehlike: kirmizi/turuncu.
+- Basari: yesil.
+- Minimum panel radius: 4-8 px.
+- Minimum dokunma alani: 48 dp.
+- HUD metni: yuksek kontrast, kisa etiket.
+
+## Fantastik HUD Yonu
+
+Hedef:
+
+- Fantastik savunma oyunu hissi.
+- Tas, metal ve parsomene yakin malzeme dili.
+- FutbolQuiz'den alinacak taraf: buyuk dokunma alanlari, net hiyerarsi, okunabilir sayilar.
+- FutbolQuiz'in neo-brutalist gorsel dili kopyalanmayacak.
+
+## Savas HUD Bilgi Mimarisi
+
+Savas ekraninda sabit bilgiler:
+
+- Can
+- Altin
+- Dalga
+- Dalga ilerlemesi
+- Hız
+- Pause
+- Kahraman yetenekleri
+- Secili karakol paneli
+
+Kural:
+
+- HUD savas alanini kapatmamalı.
+- Kahraman yetenekleri bas parmak erisimi icin alt bolgeye yakin olmali.
+- Secili karakol paneli yalnizca secim varken acilmali.
+
+## Dokunma Hedefi Standardi
+
+Kural:
+
+- Kritik butonlar en az 48 dp dokunma alani tasir.
+- Ikon kucuk olabilir, ama gorunmez dokunma alani kucuk olamaz.
+- Slot, komuta noktasi ve karakol secim yaricaplari mobil parmak hatasini tolere eder.
+
+## Karakol Bilgi Paneli
+
+Panelde gorunecek bilgiler:
+
+- Ad
+- Rol
+- Seviye
+- Hasar
+- Menzil
+- Saldiri hizi
+- Ozel etki
+- Yukseltme sonrasi fark
+- Satis degeri
+
+## Kahraman Yetenek Akisi
+
+Kural:
+
+- Yetenek secimi iptal edilebilir.
+- Hedef onizlemesi gosterilir.
+- Menzil disi hedef reddedilir.
+- Cooldown sayi ve dolumla okunur.
+
+## Ilk Oyun Ogreticisi
+
+Ilk 3 dalga ogretir:
+
+- Dalga 1: Karakol kurma.
+- Dalga 2: Komuta noktasi ve kahraman hareketi.
+- Dalga 3: Kahraman yetenegi ve dalga onizlemesi.
+
+Kural:
+
+- Uzun metin ekranlari yok.
+- Oyuncu oynarken ogrenmeli.
+
+## Ana Menu
+
+MVP ana menu:
+
+- Devam Et
+- Bolumler
+- Kahraman
+- Ekipman
+- Ayarlar
+
+MVP disi bos menuler gosterilmez.
+
+## Bolum Secme
+
+Gosterilecekler:
+
+- Harita adi
+- Zorluk
+- Kazanilan yildizlar
+- Onerilen guc
+- Odul onizlemesi
+
+## Sonuc Ekranlari
+
+Zafer:
+
+- Yildizlar
+- Oduller
+- Sonraki bolum
+- Tekrar oyna
+
+Yenilgi:
+
+- Kayip nedeni
+- Tekrar dene
+- Yukleme degistir
+- Haritaya don
+
+## Ayarlar
+
+Ilk ayarlar:
+
+- Muzik
+- Efekt
+- Titresim
+- Dil
+- Grafik kalite
+- Pil modu
+- Kamera sarsintisi
+
+## Yerellestirme
+
+Kural:
+
+- Kaynak dil Turkce olabilir.
+- Tum kullanici metinleri koddan ayrilacak.
+- Dinamik sayilar ve cogullar desteklenecek.
+- Yayin hedefinde Ingilizce kaynak da hazirlanacak.
+
+## Safe Area ve Ekran Oranlari
+
+Tamamlanan kod degisikligi:
+
+- `SafeAreaFitter` eklendi.
+- Runtime canvas safe area icine oturacak.
+
+Test edilecek ekranlar:
+
+- Cikintili iPhone ekran
+- Standart iPhone yatay ekran
+- Uzun Android telefon
+- Tablet
+- 16:9 yatay ekran
+- 20:9 yatay ekran
