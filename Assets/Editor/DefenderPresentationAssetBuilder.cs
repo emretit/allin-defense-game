@@ -99,6 +99,8 @@ namespace DefenderChronicles.Editor
                     concurrency = cue is PresentationCue.EnemyHit ? 4 : 2
                 }).ToArray();
             catalog.fontLicense = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/ThirdParty/Noto/OFL.txt");
+            catalog.audioLicense = AssetDatabase.LoadAssetAtPath<TextAsset>(
+                "Assets/ThirdParty/Audio/CC0Sources/CC0-1.0-Legal-Code.txt");
             catalog.provenance = new[]
             {
                 Provenance("Noto Sans", "Assets/Art/Fonts/NotoSans-Regular.ttf", AssetLicenseKind.OpenFontLicense,
@@ -109,8 +111,10 @@ namespace DefenderChronicles.Editor
                     "OpenAI image generation / this project session", "2026-08-16"),
                 Provenance("Blender source", "ArtSource/Blender", AssetLicenseKind.Original,
                     "Defender Chronicles procedural art pipeline", "2026-08-16"),
-                Provenance("Procedural audio", "Assets/Audio/Presentation", AssetLicenseKind.Original,
-                    "Defender Chronicles procedural audio pipeline", "2026-08-16")
+                Provenance("CC0 sound effects", "Assets/Audio/Presentation/SFX", AssetLicenseKind.CreativeCommonsZero,
+                    "https://kenney.nl/assets/interface-sounds | https://www.kenney.nl/assets/impact-sounds | https://www.kenney.nl/assets/rpg-audio", "2026-08-16"),
+                Provenance("CC0 music", "Assets/Audio/Presentation/Music", AssetLicenseKind.CreativeCommonsZero,
+                    "https://opengameart.org/ (six source pages recorded in Assets/ThirdParty/Audio/CC0Sources/SOURCES.md)", "2026-08-16")
             };
             catalog.music = Enum.GetValues(typeof(MusicState)).Cast<MusicState>()
                 .Select(state => new MusicEntry
@@ -369,6 +373,10 @@ namespace DefenderChronicles.Editor
 
         private static GameObject CreateHudPrefab(Sprite panel, TMP_FontAsset body, TMP_FontAsset title)
         {
+            string path = $"{GeneratedRoot}/DefenderHud.prefab";
+            GameObject existing = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+            if (existing != null) return existing;
+
             var root = new GameObject("DefenderHud", typeof(RectTransform), typeof(DefenderHudController));
             Stretch(root.GetComponent<RectTransform>());
             GameObject top = Panel(root.transform, "TopBar", panel, new Color(0.025f, 0.055f, 0.095f, 0.96f),
@@ -417,7 +425,6 @@ namespace DefenderChronicles.Editor
             Button(result.transform, "Restart", "YENİDEN DENE", panel, title, new Vector2(-175, -160), new Vector2(350, 86),
                 new Vector2(.5f, .5f), new Vector2(.5f, .5f), Hex("174D78"));
 
-            string path = $"{GeneratedRoot}/DefenderHud.prefab";
             GameObject prefab = PrefabUtility.SaveAsPrefabAsset(root, path);
             UnityEngine.Object.DestroyImmediate(root);
             return prefab;

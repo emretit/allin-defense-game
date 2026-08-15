@@ -60,6 +60,7 @@ namespace DefenderChronicles.Presentation
     {
         Original,
         OpenFontLicense,
+        CreativeCommonsZero,
         OpenAIGenerated
     }
 
@@ -148,6 +149,7 @@ namespace DefenderChronicles.Presentation
 
         [Header("Provenance")]
         public TextAsset fontLicense;
+        public TextAsset audioLicense;
         public AssetProvenanceEntry[] provenance = Array.Empty<AssetProvenanceEntry>();
 
         public GameObject ActorPrefab(PresentationActorKind kind)
@@ -216,12 +218,14 @@ namespace DefenderChronicles.Presentation
                 errors.Add("UI, SFX and music must use separate mixer groups.");
 
             if (fontLicense == null) errors.Add("Noto font license file is missing.");
-            foreach (string required in new[] { "Noto Sans", "Noto Serif", "HUD panel", "Blender source", "Procedural audio" })
+            if (audioLicense == null) errors.Add("CC0 audio license file is missing.");
+            foreach (string required in new[] { "Noto Sans", "Noto Serif", "HUD panel", "Blender source", "CC0 sound effects", "CC0 music" })
             {
                 AssetProvenanceEntry entry = provenance.FirstOrDefault(item => item != null && item.assetName == required);
                 if (entry == null || string.IsNullOrWhiteSpace(entry.assetPath) || string.IsNullOrWhiteSpace(entry.acquiredOn))
                     errors.Add($"Asset provenance is missing: {required}.");
-                else if (entry.license == AssetLicenseKind.OpenFontLicense && string.IsNullOrWhiteSpace(entry.sourceUrl))
+                else if ((entry.license is AssetLicenseKind.OpenFontLicense or AssetLicenseKind.CreativeCommonsZero) &&
+                         string.IsNullOrWhiteSpace(entry.sourceUrl))
                     errors.Add($"Licensed asset source URL is missing: {required}.");
             }
 

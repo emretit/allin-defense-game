@@ -222,6 +222,7 @@ MonoBehaviour:
     volume: 0.46
     loop: 0
   fontLicense: {fileID: 4900000, guid: e3df79ffd66224f57b7ee14922ca6e3d, type: 3}
+  audioLicense: {fileID: 4900000, guid: 359c65aa882824cb9aa01db4451652a5, type: 3}
   provenance:
   - assetName: Noto Sans
     assetPath: Assets/Art/Fonts/NotoSans-Regular.ttf
@@ -235,7 +236,7 @@ MonoBehaviour:
     acquiredOn: 2026-08-16
   - assetName: HUD panel
     assetPath: Assets/Art/UI/DefenderHudPanel.png
-    license: 2
+    license: 3
     sourceUrl: OpenAI image generation / this project session
     acquiredOn: 2026-08-16
   - assetName: Blender source
@@ -243,8 +244,14 @@ MonoBehaviour:
     license: 0
     sourceUrl: Defender Chronicles procedural art pipeline
     acquiredOn: 2026-08-16
-  - assetName: Procedural audio
-    assetPath: Assets/Audio/Presentation
-    license: 0
-    sourceUrl: Defender Chronicles procedural audio pipeline
+  - assetName: CC0 sound effects
+    assetPath: Assets/Audio/Presentation/SFX
+    license: 2
+    sourceUrl: https://kenney.nl/assets/interface-sounds | https://www.kenney.nl/assets/impact-sounds
+      | https://www.kenney.nl/assets/rpg-audio
+    acquiredOn: 2026-08-16
+  - assetName: CC0 music
+    assetPath: Assets/Audio/Presentation/Music
+    license: 2
+    sourceUrl: https://opengameart.org/ (six source pages recorded in Assets/ThirdParty/Audio/CC0Sources/SOURCES.md)
     acquiredOn: 2026-08-16

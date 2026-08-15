@@ -2,7 +2,7 @@
 
 Bağımsız, mobil öncelikli stilize 3B savunma oyununun sanatsal dikey dilimi.
 
-Bu proje Age of Arena veya FutbolQuiz’den kod, model, ses, font, ikon ya da UI dosyası kullanmaz. Production sunumu özgün Blender kaynakları, paylaşılan URP paleti, proje için üretilen sesler ve lisansı repoda tutulan Noto fontlarından oluşur.
+Bu proje Age of Arena veya FutbolQuiz’den kod, model, ses, font, ikon ya da UI dosyası kullanmaz. Production sunumu özgün Blender kaynakları, paylaşılan URP paleti, kaynağı/lisansı repoda tutulan CC0 sesler ve Noto fontlarından oluşur.
 
 ## Mevcut oynanabilir kapsam
 
