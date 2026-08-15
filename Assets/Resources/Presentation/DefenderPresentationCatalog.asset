@@ -1,0 +1,250 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f912ffde76bc43c38d142e1b21c0e2e, type: 3}
+  m_Name: DefenderPresentationCatalog
+  m_EditorClassIdentifier: DefenderChronicles.Runtime::DefenderChronicles.Presentation.DefenderPresentationCatalog
+  environmentPrefab: {fileID: 919132149155446097, guid: 4bd571863ad334089b0dc6e9cc2d34bc,
+    type: 3}
+  outpostSlotPrefab: {fileID: 919132149155446097, guid: d4bb914a8bbc44025898f9feea783db0,
+    type: 3}
+  commandPointPrefab: {fileID: 919132149155446097, guid: c72b86e1c140d46b2b3c20dc64934634,
+    type: 3}
+  actorVisuals:
+  - kind: 0
+    prefab: {fileID: 919132149155446097, guid: ca86211f0d59c42c3a59ef4012912ecf, type: 3}
+    scale: 0.92
+  - kind: 1
+    prefab: {fileID: 919132149155446097, guid: 4af9ec369fb8b42e3a8a128f9653dc90, type: 3}
+    scale: 0.94
+  - kind: 2
+    prefab: {fileID: 919132149155446097, guid: 35ede50e5d4af46b6b65d0a533522257, type: 3}
+    scale: 0.94
+  - kind: 3
+    prefab: {fileID: 919132149155446097, guid: 92a664c5553364d679574a52bd92676c, type: 3}
+    scale: 0.92
+  - kind: 4
+    prefab: {fileID: 919132149155446097, guid: f382a95ee783c4e069f7ecc6ee955d69, type: 3}
+    scale: 0.86
+  - kind: 5
+    prefab: {fileID: 919132149155446097, guid: af8b985f82eff4928a7e89c9d859c70a, type: 3}
+    scale: 0.92
+  - kind: 6
+    prefab: {fileID: 919132149155446097, guid: 521a8c7e7877e46029ce3e7c3771366f, type: 3}
+    scale: 0.92
+  - kind: 7
+    prefab: {fileID: 919132149155446097, guid: ac0cfbb859c1e4699a54973c59f9924b, type: 3}
+    scale: 0.82
+  outpostVisuals:
+  - kind: 0
+    level: 1
+    prefab: {fileID: 919132149155446097, guid: 7a9d1afe6007e45cd824beade4c79e1b, type: 3}
+  - kind: 0
+    level: 2
+    prefab: {fileID: 919132149155446097, guid: bac5a0bfb001e4ee2adff39969fa0553, type: 3}
+  - kind: 1
+    level: 1
+    prefab: {fileID: 919132149155446097, guid: 3a3093b70c9d04e388e1e693c94d264f, type: 3}
+  - kind: 1
+    level: 2
+    prefab: {fileID: 919132149155446097, guid: 1499894568b0a4e759da8189b924c1cb, type: 3}
+  - kind: 2
+    level: 1
+    prefab: {fileID: 919132149155446097, guid: 7c095fd12c14640bfafb7e9cf5b31cf9, type: 3}
+  - kind: 2
+    level: 2
+    prefab: {fileID: 919132149155446097, guid: 1df86af8f5df64309a5cdd53d8b40beb, type: 3}
+  hudPrefab: {fileID: 398868325819694731, guid: d0eb9a43eadfb4d768c166ba3b9a6beb,
+    type: 3}
+  panelSprite: {fileID: 21300000, guid: 56271692c10584855bf39edc4905b029, type: 3}
+  bodyFont: {fileID: 11400000, guid: 55ffe4fbd2df8412797e0ec01dabc31e, type: 2}
+  titleFont: {fileID: 11400000, guid: a5a920af6a43545b7a6375b5e3994f71, type: 2}
+  uiCopy: {fileID: 11400000, guid: 0213a3cedcd6c45198b884a9c0577ffe, type: 2}
+  navyMaterial: {fileID: 2100000, guid: 6912925e7c35e43a58fa579f1d7b8cfd, type: 2}
+  defenderMaterial: {fileID: 2100000, guid: 2028187e5b15c4250a403b69f0cf47c1, type: 2}
+  stoneMaterial: {fileID: 2100000, guid: fab36d4ac88b54a1489c1abfcab8019c, type: 2}
+  forestMaterial: {fileID: 2100000, guid: 84a2db07cb1c94a48a3788c7c5f7254e, type: 2}
+  enemyMaterial: {fileID: 2100000, guid: 163d470132705455fac666f8c09a7d80, type: 2}
+  magicMaterial: {fileID: 2100000, guid: b35ab07578d4948b2903dcf67d867781, type: 2}
+  fireMaterial: {fileID: 2100000, guid: c71d844d8b5d14272b1450ffea484694, type: 2}
+  darkMaterial: {fileID: 2100000, guid: 19d5ee03b3d064becaaf1599231350d1, type: 2}
+  uiMixer: {fileID: -2856758767650484201, guid: 7876f6209d05645a8bf9f4b35a787110,
+    type: 2}
+  sfxMixer: {fileID: 7947332164907218351, guid: 7876f6209d05645a8bf9f4b35a787110,
+    type: 2}
+  musicMixer: {fileID: -3292131194035118651, guid: 7876f6209d05645a8bf9f4b35a787110,
+    type: 2}
+  normalSnapshot: {fileID: 24500006, guid: 7876f6209d05645a8bf9f4b35a787110, type: 2}
+  pauseSnapshot: {fileID: 6696091033638448953, guid: 7876f6209d05645a8bf9f4b35a787110,
+    type: 2}
+  audioCues:
+  - cue: 0
+    clip: {fileID: 8300000, guid: c945def296b4f4c76ac5eaaf825d31df, type: 3}
+    volume: 0.68
+    pitchVariation: 0.035
+    concurrency: 2
+  - cue: 1
+    clip: {fileID: 8300000, guid: f7c300572aef94276b75ab8844610647, type: 3}
+    volume: 0.68
+    pitchVariation: 0.035
+    concurrency: 2
+  - cue: 2
+    clip: {fileID: 8300000, guid: 21adbce9e3d184d098bbae91c63d22e1, type: 3}
+    volume: 0.68
+    pitchVariation: 0.035
+    concurrency: 2
+  - cue: 3
+    clip: {fileID: 8300000, guid: 6c76b5aa20b0c49aaa084c303831b35c, type: 3}
+    volume: 0.68
+    pitchVariation: 0.035
+    concurrency: 2
+  - cue: 4
+    clip: {fileID: 8300000, guid: aedd2200020734e6a811f1c15cf1af14, type: 3}
+    volume: 0.68
+    pitchVariation: 0.035
+    concurrency: 2
+  - cue: 5
+    clip: {fileID: 8300000, guid: fed80f616628148c9ab5ea88d1f1b92f, type: 3}
+    volume: 0.68
+    pitchVariation: 0.035
+    concurrency: 2
+  - cue: 6
+    clip: {fileID: 8300000, guid: 407e8546a710e4e83ae5e8d476ffea01, type: 3}
+    volume: 0.68
+    pitchVariation: 0.035
+    concurrency: 2
+  - cue: 7
+    clip: {fileID: 8300000, guid: 4df2bc4ca3b67472c9dbe3e6e58d81fb, type: 3}
+    volume: 0.68
+    pitchVariation: 0.035
+    concurrency: 4
+  - cue: 8
+    clip: {fileID: 8300000, guid: 7be7b62cccd8b4476a8c371fa9c5883a, type: 3}
+    volume: 0.68
+    pitchVariation: 0.035
+    concurrency: 2
+  - cue: 9
+    clip: {fileID: 8300000, guid: 227caff2658ad4683a9c10e7a3b7be09, type: 3}
+    volume: 0.68
+    pitchVariation: 0.035
+    concurrency: 2
+  - cue: 10
+    clip: {fileID: 8300000, guid: 23f2c889f511244e7bf995128590c93b, type: 3}
+    volume: 0.68
+    pitchVariation: 0.035
+    concurrency: 2
+  - cue: 11
+    clip: {fileID: 8300000, guid: 9b9b912773dc842c6843db1cf3f73b75, type: 3}
+    volume: 0.68
+    pitchVariation: 0.035
+    concurrency: 2
+  - cue: 12
+    clip: {fileID: 8300000, guid: 44c44441b9a17434daf02af9526f436b, type: 3}
+    volume: 0.68
+    pitchVariation: 0.035
+    concurrency: 2
+  - cue: 13
+    clip: {fileID: 8300000, guid: 0e90a2491ff2e4dfe8bda20e6f75e190, type: 3}
+    volume: 0.68
+    pitchVariation: 0.035
+    concurrency: 2
+  - cue: 14
+    clip: {fileID: 8300000, guid: 74c890c342907403caee09b582822ee8, type: 3}
+    volume: 0.68
+    pitchVariation: 0.035
+    concurrency: 2
+  - cue: 15
+    clip: {fileID: 8300000, guid: b542a0622116e4993a161b86b278cbe9, type: 3}
+    volume: 0.68
+    pitchVariation: 0.035
+    concurrency: 2
+  - cue: 16
+    clip: {fileID: 8300000, guid: f41356316fb8c40d7ad4dba17ca66ca4, type: 3}
+    volume: 0.68
+    pitchVariation: 0.035
+    concurrency: 2
+  - cue: 17
+    clip: {fileID: 8300000, guid: 61f9c8ba9a2e44b0db74ba946f2ac54d, type: 3}
+    volume: 0.86
+    pitchVariation: 0.035
+    concurrency: 2
+  - cue: 18
+    clip: {fileID: 8300000, guid: d03fda0e9f3fe41a0a9b01aef2456333, type: 3}
+    volume: 0.86
+    pitchVariation: 0.035
+    concurrency: 2
+  - cue: 19
+    clip: {fileID: 8300000, guid: 61e5f8d5e76524f7f9b01567ef827e03, type: 3}
+    volume: 0.68
+    pitchVariation: 0.035
+    concurrency: 2
+  - cue: 20
+    clip: {fileID: 8300000, guid: 8da7ff52043c2422eae2829a4e246311, type: 3}
+    volume: 0.68
+    pitchVariation: 0
+    concurrency: 2
+  - cue: 21
+    clip: {fileID: 8300000, guid: d707faea7b343441bb7273e07c7e2b1f, type: 3}
+    volume: 0.68
+    pitchVariation: 0
+    concurrency: 2
+  music:
+  - state: 0
+    clip: {fileID: 8300000, guid: e4190316a2dbe460b90298d32398a156, type: 3}
+    volume: 0.46
+    loop: 1
+  - state: 1
+    clip: {fileID: 8300000, guid: 4a810e364482747afb521bb03623e206, type: 3}
+    volume: 0.46
+    loop: 1
+  - state: 2
+    clip: {fileID: 8300000, guid: 6c3eca43d83b3454a9837679b586d4fa, type: 3}
+    volume: 0.46
+    loop: 1
+  - state: 3
+    clip: {fileID: 8300000, guid: 4cda99b9745e24250be045305331d920, type: 3}
+    volume: 0.58
+    loop: 1
+  - state: 4
+    clip: {fileID: 8300000, guid: 61df319d473c041398253ea0cf51ac74, type: 3}
+    volume: 0.46
+    loop: 0
+  - state: 5
+    clip: {fileID: 8300000, guid: 2174ca02779d04046b0ddcd8073c796b, type: 3}
+    volume: 0.46
+    loop: 0
+  fontLicense: {fileID: 4900000, guid: e3df79ffd66224f57b7ee14922ca6e3d, type: 3}
+  provenance:
+  - assetName: Noto Sans
+    assetPath: Assets/Art/Fonts/NotoSans-Regular.ttf
+    license: 1
+    sourceUrl: https://github.com/notofonts/noto-fonts
+    acquiredOn: 2026-08-16
+  - assetName: Noto Serif
+    assetPath: Assets/Art/Fonts/NotoSerif-SemiBold.ttf
+    license: 1
+    sourceUrl: https://github.com/notofonts/noto-fonts
+    acquiredOn: 2026-08-16
+  - assetName: HUD panel
+    assetPath: Assets/Art/UI/DefenderHudPanel.png
+    license: 2
+    sourceUrl: OpenAI image generation / this project session
+    acquiredOn: 2026-08-16
+  - assetName: Blender source
+    assetPath: ArtSource/Blender
+    license: 0
+    sourceUrl: Defender Chronicles procedural art pipeline
+    acquiredOn: 2026-08-16
+  - assetName: Procedural audio
+    assetPath: Assets/Audio/Presentation
+    license: 0
+    sourceUrl: Defender Chronicles procedural audio pipeline
+    acquiredOn: 2026-08-16

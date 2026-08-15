@@ -1,14 +1,16 @@
 using UnityEngine;
+using DefenderChronicles.Presentation;
 
 namespace DefenderChronicles.Core
 {
     /// <summary>
-    /// Minimal scene entry point. The playable greybox owns its authored runtime
-    /// hierarchy and does not depend on optional TMP resources or Inspector wiring.
+    /// Minimal production entry point. The scene must explicitly provide the
+    /// validated presentation catalog before the gameplay session is initialized.
     /// </summary>
     [DefaultExecutionOrder(-500)]
     public sealed class GameBootstrap : MonoBehaviour
     {
+        [SerializeField] private DefenderPresentationCatalog presentationCatalog;
         public static bool RuntimeSceneReady { get; private set; }
 
         private void Awake()
@@ -22,6 +24,9 @@ namespace DefenderChronicles.Core
                 session = root.AddComponent<GameSessionController>();
             }
 
+            if (presentationCatalog == null)
+                throw new System.InvalidOperationException("Production presentation catalog is missing from GameBootstrap.");
+            session.ConfigurePresentation(presentationCatalog);
             session.Initialize();
             RuntimeSceneReady = true;
         }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DefenderChronicles.Data;
+using DefenderChronicles.Presentation;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -56,6 +57,10 @@ namespace DefenderChronicles.Core
         public event Action<GamePhase> PhaseChanged;
         public event Action<int> GoldChanged;
         public event Action<int> LivesChanged;
+        public event Action<PresentationSignal> PresentationSignaled;
+
+        public DefenderPresentationCatalog PresentationCatalog => presentationCatalog;
+        public bool HasProductionPresentation => presentationCatalog != null;
 
         private readonly List<Vector3> path = new();
         private readonly List<GreyboxEnemy> enemies = new();
@@ -100,6 +105,9 @@ namespace DefenderChronicles.Core
         private GameObject selectedPanel;
         private GameObject resultPanel;
         private Text resultTitle;
+        private DefenderPresentationCatalog presentationCatalog;
+        private DefenderPresentationDirector presentationDirector;
+        private DefenderHudController artHud;
 
         private readonly Color groundColor = new(0.18f, 0.34f, 0.22f);
         private readonly Color roadColor = new(0.66f, 0.56f, 0.39f);
@@ -117,9 +125,22 @@ namespace DefenderChronicles.Core
             Instance = this;
         }
 
+        private void OnDestroy()
+        {
+            if (Instance == this) Instance = null;
+        }
+
+        public void ConfigurePresentation(DefenderPresentationCatalog catalog)
+        {
+            if (initialized) throw new InvalidOperationException("Presentation must be configured before initialization.");
+            presentationCatalog = catalog;
+        }
+
         public void Initialize()
         {
             if (initialized) return;
+            if (presentationCatalog == null && !Application.isEditor)
+                throw new InvalidOperationException("Primitive presentation is restricted to automated editor tests.");
             initialized = true;
             Time.timeScale = 1f;
             Application.targetFrameRate = 60;
@@ -130,6 +151,13 @@ namespace DefenderChronicles.Core
             BuildWorld();
             BuildInterface();
             BuildHero();
+            if (presentationCatalog != null)
+            {
+                var presentationObject = new GameObject("Presentation Director");
+                presentationObject.transform.SetParent(transform, false);
+                presentationDirector = presentationObject.AddComponent<DefenderPresentationDirector>();
+                presentationDirector.Initialize(this, presentationCatalog);
+            }
             ValidateContent();
             SetPhase(GamePhase.Preparing);
             ShowMessage("Bir karakol platformuna dokun ve savunmanı kur.", 6f);
@@ -161,6 +189,10 @@ namespace DefenderChronicles.Core
                     nextWaveButtonLabel.text = intermissionRemaining > 0f
                         ? $"DALGAYI ERKEN ÇAĞIR  {Mathf.CeilToInt(intermissionRemaining)}"
                         : "SONRAKİ DALGA";
+                if (artHud != null)
+                    artHud.SetNextWaveLabel(intermissionRemaining > 0f
+                        ? $"{presentationCatalog.uiCopy.Get(UiTextKey.EarlyWave)}  {Mathf.CeilToInt(intermissionRemaining)}"
+                        : presentationCatalog.uiCopy.Get(UiTextKey.NextWave));
                 if (intermissionRemaining <= 0f)
                     StartNextWave();
             }
@@ -247,6 +279,12 @@ namespace DefenderChronicles.Core
 
         private void BuildWorld()
         {
+            if (presentationCatalog != null)
+            {
+                BuildStylizedWorld();
+                return;
+            }
+
             var world = new GameObject("Greybox World").transform;
             CreatePrimitive("Deep Blue Backdrop", PrimitiveType.Cube, new Vector3(11f, -0.72f, 5.5f),
                 new Vector3(33f, 0.24f, 19f), new Color(0.06f, 0.16f, 0.24f), world, false);
@@ -324,6 +362,51 @@ namespace DefenderChronicles.Core
             }
         }
 
+        private void BuildStylizedWorld()
+        {
+            var world = new GameObject("Greenwatch Valley").transform;
+            world.SetParent(transform, false);
+            GameObject environment = StylizedPresentationFactory.SpawnModel(presentationCatalog.environmentPrefab, world,
+                presentationCatalog, "Greenwatch Environment");
+            // Blender's FBX handedness mirrors authored world-space X/Z positions; a 180° Y rotation
+            // restores the gameplay coordinate system while leaving individual centered models unchanged.
+            if (environment != null) environment.transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
+
+            Vector3[] slotPositions =
+            {
+                new(2f, 0.15f, 0f), new(2f, 0.15f, 5f),
+                new(6.5f, 0.15f, 6f), new(8f, 0.15f, 10.5f),
+                new(12f, 0.15f, 1.2f), new(14f, 0.15f, 6f),
+                new(18f, 0.15f, 6.8f), new(20.5f, 0.15f, 11.2f)
+            };
+            for (int i = 0; i < slotPositions.Length; i++)
+            {
+                GameObject root = StylizedPresentationFactory.CreateRoot($"Outpost Slot {i + 1}", slotPositions[i],
+                    new Vector3(1.25f, 0.24f, 1.25f), presentationCatalog.outpostSlotPrefab,
+                    presentationCatalog, PresentationCollider.Cylinder);
+                root.transform.SetParent(world, true);
+                var slot = root.AddComponent<GreyboxOutpostSlot>();
+                slot.Configure(this, i, slotColor);
+                slots.Add(slot);
+            }
+
+            Vector3[] commandPositions =
+            {
+                new(3.2f, 0.12f, 3.4f), new(7.4f, 0.12f, 7.2f),
+                new(13.2f, 0.12f, 3.8f), new(18.5f, 0.12f, 9f)
+            };
+            for (int i = 0; i < commandPositions.Length; i++)
+            {
+                GameObject root = StylizedPresentationFactory.CreateRoot($"Command Point {i + 1}", commandPositions[i],
+                    new Vector3(0.86f, 0.2f, 0.86f), presentationCatalog.commandPointPrefab,
+                    presentationCatalog, PresentationCollider.Cylinder);
+                root.transform.SetParent(world, true);
+                var point = root.AddComponent<GreyboxCommandPoint>();
+                point.Configure(i);
+                commandPoints.Add(point);
+            }
+        }
+
         private void CreateRoadSegment(Vector3 from, Vector3 to, Transform parent)
         {
             Vector3 delta = to - from;
@@ -364,12 +447,24 @@ namespace DefenderChronicles.Core
 
         private void BuildHero()
         {
-            var go = CreatePrimitive("Knight Commander", PrimitiveType.Capsule, commandPoints[0].transform.position + Vector3.up,
-                new Vector3(0.75f, 1f, 0.75f), new Color(0.20f, 0.52f, 1f), transform, true);
-            CreatePrimitive("Knight Shield", PrimitiveType.Cube, go.transform.position + new Vector3(-0.42f, 0.1f, -0.1f),
-                new Vector3(0.16f, 0.58f, 0.42f), new Color(0.70f, 0.84f, 0.92f), go.transform, false);
-            CreatePrimitive("Knight Crest", PrimitiveType.Sphere, go.transform.position + new Vector3(0f, 0.62f, 0f),
-                new Vector3(0.36f, 0.22f, 0.36f), new Color(0.95f, 0.86f, 0.34f), go.transform, false);
+            GameObject go;
+            if (presentationCatalog != null)
+            {
+                go = StylizedPresentationFactory.CreateRoot("Knight Commander",
+                    commandPoints[0].transform.position, new Vector3(0.72f, 1.9f, 0.72f),
+                    presentationCatalog.ActorPrefab(PresentationActorKind.Knight), presentationCatalog,
+                    PresentationCollider.Capsule, presentationCatalog.ActorScale(PresentationActorKind.Knight));
+                go.transform.SetParent(transform, true);
+            }
+            else
+            {
+                go = CreatePrimitive("Knight Commander", PrimitiveType.Capsule, commandPoints[0].transform.position + Vector3.up,
+                    new Vector3(0.75f, 1f, 0.75f), new Color(0.20f, 0.52f, 1f), transform, true);
+                CreatePrimitive("Knight Shield", PrimitiveType.Cube, go.transform.position + new Vector3(-0.42f, 0.1f, -0.1f),
+                    new Vector3(0.16f, 0.58f, 0.42f), new Color(0.70f, 0.84f, 0.92f), go.transform, false);
+                CreatePrimitive("Knight Crest", PrimitiveType.Sphere, go.transform.position + new Vector3(0f, 0.62f, 0f),
+                    new Vector3(0.36f, 0.22f, 0.36f), new Color(0.95f, 0.86f, 0.34f), go.transform, false);
+            }
             hero = go.AddComponent<GreyboxHero>();
             hero.Configure(this, commandPoints[0].transform.position);
         }
@@ -391,6 +486,20 @@ namespace DefenderChronicles.Core
             var safeRoot = CreateUiObject("Safe Area", canvasObject.transform);
             Stretch(safeRoot.GetComponent<RectTransform>());
             safeRoot.AddComponent<RuntimeSafeArea>();
+
+            if (presentationCatalog != null)
+            {
+                GameObject hudObject = Instantiate(presentationCatalog.hudPrefab, safeRoot.transform);
+                hudObject.name = "Defender HUD";
+                Stretch(hudObject.GetComponent<RectTransform>());
+                artHud = hudObject.GetComponent<DefenderHudController>();
+                if (artHud == null)
+                    throw new InvalidOperationException("Presentation HUD prefab has no DefenderHudController.");
+                artHud.Initialize(presentationCatalog.uiCopy, TryBuildSelected, UseHeroAbility, CancelSelection,
+                    StartNextWave, OnPausePressed, UpgradeSelected, SellSelected, RestartLevel,
+                    () => EmitPresentation(PresentationCue.UiClick, Vector3.zero));
+                return;
+            }
 
             var topBar = CreatePanel("Top Bar", safeRoot.transform, new Color(0.035f, 0.055f, 0.075f, 0.94f));
             SetAnchors(topBar.GetComponent<RectTransform>(), new Vector2(0f, 1f), new Vector2(1f, 1f),
@@ -478,7 +587,9 @@ namespace DefenderChronicles.Core
             spawning = true;
             plannedThisWave = wave.groups?.Sum(group => Mathf.Max(0, group.count)) ?? 0;
             removedThisWave = 0;
-            previewText.text = wave.preview;
+            if (previewText != null) previewText.text = wave.preview;
+            artHud?.SetPreview(wave.preview);
+            EmitPresentation(PresentationCue.WaveStarted, path[0], value: currentWaveIndex);
 
             if (plannedThisWave <= 0)
             {
@@ -515,10 +626,22 @@ namespace DefenderChronicles.Core
             }
 
             EnemyStats stats = GetStats(archetype);
-            var type = archetype == EnemyArchetype.Boss ? PrimitiveType.Capsule : PrimitiveType.Sphere;
             float size = archetype == EnemyArchetype.Boss ? 1.7f : archetype == EnemyArchetype.Siege ? 1.25f : 0.85f;
-            var go = CreatePrimitive(archetype.ToString(), type, path[0] + Vector3.up * (size * 0.6f),
-                new Vector3(size, size, size), stats.color, transform, true);
+            GameObject go;
+            if (presentationCatalog != null)
+            {
+                PresentationActorKind actorKind = ActorKind(archetype);
+                go = StylizedPresentationFactory.CreateRoot(archetype.ToString(), path[0],
+                    new Vector3(size, Mathf.Max(1.4f, size * 1.7f), size), presentationCatalog.ActorPrefab(actorKind),
+                    presentationCatalog, PresentationCollider.Capsule, presentationCatalog.ActorScale(actorKind));
+                go.transform.SetParent(transform, true);
+            }
+            else
+            {
+                var type = archetype == EnemyArchetype.Boss ? PrimitiveType.Capsule : PrimitiveType.Sphere;
+                go = CreatePrimitive(archetype.ToString(), type, path[0] + Vector3.up * (size * 0.6f),
+                    new Vector3(size, size, size), stats.color, transform, true);
+            }
             var enemy = go.AddComponent<GreyboxEnemy>();
             enemy.Configure(this, archetype, stats, path);
             enemies.Add(enemy);
@@ -530,7 +653,11 @@ namespace DefenderChronicles.Core
             enemies.Remove(enemy);
             removedThisWave++;
             if (defeated)
+            {
                 EarnGold(enemy.Reward);
+                EmitPresentation(PresentationCue.EnemyDefeated, enemy.Position, enemy.gameObject,
+                    ActorKind(enemy.Archetype));
+            }
             TryCompleteWave();
         }
 
@@ -557,16 +684,23 @@ namespace DefenderChronicles.Core
             if (currentWaveIndex >= waves.Length)
             {
                 SetPhase(GamePhase.Victory);
-                resultPanel.SetActive(true);
-                resultTitle.text = "ZAFER\nGREENWATCH KORUNDU";
-                resultTitle.color = new Color(0.45f, 1f, 0.58f);
+                if (resultPanel != null)
+                {
+                    resultPanel.SetActive(true);
+                    resultTitle.text = "ZAFER\nGREENWATCH KORUNDU";
+                    resultTitle.color = new Color(0.45f, 1f, 0.58f);
+                }
+                artHud?.ShowResult(true);
+                EmitPresentation(PresentationCue.Victory, path[^1]);
                 Time.timeScale = 0f;
                 return;
             }
 
             intermissionRemaining = IntermissionSeconds;
             SetPhase(GamePhase.Intermission);
-            previewText.text = $"Sıradaki: {waves[currentWaveIndex].preview}";
+            string nextPreview = $"Sıradaki: {waves[currentWaveIndex].preview}";
+            if (previewText != null) previewText.text = nextPreview;
+            artHud?.SetPreview(nextPreview);
             if (currentWaveIndex == 1)
                 ShowMessage("Kahramanı yeşil komuta noktalarına gönder.", 5f);
             else if (currentWaveIndex == 2)
@@ -588,14 +722,14 @@ namespace DefenderChronicles.Core
             {
                 Time.timeScale = 1f;
                 SetPhase(phaseBeforePause);
-                pauseButtonLabel.text = "DURAKLAT";
+                if (pauseButtonLabel != null) pauseButtonLabel.text = "DURAKLAT";
             }
             else
             {
                 phaseBeforePause = Phase;
                 SetPhase(GamePhase.Paused);
                 Time.timeScale = 0f;
-                pauseButtonLabel.text = "DEVAM";
+                if (pauseButtonLabel != null) pauseButtonLabel.text = "DEVAM";
             }
         }
 
@@ -612,6 +746,7 @@ namespace DefenderChronicles.Core
             if (selectedSlot == null)
             {
                 ShowMessage("Önce mavi bir karakol platformu seç.", 2.5f);
+                EmitPresentation(PresentationCue.UiError, Vector3.zero);
                 return;
             }
             if (selectedSlot.Occupant != null)
@@ -623,6 +758,7 @@ namespace DefenderChronicles.Core
             if (!TryBuildOutpost(selectedSlot.Index, kind))
             {
                 ShowMessage("Yeterli altın yok.", 2f);
+                EmitPresentation(PresentationCue.UiError, Vector3.zero);
                 return;
             }
 
@@ -640,21 +776,33 @@ namespace DefenderChronicles.Core
 
             SelectSlot(targetSlot);
 
-            var primitive = kind == OutpostKind.Barracks ? PrimitiveType.Cube : PrimitiveType.Cylinder;
             Color color = kind switch
             {
                 OutpostKind.Archer => new Color(0.92f, 0.65f, 0.22f),
                 OutpostKind.Barracks => new Color(0.64f, 0.70f, 0.76f),
                 _ => new Color(0.62f, 0.28f, 0.95f)
             };
-            var go = CreatePrimitive($"{kind} Outpost", primitive, targetSlot.transform.position + Vector3.up * 0.75f,
-                new Vector3(1.1f, 1.35f, 1.1f), color, transform, true);
-            BuildOutpostSilhouette(kind, go.transform);
+            GameObject go;
+            if (presentationCatalog != null)
+            {
+                go = StylizedPresentationFactory.CreateRoot($"{kind} Outpost", targetSlot.transform.position,
+                    new Vector3(1.15f, 1.55f, 1.15f), presentationCatalog.OutpostPrefab(kind, 1),
+                    presentationCatalog, PresentationCollider.Cylinder);
+                go.transform.SetParent(transform, true);
+            }
+            else
+            {
+                var primitive = kind == OutpostKind.Barracks ? PrimitiveType.Cube : PrimitiveType.Cylinder;
+                go = CreatePrimitive($"{kind} Outpost", primitive, targetSlot.transform.position + Vector3.up * 0.75f,
+                    new Vector3(1.1f, 1.35f, 1.1f), color, transform, true);
+                BuildOutpostSilhouette(kind, go.transform);
+            }
             var outpost = go.AddComponent<GreyboxOutpost>();
             outpost.Configure(this, targetSlot, kind, stats);
             targetSlot.SetOccupant(outpost);
             outposts.Add(outpost);
             SelectOutpost(outpost);
+            EmitPresentation(PresentationCue.OutpostBuilt, go.transform.position, go, outpost: kind);
             return true;
         }
 
@@ -708,6 +856,8 @@ namespace DefenderChronicles.Core
             GreyboxOutpost outpost = slots[slotIndex]?.Occupant;
             if (outpost == null || !outpost.CanUpgrade || !SpendGold(outpost.UpgradeCost)) return false;
             outpost.Upgrade();
+            ReplaceOutpostVisual(outpost);
+            EmitPresentation(PresentationCue.OutpostUpgraded, outpost.Position, outpost.gameObject, outpost: outpost.Kind);
             return true;
         }
 
@@ -728,6 +878,7 @@ namespace DefenderChronicles.Core
             if (outpost == null) return false;
             int refund = outpost.SellValue;
             outposts.Remove(outpost);
+            EmitPresentation(PresentationCue.OutpostSold, outpost.Position, outpost.gameObject, outpost: outpost.Kind);
             outpost.Sell();
             EarnGold(refund);
             if (selectedOutpost == outpost) selectedOutpost = null;
@@ -897,6 +1048,16 @@ namespace DefenderChronicles.Core
 
         private void RefreshSelectedPanel()
         {
+            if (artHud != null)
+            {
+                if (selectedOutpost != null)
+                    artHud.SetSelected(selectedOutpost.Description, selectedOutpost.CanUpgrade, true, true);
+                else if (selectedSlot != null)
+                    artHud.SetSelected($"KARAKOL PLATFORMU {selectedSlot.Index + 1}\n\nAşağıdan bir karakol seç.", false, false, true);
+                else
+                    artHud.SetSelected(string.Empty, false, false, false);
+                return;
+            }
             if (selectedText == null) return;
             if (selectedOutpost != null)
             {
@@ -921,6 +1082,17 @@ namespace DefenderChronicles.Core
 
         private void RefreshUi()
         {
+            if (artHud != null)
+            {
+                artHud.Refresh(this);
+                artHud.SetBuildInteractable(Gold >= GetOutpostStats(OutpostKind.Archer).cost,
+                    Gold >= GetOutpostStats(OutpostKind.Barracks).cost,
+                    Gold >= GetOutpostStats(OutpostKind.Mage).cost);
+                if (Phase == GamePhase.Preparing)
+                    artHud.SetNextWaveLabel(presentationCatalog.uiCopy.Get(UiTextKey.FirstWave));
+                RefreshSelectedPanel();
+                return;
+            }
             if (goldText == null) return;
             goldText.text = $"ALTIN  {Gold}";
             livesText.text = $"KALE  {Lives}";
@@ -952,16 +1124,18 @@ namespace DefenderChronicles.Core
         private Coroutine messageRoutine;
         private void ShowMessage(string message, float duration)
         {
-            if (messageText == null) return;
+            if (messageText == null && artHud == null) return;
             if (messageRoutine != null) StopCoroutine(messageRoutine);
             messageRoutine = StartCoroutine(MessageRoutine(message, duration));
         }
 
         private IEnumerator MessageRoutine(string message, float duration)
         {
-            messageText.text = message;
+            if (messageText != null) messageText.text = message;
+            artHud?.SetMessage(message);
             yield return new WaitForSecondsRealtime(duration);
-            messageText.text = string.Empty;
+            if (messageText != null) messageText.text = string.Empty;
+            artHud?.SetMessage(string.Empty);
             messageRoutine = null;
         }
 
@@ -987,9 +1161,14 @@ namespace DefenderChronicles.Core
             LivesChanged?.Invoke(Lives);
             if (Lives > 0) return;
             SetPhase(GamePhase.Defeat);
-            resultPanel.SetActive(true);
-            resultTitle.text = "YENİLGİ\nGREENWATCH DÜŞTÜ";
-            resultTitle.color = new Color(1f, 0.35f, 0.28f);
+            if (resultPanel != null)
+            {
+                resultPanel.SetActive(true);
+                resultTitle.text = "YENİLGİ\nGREENWATCH DÜŞTÜ";
+                resultTitle.color = new Color(1f, 0.35f, 0.28f);
+            }
+            artHud?.ShowResult(false);
+            EmitPresentation(PresentationCue.Defeat, path[^1]);
             Time.timeScale = 0f;
         }
 
@@ -1070,6 +1249,42 @@ namespace DefenderChronicles.Core
             if (unit != null && !friendlyUnits.Contains(unit)) friendlyUnits.Add(unit);
         }
 
+        internal GameObject CreateFriendlyVisual(string objectName, Vector3 position)
+        {
+            if (presentationCatalog == null) return null;
+            GameObject root = StylizedPresentationFactory.CreateRoot(objectName, position,
+                new Vector3(0.52f, 1.25f, 0.52f), presentationCatalog.ActorPrefab(PresentationActorKind.Guard),
+                presentationCatalog, PresentationCollider.Capsule, presentationCatalog.ActorScale(PresentationActorKind.Guard));
+            root.transform.SetParent(transform, true);
+            EmitPresentation(PresentationCue.UnitSpawned, position, root, PresentationActorKind.Guard);
+            return root;
+        }
+
+        internal void ReplaceOutpostVisual(GreyboxOutpost outpost)
+        {
+            if (presentationCatalog == null || outpost == null) return;
+            Transform art = outpost.transform.Find("Art");
+            if (art != null) Destroy(art.gameObject);
+            GameObject visual = StylizedPresentationFactory.SpawnModel(
+                presentationCatalog.OutpostPrefab(outpost.Kind, 2), outpost.transform, presentationCatalog, "Art");
+            if (visual != null)
+            {
+                visual.transform.localPosition = Vector3.zero;
+                visual.transform.localRotation = Quaternion.identity;
+                visual.transform.localScale = Vector3.one;
+                outpost.GetComponent<StylizedActorView>()?.Configure(visual.transform);
+                outpost.RefreshPresentationRenderer();
+            }
+        }
+
+        internal void EmitPresentation(PresentationCue cue, Vector3 position, GameObject source = null,
+            PresentationActorKind actor = PresentationActorKind.Raider,
+            OutpostKind outpost = OutpostKind.Archer, int value = 0)
+        {
+            if (presentationCatalog == null) return;
+            PresentationSignaled?.Invoke(new PresentationSignal(cue, position, source, actor, outpost, value));
+        }
+
         internal Vector3 NearestCommandPoint(Vector3 position)
         {
             if (commandPoints.Count == 0) return position;
@@ -1096,6 +1311,8 @@ namespace DefenderChronicles.Core
             if (waves == null || waves.Length != 7) errors.Add("Greybox level needs six waves and one boss wave.");
             if (waves != null && (waves.Length == 0 || !waves[^1].bossWave)) errors.Add("Final wave must be a boss wave.");
             if (uiFont == null) errors.Add("Unity LegacyRuntime font is unavailable.");
+            if (presentationCatalog != null)
+                errors.AddRange(presentationCatalog.ValidationErrors());
 
             if (errors.Count > 0)
                 throw new InvalidOperationException("Defender Chronicles content validation failed:\n- " + string.Join("\n- ", errors));
@@ -1110,6 +1327,17 @@ namespace DefenderChronicles.Core
             EnemyArchetype.Siege => new EnemyStats(620, 0.72f, 55, 3, 22, new Color(0.42f, 0.30f, 0.18f)),
             EnemyArchetype.Boss => new EnemyStats(2600, 0.62f, 220, 5, 30, new Color(0.72f, 0.08f, 0.08f)),
             _ => new EnemyStats(100, 1f, 10, 1, 10, Color.red)
+        };
+
+        internal static PresentationActorKind ActorKind(EnemyArchetype archetype) => archetype switch
+        {
+            EnemyArchetype.Raider => PresentationActorKind.Raider,
+            EnemyArchetype.Vanguard => PresentationActorKind.Vanguard,
+            EnemyArchetype.Regenerator => PresentationActorKind.Regenerator,
+            EnemyArchetype.Support => PresentationActorKind.Support,
+            EnemyArchetype.Siege => PresentationActorKind.Siege,
+            EnemyArchetype.Boss => PresentationActorKind.Boss,
+            _ => PresentationActorKind.Raider
         };
 
         internal static OutpostStats GetOutpostStats(OutpostKind kind) => kind switch

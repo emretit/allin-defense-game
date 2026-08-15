@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using DefenderChronicles.Data;
+using DefenderChronicles.Presentation;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace DefenderChronicles.Core
 {
@@ -35,6 +37,7 @@ namespace DefenderChronicles.Core
 
         public EnemyCombatState State { get; private set; } = EnemyCombatState.Spawn;
         public int Reward => stats.reward;
+        public EnemyArchetype Archetype => archetype;
         public float RouteProgress => session == null ? 0f : session.ComputeRouteProgress(transform.position, targetWaypoint);
         public bool IsAlive => !removed && health > 0;
         public Vector3 Position => transform.position;
@@ -47,7 +50,7 @@ namespace DefenderChronicles.Core
             stats = definition;
             path = route;
             health = Mathf.Max(1, stats.maxHealth);
-            bodyRenderer = GetComponent<Renderer>();
+            bodyRenderer = GetComponentInChildren<Renderer>();
             CreateHealthBar();
             State = EnemyCombatState.Moving;
         }
@@ -93,12 +96,16 @@ namespace DefenderChronicles.Core
             if (archetype == EnemyArchetype.Regenerator && regenerationTimer <= 0f)
             {
                 Heal(Mathf.Max(5, stats.maxHealth / 25));
+                session.EmitPresentation(PresentationCue.HealPulse, transform.position, gameObject,
+                    GameSessionController.ActorKind(archetype));
                 regenerationTimer = 1.25f;
             }
 
             if (archetype == EnemyArchetype.Support && supportTimer <= 0f)
             {
                 session.HealEnemies(transform.position, 3.5f, 24, this);
+                session.EmitPresentation(PresentationCue.HealPulse, transform.position, gameObject,
+                    GameSessionController.ActorKind(archetype));
                 supportTimer = 2.4f;
             }
 
@@ -107,7 +114,11 @@ namespace DefenderChronicles.Core
                 GreyboxOutpost outpost = session.FindNearestOutpost(transform.position,
                     archetype == EnemyArchetype.Boss ? 6.5f : 4.5f);
                 if (outpost != null)
+                {
                     outpost.DisableTemporarily(archetype == EnemyArchetype.Boss ? 5f : 3f);
+                    session.EmitPresentation(archetype == EnemyArchetype.Boss ? PresentationCue.BossAttack : PresentationCue.OutpostDisrupted,
+                        outpost.Position, gameObject, GameSessionController.ActorKind(archetype));
+                }
                 siegeTimer = archetype == EnemyArchetype.Boss ? 8f : 6f;
             }
 
@@ -122,6 +133,8 @@ namespace DefenderChronicles.Core
                     ? new Color(0.95f, 0.18f, 0.08f)
                     : new Color(1f, 0.42f, 0.05f);
             session.DamageEnemies(transform.position, 3.5f, 0, 0.45f, 1.5f);
+            session.EmitPresentation(PresentationCue.BossPhase, transform.position, gameObject,
+                PresentationActorKind.Boss, value: bossPhase);
         }
 
         private void MoveAlongRoute(float delta)
@@ -168,6 +181,8 @@ namespace DefenderChronicles.Core
             if (!IsAlive || amount <= 0) return;
             health = CombatMath.ApplyDamage(health, amount);
             UpdateHealthBar();
+            session?.EmitPresentation(PresentationCue.EnemyHit, transform.position, gameObject,
+                GameSessionController.ActorKind(archetype));
             if (health > 0) return;
             removed = true;
             State = EnemyCombatState.Dead;
@@ -196,6 +211,36 @@ namespace DefenderChronicles.Core
 
         private void CreateHealthBar()
         {
+            if (session != null && session.HasProductionPresentation)
+            {
+                var canvasObject = new GameObject("Health Bar", typeof(RectTransform), typeof(Canvas));
+                canvasObject.transform.SetParent(transform, false);
+                var canvas = canvasObject.GetComponent<Canvas>();
+                canvas.renderMode = RenderMode.WorldSpace;
+                var rect = canvasObject.GetComponent<RectTransform>();
+                rect.localPosition = Vector3.up * (archetype == EnemyArchetype.Boss ? 2.8f : 1.65f);
+                rect.sizeDelta = new Vector2(100f, 10f);
+                rect.localScale = Vector3.one * 0.012f;
+                canvasObject.AddComponent<WorldSpaceBillboard>();
+                var backgroundObject = new GameObject("Background", typeof(RectTransform), typeof(Image));
+                backgroundObject.transform.SetParent(canvasObject.transform, false);
+                var backgroundRect = backgroundObject.GetComponent<RectTransform>();
+                backgroundRect.anchorMin = Vector2.zero;
+                backgroundRect.anchorMax = Vector2.one;
+                backgroundRect.offsetMin = Vector2.zero;
+                backgroundRect.offsetMax = Vector2.zero;
+                backgroundObject.GetComponent<Image>().color = new Color(0.05f, 0.02f, 0.03f, 0.9f);
+                var fillObject = new GameObject("Fill", typeof(RectTransform), typeof(Image));
+                fillObject.transform.SetParent(backgroundObject.transform, false);
+                var fillRect = fillObject.GetComponent<RectTransform>();
+                fillRect.anchorMin = Vector2.zero;
+                fillRect.anchorMax = Vector2.one;
+                fillRect.offsetMin = new Vector2(2f, 2f);
+                fillRect.offsetMax = new Vector2(-2f, -2f);
+                fillObject.GetComponent<Image>().color = new Color(0.25f, 0.95f, 0.3f);
+                healthFill = fillObject.transform;
+                return;
+            }
             var background = GameSessionController.CreatePrimitive("Health Background", PrimitiveType.Cube,
                 transform.position + Vector3.up * 1.15f, new Vector3(0.95f, 0.08f, 0.08f),
                 new Color(0.12f, 0.03f, 0.03f), transform, false);
@@ -255,7 +300,7 @@ namespace DefenderChronicles.Core
             Kind = kind;
             baseStats = stats;
             invested = stats.cost;
-            bodyRenderer = GetComponent<Renderer>();
+            bodyRenderer = GetComponentInChildren<Renderer>();
             activeColor = bodyRenderer != null ? bodyRenderer.material.color : Color.white;
             if (Kind == OutpostKind.Barracks) SpawnSoldiers();
         }
@@ -286,9 +331,15 @@ namespace DefenderChronicles.Core
             GreyboxEnemy target = session.FindFirstEnemy(transform.position, CurrentRange());
             if (target == null) return;
             if (Kind == OutpostKind.Mage)
+            {
                 session.DamageEnemies(target.Position, 1.65f, CurrentDamage(), 0.70f, 1.5f);
+                session.EmitPresentation(PresentationCue.MageImpact, target.Position, gameObject, outpost: Kind);
+            }
             else
+            {
                 target.TakeDamage(CurrentDamage());
+                session.EmitPresentation(PresentationCue.OutpostAttacked, target.Position, gameObject, outpost: Kind);
+            }
             attackTimer = 1f / Mathf.Max(0.05f, CurrentRate());
         }
 
@@ -297,9 +348,15 @@ namespace DefenderChronicles.Core
             if (!CanUpgrade) return;
             level = 2;
             invested += UpgradeCost;
-            transform.localScale *= 1.15f;
+            if (session == null || !session.HasProductionPresentation) transform.localScale *= 1.15f;
             foreach (var soldier in soldiers)
                 if (soldier != null) soldier.SetUpgradeLevel(level);
+        }
+
+        internal void RefreshPresentationRenderer()
+        {
+            bodyRenderer = GetComponentInChildren<Renderer>();
+            activeColor = bodyRenderer != null ? bodyRenderer.material.color : Color.white;
         }
 
         public void DisableTemporarily(float duration)
@@ -307,6 +364,7 @@ namespace DefenderChronicles.Core
             if (!IsAlive) return;
             disabledRemaining = Mathf.Max(disabledRemaining, duration);
             if (bodyRenderer != null) bodyRenderer.material.color = new Color(0.25f, 0.25f, 0.25f);
+            session?.EmitPresentation(PresentationCue.OutpostDisrupted, transform.position, gameObject, outpost: Kind);
         }
 
         public void TakeDamage(int amount)
@@ -337,9 +395,11 @@ namespace DefenderChronicles.Core
             if (!IsAlive || session == null || soldiers.Count >= 2) return;
             Vector3 side = index % 2 == 0 ? Vector3.left : Vector3.right;
             Vector3 rally = transform.position + side * 0.6f + Vector3.forward * 0.4f;
-            var go = GameSessionController.CreatePrimitive($"Barracks Guard {index + 1}", PrimitiveType.Capsule,
-                rally + Vector3.up * 0.55f, new Vector3(0.42f, 0.55f, 0.42f),
-                new Color(0.72f, 0.76f, 0.82f), transform.parent, true);
+            GameObject go = session.CreateFriendlyVisual($"Barracks Guard {index + 1}", rally);
+            if (go == null)
+                go = GameSessionController.CreatePrimitive($"Barracks Guard {index + 1}", PrimitiveType.Capsule,
+                    rally + Vector3.up * 0.55f, new Vector3(0.42f, 0.55f, 0.42f),
+                    new Color(0.72f, 0.76f, 0.82f), transform.parent, true);
             var soldier = go.AddComponent<GreyboxFriendlyUnit>();
             soldier.Configure(session, this, rally, level);
             soldiers.Add(soldier);
@@ -397,6 +457,8 @@ namespace DefenderChronicles.Core
                 if (attackTimer <= 0f)
                 {
                     target.TakeDamage(damage);
+                    session.EmitPresentation(PresentationCue.OutpostAttacked, target.Position, gameObject,
+                        PresentationActorKind.Guard, owner.Kind);
                     attackTimer = 0.85f;
                 }
                 return;
@@ -413,6 +475,8 @@ namespace DefenderChronicles.Core
             health = CombatMath.ApplyDamage(health, amount);
             if (health > 0) return;
             dead = true;
+            session?.EmitPresentation(PresentationCue.UnitDefeated, transform.position, gameObject,
+                PresentationActorKind.Guard);
             Destroy(gameObject);
         }
     }
@@ -441,7 +505,7 @@ namespace DefenderChronicles.Core
             session = owner;
             commandPoint = initialCommandPoint;
             health = MaxHealth;
-            bodyRenderer = GetComponent<Renderer>();
+            bodyRenderer = GetComponentInChildren<Renderer>();
             bodyCollider = GetComponent<Collider>();
         }
 
@@ -462,12 +526,14 @@ namespace DefenderChronicles.Core
                 if (attackTimer <= 0f)
                 {
                     enemy.TakeDamage(20);
+                    session.EmitPresentation(PresentationCue.HeroAttacked, enemy.Position, gameObject,
+                        PresentationActorKind.Knight);
                     attackTimer = 0.75f;
                 }
                 return;
             }
 
-            Vector3 destination = commandPoint + Vector3.up;
+            Vector3 destination = session != null && session.HasProductionPresentation ? commandPoint : commandPoint + Vector3.up;
             transform.position = Vector3.MoveTowards(transform.position, destination, 3.5f * Time.deltaTime);
         }
 
@@ -475,6 +541,8 @@ namespace DefenderChronicles.Core
         {
             if (!IsAlive) return;
             commandPoint = point;
+            session?.EmitPresentation(PresentationCue.HeroMoved, transform.position, gameObject,
+                PresentationActorKind.Knight);
         }
 
         public bool TryUseShieldBash()
@@ -488,12 +556,19 @@ namespace DefenderChronicles.Core
                     enemy.Stun(2f);
             }
             AbilityRemaining = AbilityCooldown;
+            session.EmitPresentation(PresentationCue.HeroAbility, transform.position, gameObject,
+                PresentationActorKind.Knight);
             StartCoroutine(AbilityPreview());
             return true;
         }
 
         private System.Collections.IEnumerator AbilityPreview()
         {
+            if (session != null && session.HasProductionPresentation)
+            {
+                yield return new WaitForSeconds(0.28f);
+                yield break;
+            }
             var preview = GameSessionController.CreatePrimitive("Shield Bash Range", PrimitiveType.Cylinder,
                 new Vector3(transform.position.x, 0.08f, transform.position.z), new Vector3(3.2f, 0.03f, 3.2f),
                 new Color(0.25f, 0.75f, 1f, 0.45f), transform.parent, false);
@@ -508,7 +583,7 @@ namespace DefenderChronicles.Core
             if (health > 0) return;
             downed = true;
             RespawnRemaining = RespawnSeconds;
-            if (bodyRenderer != null) bodyRenderer.enabled = false;
+            SetVisuals(false);
             if (bodyCollider != null) bodyCollider.enabled = false;
         }
 
@@ -516,9 +591,24 @@ namespace DefenderChronicles.Core
         {
             health = MaxHealth;
             downed = false;
-            transform.position = commandPoint + Vector3.up;
-            if (bodyRenderer != null) bodyRenderer.enabled = true;
+            transform.position = session != null && session.HasProductionPresentation ? commandPoint : commandPoint + Vector3.up;
+            SetVisuals(true);
             if (bodyCollider != null) bodyCollider.enabled = true;
+        }
+
+        private void SetVisuals(bool visible)
+        {
+            foreach (var renderer in GetComponentsInChildren<Renderer>(true)) renderer.enabled = visible;
+        }
+    }
+
+    public sealed class WorldSpaceBillboard : MonoBehaviour
+    {
+        private void LateUpdate()
+        {
+            Camera camera = Camera.main;
+            if (camera == null) return;
+            transform.rotation = camera.transform.rotation;
         }
     }
 }

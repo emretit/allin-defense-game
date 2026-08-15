@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b367f3058e7974ea385e70f2cc6f4603, type: 3}
+  m_Name: UiCopyTr
+  m_EditorClassIdentifier: DefenderChronicles.Runtime::DefenderChronicles.Presentation.UiCopyCatalog
+  locale: tr-TR
+  entries:
+  - key: 0
+    value: ALTIN
+  - key: 1
+    value: KALE
+  - key: 2
+    value: DALGA
+  - key: 3
+    value: HAZIRLIK
+  - key: 4
+    value: "SAVA\u015E"
+  - key: 5
+    value: MOLA
+  - key: 6
+    value: DURAKLATILDI
+  - key: 7
+    value: "Y\xDCKLEN\u0130YOR"
+  - key: 8
+    value: DURAKLAT
+  - key: 9
+    value: DEVAM
+  - key: 10
+    value: "OK\xC7U"
+  - key: 11
+    value: "KI\u015ELA"
+  - key: 12
+    value: "B\xDCY\xDC"
+  - key: 13
+    value: "KALKAN DARBES\u0130"
+  - key: 14
+    value: "\u0130PTAL"
+  - key: 15
+    value: "\u0130LK DALGAYI BA\u015ELAT"
+  - key: 16
+    value: "DALGAYI ERKEN \xC7A\u011EIR"
+  - key: 17
+    value: "SONRAK\u0130 DALGA"
+  - key: 18
+    value: "Y\xDCKSELT"
+  - key: 19
+    value: SAT
+  - key: 20
+    value: "\u015E\xD6VALYE"
+  - key: 21
+    value: YETENEK HAZIR
+  - key: 22
+    value: "\u015E\xD6VALYE D\xD6N\xDCYOR"
+  - key: 23
+    value: 'ZAFER
+
+      GREENWATCH KORUNDU'
+  - key: 24
+    value: "YEN\u0130LG\u0130\nGREENWATCH D\xDC\u015ET\xDC"
+  - key: 25
+    value: ZAFER
+  - key: 26
+    value: "YEN\u0130LG\u0130"
+  - key: 27
+    value: "YEN\u0130DEN DENE"
+  - key: 28
+    value: KARAKOL PLATFORMU
+  - key: 29
+    value: "A\u015Fa\u011F\u0131dan bir karakol se\xE7."

@@ -1,5 +1,6 @@
 using DefenderChronicles.Core;
 using DefenderChronicles.Data;
+using DefenderChronicles.Presentation;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -42,6 +43,29 @@ namespace DefenderChronicles.Tests
             Assert.That(group.count, Is.EqualTo(1));
             Assert.That(group.startDelay, Is.Zero);
             Assert.That(group.interval, Is.EqualTo(0.1f));
+        }
+
+        [Test]
+        public void ProductionPresentationCatalogIsComplete()
+        {
+            var catalog = Resources.Load<DefenderPresentationCatalog>("Presentation/DefenderPresentationCatalog");
+            Assert.That(catalog, Is.Not.Null);
+            Assert.That(catalog.ValidationErrors(), Is.Empty);
+            Assert.That(catalog.actorVisuals, Has.Length.EqualTo(8));
+            Assert.That(catalog.outpostVisuals, Has.Length.EqualTo(6));
+            Assert.That(catalog.uiMixer, Is.Not.SameAs(catalog.sfxMixer));
+            Assert.That(catalog.uiMixer, Is.Not.SameAs(catalog.musicMixer));
+            Assert.That(catalog.sfxMixer, Is.Not.SameAs(catalog.musicMixer));
+            Assert.That(catalog.provenance, Has.Length.EqualTo(5));
+        }
+
+        [Test]
+        public void TurkishUiCopyHasEveryPublicKey()
+        {
+            var copy = Resources.Load<UiCopyCatalog>("Presentation/UiCopyTr");
+            Assert.That(copy, Is.Not.Null);
+            Assert.That(copy.locale, Is.EqualTo("tr-TR"));
+            Assert.That(copy.ValidationErrors(), Is.Empty);
         }
     }
 }
