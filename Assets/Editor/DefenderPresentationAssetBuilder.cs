@@ -559,6 +559,15 @@ namespace DefenderChronicles.Editor
                 if (material.HasProperty("_BaseColor")) material.SetColor("_BaseColor", Color.white);
                 if (material.HasProperty("_Metallic")) material.SetFloat("_Metallic", 0f);
                 if (material.HasProperty("_Smoothness")) material.SetFloat("_Smoothness", 0.08f);
+                bool actorAtlas = sourceName != "hexagons_medieval";
+                if (actorAtlas)
+                {
+                    material.EnableKeyword("_EMISSION");
+                    if (material.HasProperty("_EmissionMap")) material.SetTexture("_EmissionMap", texture);
+                    if (material.HasProperty("_EmissionColor"))
+                        material.SetColor("_EmissionColor", new Color(0.13f, 0.16f, 0.2f));
+                    material.globalIlluminationFlags = MaterialGlobalIlluminationFlags.None;
+                }
                 EditorUtility.SetDirty(material);
                 result.Add(new LicensedAtlasMaterialEntry { sourceName = sourceName, material = material });
             }
@@ -574,7 +583,9 @@ namespace DefenderChronicles.Editor
             if (baseEnvironment == null) throw new InvalidOperationException("Base environment model is missing.");
             baseEnvironment.name = "Battlefield";
             foreach (Renderer renderer in baseEnvironment.GetComponentsInChildren<Renderer>(true))
-                if (renderer.name.StartsWith("Keep", StringComparison.OrdinalIgnoreCase)) renderer.enabled = false;
+                if (renderer.name.StartsWith("Keep", StringComparison.OrdinalIgnoreCase) ||
+                    renderer.name.StartsWith("Pine", StringComparison.OrdinalIgnoreCase))
+                    renderer.enabled = false;
 
             GameObject castle = PrefabUtility.InstantiatePrefab(LicensedBuilding("building_castle_blue"), root.transform) as GameObject;
             if (castle == null) throw new InvalidOperationException("Licensed castle model is missing.");
@@ -585,9 +596,45 @@ namespace DefenderChronicles.Editor
             castle.transform.localRotation = Quaternion.Euler(0f, -90f, 0f);
             castle.transform.localScale = Vector3.one;
 
+            (string asset, Vector3 position, float scale, float rotation)[] nature =
+            {
+                ("trees_A_medium", new Vector3(0.8f, 0f, 11.15f), 1.05f, 12f),
+                ("trees_B_small", new Vector3(4.0f, 0f, 11.2f), 1.16f, -18f),
+                ("trees_A_small", new Vector3(7.8f, 0f, 11.2f), 1.12f, 28f),
+                ("trees_A_medium", new Vector3(12.0f, 0f, 11.15f), 1.02f, -8f),
+                ("trees_B_small", new Vector3(16.1f, 0f, 11.2f), 1.2f, 16f),
+                ("trees_A_small", new Vector3(20.2f, 0f, 11.15f), 1.1f, -28f),
+                ("trees_B_small", new Vector3(1.0f, 0f, 0.62f), 1.14f, 22f),
+                ("trees_A_small", new Vector3(5.2f, 0f, 0.58f), 1.08f, -14f),
+                ("trees_A_medium", new Vector3(10.2f, 0f, 0.58f), 1f, 8f),
+                ("trees_B_small", new Vector3(15.7f, 0f, 0.62f), 1.18f, -26f),
+                ("trees_A_small", new Vector3(21.1f, 0f, 0.6f), 1.08f, 18f),
+                ("rock_single_A", new Vector3(4.3f, 0.03f, 3.0f), 1.9f, 12f),
+                ("rock_single_B", new Vector3(9.7f, 0.03f, 2.0f), 1.7f, -18f),
+                ("rock_single_A", new Vector3(15.8f, 0.03f, 9.7f), 2.1f, 24f),
+                ("rock_single_B", new Vector3(19.2f, 0.03f, 3.0f), 1.8f, -8f)
+            };
+            for (int i = 0; i < nature.Length; i++)
+            {
+                var entry = nature[i];
+                AddLicensedEnvironmentPiece(root.transform, entry.asset, entry.position, entry.scale, entry.rotation, i + 1);
+            }
+
             GameObject prefab = PrefabUtility.SaveAsPrefabAsset(root, path);
             UnityEngine.Object.DestroyImmediate(root);
             return prefab;
+        }
+
+        private static void AddLicensedEnvironmentPiece(Transform parent, string assetName, Vector3 worldPosition,
+            float scale, float worldRotation, int index)
+        {
+            GameObject source = LicensedBuilding(assetName);
+            GameObject piece = PrefabUtility.InstantiatePrefab(source, parent) as GameObject;
+            if (piece == null) throw new InvalidOperationException($"Licensed environment model is missing: {assetName}.");
+            piece.name = $"Licensed Nature {index:00} {assetName}";
+            piece.transform.localPosition = new Vector3(-worldPosition.x, worldPosition.y, -worldPosition.z);
+            piece.transform.localRotation = Quaternion.Euler(0f, worldRotation - 180f, 0f);
+            piece.transform.localScale = Vector3.one * scale;
         }
 
         private static void ConfigureForwardRenderer()
@@ -689,7 +736,8 @@ namespace DefenderChronicles.Editor
         private static GameObject CreateHudPrefab(Sprite panel, Sprite frame, TMP_FontAsset body, TMP_FontAsset title)
         {
             string path = $"{GeneratedRoot}/DefenderHud.prefab";
-            if (AssetDatabase.LoadAssetAtPath<GameObject>(path) != null) AssetDatabase.DeleteAsset(path);
+            GameObject existing = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+            if (existing != null) return existing;
             activeUiFrameSprite = frame;
 
             var root = new GameObject("DefenderHud", typeof(RectTransform), typeof(DefenderHudController));

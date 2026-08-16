@@ -14,6 +14,8 @@ namespace DefenderChronicles.Presentation
 
     public static class StylizedPresentationFactory
     {
+        private static Mesh groundingRingMesh;
+
         public static GameObject CreateRoot(string name, Vector3 position, Vector3 colliderSize,
             GameObject visualPrefab, DefenderPresentationCatalog catalog, PresentationCollider collider,
             float visualScale = 1f)
@@ -51,9 +53,62 @@ namespace DefenderChronicles.Presentation
                 visual.transform.localScale = Vector3.one * visualScale;
                 ApplyPalette(visual, catalog, true);
                 if (collider == PresentationCollider.Capsule)
+                {
                     root.AddComponent<StylizedActorView>().Configure(motion.transform, catalog);
+                    CreateGroundingAccent(root.transform, name, colliderSize.x, catalog);
+                }
             }
             return root;
+        }
+
+        private static void CreateGroundingAccent(Transform root, string identity, float actorWidth,
+            DefenderPresentationCatalog catalog)
+        {
+            string value = identity?.ToLowerInvariant() ?? string.Empty;
+            bool boss = value.Contains("boss");
+            bool defender = value.Contains("knight") || value.Contains("guard");
+            if (!boss && !defender) return;
+
+            var accent = new GameObject(boss ? "Boss Ground Aura" : "Defender Ground Aura");
+            accent.transform.SetParent(root, false);
+            accent.transform.localPosition = Vector3.up * 0.045f;
+            float radius = Mathf.Max(0.42f, actorWidth * (boss ? 0.76f : 0.64f));
+            accent.transform.localScale = Vector3.one * radius;
+            var filter = accent.AddComponent<MeshFilter>();
+            groundingRingMesh ??= BuildGroundingRing(28);
+            filter.sharedMesh = groundingRingMesh;
+            var renderer = accent.AddComponent<MeshRenderer>();
+            renderer.sharedMaterial = boss ? catalog.fireMaterial : catalog.magicMaterial;
+            renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            renderer.receiveShadows = false;
+            accent.AddComponent<StylizedGroundingAura>().Configure(radius, boss);
+        }
+
+        private static Mesh BuildGroundingRing(int segments)
+        {
+            var mesh = new Mesh { name = "DC Grounding Aura Ring" };
+            var vertices = new Vector3[segments * 2];
+            var triangles = new int[segments * 6];
+            for (int i = 0; i < segments; i++)
+            {
+                float angle = Mathf.PI * 2f * i / segments;
+                Vector3 direction = new(Mathf.Cos(angle), 0f, Mathf.Sin(angle));
+                vertices[i * 2] = direction * 0.79f;
+                vertices[i * 2 + 1] = direction;
+                int next = (i + 1) % segments;
+                int offset = i * 6;
+                triangles[offset] = i * 2;
+                triangles[offset + 1] = next * 2 + 1;
+                triangles[offset + 2] = i * 2 + 1;
+                triangles[offset + 3] = i * 2;
+                triangles[offset + 4] = next * 2;
+                triangles[offset + 5] = next * 2 + 1;
+            }
+            mesh.vertices = vertices;
+            mesh.triangles = triangles;
+            mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
+            return mesh;
         }
 
         public static GameObject SpawnModel(GameObject prefab, Transform parent, DefenderPresentationCatalog catalog,
@@ -119,6 +174,29 @@ namespace DefenderChronicles.Presentation
                 renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
                 renderer.receiveShadows = true;
             }
+        }
+    }
+
+    public sealed class StylizedGroundingAura : MonoBehaviour
+    {
+        private float baseRadius;
+        private float speed;
+        private float amplitude;
+        private float phase;
+
+        public void Configure(float radius, bool boss)
+        {
+            baseRadius = radius;
+            speed = boss ? 2.1f : 1.25f;
+            amplitude = boss ? 0.10f : 0.045f;
+            phase = transform.parent != null ? transform.parent.GetInstanceID() * 0.17f : 0f;
+        }
+
+        private void Update()
+        {
+            float pulse = 1f + Mathf.Sin(Time.time * speed + phase) * amplitude;
+            transform.localScale = Vector3.one * baseRadius * pulse;
+            transform.Rotate(0f, (speed * 14f) * Time.deltaTime, 0f, Space.Self);
         }
     }
 

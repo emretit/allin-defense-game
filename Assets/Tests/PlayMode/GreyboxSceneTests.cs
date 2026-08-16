@@ -74,8 +74,10 @@ namespace DefenderChronicles.Tests
             Assert.That(session.Gold, Is.EqualTo(125));
             Assert.That(buildSignals, Is.EqualTo(1));
             Assert.That(GameObject.Find("Greenwatch Environment"), Is.Not.Null);
+            Assert.That(GameObject.Find("Licensed Nature 01 trees_A_medium"), Is.Not.Null);
             Assert.That(GameObject.Find("Defender HUD"), Is.Not.Null);
             Assert.That(session.Hero.GetComponent<StylizedActorView>(), Is.Not.Null);
+            Assert.That(session.Hero.GetComponentInChildren<StylizedGroundingAura>(), Is.Not.Null);
             Assert.That(session.Hero.GetComponentInChildren<Animator>(), Is.Not.Null);
             int heroMaterials = session.Hero.GetComponentsInChildren<Renderer>()
                 .SelectMany(renderer => renderer.sharedMaterials).Where(material => material != null).Distinct().Count();

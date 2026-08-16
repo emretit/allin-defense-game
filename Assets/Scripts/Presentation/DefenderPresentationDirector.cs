@@ -35,6 +35,9 @@ namespace DefenderChronicles.Presentation
         private void OnPresentationSignal(PresentationSignal signal)
         {
             audioController.Play(signal.cue);
+            if (signal.cue is PresentationCue.WaveStarted or PresentationCue.BossPhase or
+                PresentationCue.Victory or PresentationCue.Defeat)
+                DefenderSceneLook.Pulse(signal.cue);
             if (signal.cue is not (PresentationCue.UiClick or PresentationCue.UiError or PresentationCue.WaveStarted))
                 vfxPool.Play(signal);
 

@@ -29,7 +29,9 @@ are unmodified.
 - Source revision: `84fa4e91af6a88989be7c99e0891cede11f2ca38`
 - License: CC0 1.0 (`KayKit/MedievalHexagon/LICENSE.txt`)
 - Selected files: the blue Unity FBX variants for tower A, archery range,
-  tower base, barracks, tower B, church and castle.
+  tower base, barracks, tower B, church and castle; plus the Unity FBX nature
+  variants `trees_A_small`, `trees_B_small`, `trees_A_medium`,
+  `rock_single_A` and `rock_single_B`.
 - Shared atlas SHA-256: `5301a06866ba3be68dcc14cc429bd6d0f69004b72884283715d7e233f2e9782e`
 
 ## Kenney Fantasy UI Borders 1.0

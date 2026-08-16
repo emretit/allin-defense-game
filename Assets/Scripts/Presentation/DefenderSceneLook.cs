@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -11,6 +12,19 @@ namespace DefenderChronicles.Presentation
     public sealed class DefenderSceneLook : MonoBehaviour
     {
         private VolumeProfile runtimeProfile;
+        private Bloom bloom;
+        private ColorAdjustments colorAdjustments;
+        private Vignette vignette;
+        private Coroutine pulseRoutine;
+
+        public static void Pulse(PresentationCue cue)
+        {
+            Camera camera = Camera.main;
+            DefenderSceneLook look = camera != null ? camera.GetComponent<DefenderSceneLook>() : null;
+            if (look == null) return;
+            if (look.pulseRoutine != null) look.StopCoroutine(look.pulseRoutine);
+            look.pulseRoutine = look.StartCoroutine(look.PulseLook(cue));
+        }
 
         public static void Apply(Camera camera)
         {
@@ -35,8 +49,8 @@ namespace DefenderChronicles.Presentation
             cameraData.stopNaN = true;
 
             RenderSettings.ambientMode = AmbientMode.Trilight;
-            RenderSettings.ambientSkyColor = new Color(0.18f, 0.27f, 0.40f);
-            RenderSettings.ambientEquatorColor = new Color(0.075f, 0.15f, 0.20f);
+            RenderSettings.ambientSkyColor = new Color(0.21f, 0.30f, 0.44f);
+            RenderSettings.ambientEquatorColor = new Color(0.09f, 0.17f, 0.23f);
             RenderSettings.ambientGroundColor = new Color(0.025f, 0.055f, 0.065f);
             RenderSettings.reflectionIntensity = 0.38f;
             RenderSettings.fog = true;
@@ -105,7 +119,7 @@ namespace DefenderChronicles.Presentation
             runtimeProfile.name = "Defender Runtime Look";
             volume.profile = runtimeProfile;
 
-            Bloom bloom = runtimeProfile.Add<Bloom>();
+            bloom = runtimeProfile.Add<Bloom>();
             bloom.active = true;
             bloom.threshold.Override(1.08f);
             bloom.intensity.Override(0.22f);
@@ -115,24 +129,60 @@ namespace DefenderChronicles.Presentation
             Tonemapping tonemapping = runtimeProfile.Add<Tonemapping>();
             tonemapping.mode.Override(TonemappingMode.ACES);
 
-            ColorAdjustments color = runtimeProfile.Add<ColorAdjustments>();
-            color.postExposure.Override(0.08f);
-            color.contrast.Override(13f);
-            color.saturation.Override(7f);
-            color.colorFilter.Override(new Color(0.95f, 0.98f, 1f));
+            colorAdjustments = runtimeProfile.Add<ColorAdjustments>();
+            colorAdjustments.postExposure.Override(0.1f);
+            colorAdjustments.contrast.Override(11f);
+            colorAdjustments.saturation.Override(8f);
+            colorAdjustments.colorFilter.Override(new Color(0.95f, 0.98f, 1f));
 
             WhiteBalance whiteBalance = runtimeProfile.Add<WhiteBalance>();
             whiteBalance.temperature.Override(-7f);
             whiteBalance.tint.Override(2f);
 
-            Vignette vignette = runtimeProfile.Add<Vignette>();
+            vignette = runtimeProfile.Add<Vignette>();
             vignette.color.Override(new Color(0.01f, 0.025f, 0.055f));
             vignette.intensity.Override(0.13f);
             vignette.smoothness.Override(0.48f);
         }
 
+        private IEnumerator PulseLook(PresentationCue cue)
+        {
+            if (bloom == null || vignette == null || colorAdjustments == null) yield break;
+            float duration = cue == PresentationCue.BossPhase ? 0.82f : 0.52f;
+            float peakBloom = cue switch
+            {
+                PresentationCue.BossPhase => 0.7f,
+                PresentationCue.Victory => 0.56f,
+                PresentationCue.Defeat => 0.48f,
+                _ => 0.38f
+            };
+            Color peakFilter = cue switch
+            {
+                PresentationCue.BossPhase or PresentationCue.Defeat => new Color(1f, 0.72f, 0.70f),
+                PresentationCue.Victory => new Color(1f, 0.9f, 0.66f),
+                _ => new Color(0.78f, 0.9f, 1f)
+            };
+            Color baseFilter = new(0.95f, 0.98f, 1f);
+            float elapsed = 0f;
+            while (elapsed < duration)
+            {
+                elapsed += Time.unscaledDeltaTime;
+                float t = Mathf.Clamp01(elapsed / duration);
+                float envelope = Mathf.Sin(t * Mathf.PI);
+                bloom.intensity.Override(Mathf.Lerp(0.22f, peakBloom, envelope));
+                vignette.intensity.Override(Mathf.Lerp(0.13f, 0.24f, envelope));
+                colorAdjustments.colorFilter.Override(Color.Lerp(baseFilter, peakFilter, envelope * 0.62f));
+                yield return null;
+            }
+            bloom.intensity.Override(0.22f);
+            vignette.intensity.Override(0.13f);
+            colorAdjustments.colorFilter.Override(baseFilter);
+            pulseRoutine = null;
+        }
+
         private void OnDestroy()
         {
+            if (pulseRoutine != null) StopCoroutine(pulseRoutine);
             if (runtimeProfile != null) Destroy(runtimeProfile);
         }
     }
