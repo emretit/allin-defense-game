@@ -102,6 +102,12 @@ namespace DefenderChronicles.Presentation
                 var mapped = new Material[source.Length];
                 for (int i = 0; i < source.Length; i++)
                 {
+                    Material licensedAtlas = catalog.ResolveLicensedAtlasMaterial(source[i]);
+                    if (licensedAtlas != null)
+                    {
+                        mapped[i] = licensedAtlas;
+                        continue;
+                    }
                     string sourceName = source[i] != null ? source[i].name : renderer.name;
                     bool neutral = sourceName.Contains("stone", System.StringComparison.OrdinalIgnoreCase) ||
                                    sourceName.Contains("dark", System.StringComparison.OrdinalIgnoreCase) ||

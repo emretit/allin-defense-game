@@ -791,7 +791,7 @@ namespace DefenderChronicles.Core
             {
                 go = StylizedPresentationFactory.CreateRoot($"{kind} Outpost", targetSlot.transform.position,
                     new Vector3(1.15f, 1.55f, 1.15f), presentationCatalog.OutpostPrefab(kind, 1),
-                    presentationCatalog, PresentationCollider.Cylinder);
+                    presentationCatalog, PresentationCollider.Cylinder, presentationCatalog.OutpostScale(kind, 1));
                 go.transform.SetParent(transform, true);
             }
             else
@@ -1277,7 +1277,7 @@ namespace DefenderChronicles.Core
             {
                 visual.transform.localPosition = Vector3.zero;
                 visual.transform.localRotation = Quaternion.identity;
-                visual.transform.localScale = Vector3.one;
+                visual.transform.localScale = Vector3.one * presentationCatalog.OutpostScale(outpost.Kind, 2);
                 outpost.RefreshPresentationRenderer();
             }
         }

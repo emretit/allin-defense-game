@@ -56,8 +56,11 @@ namespace DefenderChronicles.Tests
             Assert.That(catalog.uiMixer, Is.Not.SameAs(catalog.sfxMixer));
             Assert.That(catalog.uiMixer, Is.Not.SameAs(catalog.musicMixer));
             Assert.That(catalog.sfxMixer, Is.Not.SameAs(catalog.musicMixer));
-            Assert.That(catalog.provenance, Has.Length.EqualTo(7));
+            Assert.That(catalog.provenance, Has.Length.EqualTo(10));
+            Assert.That(catalog.licensedAtlasMaterials, Has.Length.EqualTo(5));
+            Assert.That(catalog.uiFrameSprite, Is.Not.Null);
             Assert.That(catalog.audioLicense, Is.Not.Null);
+            Assert.That(catalog.thirdPartyArtSources, Is.Not.Null);
         }
 
         [Test]

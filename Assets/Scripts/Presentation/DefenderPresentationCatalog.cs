@@ -88,6 +88,14 @@ namespace DefenderChronicles.Presentation
         public OutpostKind kind;
         [Range(1, 2)] public int level = 1;
         public GameObject prefab;
+        [Min(0.1f)] public float scale = 1f;
+    }
+
+    [Serializable]
+    public sealed class LicensedAtlasMaterialEntry
+    {
+        public string sourceName;
+        public Material material;
     }
 
     [Serializable]
@@ -124,6 +132,7 @@ namespace DefenderChronicles.Presentation
         [Header("HUD")]
         public GameObject hudPrefab;
         public Sprite panelSprite;
+        public Sprite uiFrameSprite;
         public TMP_FontAsset bodyFont;
         public TMP_FontAsset titleFont;
         public UiCopyCatalog uiCopy;
@@ -152,6 +161,9 @@ namespace DefenderChronicles.Presentation
         public Material grassAccentMaterial;
         public Material metalMaterial;
 
+        [Header("Licensed Atlas Materials")]
+        public LicensedAtlasMaterialEntry[] licensedAtlasMaterials = Array.Empty<LicensedAtlasMaterialEntry>();
+
         [Header("Audio")]
         public AudioMixerGroup uiMixer;
         public AudioMixerGroup sfxMixer;
@@ -164,6 +176,7 @@ namespace DefenderChronicles.Presentation
         [Header("Provenance")]
         public TextAsset fontLicense;
         public TextAsset audioLicense;
+        public TextAsset thirdPartyArtSources;
         public AssetProvenanceEntry[] provenance = Array.Empty<AssetProvenanceEntry>();
 
         public GameObject ActorPrefab(PresentationActorKind kind)
@@ -180,6 +193,23 @@ namespace DefenderChronicles.Presentation
         {
             int clamped = Mathf.Clamp(level, 1, 2);
             return outpostVisuals.FirstOrDefault(entry => entry != null && entry.kind == kind && entry.level == clamped)?.prefab;
+        }
+
+        public float OutpostScale(OutpostKind kind, int level)
+        {
+            int clamped = Mathf.Clamp(level, 1, 2);
+            return outpostVisuals.FirstOrDefault(entry => entry != null && entry.kind == kind && entry.level == clamped)?.scale ?? 1f;
+        }
+
+        public Material ResolveLicensedAtlasMaterial(Material source)
+        {
+            if (source == null) return null;
+            string materialName = source.name?.ToLowerInvariant() ?? string.Empty;
+            string textureName = source.mainTexture != null ? source.mainTexture.name.ToLowerInvariant() : string.Empty;
+            return licensedAtlasMaterials.FirstOrDefault(entry => entry != null && entry.material != null &&
+                !string.IsNullOrWhiteSpace(entry.sourceName) &&
+                (materialName.Contains(entry.sourceName.ToLowerInvariant()) ||
+                 textureName.Contains(entry.sourceName.ToLowerInvariant())))?.material;
         }
 
         public AudioCueEntry Audio(PresentationCue cue)
@@ -216,6 +246,7 @@ namespace DefenderChronicles.Presentation
             if (commandPointPrefab == null) errors.Add("Command point prefab is missing.");
             if (hudPrefab == null) errors.Add("HUD prefab is missing.");
             if (panelSprite == null) errors.Add("HUD panel sprite is missing.");
+            if (uiFrameSprite == null) errors.Add("Licensed HUD frame sprite is missing.");
             if (bodyFont == null || titleFont == null) errors.Add("TMP font assets are incomplete.");
             if (uiCopy == null || uiCopy.ValidationErrors().Count > 0) errors.Add("Turkish UI copy is incomplete.");
             if (new[] { goldIcon, keepIcon, waveIcon, archerIcon, barracksIcon, mageIcon, abilityIcon }
@@ -242,7 +273,8 @@ namespace DefenderChronicles.Presentation
 
             if (fontLicense == null) errors.Add("Noto font license file is missing.");
             if (audioLicense == null) errors.Add("CC0 audio license file is missing.");
-            foreach (string required in new[] { "Noto Sans", "Noto Serif", "HUD panel", "HUD icons", "Blender source", "CC0 sound effects", "CC0 music" })
+            if (thirdPartyArtSources == null) errors.Add("Third-party art source manifest is missing.");
+            foreach (string required in new[] { "Noto Sans", "Noto Serif", "HUD panel", "HUD icons", "Blender source", "CC0 sound effects", "CC0 music", "KayKit Adventurers", "KayKit Medieval Hexagon", "Kenney Fantasy UI Borders" })
             {
                 AssetProvenanceEntry entry = provenance.FirstOrDefault(item => item != null && item.assetName == required);
                 if (entry == null || string.IsNullOrWhiteSpace(entry.assetPath) || string.IsNullOrWhiteSpace(entry.acquiredOn))
@@ -256,6 +288,9 @@ namespace DefenderChronicles.Presentation
                     magicMaterial, fireMaterial, darkMaterial, earthMaterial, grassAccentMaterial, metalMaterial }
                 .Any(item => item == null))
                 errors.Add("Shared palette materials are incomplete.");
+            foreach (string atlas in new[] { "knight_texture", "barbarian_texture", "mage_texture", "rogue_texture", "hexagons_medieval" })
+                if (licensedAtlasMaterials.All(entry => entry == null || entry.material == null || entry.sourceName != atlas))
+                    errors.Add($"Licensed atlas material is missing: {atlas}.");
             return errors;
         }
     }

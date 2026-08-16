@@ -24,6 +24,10 @@ namespace DefenderChronicles.Editor
         private const string GeneratedRoot = "Assets/Art/GeneratedPresentation";
         private const string ResourceRoot = "Assets/Resources/Presentation";
         private const string ModelRoot = "Assets/Art/Models/Generated";
+        private const string AdventurersRoot = "Assets/ThirdParty/KayKit/Adventurers/Models";
+        private const string MedievalRoot = "Assets/ThirdParty/KayKit/MedievalHexagon/Models";
+        private const string UiFramePath = "Assets/ThirdParty/Kenney/FantasyUiBorders/HudFrameBorder.png";
+        private static Sprite activeUiFrameSprite;
 
         [MenuItem("Defender Chronicles/Build Artistic Presentation Assets")]
         public static void BuildPresentationAssets()
@@ -36,16 +40,18 @@ namespace DefenderChronicles.Editor
             ConfigureImports();
 
             Sprite panelSprite = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/UI/DefenderHudPanel.png");
+            Sprite uiFrameSprite = AssetDatabase.LoadAssetAtPath<Sprite>(UiFramePath);
             TMP_FontAsset bodyFont = CreateFontAsset("Assets/Art/Fonts/NotoSans-Regular.ttf", "NotoSans-DC");
             TMP_FontAsset titleFont = CreateFontAsset("Assets/Art/Fonts/NotoSerif-SemiBold.ttf", "NotoSerif-DC");
             (RuntimeAnimatorController actorAnimator, AnimationClip[] actorClips) = CreateActorAnimator();
             UiCopyCatalog copy = CreateCopyCatalog();
             var materials = CreatePaletteMaterials();
+            LicensedAtlasMaterialEntry[] licensedMaterials = CreateLicensedAtlasMaterials();
             Dictionary<string, AudioMixerGroup> mixerGroups = CreateMixer();
             AudioMixer mixer = AssetDatabase.LoadAssetAtPath<AudioMixer>($"{GeneratedRoot}/DefenderPresentation.mixer");
             AudioMixerSnapshot normalSnapshot = mixer.FindSnapshot("Snapshot");
             AudioMixerSnapshot pauseSnapshot = EnsureSnapshot(mixer, "Pause");
-            GameObject hudPrefab = CreateHudPrefab(panelSprite, bodyFont, titleFont);
+            GameObject hudPrefab = CreateHudPrefab(panelSprite, uiFrameSprite, bodyFont, titleFont);
 
             string catalogPath = $"{ResourceRoot}/DefenderPresentationCatalog.asset";
             var catalog = AssetDatabase.LoadAssetAtPath<DefenderPresentationCatalog>(catalogPath);
@@ -55,28 +61,32 @@ namespace DefenderChronicles.Editor
                 AssetDatabase.CreateAsset(catalog, catalogPath);
             }
 
-            catalog.environmentPrefab = Model("Environment");
+            catalog.environmentPrefab = CreateLicensedEnvironmentPrefab();
             catalog.outpostSlotPrefab = Model("OutpostSlot");
             catalog.commandPointPrefab = Model("CommandPoint");
             catalog.actorVisuals = new[]
             {
-                Actor(PresentationActorKind.Knight, "Knight", 0.92f),
-                Actor(PresentationActorKind.Guard, "Guard", 0.94f),
-                Actor(PresentationActorKind.Raider, "Raider", 0.94f),
-                Actor(PresentationActorKind.Vanguard, "Vanguard", 0.92f),
-                Actor(PresentationActorKind.Regenerator, "Regenerator", 0.86f),
-                Actor(PresentationActorKind.Support, "Support", 0.92f),
+                Actor(PresentationActorKind.Knight, LicensedCharacter("KnightLicensed"), 0.74f),
+                Actor(PresentationActorKind.Guard, LicensedCharacter("KnightLicensed"), 0.66f),
+                Actor(PresentationActorKind.Raider, LicensedCharacter("BarbarianLicensed"), 0.64f),
+                Actor(PresentationActorKind.Vanguard, LicensedCharacter("RogueLicensed"), 0.68f),
+                Actor(PresentationActorKind.Regenerator, LicensedCharacter("MageLicensed"), 0.60f),
+                Actor(PresentationActorKind.Support, LicensedCharacter("MageLicensed"), 0.62f),
                 Actor(PresentationActorKind.Siege, "Siege", 0.92f),
-                Actor(PresentationActorKind.Boss, "Boss", 0.82f)
+                Actor(PresentationActorKind.Boss, LicensedCharacter("BarbarianLicensed"), 1.02f)
             };
             catalog.outpostVisuals = new[]
             {
-                Outpost(OutpostKind.Archer, 1, "Archer_L1"), Outpost(OutpostKind.Archer, 2, "Archer_L2"),
-                Outpost(OutpostKind.Barracks, 1, "Barracks_L1"), Outpost(OutpostKind.Barracks, 2, "Barracks_L2"),
-                Outpost(OutpostKind.Mage, 1, "Mage_L1"), Outpost(OutpostKind.Mage, 2, "Mage_L2")
+                Outpost(OutpostKind.Archer, 1, LicensedBuilding("building_tower_A_blue"), 0.72f),
+                Outpost(OutpostKind.Archer, 2, LicensedBuilding("building_archeryrange_blue"), 0.72f),
+                Outpost(OutpostKind.Barracks, 1, LicensedBuilding("building_tower_base_blue"), 0.76f),
+                Outpost(OutpostKind.Barracks, 2, LicensedBuilding("building_barracks_blue"), 0.72f),
+                Outpost(OutpostKind.Mage, 1, LicensedBuilding("building_tower_B_blue"), 0.66f),
+                Outpost(OutpostKind.Mage, 2, LicensedBuilding("building_church_blue"), 0.76f)
             };
             catalog.hudPrefab = hudPrefab;
             catalog.panelSprite = panelSprite;
+            catalog.uiFrameSprite = uiFrameSprite;
             catalog.bodyFont = bodyFont;
             catalog.titleFont = titleFont;
             catalog.uiCopy = copy;
@@ -100,6 +110,7 @@ namespace DefenderChronicles.Editor
             catalog.earthMaterial = materials["Earth"];
             catalog.grassAccentMaterial = materials["Grass"];
             catalog.metalMaterial = materials["Metal"];
+            catalog.licensedAtlasMaterials = licensedMaterials;
             catalog.uiMixer = mixerGroups["UI"];
             catalog.sfxMixer = mixerGroups["SFX"];
             catalog.musicMixer = mixerGroups["Music"];
@@ -117,6 +128,7 @@ namespace DefenderChronicles.Editor
             catalog.fontLicense = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/ThirdParty/Noto/OFL.txt");
             catalog.audioLicense = AssetDatabase.LoadAssetAtPath<TextAsset>(
                 "Assets/ThirdParty/Audio/CC0Sources/CC0-1.0-Legal-Code.txt");
+            catalog.thirdPartyArtSources = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/ThirdParty/ART_ASSET_SOURCES.md");
             catalog.provenance = new[]
             {
                 Provenance("Noto Sans", "Assets/Art/Fonts/NotoSans-Regular.ttf", AssetLicenseKind.OpenFontLicense,
@@ -132,7 +144,13 @@ namespace DefenderChronicles.Editor
                 Provenance("CC0 sound effects", "Assets/Audio/Presentation/SFX", AssetLicenseKind.CreativeCommonsZero,
                     "https://kenney.nl/assets/interface-sounds | https://www.kenney.nl/assets/impact-sounds | https://www.kenney.nl/assets/rpg-audio", "2026-08-16"),
                 Provenance("CC0 music", "Assets/Audio/Presentation/Music", AssetLicenseKind.CreativeCommonsZero,
-                    "https://opengameart.org/ (six source pages recorded in Assets/ThirdParty/Audio/CC0Sources/SOURCES.md)", "2026-08-16")
+                    "https://opengameart.org/ (six source pages recorded in Assets/ThirdParty/Audio/CC0Sources/SOURCES.md)", "2026-08-16"),
+                Provenance("KayKit Adventurers", AdventurersRoot, AssetLicenseKind.CreativeCommonsZero,
+                    "https://github.com/KayKit-Game-Assets/KayKit-Character-Pack-Adventures-1.0", "2026-08-16"),
+                Provenance("KayKit Medieval Hexagon", MedievalRoot, AssetLicenseKind.CreativeCommonsZero,
+                    "https://github.com/KayKit-Game-Assets/KayKit-Medieval-Hexagon-Pack-1.0", "2026-08-16"),
+                Provenance("Kenney Fantasy UI Borders", UiFramePath, AssetLicenseKind.CreativeCommonsZero,
+                    "https://kenney.nl/assets/fantasy-ui-borders", "2026-08-16")
             };
             catalog.music = Enum.GetValues(typeof(MusicState)).Cast<MusicState>()
                 .Select(state => new MusicEntry
@@ -166,6 +184,32 @@ namespace DefenderChronicles.Editor
                 Bounds bounds = renderers.Length > 0 ? renderers[0].bounds : new Bounds();
                 for (int i = 1; i < renderers.Length; i++) bounds.Encapsulate(renderers[i].bounds);
                 Debug.Log($"[DC_ART_BOUNDS] {name}: center={bounds.center}, size={bounds.size}, rootScale={instance.transform.localScale}");
+                UnityEngine.Object.DestroyImmediate(instance);
+            }
+        }
+
+        public static void LogLicensedAssetBounds()
+        {
+            AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
+            var assets = new Dictionary<string, GameObject>
+            {
+                ["KnightLicensed"] = LicensedCharacter("KnightLicensed"),
+                ["BarbarianLicensed"] = LicensedCharacter("BarbarianLicensed"),
+                ["MageLicensed"] = LicensedCharacter("MageLicensed"),
+                ["RogueLicensed"] = LicensedCharacter("RogueLicensed"),
+                ["CastleLicensed"] = LicensedBuilding("building_castle_blue"),
+                ["ArcherL1Licensed"] = LicensedBuilding("building_tower_A_blue")
+            };
+            foreach ((string name, GameObject prefab) in assets)
+            {
+                GameObject instance = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
+                if (instance == null) continue;
+                Renderer[] renderers = instance.GetComponentsInChildren<Renderer>(true);
+                Bounds bounds = renderers.Length > 0 ? renderers[0].bounds : new Bounds();
+                for (int i = 1; i < renderers.Length; i++) bounds.Encapsulate(renderers[i].bounds);
+                string materialInfo = string.Join(", ", renderers.SelectMany(item => item.sharedMaterials)
+                    .Where(item => item != null).Select(item => $"{item.name}/{item.mainTexture?.name}").Distinct());
+                Debug.Log($"[DC_LICENSED_BOUNDS] {name}: center={bounds.center}, size={bounds.size}, materials={materialInfo}");
                 UnityEngine.Object.DestroyImmediate(instance);
             }
         }
@@ -229,6 +273,30 @@ namespace DefenderChronicles.Editor
                 panel.textureCompression = TextureImporterCompression.Compressed;
                 panel.mipmapEnabled = false;
                 panel.SaveAndReimport();
+            }
+
+            if (AssetImporter.GetAtPath(UiFramePath) is TextureImporter frame)
+            {
+                frame.textureType = TextureImporterType.Sprite;
+                frame.spriteImportMode = SpriteImportMode.Single;
+                frame.spriteBorder = new Vector4(12, 12, 12, 12);
+                frame.maxTextureSize = 64;
+                frame.textureCompression = TextureImporterCompression.Uncompressed;
+                frame.filterMode = FilterMode.Bilinear;
+                frame.mipmapEnabled = false;
+                frame.SaveAndReimport();
+            }
+
+            foreach (string path in Directory.GetFiles("Assets/ThirdParty/KayKit", "*.png", SearchOption.AllDirectories))
+            {
+                string assetPath = path.Replace('\\', '/');
+                if (AssetImporter.GetAtPath(assetPath) is not TextureImporter atlas) continue;
+                atlas.textureType = TextureImporterType.Default;
+                atlas.sRGBTexture = true;
+                atlas.mipmapEnabled = true;
+                atlas.maxTextureSize = assetPath.Contains("MedievalHexagon") ? 1024 : 512;
+                atlas.textureCompression = TextureImporterCompression.CompressedHQ;
+                atlas.SaveAndReimport();
             }
 
             foreach (string path in Directory.GetFiles("Assets/Art/UI", "Icon*.png", SearchOption.TopDirectoryOnly))
@@ -462,6 +530,66 @@ namespace DefenderChronicles.Editor
             return result;
         }
 
+        private static LicensedAtlasMaterialEntry[] CreateLicensedAtlasMaterials()
+        {
+            Shader shader = Shader.Find("Universal Render Pipeline/Lit") ?? Shader.Find("Universal Render Pipeline/Unlit");
+            var definitions = new[]
+            {
+                ("knight_texture", $"{AdventurersRoot}/knight_texture.png"),
+                ("barbarian_texture", $"{AdventurersRoot}/barbarian_texture.png"),
+                ("mage_texture", $"{AdventurersRoot}/mage_texture.png"),
+                ("rogue_texture", $"{AdventurersRoot}/rogue_texture.png"),
+                ("hexagons_medieval", $"{MedievalRoot}/hexagons_medieval.png")
+            };
+            var result = new List<LicensedAtlasMaterialEntry>();
+            foreach ((string sourceName, string texturePath) in definitions)
+            {
+                Texture2D texture = AssetDatabase.LoadAssetAtPath<Texture2D>(texturePath);
+                if (texture == null) throw new InvalidOperationException($"Licensed atlas texture failed to import: {texturePath}");
+                string materialPath = $"{GeneratedRoot}/Licensed_{sourceName}.mat";
+                Material material = AssetDatabase.LoadAssetAtPath<Material>(materialPath);
+                if (material == null)
+                {
+                    material = new Material(shader) { name = $"Licensed_{sourceName}" };
+                    AssetDatabase.CreateAsset(material, materialPath);
+                }
+                material.mainTexture = texture;
+                material.color = Color.white;
+                if (material.HasProperty("_BaseMap")) material.SetTexture("_BaseMap", texture);
+                if (material.HasProperty("_BaseColor")) material.SetColor("_BaseColor", Color.white);
+                if (material.HasProperty("_Metallic")) material.SetFloat("_Metallic", 0f);
+                if (material.HasProperty("_Smoothness")) material.SetFloat("_Smoothness", 0.08f);
+                EditorUtility.SetDirty(material);
+                result.Add(new LicensedAtlasMaterialEntry { sourceName = sourceName, material = material });
+            }
+            return result.ToArray();
+        }
+
+        private static GameObject CreateLicensedEnvironmentPrefab()
+        {
+            string path = $"{GeneratedRoot}/LicensedEnvironment.prefab";
+            if (AssetDatabase.LoadAssetAtPath<GameObject>(path) != null) AssetDatabase.DeleteAsset(path);
+            var root = new GameObject("LicensedEnvironment");
+            GameObject baseEnvironment = PrefabUtility.InstantiatePrefab(Model("Environment"), root.transform) as GameObject;
+            if (baseEnvironment == null) throw new InvalidOperationException("Base environment model is missing.");
+            baseEnvironment.name = "Battlefield";
+            foreach (Renderer renderer in baseEnvironment.GetComponentsInChildren<Renderer>(true))
+                if (renderer.name.StartsWith("Keep", StringComparison.OrdinalIgnoreCase)) renderer.enabled = false;
+
+            GameObject castle = PrefabUtility.InstantiatePrefab(LicensedBuilding("building_castle_blue"), root.transform) as GameObject;
+            if (castle == null) throw new InvalidOperationException("Licensed castle model is missing.");
+            castle.name = "Defender Keep Licensed";
+            // The runtime rotates the authored environment 180 degrees to undo FBX handedness.
+            // Composite children therefore use the imported (mirrored) local coordinates too.
+            castle.transform.localPosition = new Vector3(-23.45f, 0f, -9f);
+            castle.transform.localRotation = Quaternion.Euler(0f, -90f, 0f);
+            castle.transform.localScale = Vector3.one;
+
+            GameObject prefab = PrefabUtility.SaveAsPrefabAsset(root, path);
+            UnityEngine.Object.DestroyImmediate(root);
+            return prefab;
+        }
+
         private static void ConfigureForwardRenderer()
         {
             const string rendererPath = "Assets/Settings/DefenderForwardRenderer.asset";
@@ -558,20 +686,20 @@ namespace DefenderChronicles.Editor
             return result;
         }
 
-        private static GameObject CreateHudPrefab(Sprite panel, TMP_FontAsset body, TMP_FontAsset title)
+        private static GameObject CreateHudPrefab(Sprite panel, Sprite frame, TMP_FontAsset body, TMP_FontAsset title)
         {
             string path = $"{GeneratedRoot}/DefenderHud.prefab";
-            GameObject existing = AssetDatabase.LoadAssetAtPath<GameObject>(path);
-            if (existing != null) return existing;
+            if (AssetDatabase.LoadAssetAtPath<GameObject>(path) != null) AssetDatabase.DeleteAsset(path);
+            activeUiFrameSprite = frame;
 
             var root = new GameObject("DefenderHud", typeof(RectTransform), typeof(DefenderHudController));
             Stretch(root.GetComponent<RectTransform>());
             GameObject top = Panel(root.transform, "TopBar", panel, new Color(0.025f, 0.055f, 0.095f, 0.96f),
                 new Vector2(0, 1), new Vector2(1, 1), new Vector2(0, -82), Vector2.zero);
             Text(top.transform, "Gold", "ALTIN  200", body, 28, TextAlignmentOptions.MidlineLeft,
-                new Vector2(20, 8), new Vector2(280, 62), Vector2.zero, Vector2.zero);
+                new Vector2(20, 8), new Vector2(310, 62), Vector2.zero, Vector2.zero);
             Text(top.transform, "Lives", "KALE  20", body, 28, TextAlignmentOptions.MidlineLeft,
-                new Vector2(305, 8), new Vector2(250, 62), Vector2.zero, Vector2.zero);
+                new Vector2(335, 8), new Vector2(240, 62), Vector2.zero, Vector2.zero);
             Text(top.transform, "Wave", "DALGA  0 / 7", title, 28, TextAlignmentOptions.Center,
                 new Vector2(-205, 8), new Vector2(410, 62), new Vector2(.5f, 0), new Vector2(.5f, 0));
             Text(top.transform, "Phase", "HAZIRLIK", body, 22, TextAlignmentOptions.Center,
@@ -678,6 +806,20 @@ namespace DefenderChronicles.Editor
             colors.pressedColor = new Color(1f, 0.48f, 0.13f, 1f);
             colors.disabledColor = new Color(0.08f, 0.10f, 0.14f, 0.72f);
             button.colors = colors;
+            if (activeUiFrameSprite != null)
+            {
+                var frame = new GameObject("LicensedFrame", typeof(RectTransform), typeof(Image));
+                frame.transform.SetParent(go.transform, false);
+                var frameRect = frame.GetComponent<RectTransform>();
+                Stretch(frameRect);
+                frameRect.offsetMin = new Vector2(3, 3);
+                frameRect.offsetMax = new Vector2(-3, -3);
+                var frameImage = frame.GetComponent<Image>();
+                frameImage.sprite = activeUiFrameSprite;
+                frameImage.type = Image.Type.Sliced;
+                frameImage.color = tint.HasValue ? Hex("713913") : Hex("123653");
+                frameImage.raycastTarget = false;
+            }
             TMP_Text text = Text(go.transform, "Label", label, font, 22, TextAlignmentOptions.Center,
                 Vector2.zero, Vector2.zero, Vector2.zero, Vector2.one);
             text.rectTransform.offsetMin = new Vector2(8, 5);
@@ -698,10 +840,18 @@ namespace DefenderChronicles.Editor
         }
 
         private static GameObject Model(string name) => AssetDatabase.LoadAssetAtPath<GameObject>($"{ModelRoot}/{name}.fbx");
+        private static GameObject LicensedCharacter(string name) =>
+            AssetDatabase.LoadAssetAtPath<GameObject>($"{AdventurersRoot}/{name}.fbx");
+        private static GameObject LicensedBuilding(string name) =>
+            AssetDatabase.LoadAssetAtPath<GameObject>($"{MedievalRoot}/{name}.fbx");
         private static ActorVisualEntry Actor(PresentationActorKind kind, string name, float scale) =>
             new() { kind = kind, prefab = Model(name), scale = scale };
+        private static ActorVisualEntry Actor(PresentationActorKind kind, GameObject prefab, float scale) =>
+            new() { kind = kind, prefab = prefab, scale = scale };
         private static OutpostVisualEntry Outpost(OutpostKind kind, int level, string name) =>
             new() { kind = kind, level = level, prefab = Model(name) };
+        private static OutpostVisualEntry Outpost(OutpostKind kind, int level, GameObject prefab, float scale) =>
+            new() { kind = kind, level = level, prefab = prefab, scale = scale };
         private static Color Hex(string value) => ColorUtility.TryParseHtmlString($"#{value}", out Color color) ? color : Color.magenta;
         private static void Stretch(RectTransform rect)
         {

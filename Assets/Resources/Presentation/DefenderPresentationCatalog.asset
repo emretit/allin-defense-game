@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f912ffde76bc43c38d142e1b21c0e2e, type: 3}
   m_Name: DefenderPresentationCatalog
   m_EditorClassIdentifier: DefenderChronicles.Runtime::DefenderChronicles.Presentation.DefenderPresentationCatalog
-  environmentPrefab: {fileID: 919132149155446097, guid: 4bd571863ad334089b0dc6e9cc2d34bc,
+  environmentPrefab: {fileID: 5388832878122047648, guid: 3865bce0e266445a695ef27240a4830d,
     type: 3}
   outpostSlotPrefab: {fileID: 919132149155446097, guid: d4bb914a8bbc44025898f9feea783db0,
     type: 3}
@@ -20,51 +20,58 @@ MonoBehaviour:
     type: 3}
   actorVisuals:
   - kind: 0
-    prefab: {fileID: 919132149155446097, guid: ca86211f0d59c42c3a59ef4012912ecf, type: 3}
-    scale: 0.92
+    prefab: {fileID: 919132149155446097, guid: 1fe96d3be194f4d7a951455268fa923e, type: 3}
+    scale: 0.74
   - kind: 1
-    prefab: {fileID: 919132149155446097, guid: 4af9ec369fb8b42e3a8a128f9653dc90, type: 3}
-    scale: 0.94
+    prefab: {fileID: 919132149155446097, guid: 1fe96d3be194f4d7a951455268fa923e, type: 3}
+    scale: 0.66
   - kind: 2
-    prefab: {fileID: 919132149155446097, guid: 35ede50e5d4af46b6b65d0a533522257, type: 3}
-    scale: 0.94
+    prefab: {fileID: 919132149155446097, guid: 1beaabf1e192a48048d7b24812f66167, type: 3}
+    scale: 0.64
   - kind: 3
-    prefab: {fileID: 919132149155446097, guid: 92a664c5553364d679574a52bd92676c, type: 3}
-    scale: 0.92
+    prefab: {fileID: 919132149155446097, guid: 6698432a20c934b5e82c7b9539363c64, type: 3}
+    scale: 0.68
   - kind: 4
-    prefab: {fileID: 919132149155446097, guid: f382a95ee783c4e069f7ecc6ee955d69, type: 3}
-    scale: 0.86
+    prefab: {fileID: 919132149155446097, guid: aad07cdf9f45f4428b9ec24109d5f2bc, type: 3}
+    scale: 0.6
   - kind: 5
-    prefab: {fileID: 919132149155446097, guid: af8b985f82eff4928a7e89c9d859c70a, type: 3}
-    scale: 0.92
+    prefab: {fileID: 919132149155446097, guid: aad07cdf9f45f4428b9ec24109d5f2bc, type: 3}
+    scale: 0.62
   - kind: 6
     prefab: {fileID: 919132149155446097, guid: 521a8c7e7877e46029ce3e7c3771366f, type: 3}
     scale: 0.92
   - kind: 7
-    prefab: {fileID: 919132149155446097, guid: ac0cfbb859c1e4699a54973c59f9924b, type: 3}
-    scale: 0.82
+    prefab: {fileID: 919132149155446097, guid: 1beaabf1e192a48048d7b24812f66167, type: 3}
+    scale: 1.02
   outpostVisuals:
   - kind: 0
     level: 1
-    prefab: {fileID: 919132149155446097, guid: 7a9d1afe6007e45cd824beade4c79e1b, type: 3}
+    prefab: {fileID: 919132149155446097, guid: 5efd1874c34414624a989e17aa368b8c, type: 3}
+    scale: 0.72
   - kind: 0
     level: 2
-    prefab: {fileID: 919132149155446097, guid: bac5a0bfb001e4ee2adff39969fa0553, type: 3}
+    prefab: {fileID: 919132149155446097, guid: 32291c7b067fa47d0bf2c4965fd7ecd1, type: 3}
+    scale: 0.72
   - kind: 1
     level: 1
-    prefab: {fileID: 919132149155446097, guid: 3a3093b70c9d04e388e1e693c94d264f, type: 3}
+    prefab: {fileID: 919132149155446097, guid: 524bc77976bb64eab9d2fc533d8c77bd, type: 3}
+    scale: 0.76
   - kind: 1
     level: 2
-    prefab: {fileID: 919132149155446097, guid: 1499894568b0a4e759da8189b924c1cb, type: 3}
+    prefab: {fileID: 919132149155446097, guid: ad4763606b853428288e900958fdf7b9, type: 3}
+    scale: 0.72
   - kind: 2
     level: 1
-    prefab: {fileID: 919132149155446097, guid: 7c095fd12c14640bfafb7e9cf5b31cf9, type: 3}
+    prefab: {fileID: 919132149155446097, guid: 0c89efcb31e2e4f0d9bf1a391f54d097, type: 3}
+    scale: 0.66
   - kind: 2
     level: 2
-    prefab: {fileID: 919132149155446097, guid: 1df86af8f5df64309a5cdd53d8b40beb, type: 3}
-  hudPrefab: {fileID: 398868325819694731, guid: d0eb9a43eadfb4d768c166ba3b9a6beb,
+    prefab: {fileID: 919132149155446097, guid: 3dc9f1c202a2e407a90d41c5154a988e, type: 3}
+    scale: 0.76
+  hudPrefab: {fileID: 4932434759920830639, guid: d0eb9a43eadfb4d768c166ba3b9a6beb,
     type: 3}
   panelSprite: {fileID: 21300000, guid: 56271692c10584855bf39edc4905b029, type: 3}
+  uiFrameSprite: {fileID: 21300000, guid: a9ae2dbcf4084403382d431049f6023a, type: 3}
   bodyFont: {fileID: 11400000, guid: 55ffe4fbd2df8412797e0ec01dabc31e, type: 2}
   titleFont: {fileID: 11400000, guid: a5a920af6a43545b7a6375b5e3994f71, type: 2}
   uiCopy: {fileID: 11400000, guid: 0213a3cedcd6c45198b884a9c0577ffe, type: 2}
@@ -97,6 +104,17 @@ MonoBehaviour:
   earthMaterial: {fileID: 2100000, guid: f9a21363ab2c14b92b1abbd30d32b92f, type: 2}
   grassAccentMaterial: {fileID: 2100000, guid: 4c2476919567147fc90584995c925b2a, type: 2}
   metalMaterial: {fileID: 2100000, guid: 6468dcf8c10e44e9998dc6233fa6d54e, type: 2}
+  licensedAtlasMaterials:
+  - sourceName: knight_texture
+    material: {fileID: 2100000, guid: 53bfe0d4e9bb84e0cae6193013eba872, type: 2}
+  - sourceName: barbarian_texture
+    material: {fileID: 2100000, guid: 321bfcb37479947b496c68d4a5f3abc7, type: 2}
+  - sourceName: mage_texture
+    material: {fileID: 2100000, guid: 3139f68535d5145a49133613935daf6c, type: 2}
+  - sourceName: rogue_texture
+    material: {fileID: 2100000, guid: 0a5b1dd21bf6544b3a1965db70a8e7ea, type: 2}
+  - sourceName: hexagons_medieval
+    material: {fileID: 2100000, guid: ec2dc588c1e0c4325a64c546f4135fc8, type: 2}
   uiMixer: {fileID: -2856758767650484201, guid: 7876f6209d05645a8bf9f4b35a787110,
     type: 2}
   sfxMixer: {fileID: 7947332164907218351, guid: 7876f6209d05645a8bf9f4b35a787110,
@@ -244,6 +262,8 @@ MonoBehaviour:
     loop: 0
   fontLicense: {fileID: 4900000, guid: e3df79ffd66224f57b7ee14922ca6e3d, type: 3}
   audioLicense: {fileID: 4900000, guid: 359c65aa882824cb9aa01db4451652a5, type: 3}
+  thirdPartyArtSources: {fileID: 4900000, guid: 3f0f018d0f007405f875551ae8e1d572,
+    type: 3}
   provenance:
   - assetName: Noto Sans
     assetPath: Assets/Art/Fonts/NotoSans-Regular.ttf
@@ -280,4 +300,19 @@ MonoBehaviour:
     assetPath: Assets/Audio/Presentation/Music
     license: 2
     sourceUrl: https://opengameart.org/ (six source pages recorded in Assets/ThirdParty/Audio/CC0Sources/SOURCES.md)
+    acquiredOn: 2026-08-16
+  - assetName: KayKit Adventurers
+    assetPath: Assets/ThirdParty/KayKit/Adventurers/Models
+    license: 2
+    sourceUrl: https://github.com/KayKit-Game-Assets/KayKit-Character-Pack-Adventures-1.0
+    acquiredOn: 2026-08-16
+  - assetName: KayKit Medieval Hexagon
+    assetPath: Assets/ThirdParty/KayKit/MedievalHexagon/Models
+    license: 2
+    sourceUrl: https://github.com/KayKit-Game-Assets/KayKit-Medieval-Hexagon-Pack-1.0
+    acquiredOn: 2026-08-16
+  - assetName: Kenney Fantasy UI Borders
+    assetPath: Assets/ThirdParty/Kenney/FantasyUiBorders/HudFrameBorder.png
+    license: 2
+    sourceUrl: https://kenney.nl/assets/fantasy-ui-borders
     acquiredOn: 2026-08-16
