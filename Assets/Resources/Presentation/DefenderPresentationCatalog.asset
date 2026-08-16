@@ -94,6 +94,9 @@ MonoBehaviour:
   magicMaterial: {fileID: 2100000, guid: b35ab07578d4948b2903dcf67d867781, type: 2}
   fireMaterial: {fileID: 2100000, guid: c71d844d8b5d14272b1450ffea484694, type: 2}
   darkMaterial: {fileID: 2100000, guid: 19d5ee03b3d064becaaf1599231350d1, type: 2}
+  earthMaterial: {fileID: 2100000, guid: f9a21363ab2c14b92b1abbd30d32b92f, type: 2}
+  grassAccentMaterial: {fileID: 2100000, guid: 4c2476919567147fc90584995c925b2a, type: 2}
+  metalMaterial: {fileID: 2100000, guid: 6468dcf8c10e44e9998dc6233fa6d54e, type: 2}
   uiMixer: {fileID: -2856758767650484201, guid: 7876f6209d05645a8bf9f4b35a787110,
     type: 2}
   sfxMixer: {fileID: 7947332164907218351, guid: 7876f6209d05645a8bf9f4b35a787110,

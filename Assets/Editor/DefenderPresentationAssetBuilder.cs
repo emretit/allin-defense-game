@@ -13,6 +13,7 @@ using UnityEditor.Animations;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.TextCore.LowLevel;
 using UnityEngine.UI;
 
@@ -31,6 +32,7 @@ namespace DefenderChronicles.Editor
             Directory.CreateDirectory(ResourceRoot);
             AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
             EnsureTmpResources();
+            ConfigureForwardRenderer();
             ConfigureImports();
 
             Sprite panelSprite = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/UI/DefenderHudPanel.png");
@@ -95,6 +97,9 @@ namespace DefenderChronicles.Editor
             catalog.magicMaterial = materials["Magic"];
             catalog.fireMaterial = materials["Fire"];
             catalog.darkMaterial = materials["Dark"];
+            catalog.earthMaterial = materials["Earth"];
+            catalog.grassAccentMaterial = materials["Grass"];
+            catalog.metalMaterial = materials["Metal"];
             catalog.uiMixer = mixerGroups["UI"];
             catalog.sfxMixer = mixerGroups["SFX"];
             catalog.musicMixer = mixerGroups["Music"];
@@ -419,7 +424,8 @@ namespace DefenderChronicles.Editor
             {
                 ["Navy"] = Hex("07182A"), ["Defender"] = Hex("1D6FD1"), ["Stone"] = Hex("8A96A3"),
                 ["Forest"] = Hex("193D2C"), ["Enemy"] = Hex("A52B32"), ["Magic"] = Hex("3CBFEF"),
-                ["Fire"] = Hex("FF8A24"), ["Dark"] = Hex("0E1114")
+                ["Fire"] = Hex("FF8A24"), ["Dark"] = Hex("0E1114"), ["Earth"] = Hex("70543D"),
+                ["Grass"] = Hex("2B5B43"), ["Metal"] = Hex("596979")
             };
             Shader shader = Shader.Find("Universal Render Pipeline/Lit") ?? Shader.Find("Universal Render Pipeline/Unlit");
             var result = new Dictionary<string, Material>();
@@ -434,16 +440,75 @@ namespace DefenderChronicles.Editor
                 }
                 material.color = color;
                 if (material.HasProperty("_BaseColor")) material.SetColor("_BaseColor", color);
-                if (material.HasProperty("_Smoothness")) material.SetFloat("_Smoothness", name is "Stone" ? 0.28f : 0.12f);
+                if (material.HasProperty("_Smoothness"))
+                    material.SetFloat("_Smoothness", name switch
+                    {
+                        "Metal" => 0.46f,
+                        "Stone" => 0.22f,
+                        "Defender" or "Enemy" => 0.24f,
+                        _ => 0.09f
+                    });
+                if (material.HasProperty("_Metallic"))
+                    material.SetFloat("_Metallic", name == "Metal" ? 0.62f : name is "Defender" or "Enemy" ? 0.08f : 0f);
                 if (name is "Magic" or "Fire")
                 {
                     material.EnableKeyword("_EMISSION");
-                    if (material.HasProperty("_EmissionColor")) material.SetColor("_EmissionColor", color * 1.65f);
+                    if (material.HasProperty("_EmissionColor"))
+                        material.SetColor("_EmissionColor", color * (name == "Fire" ? 1.25f : 0.68f));
                 }
                 EditorUtility.SetDirty(material);
                 result[name] = material;
             }
             return result;
+        }
+
+        private static void ConfigureForwardRenderer()
+        {
+            const string rendererPath = "Assets/Settings/DefenderForwardRenderer.asset";
+            UniversalRendererData renderer = AssetDatabase.LoadAssetAtPath<UniversalRendererData>(rendererPath);
+            if (renderer == null)
+            {
+                renderer = ScriptableObject.CreateInstance<UniversalRendererData>();
+                renderer.name = "DefenderForwardRenderer";
+                AssetDatabase.CreateAsset(renderer, rendererPath);
+            }
+
+            var rendererSerialized = new SerializedObject(renderer);
+            SerializedProperty postProcessData = rendererSerialized.FindProperty("postProcessData");
+            if (postProcessData != null && postProcessData.objectReferenceValue == null)
+            {
+                postProcessData.objectReferenceValue = AssetDatabase.LoadAssetAtPath<PostProcessData>(
+                    "Packages/com.unity.render-pipelines.universal/Runtime/Data/PostProcessData.asset");
+                rendererSerialized.ApplyModifiedPropertiesWithoutUndo();
+            }
+
+            foreach (string pipelinePath in new[]
+                     {
+                         "Assets/Settings/UniversalRP.asset",
+                         "Assets/Settings/UniversalRPCustomAxisSort.asset"
+                     })
+            {
+                UniversalRenderPipelineAsset pipeline = AssetDatabase.LoadAssetAtPath<UniversalRenderPipelineAsset>(pipelinePath);
+                if (pipeline == null) continue;
+                var serialized = new SerializedObject(pipeline);
+                SerializedProperty rendererList = serialized.FindProperty("m_RendererDataList");
+                if (rendererList == null) continue;
+                rendererList.arraySize = 1;
+                rendererList.GetArrayElementAtIndex(0).objectReferenceValue = renderer;
+                SerializedProperty defaultIndex = serialized.FindProperty("m_DefaultRendererIndex");
+                if (defaultIndex != null) defaultIndex.intValue = 0;
+                SerializedProperty depth = serialized.FindProperty("m_RequireDepthTexture");
+                if (depth != null) depth.boolValue = true;
+                SerializedProperty msaa = serialized.FindProperty("m_MSAA");
+                if (msaa != null) msaa.intValue = 1;
+                SerializedProperty softShadows = serialized.FindProperty("m_SoftShadowsSupported");
+                if (softShadows != null) softShadows.boolValue = true;
+                serialized.ApplyModifiedPropertiesWithoutUndo();
+                EditorUtility.SetDirty(pipeline);
+            }
+
+            EditorUtility.SetDirty(renderer);
+            AssetDatabase.SaveAssets();
         }
 
         private static Dictionary<string, AudioMixerGroup> CreateMixer()

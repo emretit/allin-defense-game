@@ -258,10 +258,11 @@ namespace DefenderChronicles.Core
             }
 
             gameCamera.orthographic = true;
-            gameCamera.orthographicSize = 11.2f;
-            gameCamera.transform.position = new Vector3(11.4f, 18.5f, -11.8f);
-            gameCamera.transform.rotation = Quaternion.Euler(50f, 0f, 0f);
-            gameCamera.backgroundColor = new Color(0.055f, 0.11f, 0.17f);
+            gameCamera.orthographicSize = 8.9f;
+            Vector3 focus = new Vector3(11f, 0.25f, 5.5f);
+            gameCamera.transform.position = focus + new Vector3(1.6f, 15.8f, -16.9f);
+            gameCamera.transform.rotation = Quaternion.LookRotation(focus - gameCamera.transform.position, Vector3.up);
+            gameCamera.backgroundColor = new Color(0.025f, 0.07f, 0.12f);
             gameCamera.clearFlags = CameraClearFlags.SolidColor;
             gameCamera.nearClipPlane = 0.1f;
             gameCamera.farClipPlane = 100f;
@@ -275,6 +276,9 @@ namespace DefenderChronicles.Core
                 light.color = new Color(1f, 0.92f, 0.78f);
                 lightObject.transform.rotation = Quaternion.Euler(52f, -32f, 0f);
             }
+
+            if (presentationCatalog != null)
+                DefenderSceneLook.Apply(gameCamera);
         }
 
         private void BuildWorld()

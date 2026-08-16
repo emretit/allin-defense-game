@@ -148,6 +148,9 @@ namespace DefenderChronicles.Presentation
         public Material magicMaterial;
         public Material fireMaterial;
         public Material darkMaterial;
+        public Material earthMaterial;
+        public Material grassAccentMaterial;
+        public Material metalMaterial;
 
         [Header("Audio")]
         public AudioMixerGroup uiMixer;
@@ -192,9 +195,12 @@ namespace DefenderChronicles.Presentation
         public Material ResolveMaterial(string sourceName)
         {
             string value = sourceName?.ToLowerInvariant() ?? string.Empty;
+            if (value.Contains("earth") || value.Contains("road")) return earthMaterial;
+            if (value.Contains("grass")) return grassAccentMaterial;
             if (value.Contains("navy")) return navyMaterial;
             if (value.Contains("defender") || value.Contains("blue")) return defenderMaterial;
-            if (value.Contains("stone") || value.Contains("metal")) return stoneMaterial;
+            if (value.Contains("metal")) return metalMaterial;
+            if (value.Contains("stone")) return stoneMaterial;
             if (value.Contains("forest") || value.Contains("green")) return forestMaterial;
             if (value.Contains("enemy") || value.Contains("crimson") || value.Contains("red")) return enemyMaterial;
             if (value.Contains("magic") || value.Contains("cyan")) return magicMaterial;
@@ -247,7 +253,8 @@ namespace DefenderChronicles.Presentation
             }
 
             if (new[] { navyMaterial, defenderMaterial, stoneMaterial, forestMaterial, enemyMaterial,
-                    magicMaterial, fireMaterial, darkMaterial }.Any(item => item == null))
+                    magicMaterial, fireMaterial, darkMaterial, earthMaterial, grassAccentMaterial, metalMaterial }
+                .Any(item => item == null))
                 errors.Add("Shared palette materials are incomplete.");
             return errors;
         }

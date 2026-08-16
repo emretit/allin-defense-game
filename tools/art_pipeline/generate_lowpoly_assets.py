@@ -18,6 +18,9 @@ PALETTE = {
     "DC_Magic": (0.235, 0.749, 0.937, 1.0),
     "DC_Fire": (1.0, 0.541, 0.141, 1.0),
     "DC_Dark": (0.055, 0.066, 0.078, 1.0),
+    "DC_Earth": (0.439, 0.329, 0.239, 1.0),
+    "DC_Grass": (0.169, 0.357, 0.263, 1.0),
+    "DC_Metal": (0.349, 0.412, 0.475, 1.0),
 }
 
 
@@ -97,6 +100,23 @@ def sphere(name, location, scale, mat_name):
     return finish(obj, name, mat_name)
 
 
+def irregular_patch(name, location, scale_x, scale_z, mat_name, seed=0, vertices=9):
+    """Create a flat deterministic ground patch without a primitive rectangle silhouette."""
+    points = []
+    for i in range(vertices):
+        angle = i * math.pi * 2 / vertices
+        variation = 1.0 + 0.13 * math.sin((i + 1) * (seed + 2) * 1.71)
+        points.append((math.cos(angle) * scale_x * variation,
+                       math.sin(angle) * scale_z * variation, 0.0))
+    mesh = bpy.data.meshes.new(f"{name}_Mesh")
+    mesh.from_pydata(points, [], [tuple(range(vertices))])
+    mesh.update()
+    obj = bpy.data.objects.new(name, mesh)
+    bpy.context.collection.objects.link(obj)
+    obj.location = unity_location(location)
+    return finish(obj, name, mat_name)
+
+
 def shadow(radius=0.58):
     cylinder("BlobShadow", (0, 0.025, 0), radius, 0.025, "DC_Dark", 16)
 
@@ -147,8 +167,8 @@ def banner(prefix, location, color="DC_Defender", scale=1.0):
 def build_environment():
     box("ValleyGround", (11, -0.42, 5.5), (28, 0.55, 14.2), "DC_Forest", 0.08)
     box("DeepBackdrop", (11, -0.72, 5.5), (33, 0.18, 19), "DC_Navy")
-    box("NorthRidge", (11, -0.05, 12.68), (28, 0.72, 0.9), "DC_Stone", 0.12)
-    box("SouthRidge", (11, -0.05, -1.68), (28, 0.72, 0.9), "DC_Stone", 0.12)
+    box("NorthRidge", (11, 0.03, 12.68), (28, 0.88, 1.15), "DC_Metal", 0.16)
+    box("SouthRidge", (11, 0.03, -1.68), (28, 0.88, 1.15), "DC_Metal", 0.16)
     path = [(-2, 2), (4, 2), (4, 8), (10, 8), (10, 3.5), (16, 3.5), (16, 9), (24, 9)]
     for i, (a, b) in enumerate(zip(path, path[1:])):
         ax, az = a
@@ -156,18 +176,37 @@ def build_environment():
         dx, dz = bx - ax, bz - az
         length = math.hypot(dx, dz)
         angle = math.atan2(dx, dz)
-        edge = box(f"RoadEdge_{i}", ((ax + bx) / 2, -0.08, (az + bz) / 2),
-                   (1.9, 0.18, length + 1.6), "DC_Dark", 0.08)
+        edge = box(f"RoadEdge_{i}", ((ax + bx) / 2, -0.035, (az + bz) / 2),
+                   (1.98, 0.23, length + 1.7), "DC_Stone", 0.11)
         edge.rotation_euler[2] = -angle
-        road = box(f"Road_{i}", ((ax + bx) / 2, 0.025, (az + bz) / 2),
-                   (1.42, 0.13, length + 1.25), "DC_Stone", 0.05)
+        road = box(f"Road_{i}", ((ax + bx) / 2, 0.075, (az + bz) / 2),
+                   (1.52, 0.14, length + 1.34), "DC_Earth", 0.07)
         road.rotation_euler[2] = -angle
+
+    # Deterministic broad ground variation: large enough to read from the fixed mobile camera.
+    grass_patches = [
+        (0.4, 0.018, 4.8, 2.3, 1.25), (2.5, 0.018, 9.7, 2.6, 1.4),
+        (6.7, 0.018, 2.8, 2.2, 1.05), (7.4, 0.018, 10.8, 2.7, 1.0),
+        (11.8, 0.018, 6.2, 2.4, 1.2), (13.4, 0.018, 1.25, 2.8, 0.8),
+        (17.4, 0.018, 6.5, 2.2, 1.1), (20.5, 0.018, 2.3, 2.7, 1.0),
+        (21.1, 0.018, 10.8, 2.2, 0.85), (5.0, 0.018, 5.1, 1.5, 0.75),
+    ]
+    for i, (x, y, z, sx, sz) in enumerate(grass_patches):
+        patch = irregular_patch(f"GrassPatch_{i}", (x, y, z), sx * 0.5, sz * 0.5,
+                                "DC_Grass", seed=i)
+        patch.rotation_euler[2] = math.radians((i * 19) % 35 - 17)
 
     # Defender keep
     box("KeepMain", (24.1, 1.0, 9), (2.35, 2.0, 3.0), "DC_Stone", 0.12)
+    for level in range(3):
+        for z in (8.2, 9.0, 9.8):
+            box("KeepMasonry", (22.89, 0.38 + level * 0.48, z + (level % 2) * 0.17),
+                (0.10, 0.16, 0.48), "DC_Metal", 0.025)
     for z in (7.65, 10.35):
         cylinder("KeepTower", (23.45, 1.42, z), 0.72, 2.8, "DC_Stone", 10)
         cone("KeepRoof", (23.45, 3.05, z), 0.9, 0.12, 0.95, "DC_Defender", 10)
+        for y in (0.85, 1.52):
+            box("KeepWindow", (22.72, y, z), (0.07, 0.24, 0.16), "DC_Fire", 0.02)
     banner("KeepBanner", (22.95, 3.35, 9), "DC_Defender", 1.25)
     box("KeepDoor", (22.88, 0.72, 9), (0.08, 1.15, 0.72), "DC_Navy", 0.08)
 
@@ -177,6 +216,10 @@ def build_environment():
         box("GatePillar", (-2.52, 1.05, z), (0.58, 2.1, 0.58), "DC_Enemy", 0.08)
         cone("GateSpike", (-2.52, 2.32, z), 0.42, 0.02, 0.55, "DC_Fire", 6)
     box("GateBeam", (-2.52, 2.05, 2), (0.66, 0.44, 2.35), "DC_Enemy", 0.06)
+    for y in (0.58, 1.25, 1.92):
+        box("GateBrace", (-2.84, y, 2), (0.11, 0.12, 1.65), "DC_Metal", 0.025)
+    for z in (1.45, 2.0, 2.55):
+        sphere("GateEmber", (-2.9, 0.72, z), (0.09, 0.18, 0.09), "DC_Fire")
 
     # Boss arena runes near entrance
     for i in range(8):
@@ -187,13 +230,23 @@ def build_environment():
     for i in range(20):
         x = -0.5 + (i * 1.31) % 27
         z = -1.1 if i % 2 == 0 else 12.1
-        sphere("BoundaryRock", (x, 0.22, z), (0.34 + (i % 3) * 0.1, 0.3, 0.38), "DC_Stone")
+        sphere("BoundaryRock", (x, 0.22, z), (0.34 + (i % 3) * 0.1, 0.3, 0.38),
+               "DC_Metal" if i % 3 == 0 else "DC_Stone")
     for i in range(14):
         x = 0.6 + (i * 1.78) % 23
         z = 0.55 if i % 3 == 0 else 11.25
         cylinder("PineTrunk", (x, 0.3, z), 0.09, 0.6, "DC_Dark", 7)
-        cone("PineCrownA", (x, 0.8, z), 0.48, 0.03, 0.9, "DC_Forest", 8)
+        cone("PineCrownA", (x, 0.8, z), 0.48, 0.03, 0.9, "DC_Grass", 8)
         cone("PineCrownB", (x, 1.18, z), 0.34, 0.01, 0.72, "DC_Forest", 8)
+
+    # Small readable clusters, kept away from the navigable road.
+    for i, (x, z) in enumerate(((1.0, 4.2), (5.8, 10.7), (8.7, 1.1), (12.5, 6.4),
+                                (15.0, 11.0), (18.6, 1.2), (21.8, 6.0))):
+        for j in range(3):
+            cone(f"GrassBlade_{i}_{j}", (x + j * 0.13, 0.18, z + (j % 2) * 0.1),
+                 0.07, 0.01, 0.34 + j * 0.05, "DC_Grass", 5)
+        sphere(f"Wildflower_{i}", (x + 0.16, 0.33, z + 0.05), (0.06, 0.06, 0.06),
+               "DC_Magic" if i % 2 == 0 else "DC_Fire")
 
 
 def build_slot():
@@ -224,19 +277,26 @@ def build_humanoid(kind):
     body, accent, scale = specs[kind]
     shadow(0.48 * scale)
     cylinder("Body", (0, 0.82 * scale, 0), 0.28 * scale, 0.74 * scale, body, 8)
+    cylinder("Belt", (0, 0.69 * scale, 0), 0.305 * scale, 0.13 * scale, accent, 8)
     sphere("Shoulders", (0, 1.12 * scale, 0), (0.42 * scale, 0.22 * scale, 0.26 * scale), accent)
     sphere("Head", (0, 1.46 * scale, 0), (0.25 * scale, 0.28 * scale, 0.23 * scale), "DC_Stone")
     cone("Helmet", (0, 1.7 * scale, 0), 0.3 * scale, 0.06 * scale, 0.38 * scale, body, 8)
+    box("Visor", (0, 1.49 * scale, -0.225 * scale),
+        (0.34 * scale, 0.08 * scale, 0.055 * scale), "DC_Metal", 0.015 * scale)
     for side in (-1, 1):
         cylinder("Arm", (side * 0.36 * scale, 0.92 * scale, 0), 0.09 * scale, 0.58 * scale,
                  accent, 7, rotation=(0, 0, math.radians(side * 12)))
         cylinder("Leg", (side * 0.15 * scale, 0.38 * scale, 0), 0.1 * scale, 0.58 * scale, "DC_Dark", 7)
+        box("Boot", (side * 0.15 * scale, 0.10 * scale, -0.055 * scale),
+            (0.21 * scale, 0.17 * scale, 0.32 * scale), accent, 0.035 * scale)
 
     if kind in ("knight", "guard", "vanguard", "boss"):
         box("Shield", (-0.42 * scale, 0.88 * scale, -0.08 * scale),
             (0.12 * scale, 0.66 * scale, 0.52 * scale), accent, 0.05 * scale)
         cylinder("Weapon", (0.45 * scale, 1.02 * scale, 0), 0.035 * scale, 0.95 * scale, "DC_Fire", 6,
                  rotation=(0, 0, math.radians(-22)))
+        cone("WeaponBlade", (0.62 * scale, 1.42 * scale, 0), 0.10 * scale, 0.015,
+             0.34 * scale, "DC_Metal", 5, rotation=(0, 0, math.radians(-22)))
     if kind == "support":
         cylinder("Staff", (0.42 * scale, 1.0 * scale, 0), 0.04 * scale, 1.3 * scale, "DC_Stone", 7)
         sphere("StaffGem", (0.42 * scale, 1.65 * scale, 0), (0.16, 0.16, 0.16), "DC_Magic")
@@ -268,9 +328,14 @@ def build_siege():
 def build_outpost(kind, level):
     shadow(0.62)
     cylinder("TowerBase", (0, 0.22, 0), 0.58, 0.42, "DC_Stone", 10)
+    cylinder("TowerFoundation", (0, 0.10, 0), 0.69, 0.14, "DC_Metal", 10)
     if kind == "archer":
         cylinder("ArcherTower", (0, 0.83, 0), 0.43, 0.98, "DC_Stone", 10)
-        cone("ArcherRoof", (0, 1.46, 0), 0.62, 0.08, 0.46, "DC_Enemy", 8)
+        cone("ArcherRoof", (0, 1.46, 0), 0.62, 0.08, 0.46, "DC_Defender", 8)
+        for i in range(4):
+            angle = i * math.pi / 2
+            box("ArcherCrenel", (math.cos(angle) * 0.37, 1.23, math.sin(angle) * 0.37),
+                (0.22, 0.18, 0.22), "DC_Metal", 0.035)
         for side in (-1, 1):
             box("ArcherBow", (side * 0.42, 1.1, 0), (0.08, 0.58, 0.12), "DC_Fire", 0.02)
         if level == 2:
@@ -281,6 +346,9 @@ def build_outpost(kind, level):
         cone("BarracksRoof", (0, 1.34, 0), 0.74, 0.12, 0.58, "DC_Defender", 4,
              rotation=(0, math.radians(45), 0))
         box("BarracksDoor", (0, 0.58, -0.47), (0.34, 0.58, 0.08), "DC_Dark", 0.04)
+        for side in (-1, 1):
+            box("BarracksShield", (side * 0.34, 0.78, -0.5), (0.24, 0.36, 0.06),
+                "DC_Defender", 0.05)
         banner("BarracksBanner", (0.35, 1.52, 0), "DC_Defender", 0.72 + 0.12 * level)
         if level == 2:
             for side in (-1, 1):
@@ -293,6 +361,10 @@ def build_outpost(kind, level):
                  0.14, 0.02, 0.72, "DC_Stone", 6)
         sphere("MageCrystal", (0, 1.62, 0), (0.27 + level * 0.05,) * 3, "DC_Magic")
         cylinder("MageRing", (0, 0.5, 0), 0.6, 0.12, "DC_Magic", 12)
+        for i in range(6):
+            angle = i * math.pi / 3
+            sphere("MageRune", (math.cos(angle) * 0.51, 0.58, math.sin(angle) * 0.51),
+                   (0.07, 0.035, 0.11), "DC_Magic")
 
 
 ASSETS = {

@@ -75,7 +75,14 @@ namespace DefenderChronicles.Presentation
             {
                 string allNames = string.Join(" ", renderers.SelectMany(renderer => renderer.sharedMaterials)
                     .Where(material => material != null).Select(material => material.name.ToLowerInvariant()));
-                teamMaterial = allNames.Contains("magic") ? catalog.magicMaterial
+                string identity = instance.name.ToLowerInvariant();
+                teamMaterial = identity.Contains("mage") || identity.Contains("support") ? catalog.magicMaterial
+                    : identity.Contains("regenerator") ? catalog.forestMaterial
+                    : identity.Contains("archer") || identity.Contains("barracks") || identity.Contains("knight") || identity.Contains("guard")
+                        ? catalog.defenderMaterial
+                    : identity.Contains("raider") || identity.Contains("vanguard") || identity.Contains("boss") || identity.Contains("siege")
+                        ? catalog.enemyMaterial
+                    : allNames.Contains("magic") ? catalog.magicMaterial
                     : allNames.Contains("forest") ? catalog.forestMaterial
                     : allNames.Contains("enemy") ? catalog.enemyMaterial
                     : allNames.Contains("defender") ? catalog.defenderMaterial
@@ -84,6 +91,13 @@ namespace DefenderChronicles.Presentation
             }
             foreach (var renderer in renderers)
             {
+                if (renderer.name.Contains("BlobShadow", System.StringComparison.OrdinalIgnoreCase))
+                {
+                    renderer.enabled = false;
+                    renderer.sharedMaterials = System.Array.Empty<Material>();
+                    continue;
+                }
+
                 var source = renderer.sharedMaterials;
                 var mapped = new Material[source.Length];
                 for (int i = 0; i < source.Length; i++)
@@ -92,12 +106,12 @@ namespace DefenderChronicles.Presentation
                     bool neutral = sourceName.Contains("stone", System.StringComparison.OrdinalIgnoreCase) ||
                                    sourceName.Contains("dark", System.StringComparison.OrdinalIgnoreCase) ||
                                    sourceName.Contains("metal", System.StringComparison.OrdinalIgnoreCase);
-                    mapped[i] = limitToTwoMaterials ? (neutral ? catalog.darkMaterial : teamMaterial) :
+                    mapped[i] = limitToTwoMaterials ? (neutral ? catalog.stoneMaterial : teamMaterial) :
                         catalog.ResolveMaterial(sourceName);
                 }
                 renderer.sharedMaterials = mapped;
-                renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-                renderer.receiveShadows = false;
+                renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+                renderer.receiveShadows = true;
             }
         }
     }
