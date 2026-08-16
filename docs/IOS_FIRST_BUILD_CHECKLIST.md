@@ -62,10 +62,21 @@ Kontrol edilecekler:
 - Safe area UI'yi kesiyor mu?
 - HUD okunuyor mu?
 - Karakol slotuna dokunma calisiyor mu?
-- Kahraman komuta noktasina gidiyor mu?
+- Knight kale onunde otomatik saldiriyor ve Kalkan Darbesi calisiyor mu?
 - Dalga baslatma calisiyor mu?
 - Performans ilk elde akici mi?
 - Console veya Xcode logunda kirmizi hata var mi?
+
+## Fiziksel Cihaza Kurma
+
+iPhone bagli, kilidi acik ve Developer Mode etkin durumdayken proje kokunden:
+
+1. `./tools/build_and_run_ios_device.sh` calistirilir.
+2. Akis tek bagli fiziksel iPhone'u ve Apple Development takim kimligini otomatik bulur.
+3. Birden fazla cihaz varsa `DC_IOS_DEVICE_ID`, farkli takim gerekiyorsa `DC_IOS_TEAM_ID` kullanilir.
+4. Development yapisi cihaz telemetrisini `[DC_DEVICE_METRICS]` etiketiyle kaydeder.
+
+Hizlandirilmis cihaz kosulari icin `DC_IOS_SMOKE=1` veya `DC_IOS_DEFEAT_SMOKE=1` kullanilabilir; normal 8-12 dakikalik kabul kosusunun yerine gecmez.
 
 ## Hata Olursa
 

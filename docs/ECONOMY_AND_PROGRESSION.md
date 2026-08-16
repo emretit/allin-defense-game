@@ -62,7 +62,7 @@ Ilk kural:
 
 Ornekler:
 
-- Bir komuta noktasindaki birlikler daha hizli yeniden dogar.
+- Secili Barracks birlikleri daha hizli yeniden dogar.
 - Archer tipi karakollar destek dusmanlara oncelik verir.
 - Kahraman bir sonraki Shield Bash'i daha genis alanda kullanir.
 
@@ -124,7 +124,7 @@ Ilk ozellik tipleri:
 
 - Kahraman saldiri bicimi
 - Yetenek cooldown degisimi
-- Komuta noktasi bonusu
+- Sabit kale savunmasi bonusu
 - Birlik yeniden dogma bonusu
 - Belirli karakol uzmanligi sinerjisi
 
@@ -156,7 +156,7 @@ Ilk yildiz hedefleri:
 
 Yan hedef ornekleri:
 
-- En az bir rally komutu kullan.
+- Boss dalgasinda en az bir Kalkan Darbesi kullan.
 - Boss dalgasindan once 3 farkli karakol kur.
 - Belirli karakol tipiyle kazan.
 

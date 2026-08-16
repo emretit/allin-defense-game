@@ -487,7 +487,7 @@ namespace DefenderChronicles.Core
         private const float RespawnSeconds = 10f;
         private const float AbilityCooldown = 12f;
         private GameSessionController session;
-        private Vector3 commandPoint;
+        private Vector3 guardianPosition;
         private Renderer bodyRenderer;
         private Collider bodyCollider;
         private int health;
@@ -500,10 +500,10 @@ namespace DefenderChronicles.Core
         public float AbilityRemaining { get; private set; }
         public float RespawnRemaining { get; private set; }
 
-        public void Configure(GameSessionController owner, Vector3 initialCommandPoint)
+        public void Configure(GameSessionController owner, Vector3 initialGuardianPosition)
         {
             session = owner;
-            commandPoint = initialCommandPoint;
+            guardianPosition = initialGuardianPosition;
             health = MaxHealth;
             bodyRenderer = GetComponentInChildren<Renderer>();
             bodyCollider = GetComponent<Collider>();
@@ -533,16 +533,8 @@ namespace DefenderChronicles.Core
                 return;
             }
 
-            Vector3 destination = session != null && session.HasProductionPresentation ? commandPoint : commandPoint + Vector3.up;
-            transform.position = Vector3.MoveTowards(transform.position, destination, 3.5f * Time.deltaTime);
-        }
-
-        public void CommandTo(Vector3 point)
-        {
-            if (!IsAlive) return;
-            commandPoint = point;
-            session?.EmitPresentation(PresentationCue.HeroMoved, transform.position, gameObject,
-                PresentationActorKind.Knight);
+            // The commander is a stationary keep defender. Player strategy comes from placing
+            // structures, not steering a character around the battlefield.
         }
 
         public bool TryUseShieldBash()
@@ -591,7 +583,9 @@ namespace DefenderChronicles.Core
         {
             health = MaxHealth;
             downed = false;
-            transform.position = session != null && session.HasProductionPresentation ? commandPoint : commandPoint + Vector3.up;
+            transform.position = session != null && session.HasProductionPresentation
+                ? guardianPosition
+                : guardianPosition + Vector3.up;
             SetVisuals(true);
             if (bodyCollider != null) bodyCollider.enabled = true;
         }

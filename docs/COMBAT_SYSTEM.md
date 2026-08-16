@@ -12,7 +12,7 @@ Tum savas varliklari ayni kavramlari paylasacak:
 - Hasar alabilirlik
 - Hedeflenebilirlik
 - Takim
-- Rota ilerlemesi veya komuta noktasi
+- Rota ilerlemesi veya sabit savunma konumu
 - Durum etkileri
 - Olum/yeniden dogma/temizlenme akisi
 
@@ -29,7 +29,7 @@ Ilk teknik temel:
 Hedef davranis:
 
 - Barracks karakolundan dogar.
-- Atanan komuta noktasina gider.
+- Kendi karakolunun yerel savunma noktasina gider.
 - Menziline giren dusmani tutar.
 - Dusmanla temas halinde saldirir.
 - Olurse belirli sure sonra karakoldan yeniden dogar.
@@ -143,7 +143,7 @@ Sonraki saglamlastirma:
 Ilk kural:
 
 - Dusmanlar birbirini fiziksel olarak itmeyecek.
-- Dost birlikler ayni komuta noktasinda kucuk formasyon ofseti kullanacak.
+- Ayni karakoldaki dost birlikler yerel savunma noktasinda kucuk formasyon ofseti kullanacak.
 - Yol tamamen kapanmayacak; buyuk dusman ve boss gecisi oyun kilidi yaratmayacak.
 - Ucan dusmanlar temas engelinden etkilenmeyecek.
 

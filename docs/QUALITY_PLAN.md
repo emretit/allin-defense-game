@@ -76,7 +76,7 @@ Senaryolar:
 - Tum dalgalar bitince zafer olur.
 - Pause ve restart calisir.
 - Karakol satilinca slot bosalir.
-- Kahraman komuta noktasina gider.
+- Knight sabit kale savunma konumunda otomatik saldirir, Kalkan Darbesi ve geri donus calisir.
 
 ## Kayit Guvenligi
 

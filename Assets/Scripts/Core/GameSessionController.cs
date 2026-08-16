@@ -39,6 +39,13 @@ namespace DefenderChronicles.Core
         private const int StartingGold = 200;
         private const int StartingLives = 20;
         private const float IntermissionSeconds = 8f;
+        private static readonly Vector3[] OutpostSlotPositions =
+        {
+            new(2f, 0.15f, 0f), new(2f, 0.15f, 5f),
+            new(6.5f, 0.15f, 6f), new(8f, 0.15f, 10.5f),
+            new(12f, 0.15f, 1.2f), new(14f, 0.15f, 6f),
+            new(18f, 0.15f, 6.8f), new(20.5f, 0.15f, 11.2f)
+        };
 
         public static GameSessionController Instance { get; private set; }
 
@@ -52,7 +59,6 @@ namespace DefenderChronicles.Core
         public int WaveCount => waves?.Length ?? 0;
         public int CurrentWaveIndex => currentWaveIndex;
         public int SlotCount => slots.Count;
-        public int CommandPointCount => commandPoints.Count;
 
         public event Action<GamePhase> PhaseChanged;
         public event Action<int> GoldChanged;
@@ -67,7 +73,6 @@ namespace DefenderChronicles.Core
         private readonly List<GreyboxOutpost> outposts = new();
         private readonly List<GreyboxFriendlyUnit> friendlyUnits = new();
         private readonly List<GreyboxOutpostSlot> slots = new();
-        private readonly List<GreyboxCommandPoint> commandPoints = new();
 
         private WaveDefinition[] waves;
         private int currentWaveIndex;
@@ -160,6 +165,8 @@ namespace DefenderChronicles.Core
             }
             ValidateContent();
             SetPhase(GamePhase.Preparing);
+            if (Debug.isDebugBuild && Application.platform == RuntimePlatform.IPhonePlayer)
+                gameObject.AddComponent<DeviceAcceptanceProbe>();
             ShowMessage("Bir karakol platformuna dokun ve savunmanı kur.", 6f);
             RefreshUi();
 
@@ -260,7 +267,7 @@ namespace DefenderChronicles.Core
             gameCamera.orthographic = true;
             gameCamera.orthographicSize = 8.9f;
             Vector3 focus = new Vector3(11f, 0.25f, 5.5f);
-            gameCamera.transform.position = focus + new Vector3(1.6f, 15.8f, -16.9f);
+            gameCamera.transform.position = focus + new Vector3(0f, 15.8f, -16.9f);
             gameCamera.transform.rotation = Quaternion.LookRotation(focus - gameCamera.transform.position, Vector3.up);
             gameCamera.backgroundColor = new Color(0.025f, 0.07f, 0.12f);
             gameCamera.clearFlags = CameraClearFlags.SolidColor;
@@ -305,45 +312,7 @@ namespace DefenderChronicles.Core
             BuildEnemyGate(world);
             BuildDefenderKeep(world);
 
-            Vector3[] slotPositions =
-            {
-                new(2f, 0.15f, 0f), new(2f, 0.15f, 5f),
-                new(6.5f, 0.15f, 6f), new(8f, 0.15f, 10.5f),
-                new(12f, 0.15f, 1.2f), new(14f, 0.15f, 6f),
-                new(18f, 0.15f, 6.8f), new(20.5f, 0.15f, 11.2f)
-            };
-            for (int i = 0; i < slotPositions.Length; i++)
-            {
-                var slotRoot = CreatePrimitive($"Outpost Slot {i + 1}", PrimitiveType.Cylinder, slotPositions[i],
-                    new Vector3(1.18f, 0.16f, 1.18f), stoneColor, world, true);
-                CreatePrimitive($"Outpost Slot {i + 1} Glow", PrimitiveType.Cylinder, slotPositions[i] + Vector3.up * 0.08f,
-                    new Vector3(0.86f, 0.05f, 0.86f), slotColor, slotRoot.transform, false);
-                CreatePrimitive($"Outpost Slot {i + 1} Peg", PrimitiveType.Cube, slotPositions[i] + new Vector3(0f, 0.22f, 0.42f),
-                    new Vector3(0.12f, 0.28f, 0.12f), new Color(0.08f, 0.24f, 0.32f), slotRoot.transform, false);
-                var slot = slotRoot.AddComponent<GreyboxOutpostSlot>();
-                slot.Configure(this, i, slotColor);
-                slots.Add(slot);
-            }
-
-            Vector3[] commandPositions =
-            {
-                new(3.2f, 0.12f, 3.4f), new(7.4f, 0.12f, 7.2f),
-                new(13.2f, 0.12f, 3.8f), new(18.5f, 0.12f, 9f)
-            };
-            for (int i = 0; i < commandPositions.Length; i++)
-            {
-                var go = CreatePrimitive($"Command Point {i + 1}", PrimitiveType.Cylinder, commandPositions[i],
-                    new Vector3(0.72f, 0.07f, 0.72f), new Color(0.22f, 0.70f, 0.42f), world, true);
-                CreatePrimitive($"Command Point {i + 1} Banner Pole", PrimitiveType.Cylinder,
-                    commandPositions[i] + new Vector3(-0.18f, 0.48f, 0f),
-                    new Vector3(0.08f, 0.82f, 0.08f), new Color(0.12f, 0.18f, 0.15f), go.transform, false);
-                CreatePrimitive($"Command Point {i + 1} Banner", PrimitiveType.Cube,
-                    commandPositions[i] + new Vector3(0.12f, 0.82f, 0f),
-                    new Vector3(0.45f, 0.28f, 0.06f), new Color(0.50f, 0.95f, 0.58f), go.transform, false);
-                var point = go.AddComponent<GreyboxCommandPoint>();
-                point.Configure(i);
-                commandPoints.Add(point);
-            }
+            CreateGreyboxOutpostSlots(world);
 
             // Low-detail original scenery made only from Unity primitives.
             for (int i = 0; i < 24; i++)
@@ -374,41 +343,55 @@ namespace DefenderChronicles.Core
                 presentationCatalog, "Greenwatch Environment");
             // Blender's FBX handedness mirrors authored world-space X/Z positions; a 180° Y rotation
             // restores the gameplay coordinate system while leaving individual centered models unchanged.
-            if (environment != null) environment.transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
-
-            Vector3[] slotPositions =
+            if (environment != null)
             {
-                new(2f, 0.15f, 0f), new(2f, 0.15f, 5f),
-                new(6.5f, 0.15f, 6f), new(8f, 0.15f, 10.5f),
-                new(12f, 0.15f, 1.2f), new(14f, 0.15f, 6f),
-                new(18f, 0.15f, 6.8f), new(20.5f, 0.15f, 11.2f)
-            };
-            for (int i = 0; i < slotPositions.Length; i++)
-            {
-                GameObject root = StylizedPresentationFactory.CreateRoot($"Outpost Slot {i + 1}", slotPositions[i],
-                    new Vector3(1.25f, 0.24f, 1.25f), presentationCatalog.outpostSlotPrefab,
-                    presentationCatalog, PresentationCollider.Cylinder);
-                root.transform.SetParent(world, true);
-                var slot = root.AddComponent<GreyboxOutpostSlot>();
-                slot.Configure(this, i, slotColor);
-                slots.Add(slot);
+                environment.transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
+                foreach (Renderer renderer in environment.GetComponentsInChildren<Renderer>(true))
+                {
+                    if (renderer.name.StartsWith("RoadEdge", StringComparison.OrdinalIgnoreCase) ||
+                        renderer.name.StartsWith("DeepBackdrop", StringComparison.OrdinalIgnoreCase) ||
+                        renderer.sharedMaterial == presentationCatalog.navyMaterial)
+                        renderer.enabled = false;
+                }
             }
+            DefenderBattlefieldDressing.Install(world, presentationCatalog, gameCamera);
 
-            Vector3[] commandPositions =
+            CreateStylizedOutpostSlots(world);
+        }
+
+        private void CreateGreyboxOutpostSlots(Transform world)
+        {
+            for (int i = 0; i < OutpostSlotPositions.Length; i++)
             {
-                new(3.2f, 0.12f, 3.4f), new(7.4f, 0.12f, 7.2f),
-                new(13.2f, 0.12f, 3.8f), new(18.5f, 0.12f, 9f)
-            };
-            for (int i = 0; i < commandPositions.Length; i++)
-            {
-                GameObject root = StylizedPresentationFactory.CreateRoot($"Command Point {i + 1}", commandPositions[i],
-                    new Vector3(0.86f, 0.2f, 0.86f), presentationCatalog.commandPointPrefab,
-                    presentationCatalog, PresentationCollider.Cylinder);
-                root.transform.SetParent(world, true);
-                var point = root.AddComponent<GreyboxCommandPoint>();
-                point.Configure(i);
-                commandPoints.Add(point);
+                Vector3 position = OutpostSlotPositions[i];
+                var slotRoot = CreatePrimitive($"Outpost Slot {i + 1}", PrimitiveType.Cylinder, position,
+                    new Vector3(1.18f, 0.16f, 1.18f), stoneColor, world, true);
+                CreatePrimitive($"Outpost Slot {i + 1} Glow", PrimitiveType.Cylinder, position + Vector3.up * 0.08f,
+                    new Vector3(0.86f, 0.05f, 0.86f), slotColor, slotRoot.transform, false);
+                CreatePrimitive($"Outpost Slot {i + 1} Peg", PrimitiveType.Cube,
+                    position + new Vector3(0f, 0.22f, 0.42f), new Vector3(0.12f, 0.28f, 0.12f),
+                    new Color(0.08f, 0.24f, 0.32f), slotRoot.transform, false);
+                AddOutpostSlot(slotRoot);
             }
+        }
+
+        private void CreateStylizedOutpostSlots(Transform world)
+        {
+            for (int i = 0; i < OutpostSlotPositions.Length; i++)
+            {
+                GameObject root = StylizedPresentationFactory.CreateRoot($"Outpost Slot {i + 1}",
+                    OutpostSlotPositions[i], new Vector3(1.25f, 0.24f, 1.25f),
+                    presentationCatalog.outpostSlotPrefab, presentationCatalog, PresentationCollider.Cylinder);
+                root.transform.SetParent(world, true);
+                AddOutpostSlot(root);
+            }
+        }
+
+        private void AddOutpostSlot(GameObject root)
+        {
+            var slot = root.AddComponent<GreyboxOutpostSlot>();
+            slot.Configure(this, slots.Count, slotColor);
+            slots.Add(slot);
         }
 
         private void CreateRoadSegment(Vector3 from, Vector3 to, Transform parent)
@@ -451,18 +434,19 @@ namespace DefenderChronicles.Core
 
         private void BuildHero()
         {
+            Vector3 guardianPosition = new(21.7f, 0.12f, 8.15f);
             GameObject go;
             if (presentationCatalog != null)
             {
                 go = StylizedPresentationFactory.CreateRoot("Knight Commander",
-                    commandPoints[0].transform.position, new Vector3(0.72f, 1.9f, 0.72f),
+                    guardianPosition, new Vector3(0.72f, 1.9f, 0.72f),
                     presentationCatalog.ActorPrefab(PresentationActorKind.Knight), presentationCatalog,
                     PresentationCollider.Capsule, presentationCatalog.ActorScale(PresentationActorKind.Knight));
                 go.transform.SetParent(transform, true);
             }
             else
             {
-                go = CreatePrimitive("Knight Commander", PrimitiveType.Capsule, commandPoints[0].transform.position + Vector3.up,
+                go = CreatePrimitive("Knight Commander", PrimitiveType.Capsule, guardianPosition + Vector3.up,
                     new Vector3(0.75f, 1f, 0.75f), new Color(0.20f, 0.52f, 1f), transform, true);
                 CreatePrimitive("Knight Shield", PrimitiveType.Cube, go.transform.position + new Vector3(-0.42f, 0.1f, -0.1f),
                     new Vector3(0.16f, 0.58f, 0.42f), new Color(0.70f, 0.84f, 0.92f), go.transform, false);
@@ -470,7 +454,7 @@ namespace DefenderChronicles.Core
                     new Vector3(0.36f, 0.22f, 0.36f), new Color(0.95f, 0.86f, 0.34f), go.transform, false);
             }
             hero = go.AddComponent<GreyboxHero>();
-            hero.Configure(this, commandPoints[0].transform.position);
+            hero.Configure(this, guardianPosition);
         }
 
         private void BuildInterface()
@@ -706,7 +690,7 @@ namespace DefenderChronicles.Core
             if (previewText != null) previewText.text = nextPreview;
             artHud?.SetPreview(nextPreview);
             if (currentWaveIndex == 1)
-                ShowMessage("Kahramanı yeşil komuta noktalarına gönder.", 5f);
+                ShowMessage("Kale muhafızı son savunma hattını otomatik korur.", 5f);
             else if (currentWaveIndex == 2)
                 ShowMessage("Kalkan Darbesi kalabalıkları kısa süre durdurur.", 5f);
         }
@@ -930,7 +914,6 @@ namespace DefenderChronicles.Core
                 TryUpgradeOutpost(i);
             }
 
-            hero.CommandTo(commandPoints[1].transform.position);
             hero.TryUseShieldBash();
             TogglePause();
             yield return null;
@@ -1025,12 +1008,6 @@ namespace DefenderChronicles.Core
                 return;
             }
 
-            var command = hit.collider.GetComponent<GreyboxCommandPoint>();
-            if (command != null && hero != null)
-            {
-                hero.CommandTo(command.transform.position);
-                ShowMessage($"Şövalye komuta noktası {command.Index + 1}'e gidiyor.", 2f);
-            }
         }
 
         private void SelectSlot(GreyboxOutpostSlot slot)
@@ -1290,12 +1267,6 @@ namespace DefenderChronicles.Core
             PresentationSignaled?.Invoke(new PresentationSignal(cue, position, source, actor, outpost, value));
         }
 
-        internal Vector3 NearestCommandPoint(Vector3 position)
-        {
-            if (commandPoints.Count == 0) return position;
-            return commandPoints.OrderBy(point => (point.transform.position - position).sqrMagnitude).First().transform.position;
-        }
-
         public float ComputeRouteProgress(Vector3 position, int targetIndex)
         {
             if (path.Count < 2) return 0f;
@@ -1312,7 +1283,6 @@ namespace DefenderChronicles.Core
             var errors = new List<string>();
             if (path.Count < 2) errors.Add("Level path needs at least two points.");
             if (slots.Count != 8) errors.Add("Greybox level needs exactly eight outpost slots.");
-            if (commandPoints.Count != 4) errors.Add("Greybox level needs exactly four command points.");
             if (waves == null || waves.Length != 7) errors.Add("Greybox level needs six waves and one boss wave.");
             if (waves != null && (waves.Length == 0 || !waves[^1].bossWave)) errors.Add("Final wave must be a boss wave.");
             if (uiFont == null) errors.Add("Unity LegacyRuntime font is unavailable.");
@@ -1595,9 +1565,4 @@ namespace DefenderChronicles.Core
         }
     }
 
-    public sealed class GreyboxCommandPoint : MonoBehaviour
-    {
-        public int Index { get; private set; }
-        public void Configure(int index) => Index = index;
-    }
 }

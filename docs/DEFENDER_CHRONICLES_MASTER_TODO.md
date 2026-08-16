@@ -31,7 +31,7 @@ Bu belge eski “belgelendi = tamamlandı” yaklaşımını kaldırır. Aşağ�
 |---|---|---|
 | DC-026–030 | Doğrulandı | XZ rota, rota ilerlemesi, 8 sabit slot ve mobil kurulum akışı çalışıyor. |
 | DC-031 | Doğrulandı | Revize kapsamın tek yükseltme seviyesi çalışıyor; dallanan ağaç kapsam dışı. |
-| DC-032–037 | Doğrulandı | %60 iade, geçici bozma, 4 komuta noktası, görünür yol ve dokunma önceliği var. |
+| DC-032–037 | Doğrulandı | %60 iade, geçici bozma, görünür yol, sabit kale muhafızı ve dokunma önceliği var; komuta noktası kapsamı kaldırıldı. |
 | DC-038–039 | Doğrulandı | Ortak hasar sözleşmesi ve iki engelleyici/yeniden doğan kışla birliği çalışıyor. |
 | DC-040–041 | Tasarlandı | Ayrı menzilli/büyü dost birlikleri revize dikey dilimde yok. |
 | DC-042–044 | Uygulandı | En ileride hedefleme, hasar, yavaşlatma ve stun var; tam strateji/direnç matrisi yok. |
@@ -39,7 +39,7 @@ Bu belge eski “belgelendi = tamamlandı” yaklaşımını kaldırır. Aşağ�
 | DC-047 | Doğrulandı | Düşman temizliği, birlik yeniden doğması ve Knight geri dönüşü çalışıyor. |
 | DC-048 | Doğrulandı | Takım rengi, siluet, animasyon ve sağlık çubuğu production sunumunda okunur. |
 | DC-049–050 | Uygulandı | Havuzlu VFX ve ses geri bildirimi var; oyuncu 2× hızı kapsam dışı. |
-| DC-051–055 | Doğrulandı | Knight rolü, komuta hareketi, saldırı, hedeflenme, Shield Bash ve cooldown HUD çalışıyor. |
+| DC-051–055 | Doğrulandı | Knight sabit kale muhafızı olarak otomatik saldırıyor; hedeflenme, geri dönüş, Shield Bash ve cooldown HUD çalışıyor. |
 | DC-056–060 | Tasarlandı | XP, seviye, ekipman ve yükleme ekranı bu teslimin dışında. |
 
 ## Düşman, dalga ve ekonomi
@@ -74,24 +74,24 @@ Bu belge eski “belgelendi = tamamlandı” yaklaşımını kaldırır. Aşağ�
 | Maddeler | Durum | Kanıt / kalan iş |
 |---|---|---|
 | DC-106–109 | Tasarlandı | Erişilebilirlik ve performans bütçeleri gerçek cihaz geçişi bekliyor. |
-| DC-110 | Uygulandı | 9 EditMode testi geçti; katalog ve Türkçe kopya bütünlüğü de kapsanıyor. |
-| DC-111 | Doğrulandı | 2 PlayMode testi ekonomi/pause ve production sunumunu kapsıyor; iOS kabul koşuları geçti. |
+| DC-110 | Uygulandı | Güncel sabit-slot kodunda 9 EditMode testi geçti; katalog ve Türkçe kopya bütünlüğü de kapsanıyor. |
+| DC-111 | Doğrulandı | Güncel sabit-slot kodunda 2 PlayMode testi; sekiz seçilebilir slotu, ekonomi/pause, sabit Knight ve production sunumunu kapsıyor. |
 | DC-112 | Tasarlandı | Kalıcı kayıt bu dilimde yok. |
 | DC-113 | Uygulandı | Açılış ve zafer görüntüleri saklandı; otomatik piksel karşılaştırması yok. |
 | DC-114 | Bekliyor | 30–60 dakikalık dayanıklılık testi yapılmadı. |
-| DC-115 | Uygulandı | Input olayları null-safe; gerçek hızlı/çoklu dokunma cihaz matrisi bekliyor. |
+| DC-115 | Uygulandı | Input olayları null-safe; fiziksel iPhone build/telemetri akışı hazır, gerçek hızlı/çoklu dokunma matrisi bekliyor. |
 | DC-116 | Uygulandı | Hızlandırılmış tam bölüm kabul modu var; istatistiksel denge simülatörü yok. |
 | DC-117 | Bekliyor | 5–10 dış oyuncu testi yapılmadı. |
 | DC-118 | Doğrulandı | Final Development Simulator açılışı ve tam koşularda yakalanmış error/exception yok. |
 | DC-119 | Doğrulandı | Final iOS yapısı iki kez 6 normal dalga + boss zaferiyle baştan sona tamamlandı. |
 | DC-120 | Uygulandı | Karma savunma kazanıyor; üç farklı karakol ağırlıklı strateji manuel kabulü bekliyor. |
 | DC-121 | Doğrulandı | Tek haritanın tüm aktörleri, karakolları, HUD, VFX, ses ve müziği sanatsal dikey dilime taşındı. |
-| DC-122 | Bekliyor | Performans Simulator’da değil gerçek iPhone’da ölçülecek. |
+| DC-122 | Bekliyor | iPhone 13 Development ölçüm akışı hazır; normal hızlı fiziksel cihaz kabul koşusu henüz yapılmadı. |
 | DC-123 | Bekliyor | Dış kullanıcı testi yapılacak. |
 | DC-124–128 | Tasarlandı | Sonraki kampanya, hesap, liderlik, gelir ve mağaza belgeleri var; uygulanmadı. |
 
 ## Sanatsal dikey dilim kabul özeti
 
-- **Geçti:** production katalog doğrulaması, özgün görsel set, TMP HUD, Türkçe kopya, havuzlu VFX, mixer/müzik durumları, build, kurulum, yatay açılış, safe area, üç karakol, Knight, 7 dalga, boss, zafer, yenilgi, pause ve restart.
+- **Geçti:** production katalog doğrulaması, özgün görsel set, TMP HUD, Türkçe kopya, havuzlu VFX, mixer/müzik durumları, sekiz sabit slot, üç karakol, sabit Knight, 7 dalga, boss, zafer, yenilgi, pause ve restart.
 - **Kısmi:** gerçek parmakla hızlı/çoklu dokunma, üç ayrı strateji dengesi ve 8–12 dakikalık dış oyuncu süre ölçümü.
 - **Sonraki kapı:** fiziksel iPhone'da dokunma, bellek, termal durum ve kesin 30/60 FPS performans testi.

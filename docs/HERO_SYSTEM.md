@@ -9,56 +9,36 @@ Ilk kahraman: on saf tank/komutan.
 
 Gorevi:
 
-- Kritik hatta gidip baskiyi emmek.
+- Kale onundeki son hatta baskiyi emmek.
 - Dusmanlari kisa sure durdurmak veya yavaslatmak.
 - Karakol savunmasinin yetmedigi anlarda oyuncuya aktif mudahale araci vermek.
 
-Ilk yetenek seti:
+Aktif dikey dilim yetenek seti:
 
 - Normal saldiri: Yakin menzilli tek hedef.
-- Pasif: Yakindaki dost birliklere kucuk savunma bonusu.
-- Aktif 1: Shield Bash, yakin alanda hasar ve kisa kontrol.
-- Aktif 2: Rally Cry, komuta noktasindaki birlikleri guclendirme.
-- Nihai: Last Stand, kisa sure hasar azaltma ve alan tutma.
+- Aktif: Shield Bash, yakin alanda hasar ve kisa kontrol.
+- Bayilma: 10 saniye sonra ayni savunma konumunda tam canla donus.
 
-## Hareket Komutu
-
-Tamamlanan kod degisikligi:
-
-- `HeroBase.CommandTo(...)` eklendi.
-- `HeroCommandController` eklendi.
-- Oyuncu komuta noktasina dokununca kahraman o noktaya hareket eder.
-- Kule kurma modundayken kahraman komutu verilmez.
+## Sabit Muhafiz Davranisi
 
 Kural:
 
-- Kahraman serbest harita noktasina degil, gecerli komuta noktalarina gider.
-- Yeni komut eski hareket emrini degistirir.
+- Knight `(21.7, 0.12, 8.15)` konumunda kale muhafizi olarak baslar.
+- Oyuncu harita dokunusuyla hareket komutu vermez.
+- Knight 1.65 birim icindeki dusmana otomatik saldirir.
+- Yeniden dogdugunda ayni savunma konumuna doner.
 
 ## Aggro Davranisi
 
 Ilk kural:
 
-- Kahraman komuta noktasina giderken yakinindaki dusmanlara saldirabilir.
-- Otomatik hedef secimi komuta noktasini degistirmez.
-- Kahraman dusmani takip etmek icin haritanin baska ucuna suruklenmez.
-- Oyuncu yeni komut verirse kahraman hemen o yonde hareket eder.
+- Knight yalnizca sabit konumunun yakinindaki dusmanlara saldirir.
+- Dusmani takip etmek icin savunma konumundan ayrilmaz.
+- Oyuncu yalnizca Kalkan Darbesi zamanlamasini kontrol eder.
 
 ## Yetenek Hedefleme
 
-Hedefleme tipleri:
-
-- Kendine kullanim
-- Kahraman cevresi alan
-- Komuta noktasi alan
-- Yonlu saldiri
-- Dost birlik hedefleme
-
-Mobil kural:
-
-- Yetenek secildiginde onizleme acilir.
-- Ikinci dokunus onay, iptal tusu vazgecme olur.
-- Menzil disi veya gecersiz hedef net gosterilir.
+Kalkan Darbesi Knight merkezli 3.2 birimlik alanda aninda uygulanir. Ayri hedefleme veya hareket modu yoktur; cooldown HUD'da sayi ve dolumla gosterilir.
 
 ## Cooldown Arayuzu
 
@@ -106,7 +86,7 @@ Ilk tasarim:
 Ornek secenekler:
 
 - Shield Bash alani artar.
-- Kahraman komuta noktasina daha hizli gider.
+- Kalkan Darbesi cooldown'i kisalir.
 - Yakindaki birlikler daha uzun sure dayanir.
 
 ## Bayilma ve Geri Donus

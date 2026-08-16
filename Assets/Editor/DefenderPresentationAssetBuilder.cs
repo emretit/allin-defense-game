@@ -492,7 +492,7 @@ namespace DefenderChronicles.Editor
             {
                 ["Navy"] = Hex("07182A"), ["Defender"] = Hex("1D6FD1"), ["Stone"] = Hex("8A96A3"),
                 ["Forest"] = Hex("193D2C"), ["Enemy"] = Hex("A52B32"), ["Magic"] = Hex("3CBFEF"),
-                ["Fire"] = Hex("FF8A24"), ["Dark"] = Hex("0E1114"), ["Earth"] = Hex("70543D"),
+                ["Fire"] = Hex("FF8A24"), ["Dark"] = Hex("0E1114"), ["Earth"] = Hex("9A6742"),
                 ["Grass"] = Hex("2B5B43"), ["Metal"] = Hex("596979")
             };
             Shader shader = Shader.Find("Universal Render Pipeline/Lit") ?? Shader.Find("Universal Render Pipeline/Unlit");

@@ -50,7 +50,7 @@ Kural:
 
 - Kritik butonlar en az 48 dp dokunma alani tasir.
 - Ikon kucuk olabilir, ama gorunmez dokunma alani kucuk olamaz.
-- Slot, komuta noktasi ve karakol secim yaricaplari mobil parmak hatasini tolere eder.
+- Slot ve karakol secim yaricaplari mobil parmak hatasini tolere eder.
 
 ## Karakol Bilgi Paneli
 
@@ -70,9 +70,8 @@ Panelde gorunecek bilgiler:
 
 Kural:
 
-- Yetenek secimi iptal edilebilir.
-- Hedef onizlemesi gosterilir.
-- Menzil disi hedef reddedilir.
+- Kalkan Darbesi butona dokununca Knight merkezinde aninda kullanilir.
+- Alan geri bildirimi VFX ile gosterilir.
 - Cooldown sayi ve dolumla okunur.
 
 ## Ilk Oyun Ogreticisi
@@ -80,8 +79,8 @@ Kural:
 Ilk 3 dalga ogretir:
 
 - Dalga 1: Karakol kurma.
-- Dalga 2: Komuta noktasi ve kahraman hareketi.
-- Dalga 3: Kahraman yetenegi ve dalga onizlemesi.
+- Dalga 2: Sabit slotlarla savunmayi yolun farkli kivrimlarina yayma.
+- Dalga 3: Knight Kalkan Darbesi ve dalga onizlemesi.
 
 Kural:
 

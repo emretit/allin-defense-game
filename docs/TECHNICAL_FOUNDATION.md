@@ -51,7 +51,7 @@ Test araci karari:
 ### Grid ve Yol
 
 - `GridManager.cs`: Donustur. Serbest grid yerlestirme yerine tasarimci tarafindan belirlenmis karakol slotlari gelecek.
-- `PathManager.cs`: Donustur. Basit waypoint sistemi korunabilir; rota ilerleme degeri, kavsak ve komuta noktasi destekleri eklenecek.
+- `PathManager.cs`: Donustur. Basit waypoint sistemi korunabilir; rota ilerleme degeri ve gelecek kavsak destekleri eklenecek.
 
 ### Towers
 

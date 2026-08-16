@@ -66,7 +66,7 @@ Ilk boss hedefi:
 
 Karsi oyun:
 
-- Kahraman boss odak komuta noktasina alinabilir.
+- Knight son hatta boss yaklastiginda otomatik saldirir; Kalkan Darbesi oyuncu tarafindan zamanlanir.
 - Kontrol karakollari boss ilerlemesini yavaslatabilir.
 - Oyuncu son savunma hattini onceden hazirlayabilir.
 

@@ -42,9 +42,25 @@ namespace DefenderChronicles.Editor
             BuildSimulator("Builds/iOS-Simulator-Release", false);
         }
 
+        [MenuItem("Defender Chronicles/Build iOS Device Development Xcode Project")]
+        public static void BuildDeviceDevelopmentProject()
+        {
+            Apply();
+            BuildXcodeProject("Builds/iOS-Device",
+                BuildOptions.Development | BuildOptions.AllowDebugging | BuildOptions.ConnectWithProfiler,
+                "iOS Device Development");
+        }
+
         private static void BuildSimulator(string relativeOutputPath, bool development)
         {
             ApplySimulator();
+
+            BuildXcodeProject(relativeOutputPath, development ? BuildOptions.Development : BuildOptions.None,
+                $"iOS Simulator {(development ? "Development" : "Release")}");
+        }
+
+        private static void BuildXcodeProject(string relativeOutputPath, BuildOptions buildOptions, string label)
+        {
 
             string outputPath = Path.GetFullPath(relativeOutputPath);
             Directory.CreateDirectory(outputPath);
@@ -63,14 +79,14 @@ namespace DefenderChronicles.Editor
                 target = BuildTarget.iOS,
                 targetGroup = BuildTargetGroup.iOS,
                 locationPathName = outputPath,
-                options = development ? BuildOptions.Development : BuildOptions.None
+                options = buildOptions
             };
 
             var report = BuildPipeline.BuildPlayer(options);
             if (report.summary.result != UnityEditor.Build.Reporting.BuildResult.Succeeded)
                 throw new System.Exception($"iOS Simulator build failed: {report.summary.result}");
 
-            Debug.Log($"iOS Simulator {(development ? "Development" : "Release")} Xcode project built at: {outputPath}");
+            Debug.Log($"{label} Xcode project built at: {outputPath}");
         }
 
         private static void ApplySharedIosSettings()

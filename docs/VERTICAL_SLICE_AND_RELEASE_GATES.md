@@ -10,7 +10,7 @@ Tamamlanmis sayilmasi icin:
 - 1 harita bastan sona oynanir.
 - 3 karakol tipi anlamli rol farki sunar.
 - Birlikler savunma hattina katilir.
-- Kahraman komuta noktalarina gider.
+- Knight kale onunde otomatik savunur ve oyuncu Kalkan Darbesi'ni zamanlar.
 - 6 normal dalga ve 1 boss dalgasi calisir.
 - Zafer ve yenilgi akislari guvenilirdir.
 

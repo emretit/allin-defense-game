@@ -12,7 +12,6 @@ Standartlar:
 - 1 Unity unit = 1 tasarim hucresi.
 - Yol genisligi hedefi = 1.0-1.5 unit.
 - Karakol slot secim yaricapi = 0.85 unit.
-- Komuta noktasi secim yaricapi = 0.9 unit.
 - Ilk harita yaklasik 22 x 12 unit alana sigar.
 - Kamera harita disina cikmayacak sekilde sinirlanacak.
 
@@ -34,7 +33,6 @@ Gelecek genisleme:
 - Kavsak
 - Serit
 - Ucan rota
-- Komuta noktasi baglantisi
 
 ## Rota Ilerlemesi
 
@@ -65,10 +63,10 @@ Ilk slot rolleri:
 
 Ilk akisin hedefi:
 
-1. Oyuncu karakol tipini secer.
-2. Bos slota dokunur.
-3. Slot uygunsa onizleme yesil gorunur.
-4. Altin yeterliyse karakol kurulur.
+1. Oyuncu bos slota dokunur.
+2. Secili slot vurgulanir ve karakol tipleri acilir.
+3. Oyuncu karakol tipini secer.
+4. Altin yeterliyse karakol secili slota kurulur.
 5. Slot doluysa veya uzaksa kurulum yapilmaz.
 6. Iptal ile secim temizlenir.
 
@@ -115,25 +113,16 @@ Ilk boss tasarimi icin kural:
 - Susturulan karakol gorsel ve UI ile acikca belirtilir.
 - Oyuncu kahraman yetenegi veya destek karakoluyla susturmayi kisaltabilir.
 
-## Komuta Noktalari
+## Kale Muhafizi Konumu
 
-Tamamlanan kod degisikligi:
+Aktif dikey dilim karari:
 
-- `CommandPointManager` eklendi.
-- Ilk harita icin 4 komuta noktasi tanimlandi.
+- Knight kale kapisi yanindaki tek sabit savunma konumunda durur.
+- Harita dokunusu Knight'a hareket komutu vermez.
+- Knight yakin dusmanlara otomatik saldirir; oyuncu Kalkan Darbesi'ni zamanlar.
+- Eski komuta noktasi siniflari arşiv/prototip kapsaminda kalir ve aktif sahneye baglanmaz.
 
-Ilk noktalar:
-
-- Bati tutma noktasi
-- Orta tutma noktasi
-- Kale kapisi tutma noktasi
-- Boss odak noktasi
-
-Gelecek kullanim:
-
-- Kahraman yalnizca bu noktalara gidecek.
-- Barracks birlikleri rally hedefi olarak bu noktalari kullanacak.
-- Gecersiz dokunuslarda hedef reddedilecek.
+Bu karar fiziksel iPhone, denge ve dis oyuncu kabul kapilari kapanana kadar yeniden acilmayacak.
 
 ## Yol Engelleme Kurallari
 
@@ -153,10 +142,9 @@ Dokunma onceligi:
 2. Secili hedefleme/aktif yetenek onizlemesi
 3. Karakol slotu
 4. Var olan karakol
-5. Komuta noktasi
-6. Dusman
-7. Dost birlik/kahraman
-8. Bos harita/dekor
+5. Dusman
+6. Dost birlik/kahraman
+7. Bos harita/dekor
 
 Bu sira, mobilde yanlis dokunmayi azaltmak icin esas alinacak.
 
@@ -166,13 +154,13 @@ Gri kutu harita hedefi:
 
 - Tek ana yol
 - 8 karakol slotu
-- 4 komuta noktasi
+- 1 sabit kale muhafizi konumu
 - 3 kritik savunma bolgesi
 - Son bolgede boss baskisi
 - Yol boyunca erken, orta ve son savunma kararlarini ayiran virajlar
 
 Kritik bolgeler:
 
-- Bati girisi: Oyuncuya ilk karakol/rally mantigini ogretir.
+- Bati girisi: Oyuncuya ilk sabit slot ve karakol rolunu ogretir.
 - Orta kavsak: Alan kontrolu ve kahraman zamanlamasi ister.
 - Son savunma: Boss ve gec dalga baskisini toplar.

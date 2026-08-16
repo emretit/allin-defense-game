@@ -5,17 +5,17 @@ Son guncelleme: 2026-08-15
 
 ## Tek Cumlelik Urun Vaadi
 
-Defender Chronicles, oyuncunun stratejik karakollar kurdugu, savunma birliklerini komuta noktalarina yonlendirdigi ve kahramaniyla kritik anlara mudahale ettigi mobil odakli bir izometrik savunma/RPG oyunudur.
+Defender Chronicles, oyuncunun stratejik sabit noktalara karakollar kurdugu ve kale muhafizinin alan yetenegini kritik anlarda kullandigi mobil odakli bir izometrik savunma/RPG oyunudur.
 
 ## Kisa Aciklama
 
 Oyun, klasik kule savunmasindaki "kule koy ve bekle" hissini daha aktif bir savunma komutasina cevirmeyi hedefler. Oyuncu haritada serbest grid doldurmak yerine onceden tasarlanmis karakol noktalarini secerek savunma hatti kurar. Bazi karakollar yalnizca saldiri yapmaz; asker uretir, birlikleri yol uzerinde tutar veya savunma bolgelerini guclendirir.
 
-Kahraman, savunmanin pasif bir bonusu degil, oyuncunun elindeki aktif kriz cozum aracidir. Oyuncu kahramani uygun komuta noktalarina gonderir, yeteneklerini zamanlar ve dalgalarin baski kurdugu bolgeye agirlik verir.
+Knight kale onundeki son savunma hattini otomatik korur. Oyuncu kahramani haritada yonetmez; Kalkan Darbesi'ni dogru anda kullanarak son hatta aktif mudahale eder.
 
 ## Ayirt Edici Nokta
 
-Defender Chronicles'in ana farki, savunmanin yalnizca bina ekonomisiyle degil, "nerede durduracagim, kimi one surecegim, kahramani ne zaman sokacagim" kararlarinin birlesimiyle kazanilmasidir.
+Defender Chronicles'in ana farki, savunmanin yalnizca bina ekonomisiyle degil, "hangi sabit noktada durduracagim, hangi rolu kuracagim ve son hat yetenegini ne zaman kullanacagim" kararlarinin birlesimiyle kazanilmasidir.
 
 ## Ilk Dikey Dilim Vaadi
 
@@ -48,7 +48,7 @@ Beklenen oyuncu davranisi:
 - Gunluk kisa oturumlarla ilerler.
 - Internet olmadan ana bolumleri oynayabilmek ister.
 - Stratejik karar ister ama uzun tablo/menulerle ugrasmadan savasa girmek ister.
-- Kule yerlestirme kadar aktif kahraman komutu vermekten de keyif alir.
+- Kule yerlestirme, yukseltme/satis ve kahraman yetenegi zamanlamasindan keyif alir.
 - Baslangicta ucretsiz veya dusuk giris maliyetli deneyime daha sicak bakar.
 - Pay-to-win baskisi yerine kozmetik, genisleme veya premium icerige daha guven duyar.
 
@@ -132,7 +132,7 @@ Calisma adi "Defender Chronicles" olarak kalabilir; yayin oncesi marka ve magaza
 ## Temel Oyun Sutunlari
 
 1. Savunma plani: Oyuncu dogru karakolu dogru noktaya kurarak savunma hattini planlar.
-2. Aktif komuta: Rally noktasi, kahraman hareketi ve yetenek zamanlamasi savasin gidisini degistirir.
+2. Aktif mudahale: Otomatik kale muhafizinin Kalkan Darbesi zamanlamasi son savunmanin gidisini degistirir.
 3. Kahraman RPG gelisimi: Kahraman secimi, yetenekler ve ekipman sayi artisi kadar oyun tarzi da yaratir.
 4. Tekrar oynanabilir karsilasmalar: Dalgalar, yan hedefler ve farkli karakol uzmanliklari ayni bolumu farkli stratejilerle oynatir.
 
@@ -158,7 +158,7 @@ Bu ozelliklerin her biri, gri kutu dikey dilim ve ilk dis oyuncu testi olumlu so
 Ilk dikey dilim su sartlari saglarsa basarili sayilir:
 
 - Tek bolum 8-12 dakika icinde tamamlanabilir.
-- Oyuncu en az uc anlamli savunma karari verir: karakol kurma, rally/kahraman komutu, yetenek zamanlamasi.
+- Oyuncu en az uc anlamli savunma karari verir: sabit slot/karakol secimi, yukseltme veya satis ve yetenek zamanlamasi.
 - Bolumde 6 normal dalga ve 1 boss dalgasi bastan sona calisir.
 - En az uc karakol tipi anlamli rol farki gosterir.
 - Ilk test oyuncularinin cogu temel kontrolleri yardimsiz kavrar.

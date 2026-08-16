@@ -6,13 +6,13 @@ Bu proje Age of Arena veya FutbolQuiz’den kod, model, ses, font, ikon ya da UI
 
 ## Mevcut oynanabilir kapsam
 
-- XZ zemin üzerinde özgün, sabit izometrik 3B harita
-- Görünür rota, düşman kapısı, kale, 8 karakol slotu ve 4 komuta noktası
+- XZ zemin üzerinde yatay hizalanmış, sabit izometrik 3B harita
+- Görünür rota, düşman kapısı, kale ve 8 sabit karakol platformu
 - 200 başlangıç altını ve 20 kale canı
 - Okçu (75), Kışla (100) ve Büyü (125) karakolları
 - Tek seviye yükseltme ve toplam yatırımın %60’ı satış iadesi
 - Kışladan çıkan, düşmanı durduran ve yeniden doğan iki birlik
-- Hareket, saldırı, bayılma, 10 saniyede dönüş ve Kalkan Darbesi olan Knight
+- Kale yanında sabit duran; saldırı, bayılma, 10 saniyede dönüş ve Kalkan Darbesi olan Knight
 - Hızlı, tank, rejenerasyon, destek, kuşatma ve üç safhalı boss düşmanları
 - 6 normal dalga + 1 boss dalgası
 - Hazırlık, savaş, 8 saniyelik mola, pause, zafer, yenilgi ve restart durumları
@@ -48,7 +48,7 @@ PlayMode için `-testPlatform PlayMode` kullanılır.
 Doğrulanan sonuçlar (16 Ağustos 2026):
 
 - EditMode: 9/9 geçti
-- PlayMode: 2/2 geçti; sahne, içerik, ekonomi, pause/devam ve production sunumu kontrol edildi
+- PlayMode: 2/2 geçti; 8 sabit/seçilebilir slot, sabit Knight, ekonomi, pause/devam ve production sunumu kontrol edildi
 - iOS Development Simulator build: geçti
 - iOS Xcode Debug build: geçti
 - Normal Simulator açılışı: yakalanmış error/exception yok
@@ -66,6 +66,18 @@ Simulator’da bir iPhone açıkken:
 ```
 
 Bu komut Unity’den Xcode projesi üretir, Development yapı alır, açık Simulator’a kurar ve oyunu normal hazırlık ekranında açar. Ayrı Release Xcode çıktısı Unity menüsündeki `Defender Chronicles > Build iOS Simulator Release Xcode Project` komutuyla üretilebilir.
+
+## Fiziksel iPhone'a kurma
+
+iPhone bağlı, kilidi açık ve Developer Mode etkin durumdayken:
+
+```sh
+./tools/build_and_run_ios_device.sh
+```
+
+Akış cihazı ve geçerli Apple Development takımını otomatik bulur, imzalı Development yapısını kurar ve açar. Development yapısı FPS, frame süresi, Unity belleği, düşük bellek uyarısı ve iOS termal durumunu `[DC_DEVICE_METRICS]` kayıtlarında raporlar. Ham çıktılar `Builds/` altında tutulur.
+
+Fiziksel cihaz kabul durumu: [IOS_DEVICE_ACCEPTANCE_2026-08-16.md](/Users/emreaydin/DefenderChronicles/docs/IOS_DEVICE_ACCEPTANCE_2026-08-16.md).
 
 ## Varlık kökeni
 
