@@ -1,0 +1,492 @@
+{
+  "schema": "defender-chronicles.visual-development.actor-rig-source-inspection.v2",
+  "captured_on": "2026-08-25",
+  "sources": [
+    {
+      "name": "Knight",
+      "path": "Assets/Art/Models/Generated/Knight.fbx",
+      "purpose": "runtime",
+      "rig_target": "Generic transform rig",
+      "exists": true,
+      "armature_count": 1,
+      "armatures": [
+        {
+          "name": "DC_HumanoidRig",
+          "bone_count": 7,
+          "root_bones": [
+            "Root"
+          ]
+        }
+      ],
+      "mesh_count": 18,
+      "mesh_names": [
+        "Arm",
+        "Arm.001",
+        "Belt",
+        "BlobShadow",
+        "Body",
+        "Boot",
+        "Boot.001",
+        "Cape",
+        "Crest",
+        "Head",
+        "Helmet",
+        "Leg",
+        "Leg.001",
+        "Shield",
+        "Shoulders",
+        "Visor",
+        "Weapon",
+        "WeaponBlade"
+      ],
+      "material_count": 2,
+      "material_names": [
+        "DC_Defender",
+        "DC_Fire"
+      ],
+      "action_count": 0,
+      "action_names": [],
+      "has_rig": true,
+      "has_actions": false
+    },
+    {
+      "name": "Guard",
+      "path": "Assets/Art/Models/Generated/Guard.fbx",
+      "purpose": "runtime",
+      "rig_target": "Generic transform rig",
+      "exists": true,
+      "armature_count": 1,
+      "armatures": [
+        {
+          "name": "DC_HumanoidRig",
+          "bone_count": 7,
+          "root_bones": [
+            "Root"
+          ]
+        }
+      ],
+      "mesh_count": 16,
+      "mesh_names": [
+        "Arm",
+        "Arm.001",
+        "Belt",
+        "BlobShadow",
+        "Body",
+        "Boot",
+        "Boot.001",
+        "GuardBuckler",
+        "GuardSpearShaft",
+        "GuardSpearTip",
+        "Head",
+        "Helmet",
+        "Leg",
+        "Leg.001",
+        "Shoulders",
+        "Visor"
+      ],
+      "material_count": 2,
+      "material_names": [
+        "DC_Defender.001",
+        "DC_Stone"
+      ],
+      "action_count": 0,
+      "action_names": [],
+      "has_rig": true,
+      "has_actions": false
+    },
+    {
+      "name": "Raider",
+      "path": "Assets/Art/Models/Generated/Raider.fbx",
+      "purpose": "runtime",
+      "rig_target": "Generic transform rig",
+      "exists": true,
+      "armature_count": 1,
+      "armatures": [
+        {
+          "name": "DC_HumanoidRig",
+          "bone_count": 7,
+          "root_bones": [
+            "Root"
+          ]
+        }
+      ],
+      "mesh_count": 20,
+      "mesh_names": [
+        "Arm",
+        "Arm.001",
+        "Belt",
+        "BlobShadow",
+        "Body",
+        "Boot",
+        "Boot.001",
+        "Head",
+        "Helmet",
+        "Horn",
+        "Horn.001",
+        "Leg",
+        "Leg.001",
+        "RaiderBlade",
+        "RaiderBlade.001",
+        "RaiderGrip",
+        "RaiderGrip.001",
+        "RaiderScarf",
+        "Shoulders",
+        "Visor"
+      ],
+      "material_count": 2,
+      "material_names": [
+        "DC_Dark",
+        "DC_Enemy"
+      ],
+      "action_count": 0,
+      "action_names": [],
+      "has_rig": true,
+      "has_actions": false
+    },
+    {
+      "name": "Vanguard",
+      "path": "Assets/Art/Models/Generated/Vanguard.fbx",
+      "purpose": "runtime",
+      "rig_target": "Generic transform rig",
+      "exists": true,
+      "armature_count": 1,
+      "armatures": [
+        {
+          "name": "DC_HumanoidRig",
+          "bone_count": 7,
+          "root_bones": [
+            "Root"
+          ]
+        }
+      ],
+      "mesh_count": 17,
+      "mesh_names": [
+        "Arm",
+        "Arm.001",
+        "Belt",
+        "BlobShadow",
+        "Body",
+        "Boot",
+        "Boot.001",
+        "ChestPlate",
+        "GreatWeaponHandle",
+        "GreatWeaponHead",
+        "GreatWeaponSpike",
+        "Head",
+        "Helmet",
+        "Leg",
+        "Leg.001",
+        "Shoulders",
+        "Visor"
+      ],
+      "material_count": 2,
+      "material_names": [
+        "DC_Dark.001",
+        "DC_Enemy.001"
+      ],
+      "action_count": 0,
+      "action_names": [],
+      "has_rig": true,
+      "has_actions": false
+    },
+    {
+      "name": "Regenerator",
+      "path": "Assets/Art/Models/Generated/Regenerator.fbx",
+      "purpose": "runtime",
+      "rig_target": "Generic transform rig",
+      "exists": true,
+      "armature_count": 1,
+      "armatures": [
+        {
+          "name": "DC_HumanoidRig",
+          "bone_count": 7,
+          "root_bones": [
+            "Root"
+          ]
+        }
+      ],
+      "mesh_count": 24,
+      "mesh_names": [
+        "Arm",
+        "Arm.001",
+        "BackTendril_0",
+        "BackTendril_1",
+        "BackTendril_2",
+        "BackTotemPod",
+        "BackTotemStem",
+        "BackTotemTip",
+        "Belt",
+        "BlobShadow",
+        "Body",
+        "Boot",
+        "Boot.001",
+        "CoreOrb",
+        "CoreRibA",
+        "CoreRibB",
+        "Head",
+        "Helmet",
+        "Leg",
+        "Leg.001",
+        "Shoulders",
+        "VineHorn",
+        "VineHorn.001",
+        "Visor"
+      ],
+      "material_count": 2,
+      "material_names": [
+        "DC_Dark.002",
+        "DC_RegenCore"
+      ],
+      "action_count": 0,
+      "action_names": [],
+      "has_rig": true,
+      "has_actions": false
+    },
+    {
+      "name": "Support",
+      "path": "Assets/Art/Models/Generated/Support.fbx",
+      "purpose": "runtime",
+      "rig_target": "Generic transform rig",
+      "exists": true,
+      "armature_count": 1,
+      "armatures": [
+        {
+          "name": "DC_HumanoidRig",
+          "bone_count": 7,
+          "root_bones": [
+            "Root"
+          ]
+        }
+      ],
+      "mesh_count": 21,
+      "mesh_names": [
+        "Arm",
+        "Arm.001",
+        "Belt",
+        "BlobShadow",
+        "Body",
+        "Boot",
+        "Boot.001",
+        "ChestFocus",
+        "ClothRibbon",
+        "ClothRibbon.001",
+        "Head",
+        "Helmet",
+        "LanternRing",
+        "Leg",
+        "Leg.001",
+        "OpenMantle",
+        "Shoulders",
+        "Staff",
+        "StaffBeacon",
+        "StaffLantern",
+        "Visor"
+      ],
+      "material_count": 2,
+      "material_names": [
+        "DC_Magic",
+        "DC_SupportCloth"
+      ],
+      "action_count": 0,
+      "action_names": [],
+      "has_rig": true,
+      "has_actions": false
+    },
+    {
+      "name": "Siege",
+      "path": "Assets/Art/Models/Generated/Siege.fbx",
+      "purpose": "runtime",
+      "rig_target": "Generic transform rig",
+      "exists": true,
+      "armature_count": 1,
+      "armatures": [
+        {
+          "name": "DC_HumanoidRig",
+          "bone_count": 7,
+          "root_bones": [
+            "Root"
+          ]
+        }
+      ],
+      "mesh_count": 19,
+      "mesh_names": [
+        "BlobShadow",
+        "Ram",
+        "RamCollar",
+        "RamHead",
+        "SiegeBanner_Cloth",
+        "SiegeBanner_Pole",
+        "SiegeBody",
+        "SiegeRearCounterweight",
+        "SiegeSidePlate",
+        "SiegeSidePlate.001",
+        "SiegeUpperCradle",
+        "Wheel",
+        "Wheel.001",
+        "Wheel.002",
+        "Wheel.003",
+        "WheelBrace",
+        "WheelBrace.001",
+        "WheelBrace.002",
+        "WheelBrace.003"
+      ],
+      "material_count": 2,
+      "material_names": [
+        "DC_Dark.003",
+        "DC_Enemy.002"
+      ],
+      "action_count": 0,
+      "action_names": [],
+      "has_rig": true,
+      "has_actions": false
+    },
+    {
+      "name": "Boss",
+      "path": "Assets/Art/Models/Generated/Boss.fbx",
+      "purpose": "runtime",
+      "rig_target": "Generic transform rig",
+      "exists": true,
+      "armature_count": 1,
+      "armatures": [
+        {
+          "name": "DC_HumanoidRig",
+          "bone_count": 7,
+          "root_bones": [
+            "Root"
+          ]
+        }
+      ],
+      "mesh_count": 27,
+      "mesh_names": [
+        "Arm",
+        "Arm.001",
+        "Belt",
+        "BlobShadow",
+        "Body",
+        "Boot",
+        "Boot.001",
+        "BossCleaverHaft",
+        "BossCleaverHead",
+        "BossCleaverSpike",
+        "BossCorePlate",
+        "BossLeftPauldron",
+        "Head",
+        "Helmet",
+        "Horn",
+        "Horn.001",
+        "Leg",
+        "Leg.001",
+        "Phase2_Core",
+        "Phase2_ShoulderShard_L",
+        "Phase2_ShoulderShard_R",
+        "Phase3_BackBlade_L",
+        "Phase3_BackBlade_R",
+        "Phase3_CoreRing",
+        "Phase3_Crown",
+        "Shoulders",
+        "Visor"
+      ],
+      "material_count": 3,
+      "material_names": [
+        "DC_Enemy.003",
+        "DC_Fire.001",
+        "DC_Magic.001"
+      ],
+      "action_count": 0,
+      "action_names": [],
+      "has_rig": true,
+      "has_actions": false
+    },
+    {
+      "name": "KnightLicensed",
+      "path": "Assets/ThirdParty/KayKit/Adventurers/Models/KnightLicensed.fbx",
+      "purpose": "comparison",
+      "rig_target": "Static CC0 reference",
+      "exists": true,
+      "armature_count": 0,
+      "armatures": [],
+      "mesh_count": 1,
+      "mesh_names": [
+        "KnightLicensed"
+      ],
+      "material_count": 1,
+      "material_names": [
+        "knight_texture"
+      ],
+      "action_count": 0,
+      "action_names": [],
+      "has_rig": false,
+      "has_actions": false
+    },
+    {
+      "name": "BarbarianLicensed",
+      "path": "Assets/ThirdParty/KayKit/Adventurers/Models/BarbarianLicensed.fbx",
+      "purpose": "comparison",
+      "rig_target": "Static CC0 reference",
+      "exists": true,
+      "armature_count": 0,
+      "armatures": [],
+      "mesh_count": 1,
+      "mesh_names": [
+        "BarbarianLicensed"
+      ],
+      "material_count": 1,
+      "material_names": [
+        "barbarian_texture"
+      ],
+      "action_count": 0,
+      "action_names": [],
+      "has_rig": false,
+      "has_actions": false
+    },
+    {
+      "name": "MageLicensed",
+      "path": "Assets/ThirdParty/KayKit/Adventurers/Models/MageLicensed.fbx",
+      "purpose": "comparison",
+      "rig_target": "Static CC0 reference",
+      "exists": true,
+      "armature_count": 0,
+      "armatures": [],
+      "mesh_count": 1,
+      "mesh_names": [
+        "MageLicensed"
+      ],
+      "material_count": 1,
+      "material_names": [
+        "mage_texture"
+      ],
+      "action_count": 0,
+      "action_names": [],
+      "has_rig": false,
+      "has_actions": false
+    },
+    {
+      "name": "RogueLicensed",
+      "path": "Assets/ThirdParty/KayKit/Adventurers/Models/RogueLicensed.fbx",
+      "purpose": "comparison",
+      "rig_target": "Static CC0 reference",
+      "exists": true,
+      "armature_count": 0,
+      "armatures": [],
+      "mesh_count": 1,
+      "mesh_names": [
+        "RogueLicensed"
+      ],
+      "material_count": 1,
+      "material_names": [
+        "rogue_texture"
+      ],
+      "action_count": 0,
+      "action_names": [],
+      "has_rig": false,
+      "has_actions": false
+    }
+  ],
+  "decision": {
+    "unity_import_rig_type": "Generic transform rigs for this modular low-poly vertical slice",
+    "reason": "Every runtime actor now owns an original lightweight armature and bone-parented modular geometry. The stored KayKit files remain static CC0 comparison sources and are not runtime catalog actors.",
+    "animation_authority": "Animator events may time presentation only; gameplay remains authoritative in combat code.",
+    "unity_validation_status": "Covered by EditMode catalog, override, bone-curve and visible-geometry tests.",
+    "humanoid_follow_up": "A future fully skinned animation library may migrate Knight, Guard, Raider, Vanguard and Support to Unity Humanoid avatars; it is not required by the current rigid low-poly runtime clips."
+  }
+}
