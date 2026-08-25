@@ -18,7 +18,7 @@ Decision: The art vertical slice is not fully releasable yet because physical iP
 | Simulator performance acceptance | In review | `docs/VIS807_PERFORMANCE_ACCEPTANCE_SIMULATOR_2026-08-17.md`, `Builds/ios-performance-acceptance.log` |
 | Physical device Profiler | Open | Required for VIS-006/VIS-807; no iPhone 13-class Profiler capture is present. |
 | Frame/Rendering Debugger | Open | Required for VIS-007; final draw pass, shadow caster, overdraw and texture screens are missing. |
-| Catalog QA | Passed | Current integrated EditMode suite passed 64/64. Raw XML is intentionally ignored. |
+| Catalog QA | Passed | Current integrated EditMode suite passed 65/65. Raw XML is intentionally ignored. |
 | Gameplay QA | Passed | Current integrated PlayMode suite passed 12/12. Raw XML is intentionally ignored. |
 | Automated audio-visual combat | Passed on Simulator | `docs/VIS700_AUDIO_VISUAL_POLISH_ACCEPTANCE_2026-08-25.md`; 480 seconds, 22/22 cues, 6/6 music states, 3/3 levels and 40/40 combat cycles. |
 | Human audio polish | Open | Speaker/headphone fatigue, loudness, pop/click, audio-only/visual-only and final video review are not signed off. |
@@ -29,7 +29,7 @@ Decision: The art vertical slice is not fully releasable yet because physical iP
 
 ## Accepted Simulator Evidence
 
-- EditMode QA: current integrated suite passed 64/64.
+- EditMode QA: current integrated suite passed 65/65.
 - PlayMode QA: current integrated suite passed 12/12.
 - Audio-visual combat: the eight-minute Simulator runner passed all 22 cues, six music states, three review levels, 40 stress cycles and the ten-voice cap.
 - Visual state set: `vis812-final-20260825-210559` includes preparation, ability, normal, dense, boss1, boss2, boss3, victory and defeat from the same installed build.

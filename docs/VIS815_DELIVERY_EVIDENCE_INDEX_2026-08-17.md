@@ -17,7 +17,7 @@ This update supersedes the older test counts and release-risk summary below whil
 | Actor/catalog | 8/8 unique generated actor models, role overrides, sockets and icons; 5,028 total triangles, 800 maximum for one actor. |
 | Rig decision | 8/8 use a seven-bone Generic transform rig for this slice. Humanoid migration is explicitly not claimed. |
 | Buildings | 6/6 generated Archer/Barracks/Mage L1/L2 entries; 3,088 total triangles, unique catalog GUIDs and required sockets. |
-| Automated QA | EditMode 64/64; PlayMode 12/12. Raw XML/log output remains outside version control. |
+| Automated QA | EditMode 65/65; PlayMode 12/12. Raw XML/log output remains outside version control. |
 | Ratio QA | Selected 16:9, 20:9 and 4:3 preparation screenshots under `docs/evidence/runtime/`. |
 | Simulator performance | Preparation/normal/dense/boss median 60 FPS, boss p95 17.1 ms and longest continuous under-30 interval 0.10 s; 90-second soak median 60 FPS, p95 17.1 ms, 8.9% post-warm-up memory growth, no low-memory warning, nominal thermal proxy. |
 | Physical iPhone | Blocked: attached iPhone 13 runs iOS 26.6 beta while installed Xcode 26.6 supplies iOS 26.5 SDK/DDI; developer disk image cannot be mounted. |
@@ -77,8 +77,9 @@ Selected final authoring evidence:
 | VIS-276 | In review | `Assets/Scripts/Core/GameSessionController.cs`, `Builds/editmode-results-vis276.xml` passed 40/40, `Builds/playmode-results-vis276.xml` passed 6/6, `Builds/ios-actor-capture.log` passed with `siege_spawn=true siege_heavy=true`, `docs/evidence/runtime/defender-simulator-actor-runtime-vfx-animation-20260817-213948-landscape-upright.png` |
 | VIS-266 | In review | `Builds/editmode-results-vis266.xml` passed 40/40, `Builds/playmode-results-vis266.xml` passed 6/6, `Builds/ios-actor-capture.log`, `docs/evidence/runtime/defender-simulator-actor-runtime-vfx-animation-20260817-211833-landscape-upright.png` |
 | VIS-701–705 | Passed | `docs/VIS700_AUDIO_VISUAL_POLISH_ACCEPTANCE_2026-08-25.md`, `docs/evidence/runtime/audio-visual-acceptance-20260825.txt`; 480-second run passed 22/22 cues and 40/40 combat cycles. |
+| VIS-706 | In review | Procedural wind/leaf/crystal layer integrated; final-source 60-second Medium smoke played 4 details and Low-off profile test passed. Human masking/loudness review remains open. |
 | VIS-707/VIS-708 | In review | Automated matrix/full-run passed; human audio-only/visual-only, speaker/headphone and final video sign-off remain open. |
-| VIS-810 | Passed | Current integrated EditMode suite passed 64/64; raw XML intentionally remains ignored. |
+| VIS-810 | Passed | Current integrated EditMode suite passed 65/65; raw XML intentionally remains ignored. |
 | VIS-811 | Passed | Current integrated PlayMode suite passed 12/12, including audio voice-budget and result layout regressions; raw XML intentionally remains ignored. |
 | VIS-812 | Passed on Simulator | `docs/VIS812_FINAL_VISUAL_EVIDENCE_SIMULATOR_2026-08-17.md`, accepted stamp `vis812-final-20260825-210559`, `Builds/ios-vis812-final-evidence.log`, `Builds/ios-vis812-final-evidence-defeat.log` |
 | VIS-813/VIS-814 | In review | `docs/VIS813_814_ACCESSIBILITY_COMPARISON_2026-08-17.md`, `docs/evidence/visual-development/vis813-accessibility-grayscale-contact-sheet-2026-08-17.png`, `docs/evidence/visual-development/vis814-before-after-contact-sheet-2026-08-17.png`, `docs/evidence/visual-development/vis813-814-visual-audit-report-2026-08-17.json` |
@@ -142,7 +143,7 @@ python3 tools/art_pipeline/render_vis813_814_evidence.py
 | Item | Why It Remains Open |
 |---|---|
 | VIS-006/VIS-007/VIS-807 physical-device profiling | Simulator metrics passed, but final iPhone 13-class Profiler, Frame Debugger and Rendering Debugger evidence are still missing. |
-| VIS-706 environment ambience | Dedicated low-profile wind, foliage and crystal SFX have not been authored. |
+| VIS-706 environment ambience | Runtime layer and quality controls passed; subjective masking/loudness remains part of the human audio polish review. |
 | VIS-707/VIS-708 human polish sign-off | Eight-minute automation passed, but speaker/headphone fatigue, loudness, pop/click and audio-only/visual-only video review need a human listener. |
 | Real assistive-tech review | VIS-813 visual/grayscale evidence passed in review, but VoiceOver or assistive-tech behavior was not validated. |
 | Role-specific authored asset polish | Knight/Guard/Raider generated override clips now exist and pass regression, but final hand-authored motion polish and many actor/building P1/P2 production tasks remain open. |

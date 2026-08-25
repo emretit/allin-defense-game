@@ -19,13 +19,14 @@ Release gate: Blocked, not failed
 
 | Check | Result |
 |---|---|
-| Unity EditMode | 64/64 passed |
+| Unity EditMode | 65/65 passed |
 | Unity PlayMode | 12/12 passed |
 | Actor catalog | 8/8 unique, 5,028 triangles total, no required socket gaps |
 | Building catalog | 6/6 unique, 3,088 triangles total, no required socket gaps |
 | Simulator four-scenario run | 60 FPS median, boss p95 17.1 ms, longest continuous under-30 interval 0.10 s, no low-memory warning |
 | Simulator 90-second soak | 60 FPS median, 17.1 ms p95, 8.9% post-warm-up memory growth, no low-memory warning |
 | Simulator 8-minute audio-visual combat | 22/22 cues, 6/6 music states, 3/3 review levels, 40/40 combat cycles, pause snapshot passed, 10/10 peak SFX voices |
+| Final-source ambience smoke | Medium enabled, 4 wind/leaf/crystal details; Low-off/Medium/High profile contract passed |
 | Safe-area ratios | 16:9, 20:9 and 4:3 selected evidence visually inspected |
 
 Raw builds, XML, profiler logs and crash output stay under ignored `Builds/` or `TestResults/`. Curated evidence is under `docs/evidence/`.
@@ -43,8 +44,7 @@ KayKit Medieval Hexagon/Adventurers and Kenney Fantasy UI provenance remains rec
 1. Physical iPhone Profiler, Frame Debugger and Rendering Debugger capture. The connected iPhone 13 runs iOS 26.6 beta, but installed Xcode supplies iOS 26.5 DeviceSupport/DDI; developer disk image mount fails before installation.
 2. Physical-device 60-actor/VFX stress and final 90-second soak.
 3. Human speaker/headphone listening, audio-only/visual-only and final video sign-off. The automated Silent/Low/Normal matrix and eight-minute combat run passed.
-4. VIS-706 authored wind/foliage/crystal ambience polish.
-5. Optional human blind-recognition sign-off for the eight actor silhouettes; automated color/grayscale/64 px evidence exists.
+4. Optional human blind-recognition sign-off for the eight actor silhouettes; automated color/grayscale/64 px evidence exists.
 
 Do not close VIS-816 until items 1–3 pass or the product owner explicitly waives them. Simulator FPS must not be presented as physical GPU or thermal acceptance.
 

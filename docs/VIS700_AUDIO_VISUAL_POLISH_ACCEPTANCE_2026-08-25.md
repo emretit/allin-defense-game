@@ -2,7 +2,7 @@
 
 Date: 2026-08-25
 
-Status: VIS-701–705 completed; VIS-706 waiting; VIS-707/VIS-708 in review
+Status: VIS-701–705 completed; VIS-706/VIS-707/VIS-708 in review
 
 ## Delivered Contract
 
@@ -37,16 +37,19 @@ Music crossfade targets are Preparation 1.10 s, Combat 0.85 s, Intense 0.70 s, B
 
 Review gains are Silent 0%, Low 25% and Normal 100%. These are acceptance controls, not a new player-facing settings screen.
 
+VIS-706 adds a project-original procedural ambience layer: a filtered wind bed, sparse leaf rustle and sparse crystal chime. Low quality disables the layer completely. Medium uses wind 0.055/detail 0.08 with 7–12 second detail spacing; High uses 0.075/0.11 with 5–10 second spacing. Combat, Intense, Boss and result music states progressively attenuate ambience so it stays subordinate to gameplay signals. `DC_AMBIENT_DISABLE=1` provides a deterministic runtime-off switch.
+
 ## Automated Acceptance
 
 The iOS Simulator acceptance runner starts gameplay directly, builds the eight-slot defence layout and holds real combat load for the whole run. Every 12 seconds it replaces the stress group with 16 enemies; every fourth cycle includes a Boss. In parallel it exercises all 22 cues, all six music states, the three review gains and the pause snapshot.
 
 | Check | Result |
 |---|---|
-| EditMode | 64/64 passed |
+| EditMode | 65/65 passed |
 | PlayMode | 12/12 passed |
 | 60-second integration smoke | 22/22 cues, 6/6 music states, 3/3 levels, 5/5 combat cycles, 10/10 maximum voices |
 | 480-second full combat run | 22/22 cues, 6/6 music states, 3/3 levels, 40/40 combat cycles, 10/10 maximum voices |
+| Post-VIS-706 60-second integration | Medium ambience enabled; 4 procedural details played; Low-off/Medium/High contract test passed |
 | Mixer snapshot | normal → pause → normal passed |
 | Runtime failure marker | none |
 
@@ -61,7 +64,7 @@ Raw runtime log: ignored `Builds/ios-audio-visual-acceptance.log`
 - VIS-703 is complete: all six music states have deterministic crossfade targets; pause/normal snapshot transition passed.
 - VIS-704 is complete: build/upgrade/sell remain success-only gameplay emissions and share the protected Economy feedback group.
 - VIS-705 is complete: HeroAbility, BossPhase, BossAttack, Victory and Defeat are Critical and duck music.
-- VIS-706 remains waiting: a dedicated low-profile wind/foliage/crystal environment SFX layer has not been authored.
+- VIS-706 is in review: the wind/leaf/crystal layer is integrated, Low-off behavior and Medium runtime playback passed; human masking/loudness review remains open.
 - VIS-707 is in review: automated Silent/Low/Normal coverage passed, but the requested video and human audio-only/visual-only sign-off are not present.
 - VIS-708 is in review: the eight-minute combat run passed with timestamped evidence, but subjective speaker/headphone fatigue, loudness balance, pop/click and perceived synchronization still require a listening pass.
 

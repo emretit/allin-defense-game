@@ -5,7 +5,7 @@
   "accepted_ratios": ["16:9", "20:9", "4:3"],
   "unity": {
     "version": "6000.4.1f1",
-    "editmode": { "passed": 64, "total": 64 },
+    "editmode": { "passed": 65, "total": 65 },
     "playmode": { "passed": 12, "total": 12 }
   },
   "actors": {
@@ -50,6 +50,15 @@
     "maximum_active_sfx_voices": 10,
     "voice_budget": 10,
     "human_listening_signoff": false
+  },
+  "simulator_ambience_smoke": {
+    "duration_seconds": 60,
+    "quality": "Medium",
+    "enabled": true,
+    "played_details": 4,
+    "minimum_expected_details": 1,
+    "low_profile_disabled": true,
+    "human_masking_signoff": false
   },
   "physical_device": {
     "model": "iPhone 13 (iPhone14,5)",

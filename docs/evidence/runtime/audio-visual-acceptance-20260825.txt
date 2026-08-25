@@ -18,7 +18,14 @@ Selected runtime markers from Builds/ios-audio-visual-acceptance.log:
 
 Automated QA from the same source state:
 
-EditMode: 64/64 passed
+EditMode: 65/65 passed
 PlayMode: 12/12 passed
+
+Post-run VIS-706 ambience integration smoke from the final source state:
+
+[DC_AMBIENT_CONFIG] quality=Medium enabled=True wind=0.055 detail=0.080 interval=7-12
+[DC_AMBIENT_DETAIL] count=1 clip=DC_Original_LeafRustle review_gain=0.25 state_gain=0.52
+[DC_AMBIENT_DETAIL] count=3 clip=DC_Original_CrystalChime review_gain=1.00 state_gain=0.68
+[DC_AUDIO_VISUAL_ACCEPTANCE_PASS] duration_seconds=60 cues=22/22 music_states=6/6 levels=3/3 combat_cycles=5/5 ambient_enabled=True ambient_details=4/1 pause_snapshot=True max_active_voices=10/10
 
 This is curated automated evidence. The ignored raw log remains under Builds/. It does not replace a human speaker/headphone loudness, pop/click and fatigue review.
