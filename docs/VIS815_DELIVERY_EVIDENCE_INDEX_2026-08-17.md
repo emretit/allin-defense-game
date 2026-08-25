@@ -52,6 +52,7 @@ Selected final authoring evidence:
 |---|---|---|
 | VIS-801/VIS-802/VIS-803 | In review | `docs/VIS800_QUALITY_PROFILE_MATRIX_2026-08-17.md`, `Builds/playmode-results-vis801-803.xml`, `Builds/unity-quality-profile-matrix-checkpoint.log` |
 | VIS-804 | In review | `docs/VIS804_TEXTURE_IMPORT_PROFILE_2026-08-17.md`, `Builds/unity-texture-import-profile-checkpoint.log`, `docs/evidence/visual-development/texture-import-profile-report-2026-08-17.json` |
+| VIS-805 | In review | `docs/VIS805_GEOMETRY_OPTIMIZATION_DECISION_2026-08-25.md`, `docs/evidence/visual-development/vis805-geometry-optimization-decision-2026-08-25.json`; no geometry mutation applied before physical Frame Debugger evidence |
 | VIS-806 | In review | `docs/VIS806_VFX_QUALITY_PROFILE_2026-08-17.md`, `Builds/unity-vfx-quality-profile-checkpoint.log`, `docs/evidence/visual-development/vfx-quality-profile-report-2026-08-17.json` |
 | VIS-807 | In progress | `docs/VIS807_PERFORMANCE_ACCEPTANCE_SIMULATOR_2026-08-17.md`, `Builds/ios-performance-acceptance.log`, `tools/run_ios_performance_acceptance.sh` |
 | VIS-221/VIS-222 | In review | `ArtSource/Blender/Guard.blend`, `Assets/Art/Models/Generated/Guard.fbx`, `docs/evidence/visual-development/actor-proxy-metrics-2026-08-17.json`, `Builds/unity-actor-catalog-visual-vis221222.log`, `Builds/editmode-results-vis221222.xml` passed 40/40 |

@@ -1,0 +1,84 @@
+{
+  "schema": "defender-chronicles.visual-development.vis805-geometry-decision.v1",
+  "checkpoint": "VIS-805",
+  "capturedOn": "2026-08-25",
+  "status": "in_review",
+  "acceptedVisualStamp": "vis812-final-20260825-210559",
+  "decision": "No geometry mutation applied before physical Profiler/Frame Debugger evidence.",
+  "inputs": [
+    "docs/evidence/visual-development/closeout-metrics-2026-08-25.json",
+    "docs/evidence/visual-development/actor-proxy-metrics-2026-08-17.json",
+    "docs/evidence/visual-development/building-proxy-metrics-2026-08-16.json",
+    "docs/evidence/visual-development/environment-budget-proxy-report-2026-08-17.json",
+    "docs/evidence/visual-development/vfx-profiler-overdraw-report-2026-08-17.json"
+  ],
+  "currentStaticBudgets": {
+    "actors": {
+      "count": 8,
+      "totalTriangles": 5028,
+      "maxActorTriangles": 800,
+      "missingSockets": [],
+      "sourceMetricsTotalTriangles": 4640
+    },
+    "buildings": {
+      "count": 6,
+      "generatedTriangles": 3088,
+      "legacyCatalogTriangles": 15521,
+      "legacyToGeneratedTriangleReductionPercent": 80.1,
+      "missingSockets": []
+    },
+    "environment": {
+      "rendererCount": 16,
+      "rendererSoftBudget": 16,
+      "triangleCount": 3792,
+      "triangleSoftBudget": 8500,
+      "materialSlots": 16,
+      "materialSlotSoftBudget": 20,
+      "shadowCasters": 0,
+      "colliderCount": 0
+    },
+    "vfxStressProxy": {
+      "signals": 108,
+      "poolGrowth": 0,
+      "estimatedTransparentCost": 117.331,
+      "estimatedTransparentBudget": 120
+    }
+  },
+  "candidateDecisions": [
+    {
+      "candidate": "Mesh combine",
+      "status": "defer",
+      "reason": "Environment renderer count is already at the soft budget and there is no physical draw-pass bottleneck yet.",
+      "allowedScopeAfterDeviceEvidence": "Only non-interactive background strips or decorative clusters.",
+      "blockedScope": "Actors, outposts, build slots, touch targets, pathing roots and VFX sockets."
+    },
+    {
+      "candidate": "GPU instancing",
+      "status": "candidate",
+      "reason": "Repeated props and road stones may benefit if Frame Debugger shows repeated material draw calls.",
+      "allowedScopeAfterDeviceEvidence": "Repeated non-interactive prop families sharing one material.",
+      "blockedScope": "Unique actor/building silhouettes where per-role material or socket identity matters."
+    },
+    {
+      "candidate": "Static batching",
+      "status": "candidate",
+      "reason": "Static terrain, road and boundary dressing are safe candidates only after draw-call evidence.",
+      "allowedScopeAfterDeviceEvidence": "Terrain, road, boundary and keep dressing with no gameplay collider or input role.",
+      "blockedScope": "Build slots, selected outpost panels, dynamic outpost state models, actors and VFX."
+    },
+    {
+      "candidate": "LOD",
+      "status": "reject_for_current_actor_building_set",
+      "reason": "Current actor/building triangle counts are well below art-bible soft budgets; LOD would add authoring and QA cost without measured benefit.",
+      "allowedScopeAfterDeviceEvidence": "Only large boundary/keep silhouettes if physical triangle or overdraw evidence demands it.",
+      "blockedScope": "Small actors and the six gameplay-critical building silhouettes."
+    }
+  ],
+  "regressionGuards": [
+    "No generated FBX, prefab, catalog, slot, route or camera file changed for this checkpoint.",
+    "Picking, pathing, eight build slots and touch targets remain untouched.",
+    "Any future geometry optimization must include before/after draw call, triangle and interaction regression evidence."
+  ],
+  "passesStaticDecisionGate": true,
+  "completionGate": "VIS-805 may move from Bekliyor to In review. It cannot be Tamamlandi until physical Profiler/Frame Debugger evidence proves whether a candidate should be applied or rejected."
+}

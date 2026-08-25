@@ -14,6 +14,7 @@ Decision: The art vertical slice is not fully releasable yet because physical iP
 |---|---|---|
 | Quality profile matrix | In review | `docs/VIS800_QUALITY_PROFILE_MATRIX_2026-08-17.md`, `Builds/unity-quality-profile-matrix-checkpoint.log` |
 | Texture import profile | In review | `docs/VIS804_TEXTURE_IMPORT_PROFILE_2026-08-17.md`, `Builds/unity-texture-import-profile-checkpoint.log` |
+| Geometry optimization decision | In review | `docs/VIS805_GEOMETRY_OPTIMIZATION_DECISION_2026-08-25.md`; no mesh mutation applied without physical draw-pass proof |
 | VFX quality profile | In review | `docs/VIS806_VFX_QUALITY_PROFILE_2026-08-17.md`, `Builds/unity-vfx-quality-profile-checkpoint.log` |
 | Simulator performance acceptance | In review | `docs/VIS807_PERFORMANCE_ACCEPTANCE_SIMULATOR_2026-08-17.md`, `Builds/ios-performance-acceptance.log` |
 | Physical device Profiler | Open | Required for VIS-006/VIS-807; no iPhone 13-class Profiler capture is present. |

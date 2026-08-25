@@ -14,6 +14,7 @@ Release gate: Blocked, not failed
 - Responsive HUD/input tests cover 16:9, 20:9 and 4:3 without changing the eight build slots or gameplay route.
 - iOS performance, soak, state capture and ratio capture workflows are repeatable from `tools/`.
 - The 22-cue audio policy, critical-event ducking, ten-voice budget, six music transitions and Silent/Low/Normal acceptance runner are integrated.
+- VIS-805 geometry optimization is now a measured decision gate: no mesh mutation was applied before physical draw-pass proof.
 
 ## Verified
 
@@ -27,6 +28,7 @@ Release gate: Blocked, not failed
 | Simulator 90-second soak | 60 FPS median, 17.1 ms p95, 8.9% post-warm-up memory growth, no low-memory warning |
 | Simulator 8-minute audio-visual combat | 22/22 cues, 6/6 music states, 3/3 review levels, 40/40 combat cycles, pause snapshot passed, 10/10 peak SFX voices |
 | Final-source ambience smoke | Medium enabled, 4 wind/leaf/crystal details; Low-off/Medium/High profile contract passed |
+| Geometry decision | Actors/buildings remain below static triangle budgets; mesh combine/instancing/static batching/LOD deferred until physical Frame Debugger evidence |
 | Safe-area ratios | 16:9, 20:9 and 4:3 selected evidence visually inspected |
 
 Raw builds, XML, profiler logs and crash output stay under ignored `Builds/` or `TestResults/`. Curated evidence is under `docs/evidence/`.
@@ -58,6 +60,7 @@ DC_SIMULATOR_ID=<iphone-17-pro-udid> DC_REUSE_INSTALLED_BUILD=1 tools/run_ios_vi
 DC_SIMULATOR_ID=<iphone-17-pro-udid> DC_REUSE_INSTALLED_BUILD=1 DC_AUDIO_ACCEPTANCE_SECONDS=480 tools/run_ios_audio_visual_acceptance.sh
 tools/run_ios_ratio_acceptance.sh
 python3 tools/art_pipeline/render_vis813_814_evidence.py
+python3 tools/art_pipeline/write_vis805_geometry_decision.py
 python3 tools/validate_visual_human_signoff.py docs/evidence/visual-development/human-review-signoff-template-2026-08-25.json --allow-pending
 ```
 
