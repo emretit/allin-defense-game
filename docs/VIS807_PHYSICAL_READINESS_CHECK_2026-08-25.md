@@ -8,7 +8,7 @@ Readiness report: `docs/evidence/visual-development/ios-physical-readiness-2026-
 
 ## Current Result
 
-The iPhone 13-class device is visible to CoreDevice, paired over wired transport and has Developer Mode enabled. It is still not ready for the physical Profiler, Frame Debugger or Rendering Debugger acceptance pass.
+The iPhone 13-class device is visible to CoreDevice and has Developer Mode enabled. CoreDevice has a usable iOS DDI, but the phone is currently visible over local network instead of wired USB and the DDI mount probe reports the device as locked. It is still not ready for the physical Profiler, Frame Debugger or Rendering Debugger acceptance pass.
 
 | Check | Result |
 |---|---|
@@ -16,22 +16,24 @@ The iPhone 13-class device is visible to CoreDevice, paired over wired transport
 | Device | iPhone 13 (`iPhone14,5`) |
 | iOS | 26.6 beta (`23G5028e`) |
 | Pairing | paired |
-| Transport | wired |
+| Transport | localNetwork |
 | Developer Mode | enabled |
 | DDI services | unavailable |
-| DeviceSupport match | iOS 26.6 not present |
+| Preferred iOS DDI | usable, build 17F113 |
+| DDI mount probe | blocked by device locked |
 
 ## Blocker
 
-The physical acceptance gate is blocked by device/toolchain support, not by the game project:
+The physical acceptance gate is blocked by device connection/lock state, not by the game project:
 
 - `ddiServicesAvailable` is `false`.
-- The visible Xcode DeviceSupport set does not include iOS 26.6.
-- `xctrace` sees the iPhone 13 in the physical device sections, but profiling cannot be treated as ready until DDI services are available.
+- CoreDevice reports a usable preferred iOS DDI at `/Library/Developer/DeveloperDiskImages/iOS_DDI/`.
+- The direct `ddiServices` probe attempted to mount the DDI and failed because the device is locked.
+- `devicectl` currently sees the phone over `localNetwork`, not wired USB.
 
 ## Next Gate
 
-After installing an Xcode/DeviceSupport/DDI build compatible with iOS 26.6 beta, or moving the phone to a supported iOS version, rerun:
+Connect the phone over USB, unlock it, keep the screen awake, accept any trust/developer prompts, then rerun:
 
 ```sh
 python3 tools/check_ios_physical_readiness.py

@@ -7,7 +7,7 @@
     "build": "17F113",
     "error": ""
   },
-  "deviceSupportVersions": [
+  "legacyDeviceSupportVersions": [
     "15.0",
     "15.2",
     "15.4",
@@ -16,6 +16,16 @@
     "16.1",
     "16.4"
   ],
+  "preferredIosDDI": {
+    "ok": true,
+    "error": "",
+    "hostCoreDeviceVersion": "518.33",
+    "usable": true,
+    "contentIsCompatible": true,
+    "buildUpdate": "17F113",
+    "variant": "external",
+    "hostDDIPresent": true
+  },
   "devicectlOk": true,
   "physicalDevices": [
     {
@@ -30,8 +40,16 @@
       "developerModeStatus": "enabled",
       "ddiServicesAvailable": false,
       "pairingState": "paired",
-      "transportType": "wired",
+      "transportType": "localNetwork",
       "tunnelState": "disconnected"
+    }
+  ],
+  "ddiServiceProbes": [
+    {
+      "name": "Emre iPhone’u (2)",
+      "result": "deviceLocked",
+      "ok": false,
+      "mountAttempted": true
     }
   ],
   "xctrace": {
@@ -44,8 +62,8 @@
   "status": {
     "readyForPhysicalAcceptance": false,
     "blockers": [
-      "Emre iPhone’u (2) DDI services are not available.",
-      "Xcode DeviceSupport does not include iOS 26.6."
+      "Emre iPhone’u (2) is visible over localNetwork rather than wired USB.",
+      "Emre iPhone’u (2) must be unlocked and kept awake before DDI services can mount."
     ]
   },
   "note": "Sanitized report: serial number, ECID, UDID and CoreDevice identifier are intentionally omitted."

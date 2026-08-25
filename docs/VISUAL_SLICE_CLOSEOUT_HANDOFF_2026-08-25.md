@@ -45,7 +45,7 @@ KayKit Medieval Hexagon/Adventurers and Kenney Fantasy UI provenance remains rec
 
 See `docs/VISUAL_DEVELOPMENT_EXTERNAL_BLOCKERS_2026-08-25.md` for the current blocker map. The TODO now has 165 completed rows and 23 blocked rows; there are no ambiguous `İncelemede` rows left.
 
-1. Physical iPhone Profiler, Frame Debugger and Rendering Debugger capture. The connected iPhone 13 is paired/wired with Developer Mode enabled, but `docs/evidence/visual-development/ios-physical-readiness-2026-08-25.json` reports DDI services unavailable for iOS 26.6 beta.
+1. Physical iPhone Profiler, Frame Debugger and Rendering Debugger capture. The iPhone 13 is paired with Developer Mode enabled and CoreDevice has a usable preferred iOS DDI, but `docs/evidence/visual-development/ios-physical-readiness-2026-08-25.json` reports localNetwork transport plus a locked-device DDI mount failure. Connect over USB, unlock and keep the phone awake before rerunning readiness.
 2. Physical-device 60-actor/VFX stress and final 90-second soak.
 3. Human speaker/headphone listening, audio-only/visual-only, VoiceOver/blind-recognition and final video sign-off. The review protocol and JSON validator are in `docs/VIS706_708_813_814_HUMAN_REVIEW_GATE_2026-08-25.md`.
 4. Final human sign-off file is not present yet; `docs/evidence/visual-development/human-review-signoff-template-2026-08-25.json` currently validates as pending by design.
@@ -67,7 +67,7 @@ python3 tools/check_ios_physical_readiness.py
 python3 tools/validate_visual_human_signoff.py docs/evidence/visual-development/human-review-signoff-template-2026-08-25.json --allow-pending
 ```
 
-For physical acceptance, install an Xcode/DeviceSupport build compatible with iOS 26.6 beta, then run:
+For physical acceptance, connect the iPhone over USB, unlock it, keep it awake, accept any trust/developer prompts, then run:
 
 ```sh
 DC_IOS_TEAM_ID=YL5HQCW4RY DC_IOS_PERFORMANCE_ACCEPTANCE=1 tools/build_and_run_ios_device.sh

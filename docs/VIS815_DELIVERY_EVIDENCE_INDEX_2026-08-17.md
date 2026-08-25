@@ -20,7 +20,7 @@ This update supersedes the older test counts and release-risk summary below whil
 | Automated QA | EditMode 65/65; PlayMode 12/12. Raw XML/log output remains outside version control. |
 | Ratio QA | Selected 16:9, 20:9 and 4:3 preparation screenshots under `docs/evidence/runtime/`. |
 | Simulator performance | Preparation/normal/dense/boss median 60 FPS, boss p95 17.1 ms and longest continuous under-30 interval 0.10 s; 90-second soak median 60 FPS, p95 17.1 ms, 8.9% post-warm-up memory growth, no low-memory warning, nominal thermal proxy. |
-| Physical iPhone | Blocked: attached iPhone 13 is paired/wired with Developer Mode enabled, but `docs/evidence/visual-development/ios-physical-readiness-2026-08-25.json` reports DDI services unavailable and no iOS 26.6 DeviceSupport match. |
+| Physical iPhone | Blocked: iPhone 13 is paired with Developer Mode enabled and preferred iOS DDI is usable, but `docs/evidence/visual-development/ios-physical-readiness-2026-08-25.json` reports localNetwork transport plus locked-device DDI mount failure. |
 | Audio-visual polish | Eight-minute Simulator combat acceptance passed: 22/22 cues, 6/6 music states, 3/3 review levels and 40/40 stress cycles. Human listening/video sign-off is now standardized in `docs/VIS706_708_813_814_HUMAN_REVIEW_GATE_2026-08-25.md`. |
 | Release decision | VIS-816 remains blocked; Simulator approval is not a substitute for physical Profiler/Frame Debugger or human speaker/headphone polish review. |
 

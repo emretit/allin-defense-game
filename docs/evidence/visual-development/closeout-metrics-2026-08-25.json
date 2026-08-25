@@ -80,7 +80,7 @@
     "os": "iOS 26.6 beta (23G5028e)",
     "state": "blocked",
     "readiness_report": "docs/evidence/visual-development/ios-physical-readiness-2026-08-25.json",
-    "reason": "DDI services are unavailable and the installed Xcode DeviceSupport set does not include iOS 26.6."
+    "reason": "Preferred iOS DDI is usable, but the phone is visible over localNetwork and DDI mount is blocked because the device is locked."
   },
   "release_gate": "blocked"
 }

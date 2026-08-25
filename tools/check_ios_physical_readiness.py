@@ -55,6 +55,31 @@ def load_devicectl() -> dict[str, Any]:
     return {"ok": True, "error": "", "devices": data.get("result", {}).get("devices", [])}
 
 
+def preferred_ios_ddi() -> dict[str, Any]:
+    with tempfile.NamedTemporaryFile(suffix=".json") as tmp:
+        code, _, stderr = run(
+            ["xcrun", "devicectl", "list", "preferredDDI", "--platform", "iOS", "--json-output", tmp.name]
+        )
+        if code != 0:
+            return {"ok": False, "error": stderr, "usable": False}
+        with open(tmp.name, "r", encoding="utf-8") as stream:
+            data = json.load(stream)
+    candidates = data.get("result", {}).get("platforms", {}).get("iOS", [])
+    first = candidates[0] if candidates else {}
+    metadata = first.get("ddiMetadata", {})
+    host_ddi = first.get("hostDDI", "")
+    return {
+        "ok": True,
+        "error": "",
+        "hostCoreDeviceVersion": data.get("result", {}).get("hostCoreDeviceVersion", ""),
+        "usable": metadata.get("isUsable", False) is True,
+        "contentIsCompatible": metadata.get("contentIsCompatible", False) is True,
+        "buildUpdate": metadata.get("buildUpdate", ""),
+        "variant": metadata.get("variant", ""),
+        "hostDDIPresent": bool(host_ddi),
+    }
+
+
 def sanitized_physical_devices(devices: list[dict[str, Any]]) -> list[dict[str, Any]]:
     sanitized: list[dict[str, Any]] = []
     for device in devices:
@@ -83,6 +108,50 @@ def sanitized_physical_devices(devices: list[dict[str, Any]]) -> list[dict[str, 
     return sanitized
 
 
+def ddi_service_probes(devices: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    probes: list[dict[str, Any]] = []
+    for device in devices:
+        hardware = device.get("hardwareProperties", {})
+        properties = device.get("deviceProperties", {})
+        identifier = device.get("identifier", "")
+        if hardware.get("reality") != "physical" or hardware.get("platform") != "iOS" or not identifier:
+            continue
+        with tempfile.NamedTemporaryFile(suffix=".json") as tmp:
+            code, stdout, stderr = run(
+                [
+                    "xcrun",
+                    "devicectl",
+                    "device",
+                    "info",
+                    "ddiServices",
+                    "--device",
+                    identifier,
+                    "--json-output",
+                    tmp.name,
+                ],
+                timeout=45,
+            )
+        combined = "\n".join(part for part in (stdout, stderr) if part)
+        lowered = combined.lower()
+        if code == 0:
+            reason = "available"
+        elif "devicelocked" in lowered or "device is locked" in lowered:
+            reason = "deviceLocked"
+        elif "could not be mounted" in lowered:
+            reason = "mountFailed"
+        else:
+            reason = "unavailable"
+        probes.append(
+            {
+                "name": properties.get("name", ""),
+                "result": reason,
+                "ok": code == 0,
+                "mountAttempted": "mount" in lowered or "developer disk image" in lowered,
+            }
+        )
+    return probes
+
+
 def xctrace_devices() -> dict[str, Any]:
     code, stdout, stderr = run(["xcrun", "xctrace", "list", "devices"], timeout=45)
     physical_lines: list[str] = []
@@ -104,19 +173,34 @@ def xctrace_devices() -> dict[str, Any]:
     }
 
 
-def readiness_status(devices: list[dict[str, Any]], support_versions: list[str]) -> dict[str, Any]:
+def readiness_status(
+    devices: list[dict[str, Any]],
+    support_versions: list[str],
+    preferred_ddi: dict[str, Any],
+    ddi_probes: list[dict[str, Any]],
+) -> dict[str, Any]:
     blockers: list[str] = []
     if not devices:
         blockers.append("No physical iOS device is visible to devicectl.")
+    if not preferred_ddi.get("usable", False):
+        blockers.append("No usable iOS Developer Disk Image is available to CoreDevice.")
+    probe_by_name = {probe.get("name", ""): probe for probe in ddi_probes}
     for device in devices:
+        name = device.get("name", "device")
         if device.get("pairingState") != "paired":
-            blockers.append(f"{device.get('name', 'device')} is not paired.")
+            blockers.append(f"{name} is not paired.")
         if device.get("developerModeStatus") != "enabled":
-            blockers.append(f"{device.get('name', 'device')} Developer Mode is not enabled.")
+            blockers.append(f"{name} Developer Mode is not enabled.")
+        if device.get("transportType") != "wired":
+            blockers.append(f"{name} is visible over {device.get('transportType', 'unknown')} rather than wired USB.")
         if device.get("ddiServicesAvailable") is not True:
-            blockers.append(f"{device.get('name', 'device')} DDI services are not available.")
+            probe = probe_by_name.get(name, {})
+            if probe.get("result") == "deviceLocked":
+                blockers.append(f"{name} must be unlocked and kept awake before DDI services can mount.")
+            else:
+                blockers.append(f"{name} DDI services are not available.")
         os_version = str(device.get("osVersion", ""))
-        if os_version and os_version not in support_versions:
+        if os_version and os_version not in support_versions and not preferred_ddi.get("usable", False):
             blockers.append(f"Xcode DeviceSupport does not include iOS {os_version}.")
     return {
         "readyForPhysicalAcceptance": not blockers,
@@ -131,15 +215,20 @@ def main() -> int:
 
     devicectl = load_devicectl()
     devices = sanitized_physical_devices(devicectl["devices"])
+    raw_devices = devicectl["devices"]
     support_versions = device_support_versions()
-    status = readiness_status(devices, support_versions)
+    preferred_ddi = preferred_ios_ddi()
+    ddi_probes = ddi_service_probes(raw_devices)
+    status = readiness_status(devices, support_versions, preferred_ddi, ddi_probes)
     report = {
         "schema": "defender-chronicles.visual-development.ios-physical-readiness.v1",
         "capturedOn": "2026-08-25",
         "xcode": xcode_version(),
-        "deviceSupportVersions": support_versions,
+        "legacyDeviceSupportVersions": support_versions,
+        "preferredIosDDI": preferred_ddi,
         "devicectlOk": devicectl["ok"],
         "physicalDevices": devices,
+        "ddiServiceProbes": ddi_probes,
         "xctrace": xctrace_devices(),
         "status": status,
         "note": "Sanitized report: serial number, ECID, UDID and CoreDevice identifier are intentionally omitted.",
