@@ -24,7 +24,7 @@ Bu proje Age of Arena veya FutbolQuiz’den kod, model, ses, font, ikon ya da UI
 
 - Unity: `6000.4.1f1`
 - iOS minimum sürüm: 15.0
-- Yön: Auto Rotation; yalnız Landscape Left ve Landscape Right
+- Yön: açılış/menü/kampanya/brifing portre; savaş/pause/sonuç yalnız Landscape Left ve Landscape Right
 - Bundle ID: `com.emreaydin.defenderchronicles`
 - Giriş: Unity Input System
 - Test: Unity Test Framework 1.6.0

@@ -150,8 +150,14 @@ Kural:
 
 Tamamlanan kod degisikligi:
 
+- Uygulama acilisi, ana menu, kampanya ve brifing portre calisir.
+- Savas, pause ve savas sonucu iki yatay yonden birinde calisir; haritaya veya ana menuye donuste portreye gecilir.
 - `SafeAreaFitter` eklendi.
 - Runtime canvas safe area icine oturacak.
+- Uretim HUD raylari fiziksel ekran kenarlarina kadar uzanacak.
+- Yazi ve dokunma hedefleri raylar icindeki `SafeContent` katmaninda safe area icinde kalacak.
+- Savas kamerasi sabit zoom yerine cihaz ve safe area oranina gore yatay kadraji koruyacak.
+- Detayli arastirma ve karar kaydi: `docs/UI_FULL_SCREEN_RESEARCH_2026-08-16.md`.
 
 Test edilecek ekranlar:
 

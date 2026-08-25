@@ -1,0 +1,50 @@
+{
+  "schema": "defender-chronicles.visual-slice-closeout.v1",
+  "captured_on": "2026-08-25",
+  "accepted_visual_stamp": "vis812-final-20260825-210559",
+  "accepted_ratios": ["16:9", "20:9", "4:3"],
+  "unity": {
+    "version": "6000.4.1f1",
+    "editmode": { "passed": 62, "total": 62 },
+    "playmode": { "passed": 11, "total": 11 }
+  },
+  "actors": {
+    "expected": 8,
+    "found": 8,
+    "unique_catalog_guids": 8,
+    "total_triangles": 5028,
+    "maximum_actor_triangles": 800,
+    "roles_missing_required_sockets": [],
+    "rig": "seven-bone Generic transform rig",
+    "humanoid_migration_claimed": false
+  },
+  "buildings": {
+    "expected": 6,
+    "found": 6,
+    "unique_catalog_guids": 6,
+    "total_triangles": 3088,
+    "roles_missing_required_sockets": []
+  },
+  "simulator_performance": {
+    "scenarios": ["preparation", "normal", "dense", "boss-phase-3"],
+    "median_fps": 60.0,
+    "p95_frame_ms": 17.1,
+    "longest_continuous_under_30_fps_seconds": 0.10,
+    "low_memory_warning": false
+  },
+  "simulator_soak": {
+    "duration_seconds": 90,
+    "cycles": 9,
+    "median_fps": 60.0,
+    "p95_frame_ms": 17.1,
+    "memory_growth_percent": 8.9,
+    "low_memory_warning": false
+  },
+  "physical_device": {
+    "model": "iPhone 13 (iPhone14,5)",
+    "os": "iOS 26.6 beta (23G5028e)",
+    "state": "blocked",
+    "reason": "Installed Xcode provides iOS 26.5 DeviceSupport/DDI; developer disk image cannot be mounted on iOS 26.6 beta."
+  },
+  "release_gate": "blocked"
+}
