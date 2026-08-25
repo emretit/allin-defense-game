@@ -9,7 +9,7 @@ Current closeout state: `VISUAL_DEVELOPMENT_TODO.md` has 165 completed rows and 
 
 | ID | Priority | Status | Task | Acceptance |
 |---|---:|---|---|---|
-| NEXT-001 | P0 | Ready when device is in hand | Connect iPhone over USB, unlock it, keep screen awake, accept Trust/Developer prompts | `python3 tools/check_ios_physical_readiness.py` returns `[DC_IOS_PHYSICAL_READY]` |
+| NEXT-001 | P0 | Blocked by USB/unlock | Connect iPhone over USB, unlock it, keep screen awake, accept Trust/Developer prompts | `python3 tools/check_ios_physical_readiness.py` returns `[DC_IOS_PHYSICAL_READY]` |
 | NEXT-002 | P0 | Blocked by NEXT-001 | Run physical iPhone development build | App installs and launches on iPhone 13-class device |
 | NEXT-003 | P0 | Blocked by NEXT-002 | Capture physical Profiler scenarios: preparation, normal, dense, boss phase 3 | 60-second capture per scenario with FPS, CPU/GPU frame time, draw calls, triangles, GC, memory and thermal notes |
 | NEXT-004 | P0 | Blocked by NEXT-003 | Capture Frame/Rendering Debugger evidence | Top render costs, shadow casters, additional lights, overdraw and texture usage are recorded |
@@ -44,3 +44,14 @@ These are intentionally outside the current vertical-slice closeout. Do not mix 
 - Do not stage ignored raw screenshots, `Builds`, `Library`, `TestResults`, crash dumps or transient logs.
 - Do stage curated docs/evidence that are directly linked from TODO, handoff or blocker reports.
 - Re-run the exact acceptance validator before changing a blocked row to `Tamamlandı`.
+
+## Execution helper
+
+`tools/run_visual_closeout_acceptance.sh` now runs the remaining closeout chain in order once the physical device is ready. The detailed runbook is `docs/VISUAL_CLOSEOUT_ACCEPTANCE_RUNBOOK_2026-08-25.md`.
+
+Latest local preflight:
+
+- `tools/run_visual_closeout_acceptance.sh` stops at NEXT-001 with `[DC_VISUAL_CLOSEOUT_BLOCKED]`.
+- `docs/evidence/visual-development/ios-physical-readiness-2026-08-25.json` shows the iPhone is paired and tunnel-connected, but still visible through `localNetwork` instead of wired USB.
+- The same report shows DDI services are unavailable until the phone is unlocked and kept awake.
+- `tools/validate_visual_human_signoff.py docs/evidence/visual-development/human-review-signoff-template-2026-08-25.json --allow-pending` lists the expected missing human-review approvals for NEXT-006.
