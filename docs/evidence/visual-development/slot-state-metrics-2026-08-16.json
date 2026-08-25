@@ -1,0 +1,201 @@
+{
+  "summary": {
+    "expected_state_count": 5,
+    "generated_state_count": 5,
+    "total_triangles": 2008,
+    "states_over_material_budget": [],
+    "states_over_triangle_soft_budget": [],
+    "unity_validation_status": "Pending: Unity CLI/Editor unavailable in current shell."
+  },
+  "states": [
+    {
+      "state": "Empty",
+      "path": "Assets/Art/Models/Generated/OutpostSlot_Empty.fbx",
+      "exists": true,
+      "size_bytes": 46540,
+      "sha256": "0c9a70db8b34c2e51bc5b724c6d5d3c7c2d81634775ceeba27576b59f963337f",
+      "meta": {
+        "exists": true,
+        "guid": "faec8a573ef644a487ee9fed2ae5763b",
+        "globalScale": "1",
+        "meshCompression": "0",
+        "useFileScale": "1",
+        "importAnimation": "1",
+        "animationType": "2"
+      },
+      "mesh_count": 10,
+      "object_count": 10,
+      "vertex_count": 240,
+      "triangle_count": 440,
+      "material_count": 3,
+      "material_names": [
+        "DC_Dark",
+        "DC_Defender",
+        "DC_Stone"
+      ],
+      "bounds": {
+        "size": [
+          1.32,
+          1.32,
+          0.28
+        ],
+        "center": [
+          0.0,
+          0.0,
+          0.14
+        ]
+      }
+    },
+    {
+      "state": "Selected",
+      "path": "Assets/Art/Models/Generated/OutpostSlot_Selected.fbx",
+      "exists": true,
+      "size_bytes": 57404,
+      "sha256": "ebba88d6c96d0de43fcc5ba37638aadb69f1f116cfbbb1636c1b8c41ef3a0b3e",
+      "meta": {
+        "exists": true,
+        "guid": "8a514bf0f8b64b44ac42e3b21d5b36f0",
+        "globalScale": "1",
+        "meshCompression": "0",
+        "useFileScale": "1",
+        "importAnimation": "1",
+        "animationType": "2"
+      },
+      "mesh_count": 15,
+      "object_count": 15,
+      "vertex_count": 232,
+      "triangle_count": 404,
+      "material_count": 3,
+      "material_names": [
+        "DC_Defender",
+        "DC_Magic",
+        "DC_Stone"
+      ],
+      "bounds": {
+        "size": [
+          1.32,
+          1.32,
+          0.38
+        ],
+        "center": [
+          0.0,
+          0.0,
+          0.19
+        ]
+      }
+    },
+    {
+      "state": "Available",
+      "path": "Assets/Art/Models/Generated/OutpostSlot_Available.fbx",
+      "exists": true,
+      "size_bytes": 48252,
+      "sha256": "d294a13ccee03fe7c41222d8f5788ee29d407a1c5aa9456973f0d9c0cad6c354",
+      "meta": {
+        "exists": true,
+        "guid": "24e0a04d627e41359529f2da1ec4d63e",
+        "globalScale": "1",
+        "meshCompression": "0",
+        "useFileScale": "1",
+        "importAnimation": "1",
+        "animationType": "2"
+      },
+      "mesh_count": 11,
+      "object_count": 11,
+      "vertex_count": 208,
+      "triangle_count": 372,
+      "material_count": 3,
+      "material_names": [
+        "DC_Forest",
+        "DC_Magic",
+        "DC_Stone"
+      ],
+      "bounds": {
+        "size": [
+          1.32,
+          1.32,
+          0.4912
+        ],
+        "center": [
+          0.0,
+          0.0,
+          0.2456
+        ]
+      }
+    },
+    {
+      "state": "Insufficient",
+      "path": "Assets/Art/Models/Generated/OutpostSlot_Insufficient.fbx",
+      "exists": true,
+      "size_bytes": 54444,
+      "sha256": "dcba668848d19331447d448e06c70e1aeac49ebb964f8ab3d540b14fd0c103b4",
+      "meta": {
+        "exists": true,
+        "guid": "5292e35630c74a6e84922cf8e0d48ad4",
+        "globalScale": "1",
+        "meshCompression": "0",
+        "useFileScale": "1",
+        "importAnimation": "1",
+        "animationType": "2"
+      },
+      "mesh_count": 14,
+      "object_count": 14,
+      "vertex_count": 208,
+      "triangle_count": 360,
+      "material_count": 3,
+      "material_names": [
+        "DC_Dark",
+        "DC_Fire",
+        "DC_Stone"
+      ],
+      "bounds": {
+        "size": [
+          1.32,
+          1.32,
+          0.39
+        ],
+        "center": [
+          0.0,
+          0.0,
+          0.195
+        ]
+      }
+    },
+    {
+      "state": "Locked",
+      "path": "Assets/Art/Models/Generated/OutpostSlot_Locked.fbx",
+      "exists": true,
+      "size_bytes": 49788,
+      "sha256": "dc12d7643995c1b3d371b18776765ca458306295e2ecb0a6ad8cf4632efc4323",
+      "meta": {
+        "exists": true,
+        "guid": "672d58036fbe433f8ab3e7300a3ca5e8",
+        "globalScale": "1",
+        "meshCompression": "0",
+        "useFileScale": "1",
+        "importAnimation": "1",
+        "animationType": "2"
+      },
+      "mesh_count": 12,
+      "object_count": 12,
+      "vertex_count": 240,
+      "triangle_count": 432,
+      "material_count": 2,
+      "material_names": [
+        "DC_Dark",
+        "DC_Stone"
+      ],
+      "bounds": {
+        "size": [
+          1.32,
+          1.32,
+          0.5
+        ],
+        "center": [
+          0.0,
+          0.0,
+          0.25
+        ]
+      }
+    }
+  ]
+}

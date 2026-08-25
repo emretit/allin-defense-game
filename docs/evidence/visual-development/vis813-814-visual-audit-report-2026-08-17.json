@@ -1,0 +1,140 @@
+{
+  "date": "2026-08-17",
+  "acceptedStamp": "vis812-final-20260817-191207",
+  "vis813": {
+    "status": "in_review",
+    "grayscaleContactSheet": "docs/evidence/visual-development/vis813-accessibility-grayscale-contact-sheet-2026-08-17.png",
+    "statesChecked": [
+      "preparation",
+      "ability",
+      "normal",
+      "dense",
+      "boss1",
+      "boss2",
+      "boss3",
+      "victory",
+      "defeat"
+    ],
+    "allCapturesLandscape1334x750": true,
+    "luminanceStdDevAverage": 32.35,
+    "notes": [
+      "Critical state labels, result overlays and major silhouettes remain distinguishable in grayscale contact sheet.",
+      "This is visual accessibility evidence; real assistive-tech/VoiceOver validation remains separate."
+    ]
+  },
+  "vis814": {
+    "status": "in_review",
+    "beforeAfterContactSheet": "docs/evidence/visual-development/vis814-before-after-contact-sheet-2026-08-17.png",
+    "baseline": "docs/evidence/runtime/defender-simulator-run-late-landscape-review-readable-2026-08-16.png",
+    "finalStates": [
+      "preparation",
+      "dense",
+      "victory"
+    ],
+    "notes": [
+      "Comparison shows final HUD/material/environment/slot/readability progression against the earlier partial runtime baseline.",
+      "Final full-state evidence is the VIS-812 accepted set."
+    ]
+  },
+  "metrics": [
+    {
+      "state": "preparation",
+      "path": "docs/evidence/runtime/defender-simulator-vis812-final-20260817-191207-preparation-landscape-upright.png",
+      "width": 1334,
+      "height": 750,
+      "luminanceMean": 27.9,
+      "luminanceStdDev": 38.4,
+      "centerStdDev": 35.64,
+      "darkPixelShare": 0.7337,
+      "brightPixelShare": 0.007
+    },
+    {
+      "state": "ability",
+      "path": "docs/evidence/runtime/defender-simulator-vis812-final-20260817-191207-ability-landscape-upright.png",
+      "width": 1334,
+      "height": 750,
+      "luminanceMean": 27.52,
+      "luminanceStdDev": 37.76,
+      "centerStdDev": 35.09,
+      "darkPixelShare": 0.7402,
+      "brightPixelShare": 0.0053
+    },
+    {
+      "state": "normal",
+      "path": "docs/evidence/runtime/defender-simulator-vis812-final-20260817-191207-normal-landscape-upright.png",
+      "width": 1334,
+      "height": 750,
+      "luminanceMean": 26.79,
+      "luminanceStdDev": 36.48,
+      "centerStdDev": 33.18,
+      "darkPixelShare": 0.7437,
+      "brightPixelShare": 0.0052
+    },
+    {
+      "state": "dense",
+      "path": "docs/evidence/runtime/defender-simulator-vis812-final-20260817-191207-dense-landscape-upright.png",
+      "width": 1334,
+      "height": 750,
+      "luminanceMean": 24.36,
+      "luminanceStdDev": 34.29,
+      "centerStdDev": 30.68,
+      "darkPixelShare": 0.747,
+      "brightPixelShare": 0.0015
+    },
+    {
+      "state": "boss1",
+      "path": "docs/evidence/runtime/defender-simulator-vis812-final-20260817-191207-boss1-landscape-upright.png",
+      "width": 1334,
+      "height": 750,
+      "luminanceMean": 23.9,
+      "luminanceStdDev": 33.47,
+      "centerStdDev": 29.76,
+      "darkPixelShare": 0.747,
+      "brightPixelShare": 0.0013
+    },
+    {
+      "state": "boss2",
+      "path": "docs/evidence/runtime/defender-simulator-vis812-final-20260817-191207-boss2-landscape-upright.png",
+      "width": 1334,
+      "height": 750,
+      "luminanceMean": 26.3,
+      "luminanceStdDev": 35.65,
+      "centerStdDev": 31.93,
+      "darkPixelShare": 0.7438,
+      "brightPixelShare": 0.0047
+    },
+    {
+      "state": "boss3",
+      "path": "docs/evidence/runtime/defender-simulator-vis812-final-20260817-191207-boss3-landscape-upright.png",
+      "width": 1334,
+      "height": 750,
+      "luminanceMean": 35.8,
+      "luminanceStdDev": 25.07,
+      "centerStdDev": 21.08,
+      "darkPixelShare": 0.42,
+      "brightPixelShare": 0.0
+    },
+    {
+      "state": "victory",
+      "path": "docs/evidence/runtime/defender-simulator-vis812-final-20260817-191207-victory-landscape-upright.png",
+      "width": 1334,
+      "height": 750,
+      "luminanceMean": 35.77,
+      "luminanceStdDev": 25.04,
+      "centerStdDev": 21.07,
+      "darkPixelShare": 0.42,
+      "brightPixelShare": 0.0
+    },
+    {
+      "state": "defeat",
+      "path": "docs/evidence/runtime/defender-simulator-vis812-final-20260817-191207-defeat-landscape-upright.png",
+      "width": 1334,
+      "height": 750,
+      "luminanceMean": 35.77,
+      "luminanceStdDev": 24.98,
+      "centerStdDev": 21.0,
+      "darkPixelShare": 0.4214,
+      "brightPixelShare": 0.0
+    }
+  ]
+}

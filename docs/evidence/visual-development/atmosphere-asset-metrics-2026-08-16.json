@@ -1,0 +1,229 @@
+{
+  "schema": "defender-chronicles.visual-development.atmosphere-asset-metrics.v1",
+  "captured_on": "2026-08-16",
+  "todo": "VIS-411",
+  "asset_scope": "Generated atmosphere FBX candidates for single map visual depth and readability support.",
+  "summary": {
+    "expected_asset_count": 3,
+    "generated_asset_count": 3,
+    "total_triangles": 688,
+    "assets_over_triangle_soft_budget": [],
+    "assets_over_material_soft_budget": [],
+    "assets_missing_meta": [
+      "Atmosphere_MoonDisc",
+      "Atmosphere_FogRibbon",
+      "Atmosphere_DustVeil"
+    ],
+    "assets_with_imported_colliders_enabled": [],
+    "assets_missing_source_blend": [],
+    "unity_validation_status": "Pending: Unity CLI/Editor unavailable in current shell.",
+    "runtime_binding_status": "Atmosphere FBX candidates are generated; prefab-quality integration not yet done."
+  },
+  "assets": [
+    {
+      "id": "Atmosphere_MoonDisc",
+      "category": "Night moon disc + crater accents",
+      "path": "Assets/Art/Models/Generated/Atmosphere_MoonDisc.fbx",
+      "source": "ArtSource/Blender/Atmosphere_MoonDisc.blend",
+      "triangle_soft_budget": 700,
+      "material_soft_budget": 4,
+      "acceptance_note": "Moon reads as distant atmosphere anchor and keeps center gameplay readable.",
+      "exists": true,
+      "sha256": "f24c84c66d4cf7d5a54effe335a055005e55b007674d3dc8207cd843a8ee8528",
+      "source_exists": true,
+      "source_sha256": "f1e5040d5a0fda57aa1233409e419abc5e0335a164185b50cdb74f7efba25c55",
+      "meta": {
+        "exists": false
+      },
+      "object_count": 6,
+      "mesh_count": 6,
+      "empty_count": 0,
+      "socket_names": [],
+      "mesh_names_sample": [
+        "AtmosphereMoonCrater_0",
+        "AtmosphereMoonCrater_1",
+        "AtmosphereMoonCrater_2",
+        "AtmosphereMoonCrater_3",
+        "AtmosphereMoonDisc",
+        "AtmosphereMoonRing"
+      ],
+      "vertex_count": 120,
+      "polygon_count": 72,
+      "triangle_count": 216,
+      "material_count": 3,
+      "material_names": [
+        "DC_Dark",
+        "DC_Magic",
+        "DC_Navy"
+      ],
+      "bounds": {
+        "min": [
+          -3.44,
+          0.81,
+          0.19
+        ],
+        "max": [
+          -1.96,
+          13.36,
+          1.67
+        ],
+        "size": [
+          1.48,
+          12.55,
+          1.48
+        ],
+        "center": [
+          -2.7,
+          7.085,
+          0.93
+        ]
+      },
+      "over_triangle_soft_budget": false,
+      "over_material_soft_budget": false,
+      "imported_collider_risk": false
+    },
+    {
+      "id": "Atmosphere_FogRibbon",
+      "category": "Distant fog/atmosphere ribbon",
+      "path": "Assets/Art/Models/Generated/Atmosphere_FogRibbon.fbx",
+      "source": "ArtSource/Blender/Atmosphere_FogRibbon.blend",
+      "triangle_soft_budget": 700,
+      "material_soft_budget": 4,
+      "acceptance_note": "Fog ribbon adds depth without adding hard edges over actor silhouette.",
+      "exists": true,
+      "sha256": "90ac48316743d8cb028d17e63ef6215268e525b2fd98eef368f7a66994ef6e36",
+      "source_exists": true,
+      "source_sha256": "1d9326776f21571090d58c1e45fc184bcb3358250d3da0c7445bc69296d31670",
+      "meta": {
+        "exists": false
+      },
+      "object_count": 19,
+      "mesh_count": 19,
+      "empty_count": 0,
+      "socket_names": [],
+      "mesh_names_sample": [
+        "AtmosphereFogPuff",
+        "AtmosphereFogPuff.001",
+        "AtmosphereFogPuff.002",
+        "AtmosphereFogPuff.003",
+        "AtmosphereFogPuff.004",
+        "AtmosphereFogPuff.005",
+        "AtmosphereFogPuff.006",
+        "AtmosphereFogPuff.007",
+        "AtmosphereFogPuff.008",
+        "AtmosphereFogPuff.009",
+        "AtmosphereFogPuff.010",
+        "AtmosphereFogPuff.011",
+        "AtmosphereFogPuff.012",
+        "AtmosphereFogPuff.013",
+        "AtmosphereFogPuff.014",
+        "AtmosphereFogPuff.015",
+        "AtmosphereFogPuff.016",
+        "AtmosphereFogPuff.017",
+        "AtmosphereFogRibbon"
+      ],
+      "vertex_count": 152,
+      "polygon_count": 114,
+      "triangle_count": 228,
+      "material_count": 2,
+      "material_names": [
+        "DC_Dark.001",
+        "DC_Navy.001"
+      ],
+      "bounds": {
+        "min": [
+          -3.1,
+          7.25,
+          0.635
+        ],
+        "max": [
+          25.11,
+          9.55,
+          0.7287
+        ],
+        "size": [
+          28.21,
+          2.3,
+          0.0937
+        ],
+        "center": [
+          11.005,
+          8.4,
+          0.6818
+        ]
+      },
+      "over_triangle_soft_budget": false,
+      "over_material_soft_budget": false,
+      "imported_collider_risk": false
+    },
+    {
+      "id": "Atmosphere_DustVeil",
+      "category": "Low-cost dust veil and lane veil accents",
+      "path": "Assets/Art/Models/Generated/Atmosphere_DustVeil.fbx",
+      "source": "ArtSource/Blender/Atmosphere_DustVeil.blend",
+      "triangle_soft_budget": 900,
+      "material_soft_budget": 4,
+      "acceptance_note": "Dust veil is removable in Low profile and does not occlude main lane center.",
+      "exists": true,
+      "sha256": "7f7cec22605a1d8f51eb1355915464442ad2aaa39b27e5fe135372f0f8ccb6c6",
+      "source_exists": true,
+      "source_sha256": "8f0d6ff0cc75667d26d29abf789b8eee7c8cc43e3ac67cda054f1e47f2427dbd",
+      "meta": {
+        "exists": false
+      },
+      "object_count": 14,
+      "mesh_count": 14,
+      "empty_count": 0,
+      "socket_names": [],
+      "mesh_names_sample": [
+        "AtmosphereDustFluff_0",
+        "AtmosphereDustFluff_2",
+        "AtmosphereDustFluff_4",
+        "AtmosphereDustFluff_6",
+        "AtmosphereDustFluff_8",
+        "AtmosphereDustVeil_0",
+        "AtmosphereDustVeil_1",
+        "AtmosphereDustVeil_2",
+        "AtmosphereDustVeil_3",
+        "AtmosphereDustVeil_4",
+        "AtmosphereDustVeil_5",
+        "AtmosphereDustVeil_6",
+        "AtmosphereDustVeil_7",
+        "AtmosphereDustVeil_8"
+      ],
+      "vertex_count": 150,
+      "polygon_count": 163,
+      "triangle_count": 244,
+      "material_count": 2,
+      "material_names": [
+        "DC_Earth",
+        "DC_Grass"
+      ],
+      "bounds": {
+        "min": [
+          -0.7039,
+          -0.0421,
+          0.088
+        ],
+        "max": [
+          24.0416,
+          0.9895,
+          0.242
+        ],
+        "size": [
+          24.7455,
+          1.0316,
+          0.154
+        ],
+        "center": [
+          11.6688,
+          0.4737,
+          0.165
+        ]
+      },
+      "over_triangle_soft_budget": false,
+      "over_material_soft_budget": false,
+      "imported_collider_risk": false
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "checkpoint": "VIS-806",
+  "scenario": "Dense boss/status/projectile VFX burst across Low, Medium and High quality profiles",
+  "profiles": [
+    {
+      "qualityName": "Low",
+      "prewarmPoolSize": 72,
+      "maxPlayingCount": 72,
+      "poolCount": 72,
+      "playingCount": 72,
+      "bossImpactMaxConcurrent": 2,
+      "bossImpactPlaying": 2,
+      "bossTelegraphMaxConcurrent": 1,
+      "bossTelegraphPlaying": 1,
+      "criticalPlaying": 1,
+      "estimatedTransparentCost": 79.484,
+      "transparentCostBudget": 82,
+      "managedHeapDeltaBytes": 1073152
+    },
+    {
+      "qualityName": "Medium",
+      "prewarmPoolSize": 96,
+      "maxPlayingCount": 96,
+      "poolCount": 96,
+      "playingCount": 96,
+      "bossImpactMaxConcurrent": 3,
+      "bossImpactPlaying": 3,
+      "bossTelegraphMaxConcurrent": 2,
+      "bossTelegraphPlaying": 2,
+      "criticalPlaying": 2,
+      "estimatedTransparentCost": 101.788,
+      "transparentCostBudget": 104,
+      "managedHeapDeltaBytes": 16384
+    },
+    {
+      "qualityName": "High",
+      "prewarmPoolSize": 128,
+      "maxPlayingCount": 128,
+      "poolCount": 128,
+      "playingCount": 101,
+      "bossImpactMaxConcurrent": 3,
+      "bossImpactPlaying": 3,
+      "bossTelegraphMaxConcurrent": 2,
+      "bossTelegraphPlaying": 2,
+      "criticalPlaying": 2,
+      "estimatedTransparentCost": 108.184,
+      "transparentCostBudget": 120,
+      "managedHeapDeltaBytes": 466944
+    }
+  ],
+  "poolGrowth": 0,
+  "criticalBossTelegraphPreserved": true,
+  "notes": "Batch-mode quality config proof; final device Profiler and GC spike capture remain under VIS-807."
+}

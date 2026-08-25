@@ -1,0 +1,88 @@
+{
+  "schema": "defender-chronicles.visual-development.actor-rig-source-inspection.v1",
+  "captured_on": "2026-08-16",
+  "sources": [
+    {
+      "name": "KnightLicensed",
+      "path": "Assets/ThirdParty/KayKit/Adventurers/Models/KnightLicensed.fbx",
+      "exists": true,
+      "armature_count": 0,
+      "armatures": [],
+      "mesh_count": 1,
+      "mesh_names": [
+        "KnightLicensed"
+      ],
+      "material_count": 1,
+      "material_names": [
+        "knight_texture"
+      ],
+      "action_count": 0,
+      "action_names": [],
+      "has_rig": false,
+      "has_actions": false
+    },
+    {
+      "name": "BarbarianLicensed",
+      "path": "Assets/ThirdParty/KayKit/Adventurers/Models/BarbarianLicensed.fbx",
+      "exists": true,
+      "armature_count": 0,
+      "armatures": [],
+      "mesh_count": 1,
+      "mesh_names": [
+        "BarbarianLicensed"
+      ],
+      "material_count": 1,
+      "material_names": [
+        "barbarian_texture"
+      ],
+      "action_count": 0,
+      "action_names": [],
+      "has_rig": false,
+      "has_actions": false
+    },
+    {
+      "name": "MageLicensed",
+      "path": "Assets/ThirdParty/KayKit/Adventurers/Models/MageLicensed.fbx",
+      "exists": true,
+      "armature_count": 0,
+      "armatures": [],
+      "mesh_count": 1,
+      "mesh_names": [
+        "MageLicensed"
+      ],
+      "material_count": 1,
+      "material_names": [
+        "mage_texture"
+      ],
+      "action_count": 0,
+      "action_names": [],
+      "has_rig": false,
+      "has_actions": false
+    },
+    {
+      "name": "RogueLicensed",
+      "path": "Assets/ThirdParty/KayKit/Adventurers/Models/RogueLicensed.fbx",
+      "exists": true,
+      "armature_count": 0,
+      "armatures": [],
+      "mesh_count": 1,
+      "mesh_names": [
+        "RogueLicensed"
+      ],
+      "material_count": 1,
+      "material_names": [
+        "rogue_texture"
+      ],
+      "action_count": 0,
+      "action_names": [],
+      "has_rig": false,
+      "has_actions": false
+    }
+  ],
+  "decision": {
+    "unity_import_rig_type": "Pending",
+    "reason": "The local selected KayKit Adventurers FBX files stored in this repository are static proxy meshes with no armature and no animation actions. Generic remains the expected import target for full KayKit rig sources or original stylized rigs, but it cannot be validated from the currently stored files.",
+    "unity_validation_status": "Pending: Unity CLI/Editor unavailable in current shell.",
+    "required_next_step": "Reacquire/store the full rigged CC0 KayKit source FBX files or create original rigged actor sources before closing VIS-202."
+  }
+}

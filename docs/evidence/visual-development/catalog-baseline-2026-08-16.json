@@ -1,0 +1,135 @@
+{
+  "schema": "defender-chronicles.visual-development.catalog-baseline.v1",
+  "captured_on": "2026-08-16",
+  "source_asset": "Assets/Resources/Presentation/DefenderPresentationCatalog.asset",
+  "source_script": "Assets/Scripts/Presentation/DefenderPresentationCatalog.cs",
+  "unity_cli": {
+    "available": false,
+    "evidence": "which unity returned no executable on 2026-08-16"
+  },
+  "actors": [
+    {
+      "kind": "Knight",
+      "prefab_guid": "ca86211f0d59c42c3a59ef4012912ecf",
+      "prefab_path": "Assets/Art/Models/Generated/Knight.fbx",
+      "scale": 0.74,
+      "shared_prefab_group": null,
+      "baseline_issue": "Role-specific generated proxy is connected; final heavy shield model, material, animation and VFX still required."
+    },
+    {
+      "kind": "Guard",
+      "prefab_guid": "4af9ec369fb8b42e3a8a128f9653dc90",
+      "prefab_path": "Assets/Art/Models/Generated/Guard.fbx",
+      "scale": 0.66,
+      "shared_prefab_group": null,
+      "baseline_issue": "Role-specific generated proxy is connected; final spear silhouette and animation still required."
+    },
+    {
+      "kind": "Raider",
+      "prefab_guid": "35ede50e5d4af46b6b65d0a533522257",
+      "prefab_path": "Assets/Art/Models/Generated/Raider.fbx",
+      "scale": 0.64,
+      "shared_prefab_group": null,
+      "baseline_issue": "Role-specific generated proxy is connected; final agile enemy profile still required."
+    },
+    {
+      "kind": "Vanguard",
+      "prefab_guid": "92a664c5553364d679574a52bd92676c",
+      "prefab_path": "Assets/Art/Models/Generated/Vanguard.fbx",
+      "scale": 0.68,
+      "shared_prefab_group": null,
+      "baseline_issue": "Role-specific generated proxy is connected; final bulky armor/weapon language still required."
+    },
+    {
+      "kind": "Regenerator",
+      "prefab_guid": "f382a95ee783c4e069f7ecc6ee955d69",
+      "prefab_path": "Assets/Art/Models/Generated/Regenerator.fbx",
+      "scale": 0.6,
+      "shared_prefab_group": null,
+      "baseline_issue": "Role-specific generated proxy is connected; final organic/asymmetric regeneration silhouette still required."
+    },
+    {
+      "kind": "Support",
+      "prefab_guid": "af8b985f82eff4928a7e89c9d859c70a",
+      "prefab_path": "Assets/Art/Models/Generated/Support.fbx",
+      "scale": 0.62,
+      "shared_prefab_group": null,
+      "baseline_issue": "Role-specific generated proxy is connected; final staff/lantern support silhouette still required."
+    },
+    {
+      "kind": "Siege",
+      "prefab_guid": "521a8c7e7877e46029ce3e7c3771366f",
+      "prefab_path": "Assets/Art/Models/Generated/Siege.fbx",
+      "scale": 0.92,
+      "shared_prefab_group": null,
+      "baseline_issue": "Unique generated FBX; needs mechanical/heavy attack readable animation and VFX."
+    },
+    {
+      "kind": "Boss",
+      "prefab_guid": "ac0cfbb859c1e4699a54973c59f9924b",
+      "prefab_path": "Assets/Art/Models/Generated/Boss.fbx",
+      "scale": 1.02,
+      "shared_prefab_group": null,
+      "baseline_issue": "Role-specific generated proxy is connected; final three-phase boss body and VFX still required."
+    }
+  ],
+  "outposts": [
+    {
+      "kind": "Archer",
+      "level": 1,
+      "prefab_guid": "5efd1874c34414624a989e17aa368b8c",
+      "prefab_path": "Assets/ThirdParty/KayKit/MedievalHexagon/Models/building_tower_A_blue.fbx",
+      "scale": 0.72
+    },
+    {
+      "kind": "Archer",
+      "level": 2,
+      "prefab_guid": "32291c7b067fa47d0bf2c4965fd7ecd1",
+      "prefab_path": "Assets/ThirdParty/KayKit/MedievalHexagon/Models/building_archeryrange_blue.fbx",
+      "scale": 0.72
+    },
+    {
+      "kind": "Barracks",
+      "level": 1,
+      "prefab_guid": "524bc77976bb64eab9d2fc533d8c77bd",
+      "prefab_path": "Assets/ThirdParty/KayKit/MedievalHexagon/Models/building_tower_base_blue.fbx",
+      "scale": 0.76
+    },
+    {
+      "kind": "Barracks",
+      "level": 2,
+      "prefab_guid": "ad4763606b853428288e900958fdf7b9",
+      "prefab_path": "Assets/ThirdParty/KayKit/MedievalHexagon/Models/building_barracks_blue.fbx",
+      "scale": 0.72
+    },
+    {
+      "kind": "Mage",
+      "level": 1,
+      "prefab_guid": "0c89efcb31e2e4f0d9bf1a391f54d097",
+      "prefab_path": "Assets/ThirdParty/KayKit/MedievalHexagon/Models/building_tower_B_blue.fbx",
+      "scale": 0.66
+    },
+    {
+      "kind": "Mage",
+      "level": 2,
+      "prefab_guid": "3dc9f1c202a2e407a90d41c5154a988e",
+      "prefab_path": "Assets/ThirdParty/KayKit/MedievalHexagon/Models/building_church_blue.fbx",
+      "scale": 0.76
+    }
+  ],
+  "catalog_counts": {
+    "actor_roles": 8,
+    "unique_actor_prefabs": 8,
+    "outpost_visuals": 6,
+    "shared_palette_materials": 11,
+    "licensed_atlas_materials": 5,
+    "actor_animation_clips": 9,
+    "audio_cues": 22,
+    "music_states": 6
+  },
+  "baseline_decisions": [
+    "Actor production starts from role-specific generated proxies instead of shared catalog prefabs.",
+    "Outpost production can start from existing six catalog mappings but must strengthen type and level reads.",
+    "Runtime validation still requires Unity Editor or Unity CLI access."
+  ]
+}

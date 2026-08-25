@@ -1,0 +1,613 @@
+{
+  "schema": "defender-chronicles.visual-development.prop-library-metrics.v1",
+  "captured_on": "2026-08-16",
+  "todo": "VIS-408",
+  "asset_scope": "Generated prop library FBX files only; not bound to runtime environment prefab.",
+  "summary": {
+    "expected_asset_count": 10,
+    "generated_asset_count": 10,
+    "family_counts": {
+      "Tree": 2,
+      "Rock": 2,
+      "Bush": 2,
+      "Grass": 2,
+      "Crystal": 2
+    },
+    "families_with_two_or_more_variants": [
+      "Bush",
+      "Crystal",
+      "Grass",
+      "Rock",
+      "Tree"
+    ],
+    "total_triangles": 856,
+    "assets_over_triangle_soft_budget": [],
+    "assets_over_material_soft_budget": [],
+    "assets_missing_meta": [],
+    "assets_with_imported_colliders_enabled": [],
+    "assets_missing_source_blend": [],
+    "update_script_status": "No scripts are embedded in FBX candidates; runtime prefab checks remain pending.",
+    "unity_validation_status": "Pending: Unity CLI/Editor unavailable in current shell.",
+    "runtime_binding_status": "Pending: generated prop candidates are not attached to the production environment prefab."
+  },
+  "assets": [
+    {
+      "id": "Prop_PineTall_A",
+      "family": "Tree",
+      "variant": "A",
+      "path": "Assets/Art/Models/Generated/Prop_PineTall_A.fbx",
+      "source": "ArtSource/Blender/Prop_PineTall_A.blend",
+      "triangle_soft_budget": 300,
+      "material_soft_budget": 4,
+      "exists": true,
+      "sha256": "9f631f9bf6ea36c9f97e55a893b41e2025630d5fe300fc12d46d1f2d162428dc",
+      "source_exists": true,
+      "source_sha256": "3af5a417019ed0a5950c1bb9c22f5beb914bba0f31768adbeada9775b5abe588",
+      "meta": {
+        "exists": true,
+        "guid": "89397b9ba96541269ec7bb241b7431fb",
+        "globalScale": "1",
+        "meshCompression": "0",
+        "useFileScale": "1",
+        "importAnimation": "0",
+        "animationType": "0",
+        "addColliders": "0"
+      },
+      "object_count": 5,
+      "mesh_count": 5,
+      "vertex_count": 70,
+      "polygon_count": 45,
+      "triangle_count": 120,
+      "material_count": 4,
+      "material_names": [
+        "DC_Dark",
+        "DC_Forest",
+        "DC_Grass",
+        "DC_Stone"
+      ],
+      "bounds": {
+        "min": [
+          -0.56,
+          -0.56,
+          -0.0
+        ],
+        "max": [
+          0.56,
+          0.56,
+          1.99
+        ],
+        "size": [
+          1.12,
+          1.12,
+          1.99
+        ],
+        "center": [
+          0.0,
+          -0.0,
+          0.995
+        ]
+      },
+      "over_triangle_soft_budget": false,
+      "over_material_soft_budget": false
+    },
+    {
+      "id": "Prop_PineTall_B",
+      "family": "Tree",
+      "variant": "B",
+      "path": "Assets/Art/Models/Generated/Prop_PineTall_B.fbx",
+      "source": "ArtSource/Blender/Prop_PineTall_B.blend",
+      "triangle_soft_budget": 300,
+      "material_soft_budget": 4,
+      "exists": true,
+      "sha256": "964908587c668e0f3a117d2ed7f38420245647e99b14d6190cf1a9350ed11ed4",
+      "source_exists": true,
+      "source_sha256": "07efc5e8683236dcd64c2907c759b63546cdea457d730db2ea956cf8f51b135a",
+      "meta": {
+        "exists": true,
+        "guid": "49ff184ccdc34fff9ffd5e2cdb0207b3",
+        "globalScale": "1",
+        "meshCompression": "0",
+        "useFileScale": "1",
+        "importAnimation": "0",
+        "animationType": "0",
+        "addColliders": "0"
+      },
+      "object_count": 5,
+      "mesh_count": 5,
+      "vertex_count": 70,
+      "polygon_count": 45,
+      "triangle_count": 120,
+      "material_count": 3,
+      "material_names": [
+        "DC_Dark.001",
+        "DC_Forest.001",
+        "DC_Grass.001"
+      ],
+      "bounds": {
+        "min": [
+          -0.58,
+          -0.62,
+          -0.0081
+        ],
+        "max": [
+          0.66,
+          0.62,
+          1.93
+        ],
+        "size": [
+          1.24,
+          1.24,
+          1.9381
+        ],
+        "center": [
+          0.04,
+          -0.0,
+          0.9609
+        ]
+      },
+      "over_triangle_soft_budget": false,
+      "over_material_soft_budget": false
+    },
+    {
+      "id": "Prop_RockCluster_A",
+      "family": "Rock",
+      "variant": "A",
+      "path": "Assets/Art/Models/Generated/Prop_RockCluster_A.fbx",
+      "source": "ArtSource/Blender/Prop_RockCluster_A.blend",
+      "triangle_soft_budget": 160,
+      "material_soft_budget": 2,
+      "exists": true,
+      "sha256": "59d9d9495a67e8252fa4e9987ee0c986739ed8a505c2e9845ec2c91987433a97",
+      "source_exists": true,
+      "source_sha256": "1c15791fc839603a1d31cc4abbccdfe046feb641c1fc7ca9cc817dca690c5d1a",
+      "meta": {
+        "exists": true,
+        "guid": "60b541e7237e4cb5b25d5a3592500bb2",
+        "globalScale": "1",
+        "meshCompression": "0",
+        "useFileScale": "1",
+        "importAnimation": "0",
+        "animationType": "0",
+        "addColliders": "0"
+      },
+      "object_count": 3,
+      "mesh_count": 3,
+      "vertex_count": 36,
+      "polygon_count": 60,
+      "triangle_count": 60,
+      "material_count": 2,
+      "material_names": [
+        "DC_Metal",
+        "DC_Stone.001"
+      ],
+      "bounds": {
+        "min": [
+          -0.5747,
+          -0.3573,
+          -0.1
+        ],
+        "max": [
+          0.4589,
+          0.3671,
+          0.58
+        ],
+        "size": [
+          1.0335,
+          0.7244,
+          0.68
+        ],
+        "center": [
+          -0.0579,
+          0.0049,
+          0.24
+        ]
+      },
+      "over_triangle_soft_budget": false,
+      "over_material_soft_budget": false
+    },
+    {
+      "id": "Prop_RockCluster_B",
+      "family": "Rock",
+      "variant": "B",
+      "path": "Assets/Art/Models/Generated/Prop_RockCluster_B.fbx",
+      "source": "ArtSource/Blender/Prop_RockCluster_B.blend",
+      "triangle_soft_budget": 200,
+      "material_soft_budget": 2,
+      "exists": true,
+      "sha256": "c8a119ad91b7d87da33e436bac777e05020114e6c41a33593f4dff7960427df9",
+      "source_exists": true,
+      "source_sha256": "d42968af4d4cc7f863de76c93565ac6b885df399df7657af6084633877b01a5d",
+      "meta": {
+        "exists": true,
+        "guid": "a6a99d48671245838d40724de7018178",
+        "globalScale": "1",
+        "meshCompression": "0",
+        "useFileScale": "1",
+        "importAnimation": "0",
+        "animationType": "0",
+        "addColliders": "0"
+      },
+      "object_count": 4,
+      "mesh_count": 4,
+      "vertex_count": 44,
+      "polygon_count": 66,
+      "triangle_count": 72,
+      "material_count": 2,
+      "material_names": [
+        "DC_Metal.001",
+        "DC_Stone.002"
+      ],
+      "bounds": {
+        "min": [
+          -0.3831,
+          -0.2991,
+          -0.16
+        ],
+        "max": [
+          0.421,
+          0.3531,
+          0.8
+        ],
+        "size": [
+          0.8041,
+          0.6522,
+          0.96
+        ],
+        "center": [
+          0.0189,
+          0.027,
+          0.32
+        ]
+      },
+      "over_triangle_soft_budget": false,
+      "over_material_soft_budget": false
+    },
+    {
+      "id": "Prop_BushRound_A",
+      "family": "Bush",
+      "variant": "A",
+      "path": "Assets/Art/Models/Generated/Prop_BushRound_A.fbx",
+      "source": "ArtSource/Blender/Prop_BushRound_A.blend",
+      "triangle_soft_budget": 180,
+      "material_soft_budget": 3,
+      "exists": true,
+      "sha256": "3a57379fad1a09dd79de7f54e4b19245ec1c543c2ce18ad82c3885057a1b2cab",
+      "source_exists": true,
+      "source_sha256": "cc217a7ea06f225a8bf1a763f9d303874b3b913a2b79eee1cb339c2ba53bc687",
+      "meta": {
+        "exists": true,
+        "guid": "e2257fbd72164181940c16e93f56771e",
+        "globalScale": "1",
+        "meshCompression": "0",
+        "useFileScale": "1",
+        "importAnimation": "0",
+        "animationType": "0",
+        "addColliders": "0"
+      },
+      "object_count": 4,
+      "mesh_count": 4,
+      "vertex_count": 48,
+      "polygon_count": 80,
+      "triangle_count": 80,
+      "material_count": 3,
+      "material_names": [
+        "DC_Forest.002",
+        "DC_Grass.002",
+        "DC_Magic"
+      ],
+      "bounds": {
+        "min": [
+          -0.483,
+          -0.3573,
+          -0.02
+        ],
+        "max": [
+          0.483,
+          0.3573,
+          0.66
+        ],
+        "size": [
+          0.966,
+          0.7145,
+          0.68
+        ],
+        "center": [
+          0.0,
+          0.0,
+          0.32
+        ]
+      },
+      "over_triangle_soft_budget": false,
+      "over_material_soft_budget": false
+    },
+    {
+      "id": "Prop_BushRound_B",
+      "family": "Bush",
+      "variant": "B",
+      "path": "Assets/Art/Models/Generated/Prop_BushRound_B.fbx",
+      "source": "ArtSource/Blender/Prop_BushRound_B.blend",
+      "triangle_soft_budget": 180,
+      "material_soft_budget": 3,
+      "exists": true,
+      "sha256": "51a352f1d728d19bcd441cae7106fdac330e76ac832928f864ad2ff87c44960b",
+      "source_exists": true,
+      "source_sha256": "544dc8a33d48fb2444242cb5c5381ece542be2a5af5501161f506376c83c2724",
+      "meta": {
+        "exists": true,
+        "guid": "56d5f69c84b24690972a0ca91812e2d2",
+        "globalScale": "1",
+        "meshCompression": "0",
+        "useFileScale": "1",
+        "importAnimation": "0",
+        "animationType": "0",
+        "addColliders": "0"
+      },
+      "object_count": 4,
+      "mesh_count": 4,
+      "vertex_count": 48,
+      "polygon_count": 68,
+      "triangle_count": 80,
+      "material_count": 2,
+      "material_names": [
+        "DC_Forest.003",
+        "DC_Grass.003"
+      ],
+      "bounds": {
+        "min": [
+          -0.4293,
+          -0.3062,
+          -0.02
+        ],
+        "max": [
+          0.4431,
+          0.3062,
+          0.71
+        ],
+        "size": [
+          0.8724,
+          0.6125,
+          0.73
+        ],
+        "center": [
+          0.0069,
+          0.0,
+          0.345
+        ]
+      },
+      "over_triangle_soft_budget": false,
+      "over_material_soft_budget": false
+    },
+    {
+      "id": "Prop_GrassPatch_A",
+      "family": "Grass",
+      "variant": "A",
+      "path": "Assets/Art/Models/Generated/Prop_GrassPatch_A.fbx",
+      "source": "ArtSource/Blender/Prop_GrassPatch_A.blend",
+      "triangle_soft_budget": 120,
+      "material_soft_budget": 2,
+      "exists": true,
+      "sha256": "be2021714161e191793dfee4376041f26091c2f7b13d25e03c2a0514cb8235e8",
+      "source_exists": true,
+      "source_sha256": "c9c9f24f7e57ed1abf2e295466a1325e01f1a272a6869b7e1bca2629af930365",
+      "meta": {
+        "exists": true,
+        "guid": "ca877cf9723a4eb58341f371ce6c9719",
+        "globalScale": "1",
+        "meshCompression": "0",
+        "useFileScale": "1",
+        "importAnimation": "0",
+        "animationType": "0",
+        "addColliders": "0"
+      },
+      "object_count": 5,
+      "mesh_count": 5,
+      "vertex_count": 52,
+      "polygon_count": 48,
+      "triangle_count": 84,
+      "material_count": 2,
+      "material_names": [
+        "DC_Fire",
+        "DC_Grass.004"
+      ],
+      "bounds": {
+        "min": [
+          -0.2352,
+          -0.0885,
+          0.1101
+        ],
+        "max": [
+          0.2705,
+          0.16,
+          0.5801
+        ],
+        "size": [
+          0.5057,
+          0.2485,
+          0.47
+        ],
+        "center": [
+          0.0176,
+          0.0357,
+          0.3451
+        ]
+      },
+      "over_triangle_soft_budget": false,
+      "over_material_soft_budget": false
+    },
+    {
+      "id": "Prop_GrassPatch_B",
+      "family": "Grass",
+      "variant": "B",
+      "path": "Assets/Art/Models/Generated/Prop_GrassPatch_B.fbx",
+      "source": "ArtSource/Blender/Prop_GrassPatch_B.blend",
+      "triangle_soft_budget": 120,
+      "material_soft_budget": 3,
+      "exists": true,
+      "sha256": "289c7eb83808d15e43e69d23ab2d198296553185382ec97cfa29243458702206",
+      "source_exists": true,
+      "source_sha256": "9acc2f9bac41374b26d452faf5291298e395bf6e7e2d942ad6a2b93fbfafc1e6",
+      "meta": {
+        "exists": true,
+        "guid": "1fd398e7da124ec5868c2af1108efcf9",
+        "globalScale": "1",
+        "meshCompression": "0",
+        "useFileScale": "1",
+        "importAnimation": "0",
+        "animationType": "0",
+        "addColliders": "0"
+      },
+      "object_count": 6,
+      "mesh_count": 6,
+      "vertex_count": 62,
+      "polygon_count": 55,
+      "triangle_count": 100,
+      "material_count": 3,
+      "material_names": [
+        "DC_Forest.004",
+        "DC_Grass.005",
+        "DC_Magic.001"
+      ],
+      "bounds": {
+        "min": [
+          -0.2833,
+          -0.1205,
+          0.1138
+        ],
+        "max": [
+          0.3145,
+          0.19,
+          0.6394
+        ],
+        "size": [
+          0.5978,
+          0.3105,
+          0.5255
+        ],
+        "center": [
+          0.0156,
+          0.0348,
+          0.3766
+        ]
+      },
+      "over_triangle_soft_budget": false,
+      "over_material_soft_budget": false
+    },
+    {
+      "id": "Prop_CrystalCluster_A",
+      "family": "Crystal",
+      "variant": "A",
+      "path": "Assets/Art/Models/Generated/Prop_CrystalCluster_A.fbx",
+      "source": "ArtSource/Blender/Prop_CrystalCluster_A.blend",
+      "triangle_soft_budget": 160,
+      "material_soft_budget": 3,
+      "exists": true,
+      "sha256": "5d87a94d2fc068813d85eb4fcc5511305789faf769fe591e3bc62b7a13b11772",
+      "source_exists": true,
+      "source_sha256": "586dbe23ebddabb81d4353e5edd3128f8d1be55989345b3d56c9af96eb91576b",
+      "meta": {
+        "exists": true,
+        "guid": "0927ca36ab3f41e6bfb77fa143afc890",
+        "globalScale": "1",
+        "meshCompression": "0",
+        "useFileScale": "1",
+        "importAnimation": "0",
+        "animationType": "0",
+        "addColliders": "0"
+      },
+      "object_count": 4,
+      "mesh_count": 4,
+      "vertex_count": 42,
+      "polygon_count": 41,
+      "triangle_count": 68,
+      "material_count": 3,
+      "material_names": [
+        "DC_Defender",
+        "DC_Magic.002",
+        "DC_Stone.003"
+      ],
+      "bounds": {
+        "min": [
+          -0.2751,
+          -0.1531,
+          -0.02
+        ],
+        "max": [
+          0.2656,
+          0.2,
+          0.68
+        ],
+        "size": [
+          0.5407,
+          0.3531,
+          0.7
+        ],
+        "center": [
+          -0.0048,
+          0.0234,
+          0.33
+        ]
+      },
+      "over_triangle_soft_budget": false,
+      "over_material_soft_budget": false
+    },
+    {
+      "id": "Prop_CrystalCluster_B",
+      "family": "Crystal",
+      "variant": "B",
+      "path": "Assets/Art/Models/Generated/Prop_CrystalCluster_B.fbx",
+      "source": "ArtSource/Blender/Prop_CrystalCluster_B.blend",
+      "triangle_soft_budget": 160,
+      "material_soft_budget": 4,
+      "exists": true,
+      "sha256": "d29b21e7e00811ea9dee25c5beddf2b2282e10dd2d2e89197f37f2236b761bd0",
+      "source_exists": true,
+      "source_sha256": "b1966f0e5137c081e59161150cdec485da3f7b33ab5816e72df2c43e1836ecd5",
+      "meta": {
+        "exists": true,
+        "guid": "b83e61d2589f4cdf95e53378821b4b3e",
+        "globalScale": "1",
+        "meshCompression": "0",
+        "useFileScale": "1",
+        "importAnimation": "0",
+        "animationType": "0",
+        "addColliders": "0"
+      },
+      "object_count": 4,
+      "mesh_count": 4,
+      "vertex_count": 44,
+      "polygon_count": 54,
+      "triangle_count": 72,
+      "material_count": 4,
+      "material_names": [
+        "DC_Enemy",
+        "DC_Fire.001",
+        "DC_Metal.002",
+        "DC_Stone.004"
+      ],
+      "bounds": {
+        "min": [
+          -0.2789,
+          -0.2161,
+          -0.01
+        ],
+        "max": [
+          0.3052,
+          0.22,
+          0.56
+        ],
+        "size": [
+          0.5841,
+          0.4361,
+          0.57
+        ],
+        "center": [
+          0.0132,
+          0.0019,
+          0.275
+        ]
+      },
+      "over_triangle_soft_budget": false,
+      "over_material_soft_budget": false
+    }
+  ]
+}

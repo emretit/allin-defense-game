@@ -1,0 +1,124 @@
+{
+  "summary": {
+    "expected_asset_count": 3,
+    "generated_asset_count": 3,
+    "total_triangles": 760,
+    "assets_over_material_budget": [],
+    "assets_over_triangle_soft_budget": [],
+    "uses_enemy_red_material_flags": [],
+    "unity_validation_status": "Pending: Unity CLI/Editor unavailable in current shell."
+  },
+  "assets": [
+    {
+      "asset": "Ring",
+      "path": "Assets/Art/Models/Generated/SellVfx_Ring.fbx",
+      "exists": true,
+      "size_bytes": 44252,
+      "sha256": "4d47a51e4863b1bdf414ba26991289af1c9c7e5c049ea799d0b51619761f6cac",
+      "meta": {
+        "exists": true,
+        "guid": "7ead109f21e643b19f45765bf876a153",
+        "globalScale": "1",
+        "meshCompression": "0",
+        "useFileScale": "1",
+        "importAnimation": "1",
+        "animationType": "2"
+      },
+      "mesh_count": 11,
+      "object_count": 11,
+      "vertex_count": 164,
+      "triangle_count": 284,
+      "material_count": 2,
+      "material_names": [
+        "DC_Earth",
+        "DC_Fire"
+      ],
+      "bounds": {
+        "size": [
+          1.3787,
+          1.4,
+          0.1975
+        ],
+        "center": [
+          0.0,
+          0.0,
+          0.1262
+        ]
+      }
+    },
+    {
+      "asset": "Chips",
+      "path": "Assets/Art/Models/Generated/SellVfx_Chips.fbx",
+      "exists": true,
+      "size_bytes": 54668,
+      "sha256": "10108877f15f34a487252f3c111685aed4a9fd8486141169530da8e8d03d2468",
+      "meta": {
+        "exists": true,
+        "guid": "b0e59dea4406478e9e54ad8e62e17b0e",
+        "globalScale": "1",
+        "meshCompression": "0",
+        "useFileScale": "1",
+        "importAnimation": "1",
+        "animationType": "2"
+      },
+      "mesh_count": 15,
+      "object_count": 15,
+      "vertex_count": 140,
+      "triangle_count": 220,
+      "material_count": 3,
+      "material_names": [
+        "DC_Dark",
+        "DC_Earth",
+        "DC_Stone"
+      ],
+      "bounds": {
+        "size": [
+          1.2479,
+          1.28,
+          0.2945
+        ],
+        "center": [
+          0.0,
+          0.0,
+          0.1493
+        ]
+      }
+    },
+    {
+      "asset": "Glint",
+      "path": "Assets/Art/Models/Generated/SellVfx_Glint.fbx",
+      "exists": true,
+      "size_bytes": 46620,
+      "sha256": "a94ce52b5bc83cd3a6b49049e70685d6a8c091ce82241ea9cd10e0a608d1bcc2",
+      "meta": {
+        "exists": true,
+        "guid": "b764357a1ca1402da833fa622549e146",
+        "globalScale": "1",
+        "meshCompression": "0",
+        "useFileScale": "1",
+        "importAnimation": "1",
+        "animationType": "2"
+      },
+      "mesh_count": 12,
+      "object_count": 12,
+      "vertex_count": 152,
+      "triangle_count": 256,
+      "material_count": 1,
+      "material_names": [
+        "DC_Fire"
+      ],
+      "bounds": {
+        "size": [
+          0.4629,
+          0.3751,
+          0.335
+        ],
+        "center": [
+          0.0036,
+          0.0033,
+          0.3925
+        ]
+      }
+    }
+  ]
+}

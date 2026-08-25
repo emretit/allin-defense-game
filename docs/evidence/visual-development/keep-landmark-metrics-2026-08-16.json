@@ -1,0 +1,283 @@
+{
+  "schema": "defender-chronicles.visual-development.keep-landmark-metrics.v1",
+  "captured_on": "2026-08-16",
+  "todo": "VIS-407",
+  "asset_scope": "Generated defender keep/command landmark FBX files only; not bound to runtime environment prefab.",
+  "summary": {
+    "expected_asset_count": 3,
+    "generated_asset_count": 3,
+    "total_triangles": 2712,
+    "assets_over_triangle_soft_budget": [],
+    "assets_over_material_soft_budget": [],
+    "assets_missing_meta": [],
+    "assets_with_imported_colliders_enabled": [],
+    "assets_missing_source_blend": [],
+    "unity_validation_status": "Pending: Unity CLI/Editor unavailable in current shell.",
+    "runtime_binding_status": "Pending: generated keep candidates are not attached to the production environment prefab."
+  },
+  "assets": [
+    {
+      "id": "GreenwatchKeep_Core",
+      "category": "Defender keep core mass",
+      "path": "Assets/Art/Models/Generated/GreenwatchKeep_Core.fbx",
+      "source": "ArtSource/Blender/GreenwatchKeep_Core.blend",
+      "triangle_soft_budget": 1800,
+      "material_soft_budget": 7,
+      "acceptance_note": "Strongest friendly mass with keep-center, banner and command sockets.",
+      "exists": true,
+      "sha256": "41f12cc2c3c0933913f7815f282edf017475e685781d52cea9253c991579d2bb",
+      "source_exists": true,
+      "source_sha256": "fd651aeb43766294fa1a66217eb97e82960e3af039595ac9c3bfae435934a26a",
+      "meta": {
+        "exists": true,
+        "guid": "78e8f39458a142c18a4d6ba7d631ee73",
+        "globalScale": "1",
+        "meshCompression": "0",
+        "useFileScale": "1",
+        "importAnimation": "0",
+        "animationType": "0",
+        "addColliders": "0",
+        "materialImportMode": "2"
+      },
+      "object_count": 47,
+      "mesh_count": 42,
+      "empty_count": 5,
+      "socket_names": [
+        "Socket_Banner",
+        "Socket_CommandLight",
+        "Socket_Focus",
+        "Socket_KeepCenter",
+        "Socket_Rally"
+      ],
+      "mesh_names_sample": [
+        "KeepCore_Buttress",
+        "KeepCore_Buttress.001",
+        "KeepCore_Buttress.002",
+        "KeepCore_Buttress.003",
+        "KeepCore_FrontDoor",
+        "KeepCore_FrontGateFrame",
+        "KeepCore_GoldLantern",
+        "KeepCore_GoldLantern.001",
+        "KeepCore_GoldLantern.002",
+        "KeepCore_MainBanner_Cloth",
+        "KeepCore_MainBanner_Pole",
+        "KeepCore_MainHall",
+        "KeepCore_Rampart",
+        "KeepCore_RampartCrenel",
+        "KeepCore_RampartCrenel.001",
+        "KeepCore_RampartCrenel.002",
+        "KeepCore_RampartCrenel.003",
+        "KeepCore_RampartCrenel.004",
+        "KeepCore_RampartCrenel.005",
+        "KeepCore_RampartCrenel.006"
+      ],
+      "vertex_count": 948,
+      "polygon_count": 1002,
+      "triangle_count": 1728,
+      "material_count": 7,
+      "material_names": [
+        "DC_Dark",
+        "DC_Defender",
+        "DC_Fire",
+        "DC_Magic",
+        "DC_Metal",
+        "DC_Navy",
+        "DC_Stone"
+      ],
+      "bounds": {
+        "min": [
+          22.53,
+          6.3253,
+          -0.01
+        ],
+        "max": [
+          25.525,
+          11.6747,
+          4.616
+        ],
+        "size": [
+          2.995,
+          5.3495,
+          4.626
+        ],
+        "center": [
+          24.0275,
+          9.0,
+          2.303
+        ]
+      },
+      "over_triangle_soft_budget": false,
+      "over_material_soft_budget": false
+    },
+    {
+      "id": "GreenwatchKeep_CommandLight",
+      "category": "Keep command beacon",
+      "path": "Assets/Art/Models/Generated/GreenwatchKeep_CommandLight.fbx",
+      "source": "ArtSource/Blender/GreenwatchKeep_CommandLight.blend",
+      "triangle_soft_budget": 520,
+      "material_soft_budget": 3,
+      "acceptance_note": "Cool/friendly command cue readable by ring, shard and beacon form.",
+      "exists": true,
+      "sha256": "a0ff9799abdf63d8c60333c49b8476f55b9481f2f80fe5a98b4258d9e83ca3cd",
+      "source_exists": true,
+      "source_sha256": "393b755c6cf2895b6abbc67ac71d27363d7c7a0940a2aaba5b698f05acccf1e0",
+      "meta": {
+        "exists": true,
+        "guid": "c884623b3df548d986a768ee107d80b5",
+        "globalScale": "1",
+        "meshCompression": "0",
+        "useFileScale": "1",
+        "importAnimation": "0",
+        "animationType": "0",
+        "addColliders": "0",
+        "materialImportMode": "2"
+      },
+      "object_count": 18,
+      "mesh_count": 16,
+      "empty_count": 2,
+      "socket_names": [
+        "Socket_Audio",
+        "Socket_VFX"
+      ],
+      "mesh_names_sample": [
+        "KeepLight_Beacon",
+        "KeepLight_Beacon.001",
+        "KeepLight_Beacon.002",
+        "KeepLight_CommandShard",
+        "KeepLight_CommandShard.001",
+        "KeepLight_CommandShard.002",
+        "KeepLight_CommandShard.003",
+        "KeepLight_CommandShard.004",
+        "KeepLight_CommandShard.005",
+        "KeepLight_CrownRay",
+        "KeepLight_CrownRay.001",
+        "KeepLight_CrownRay.002",
+        "KeepLight_CrownRay.003",
+        "KeepLight_GoldAnchor",
+        "KeepLight_InnerRune",
+        "KeepLight_OuterRing"
+      ],
+      "vertex_count": 244,
+      "polygon_count": 154,
+      "triangle_count": 424,
+      "material_count": 3,
+      "material_names": [
+        "DC_Defender.001",
+        "DC_Fire.001",
+        "DC_Magic.001"
+      ],
+      "bounds": {
+        "min": [
+          20.56,
+          7.96,
+          0.045
+        ],
+        "max": [
+          24.613,
+          10.0,
+          4.3492
+        ],
+        "size": [
+          4.053,
+          2.04,
+          4.3042
+        ],
+        "center": [
+          22.5865,
+          8.98,
+          2.1971
+        ]
+      },
+      "over_triangle_soft_budget": false,
+      "over_material_soft_budget": false
+    },
+    {
+      "id": "GreenwatchKeep_Dressing",
+      "category": "Keep apron and final-stand dressing",
+      "path": "Assets/Art/Models/Generated/GreenwatchKeep_Dressing.fbx",
+      "source": "ArtSource/Blender/GreenwatchKeep_Dressing.blend",
+      "triangle_soft_budget": 600,
+      "material_soft_budget": 8,
+      "acceptance_note": "Final-stand framing stays out of S7/S8 and keep silhouette priority.",
+      "exists": true,
+      "sha256": "91e9fb1c9619716608770340671156aa800102d7c56f29df930bd8f9ac6982db",
+      "source_exists": true,
+      "source_sha256": "3b6a13c41e69559841fa32a63dcf04da832d54f5e7d6fb56f50eeaa2a9800720",
+      "meta": {
+        "exists": true,
+        "guid": "90403be1a30e4b7893d0a86cd237576a",
+        "globalScale": "1",
+        "meshCompression": "0",
+        "useFileScale": "1",
+        "importAnimation": "0",
+        "animationType": "0",
+        "addColliders": "0",
+        "materialImportMode": "2"
+      },
+      "object_count": 23,
+      "mesh_count": 23,
+      "empty_count": 0,
+      "socket_names": [],
+      "mesh_names_sample": [
+        "KeepDressing_ApronPatch_0",
+        "KeepDressing_ApronPatch_1",
+        "KeepDressing_ApronPatch_2",
+        "KeepDressing_ApronPatch_3",
+        "KeepDressing_BoundaryRock",
+        "KeepDressing_BoundaryRock.001",
+        "KeepDressing_BoundaryRock.002",
+        "KeepDressing_BoundaryRock.003",
+        "KeepDressing_CoolCrystal",
+        "KeepDressing_CoolCrystal.001",
+        "KeepDressing_CoolCrystal.002",
+        "KeepDressing_FinalStandPlate",
+        "KeepDressing_FinalStandPlate.001",
+        "KeepDressing_FinalStandPlate.002",
+        "KeepDressing_PostBanner_Cloth",
+        "KeepDressing_PostBanner_Cloth.001",
+        "KeepDressing_PostBanner_Cloth.002",
+        "KeepDressing_PostBanner_Pole",
+        "KeepDressing_PostBanner_Pole.001",
+        "KeepDressing_PostBanner_Pole.002"
+      ],
+      "vertex_count": 338,
+      "polygon_count": 315,
+      "triangle_count": 560,
+      "material_count": 8,
+      "material_names": [
+        "DC_Dark.001",
+        "DC_Defender.002",
+        "DC_Earth",
+        "DC_Grass",
+        "DC_Magic.002",
+        "DC_Metal.001",
+        "DC_Navy.001",
+        "DC_Stone.001"
+      ],
+      "bounds": {
+        "min": [
+          17.2578,
+          6.5564,
+          -0.0043
+        ],
+        "max": [
+          25.0274,
+          11.2569,
+          1.179
+        ],
+        "size": [
+          7.7697,
+          4.7005,
+          1.1833
+        ],
+        "center": [
+          21.1426,
+          8.9067,
+          0.5873
+        ]
+      },
+      "over_triangle_soft_budget": false,
+      "over_material_soft_budget": false
+    }
+  ]
+}

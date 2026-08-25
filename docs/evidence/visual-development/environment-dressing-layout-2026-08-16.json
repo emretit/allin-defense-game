@@ -1,0 +1,263 @@
+{
+  "schema": "defender-chronicles.visual-development.greenwatch-dressing-layout.v1",
+  "captured_on": "2026-08-16",
+  "todo": "VIS-409",
+  "scope": "Placement manifest only; no pathing/collider/camera/runtime behavior changes.",
+  "world_bounds": {
+    "min_x": -3.2,
+    "max_x": 25.4,
+    "min_z": -2.1,
+    "max_z": 13.2
+  },
+  "source_pass": "docs/ENVIRONMENT_DRESSING_PASS_2026-08-16.md",
+  "path": [
+    {"x": -2, "z": 2},
+    {"x": 4, "z": 2},
+    {"x": 4, "z": 8},
+    {"x": 10, "z": 8},
+    {"x": 10, "z": 3.5},
+    {"x": 16, "z": 3.5},
+    {"x": 16, "z": 9},
+    {"x": 24, "z": 9}
+  ],
+  "slots": [
+    {"code": "S1", "id": "slot_valley_west_entry", "x": 2.5, "z": 2.1, "role": "Frontline"},
+    {"code": "S2", "id": "slot_valley_west_ridge", "x": 5.5, "z": 2.8, "role": "Ranged"},
+    {"code": "S3", "id": "slot_valley_north_bend", "x": 6.6, "z": 5.9, "role": "Control"},
+    {"code": "S4", "id": "slot_valley_mid_cross", "x": 10.0, "z": 3.3, "role": "Frontline"},
+    {"code": "S5", "id": "slot_valley_east_ridge", "x": 13.8, "z": 4.4, "role": "Ranged"},
+    {"code": "S6", "id": "slot_valley_gate_low", "x": 15.6, "z": 1.0, "role": "Control"},
+    {"code": "S7", "id": "slot_valley_gate_high", "x": 18.2, "z": 4.6, "role": "Ranged"},
+    {"code": "S8", "id": "slot_valley_final_stand", "x": 19.2, "z": 7.9, "role": "Frontline"}
+  ],
+  "no_repeat_radius": 1.3,
+  "path_clear_radius": 1.3,
+  "slot_clear_radius": 1.25,
+  "slot_hit_margin": 0.25,
+  "radius_by_family": {
+    "Tree": 1.1,
+    "Rock": 0.9,
+    "Bush": 0.45,
+    "Grass": 0.35,
+    "Crystal": 0.7
+  },
+  "cluster_rules": [
+    {"id": "C01", "description": "North frame silhouette", "max_items": 4, "family_min": 2},
+    {"id": "C02", "description": "North ridge edge", "max_items": 4, "family_min": 2},
+    {"id": "C03", "description": "Mid read/control noise", "max_items": 6, "family_min": 3},
+    {"id": "C04", "description": "West entrance frame and no-clutter support", "max_items": 3, "family_min": 1},
+    {"id": "C05", "description": "Final stand approach and late approach frame", "max_items": 4, "family_min": 2}
+  ],
+  "asset_variants": [
+    "Prop_PineTall_A",
+    "Prop_PineTall_B",
+    "Prop_RockCluster_A",
+    "Prop_RockCluster_B",
+    "Prop_BushRound_A",
+    "Prop_BushRound_B",
+    "Prop_GrassPatch_A",
+    "Prop_GrassPatch_B",
+    "Prop_CrystalCluster_A",
+    "Prop_CrystalCluster_B"
+  ],
+  "placements": [
+    {
+      "placement_id": "P-409-01",
+      "cluster_id": "C01",
+      "asset_id": "Prop_PineTall_A",
+      "family": "Tree",
+      "variant": "A",
+      "x": -1.5,
+      "z": 12.1,
+      "rotation_y": -18,
+      "scale": 1.02
+    },
+    {
+      "placement_id": "P-409-02",
+      "cluster_id": "C01",
+      "asset_id": "Prop_PineTall_B",
+      "family": "Tree",
+      "variant": "B",
+      "x": 1.8,
+      "z": 11.9,
+      "rotation_y": 34,
+      "scale": 0.97
+    },
+    {
+      "placement_id": "P-409-03",
+      "cluster_id": "C01",
+      "asset_id": "Prop_RockCluster_A",
+      "family": "Rock",
+      "variant": "A",
+      "x": 4.8,
+      "z": 11.6,
+      "rotation_y": 54,
+      "scale": 1.02
+    },
+    {
+      "placement_id": "P-409-04",
+      "cluster_id": "C02",
+      "asset_id": "Prop_RockCluster_B",
+      "family": "Rock",
+      "variant": "B",
+      "x": 7.6,
+      "z": 11.8,
+      "rotation_y": -38,
+      "scale": 0.90
+    },
+    {
+      "placement_id": "P-409-05",
+      "cluster_id": "C02",
+      "asset_id": "Prop_CrystalCluster_B",
+      "family": "Crystal",
+      "variant": "B",
+      "x": 10.2,
+      "z": 11.9,
+      "rotation_y": 16,
+      "scale": 0.74
+    },
+    {
+      "placement_id": "P-409-06",
+      "cluster_id": "C02",
+      "asset_id": "Prop_GrassPatch_A",
+      "family": "Grass",
+      "variant": "A",
+      "x": 13.4,
+      "z": 11.4,
+      "rotation_y": 72,
+      "scale": 0.62
+    },
+    {
+      "placement_id": "P-409-07",
+      "cluster_id": "C03",
+      "asset_id": "Prop_BushRound_B",
+      "family": "Bush",
+      "variant": "B",
+      "x": 7.8,
+      "z": 4.5,
+      "rotation_y": 18,
+      "scale": 0.75
+    },
+    {
+      "placement_id": "P-409-08",
+      "cluster_id": "C03",
+      "asset_id": "Prop_GrassPatch_B",
+      "family": "Grass",
+      "variant": "B",
+      "x": 2.2,
+      "z": 10.0,
+      "rotation_y": -26,
+      "scale": 0.64
+    },
+    {
+      "placement_id": "P-409-09",
+      "cluster_id": "C03",
+      "asset_id": "Prop_BushRound_A",
+      "family": "Bush",
+      "variant": "A",
+      "x": 13.4,
+      "z": 6.8,
+      "rotation_y": 56,
+      "scale": 0.82
+    },
+    {
+      "placement_id": "P-409-10",
+      "cluster_id": "C03",
+      "asset_id": "Prop_RockCluster_B",
+      "family": "Rock",
+      "variant": "B",
+      "x": 11.5,
+      "z": 6.8,
+      "rotation_y": -12,
+      "scale": 0.96
+    },
+    {
+      "placement_id": "P-409-11",
+      "cluster_id": "C03",
+      "asset_id": "Prop_GrassPatch_A",
+      "family": "Grass",
+      "variant": "A",
+      "x": 14.3,
+      "z": 7.2,
+      "rotation_y": 34,
+      "scale": 0.58
+    },
+    {
+      "placement_id": "P-409-12",
+      "cluster_id": "C03",
+      "asset_id": "Prop_BushRound_B",
+      "family": "Bush",
+      "variant": "B",
+      "x": 14.0,
+      "z": 6.8,
+      "rotation_y": 11,
+      "scale": 0.68
+    },
+    {
+      "placement_id": "P-409-13",
+      "cluster_id": "C04",
+      "asset_id": "Prop_PineTall_A",
+      "family": "Tree",
+      "variant": "A",
+      "x": 0.0,
+      "z": 0.7,
+      "rotation_y": 5,
+      "scale": 0.92
+    },
+    {
+      "placement_id": "P-409-14",
+      "cluster_id": "C04",
+      "asset_id": "Prop_BushRound_B",
+      "family": "Bush",
+      "variant": "B",
+      "x": 1.2,
+      "z": 0.2,
+      "rotation_y": -74,
+      "scale": 0.63
+    },
+    {
+      "placement_id": "P-409-15",
+      "cluster_id": "C05",
+      "asset_id": "Prop_RockCluster_A",
+      "family": "Rock",
+      "variant": "A",
+      "x": 19.1,
+      "z": 10.6,
+      "rotation_y": -54,
+      "scale": 0.77
+    },
+    {
+      "placement_id": "P-409-16",
+      "cluster_id": "C05",
+      "asset_id": "Prop_PineTall_B",
+      "family": "Tree",
+      "variant": "B",
+      "x": 21.6,
+      "z": 10.4,
+      "rotation_y": 21,
+      "scale": 1.06
+    },
+    {
+      "placement_id": "P-409-17",
+      "cluster_id": "C05",
+      "asset_id": "Prop_CrystalCluster_A",
+      "family": "Crystal",
+      "variant": "A",
+      "x": 18.0,
+      "z": 10.5,
+      "rotation_y": 22,
+      "scale": 0.82
+    },
+    {
+      "placement_id": "P-409-18",
+      "cluster_id": "C05",
+      "asset_id": "Prop_CrystalCluster_B",
+      "family": "Crystal",
+      "variant": "B",
+      "x": 23.8,
+      "z": 10.9,
+      "rotation_y": 31,
+      "scale": 0.68
+    }
+  ]
+}

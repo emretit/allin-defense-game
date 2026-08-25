@@ -1,0 +1,13 @@
+{
+  "checkpoint": "VIS-515",
+  "scenario": "60 actor VFX plus dense boss/status/projectile burst",
+  "signals": 108,
+  "poolCount": 128,
+  "playingCount": 101,
+  "poolGrowth": 0,
+  "managedHeapDeltaBytes": 1253376,
+  "estimatedTransparentCost": 117.331,
+  "estimatedTransparentBudget": 120,
+  "criticalBossTelegraphPreserved": true,
+  "notes": "Batch-mode proxy report; final device Profiler/Frame Debugger capture remains under VIS-006/VIS-807."
+}

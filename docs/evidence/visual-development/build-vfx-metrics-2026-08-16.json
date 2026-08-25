@@ -1,0 +1,124 @@
+{
+  "summary": {
+    "expected_asset_count": 3,
+    "generated_asset_count": 3,
+    "total_triangles": 784,
+    "assets_over_material_budget": [],
+    "assets_over_triangle_soft_budget": [],
+    "unity_validation_status": "Pending: Unity CLI/Editor unavailable in current shell."
+  },
+  "assets": [
+    {
+      "asset": "Dust",
+      "path": "Assets/Art/Models/Generated/BuildVfx_Dust.fbx",
+      "exists": true,
+      "size_bytes": 61996,
+      "sha256": "0add5fc508b6ca1307b72de4b4558c58cb0d890e20bf1ba7c800e0f7fb947ad4",
+      "meta": {
+        "exists": true,
+        "guid": "5034969c2f70421c9b0684b145ee8523",
+        "globalScale": "1",
+        "meshCompression": "0",
+        "useFileScale": "1",
+        "importAnimation": "1",
+        "animationType": "2"
+      },
+      "mesh_count": 17,
+      "object_count": 17,
+      "vertex_count": 200,
+      "triangle_count": 332,
+      "material_count": 2,
+      "material_names": [
+        "DC_Earth",
+        "DC_Stone"
+      ],
+      "bounds": {
+        "size": [
+          1.64,
+          1.64,
+          0.2677
+        ],
+        "center": [
+          0.0,
+          0.0,
+          0.1344
+        ]
+      }
+    },
+    {
+      "asset": "Ring",
+      "path": "Assets/Art/Models/Generated/BuildVfx_Ring.fbx",
+      "exists": true,
+      "size_bytes": 53068,
+      "sha256": "b53e138e9931b22e0e03878f7fe21afe7731fe6a4455f81168e80edda61f96b3",
+      "meta": {
+        "exists": true,
+        "guid": "cc148379648c46f09f244dade252954e",
+        "globalScale": "1",
+        "meshCompression": "0",
+        "useFileScale": "1",
+        "importAnimation": "1",
+        "animationType": "2"
+      },
+      "mesh_count": 14,
+      "object_count": 14,
+      "vertex_count": 168,
+      "triangle_count": 280,
+      "material_count": 3,
+      "material_names": [
+        "DC_Dark",
+        "DC_Defender",
+        "DC_Magic"
+      ],
+      "bounds": {
+        "size": [
+          1.4575,
+          1.48,
+          0.2288
+        ],
+        "center": [
+          0.0,
+          0.0,
+          0.1369
+        ]
+      }
+    },
+    {
+      "asset": "Spark",
+      "path": "Assets/Art/Models/Generated/BuildVfx_Spark.fbx",
+      "exists": true,
+      "size_bytes": 42508,
+      "sha256": "232bbc799ee171d56120d3f5eed4d189a2fa42c852bde6369b891de06496f2fe",
+      "meta": {
+        "exists": true,
+        "guid": "15071003f8024c26bea36144c75a9b02",
+        "globalScale": "1",
+        "meshCompression": "0",
+        "useFileScale": "1",
+        "importAnimation": "1",
+        "animationType": "2"
+      },
+      "mesh_count": 10,
+      "object_count": 10,
+      "vertex_count": 106,
+      "triangle_count": 172,
+      "material_count": 2,
+      "material_names": [
+        "DC_Fire",
+        "DC_Magic"
+      ],
+      "bounds": {
+        "size": [
+          0.7056,
+          0.587,
+          0.5464
+        ],
+        "center": [
+          -0.0151,
+          0.0274,
+          0.3332
+        ]
+      }
+    }
+  ]
+}

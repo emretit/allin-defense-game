@@ -1,0 +1,74 @@
+{
+  "schema": "defender-chronicles.visual-development.greenwatch-boundary-layout-metrics.v1",
+  "captured_on": "2026-08-16",
+  "todo": "VIS-410",
+  "source": "docs/evidence/visual-development/boundary-layout-2026-08-16.json",
+  "path_clear_radius": 1.2,
+  "slot_clear_radius": 1.05,
+  "no_repeat_radius": 1.5,
+  "total_placements": 10,
+  "family_counts": {
+    "RidgeWall": 3,
+    "ForegroundStrip": 5,
+    "Silhouette": 2
+  },
+  "variant_counts": {
+    "GreenwatchBoundary_RidgeWall_A": 2,
+    "GreenwatchBoundary_RidgeWall_B": 1,
+    "GreenwatchBoundary_ForegroundStrip_A": 2,
+    "GreenwatchBoundary_ForegroundStrip_B": 3,
+    "GreenwatchBoundary_SilhouetteWall": 1,
+    "GreenwatchBoundary_ForestSilhouette": 1
+  },
+  "cluster_counts": {
+    "N01": 3,
+    "S01": 3,
+    "W01": 1,
+    "E01": 1,
+    "F01": 2
+  },
+  "cluster_rules": {
+    "N01": {
+      "id": "N01",
+      "description": "North ridge cap",
+      "max_items": 4,
+      "family_min": 1
+    },
+    "S01": {
+      "id": "S01",
+      "description": "South foreground frame",
+      "max_items": 4,
+      "family_min": 1
+    },
+    "W01": {
+      "id": "W01",
+      "description": "West long-edge frame",
+      "max_items": 2,
+      "family_min": 1
+    },
+    "E01": {
+      "id": "E01",
+      "description": "East long-edge frame",
+      "max_items": 2,
+      "family_min": 1
+    },
+    "F01": {
+      "id": "F01",
+      "description": "Distant mountain/forest silhouette",
+      "max_items": 2,
+      "family_min": 1
+    }
+  },
+  "violations": [],
+  "violations_count": 0,
+  "passes": {
+    "within_world_bounds": true,
+    "slot_clear": true,
+    "path_clear": true,
+    "repeat_control": true,
+    "scale_and_rotation_valid": true,
+    "asset_variants_present": true,
+    "has_cluster_rules": true
+  },
+  "ready_for_runtime_integration": true
+}

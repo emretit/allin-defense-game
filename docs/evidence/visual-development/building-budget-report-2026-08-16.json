@@ -1,0 +1,343 @@
+{
+  "schema": "defender-chronicles.visual-development.building-budget-report.v1",
+  "captured_on": "2026-08-16",
+  "todo": "VIS-346",
+  "asset_scope": "Generated building candidates plus generated build/upgrade/sell action VFX.",
+  "budgets": {
+    "building_triangle_soft_budget_per_asset": 800,
+    "building_material_budget_per_asset": 3,
+    "building_total_triangle_soft_budget": 4500,
+    "vfx_triangle_soft_budget_per_asset": 500,
+    "vfx_material_budget_per_asset": 3,
+    "vfx_total_triangle_soft_budget": 2500
+  },
+  "summary": {
+    "building_asset_count": 6,
+    "building_total_triangles": 3088,
+    "building_assets_over_triangle_soft_budget": [],
+    "building_assets_over_material_budget": [],
+    "building_assets_with_socket_gaps": [],
+    "building_total_over_triangle_soft_budget": false,
+    "vfx_asset_count": 9,
+    "vfx_total_triangles": 2176,
+    "vfx_assets_over_triangle_soft_budget": [],
+    "vfx_assets_over_material_budget": [],
+    "vfx_total_over_triangle_soft_budget": false,
+    "texture_import_status": "Pending Unity import profile verification; generated FBX candidates do not reference external texture files.",
+    "continuous_vfx_status": "Pending: no final always-on Mage/ambient building VFX runtime prefab has been profiled yet.",
+    "unity_validation_status": "Pending: Unity CLI/Editor unavailable in current shell."
+  },
+  "buildings": [
+    {
+      "id": "Archer_L1",
+      "kind": "Archer",
+      "level": 1,
+      "asset_path": "Assets/Art/Models/Generated/Archer_L1.fbx",
+      "exists": true,
+      "sha256": "787fcb832cdc2da386c56f58bd3f195c52080cecfe179d5b3662e246619b9447",
+      "meta_guid": "7a9d1afe6007e45cd824beade4c79e1b",
+      "triangle_count": 580,
+      "material_count": 3,
+      "material_names": [
+        "DC_Defender",
+        "DC_Fire",
+        "DC_Stone"
+      ],
+      "texture_reference_count": 0,
+      "texture_status": "Flat generated materials only; Unity texture import/compression profile pending.",
+      "socket_gap_count": 0,
+      "scaled_bounds_size": [
+        0.945,
+        1.0117,
+        1.5336
+      ],
+      "over_triangle_soft_budget": false,
+      "over_material_budget": false
+    },
+    {
+      "id": "Archer_L2",
+      "kind": "Archer",
+      "level": 2,
+      "asset_path": "Assets/Art/Models/Generated/Archer_L2.fbx",
+      "exists": true,
+      "sha256": "68bdf5148411ebf5c1ad5a0588925c9ea2e22077c5309e6cd74206ef1d2b99b3",
+      "meta_guid": "bac5a0bfb001e4ee2adff39969fa0553",
+      "triangle_count": 792,
+      "material_count": 3,
+      "material_names": [
+        "DC_Defender.001",
+        "DC_Fire.001",
+        "DC_Stone.001"
+      ],
+      "texture_reference_count": 0,
+      "texture_status": "Flat generated materials only; Unity texture import/compression profile pending.",
+      "socket_gap_count": 0,
+      "scaled_bounds_size": [
+        1.1022,
+        1.0656,
+        1.8011
+      ],
+      "over_triangle_soft_budget": false,
+      "over_material_budget": false
+    },
+    {
+      "id": "Barracks_L1",
+      "kind": "Barracks",
+      "level": 1,
+      "asset_path": "Assets/Art/Models/Generated/Barracks_L1.fbx",
+      "exists": true,
+      "sha256": "459e50e51f1ac463ab983bf1fc322be3fd577ea45bd5dcb343d9e82358672c2c",
+      "meta_guid": "3a3093b70c9d04e388e1e693c94d264f",
+      "triangle_count": 332,
+      "material_count": 3,
+      "material_names": [
+        "DC_Dark",
+        "DC_Defender.002",
+        "DC_Stone.002"
+      ],
+      "texture_reference_count": 0,
+      "texture_status": "Flat generated materials only; Unity texture import/compression profile pending.",
+      "socket_gap_count": 0,
+      "scaled_bounds_size": [
+        1.0535,
+        1.0488,
+        1.5147
+      ],
+      "over_triangle_soft_budget": false,
+      "over_material_budget": false
+    },
+    {
+      "id": "Barracks_L2",
+      "kind": "Barracks",
+      "level": 2,
+      "asset_path": "Assets/Art/Models/Generated/Barracks_L2.fbx",
+      "exists": true,
+      "sha256": "85fe767be514a86fcb6d24204ff00e18ffaa823530842c80bbf0c4fd5d0a3df2",
+      "meta_guid": "1499894568b0a4e759da8189b924c1cb",
+      "triangle_count": 636,
+      "material_count": 3,
+      "material_names": [
+        "DC_Dark.001",
+        "DC_Defender.003",
+        "DC_Stone.003"
+      ],
+      "texture_reference_count": 0,
+      "texture_status": "Flat generated materials only; Unity texture import/compression profile pending.",
+      "socket_gap_count": 0,
+      "scaled_bounds_size": [
+        1.2938,
+        0.9936,
+        1.7582
+      ],
+      "over_triangle_soft_budget": false,
+      "over_material_budget": false
+    },
+    {
+      "id": "Mage_L1",
+      "kind": "Mage",
+      "level": 1,
+      "asset_path": "Assets/Art/Models/Generated/Mage_L1.fbx",
+      "exists": true,
+      "sha256": "f1c3a7d23acaee18d402e21187263dbd0179e01737de10e17fabefdc23412ec1",
+      "meta_guid": "7c095fd12c14640bfafb7e9cf5b31cf9",
+      "triangle_count": 364,
+      "material_count": 3,
+      "material_names": [
+        "DC_Magic",
+        "DC_Navy",
+        "DC_Stone.004"
+      ],
+      "texture_reference_count": 0,
+      "texture_status": "Flat generated materials only; Unity texture import/compression profile pending.",
+      "socket_gap_count": 0,
+      "scaled_bounds_size": [
+        0.8663,
+        0.9108,
+        1.2738
+      ],
+      "over_triangle_soft_budget": false,
+      "over_material_budget": false
+    },
+    {
+      "id": "Mage_L2",
+      "kind": "Mage",
+      "level": 2,
+      "asset_path": "Assets/Art/Models/Generated/Mage_L2.fbx",
+      "exists": true,
+      "sha256": "363e3dbc104862e7fd0538dc378721fb9e0c57a3401ddefc02750f15c790160d",
+      "meta_guid": "1df86af8f5df64309a5cdd53d8b40beb",
+      "triangle_count": 384,
+      "material_count": 3,
+      "material_names": [
+        "DC_Magic.001",
+        "DC_Navy.001",
+        "DC_Stone.005"
+      ],
+      "texture_reference_count": 0,
+      "texture_status": "Flat generated materials only; Unity texture import/compression profile pending.",
+      "socket_gap_count": 0,
+      "scaled_bounds_size": [
+        0.9975,
+        1.0488,
+        1.5048
+      ],
+      "over_triangle_soft_budget": false,
+      "over_material_budget": false
+    }
+  ],
+  "building_action_vfx": [
+    {
+      "family": "build",
+      "asset": "Dust",
+      "asset_path": "Assets/Art/Models/Generated/BuildVfx_Dust.fbx",
+      "exists": true,
+      "sha256": "0add5fc508b6ca1307b72de4b4558c58cb0d890e20bf1ba7c800e0f7fb947ad4",
+      "meta_guid": "5034969c2f70421c9b0684b145ee8523",
+      "triangle_count": 332,
+      "material_count": 2,
+      "material_names": [
+        "DC_Earth",
+        "DC_Stone"
+      ],
+      "over_triangle_soft_budget": false,
+      "over_material_budget": false
+    },
+    {
+      "family": "build",
+      "asset": "Ring",
+      "asset_path": "Assets/Art/Models/Generated/BuildVfx_Ring.fbx",
+      "exists": true,
+      "sha256": "b53e138e9931b22e0e03878f7fe21afe7731fe6a4455f81168e80edda61f96b3",
+      "meta_guid": "cc148379648c46f09f244dade252954e",
+      "triangle_count": 280,
+      "material_count": 3,
+      "material_names": [
+        "DC_Dark",
+        "DC_Defender",
+        "DC_Magic"
+      ],
+      "over_triangle_soft_budget": false,
+      "over_material_budget": false
+    },
+    {
+      "family": "build",
+      "asset": "Spark",
+      "asset_path": "Assets/Art/Models/Generated/BuildVfx_Spark.fbx",
+      "exists": true,
+      "sha256": "232bbc799ee171d56120d3f5eed4d189a2fa42c852bde6369b891de06496f2fe",
+      "meta_guid": "15071003f8024c26bea36144c75a9b02",
+      "triangle_count": 172,
+      "material_count": 2,
+      "material_names": [
+        "DC_Fire",
+        "DC_Magic"
+      ],
+      "over_triangle_soft_budget": false,
+      "over_material_budget": false
+    },
+    {
+      "family": "upgrade",
+      "asset": "Anchor",
+      "asset_path": "Assets/Art/Models/Generated/UpgradeVfx_Anchor.fbx",
+      "exists": true,
+      "sha256": "538ffddedb4bf7eb7673848e97d427e6a48154163a7d398614d1358cb5605b6d",
+      "meta_guid": "8d94d7a0d3b5476d870804878de0aff6",
+      "triangle_count": 248,
+      "material_count": 3,
+      "material_names": [
+        "DC_Defender",
+        "DC_Fire",
+        "DC_Magic"
+      ],
+      "over_triangle_soft_budget": false,
+      "over_material_budget": false
+    },
+    {
+      "family": "upgrade",
+      "asset": "Column",
+      "asset_path": "Assets/Art/Models/Generated/UpgradeVfx_Column.fbx",
+      "exists": true,
+      "sha256": "b21143b4f60c87b4eb91c9e640bbebb5f343efeb92fa06f134e0c3c2af196762",
+      "meta_guid": "8d3fbc78535d4f7f87ec1bc038a15f64",
+      "triangle_count": 208,
+      "material_count": 3,
+      "material_names": [
+        "DC_Defender",
+        "DC_Fire",
+        "DC_Magic"
+      ],
+      "over_triangle_soft_budget": false,
+      "over_material_budget": false
+    },
+    {
+      "family": "upgrade",
+      "asset": "Crest",
+      "asset_path": "Assets/Art/Models/Generated/UpgradeVfx_Crest.fbx",
+      "exists": true,
+      "sha256": "9fb1fc9aa5c7c0732b97e97afc78f287ece426519c438ba5b5b3d5073519f345",
+      "meta_guid": "c0d35e3635174b25a91131ea2923afca",
+      "triangle_count": 176,
+      "material_count": 3,
+      "material_names": [
+        "DC_Defender",
+        "DC_Fire",
+        "DC_Magic"
+      ],
+      "over_triangle_soft_budget": false,
+      "over_material_budget": false
+    },
+    {
+      "family": "sell",
+      "asset": "Ring",
+      "asset_path": "Assets/Art/Models/Generated/SellVfx_Ring.fbx",
+      "exists": true,
+      "sha256": "4d47a51e4863b1bdf414ba26991289af1c9c7e5c049ea799d0b51619761f6cac",
+      "meta_guid": "7ead109f21e643b19f45765bf876a153",
+      "triangle_count": 284,
+      "material_count": 2,
+      "material_names": [
+        "DC_Earth",
+        "DC_Fire"
+      ],
+      "over_triangle_soft_budget": false,
+      "over_material_budget": false
+    },
+    {
+      "family": "sell",
+      "asset": "Chips",
+      "asset_path": "Assets/Art/Models/Generated/SellVfx_Chips.fbx",
+      "exists": true,
+      "sha256": "10108877f15f34a487252f3c111685aed4a9fd8486141169530da8e8d03d2468",
+      "meta_guid": "b0e59dea4406478e9e54ad8e62e17b0e",
+      "triangle_count": 220,
+      "material_count": 3,
+      "material_names": [
+        "DC_Dark",
+        "DC_Earth",
+        "DC_Stone"
+      ],
+      "over_triangle_soft_budget": false,
+      "over_material_budget": false
+    },
+    {
+      "family": "sell",
+      "asset": "Glint",
+      "asset_path": "Assets/Art/Models/Generated/SellVfx_Glint.fbx",
+      "exists": true,
+      "sha256": "a94ce52b5bc83cd3a6b49049e70685d6a8c091ce82241ea9cd10e0a608d1bcc2",
+      "meta_guid": "b764357a1ca1402da833fa622549e146",
+      "triangle_count": 256,
+      "material_count": 1,
+      "material_names": [
+        "DC_Fire"
+      ],
+      "over_triangle_soft_budget": false,
+      "over_material_budget": false
+    }
+  ],
+  "decision": {
+    "generated_candidate_budget_status": "Pass for current generated building FBX geometry/material soft budgets.",
+    "generated_action_vfx_budget_status": "Pass for current generated build/upgrade/sell VFX geometry/material soft budgets.",
+    "final_vis_346_status": "Not complete until Unity import settings, texture profile, continuous VFX cost and runtime evidence are recorded."
+  }
+}

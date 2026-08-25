@@ -1,0 +1,127 @@
+{
+  "summary": {
+    "expected_asset_count": 3,
+    "generated_asset_count": 3,
+    "total_triangles": 632,
+    "assets_over_material_budget": [],
+    "assets_over_triangle_soft_budget": [],
+    "center_drift_flags": [],
+    "unity_validation_status": "Pending: Unity CLI/Editor unavailable in current shell."
+  },
+  "assets": [
+    {
+      "asset": "Anchor",
+      "path": "Assets/Art/Models/Generated/UpgradeVfx_Anchor.fbx",
+      "exists": true,
+      "size_bytes": 45628,
+      "sha256": "538ffddedb4bf7eb7673848e97d427e6a48154163a7d398614d1358cb5605b6d",
+      "meta": {
+        "exists": true,
+        "guid": "8d94d7a0d3b5476d870804878de0aff6",
+        "globalScale": "1",
+        "meshCompression": "0",
+        "useFileScale": "1",
+        "importAnimation": "1",
+        "animationType": "2"
+      },
+      "mesh_count": 11,
+      "object_count": 11,
+      "vertex_count": 146,
+      "triangle_count": 248,
+      "material_count": 3,
+      "material_names": [
+        "DC_Defender",
+        "DC_Fire",
+        "DC_Magic"
+      ],
+      "bounds": {
+        "size": [
+          1.5363,
+          1.56,
+          0.3486
+        ],
+        "center": [
+          0.0,
+          0.0,
+          0.1993
+        ]
+      }
+    },
+    {
+      "asset": "Column",
+      "path": "Assets/Art/Models/Generated/UpgradeVfx_Column.fbx",
+      "exists": true,
+      "size_bytes": 48332,
+      "sha256": "b21143b4f60c87b4eb91c9e640bbebb5f343efeb92fa06f134e0c3c2af196762",
+      "meta": {
+        "exists": true,
+        "guid": "8d3fbc78535d4f7f87ec1bc038a15f64",
+        "globalScale": "1",
+        "meshCompression": "0",
+        "useFileScale": "1",
+        "importAnimation": "1",
+        "animationType": "2"
+      },
+      "mesh_count": 12,
+      "object_count": 12,
+      "vertex_count": 128,
+      "triangle_count": 208,
+      "material_count": 3,
+      "material_names": [
+        "DC_Defender",
+        "DC_Fire",
+        "DC_Magic"
+      ],
+      "bounds": {
+        "size": [
+          0.6981,
+          0.6511,
+          1.18
+        ],
+        "center": [
+          0.0,
+          0.0,
+          0.62
+        ]
+      }
+    },
+    {
+      "asset": "Crest",
+      "path": "Assets/Art/Models/Generated/UpgradeVfx_Crest.fbx",
+      "exists": true,
+      "size_bytes": 43628,
+      "sha256": "9fb1fc9aa5c7c0732b97e97afc78f287ece426519c438ba5b5b3d5073519f345",
+      "meta": {
+        "exists": true,
+        "guid": "c0d35e3635174b25a91131ea2923afca",
+        "globalScale": "1",
+        "meshCompression": "0",
+        "useFileScale": "1",
+        "importAnimation": "1",
+        "animationType": "2"
+      },
+      "mesh_count": 10,
+      "object_count": 10,
+      "vertex_count": 108,
+      "triangle_count": 176,
+      "material_count": 3,
+      "material_names": [
+        "DC_Defender",
+        "DC_Fire",
+        "DC_Magic"
+      ],
+      "bounds": {
+        "size": [
+          0.6686,
+          0.5614,
+          0.52
+        ],
+        "center": [
+          0.0,
+          0.0043,
+          0.72
+        ]
+      }
+    }
+  ]
+}

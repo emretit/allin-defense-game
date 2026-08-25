@@ -1,0 +1,113 @@
+{
+  "schema": "defender-chronicles.visual-development.building-blind-recognition-key.v1",
+  "captured_on": "2026-08-16",
+  "todo": "VIS-344",
+  "asset_scope": "Generated building candidates only; production catalog binding remains pending.",
+  "blind_seed": 20260816,
+  "human_blind_recognition_status": "Pending: sheet/key are prepared, but no human recognition pass has been recorded yet.",
+  "recognition_prompt": "For each code A-F, identify role (Archer/Barracks/Mage) and level (L1/L2) from silhouette/thumbnail, without reading this key.",
+  "items": [
+    {
+      "code": "A",
+      "id": "Archer_L1",
+      "kind": "Archer",
+      "level": 1,
+      "asset_path": "Assets/Art/Models/Generated/Archer_L1.fbx",
+      "expected_read": "thin watchtower, visible bow/target language, low mass",
+      "sha256": "787fcb832cdc2da386c56f58bd3f195c52080cecfe179d5b3662e246619b9447",
+      "meta": {
+        "exists": true,
+        "guid": "7a9d1afe6007e45cd824beade4c79e1b",
+        "globalScale": "1",
+        "useFileScale": "1",
+        "animationType": "2",
+        "importAnimation": "1"
+      }
+    },
+    {
+      "code": "B",
+      "id": "Mage_L2",
+      "kind": "Mage",
+      "level": 2,
+      "asset_path": "Assets/Art/Models/Generated/Mage_L2.fbx",
+      "expected_read": "taller arcane sanctuary, multi-crystal vertical silhouette",
+      "sha256": "363e3dbc104862e7fd0538dc378721fb9e0c57a3401ddefc02750f15c790160d",
+      "meta": {
+        "exists": true,
+        "guid": "1df86af8f5df64309a5cdd53d8b40beb",
+        "globalScale": "1",
+        "useFileScale": "1",
+        "animationType": "2",
+        "importAnimation": "1"
+      }
+    },
+    {
+      "code": "C",
+      "id": "Archer_L2",
+      "kind": "Archer",
+      "level": 2,
+      "asset_path": "Assets/Art/Models/Generated/Archer_L2.fbx",
+      "expected_read": "taller roofed archer post, larger banner/weapon profile",
+      "sha256": "68bdf5148411ebf5c1ad5a0588925c9ea2e22077c5309e6cd74206ef1d2b99b3",
+      "meta": {
+        "exists": true,
+        "guid": "bac5a0bfb001e4ee2adff39969fa0553",
+        "globalScale": "1",
+        "useFileScale": "1",
+        "animationType": "2",
+        "importAnimation": "1"
+      }
+    },
+    {
+      "code": "D",
+      "id": "Barracks_L1",
+      "kind": "Barracks",
+      "level": 1,
+      "asset_path": "Assets/Art/Models/Generated/Barracks_L1.fbx",
+      "expected_read": "low guard post, horizontal mass, shield/spear language",
+      "sha256": "459e50e51f1ac463ab983bf1fc322be3fd577ea45bd5dcb343d9e82358672c2c",
+      "meta": {
+        "exists": true,
+        "guid": "3a3093b70c9d04e388e1e693c94d264f",
+        "globalScale": "1",
+        "useFileScale": "1",
+        "animationType": "2",
+        "importAnimation": "1"
+      }
+    },
+    {
+      "code": "E",
+      "id": "Barracks_L2",
+      "kind": "Barracks",
+      "level": 2,
+      "asset_path": "Assets/Art/Models/Generated/Barracks_L2.fbx",
+      "expected_read": "fortified barracks, heavier roof/tower/weapon-rack mass",
+      "sha256": "85fe767be514a86fcb6d24204ff00e18ffaa823530842c80bbf0c4fd5d0a3df2",
+      "meta": {
+        "exists": true,
+        "guid": "1499894568b0a4e759da8189b924c1cb",
+        "globalScale": "1",
+        "useFileScale": "1",
+        "animationType": "2",
+        "importAnimation": "1"
+      }
+    },
+    {
+      "code": "F",
+      "id": "Mage_L1",
+      "kind": "Mage",
+      "level": 1,
+      "asset_path": "Assets/Art/Models/Generated/Mage_L1.fbx",
+      "expected_read": "open crystal shrine, rune ring and single crystal focus",
+      "sha256": "f1c3a7d23acaee18d402e21187263dbd0179e01737de10e17fabefdc23412ec1",
+      "meta": {
+        "exists": true,
+        "guid": "7c095fd12c14640bfafb7e9cf5b31cf9",
+        "globalScale": "1",
+        "useFileScale": "1",
+        "animationType": "2",
+        "importAnimation": "1"
+      }
+    }
+  ]
+}

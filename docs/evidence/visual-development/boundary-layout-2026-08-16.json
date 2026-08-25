@@ -1,0 +1,257 @@
+{
+  "schema": "defender-chronicles.visual-development.greenwatch-boundary-layout.v1",
+  "captured_on": "2026-08-16",
+  "todo": "VIS-410",
+  "scope": "Boundary framing and distant silhouette staging pass; runtime route/slot/collider/sizing not changed.",
+  "world_bounds": {
+    "min_x": -3.2,
+    "max_x": 25.4,
+    "min_z": -2.1,
+    "max_z": 13.2
+  },
+  "path": [
+    {
+      "x": -2,
+      "z": 2
+    },
+    {
+      "x": 4,
+      "z": 2
+    },
+    {
+      "x": 4,
+      "z": 8
+    },
+    {
+      "x": 10,
+      "z": 8
+    },
+    {
+      "x": 10,
+      "z": 3.5
+    },
+    {
+      "x": 16,
+      "z": 3.5
+    },
+    {
+      "x": 16,
+      "z": 9
+    },
+    {
+      "x": 24,
+      "z": 9
+    }
+  ],
+  "slots": [
+    {
+      "code": "S1",
+      "x": 2.5,
+      "z": 2.1,
+      "role": "Frontline"
+    },
+    {
+      "code": "S2",
+      "x": 5.5,
+      "z": 2.8,
+      "role": "Ranged"
+    },
+    {
+      "code": "S3",
+      "x": 6.6,
+      "z": 5.9,
+      "role": "Control"
+    },
+    {
+      "code": "S4",
+      "x": 10,
+      "z": 3.3,
+      "role": "Frontline"
+    },
+    {
+      "code": "S5",
+      "x": 13.8,
+      "z": 4.4,
+      "role": "Ranged"
+    },
+    {
+      "code": "S6",
+      "x": 15.6,
+      "z": 1.0,
+      "role": "Control"
+    },
+    {
+      "code": "S7",
+      "x": 18.2,
+      "z": 4.6,
+      "role": "Ranged"
+    },
+    {
+      "code": "S8",
+      "x": 19.2,
+      "z": 7.9,
+      "role": "Frontline"
+    }
+  ],
+  "path_clear_radius": 1.20,
+  "slot_clear_radius": 1.05,
+  "slot_hit_margin": 0.25,
+  "no_repeat_radius": 1.50,
+  "family_min_radius": {
+    "RidgeWall": 0.95,
+    "ForegroundStrip": 0.75,
+    "Silhouette": 0.88
+  },
+  "asset_variants": [
+    "GreenwatchBoundary_RidgeWall_A",
+    "GreenwatchBoundary_RidgeWall_B",
+    "GreenwatchBoundary_ForegroundStrip_A",
+    "GreenwatchBoundary_ForegroundStrip_B",
+    "GreenwatchBoundary_SilhouetteWall",
+    "GreenwatchBoundary_ForestSilhouette"
+  ],
+  "cluster_rules": [
+    {
+      "id": "N01",
+      "description": "North ridge cap",
+      "max_items": 4,
+      "family_min": 1
+    },
+    {
+      "id": "S01",
+      "description": "South foreground frame",
+      "max_items": 4,
+      "family_min": 1
+    },
+    {
+      "id": "W01",
+      "description": "West long-edge frame",
+      "max_items": 2,
+      "family_min": 1
+    },
+    {
+      "id": "E01",
+      "description": "East long-edge frame",
+      "max_items": 2,
+      "family_min": 1
+    },
+    {
+      "id": "F01",
+      "description": "Distant mountain/forest silhouette",
+      "max_items": 2,
+      "family_min": 1
+    }
+  ],
+  "placements": [
+    {
+      "placement_id": "B-410-01",
+      "cluster_id": "N01",
+      "asset_id": "GreenwatchBoundary_RidgeWall_A",
+      "family": "RidgeWall",
+      "variant": "A",
+      "x": 1.4,
+      "z": 12.95,
+      "rotation_y": 2,
+      "scale": 1.02
+    },
+    {
+      "placement_id": "B-410-02",
+      "cluster_id": "N01",
+      "asset_id": "GreenwatchBoundary_RidgeWall_B",
+      "family": "RidgeWall",
+      "variant": "B",
+      "x": 11.2,
+      "z": 12.78,
+      "rotation_y": -6,
+      "scale": 1.00
+    },
+    {
+      "placement_id": "B-410-03",
+      "cluster_id": "N01",
+      "asset_id": "GreenwatchBoundary_RidgeWall_A",
+      "family": "RidgeWall",
+      "variant": "A",
+      "x": 20.8,
+      "z": 12.85,
+      "rotation_y": 9,
+      "scale": 1.00
+    },
+    {
+      "placement_id": "B-410-04",
+      "cluster_id": "S01",
+      "asset_id": "GreenwatchBoundary_ForegroundStrip_A",
+      "family": "ForegroundStrip",
+      "variant": "A",
+      "x": 2.4,
+      "z": -0.20,
+      "rotation_y": 4,
+      "scale": 1.00
+    },
+    {
+      "placement_id": "B-410-05",
+      "cluster_id": "S01",
+      "asset_id": "GreenwatchBoundary_ForegroundStrip_B",
+      "family": "ForegroundStrip",
+      "variant": "B",
+      "x": 11.0,
+      "z": 0.78,
+      "rotation_y": -7,
+      "scale": 0.98
+    },
+    {
+      "placement_id": "B-410-06",
+      "cluster_id": "S01",
+      "asset_id": "GreenwatchBoundary_ForegroundStrip_A",
+      "family": "ForegroundStrip",
+      "variant": "A",
+      "x": 19.8,
+      "z": 0.58,
+      "rotation_y": -5,
+      "scale": 1.01
+    },
+    {
+      "placement_id": "B-410-07",
+      "cluster_id": "W01",
+      "asset_id": "GreenwatchBoundary_ForegroundStrip_B",
+      "family": "ForegroundStrip",
+      "variant": "B",
+      "x": -2.1,
+      "z": 7.2,
+      "rotation_y": 82,
+      "scale": 0.88
+    },
+    {
+      "placement_id": "B-410-08",
+      "cluster_id": "E01",
+      "asset_id": "GreenwatchBoundary_ForegroundStrip_B",
+      "family": "ForegroundStrip",
+      "variant": "B",
+      "x": 24.8,
+      "z": 6.5,
+      "rotation_y": -88,
+      "scale": 0.90
+    },
+    {
+      "placement_id": "B-410-09",
+      "cluster_id": "F01",
+      "asset_id": "GreenwatchBoundary_SilhouetteWall",
+      "family": "Silhouette",
+      "variant": "Wall",
+      "x": 4.9,
+      "z": 11.16,
+      "rotation_y": 2,
+      "scale": 1.04
+    },
+    {
+      "placement_id": "B-410-10",
+      "cluster_id": "F01",
+      "asset_id": "GreenwatchBoundary_ForestSilhouette",
+      "family": "Silhouette",
+      "variant": "Forest",
+      "x": 14.2,
+      "z": 11.14,
+      "rotation_y": 0,
+      "scale": 1.00
+    }
+  ]
+}

@@ -1,0 +1,153 @@
+{
+  "checkpoint": "VIS-804",
+  "scenario": "Mobile texture import profile for actor, building/environment, UI and VFX helper textures",
+  "targetPlatform": "iPhone",
+  "textures": [
+    {
+      "category": "Actor",
+      "path": "Assets/ThirdParty/KayKit/Adventurers/Models/knight_texture.png",
+      "textureType": "Default",
+      "maxTextureSize": 512,
+      "mipmapEnabled": true,
+      "iosFormat": "ASTC_6x6",
+      "iosMaxTextureSize": 512
+    },
+    {
+      "category": "Actor",
+      "path": "Assets/ThirdParty/KayKit/Adventurers/Models/barbarian_texture.png",
+      "textureType": "Default",
+      "maxTextureSize": 512,
+      "mipmapEnabled": true,
+      "iosFormat": "ASTC_6x6",
+      "iosMaxTextureSize": 512
+    },
+    {
+      "category": "Actor",
+      "path": "Assets/ThirdParty/KayKit/Adventurers/Models/mage_texture.png",
+      "textureType": "Default",
+      "maxTextureSize": 512,
+      "mipmapEnabled": true,
+      "iosFormat": "ASTC_6x6",
+      "iosMaxTextureSize": 512
+    },
+    {
+      "category": "Actor",
+      "path": "Assets/ThirdParty/KayKit/Adventurers/Models/rogue_texture.png",
+      "textureType": "Default",
+      "maxTextureSize": 512,
+      "mipmapEnabled": true,
+      "iosFormat": "ASTC_6x6",
+      "iosMaxTextureSize": 512
+    },
+    {
+      "category": "Environment/Building",
+      "path": "Assets/ThirdParty/KayKit/MedievalHexagon/Models/hexagons_medieval.png",
+      "textureType": "Default",
+      "maxTextureSize": 1024,
+      "mipmapEnabled": true,
+      "iosFormat": "ASTC_8x8",
+      "iosMaxTextureSize": 1024
+    },
+    {
+      "category": "UI",
+      "path": "Assets/Art/UI/DefenderHudPanel.png",
+      "textureType": "Sprite",
+      "maxTextureSize": 1024,
+      "mipmapEnabled": false,
+      "iosFormat": "ASTC_4x4",
+      "iosMaxTextureSize": 1024
+    },
+    {
+      "category": "UI",
+      "path": "Assets/ThirdParty/Kenney/FantasyUiBorders/HudFrameBorder.png",
+      "textureType": "Sprite",
+      "maxTextureSize": 64,
+      "mipmapEnabled": false,
+      "iosFormat": "RGBA32",
+      "iosMaxTextureSize": 64
+    },
+    {
+      "category": "UI",
+      "path": "Assets/Art/UI/DefenderIconAtlas.png",
+      "textureType": "Sprite",
+      "maxTextureSize": 512,
+      "mipmapEnabled": false,
+      "iosFormat": "ASTC_4x4",
+      "iosMaxTextureSize": 512
+    },
+    {
+      "category": "UI",
+      "path": "Assets/Art/UI/IconGold.png",
+      "textureType": "Sprite",
+      "maxTextureSize": 256,
+      "mipmapEnabled": false,
+      "iosFormat": "ASTC_4x4",
+      "iosMaxTextureSize": 256
+    },
+    {
+      "category": "UI",
+      "path": "Assets/Art/UI/IconWave.png",
+      "textureType": "Sprite",
+      "maxTextureSize": 256,
+      "mipmapEnabled": false,
+      "iosFormat": "ASTC_4x4",
+      "iosMaxTextureSize": 256
+    },
+    {
+      "category": "UI",
+      "path": "Assets/Art/UI/IconKeep.png",
+      "textureType": "Sprite",
+      "maxTextureSize": 256,
+      "mipmapEnabled": false,
+      "iosFormat": "ASTC_4x4",
+      "iosMaxTextureSize": 256
+    },
+    {
+      "category": "UI",
+      "path": "Assets/Art/UI/IconAbility.png",
+      "textureType": "Sprite",
+      "maxTextureSize": 256,
+      "mipmapEnabled": false,
+      "iosFormat": "ASTC_4x4",
+      "iosMaxTextureSize": 256
+    },
+    {
+      "category": "UI",
+      "path": "Assets/Art/UI/IconArcher.png",
+      "textureType": "Sprite",
+      "maxTextureSize": 256,
+      "mipmapEnabled": false,
+      "iosFormat": "ASTC_4x4",
+      "iosMaxTextureSize": 256
+    },
+    {
+      "category": "UI",
+      "path": "Assets/Art/UI/IconBarracks.png",
+      "textureType": "Sprite",
+      "maxTextureSize": 256,
+      "mipmapEnabled": false,
+      "iosFormat": "ASTC_4x4",
+      "iosMaxTextureSize": 256
+    },
+    {
+      "category": "UI",
+      "path": "Assets/Art/UI/IconMage.png",
+      "textureType": "Sprite",
+      "maxTextureSize": 256,
+      "mipmapEnabled": false,
+      "iosFormat": "ASTC_4x4",
+      "iosMaxTextureSize": 256
+    },
+    {
+      "category": "VFX helper",
+      "path": "Assets/Art/White32.png",
+      "textureType": "Default",
+      "maxTextureSize": 32,
+      "mipmapEnabled": false,
+      "iosFormat": "RGBA32",
+      "iosMaxTextureSize": 32
+    }
+  ],
+  "vfxTextureStatus": "Runtime VFX use generated mesh/material colors plus White32 helper; no particle flipbook atlas is present.",
+  "deviceReviewStatus": "Open: gameplay zoom acceptance and device memory delta remain under VIS-807/VIS-812."
+}

@@ -1,0 +1,237 @@
+{
+  "schema": "defender-chronicles.visual-development.road-variation-metrics.v1",
+  "captured_on": "2026-08-16",
+  "todo": "VIS-405",
+  "asset_scope": "Generated road surface/edge/wear candidate FBX files only; not bound to runtime environment prefab.",
+  "summary": {
+    "expected_asset_count": 3,
+    "generated_asset_count": 3,
+    "total_triangles": 1343,
+    "assets_over_triangle_soft_budget": [],
+    "assets_over_material_soft_budget": [],
+    "assets_missing_meta": [],
+    "assets_with_imported_colliders_enabled": [],
+    "unity_validation_status": "Pending: Unity CLI/Editor unavailable in current shell.",
+    "runtime_binding_status": "Pending: generated road candidates are not attached to the production environment prefab."
+  },
+  "assets": [
+    {
+      "id": "GreenwatchRoad_Surface",
+      "category": "Road surface",
+      "path": "Assets/Art/Models/Generated/GreenwatchRoad_Surface.fbx",
+      "source": "ArtSource/Blender/GreenwatchRoad_Surface.blend",
+      "triangle_soft_budget": 120,
+      "material_soft_budget": 1,
+      "exists": true,
+      "sha256": "2a40c6bdcfe10778dcd8b6df091569e525bef048b6264ed1a86b8ef7bbb40d68",
+      "source_exists": true,
+      "source_sha256": "f9562c1a9ace0119d5989d018d15492e09d1e953402f8429adef580d6c7fc818",
+      "meta": {
+        "exists": true,
+        "guid": "c4dbac25429da7180fa4a1d0446262d6",
+        "globalScale": "1",
+        "meshCompression": "0",
+        "useFileScale": "1",
+        "importAnimation": "1",
+        "animationType": "2",
+        "addColliders": "0"
+      },
+      "object_count": 13,
+      "mesh_count": 13,
+      "mesh_names_sample": [
+        "RoadCornerBlend_1",
+        "RoadCornerBlend_2",
+        "RoadCornerBlend_3",
+        "RoadCornerBlend_4",
+        "RoadCornerBlend_5",
+        "RoadCornerBlend_6",
+        "RoadSurface_0",
+        "RoadSurface_1",
+        "RoadSurface_2",
+        "RoadSurface_3",
+        "RoadSurface_4",
+        "RoadSurface_5",
+        "RoadSurface_6"
+      ],
+      "vertex_count": 76,
+      "polygon_count": 13,
+      "triangle_count": 50,
+      "material_count": 1,
+      "material_names": [
+        "DC_Earth"
+      ],
+      "bounds": {
+        "min": [
+          -2.2,
+          1.2237,
+          0.092
+        ],
+        "max": [
+          24.2,
+          9.7027,
+          0.114
+        ],
+        "size": [
+          26.4,
+          8.479,
+          0.022
+        ],
+        "center": [
+          11.0,
+          5.4632,
+          0.103
+        ]
+      },
+      "over_triangle_soft_budget": false,
+      "over_material_soft_budget": false
+    },
+    {
+      "id": "GreenwatchRoad_Edges",
+      "category": "Road edge stones",
+      "path": "Assets/Art/Models/Generated/GreenwatchRoad_Edges.fbx",
+      "source": "ArtSource/Blender/GreenwatchRoad_Edges.blend",
+      "triangle_soft_budget": 1200,
+      "material_soft_budget": 2,
+      "exists": true,
+      "sha256": "acf7ddfd5415132c1af9c8e1085d1da8b17db7fc6baf8af117717d4a43f05783",
+      "source_exists": true,
+      "source_sha256": "8d491f2f48323549df7883356f2cbe43b4324c1ef73a688c77ced07136ff0d5b",
+      "meta": {
+        "exists": true,
+        "guid": "f94c9fba5806c810ed6bee20ee64c2a4",
+        "globalScale": "1",
+        "meshCompression": "0",
+        "useFileScale": "1",
+        "importAnimation": "1",
+        "animationType": "2",
+        "addColliders": "0"
+      },
+      "object_count": 94,
+      "mesh_count": 94,
+      "mesh_names_sample": [
+        "RoadEdgeStone",
+        "RoadEdgeStone.001",
+        "RoadEdgeStone.002",
+        "RoadEdgeStone.003",
+        "RoadEdgeStone.004",
+        "RoadEdgeStone.005",
+        "RoadEdgeStone.006",
+        "RoadEdgeStone.007",
+        "RoadEdgeStone.008",
+        "RoadEdgeStone.009",
+        "RoadEdgeStone.010",
+        "RoadEdgeStone.011",
+        "RoadEdgeStone.012",
+        "RoadEdgeStone.013",
+        "RoadEdgeStone.014",
+        "RoadEdgeStone.015"
+      ],
+      "vertex_count": 752,
+      "polygon_count": 564,
+      "triangle_count": 1128,
+      "material_count": 2,
+      "material_names": [
+        "DC_Metal",
+        "DC_Stone"
+      ],
+      "bounds": {
+        "min": [
+          -2.0756,
+          0.9557,
+          -0.0645
+        ],
+        "max": [
+          24.0667,
+          10.0516,
+          0.3509
+        ],
+        "size": [
+          26.1423,
+          9.0959,
+          0.4154
+        ],
+        "center": [
+          10.9955,
+          5.5036,
+          0.1432
+        ]
+      },
+      "over_triangle_soft_budget": false,
+      "over_material_soft_budget": false
+    },
+    {
+      "id": "GreenwatchRoad_Wear",
+      "category": "Road travel wear",
+      "path": "Assets/Art/Models/Generated/GreenwatchRoad_Wear.fbx",
+      "source": "ArtSource/Blender/GreenwatchRoad_Wear.blend",
+      "triangle_soft_budget": 260,
+      "material_soft_budget": 2,
+      "exists": true,
+      "sha256": "17e7e29dffdf1e925533e63c83c5550ae08cbdc53ce07c80c2d2de4ab9d93fa0",
+      "source_exists": true,
+      "source_sha256": "4064a5d46e4a190a885c42bc30c11d7e1f0a24b58a306cc5a8b8fdb8e712ac93",
+      "meta": {
+        "exists": true,
+        "guid": "48cc94405309e99cd55aa5876fdc1a18",
+        "globalScale": "1",
+        "meshCompression": "0",
+        "useFileScale": "1",
+        "importAnimation": "1",
+        "animationType": "2",
+        "addColliders": "0"
+      },
+      "object_count": 32,
+      "mesh_count": 32,
+      "mesh_names_sample": [
+        "RoadShoulderScuff_0",
+        "RoadShoulderScuff_1",
+        "RoadShoulderScuff_2",
+        "RoadShoulderScuff_3",
+        "RoadShoulderScuff_4",
+        "RoadWearPatch_0",
+        "RoadWearPatch_1",
+        "RoadWearPatch_10",
+        "RoadWearPatch_11",
+        "RoadWearPatch_12",
+        "RoadWearPatch_13",
+        "RoadWearPatch_14",
+        "RoadWearPatch_15",
+        "RoadWearPatch_16",
+        "RoadWearPatch_17",
+        "RoadWearPatch_18"
+      ],
+      "vertex_count": 229,
+      "polygon_count": 32,
+      "triangle_count": 165,
+      "material_count": 2,
+      "material_names": [
+        "DC_Dark",
+        "DC_Earth.001"
+      ],
+      "bounds": {
+        "min": [
+          -1.6096,
+          1.7851,
+          0.1275
+        ],
+        "max": [
+          23.6587,
+          9.2645,
+          0.136
+        ],
+        "size": [
+          25.2682,
+          7.4793,
+          0.0085
+        ],
+        "center": [
+          11.0246,
+          5.5248,
+          0.1317
+        ]
+      },
+      "over_triangle_soft_budget": false,
+      "over_material_soft_budget": false
+    }
+  ]
+}

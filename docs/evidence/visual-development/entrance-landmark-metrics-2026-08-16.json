@@ -1,0 +1,273 @@
+{
+  "schema": "defender-chronicles.visual-development.entrance-landmark-metrics.v1",
+  "captured_on": "2026-08-16",
+  "todo": "VIS-406",
+  "asset_scope": "Generated enemy entrance/gate/spawn candidate FBX files only; not bound to runtime environment prefab.",
+  "summary": {
+    "expected_asset_count": 3,
+    "generated_asset_count": 3,
+    "total_triangles": 1668,
+    "assets_over_triangle_soft_budget": [],
+    "assets_over_material_soft_budget": [],
+    "assets_missing_meta": [],
+    "assets_with_imported_colliders_enabled": [],
+    "assets_missing_source_blend": [],
+    "unity_validation_status": "Pending: Unity CLI/Editor unavailable in current shell.",
+    "runtime_binding_status": "Pending: generated entrance candidates are not attached to the production environment prefab."
+  },
+  "assets": [
+    {
+      "id": "GreenwatchEntrance_Gate",
+      "category": "Enemy entrance gate",
+      "path": "Assets/Art/Models/Generated/GreenwatchEntrance_Gate.fbx",
+      "source": "ArtSource/Blender/GreenwatchEntrance_Gate.blend",
+      "triangle_soft_budget": 980,
+      "material_soft_budget": 5,
+      "acceptance_note": "Distinct warm enemy-gate silhouette with sockets for spawn/light hooks.",
+      "exists": true,
+      "sha256": "51f791390cce50a57f9eb3f84af5617c09679b58783500d4151669cdb108dade",
+      "source_exists": true,
+      "source_sha256": "6cbf6025883725776851ed1a0cebaf732dda8c05b95f1ec83efbfd0c0338414c",
+      "meta": {
+        "exists": true,
+        "guid": "e1954bcb5a4e4717b5888febeed36ee1",
+        "globalScale": "1",
+        "meshCompression": "0",
+        "useFileScale": "1",
+        "importAnimation": "0",
+        "animationType": "0",
+        "addColliders": "0",
+        "materialImportMode": "2"
+      },
+      "object_count": 31,
+      "mesh_count": 28,
+      "empty_count": 3,
+      "socket_names": [
+        "Socket_GateCenter",
+        "Socket_Spawn",
+        "Socket_ThreatLight"
+      ],
+      "mesh_names_sample": [
+        "EntranceGate_ArchBeam",
+        "EntranceGate_BackSlab",
+        "EntranceGate_CrownSpike",
+        "EntranceGate_CrownSpike.001",
+        "EntranceGate_EmberSocket",
+        "EntranceGate_EmberSocket.001",
+        "EntranceGate_EmberSocket.002",
+        "EntranceGate_InnerVoid",
+        "EntranceGate_IronBand",
+        "EntranceGate_IronBand.001",
+        "EntranceGate_IronBand.002",
+        "EntranceGate_IronBand.003",
+        "EntranceGate_IronBand.004",
+        "EntranceGate_IronBand.005",
+        "EntranceGate_PillarCore",
+        "EntranceGate_PillarCore.001",
+        "EntranceGate_PillarInnerShadow",
+        "EntranceGate_PillarInnerShadow.001"
+      ],
+      "vertex_count": 526,
+      "polygon_count": 547,
+      "triangle_count": 940,
+      "material_count": 5,
+      "material_names": [
+        "DC_Dark",
+        "DC_Enemy",
+        "DC_Fire",
+        "DC_Metal",
+        "DC_Stone"
+      ],
+      "bounds": {
+        "min": [
+          -2.6724,
+          0.52,
+          -0.0
+        ],
+        "max": [
+          -1.19,
+          3.48,
+          2.87
+        ],
+        "size": [
+          1.4824,
+          2.96,
+          2.87
+        ],
+        "center": [
+          -1.9312,
+          2.0,
+          1.435
+        ]
+      },
+      "over_triangle_soft_budget": false,
+      "over_material_soft_budget": false
+    },
+    {
+      "id": "GreenwatchEntrance_SpawnLight",
+      "category": "Spawn light and warning ring",
+      "path": "Assets/Art/Models/Generated/GreenwatchEntrance_SpawnLight.fbx",
+      "source": "ArtSource/Blender/GreenwatchEntrance_SpawnLight.blend",
+      "triangle_soft_budget": 460,
+      "material_soft_budget": 3,
+      "acceptance_note": "Threat cue readable by ring/shard/flame shape, not color alone.",
+      "exists": true,
+      "sha256": "6d1b7ad800dac768d29cc0975b2675e4de116641031f26375aae35b2d312e18b",
+      "source_exists": true,
+      "source_sha256": "8fcf40a8bf03966f11b76c61d66ab4f8331ae2eb86f621a0165603d523034eeb",
+      "meta": {
+        "exists": true,
+        "guid": "a0fef72d4e814813af4e9a00dfad7213",
+        "globalScale": "1",
+        "meshCompression": "0",
+        "useFileScale": "1",
+        "importAnimation": "0",
+        "animationType": "0",
+        "addColliders": "0",
+        "materialImportMode": "2"
+      },
+      "object_count": 18,
+      "mesh_count": 16,
+      "empty_count": 2,
+      "socket_names": [
+        "Socket_Audio",
+        "Socket_VFX"
+      ],
+      "mesh_names_sample": [
+        "EntranceSpawn_DirectionalShard",
+        "EntranceSpawn_DirectionalShard.001",
+        "EntranceSpawn_DirectionalShard.002",
+        "EntranceSpawn_DirectionalShard.003",
+        "EntranceSpawn_DirectionalShard.004",
+        "EntranceSpawn_DirectionalShard.005",
+        "EntranceSpawn_DirectionalShard.006",
+        "EntranceSpawn_DirectionalShard.007",
+        "EntranceSpawn_FlameWisp",
+        "EntranceSpawn_FlameWisp.001",
+        "EntranceSpawn_FlameWisp.002",
+        "EntranceSpawn_InnerDarkWell",
+        "EntranceSpawn_OuterWarningRing",
+        "EntranceSpawn_PathChevron",
+        "EntranceSpawn_PathChevron.001",
+        "EntranceSpawn_PathChevron.002"
+      ],
+      "vertex_count": 248,
+      "polygon_count": 192,
+      "triangle_count": 432,
+      "material_count": 3,
+      "material_names": [
+        "DC_Dark.001",
+        "DC_Enemy.001",
+        "DC_Fire.001"
+      ],
+      "bounds": {
+        "min": [
+          -1.8,
+          1.24,
+          0.0325
+        ],
+        "max": [
+          -0.1725,
+          2.76,
+          1.0097
+        ],
+        "size": [
+          1.6275,
+          1.52,
+          0.9772
+        ],
+        "center": [
+          -0.9863,
+          2.0,
+          0.5211
+        ]
+      },
+      "over_triangle_soft_budget": false,
+      "over_material_soft_budget": false
+    },
+    {
+      "id": "GreenwatchEntrance_Dressing",
+      "category": "Entrance scuffs, rocks, posts, crystals",
+      "path": "Assets/Art/Models/Generated/GreenwatchEntrance_Dressing.fbx",
+      "source": "ArtSource/Blender/GreenwatchEntrance_Dressing.blend",
+      "triangle_soft_budget": 420,
+      "material_soft_budget": 6,
+      "acceptance_note": "Hostile west-entry dressing remains outside first-slot/path readability.",
+      "exists": true,
+      "sha256": "bd9e2ab5118eb5417523874d5c9321ed4f5595de00b5afa6059725a4d5ee54b5",
+      "source_exists": true,
+      "source_sha256": "444b5a0f0b70fa0f9f003ba67bb8063037502cf15cd30782142cbc68af0408dd",
+      "meta": {
+        "exists": true,
+        "guid": "e59b1dbaaa2b443ab71c9a4ee08a1a8f",
+        "globalScale": "1",
+        "meshCompression": "0",
+        "useFileScale": "1",
+        "importAnimation": "0",
+        "animationType": "0",
+        "addColliders": "0",
+        "materialImportMode": "2"
+      },
+      "object_count": 19,
+      "mesh_count": 19,
+      "empty_count": 0,
+      "socket_names": [],
+      "mesh_names_sample": [
+        "EntranceDressing_BurnScuff_0",
+        "EntranceDressing_BurnScuff_1",
+        "EntranceDressing_BurnScuff_2",
+        "EntranceDressing_BurnScuff_3",
+        "EntranceDressing_CharredPost",
+        "EntranceDressing_CharredPost.001",
+        "EntranceDressing_CharredPost.002",
+        "EntranceDressing_JaggedRock",
+        "EntranceDressing_JaggedRock.001",
+        "EntranceDressing_JaggedRock.002",
+        "EntranceDressing_JaggedRock.003",
+        "EntranceDressing_JaggedRock.004",
+        "EntranceDressing_PostSpike",
+        "EntranceDressing_PostSpike.001",
+        "EntranceDressing_PostSpike.002",
+        "EntranceDressing_ThreatCrystal",
+        "EntranceDressing_ThreatCrystal.001",
+        "EntranceDressing_ThreatCrystal.002"
+      ],
+      "vertex_count": 198,
+      "polygon_count": 177,
+      "triangle_count": 296,
+      "material_count": 6,
+      "material_names": [
+        "DC_Dark.002",
+        "DC_Earth",
+        "DC_Enemy.002",
+        "DC_Fire.002",
+        "DC_Metal.001",
+        "DC_Stone.001"
+      ],
+      "bounds": {
+        "min": [
+          -3.0341,
+          0.4585,
+          -0.0
+        ],
+        "max": [
+          1.8604,
+          3.5529,
+          1.021
+        ],
+        "size": [
+          4.8944,
+          3.0944,
+          1.021
+        ],
+        "center": [
+          -0.5869,
+          2.0057,
+          0.5105
+        ]
+      },
+      "over_triangle_soft_budget": false,
+      "over_material_soft_budget": false
+    }
+  ]
+}

@@ -1,0 +1,961 @@
+{
+  "schema": "defender-chronicles.visual-development.building-proxy-metrics.v1",
+  "captured_on": "2026-08-16",
+  "summary": {
+    "expected_building_count": 6,
+    "catalog_building_count": 6,
+    "generated_candidate_count": 6,
+    "unique_catalog_guid_count": 6,
+    "unique_generated_guid_count": 6,
+    "catalog_total_triangles": 15521,
+    "generated_total_triangles": 3088,
+    "catalog_roles_missing_runtime_sockets": [
+      "Archer_L1",
+      "Archer_L2",
+      "Barracks_L1",
+      "Barracks_L2",
+      "Mage_L1",
+      "Mage_L2"
+    ],
+    "generated_roles_missing_runtime_sockets": [],
+    "unity_validation_status": "Pending: Unity CLI/Editor unavailable in current shell."
+  },
+  "buildings": [
+    {
+      "id": "Archer_L1",
+      "kind": "Archer",
+      "level": 1,
+      "catalog_scale": 0.72,
+      "catalog_current": {
+        "path": "Assets/ThirdParty/KayKit/MedievalHexagon/Models/building_tower_A_blue.fbx",
+        "exists": true,
+        "meta": {
+          "exists": true,
+          "guid": "5efd1874c34414624a989e17aa368b8c",
+          "globalScale": "1",
+          "useFileScale": "1",
+          "animationType": "2",
+          "importAnimation": "1",
+          "meshCompression": "0"
+        },
+        "object_count": 2,
+        "mesh_count": 2,
+        "mesh_names": [
+          "building_tower_A_blue",
+          "building_tower_A_top_blue"
+        ],
+        "vertex_count": 1363,
+        "polygon_count": 1203,
+        "triangle_count": 2138,
+        "material_count": 1,
+        "material_names": [
+          "hexagons_medieval"
+        ],
+        "bounds": {
+          "min": [
+            -0.4966,
+            -0.58,
+            -0.0
+          ],
+          "max": [
+            0.4966,
+            0.5735,
+            2.1917
+          ],
+          "size": [
+            0.9933,
+            1.1535,
+            2.1917
+          ],
+          "center": [
+            -0.0,
+            -0.0033,
+            1.0959
+          ]
+        },
+        "catalog_scale": 0.72,
+        "scaled_bounds_size": [
+          0.7152,
+          0.8305,
+          1.578
+        ],
+        "socket_count": 0,
+        "sockets": [],
+        "missing_required_runtime_sockets": [
+          "Socket_Root",
+          "Socket_Ground",
+          "Socket_Target",
+          "Socket_Projectile",
+          "Socket_VFX"
+        ]
+      },
+      "generated_candidate": {
+        "path": "Assets/Art/Models/Generated/Archer_L1.fbx",
+        "exists": true,
+        "meta": {
+          "exists": true,
+          "guid": "7a9d1afe6007e45cd824beade4c79e1b",
+          "globalScale": "1",
+          "useFileScale": "1",
+          "animationType": "2",
+          "importAnimation": "1",
+          "meshCompression": "0"
+        },
+        "object_count": 25,
+        "mesh_count": 17,
+        "mesh_names": [
+          "ArcherArrow",
+          "ArcherArrow.001",
+          "ArcherArrow.002",
+          "ArcherArrow.003",
+          "ArcherBow",
+          "ArcherBow.001",
+          "ArcherCrenel",
+          "ArcherCrenel.001",
+          "ArcherCrenel.002",
+          "ArcherCrenel.003",
+          "ArcherPlatform",
+          "ArcherPost",
+          "ArcherRoof",
+          "ArcherTarget",
+          "ArcherTargetBoard",
+          "TowerBase",
+          "TowerFoundation"
+        ],
+        "vertex_count": 324,
+        "polygon_count": 280,
+        "triangle_count": 580,
+        "material_count": 3,
+        "material_names": [
+          "DC_Defender",
+          "DC_Fire",
+          "DC_Stone"
+        ],
+        "bounds": {
+          "min": [
+            -0.6562,
+            -0.7151,
+            0.01
+          ],
+          "max": [
+            0.6562,
+            0.69,
+            2.14
+          ],
+          "size": [
+            1.3125,
+            1.4051,
+            2.13
+          ],
+          "center": [
+            0.0,
+            -0.0126,
+            1.075
+          ]
+        },
+        "catalog_scale": 0.72,
+        "scaled_bounds_size": [
+          0.945,
+          1.0117,
+          1.5336
+        ],
+        "socket_count": 8,
+        "sockets": [
+          "Socket_Banner",
+          "Socket_Ground",
+          "Socket_Muzzle",
+          "Socket_Projectile",
+          "Socket_Root",
+          "Socket_Target",
+          "Socket_Upgrade",
+          "Socket_VFX"
+        ],
+        "missing_required_runtime_sockets": []
+      },
+      "generated_vs_catalog_scaled_footprint_delta": {
+        "x": 0.2298,
+        "z": -0.0444
+      }
+    },
+    {
+      "id": "Archer_L2",
+      "kind": "Archer",
+      "level": 2,
+      "catalog_scale": 0.72,
+      "catalog_current": {
+        "path": "Assets/ThirdParty/KayKit/MedievalHexagon/Models/building_archeryrange_blue.fbx",
+        "exists": true,
+        "meta": {
+          "exists": true,
+          "guid": "32291c7b067fa47d0bf2c4965fd7ecd1",
+          "globalScale": "1",
+          "useFileScale": "1",
+          "animationType": "2",
+          "importAnimation": "1",
+          "meshCompression": "0"
+        },
+        "object_count": 1,
+        "mesh_count": 1,
+        "mesh_names": [
+          "building_archeryrange_blue"
+        ],
+        "vertex_count": 2280,
+        "polygon_count": 2155,
+        "triangle_count": 3819,
+        "material_count": 1,
+        "material_names": [
+          "hexagons_medieval.001"
+        ],
+        "bounds": {
+          "min": [
+            -0.8,
+            -0.6773,
+            -0.0
+          ],
+          "max": [
+            0.8706,
+            0.8735,
+            1.7917
+          ],
+          "size": [
+            1.6706,
+            1.5508,
+            1.7917
+          ],
+          "center": [
+            0.0353,
+            0.0981,
+            0.8959
+          ]
+        },
+        "catalog_scale": 0.72,
+        "scaled_bounds_size": [
+          1.2028,
+          1.1166,
+          1.29
+        ],
+        "socket_count": 0,
+        "sockets": [],
+        "missing_required_runtime_sockets": [
+          "Socket_Root",
+          "Socket_Ground",
+          "Socket_Target",
+          "Socket_Projectile",
+          "Socket_VFX"
+        ]
+      },
+      "generated_candidate": {
+        "path": "Assets/Art/Models/Generated/Archer_L2.fbx",
+        "exists": true,
+        "meta": {
+          "exists": true,
+          "guid": "bac5a0bfb001e4ee2adff39969fa0553",
+          "globalScale": "1",
+          "useFileScale": "1",
+          "animationType": "2",
+          "importAnimation": "1",
+          "meshCompression": "0"
+        },
+        "object_count": 31,
+        "mesh_count": 23,
+        "mesh_names": [
+          "ArcherArrow",
+          "ArcherArrow.001",
+          "ArcherArrow.002",
+          "ArcherArrow.003",
+          "ArcherArrow.004",
+          "ArcherBanner_Cloth",
+          "ArcherBanner_Pole",
+          "ArcherBow",
+          "ArcherBow.001",
+          "ArcherCanopyBrace",
+          "ArcherCrenel",
+          "ArcherCrenel.001",
+          "ArcherCrenel.002",
+          "ArcherCrenel.003",
+          "ArcherCrenel.004",
+          "ArcherPlatform",
+          "ArcherPost",
+          "ArcherRing",
+          "ArcherRoof",
+          "ArcherTarget",
+          "ArcherTargetBoard",
+          "TowerBase",
+          "TowerFoundation"
+        ],
+        "vertex_count": 442,
+        "polygon_count": 387,
+        "triangle_count": 792,
+        "material_count": 3,
+        "material_names": [
+          "DC_Defender.001",
+          "DC_Fire.001",
+          "DC_Stone.001"
+        ],
+        "bounds": {
+          "min": [
+            -0.74,
+            -0.74,
+            0.01
+          ],
+          "max": [
+            0.7909,
+            0.74,
+            2.5115
+          ],
+          "size": [
+            1.5309,
+            1.48,
+            2.5015
+          ],
+          "center": [
+            0.0254,
+            -0.0,
+            1.2607
+          ]
+        },
+        "catalog_scale": 0.72,
+        "scaled_bounds_size": [
+          1.1022,
+          1.0656,
+          1.8011
+        ],
+        "socket_count": 8,
+        "sockets": [
+          "Socket_Banner",
+          "Socket_Ground",
+          "Socket_Muzzle",
+          "Socket_Projectile",
+          "Socket_Root",
+          "Socket_Target",
+          "Socket_Upgrade",
+          "Socket_VFX"
+        ],
+        "missing_required_runtime_sockets": []
+      },
+      "generated_vs_catalog_scaled_footprint_delta": {
+        "x": -0.1006,
+        "z": 0.5111
+      }
+    },
+    {
+      "id": "Barracks_L1",
+      "kind": "Barracks",
+      "level": 1,
+      "catalog_scale": 0.76,
+      "catalog_current": {
+        "path": "Assets/ThirdParty/KayKit/MedievalHexagon/Models/building_tower_base_blue.fbx",
+        "exists": true,
+        "meta": {
+          "exists": true,
+          "guid": "524bc77976bb64eab9d2fc533d8c77bd",
+          "globalScale": "1",
+          "useFileScale": "1",
+          "animationType": "2",
+          "importAnimation": "1",
+          "meshCompression": "0"
+        },
+        "object_count": 1,
+        "mesh_count": 1,
+        "mesh_names": [
+          "building_tower_base_blue"
+        ],
+        "vertex_count": 982,
+        "polygon_count": 840,
+        "triangle_count": 1538,
+        "material_count": 1,
+        "material_names": [
+          "hexagons_medieval.002"
+        ],
+        "bounds": {
+          "min": [
+            -0.4649,
+            -0.58,
+            -0.0
+          ],
+          "max": [
+            0.4649,
+            0.5311,
+            1.5
+          ],
+          "size": [
+            0.9298,
+            1.1111,
+            1.5
+          ],
+          "center": [
+            0.0,
+            -0.0244,
+            0.75
+          ]
+        },
+        "catalog_scale": 0.76,
+        "scaled_bounds_size": [
+          0.7066,
+          0.8444,
+          1.14
+        ],
+        "socket_count": 0,
+        "sockets": [],
+        "missing_required_runtime_sockets": [
+          "Socket_Root",
+          "Socket_Ground",
+          "Socket_Target",
+          "Socket_Projectile",
+          "Socket_VFX"
+        ]
+      },
+      "generated_candidate": {
+        "path": "Assets/Art/Models/Generated/Barracks_L1.fbx",
+        "exists": true,
+        "meta": {
+          "exists": true,
+          "guid": "3a3093b70c9d04e388e1e693c94d264f",
+          "globalScale": "1",
+          "useFileScale": "1",
+          "animationType": "2",
+          "importAnimation": "1",
+          "meshCompression": "0"
+        },
+        "object_count": 17,
+        "mesh_count": 9,
+        "mesh_names": [
+          "BarracksBanner_Cloth",
+          "BarracksBanner_Pole",
+          "BarracksDoor",
+          "BarracksHall",
+          "BarracksRoof",
+          "BarracksShield",
+          "BarracksShield.001",
+          "TowerBase",
+          "TowerFoundation"
+        ],
+        "vertex_count": 184,
+        "polygon_count": 170,
+        "triangle_count": 332,
+        "material_count": 3,
+        "material_names": [
+          "DC_Dark",
+          "DC_Defender.002",
+          "DC_Stone.002"
+        ],
+        "bounds": {
+          "min": [
+            -0.6562,
+            -0.69,
+            0.01
+          ],
+          "max": [
+            0.7299,
+            0.69,
+            2.003
+          ],
+          "size": [
+            1.3862,
+            1.38,
+            1.993
+          ],
+          "center": [
+            0.0368,
+            0.0,
+            1.0065
+          ]
+        },
+        "catalog_scale": 0.76,
+        "scaled_bounds_size": [
+          1.0535,
+          1.0488,
+          1.5147
+        ],
+        "socket_count": 8,
+        "sockets": [
+          "Socket_Banner",
+          "Socket_Ground",
+          "Socket_Projectile",
+          "Socket_Root",
+          "Socket_Spawn",
+          "Socket_Target",
+          "Socket_Upgrade",
+          "Socket_VFX"
+        ],
+        "missing_required_runtime_sockets": []
+      },
+      "generated_vs_catalog_scaled_footprint_delta": {
+        "x": 0.3469,
+        "z": 0.3747
+      }
+    },
+    {
+      "id": "Barracks_L2",
+      "kind": "Barracks",
+      "level": 2,
+      "catalog_scale": 0.72,
+      "catalog_current": {
+        "path": "Assets/ThirdParty/KayKit/MedievalHexagon/Models/building_barracks_blue.fbx",
+        "exists": true,
+        "meta": {
+          "exists": true,
+          "guid": "ad4763606b853428288e900958fdf7b9",
+          "globalScale": "1",
+          "useFileScale": "1",
+          "animationType": "2",
+          "importAnimation": "1",
+          "meshCompression": "0"
+        },
+        "object_count": 1,
+        "mesh_count": 1,
+        "mesh_names": [
+          "building_barracks_blue"
+        ],
+        "vertex_count": 2582,
+        "polygon_count": 2326,
+        "triangle_count": 4007,
+        "material_count": 1,
+        "material_names": [
+          "hexagons_medieval.003"
+        ],
+        "bounds": {
+          "min": [
+            -0.72,
+            -0.8461,
+            -0.0
+          ],
+          "max": [
+            0.72,
+            0.72,
+            1.6401
+          ],
+          "size": [
+            1.44,
+            1.5661,
+            1.6401
+          ],
+          "center": [
+            0.0,
+            -0.063,
+            0.82
+          ]
+        },
+        "catalog_scale": 0.72,
+        "scaled_bounds_size": [
+          1.0368,
+          1.1276,
+          1.1809
+        ],
+        "socket_count": 0,
+        "sockets": [],
+        "missing_required_runtime_sockets": [
+          "Socket_Root",
+          "Socket_Ground",
+          "Socket_Target",
+          "Socket_Projectile",
+          "Socket_VFX"
+        ]
+      },
+      "generated_candidate": {
+        "path": "Assets/Art/Models/Generated/Barracks_L2.fbx",
+        "exists": true,
+        "meta": {
+          "exists": true,
+          "guid": "1499894568b0a4e759da8189b924c1cb",
+          "globalScale": "1",
+          "useFileScale": "1",
+          "animationType": "2",
+          "importAnimation": "1",
+          "meshCompression": "0"
+        },
+        "object_count": 27,
+        "mesh_count": 19,
+        "mesh_names": [
+          "BarracksBanner_Cloth",
+          "BarracksBanner_Pole",
+          "BarracksDoor",
+          "BarracksFrontBrace",
+          "BarracksHall",
+          "BarracksRoof",
+          "BarracksShield",
+          "BarracksShield.001",
+          "BarracksSpear",
+          "BarracksSpear.001",
+          "BarracksTurret",
+          "BarracksTurret.001",
+          "BarracksTurretRoof",
+          "BarracksTurretRoof.001",
+          "BarracksUpperHall",
+          "BarracksWeaponRack",
+          "BarracksWeaponRack.001",
+          "TowerBase",
+          "TowerFoundation"
+        ],
+        "vertex_count": 356,
+        "polygon_count": 324,
+        "triangle_count": 636,
+        "material_count": 3,
+        "material_names": [
+          "DC_Dark.001",
+          "DC_Defender.003",
+          "DC_Stone.003"
+        ],
+        "bounds": {
+          "min": [
+            -0.8225,
+            -0.69,
+            0.01
+          ],
+          "max": [
+            0.9745,
+            0.69,
+            2.452
+          ],
+          "size": [
+            1.797,
+            1.38,
+            2.442
+          ],
+          "center": [
+            0.076,
+            0.0,
+            1.231
+          ]
+        },
+        "catalog_scale": 0.72,
+        "scaled_bounds_size": [
+          1.2938,
+          0.9936,
+          1.7582
+        ],
+        "socket_count": 8,
+        "sockets": [
+          "Socket_Banner",
+          "Socket_Ground",
+          "Socket_Projectile",
+          "Socket_Root",
+          "Socket_Spawn",
+          "Socket_Target",
+          "Socket_Upgrade",
+          "Socket_VFX"
+        ],
+        "missing_required_runtime_sockets": []
+      },
+      "generated_vs_catalog_scaled_footprint_delta": {
+        "x": 0.257,
+        "z": 0.5773
+      }
+    },
+    {
+      "id": "Mage_L1",
+      "kind": "Mage",
+      "level": 1,
+      "catalog_scale": 0.66,
+      "catalog_current": {
+        "path": "Assets/ThirdParty/KayKit/MedievalHexagon/Models/building_tower_B_blue.fbx",
+        "exists": true,
+        "meta": {
+          "exists": true,
+          "guid": "0c89efcb31e2e4f0d9bf1a391f54d097",
+          "globalScale": "1",
+          "useFileScale": "1",
+          "animationType": "2",
+          "importAnimation": "1",
+          "meshCompression": "0"
+        },
+        "object_count": 2,
+        "mesh_count": 2,
+        "mesh_names": [
+          "building_tower_B_blue",
+          "building_tower_B_top_blue"
+        ],
+        "vertex_count": 1533,
+        "polygon_count": 1354,
+        "triangle_count": 2418,
+        "material_count": 1,
+        "material_names": [
+          "hexagons_medieval.004"
+        ],
+        "bounds": {
+          "min": [
+            -0.5987,
+            -0.6913,
+            -0.0
+          ],
+          "max": [
+            0.5987,
+            0.6913,
+            2.4854
+          ],
+          "size": [
+            1.1974,
+            1.3826,
+            2.4854
+          ],
+          "center": [
+            -0.0,
+            0.0,
+            1.2427
+          ]
+        },
+        "catalog_scale": 0.66,
+        "scaled_bounds_size": [
+          0.7903,
+          0.9125,
+          1.6404
+        ],
+        "socket_count": 0,
+        "sockets": [],
+        "missing_required_runtime_sockets": [
+          "Socket_Root",
+          "Socket_Ground",
+          "Socket_Target",
+          "Socket_Projectile",
+          "Socket_VFX"
+        ]
+      },
+      "generated_candidate": {
+        "path": "Assets/Art/Models/Generated/Mage_L1.fbx",
+        "exists": true,
+        "meta": {
+          "exists": true,
+          "guid": "7c095fd12c14640bfafb7e9cf5b31cf9",
+          "globalScale": "1",
+          "useFileScale": "1",
+          "animationType": "2",
+          "importAnimation": "1",
+          "meshCompression": "0"
+        },
+        "object_count": 24,
+        "mesh_count": 15,
+        "mesh_names": [
+          "MageCrystal",
+          "MageProng",
+          "MageProng.001",
+          "MageProng.002",
+          "MageProng.003",
+          "MageRing",
+          "MageRune",
+          "MageRune.001",
+          "MageRune.002",
+          "MageRune.003",
+          "MageRune.004",
+          "MageRune.005",
+          "MageSpire",
+          "TowerBase",
+          "TowerFoundation"
+        ],
+        "vertex_count": 212,
+        "polygon_count": 220,
+        "triangle_count": 364,
+        "material_count": 3,
+        "material_names": [
+          "DC_Magic",
+          "DC_Navy",
+          "DC_Stone.004"
+        ],
+        "bounds": {
+          "min": [
+            -0.6562,
+            -0.69,
+            0.01
+          ],
+          "max": [
+            0.6562,
+            0.69,
+            1.94
+          ],
+          "size": [
+            1.3125,
+            1.38,
+            1.93
+          ],
+          "center": [
+            0.0,
+            0.0,
+            0.975
+          ]
+        },
+        "catalog_scale": 0.66,
+        "scaled_bounds_size": [
+          0.8663,
+          0.9108,
+          1.2738
+        ],
+        "socket_count": 9,
+        "sockets": [
+          "Socket_Banner",
+          "Socket_Cast",
+          "Socket_Crystal",
+          "Socket_Ground",
+          "Socket_Projectile",
+          "Socket_Root",
+          "Socket_Target",
+          "Socket_Upgrade",
+          "Socket_VFX"
+        ],
+        "missing_required_runtime_sockets": []
+      },
+      "generated_vs_catalog_scaled_footprint_delta": {
+        "x": 0.076,
+        "z": -0.3666
+      }
+    },
+    {
+      "id": "Mage_L2",
+      "kind": "Mage",
+      "level": 2,
+      "catalog_scale": 0.76,
+      "catalog_current": {
+        "path": "Assets/ThirdParty/KayKit/MedievalHexagon/Models/building_church_blue.fbx",
+        "exists": true,
+        "meta": {
+          "exists": true,
+          "guid": "3dc9f1c202a2e407a90d41c5154a988e",
+          "globalScale": "1",
+          "useFileScale": "1",
+          "animationType": "2",
+          "importAnimation": "1",
+          "meshCompression": "0"
+        },
+        "object_count": 1,
+        "mesh_count": 1,
+        "mesh_names": [
+          "building_church_blue"
+        ],
+        "vertex_count": 1012,
+        "polygon_count": 883,
+        "triangle_count": 1601,
+        "material_count": 1,
+        "material_names": [
+          "hexagons_medieval.005"
+        ],
+        "bounds": {
+          "min": [
+            -0.5145,
+            -0.595,
+            -0.0
+          ],
+          "max": [
+            0.5145,
+            0.56,
+            1.645
+          ],
+          "size": [
+            1.029,
+            1.155,
+            1.645
+          ],
+          "center": [
+            -0.0,
+            -0.0175,
+            0.8225
+          ]
+        },
+        "catalog_scale": 0.76,
+        "scaled_bounds_size": [
+          0.782,
+          0.8778,
+          1.2502
+        ],
+        "socket_count": 0,
+        "sockets": [],
+        "missing_required_runtime_sockets": [
+          "Socket_Root",
+          "Socket_Ground",
+          "Socket_Target",
+          "Socket_Projectile",
+          "Socket_VFX"
+        ]
+      },
+      "generated_candidate": {
+        "path": "Assets/Art/Models/Generated/Mage_L2.fbx",
+        "exists": true,
+        "meta": {
+          "exists": true,
+          "guid": "1df86af8f5df64309a5cdd53d8b40beb",
+          "globalScale": "1",
+          "useFileScale": "1",
+          "animationType": "2",
+          "importAnimation": "1",
+          "meshCompression": "0"
+        },
+        "object_count": 25,
+        "mesh_count": 16,
+        "mesh_names": [
+          "MageCrystal",
+          "MageProng",
+          "MageProng.001",
+          "MageProng.002",
+          "MageProng.003",
+          "MageProng.004",
+          "MageRing",
+          "MageRune",
+          "MageRune.001",
+          "MageRune.002",
+          "MageRune.003",
+          "MageRune.004",
+          "MageRune.005",
+          "MageSpire",
+          "TowerBase",
+          "TowerFoundation"
+        ],
+        "vertex_count": 224,
+        "polygon_count": 228,
+        "triangle_count": 384,
+        "material_count": 3,
+        "material_names": [
+          "DC_Magic.001",
+          "DC_Navy.001",
+          "DC_Stone.005"
+        ],
+        "bounds": {
+          "min": [
+            -0.6562,
+            -0.69,
+            0.01
+          ],
+          "max": [
+            0.6562,
+            0.69,
+            1.99
+          ],
+          "size": [
+            1.3125,
+            1.38,
+            1.98
+          ],
+          "center": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        "catalog_scale": 0.76,
+        "scaled_bounds_size": [
+          0.9975,
+          1.0488,
+          1.5048
+        ],
+        "socket_count": 9,
+        "sockets": [
+          "Socket_Banner",
+          "Socket_Cast",
+          "Socket_Crystal",
+          "Socket_Ground",
+          "Socket_Projectile",
+          "Socket_Root",
+          "Socket_Target",
+          "Socket_Upgrade",
+          "Socket_VFX"
+        ],
+        "missing_required_runtime_sockets": []
+      },
+      "generated_vs_catalog_scaled_footprint_delta": {
+        "x": 0.2155,
+        "z": 0.2546
+      }
+    }
+  ],
+  "decision": {
+    "vis_301_status": "Pivot/footprint/socket baseline captured; final Unity prefab validation remains pending.",
+    "catalog_vs_generated_status": "Catalog currently references KayKit licensed building FBX files while generated candidate FBX files also exist under Assets/Art/Models/Generated.",
+    "socket_status": "Current catalog and generated building proxies should not be treated as final socket-complete runtime prefabs."
+  }
+}

@@ -1,0 +1,211 @@
+{
+  "schema": "defender-chronicles.visual-development.ground-variation-metrics.v1",
+  "captured_on": "2026-08-16",
+  "todo": "VIS-404",
+  "asset_scope": "Generated candidate FBX overlays only; not bound to runtime catalog/prefab yet.",
+  "budgets": {
+    "triangle_soft_budget_per_region": 120,
+    "material_soft_budget_per_region": 4
+  },
+  "summary": {
+    "expected_asset_count": 3,
+    "generated_asset_count": 3,
+    "total_triangles": 126,
+    "assets_over_triangle_soft_budget": [],
+    "assets_over_material_soft_budget": [],
+    "assets_missing_meta": [],
+    "assets_with_imported_colliders_enabled": [],
+    "unity_validation_status": "Pending: Unity CLI/Editor unavailable in current shell.",
+    "runtime_binding_status": "Pending: generated overlays are not attached to the production environment prefab."
+  },
+  "assets": [
+    {
+      "id": "GreenwatchGround_West",
+      "region": "West Entry Tutorial",
+      "path": "Assets/Art/Models/Generated/GreenwatchGround_West.fbx",
+      "source": "ArtSource/Blender/GreenwatchGround_West.blend",
+      "exists": true,
+      "sha256": "de8c87f76db832eb8ee7bec48b902c88d207d0ed673f9b0d5be4c1079c570ea7",
+      "source_exists": true,
+      "source_sha256": "1cdbda2dbc4b39920b6600e367efdb5dce37f17d3f5ec4e96a1098c59cb5211e",
+      "meta": {
+        "exists": true,
+        "guid": "57f88c17af8595f15f5f90cb65902e2a",
+        "globalScale": "1",
+        "meshCompression": "0",
+        "useFileScale": "1",
+        "importAnimation": "1",
+        "animationType": "2",
+        "addColliders": "0"
+      },
+      "object_count": 4,
+      "mesh_count": 4,
+      "mesh_names": [
+        "WestCoolBreakA",
+        "WestRidgeMoss",
+        "WestSouthForegroundValue",
+        "WestWarmGateScuff"
+      ],
+      "vertex_count": 44,
+      "polygon_count": 4,
+      "triangle_count": 36,
+      "material_count": 4,
+      "material_names": [
+        "DC_Earth",
+        "DC_Forest",
+        "DC_Grass",
+        "DC_Navy"
+      ],
+      "bounds": {
+        "min": [
+          -2.338,
+          -0.5817,
+          0.0302
+        ],
+        "max": [
+          6.4765,
+          5.7088,
+          0.047
+        ],
+        "size": [
+          8.8145,
+          6.2905,
+          0.0168
+        ],
+        "center": [
+          2.0693,
+          2.5635,
+          0.0386
+        ]
+      },
+      "over_triangle_soft_budget": false,
+      "over_material_soft_budget": false
+    },
+    {
+      "id": "GreenwatchGround_Mid",
+      "region": "Mid Control Bend",
+      "path": "Assets/Art/Models/Generated/GreenwatchGround_Mid.fbx",
+      "source": "ArtSource/Blender/GreenwatchGround_Mid.blend",
+      "exists": true,
+      "sha256": "d4595ec47e332bbe3f91b37db14fb1c5b2fe2bdda4e27cfb0815297e1854fc2a",
+      "source_exists": true,
+      "source_sha256": "6c258d030b7d68cd81828ca5c9824e5f2e999f79866af1f3079d710e6e27b9ec",
+      "meta": {
+        "exists": true,
+        "guid": "393200d6b3f722b581f9213ebb5684f6",
+        "globalScale": "1",
+        "meshCompression": "0",
+        "useFileScale": "1",
+        "importAnimation": "1",
+        "animationType": "2",
+        "addColliders": "0"
+      },
+      "object_count": 5,
+      "mesh_count": 5,
+      "mesh_names": [
+        "MidFarMossBreak",
+        "MidInnerQuietPool",
+        "MidNorthBendCool",
+        "MidRoadShoulderWear",
+        "MidSouthCutValue"
+      ],
+      "vertex_count": 55,
+      "polygon_count": 5,
+      "triangle_count": 45,
+      "material_count": 4,
+      "material_names": [
+        "DC_Earth.001",
+        "DC_Forest.001",
+        "DC_Grass.001",
+        "DC_Navy.001"
+      ],
+      "bounds": {
+        "min": [
+          4.0771,
+          1.3506,
+          0.0299
+        ],
+        "max": [
+          12.7408,
+          11.0794,
+          0.048
+        ],
+        "size": [
+          8.6637,
+          9.7287,
+          0.0181
+        ],
+        "center": [
+          8.4089,
+          6.215,
+          0.039
+        ]
+      },
+      "over_triangle_soft_budget": false,
+      "over_material_soft_budget": false
+    },
+    {
+      "id": "GreenwatchGround_Final",
+      "region": "Final Stand / Boss Read",
+      "path": "Assets/Art/Models/Generated/GreenwatchGround_Final.fbx",
+      "source": "ArtSource/Blender/GreenwatchGround_Final.blend",
+      "exists": true,
+      "sha256": "61284517afe896b0b4fa1e9a5c57564e3422c9e6bf9332b51dcc0442cfecb412",
+      "source_exists": true,
+      "source_sha256": "8ecbf845a542ae0d8f06a3226ae3f6ad2fa7e0bb7fca91d19eba4225fc491865",
+      "meta": {
+        "exists": true,
+        "guid": "f1c2692c229c93346e77a3b40965962b",
+        "globalScale": "1",
+        "meshCompression": "0",
+        "useFileScale": "1",
+        "importAnimation": "1",
+        "animationType": "2",
+        "addColliders": "0"
+      },
+      "object_count": 5,
+      "mesh_count": 5,
+      "mesh_names": [
+        "FinalBossApproachCool",
+        "FinalKeepShadowField",
+        "FinalNorthRidgeGlowBreak",
+        "FinalRoadShoulderWear",
+        "FinalSouthLowValue"
+      ],
+      "vertex_count": 55,
+      "polygon_count": 5,
+      "triangle_count": 45,
+      "material_count": 4,
+      "material_names": [
+        "DC_Earth.002",
+        "DC_Forest.002",
+        "DC_Grass.002",
+        "DC_Navy.002"
+      ],
+      "bounds": {
+        "min": [
+          13.6484,
+          0.6315,
+          0.0288
+        ],
+        "max": [
+          23.8568,
+          11.8861,
+          0.048
+        ],
+        "size": [
+          10.2084,
+          11.2546,
+          0.0192
+        ],
+        "center": [
+          18.7526,
+          6.2588,
+          0.0384
+        ]
+      },
+      "over_triangle_soft_budget": false,
+      "over_material_soft_budget": false
+    }
+  ]
+}

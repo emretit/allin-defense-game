@@ -1,0 +1,239 @@
+{
+  "schema": "defender-chronicles.visual-development.greenwatch-paintover-plan.v1",
+  "captured_on": "2026-08-16",
+  "todo": "VIS-401",
+  "scope": "Planning artifact only; does not change runtime route, slot positions, colliders or camera.",
+  "world_bounds": {
+    "min_x": -3.2,
+    "max_x": 25.4,
+    "min_z": -2.1,
+    "max_z": 13.2
+  },
+  "path": [
+    {
+      "x": -2,
+      "z": 2
+    },
+    {
+      "x": 4,
+      "z": 2
+    },
+    {
+      "x": 4,
+      "z": 8
+    },
+    {
+      "x": 10,
+      "z": 8
+    },
+    {
+      "x": 10,
+      "z": 3.5
+    },
+    {
+      "x": 16,
+      "z": 3.5
+    },
+    {
+      "x": 16,
+      "z": 9
+    },
+    {
+      "x": 24,
+      "z": 9
+    }
+  ],
+  "slots": [
+    {
+      "code": "S1",
+      "id": "slot_valley_west_entry",
+      "x": 2.5,
+      "z": 2.1,
+      "role": "Frontline"
+    },
+    {
+      "code": "S2",
+      "id": "slot_valley_west_ridge",
+      "x": 5.5,
+      "z": 2.8,
+      "role": "Ranged"
+    },
+    {
+      "code": "S3",
+      "id": "slot_valley_north_bend",
+      "x": 6.6,
+      "z": 5.9,
+      "role": "Control"
+    },
+    {
+      "code": "S4",
+      "id": "slot_valley_mid_cross",
+      "x": 10.0,
+      "z": 3.3,
+      "role": "Frontline"
+    },
+    {
+      "code": "S5",
+      "id": "slot_valley_east_ridge",
+      "x": 13.8,
+      "z": 4.4,
+      "role": "Ranged"
+    },
+    {
+      "code": "S6",
+      "id": "slot_valley_gate_low",
+      "x": 15.6,
+      "z": 1.0,
+      "role": "Control"
+    },
+    {
+      "code": "S7",
+      "id": "slot_valley_gate_high",
+      "x": 18.2,
+      "z": 4.6,
+      "role": "Ranged"
+    },
+    {
+      "code": "S8",
+      "id": "slot_valley_final_stand",
+      "x": 19.2,
+      "z": 7.9,
+      "role": "Frontline"
+    }
+  ],
+  "command_points": [
+    {
+      "name": "Guardian",
+      "x": 4.0,
+      "z": 1.4,
+      "purpose": "Knight hold"
+    },
+    {
+      "name": "Mid Hold",
+      "x": 10.8,
+      "z": 4.3,
+      "purpose": "Mid combat timing"
+    },
+    {
+      "name": "Gate Hold",
+      "x": 16.9,
+      "z": 2.4,
+      "purpose": "Late hold"
+    },
+    {
+      "name": "Boss Focus",
+      "x": 18.8,
+      "z": 6.8,
+      "purpose": "Boss pressure"
+    }
+  ],
+  "regions": [
+    {
+      "id": "A",
+      "name": "West Entry Tutorial",
+      "polygon": [
+        {
+          "x": -2.9,
+          "z": -0.1
+        },
+        {
+          "x": 5.2,
+          "z": -0.1
+        },
+        {
+          "x": 5.2,
+          "z": 4.4
+        },
+        {
+          "x": -2.9,
+          "z": 4.4
+        }
+      ],
+      "rule": "Gate, first slot and route must stay clean; use warm enemy embers and sparse rocks."
+    },
+    {
+      "id": "B",
+      "name": "Mid Control Bend",
+      "polygon": [
+        {
+          "x": 3.6,
+          "z": 3.2
+        },
+        {
+          "x": 12.4,
+          "z": 3.2
+        },
+        {
+          "x": 12.4,
+          "z": 9.7
+        },
+        {
+          "x": 3.6,
+          "z": 9.7
+        }
+      ],
+      "rule": "Best place for low ground variation and small readable prop clusters away from slot circles."
+    },
+    {
+      "id": "C",
+      "name": "Final Stand / Boss Read",
+      "polygon": [
+        {
+          "x": 13.4,
+          "z": 2.0
+        },
+        {
+          "x": 24.9,
+          "z": 2.0
+        },
+        {
+          "x": 24.9,
+          "z": 11.2
+        },
+        {
+          "x": 13.4,
+          "z": 11.2
+        }
+      ],
+      "rule": "Keep boss approach, final slots and castle silhouette dominant; no tall props in front of keep."
+    }
+  ],
+  "noise_bands": [
+    {
+      "name": "North frame prop band",
+      "min_x": -3.0,
+      "min_z": 10.9,
+      "max_x": 25.0,
+      "max_z": 13.05,
+      "rule": "High silhouettes: pines, rocks, ridge glow."
+    },
+    {
+      "name": "South foreground frame",
+      "min_x": -2.7,
+      "min_z": -1.75,
+      "max_x": 24.5,
+      "max_z": 1.05,
+      "rule": "Foreground parallax silhouettes, low near path."
+    }
+  ],
+  "landmarks": [
+    {
+      "name": "Enemy Gate",
+      "x": -2.4,
+      "z": 2.0,
+      "visual_role": "warm red/orange portal + entry spikes"
+    },
+    {
+      "name": "Moon/Ridge",
+      "x": -2.8,
+      "z": 13.1,
+      "visual_role": "cool moon and ridge silhouette"
+    },
+    {
+      "name": "Defender Keep",
+      "x": 24.1,
+      "z": 9.0,
+      "visual_role": "blue stone castle, strongest friendly mass"
+    }
+  ]
+}

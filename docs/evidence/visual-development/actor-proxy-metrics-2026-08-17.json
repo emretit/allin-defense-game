@@ -1,0 +1,712 @@
+{
+  "schema": "defender-chronicles.visual-development.actor-proxy-metrics.v1",
+  "captured_on": "2026-08-16",
+  "model_root": "Assets/Art/Models/Generated",
+  "roles_expected": [
+    "Knight",
+    "Guard",
+    "Raider",
+    "Vanguard",
+    "Regenerator",
+    "Support",
+    "Siege",
+    "Boss"
+  ],
+  "roles_found": [
+    "Knight",
+    "Guard",
+    "Raider",
+    "Vanguard",
+    "Regenerator",
+    "Support",
+    "Siege",
+    "Boss"
+  ],
+  "summary": {
+    "expected_actor_count": 8,
+    "found_actor_count": 8,
+    "unique_meta_guid_count": 8,
+    "total_triangle_count": 4640,
+    "max_triangle_count": 780,
+    "roles_missing_runtime_sockets": [],
+    "unity_validation_status": "Pending: Unity CLI/Editor unavailable in current shell."
+  },
+  "actors": [
+    {
+      "role": "Knight",
+      "path": "Assets/Art/Models/Generated/Knight.fbx",
+      "exists": true,
+      "meta": {
+        "exists": true,
+        "guid": "ca86211f0d59c42c3a59ef4012912ecf",
+        "globalScale": "1",
+        "useFileScale": "1",
+        "animationType": "2",
+        "importAnimation": "1",
+        "optimizeGameObjects": "0",
+        "preserveHierarchy": "0",
+        "meshCompression": "0",
+        "isReadable": "0"
+      },
+      "object_count": 26,
+      "mesh_count": 18,
+      "mesh_names": [
+        "Arm",
+        "Arm.001",
+        "Belt",
+        "BlobShadow",
+        "Body",
+        "Boot",
+        "Boot.001",
+        "Cape",
+        "Crest",
+        "Head",
+        "Helmet",
+        "Leg",
+        "Leg.001",
+        "Shield",
+        "Shoulders",
+        "Visor",
+        "Weapon",
+        "WeaponBlade"
+      ],
+      "armature_count": 1,
+      "vertex_count": 314,
+      "polygon_count": 289,
+      "triangle_count": 556,
+      "material_count": 2,
+      "material_names": [
+        "DC_Defender",
+        "DC_Fire"
+      ],
+      "bounds": {
+        "min": [
+          -0.5061,
+          -0.48,
+          0.0125
+        ],
+        "max": [
+          0.7719,
+          0.48,
+          2.1
+        ],
+        "size": [
+          1.278,
+          0.96,
+          2.0875
+        ],
+        "center": [
+          0.1329,
+          0.0,
+          1.0562
+        ]
+      },
+      "socket_count": 7,
+      "sockets": [
+        "Socket_Chest",
+        "Socket_Ground",
+        "Socket_Hand_L",
+        "Socket_Hand_R",
+        "Socket_Head",
+        "Socket_Root",
+        "Socket_Weapon_Tip"
+      ],
+      "missing_required_runtime_sockets": [],
+      "proxy_readiness": "Accepted as static proxy baseline",
+      "runtime_readiness": "Not accepted as final runtime actor: generated proxy has no verified runtime rig, required gameplay sockets or animation clips."
+    },
+    {
+      "role": "Guard",
+      "path": "Assets/Art/Models/Generated/Guard.fbx",
+      "exists": true,
+      "meta": {
+        "exists": true,
+        "guid": "4af9ec369fb8b42e3a8a128f9653dc90",
+        "globalScale": "1",
+        "useFileScale": "1",
+        "animationType": "2",
+        "importAnimation": "1",
+        "optimizeGameObjects": "0",
+        "preserveHierarchy": "0",
+        "meshCompression": "0",
+        "isReadable": "0"
+      },
+      "object_count": 24,
+      "mesh_count": 16,
+      "mesh_names": [
+        "Arm",
+        "Arm.001",
+        "Belt",
+        "BlobShadow",
+        "Body",
+        "Boot",
+        "Boot.001",
+        "Head",
+        "Helmet",
+        "Leg",
+        "Leg.001",
+        "Shield",
+        "Shoulders",
+        "Visor",
+        "Weapon",
+        "WeaponBlade"
+      ],
+      "armature_count": 1,
+      "vertex_count": 278,
+      "polygon_count": 243,
+      "triangle_count": 492,
+      "material_count": 2,
+      "material_names": [
+        "DC_Defender.001",
+        "DC_Stone"
+      ],
+      "bounds": {
+        "min": [
+          -0.3948,
+          -0.3744,
+          0.0117
+        ],
+        "max": [
+          0.6021,
+          0.3744,
+          1.4742
+        ],
+        "size": [
+          0.9968,
+          0.7488,
+          1.4625
+        ],
+        "center": [
+          0.1036,
+          0.0,
+          0.743
+        ]
+      },
+      "socket_count": 7,
+      "sockets": [
+        "Socket_Chest",
+        "Socket_Ground",
+        "Socket_Hand_L",
+        "Socket_Hand_R",
+        "Socket_Head",
+        "Socket_Root",
+        "Socket_Weapon_Tip"
+      ],
+      "missing_required_runtime_sockets": [],
+      "proxy_readiness": "Accepted as static proxy baseline",
+      "runtime_readiness": "Not accepted as final runtime actor: generated proxy has no verified runtime rig, required gameplay sockets or animation clips."
+    },
+    {
+      "role": "Raider",
+      "path": "Assets/Art/Models/Generated/Raider.fbx",
+      "exists": true,
+      "meta": {
+        "exists": true,
+        "guid": "35ede50e5d4af46b6b65d0a533522257",
+        "globalScale": "1",
+        "useFileScale": "1",
+        "animationType": "2",
+        "importAnimation": "1",
+        "optimizeGameObjects": "0",
+        "preserveHierarchy": "0",
+        "meshCompression": "0",
+        "isReadable": "0"
+      },
+      "object_count": 22,
+      "mesh_count": 15,
+      "mesh_names": [
+        "Arm",
+        "Arm.001",
+        "Belt",
+        "BlobShadow",
+        "Body",
+        "Boot",
+        "Boot.001",
+        "Head",
+        "Helmet",
+        "Horn",
+        "Horn.001",
+        "Leg",
+        "Leg.001",
+        "Shoulders",
+        "Visor"
+      ],
+      "armature_count": 1,
+      "vertex_count": 256,
+      "polygon_count": 218,
+      "triangle_count": 452,
+      "material_count": 2,
+      "material_names": [
+        "DC_Dark",
+        "DC_Enemy"
+      ],
+      "bounds": {
+        "min": [
+          -0.3644,
+          -0.3456,
+          0.0108
+        ],
+        "max": [
+          0.3644,
+          0.3456,
+          1.3646
+        ],
+        "size": [
+          0.7288,
+          0.6912,
+          1.3538
+        ],
+        "center": [
+          0.0,
+          0.0,
+          0.6877
+        ]
+      },
+      "socket_count": 6,
+      "sockets": [
+        "Socket_Chest",
+        "Socket_Ground",
+        "Socket_Hand_R",
+        "Socket_Head",
+        "Socket_Root",
+        "Socket_Weapon_Tip"
+      ],
+      "missing_required_runtime_sockets": [],
+      "proxy_readiness": "Accepted as static proxy baseline",
+      "runtime_readiness": "Not accepted as final runtime actor: generated proxy has no verified runtime rig, required gameplay sockets or animation clips."
+    },
+    {
+      "role": "Vanguard",
+      "path": "Assets/Art/Models/Generated/Vanguard.fbx",
+      "exists": true,
+      "meta": {
+        "exists": true,
+        "guid": "92a664c5553364d679574a52bd92676c",
+        "globalScale": "1",
+        "useFileScale": "1",
+        "animationType": "2",
+        "importAnimation": "1",
+        "optimizeGameObjects": "0",
+        "preserveHierarchy": "0",
+        "meshCompression": "0",
+        "isReadable": "0"
+      },
+      "object_count": 25,
+      "mesh_count": 17,
+      "mesh_names": [
+        "Arm",
+        "Arm.001",
+        "Belt",
+        "BlobShadow",
+        "Body",
+        "Boot",
+        "Boot.001",
+        "ChestPlate",
+        "GreatWeaponHandle",
+        "GreatWeaponHead",
+        "GreatWeaponSpike",
+        "Head",
+        "Helmet",
+        "Leg",
+        "Leg.001",
+        "Shoulders",
+        "Visor"
+      ],
+      "armature_count": 1,
+      "vertex_count": 302,
+      "polygon_count": 269,
+      "triangle_count": 536,
+      "material_count": 2,
+      "material_names": [
+        "DC_Dark.001",
+        "DC_Enemy.001"
+      ],
+      "bounds": {
+        "min": [
+          -0.5314,
+          -0.504,
+          0.0125
+        ],
+        "max": [
+          1.0572,
+          0.504,
+          2.0299
+        ],
+        "size": [
+          1.5886,
+          1.008,
+          2.0174
+        ],
+        "center": [
+          0.2629,
+          0.0,
+          1.0212
+        ]
+      },
+      "socket_count": 7,
+      "sockets": [
+        "Socket_Chest",
+        "Socket_Ground",
+        "Socket_Hand_L",
+        "Socket_Hand_R",
+        "Socket_Head",
+        "Socket_Root",
+        "Socket_Weapon_Tip"
+      ],
+      "missing_required_runtime_sockets": [],
+      "proxy_readiness": "Accepted as static proxy baseline",
+      "runtime_readiness": "Not accepted as final runtime actor: generated proxy has no verified runtime rig, required gameplay sockets or animation clips."
+    },
+    {
+      "role": "Regenerator",
+      "path": "Assets/Art/Models/Generated/Regenerator.fbx",
+      "exists": true,
+      "meta": {
+        "exists": true,
+        "guid": "f382a95ee783c4e069f7ecc6ee955d69",
+        "globalScale": "1",
+        "useFileScale": "1",
+        "animationType": "2",
+        "importAnimation": "1",
+        "optimizeGameObjects": "0",
+        "preserveHierarchy": "0",
+        "meshCompression": "0",
+        "isReadable": "0"
+      },
+      "object_count": 32,
+      "mesh_count": 24,
+      "mesh_names": [
+        "Arm",
+        "Arm.001",
+        "BackTendril_0",
+        "BackTendril_1",
+        "BackTendril_2",
+        "BackTotemPod",
+        "BackTotemStem",
+        "BackTotemTip",
+        "Belt",
+        "BlobShadow",
+        "Body",
+        "Boot",
+        "Boot.001",
+        "CoreOrb",
+        "CoreRibA",
+        "CoreRibB",
+        "Head",
+        "Helmet",
+        "Leg",
+        "Leg.001",
+        "Shoulders",
+        "VineHorn",
+        "VineHorn.001",
+        "Visor"
+      ],
+      "armature_count": 1,
+      "vertex_count": 362,
+      "polygon_count": 313,
+      "triangle_count": 628,
+      "material_count": 2,
+      "material_names": [
+        "DC_Dark.002",
+        "DC_RegenCore"
+      ],
+      "bounds": {
+        "min": [
+          -0.5162,
+          -0.4896,
+          0.0125
+        ],
+        "max": [
+          0.5162,
+          0.4896,
+          1.9651
+        ],
+        "size": [
+          1.0325,
+          0.9792,
+          1.9526
+        ],
+        "center": [
+          0.0,
+          0.0,
+          0.9888
+        ]
+      },
+      "socket_count": 7,
+      "sockets": [
+        "Socket_Back",
+        "Socket_Cast",
+        "Socket_Chest",
+        "Socket_Core",
+        "Socket_Ground",
+        "Socket_Head",
+        "Socket_Root"
+      ],
+      "missing_required_runtime_sockets": [],
+      "proxy_readiness": "Accepted as static proxy baseline",
+      "runtime_readiness": "Not accepted as final runtime actor: generated proxy has no verified runtime rig, required gameplay sockets or animation clips."
+    },
+    {
+      "role": "Support",
+      "path": "Assets/Art/Models/Generated/Support.fbx",
+      "exists": true,
+      "meta": {
+        "exists": true,
+        "guid": "af8b985f82eff4928a7e89c9d859c70a",
+        "globalScale": "1",
+        "useFileScale": "1",
+        "animationType": "2",
+        "importAnimation": "1",
+        "optimizeGameObjects": "0",
+        "preserveHierarchy": "0",
+        "meshCompression": "0",
+        "isReadable": "0"
+      },
+      "object_count": 29,
+      "mesh_count": 21,
+      "mesh_names": [
+        "Arm",
+        "Arm.001",
+        "Belt",
+        "BlobShadow",
+        "Body",
+        "Boot",
+        "Boot.001",
+        "ChestFocus",
+        "ClothRibbon",
+        "ClothRibbon.001",
+        "Head",
+        "Helmet",
+        "LanternRing",
+        "Leg",
+        "Leg.001",
+        "OpenMantle",
+        "Shoulders",
+        "Staff",
+        "StaffBeacon",
+        "StaffLantern",
+        "Visor"
+      ],
+      "armature_count": 1,
+      "vertex_count": 374,
+      "polygon_count": 349,
+      "triangle_count": 664,
+      "material_count": 2,
+      "material_names": [
+        "DC_Magic",
+        "DC_SupportCloth"
+      ],
+      "bounds": {
+        "min": [
+          -0.4454,
+          -0.4224,
+          0.0125
+        ],
+        "max": [
+          0.5202,
+          0.4224,
+          1.7512
+        ],
+        "size": [
+          0.9656,
+          0.8448,
+          1.7387
+        ],
+        "center": [
+          0.0374,
+          0.0,
+          0.8819
+        ]
+      },
+      "socket_count": 7,
+      "sockets": [
+        "Socket_Cast",
+        "Socket_Chest",
+        "Socket_Ground",
+        "Socket_Hand_R",
+        "Socket_Head",
+        "Socket_Root",
+        "Socket_Weapon_Tip"
+      ],
+      "missing_required_runtime_sockets": [],
+      "proxy_readiness": "Accepted as static proxy baseline",
+      "runtime_readiness": "Not accepted as final runtime actor: generated proxy has no verified runtime rig, required gameplay sockets or animation clips."
+    },
+    {
+      "role": "Siege",
+      "path": "Assets/Art/Models/Generated/Siege.fbx",
+      "exists": true,
+      "meta": {
+        "exists": true,
+        "guid": "521a8c7e7877e46029ce3e7c3771366f",
+        "globalScale": "1",
+        "useFileScale": "1",
+        "animationType": "2",
+        "importAnimation": "1",
+        "optimizeGameObjects": "0",
+        "preserveHierarchy": "0",
+        "meshCompression": "0",
+        "isReadable": "0"
+      },
+      "object_count": 24,
+      "mesh_count": 19,
+      "mesh_names": [
+        "BlobShadow",
+        "Ram",
+        "RamCollar",
+        "RamHead",
+        "SiegeBanner_Cloth",
+        "SiegeBanner_Pole",
+        "SiegeBody",
+        "SiegeRearCounterweight",
+        "SiegeSidePlate",
+        "SiegeSidePlate.001",
+        "SiegeUpperCradle",
+        "Wheel",
+        "Wheel.001",
+        "Wheel.002",
+        "Wheel.003",
+        "WheelBrace",
+        "WheelBrace.001",
+        "WheelBrace.002",
+        "WheelBrace.003"
+      ],
+      "armature_count": 0,
+      "vertex_count": 428,
+      "polygon_count": 396,
+      "triangle_count": 780,
+      "material_count": 2,
+      "material_names": [
+        "DC_Dark.003",
+        "DC_Enemy.002"
+      ],
+      "bounds": {
+        "min": [
+          -0.85,
+          -1.895,
+          0.0125
+        ],
+        "max": [
+          0.85,
+          0.85,
+          1.58
+        ],
+        "size": [
+          1.7,
+          2.745,
+          1.5675
+        ],
+        "center": [
+          0.0,
+          -0.5225,
+          0.7962
+        ]
+      },
+      "socket_count": 5,
+      "sockets": [
+        "Socket_Chest",
+        "Socket_Core",
+        "Socket_Ground",
+        "Socket_Muzzle",
+        "Socket_Root"
+      ],
+      "missing_required_runtime_sockets": [],
+      "proxy_readiness": "Accepted as static proxy baseline",
+      "runtime_readiness": "Not accepted as final runtime actor: generated proxy has no verified runtime rig, required gameplay sockets or animation clips."
+    },
+    {
+      "role": "Boss",
+      "path": "Assets/Art/Models/Generated/Boss.fbx",
+      "exists": true,
+      "meta": {
+        "exists": true,
+        "guid": "ac0cfbb859c1e4699a54973c59f9924b",
+        "globalScale": "1",
+        "useFileScale": "1",
+        "animationType": "2",
+        "importAnimation": "1",
+        "optimizeGameObjects": "0",
+        "preserveHierarchy": "0",
+        "meshCompression": "0",
+        "isReadable": "0"
+      },
+      "object_count": 29,
+      "mesh_count": 18,
+      "mesh_names": [
+        "Arm",
+        "Arm.001",
+        "Belt",
+        "BlobShadow",
+        "Body",
+        "Boot",
+        "Boot.001",
+        "Head",
+        "Helmet",
+        "Horn",
+        "Horn.001",
+        "Leg",
+        "Leg.001",
+        "Shield",
+        "Shoulders",
+        "Visor",
+        "Weapon",
+        "WeaponBlade"
+      ],
+      "armature_count": 1,
+      "vertex_count": 302,
+      "polygon_count": 259,
+      "triangle_count": 532,
+      "material_count": 5,
+      "material_names": [
+        "DC_Dark.004",
+        "DC_Enemy.003",
+        "DC_Fire.001",
+        "DC_Metal",
+        "DC_Stone.001"
+      ],
+      "bounds": {
+        "min": [
+          -0.7845,
+          -0.744,
+          0.0125
+        ],
+        "max": [
+          1.1964,
+          0.744,
+          2.9326
+        ],
+        "size": [
+          1.9809,
+          1.488,
+          2.9201
+        ],
+        "center": [
+          0.206,
+          0.0,
+          1.4726
+        ]
+      },
+      "socket_count": 10,
+      "sockets": [
+        "Socket_Back",
+        "Socket_Cast",
+        "Socket_Chest",
+        "Socket_Core",
+        "Socket_Ground",
+        "Socket_Hand_L",
+        "Socket_Hand_R",
+        "Socket_Head",
+        "Socket_Root",
+        "Socket_Weapon_Tip"
+      ],
+      "missing_required_runtime_sockets": [],
+      "proxy_readiness": "Accepted as static proxy baseline",
+      "runtime_readiness": "Not accepted as final runtime actor: generated proxy has no verified runtime rig, required gameplay sockets or animation clips."
+    }
+  ],
+  "decision": {
+    "vis_104_scale_status": "Proxy FBX scale/bounds captured for baseline; Unity transform/prefab validation remains pending.",
+    "vis_105_budget_status": "Triangle/material counts captured for current proxies; final mobile budgets still need device profiling.",
+    "vis_203_socket_status": "No generated proxy actor should be treated as socket-complete. Final runtime actors must include required Socket_* transforms."
+  }
+}

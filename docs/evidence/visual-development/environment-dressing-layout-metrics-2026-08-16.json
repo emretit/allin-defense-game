@@ -1,0 +1,79 @@
+{
+  "schema": "defender-chronicles.visual-development.greenwatch-dressing-layout-metrics.v1",
+  "captured_on": "2026-08-16",
+  "todo": "VIS-409",
+  "source": "docs/evidence/visual-development/environment-dressing-layout-2026-08-16.json",
+  "path_clear_radius": 1.3,
+  "slot_clear_radius": 1.25,
+  "no_repeat_radius": 1.3,
+  "total_placements": 18,
+  "family_counts": {
+    "Tree": 4,
+    "Rock": 4,
+    "Crystal": 3,
+    "Grass": 3,
+    "Bush": 4
+  },
+  "variant_counts": {
+    "Prop_PineTall_A": 2,
+    "Prop_PineTall_B": 2,
+    "Prop_RockCluster_A": 2,
+    "Prop_RockCluster_B": 2,
+    "Prop_CrystalCluster_B": 2,
+    "Prop_GrassPatch_A": 2,
+    "Prop_BushRound_B": 3,
+    "Prop_GrassPatch_B": 1,
+    "Prop_BushRound_A": 1,
+    "Prop_CrystalCluster_A": 1
+  },
+  "cluster_counts": {
+    "C01": 3,
+    "C02": 3,
+    "C03": 6,
+    "C04": 2,
+    "C05": 4
+  },
+  "cluster_rules": {
+    "C01": {
+      "id": "C01",
+      "description": "North frame silhouette",
+      "max_items": 4,
+      "family_min": 2
+    },
+    "C02": {
+      "id": "C02",
+      "description": "North ridge edge",
+      "max_items": 4,
+      "family_min": 2
+    },
+    "C03": {
+      "id": "C03",
+      "description": "Mid read/control noise",
+      "max_items": 6,
+      "family_min": 3
+    },
+    "C04": {
+      "id": "C04",
+      "description": "West entrance frame and no-clutter support",
+      "max_items": 3,
+      "family_min": 1
+    },
+    "C05": {
+      "id": "C05",
+      "description": "Final stand approach and late approach frame",
+      "max_items": 4,
+      "family_min": 2
+    }
+  },
+  "violations": [],
+  "violations_count": 0,
+  "passes": {
+    "within_world_bounds": true,
+    "slot_clear": true,
+    "path_clear": true,
+    "scale_and_rotation_valid": true,
+    "repeat_control": true,
+    "has_all_asset_variants": true
+  },
+  "ready_for_runtime_integration": true
+}

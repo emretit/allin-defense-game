@@ -1,0 +1,44 @@
+{
+  "checkpoint": "VIS-801/VIS-802/VIS-803",
+  "scenario": "Low/Medium/High runtime lighting and URP shadow matrix",
+  "urpAdditionalLightShadowsSupported": false,
+  "urpAdditionalLightsPerObjectLimit": 4,
+  "profiles": [
+    {
+      "qualityName": "Low",
+      "keyShadows": "None",
+      "pointLightCount": 2,
+      "pointShadowCasters": 0,
+      "totalLightCount": 3,
+      "moonFillIntensity": 0.624,
+      "moonFillRange": 14.4,
+      "gateFillIntensity": 1.183,
+      "gateFillRange": 4.32
+    },
+    {
+      "qualityName": "Medium",
+      "keyShadows": "None",
+      "pointLightCount": 2,
+      "pointShadowCasters": 0,
+      "totalLightCount": 3,
+      "moonFillIntensity": 0.96,
+      "moonFillRange": 24,
+      "gateFillIntensity": 1.82,
+      "gateFillRange": 7.2
+    },
+    {
+      "qualityName": "High",
+      "keyShadows": "Soft",
+      "pointLightCount": 2,
+      "pointShadowCasters": 0,
+      "totalLightCount": 3,
+      "moonFillIntensity": 0.96,
+      "moonFillRange": 24,
+      "gateFillIntensity": 1.82,
+      "gateFillRange": 7.2
+    }
+  ],
+  "passesBatchProfileMatrix": true,
+  "deviceProfilerStatus": "Open: final device profile matrix and FPS capture remain under VIS-807.",
+  "notes": "Batch-mode profile matrix validates runtime light counts, shadow rules and Low fill attenuation before final device profiling."
+}

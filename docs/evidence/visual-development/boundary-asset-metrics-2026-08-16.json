@@ -1,0 +1,560 @@
+{
+  "schema": "defender-chronicles.visual-development.boundary-asset-metrics.v1",
+  "captured_on": "2026-08-16",
+  "todo": "VIS-410",
+  "asset_scope": "Generated greenwatch boundary FBX assets only; no runtime prefab binding yet.",
+  "summary": {
+    "expected_asset_count": 6,
+    "generated_asset_count": 6,
+    "total_triangles": 4632,
+    "assets_over_triangle_soft_budget": [
+      "GreenwatchBoundary_RidgeWall_A",
+      "GreenwatchBoundary_SilhouetteWall",
+      "GreenwatchBoundary_ForestSilhouette"
+    ],
+    "assets_over_material_soft_budget": [
+      "GreenwatchBoundary_SilhouetteWall",
+      "GreenwatchBoundary_ForestSilhouette"
+    ],
+    "assets_missing_meta": [
+      "GreenwatchBoundary_RidgeWall_A",
+      "GreenwatchBoundary_RidgeWall_B",
+      "GreenwatchBoundary_ForegroundStrip_A",
+      "GreenwatchBoundary_ForegroundStrip_B",
+      "GreenwatchBoundary_SilhouetteWall",
+      "GreenwatchBoundary_ForestSilhouette"
+    ],
+    "assets_with_imported_colliders_enabled": [],
+    "assets_missing_source_blend": [],
+    "unity_validation_status": "Pending: Unity CLI/Editor unavailable in current shell.",
+    "runtime_binding_status": "Pending: boundary pass candidates are not yet attached to production environment prefab."
+  },
+  "assets": [
+    {
+      "id": "GreenwatchBoundary_RidgeWall_A",
+      "category": "North ridge wall variant A",
+      "path": "Assets/Art/Models/Generated/GreenwatchBoundary_RidgeWall_A.fbx",
+      "source": "ArtSource/Blender/GreenwatchBoundary_RidgeWall_A.blend",
+      "triangle_soft_budget": 900,
+      "material_soft_budget": 5,
+      "acceptance_note": "Long-form ridge frame reads as map edge structure, not blockers.",
+      "exists": true,
+      "sha256": "82def220beea567256fe694db83dfda9dc8473eb7a6e289fcf8fbd4f2f704449",
+      "source_exists": true,
+      "source_sha256": "8a86d67f43852ccad17119f4f43b782624824c77eb7b364003a1f177b6745f07",
+      "meta": {
+        "exists": false
+      },
+      "object_count": 40,
+      "mesh_count": 40,
+      "empty_count": 0,
+      "socket_names": [],
+      "mesh_names_sample": [
+        "BoundaryRidgeWallA_Base",
+        "BoundaryRidgeWallA_Crown_0",
+        "BoundaryRidgeWallA_Crown_1",
+        "BoundaryRidgeWallA_Crown_10",
+        "BoundaryRidgeWallA_Crown_2",
+        "BoundaryRidgeWallA_Crown_3",
+        "BoundaryRidgeWallA_Crown_4",
+        "BoundaryRidgeWallA_Crown_5",
+        "BoundaryRidgeWallA_Crown_6",
+        "BoundaryRidgeWallA_Crown_7",
+        "BoundaryRidgeWallA_Crown_8",
+        "BoundaryRidgeWallA_Crown_9",
+        "BoundaryRidgeWallA_Pine_0",
+        "BoundaryRidgeWallA_Pine_1",
+        "BoundaryRidgeWallA_Pine_10",
+        "BoundaryRidgeWallA_Pine_2",
+        "BoundaryRidgeWallA_Pine_3",
+        "BoundaryRidgeWallA_Pine_4",
+        "BoundaryRidgeWallA_Pine_5",
+        "BoundaryRidgeWallA_Pine_6",
+        "BoundaryRidgeWallA_Pine_7",
+        "BoundaryRidgeWallA_Pine_8",
+        "BoundaryRidgeWallA_Pine_9",
+        "BoundaryRidgeWallA_Puck_0",
+        "BoundaryRidgeWallA_Puck_1",
+        "BoundaryRidgeWallA_Puck_10",
+        "BoundaryRidgeWallA_Puck_2",
+        "BoundaryRidgeWallA_Puck_3",
+        "BoundaryRidgeWallA_Puck_4",
+        "BoundaryRidgeWallA_Puck_5"
+      ],
+      "vertex_count": 558,
+      "polygon_count": 575,
+      "triangle_count": 956,
+      "material_count": 4,
+      "material_names": [
+        "DC_Dark",
+        "DC_Grass",
+        "DC_Metal",
+        "DC_Stone"
+      ],
+      "bounds": {
+        "min": [
+          -2.6,
+          11.9608,
+          -0.3304
+        ],
+        "max": [
+          30.2604,
+          12.87,
+          1.736
+        ],
+        "size": [
+          32.8604,
+          0.9092,
+          2.0664
+        ],
+        "center": [
+          13.8302,
+          12.4154,
+          0.7028
+        ]
+      },
+      "over_triangle_soft_budget": true,
+      "over_material_soft_budget": false,
+      "imported_collider_risk": false
+    },
+    {
+      "id": "GreenwatchBoundary_RidgeWall_B",
+      "category": "North ridge wall variant B",
+      "path": "Assets/Art/Models/Generated/GreenwatchBoundary_RidgeWall_B.fbx",
+      "source": "ArtSource/Blender/GreenwatchBoundary_RidgeWall_B.blend",
+      "triangle_soft_budget": 900,
+      "material_soft_budget": 6,
+      "acceptance_note": "Ridge frame variant keeps silhouette difference from A with cold silhouettes.",
+      "exists": true,
+      "sha256": "dc73649fb9a3a5678d5e7f737eaa0366c7af5c53df3615f0f0b00ffc7105c917",
+      "source_exists": true,
+      "source_sha256": "41122275e0a79b668056c6d0e2ba588fd489e4874657b7114f7678e2ed14455a",
+      "meta": {
+        "exists": false
+      },
+      "object_count": 37,
+      "mesh_count": 37,
+      "empty_count": 0,
+      "socket_names": [],
+      "mesh_names_sample": [
+        "BoundaryRidgeWallB_Base",
+        "BoundaryRidgeWallB_Bloom_0",
+        "BoundaryRidgeWallB_Bloom_10",
+        "BoundaryRidgeWallB_Bloom_2",
+        "BoundaryRidgeWallB_Bloom_4",
+        "BoundaryRidgeWallB_Bloom_6",
+        "BoundaryRidgeWallB_Bloom_8",
+        "BoundaryRidgeWallB_Crown_0",
+        "BoundaryRidgeWallB_Crown_10",
+        "BoundaryRidgeWallB_Crown_2",
+        "BoundaryRidgeWallB_Crown_4",
+        "BoundaryRidgeWallB_Crown_6",
+        "BoundaryRidgeWallB_Crown_8",
+        "BoundaryRidgeWallB_Pillar_1",
+        "BoundaryRidgeWallB_Pillar_11",
+        "BoundaryRidgeWallB_Pillar_3",
+        "BoundaryRidgeWallB_Pillar_5",
+        "BoundaryRidgeWallB_Pillar_7",
+        "BoundaryRidgeWallB_Pillar_9",
+        "BoundaryRidgeWallB_Pine_0",
+        "BoundaryRidgeWallB_Pine_10",
+        "BoundaryRidgeWallB_Pine_2",
+        "BoundaryRidgeWallB_Pine_4",
+        "BoundaryRidgeWallB_Pine_6",
+        "BoundaryRidgeWallB_Pine_8",
+        "BoundaryRidgeWallB_Stone_0",
+        "BoundaryRidgeWallB_Stone_1",
+        "BoundaryRidgeWallB_Stone_10",
+        "BoundaryRidgeWallB_Stone_11",
+        "BoundaryRidgeWallB_Stone_2"
+      ],
+      "vertex_count": 480,
+      "polygon_count": 542,
+      "triangle_count": 812,
+      "material_count": 5,
+      "material_names": [
+        "DC_Dark.001",
+        "DC_Fire",
+        "DC_Grass.001",
+        "DC_Metal.001",
+        "DC_Stone.001"
+      ],
+      "bounds": {
+        "min": [
+          -2.6,
+          12.1063,
+          -0.0005
+        ],
+        "max": [
+          25.9743,
+          12.84,
+          1.3
+        ],
+        "size": [
+          28.5743,
+          0.7337,
+          1.3005
+        ],
+        "center": [
+          11.6872,
+          12.4732,
+          0.6498
+        ]
+      },
+      "over_triangle_soft_budget": false,
+      "over_material_soft_budget": false,
+      "imported_collider_risk": false
+    },
+    {
+      "id": "GreenwatchBoundary_ForegroundStrip_A",
+      "category": "South foreground strip A",
+      "path": "Assets/Art/Models/Generated/GreenwatchBoundary_ForegroundStrip_A.fbx",
+      "source": "ArtSource/Blender/GreenwatchBoundary_ForegroundStrip_A.blend",
+      "triangle_soft_budget": 700,
+      "material_soft_budget": 5,
+      "acceptance_note": "Foreground strip stays low and readable as frame.",
+      "exists": true,
+      "sha256": "98bdc5e50dd8e9ef02d798d28df68e0eb0da781d7714d15b15615347a2800d91",
+      "source_exists": true,
+      "source_sha256": "026861b6abb00af33924ecd5c184b56226dafc049f4434be3d00d4dae3007e7f",
+      "meta": {
+        "exists": false
+      },
+      "object_count": 35,
+      "mesh_count": 35,
+      "empty_count": 0,
+      "socket_names": [],
+      "mesh_names_sample": [
+        "BoundaryForegroundA_Base",
+        "BoundaryForegroundA_Bush_0",
+        "BoundaryForegroundA_Bush_1",
+        "BoundaryForegroundA_Bush_10",
+        "BoundaryForegroundA_Bush_11",
+        "BoundaryForegroundA_Bush_2",
+        "BoundaryForegroundA_Bush_3",
+        "BoundaryForegroundA_Bush_4",
+        "BoundaryForegroundA_Bush_5",
+        "BoundaryForegroundA_Bush_6",
+        "BoundaryForegroundA_Bush_7",
+        "BoundaryForegroundA_Bush_8",
+        "BoundaryForegroundA_Bush_9",
+        "BoundaryForegroundA_Shard_0",
+        "BoundaryForegroundA_Shard_10",
+        "BoundaryForegroundA_Shard_2",
+        "BoundaryForegroundA_Shard_4",
+        "BoundaryForegroundA_Shard_6",
+        "BoundaryForegroundA_Shard_8",
+        "BoundaryForegroundA_Spike_0",
+        "BoundaryForegroundA_Spike_3",
+        "BoundaryForegroundA_Spike_6",
+        "BoundaryForegroundA_Spike_9",
+        "BoundaryForegroundA_Stone_0",
+        "BoundaryForegroundA_Stone_1",
+        "BoundaryForegroundA_Stone_10",
+        "BoundaryForegroundA_Stone_11",
+        "BoundaryForegroundA_Stone_2",
+        "BoundaryForegroundA_Stone_3",
+        "BoundaryForegroundA_Stone_4"
+      ],
+      "vertex_count": 384,
+      "polygon_count": 418,
+      "triangle_count": 628,
+      "material_count": 5,
+      "material_names": [
+        "DC_Dark.002",
+        "DC_Forest",
+        "DC_Grass.002",
+        "DC_Metal.002",
+        "DC_Stone.002"
+      ],
+      "bounds": {
+        "min": [
+          -3.1,
+          -0.28,
+          -0.02
+        ],
+        "max": [
+          25.1,
+          1.8,
+          0.67
+        ],
+        "size": [
+          28.2,
+          2.08,
+          0.69
+        ],
+        "center": [
+          11.0,
+          0.76,
+          0.325
+        ]
+      },
+      "over_triangle_soft_budget": false,
+      "over_material_soft_budget": false,
+      "imported_collider_risk": false
+    },
+    {
+      "id": "GreenwatchBoundary_ForegroundStrip_B",
+      "category": "South foreground strip B",
+      "path": "Assets/Art/Models/Generated/GreenwatchBoundary_ForegroundStrip_B.fbx",
+      "source": "ArtSource/Blender/GreenwatchBoundary_ForegroundStrip_B.blend",
+      "triangle_soft_budget": 700,
+      "material_soft_budget": 5,
+      "acceptance_note": "Alternative low foreground strip with denser bushes/rocks.",
+      "exists": true,
+      "sha256": "47b58a725bb7df33380da72730ef04434e4dd813311398a9ead326211bc6b266",
+      "source_exists": true,
+      "source_sha256": "878d540d0ece3910204eed8eebed35c4622848c6d66a2233fe2fae217382a218",
+      "meta": {
+        "exists": false
+      },
+      "object_count": 32,
+      "mesh_count": 32,
+      "empty_count": 0,
+      "socket_names": [],
+      "mesh_names_sample": [
+        "BoundaryForegroundB_Base",
+        "BoundaryForegroundB_BushTop_1",
+        "BoundaryForegroundB_BushTop_10",
+        "BoundaryForegroundB_BushTop_4",
+        "BoundaryForegroundB_BushTop_7",
+        "BoundaryForegroundB_Bush_0",
+        "BoundaryForegroundB_Bush_1",
+        "BoundaryForegroundB_Bush_10",
+        "BoundaryForegroundB_Bush_2",
+        "BoundaryForegroundB_Bush_3",
+        "BoundaryForegroundB_Bush_4",
+        "BoundaryForegroundB_Bush_5",
+        "BoundaryForegroundB_Bush_6",
+        "BoundaryForegroundB_Bush_7",
+        "BoundaryForegroundB_Bush_8",
+        "BoundaryForegroundB_Bush_9",
+        "BoundaryForegroundB_StoneA_0",
+        "BoundaryForegroundB_StoneA_1",
+        "BoundaryForegroundB_StoneA_10",
+        "BoundaryForegroundB_StoneA_2",
+        "BoundaryForegroundB_StoneA_3",
+        "BoundaryForegroundB_StoneA_4",
+        "BoundaryForegroundB_StoneA_5",
+        "BoundaryForegroundB_StoneA_6",
+        "BoundaryForegroundB_StoneA_7",
+        "BoundaryForegroundB_StoneA_8",
+        "BoundaryForegroundB_StoneA_9",
+        "BoundaryForegroundB_StoneB_1",
+        "BoundaryForegroundB_StoneB_3",
+        "BoundaryForegroundB_StoneB_5"
+      ],
+      "vertex_count": 396,
+      "polygon_count": 598,
+      "triangle_count": 664,
+      "material_count": 4,
+      "material_names": [
+        "DC_Forest.001",
+        "DC_Grass.003",
+        "DC_Metal.003",
+        "DC_Stone.003"
+      ],
+      "bounds": {
+        "min": [
+          -3.1,
+          -0.06,
+          -0.03
+        ],
+        "max": [
+          25.1,
+          1.52,
+          0.48
+        ],
+        "size": [
+          28.2,
+          1.58,
+          0.51
+        ],
+        "center": [
+          11.0,
+          0.73,
+          0.225
+        ]
+      },
+      "over_triangle_soft_budget": false,
+      "over_material_soft_budget": false,
+      "imported_collider_risk": false
+    },
+    {
+      "id": "GreenwatchBoundary_SilhouetteWall",
+      "category": "Distant silhouette wall",
+      "path": "Assets/Art/Models/Generated/GreenwatchBoundary_SilhouetteWall.fbx",
+      "source": "ArtSource/Blender/GreenwatchBoundary_SilhouetteWall.blend",
+      "triangle_soft_budget": 700,
+      "material_soft_budget": 4,
+      "acceptance_note": "Distant ridge mass frames game area as far edge.",
+      "exists": true,
+      "sha256": "a12b5b033b02399b343fd263a6d29b7286b3ef95c2bcf6910bf4c66f59d6ae12",
+      "source_exists": true,
+      "source_sha256": "c6d58c572b3a99da94b41b4a6ea634bcf567c56a2df4ba13d4d98cd690663eb5",
+      "meta": {
+        "exists": false
+      },
+      "object_count": 30,
+      "mesh_count": 30,
+      "empty_count": 0,
+      "socket_names": [],
+      "mesh_names_sample": [
+        "BoundarySilhouetteWall_Cap_0",
+        "BoundarySilhouetteWall_Cap_1",
+        "BoundarySilhouetteWall_Cap_2",
+        "BoundarySilhouetteWall_Cap_3",
+        "BoundarySilhouetteWall_Cap_4",
+        "BoundarySilhouetteWall_Crown_0_0",
+        "BoundarySilhouetteWall_Crown_0_1",
+        "BoundarySilhouetteWall_Crown_1_0",
+        "BoundarySilhouetteWall_Crown_1_1",
+        "BoundarySilhouetteWall_Crown_2_0",
+        "BoundarySilhouetteWall_Crown_2_1",
+        "BoundarySilhouetteWall_Crown_3_0",
+        "BoundarySilhouetteWall_Crown_3_1",
+        "BoundarySilhouetteWall_Crown_4_0",
+        "BoundarySilhouetteWall_Crown_4_1",
+        "BoundarySilhouetteWall_Forest_0_0",
+        "BoundarySilhouetteWall_Forest_0_1",
+        "BoundarySilhouetteWall_Forest_1_0",
+        "BoundarySilhouetteWall_Forest_1_1",
+        "BoundarySilhouetteWall_Forest_2_0",
+        "BoundarySilhouetteWall_Forest_2_1",
+        "BoundarySilhouetteWall_Forest_3_0",
+        "BoundarySilhouetteWall_Forest_3_1",
+        "BoundarySilhouetteWall_Forest_4_0",
+        "BoundarySilhouetteWall_Forest_4_1",
+        "BoundarySilhouetteWall_Mass_0",
+        "BoundarySilhouetteWall_Mass_1",
+        "BoundarySilhouetteWall_Mass_2",
+        "BoundarySilhouetteWall_Mass_3",
+        "BoundarySilhouetteWall_Mass_4"
+      ],
+      "vertex_count": 470,
+      "polygon_count": 355,
+      "triangle_count": 820,
+      "material_count": 5,
+      "material_names": [
+        "DC_Dark.003",
+        "DC_Forest.002",
+        "DC_Grass.004",
+        "DC_Metal.004",
+        "DC_Stone.004"
+      ],
+      "bounds": {
+        "min": [
+          -4.22,
+          9.795,
+          0.5635
+        ],
+        "max": [
+          24.823,
+          12.005,
+          3.876
+        ],
+        "size": [
+          29.043,
+          2.21,
+          3.3125
+        ],
+        "center": [
+          10.3015,
+          10.9,
+          2.2197
+        ]
+      },
+      "over_triangle_soft_budget": true,
+      "over_material_soft_budget": true,
+      "imported_collider_risk": false
+    },
+    {
+      "id": "GreenwatchBoundary_ForestSilhouette",
+      "category": "Distant forest silhouette",
+      "path": "Assets/Art/Models/Generated/GreenwatchBoundary_ForestSilhouette.fbx",
+      "source": "ArtSource/Blender/GreenwatchBoundary_ForestSilhouette.blend",
+      "triangle_soft_budget": 700,
+      "material_soft_budget": 4,
+      "acceptance_note": "Forest silhouette is readable in grayscale at distance.",
+      "exists": true,
+      "sha256": "f212980a11388771db1f5104620fd43d3ac59d3c7255641b271bdb1f68d283c2",
+      "source_exists": true,
+      "source_sha256": "97e2be0b77c19839ad3ef08d8e04f9f65ae77a64e3742670414eee631c46acf0",
+      "meta": {
+        "exists": false
+      },
+      "object_count": 31,
+      "mesh_count": 31,
+      "empty_count": 0,
+      "socket_names": [],
+      "mesh_names_sample": [
+        "BoundaryForest_Backing",
+        "BoundaryForest_Leaves_0",
+        "BoundaryForest_Leaves_1",
+        "BoundaryForest_Leaves_2",
+        "BoundaryForest_Leaves_3",
+        "BoundaryForest_Leaves_4",
+        "BoundaryForest_Leaves_5",
+        "BoundaryForest_Leaves_6",
+        "BoundaryForest_Leaves_7",
+        "BoundaryForest_Leaves_8",
+        "BoundaryForest_Shard_1",
+        "BoundaryForest_Shard_4",
+        "BoundaryForest_Shard_7",
+        "BoundaryForest_Spike_0",
+        "BoundaryForest_Spike_1",
+        "BoundaryForest_Spike_2",
+        "BoundaryForest_Spike_3",
+        "BoundaryForest_Spike_4",
+        "BoundaryForest_Spike_5",
+        "BoundaryForest_Spike_6",
+        "BoundaryForest_Spike_7",
+        "BoundaryForest_Spike_8",
+        "BoundaryForest_Trunk_0",
+        "BoundaryForest_Trunk_1",
+        "BoundaryForest_Trunk_2",
+        "BoundaryForest_Trunk_3",
+        "BoundaryForest_Trunk_4",
+        "BoundaryForest_Trunk_5",
+        "BoundaryForest_Trunk_6",
+        "BoundaryForest_Trunk_7"
+      ],
+      "vertex_count": 438,
+      "polygon_count": 329,
+      "triangle_count": 752,
+      "material_count": 5,
+      "material_names": [
+        "DC_Dark.004",
+        "DC_Fire.001",
+        "DC_Grass.005",
+        "DC_Navy",
+        "DC_Stone.005"
+      ],
+      "bounds": {
+        "min": [
+          -2.598,
+          10.63,
+          -0.1748
+        ],
+        "max": [
+          26.6,
+          11.65,
+          1.7908
+        ],
+        "size": [
+          29.198,
+          1.02,
+          1.9656
+        ],
+        "center": [
+          12.001,
+          11.14,
+          0.808
+        ]
+      },
+      "over_triangle_soft_budget": true,
+      "over_material_soft_budget": true,
+      "imported_collider_risk": false
+    }
+  ]
+}

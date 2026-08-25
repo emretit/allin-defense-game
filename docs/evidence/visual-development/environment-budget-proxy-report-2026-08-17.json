@@ -1,0 +1,20 @@
+{
+  "checkpoint": "VIS-415",
+  "scenario": "Production presentation scenic environment dressing budget proxy",
+  "rendererCount": 16,
+  "rendererSoftBudget": 16,
+  "meshFilterCount": 16,
+  "triangleCount": 3792,
+  "triangleSoftBudget": 8500,
+  "materialSlots": 16,
+  "materialSlotSoftBudget": 20,
+  "uniqueMaterials": 13,
+  "uniqueMaterialSoftBudget": 16,
+  "transparentLikeMaterials": 0,
+  "shadowCasters": 0,
+  "receiveShadowRenderers": 0,
+  "colliderCount": 0,
+  "passesBatchProxyBudget": true,
+  "deviceProfilerFrameDebuggerStatus": "Open: final iPhone-class Profiler and Frame Debugger capture still required for VIS-415 final acceptance.",
+  "notes": "Batch-mode scene proxy; validates runtime object counts, shadow/collider safety, mesh triangles and material pressure before device profiling."
+}
