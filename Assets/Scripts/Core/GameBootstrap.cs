@@ -81,6 +81,7 @@ namespace DefenderChronicles.Core
                                          Environment.GetEnvironmentVariable("DC_ACTOR_CAPTURE") == "1" ||
                                          Environment.GetEnvironmentVariable("DC_PERFORMANCE_ACCEPTANCE") == "1" ||
                                          Environment.GetEnvironmentVariable("DC_SOAK_ACCEPTANCE") == "1" ||
+                                         Environment.GetEnvironmentVariable("DC_AUDIO_ACCEPTANCE") == "1" ||
                                          Environment.GetEnvironmentVariable("DC_VIS812_CAPTURE") == "1" ||
                                          Environment.GetEnvironmentVariable("DC_VIS812_CAPTURE_DEFEAT") == "1";
             bool showFrontend = !commandLineAutomation && !environmentAutomation;

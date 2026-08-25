@@ -38,7 +38,7 @@ namespace DefenderChronicles.Presentation
 
         private void OnPresentationSignal(PresentationSignal signal)
         {
-            audioController.Play(signal.cue);
+            audioController.Play(signal);
             feedbackController.Play(signal);
             if (signal.cue is PresentationCue.WaveStarted or PresentationCue.BossPhase or
                 PresentationCue.Victory or PresentationCue.Defeat)

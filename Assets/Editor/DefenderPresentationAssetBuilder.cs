@@ -269,7 +269,8 @@ namespace DefenderChronicles.Editor
                     clip = AssetDatabase.LoadAssetAtPath<AudioClip>($"Assets/Audio/Presentation/SFX/{cue}.wav"),
                     volume = cue is PresentationCue.BossAttack or PresentationCue.BossPhase ? 0.86f : 0.68f,
                     pitchVariation = cue is PresentationCue.Victory or PresentationCue.Defeat ? 0f : 0.035f,
-                    concurrency = cue is PresentationCue.EnemyHit ? 4 : 2
+                    concurrency = PresentationAudioPolicy.Describe(
+                        new PresentationSignal(cue, Vector3.zero)).maxConcurrent
                 }).ToArray();
             catalog.fontLicense = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/ThirdParty/Noto/OFL.txt");
             catalog.audioLicense = AssetDatabase.LoadAssetAtPath<TextAsset>(

@@ -143,7 +143,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: f7c300572aef94276b75ab8844610647, type: 3}
     volume: 0.68
     pitchVariation: 0.035
-    concurrency: 2
+    concurrency: 1
   - cue: 2
     clip: {fileID: 8300000, guid: 21adbce9e3d184d098bbae91c63d22e1, type: 3}
     volume: 0.68
@@ -163,12 +163,12 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: fed80f616628148c9ab5ea88d1f1b92f, type: 3}
     volume: 0.68
     pitchVariation: 0.035
-    concurrency: 2
+    concurrency: 3
   - cue: 6
     clip: {fileID: 8300000, guid: 407e8546a710e4e83ae5e8d476ffea01, type: 3}
     volume: 0.68
     pitchVariation: 0.035
-    concurrency: 2
+    concurrency: 3
   - cue: 7
     clip: {fileID: 8300000, guid: 4df2bc4ca3b67472c9dbe3e6e58d81fb, type: 3}
     volume: 0.68
@@ -178,7 +178,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 7be7b62cccd8b4476a8c371fa9c5883a, type: 3}
     volume: 0.68
     pitchVariation: 0.035
-    concurrency: 2
+    concurrency: 3
   - cue: 9
     clip: {fileID: 8300000, guid: 227caff2658ad4683a9c10e7a3b7be09, type: 3}
     volume: 0.68
@@ -193,22 +193,22 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 9b9b912773dc842c6843db1cf3f73b75, type: 3}
     volume: 0.68
     pitchVariation: 0.035
-    concurrency: 2
+    concurrency: 1
   - cue: 12
     clip: {fileID: 8300000, guid: 44c44441b9a17434daf02af9526f436b, type: 3}
     volume: 0.68
     pitchVariation: 0.035
-    concurrency: 2
+    concurrency: 4
   - cue: 13
     clip: {fileID: 8300000, guid: 0e90a2491ff2e4dfe8bda20e6f75e190, type: 3}
     volume: 0.68
     pitchVariation: 0.035
-    concurrency: 2
+    concurrency: 3
   - cue: 14
     clip: {fileID: 8300000, guid: 74c890c342907403caee09b582822ee8, type: 3}
     volume: 0.68
     pitchVariation: 0.035
-    concurrency: 2
+    concurrency: 3
   - cue: 15
     clip: {fileID: 8300000, guid: b542a0622116e4993a161b86b278cbe9, type: 3}
     volume: 0.68
@@ -223,7 +223,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 61f9c8ba9a2e44b0db74ba946f2ac54d, type: 3}
     volume: 0.86
     pitchVariation: 0.035
-    concurrency: 2
+    concurrency: 1
   - cue: 18
     clip: {fileID: 8300000, guid: d03fda0e9f3fe41a0a9b01aef2456333, type: 3}
     volume: 0.86
@@ -233,17 +233,17 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 61e5f8d5e76524f7f9b01567ef827e03, type: 3}
     volume: 0.68
     pitchVariation: 0.035
-    concurrency: 2
+    concurrency: 1
   - cue: 20
     clip: {fileID: 8300000, guid: 8da7ff52043c2422eae2829a4e246311, type: 3}
     volume: 0.68
     pitchVariation: 0
-    concurrency: 2
+    concurrency: 1
   - cue: 21
     clip: {fileID: 8300000, guid: d707faea7b343441bb7273e07c7e2b1f, type: 3}
     volume: 0.68
     pitchVariation: 0
-    concurrency: 2
+    concurrency: 1
   music:
   - state: 0
     clip: {fileID: 8300000, guid: e4190316a2dbe460b90298d32398a156, type: 3}

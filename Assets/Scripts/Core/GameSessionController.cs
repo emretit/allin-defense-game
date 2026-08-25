@@ -125,6 +125,7 @@ namespace DefenderChronicles.Core
         private bool automatedActorCapture;
         private bool automatedPerformanceAcceptance;
         private bool automatedSoakAcceptance;
+        private bool automatedAudioVisualAcceptance;
         private bool automatedVisualAcceptance;
         private bool automatedVisualAcceptanceDefeat;
         private static bool defeatRestartRequested;
@@ -221,7 +222,8 @@ namespace DefenderChronicles.Core
             ValidateContent();
             SetPhase(GamePhase.Preparing);
             bool explicitAcceptanceProbe = Environment.GetEnvironmentVariable("DC_PERFORMANCE_ACCEPTANCE") == "1" ||
-                                           Environment.GetEnvironmentVariable("DC_SOAK_ACCEPTANCE") == "1";
+                                           Environment.GetEnvironmentVariable("DC_SOAK_ACCEPTANCE") == "1" ||
+                                           Environment.GetEnvironmentVariable("DC_AUDIO_ACCEPTANCE") == "1";
             if (explicitAcceptanceProbe) Application.runInBackground = true;
             if (!Application.isEditor &&
                 ((Debug.isDebugBuild && Application.platform == RuntimePlatform.IPhonePlayer) || explicitAcceptanceProbe))
@@ -248,6 +250,8 @@ namespace DefenderChronicles.Core
                                              Environment.GetEnvironmentVariable("DC_PERFORMANCE_ACCEPTANCE") == "1";
             automatedSoakAcceptance = !Application.isEditor &&
                                       Environment.GetEnvironmentVariable("DC_SOAK_ACCEPTANCE") == "1";
+            automatedAudioVisualAcceptance = !Application.isEditor &&
+                                              Environment.GetEnvironmentVariable("DC_AUDIO_ACCEPTANCE") == "1";
             automatedVisualAcceptance = !Application.isEditor &&
                                         Environment.GetEnvironmentVariable("DC_VIS812_CAPTURE") == "1";
             automatedVisualAcceptanceDefeat = !Application.isEditor &&
@@ -256,6 +260,8 @@ namespace DefenderChronicles.Core
                 StartCoroutine(RunAutomatedVis812VisualAcceptance());
             else if (automatedVisualAcceptanceDefeat)
                 StartCoroutine(RunAutomatedVis812DefeatAcceptance());
+            else if (automatedAudioVisualAcceptance)
+                StartCoroutine(RunAutomatedAudioVisualAcceptance());
             else if (automatedPerformanceAcceptance)
                 StartCoroutine(RunAutomatedPerformanceAcceptance());
             else if (automatedSoakAcceptance)
@@ -1183,6 +1189,163 @@ namespace DefenderChronicles.Core
             }
             yield return new WaitForSecondsRealtime(1f);
             Application.Quit();
+        }
+
+        private IEnumerator RunAutomatedAudioVisualAcceptance()
+        {
+            int durationSeconds = 480;
+            if (int.TryParse(Environment.GetEnvironmentVariable("DC_AUDIO_ACCEPTANCE_SECONDS"), out int requestedDuration))
+                durationSeconds = Mathf.Clamp(requestedDuration, 30, 720);
+
+            Debug.Log($"[DC_AUDIO_VISUAL_ACCEPTANCE] duration_seconds={durationSeconds} " +
+                      "levels=Silent/Low/Normal cues=22 music_states=6");
+            yield return new WaitForSecondsRealtime(0.5f);
+
+            DefenderAudioController audio = presentationDirector != null ? presentationDirector.Audio : null;
+            if (audio == null)
+            {
+                Debug.LogError("[DC_AUDIO_VISUAL_ACCEPTANCE_FAIL] audio_controller_missing=true");
+                Application.Quit(2);
+                yield break;
+            }
+
+            BuildVis812DefenseLayout();
+            PresentationCue[] cues = (PresentationCue[])Enum.GetValues(typeof(PresentationCue));
+            MusicState[] musicStates = (MusicState[])Enum.GetValues(typeof(MusicState));
+            PresentationAudioReviewLevel[] reviewLevels =
+            {
+                PresentationAudioReviewLevel.Silent,
+                PresentationAudioReviewLevel.Low,
+                PresentationAudioReviewLevel.Normal
+            };
+            var seenCues = new HashSet<PresentationCue>();
+            var seenMusicStates = new HashSet<MusicState>();
+            var seenReviewLevels = new HashSet<PresentationAudioReviewLevel>();
+            float startedAt = Time.realtimeSinceStartup;
+            float nextCombatCycle = startedAt;
+            float levelWindow = durationSeconds / (float)reviewLevels.Length;
+            int activeLevelIndex = -1;
+            int cueIndex = 0;
+            int musicIndex = 0;
+            int combatCycles = 0;
+            int maxActiveVoices = 0;
+            bool pauseSnapshotChecked = false;
+            Time.timeScale = 1f;
+            SetPhase(GamePhase.Wave);
+
+            while (Time.realtimeSinceStartup - startedAt < durationSeconds)
+            {
+                float elapsed = Time.realtimeSinceStartup - startedAt;
+                if (Time.realtimeSinceStartup >= nextCombatCycle)
+                {
+                    ClearPerformanceEnemies();
+                    SpawnPerformanceMix(10, 4, 1, 1);
+                    if (combatCycles % 4 == 3) SpawnEnemy(EnemyArchetype.Boss);
+                    combatCycles++;
+                    nextCombatCycle += 12f;
+                    Debug.Log($"[DC_AUDIO_COMBAT_CYCLE] cycle={combatCycles} enemies={enemies.Count} " +
+                              $"boss={(combatCycles % 4 == 0)} elapsed_seconds={elapsed:F1}");
+                }
+                int desiredLevelIndex = Mathf.Min(reviewLevels.Length - 1,
+                    Mathf.FloorToInt(elapsed / Mathf.Max(1f, levelWindow)));
+                if (desiredLevelIndex != activeLevelIndex)
+                {
+                    activeLevelIndex = desiredLevelIndex;
+                    PresentationAudioReviewLevel level = reviewLevels[activeLevelIndex];
+                    audio.SetReviewLevel(level);
+                    seenReviewLevels.Add(level);
+                    Debug.Log($"[DC_AUDIO_REVIEW_LEVEL] level={level} elapsed_seconds={elapsed:F1}");
+                }
+
+                if (cueIndex % 5 == 0)
+                {
+                    MusicState state = musicStates[musicIndex % musicStates.Length];
+                    musicIndex++;
+                    audio.SetMusic(state);
+                    seenMusicStates.Add(state);
+                    Debug.Log($"[DC_AUDIO_MUSIC_STATE] state={state} elapsed_seconds={elapsed:F1}");
+                }
+
+                PresentationCue cue = cues[cueIndex % cues.Length];
+                cueIndex++;
+                PresentationActorKind actor = AudioAcceptanceActor(cue);
+                OutpostKind outpost = AudioAcceptanceOutpost(cue);
+                Vector3 position = AudioAcceptancePosition(cue);
+                GameObject source = cue is PresentationCue.HeroMoved or PresentationCue.HeroAttacked or
+                    PresentationCue.HeroAbility
+                    ? hero != null ? hero.gameObject : null
+                    : null;
+                EmitPresentation(cue, position, source, actor, outpost, (cueIndex % 3) + 1);
+                seenCues.Add(cue);
+                PresentationAudioCueSpec spec = PresentationAudioPolicy.Describe(
+                    new PresentationSignal(cue, position, source, actor, outpost));
+                Debug.Log($"[DC_AUDIO_CUE] cue={cue} group={spec.concurrencyGroup} " +
+                          $"priority={spec.priority} delay={spec.delaySeconds:F2} review={audio.ReviewLevel}");
+
+                if (!pauseSnapshotChecked && elapsed >= durationSeconds * 0.45f)
+                {
+                    audio.SetPaused(true);
+                    yield return new WaitForSecondsRealtime(0.25f);
+                    audio.SetPaused(false);
+                    pauseSnapshotChecked = true;
+                    Debug.Log("[DC_AUDIO_SNAPSHOT_PASS] normal_pause_normal=true");
+                }
+
+                yield return new WaitForSecondsRealtime(0.65f);
+                maxActiveVoices = Mathf.Max(maxActiveVoices, audio.ActiveVoiceCount);
+            }
+
+            audio.SetReviewLevel(PresentationAudioReviewLevel.Normal);
+            ClearPerformanceEnemies();
+            Time.timeScale = 1f;
+            int expectedCombatCycles = Mathf.Max(1, Mathf.FloorToInt((durationSeconds - 0.01f) / 12f) + 1);
+            bool passed = seenCues.Count == cues.Length &&
+                          seenMusicStates.Count == musicStates.Length &&
+                          seenReviewLevels.Count == reviewLevels.Length &&
+                          pauseSnapshotChecked && maxActiveVoices <= 10 &&
+                          combatCycles >= expectedCombatCycles;
+            string result = $"duration_seconds={durationSeconds} cues={seenCues.Count}/{cues.Length} " +
+                            $"music_states={seenMusicStates.Count}/{musicStates.Length} " +
+                            $"levels={seenReviewLevels.Count}/{reviewLevels.Length} " +
+                            $"combat_cycles={combatCycles}/{expectedCombatCycles} " +
+                            $"pause_snapshot={pauseSnapshotChecked} max_active_voices={maxActiveVoices}/10";
+            if (passed)
+                Debug.Log($"[DC_AUDIO_VISUAL_ACCEPTANCE_PASS] {result}");
+            else
+                Debug.LogError($"[DC_AUDIO_VISUAL_ACCEPTANCE_FAIL] {result}");
+
+            yield return new WaitForSecondsRealtime(1f);
+            Application.Quit(passed ? 0 : 2);
+        }
+
+        private PresentationActorKind AudioAcceptanceActor(PresentationCue cue) => cue switch
+        {
+            PresentationCue.HeroMoved or PresentationCue.HeroAttacked or PresentationCue.HeroAbility =>
+                PresentationActorKind.Knight,
+            PresentationCue.HealPulse => PresentationActorKind.Support,
+            PresentationCue.OutpostDisrupted => PresentationActorKind.Siege,
+            PresentationCue.BossPhase or PresentationCue.BossAttack => PresentationActorKind.Boss,
+            PresentationCue.UnitSpawned or PresentationCue.UnitDefeated => PresentationActorKind.Guard,
+            PresentationCue.EnemyHit or PresentationCue.EnemyDefeated or PresentationCue.SlowApplied =>
+                PresentationActorKind.Raider,
+            _ => PresentationActorKind.Vanguard
+        };
+
+        private OutpostKind AudioAcceptanceOutpost(PresentationCue cue) => cue switch
+        {
+            PresentationCue.MageImpact => OutpostKind.Mage,
+            PresentationCue.OutpostAttacked => OutpostKind.Archer,
+            _ => OutpostKind.Barracks
+        };
+
+        private Vector3 AudioAcceptancePosition(PresentationCue cue)
+        {
+            if (cue is PresentationCue.HeroMoved or PresentationCue.HeroAttacked or PresentationCue.HeroAbility)
+                return hero != null ? hero.Position : path[^1];
+            if (cue is PresentationCue.Victory or PresentationCue.Defeat)
+                return path[^1];
+            int index = Mathf.Abs((int)cue) % path.Count;
+            return path[index];
         }
 
         private IEnumerator RunAutomatedVis812VisualAcceptance()

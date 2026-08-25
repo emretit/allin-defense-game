@@ -804,6 +804,66 @@ namespace DefenderChronicles.Tests
         }
 
         [Test]
+        public void AudioPolicyCoversEveryCueAndProtectsCriticalSignals()
+        {
+            var catalog = Resources.Load<DefenderPresentationCatalog>("Presentation/DefenderPresentationCatalog");
+            Assert.That(catalog, Is.Not.Null);
+            foreach (PresentationCue cue in System.Enum.GetValues(typeof(PresentationCue)))
+            {
+                PresentationAudioCueSpec spec = PresentationAudioPolicy.Describe(
+                    new PresentationSignal(cue, Vector3.zero));
+                AudioCueEntry entry = catalog.Audio(cue);
+                Assert.That(entry, Is.Not.Null, $"{cue} needs a catalog audio entry.");
+                Assert.That(spec.concurrencyGroup, Is.Not.Empty, $"{cue} needs a concurrency group.");
+                Assert.That(spec.maxConcurrent, Is.InRange(1, 4), $"{cue} concurrency must stay mobile-safe.");
+                Assert.That(entry.concurrency, Is.EqualTo(spec.maxConcurrent),
+                    $"{cue} catalog concurrency must match the runtime policy.");
+                Assert.That(spec.delaySeconds, Is.InRange(0f, 0.25f), $"{cue} audio delay is outside the impact window.");
+                Assert.That(spec.musicDuck, Is.InRange(0f, 0.7f));
+            }
+
+            foreach (PresentationCue cue in new[]
+                     {
+                         PresentationCue.HeroAbility, PresentationCue.BossAttack,
+                         PresentationCue.BossPhase, PresentationCue.Victory, PresentationCue.Defeat
+                     })
+            {
+                PresentationAudioCueSpec spec = PresentationAudioPolicy.Describe(
+                    new PresentationSignal(cue, Vector3.zero));
+                Assert.That(spec.priority, Is.EqualTo(PresentationAudioPriority.Critical));
+                Assert.That(spec.musicDuck, Is.GreaterThan(0f));
+            }
+
+            Assert.That(PresentationAudioPolicy.Describe(
+                    new PresentationSignal(PresentationCue.EnemyHit, Vector3.zero)).maxConcurrent,
+                Is.EqualTo(4));
+            Assert.That(PresentationAudioPolicy.CanReplace(PresentationAudioPriority.Ambient,
+                PresentationAudioPriority.Critical), Is.True);
+            Assert.That(PresentationAudioPolicy.CanReplace(PresentationAudioPriority.Critical,
+                PresentationAudioPriority.Normal), Is.False);
+        }
+
+        [Test]
+        public void AudioReviewLevelsAndMusicTransitionsHaveDeterministicContracts()
+        {
+            Assert.That(PresentationAudioPolicy.ReviewGain(PresentationAudioReviewLevel.Silent), Is.Zero);
+            Assert.That(PresentationAudioPolicy.ReviewGain(PresentationAudioReviewLevel.Low),
+                Is.EqualTo(0.25f).Within(0.001f));
+            Assert.That(PresentationAudioPolicy.ReviewGain(PresentationAudioReviewLevel.Normal), Is.EqualTo(1f));
+
+            foreach (MusicState state in System.Enum.GetValues(typeof(MusicState)))
+            {
+                float seconds = PresentationAudioPolicy.MusicTransitionSeconds(state);
+                Assert.That(seconds, Is.InRange(0.25f, 1.2f), $"{state} transition must avoid a hard cut.");
+            }
+
+            Assert.That(PresentationAudioPolicy.MusicTransitionSeconds(MusicState.Boss),
+                Is.LessThan(PresentationAudioPolicy.MusicTransitionSeconds(MusicState.Preparation)));
+            Assert.That(PresentationAudioPolicy.UnityPriority(PresentationAudioPriority.Critical),
+                Is.LessThan(PresentationAudioPolicy.UnityPriority(PresentationAudioPriority.Normal)));
+        }
+
+        [Test]
         public void EveryActorRoleUsesAnAuthoredAnimatorOverride()
         {
             var catalog = Resources.Load<DefenderPresentationCatalog>("Presentation/DefenderPresentationCatalog");

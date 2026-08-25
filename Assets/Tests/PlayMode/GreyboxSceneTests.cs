@@ -727,6 +727,51 @@ namespace DefenderChronicles.Tests
         }
 
         [UnityTest]
+        public IEnumerator AudioControllerCyclesReviewMusicAndCueContractsWithinVoiceBudget()
+        {
+            var catalog = Resources.Load<DefenderPresentationCatalog>("Presentation/DefenderPresentationCatalog");
+            Assert.That(catalog, Is.Not.Null);
+            var audioObject = new GameObject("Audio Contract Test");
+            var audio = audioObject.AddComponent<DefenderAudioController>();
+            audio.Initialize(catalog);
+            yield return null;
+
+            foreach (PresentationAudioReviewLevel level in
+                     (PresentationAudioReviewLevel[])System.Enum.GetValues(typeof(PresentationAudioReviewLevel)))
+            {
+                audio.SetReviewLevel(level);
+                Assert.That(audio.ReviewLevel, Is.EqualTo(level));
+            }
+
+            foreach (MusicState state in (MusicState[])System.Enum.GetValues(typeof(MusicState)))
+            {
+                audio.SetMusic(state);
+                Assert.That(audio.CurrentState, Is.EqualTo(state));
+                yield return null;
+            }
+
+            audio.SetReviewLevel(PresentationAudioReviewLevel.Normal);
+            for (int i = 0; i < 24; i++)
+                audio.Play(new PresentationSignal(PresentationCue.EnemyHit, Vector3.zero));
+            audio.Play(new PresentationSignal(PresentationCue.HeroAbility, Vector3.zero,
+                actor: PresentationActorKind.Knight));
+            audio.Play(new PresentationSignal(PresentationCue.BossPhase, Vector3.zero,
+                actor: PresentationActorKind.Boss));
+            audio.Play(new PresentationSignal(PresentationCue.BossAttack, Vector3.zero,
+                actor: PresentationActorKind.Boss));
+            yield return new WaitForSecondsRealtime(0.35f);
+
+            Assert.That(audio.ActiveVoiceCount, Is.LessThanOrEqualTo(10));
+            audio.SetPaused(true);
+            yield return null;
+            audio.SetPaused(false);
+            yield return null;
+
+            Object.Destroy(audioObject);
+            yield return null;
+        }
+
+        [UnityTest]
         public IEnumerator ProductionHudButtonsAreInteractableAndClickable()
         {
             // VIS-613: HUD input regression
