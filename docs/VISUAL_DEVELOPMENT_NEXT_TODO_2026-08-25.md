@@ -33,7 +33,7 @@ These are intentionally outside the current vertical-slice closeout. Do not mix 
 | ID | Priority | Task | Why it helps |
 |---|---:|---|---|
 | NEXT-201 | P1 | Replace Generic transform rigs with authored skinned/Humanoid sources where useful | Better animation polish and retargeting; not required for current low-poly modular slice |
-| NEXT-202 | P1 | Add a second map biome paint-over and asset kit | Proves visual language scales beyond Greenwatch Valley |
+| NEXT-202 | P1 | Prepared: Frostfen Hollow second-biome paint-over and kit | `docs/FROSTFEN_HOLLOW_SECOND_BIOME_PLAN_2026-08-25.md` and `docs/evidence/visual-development/frostfen-hollow-paintover-plan-2026-08-25.*` prove the visual language can scale beyond Greenwatch Valley without changing runtime scope |
 | NEXT-203 | P1 | Create final marketing-quality logo/splash variants from accepted brand direction | Storefront and first-impression polish |
 | NEXT-204 | P2 | Add optional cinematic camera framing for boss intro/result moments | Stronger presentation without changing gameplay |
 | NEXT-205 | P2 | Prepared: Android visual/performance acceptance matrix | `docs/ANDROID_VISUAL_PERFORMANCE_ACCEPTANCE_MATRIX_2026-08-25.md` defines post-iOS device tiers, scenarios, profile rules and evidence package |

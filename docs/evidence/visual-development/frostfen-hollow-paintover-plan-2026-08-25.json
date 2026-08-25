@@ -1,0 +1,205 @@
+{
+  "schema": "defender-chronicles.visual-development.second-biome-paintover.v1",
+  "captured_on": "2026-08-25",
+  "todo": "NEXT-202",
+  "biome": "Frostfen Hollow",
+  "scope": "Preproduction paint-over and modular kit manifest; no runtime map, route, collider or camera change.",
+  "route_reuse": [
+    {
+      "x": -2,
+      "z": 2
+    },
+    {
+      "x": 4,
+      "z": 2
+    },
+    {
+      "x": 4,
+      "z": 8
+    },
+    {
+      "x": 10,
+      "z": 8
+    },
+    {
+      "x": 10,
+      "z": 3.5
+    },
+    {
+      "x": 16,
+      "z": 3.5
+    },
+    {
+      "x": 16,
+      "z": 9
+    },
+    {
+      "x": 24,
+      "z": 9
+    }
+  ],
+  "slot_reuse": [
+    {
+      "code": "S1",
+      "x": 2.5,
+      "z": 2.1,
+      "role": "Frontline"
+    },
+    {
+      "code": "S2",
+      "x": 5.5,
+      "z": 2.8,
+      "role": "Ranged"
+    },
+    {
+      "code": "S3",
+      "x": 6.6,
+      "z": 5.9,
+      "role": "Control"
+    },
+    {
+      "code": "S4",
+      "x": 10.0,
+      "z": 3.3,
+      "role": "Frontline"
+    },
+    {
+      "code": "S5",
+      "x": 13.8,
+      "z": 4.4,
+      "role": "Ranged"
+    },
+    {
+      "code": "S6",
+      "x": 15.6,
+      "z": 1.0,
+      "role": "Control"
+    },
+    {
+      "code": "S7",
+      "x": 18.2,
+      "z": 4.6,
+      "role": "Ranged"
+    },
+    {
+      "code": "S8",
+      "x": 19.2,
+      "z": 7.9,
+      "role": "Frontline"
+    }
+  ],
+  "regions": [
+    {
+      "id": "A",
+      "name": "Thaw Gate",
+      "polygon": [
+        [
+          -2.9,
+          -0.1
+        ],
+        [
+          5.2,
+          -0.1
+        ],
+        [
+          5.2,
+          4.4
+        ],
+        [
+          -2.9,
+          4.4
+        ]
+      ],
+      "rule": "Cold fog and cracked ice frame the enemy entrance; S1 remains bright and clean."
+    },
+    {
+      "id": "B",
+      "name": "Fen Lantern Bend",
+      "polygon": [
+        [
+          3.6,
+          3.2
+        ],
+        [
+          12.4,
+          3.2
+        ],
+        [
+          12.4,
+          9.7
+        ],
+        [
+          3.6,
+          9.7
+        ]
+      ],
+      "rule": "Green ghost lanterns and reeds add identity but stay outside slot touch rings."
+    },
+    {
+      "id": "C",
+      "name": "Glacier Keep",
+      "polygon": [
+        [
+          13.4,
+          2.0
+        ],
+        [
+          24.9,
+          2.0
+        ],
+        [
+          24.9,
+          11.2
+        ],
+        [
+          13.4,
+          11.2
+        ]
+      ],
+      "rule": "Blue-violet ice cliffs reinforce the defender keep and boss silhouette contrast."
+    }
+  ],
+  "asset_kit": [
+    {
+      "id": "FrostPineTall",
+      "role": "north/south frame silhouette",
+      "palette": "deep blue trunk, cyan snow caps",
+      "budget": "≤420 tris, 1 material"
+    },
+    {
+      "id": "IceShardCluster",
+      "role": "boss/final-stand landmark accent",
+      "palette": "cyan core, navy base",
+      "budget": "≤280 tris, emissive optional"
+    },
+    {
+      "id": "FenLanternPost",
+      "role": "mid-bend control readability",
+      "palette": "green ghost glow, dark iron",
+      "budget": "≤220 tris, no shadow-casting point light on Low/Medium"
+    },
+    {
+      "id": "FrozenRoadStone",
+      "role": "road-edge rhythm",
+      "palette": "desaturated slate, pale frost edge",
+      "budget": "≤120 tris, atlas material"
+    },
+    {
+      "id": "ReedSnowClump",
+      "role": "low filler outside touch rings",
+      "palette": "dark teal reed, muted snow",
+      "budget": "≤90 tris, no collider"
+    },
+    {
+      "id": "BrokenIceArch",
+      "role": "enemy gate variant",
+      "palette": "warm enemy rune inside cold arch",
+      "budget": "≤700 tris, 2 materials"
+    }
+  ],
+  "acceptance_notes": [
+    "Proves the current fantasy material language can scale beyond Greenwatch Valley.",
+    "Keeps eight slot/touch circles, path hierarchy and boss read rules intact.",
+    "Leaves Android/iOS device acceptance under their own gates."
+  ]
+}
