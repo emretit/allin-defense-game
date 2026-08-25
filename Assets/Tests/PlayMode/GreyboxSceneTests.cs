@@ -735,6 +735,7 @@ namespace DefenderChronicles.Tests
             var audio = audioObject.AddComponent<DefenderAudioController>();
             audio.Initialize(catalog);
             yield return null;
+            Assert.That(audio.Ambient, Is.Not.Null);
 
             foreach (PresentationAudioReviewLevel level in
                      (PresentationAudioReviewLevel[])System.Enum.GetValues(typeof(PresentationAudioReviewLevel)))

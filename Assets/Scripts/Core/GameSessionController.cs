@@ -1299,15 +1299,19 @@ namespace DefenderChronicles.Core
             ClearPerformanceEnemies();
             Time.timeScale = 1f;
             int expectedCombatCycles = Mathf.Max(1, Mathf.FloorToInt((durationSeconds - 0.01f) / 12f) + 1);
+            bool ambientEnabled = audio.Ambient != null && audio.Ambient.IsEnabled;
+            int ambientDetails = audio.Ambient != null ? audio.Ambient.PlayedDetailCount : 0;
+            int expectedAmbientDetails = ambientEnabled ? Mathf.Max(1, durationSeconds / 60) : 0;
             bool passed = seenCues.Count == cues.Length &&
                           seenMusicStates.Count == musicStates.Length &&
                           seenReviewLevels.Count == reviewLevels.Length &&
                           pauseSnapshotChecked && maxActiveVoices <= 10 &&
-                          combatCycles >= expectedCombatCycles;
+                          combatCycles >= expectedCombatCycles && ambientDetails >= expectedAmbientDetails;
             string result = $"duration_seconds={durationSeconds} cues={seenCues.Count}/{cues.Length} " +
                             $"music_states={seenMusicStates.Count}/{musicStates.Length} " +
                             $"levels={seenReviewLevels.Count}/{reviewLevels.Length} " +
                             $"combat_cycles={combatCycles}/{expectedCombatCycles} " +
+                            $"ambient_enabled={ambientEnabled} ambient_details={ambientDetails}/{expectedAmbientDetails} " +
                             $"pause_snapshot={pauseSnapshotChecked} max_active_voices={maxActiveVoices}/10";
             if (passed)
                 Debug.Log($"[DC_AUDIO_VISUAL_ACCEPTANCE_PASS] {result}");

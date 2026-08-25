@@ -56,7 +56,7 @@ done
 wait "$launch_pid" >/dev/null 2>&1 || true
 
 print "Ses-görsel kabul logu: $log_path"
-rg "DC_AUDIO_(REVIEW_LEVEL|SNAPSHOT_PASS|VISUAL_ACCEPTANCE_(PASS|FAIL))" "$log_path" || true
+rg "DC_AMBIENT_CONFIG|DC_AUDIO_(REVIEW_LEVEL|SNAPSHOT_PASS|VISUAL_ACCEPTANCE_(PASS|FAIL))" "$log_path" || true
 if ! rg -q "\[DC_AUDIO_VISUAL_ACCEPTANCE_PASS\]" "$log_path"; then
   print -u2 "Ses-görsel kabul koşusu başarı işareti üretmedi."
   exit 5

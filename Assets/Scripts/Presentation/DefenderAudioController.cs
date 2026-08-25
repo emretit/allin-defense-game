@@ -24,6 +24,7 @@ namespace DefenderChronicles.Presentation
         private AudioSource musicA;
         private AudioSource musicB;
         private AudioSource activeMusic;
+        private DefenderAmbientAudioController ambientController;
         private Coroutine musicRoutine;
         private Coroutine duckRoutine;
         private MusicState currentState;
@@ -35,6 +36,7 @@ namespace DefenderChronicles.Presentation
 
         public MusicState CurrentState => currentState;
         public PresentationAudioReviewLevel ReviewLevel => reviewLevel;
+        public DefenderAmbientAudioController Ambient => ambientController;
         public int ActiveVoiceCount => activeVoices.Count(pair => pair.Key != null && pair.Key.isPlaying);
 
         public void Initialize(DefenderPresentationCatalog value)
@@ -50,6 +52,8 @@ namespace DefenderChronicles.Presentation
             }
             musicA = CreateMusicSource("Music A");
             musicB = CreateMusicSource("Music B");
+            ambientController = gameObject.AddComponent<DefenderAmbientAudioController>();
+            ambientController.Initialize(catalog.sfxMixer);
             activeMusic = musicA;
             string requestedLevel = Environment.GetEnvironmentVariable("DC_AUDIO_REVIEW_LEVEL");
             if (Enum.TryParse(requestedLevel, true, out PresentationAudioReviewLevel parsedLevel))
@@ -75,6 +79,7 @@ namespace DefenderChronicles.Presentation
         {
             reviewLevel = level;
             reviewGain = PresentationAudioPolicy.ReviewGain(level);
+            ambientController?.SetReviewGain(reviewGain);
             foreach ((AudioSource source, ActiveVoice voice) in activeVoices)
             {
                 if (source != null) source.volume = voice.baseVolume * reviewGain;
@@ -154,6 +159,7 @@ namespace DefenderChronicles.Presentation
             MusicEntry entry = catalog.Music(state);
             if (entry?.clip == null) return;
             currentState = state;
+            ambientController?.SetMusicState(state);
             if (musicRoutine != null) StopCoroutine(musicRoutine);
             float duration = immediate ? 0f : PresentationAudioPolicy.MusicTransitionSeconds(state);
             musicRoutine = StartCoroutine(Crossfade(entry, duration));
@@ -166,6 +172,7 @@ namespace DefenderChronicles.Presentation
             foreach (AudioSource source in sfxSources) source.mute = paused;
             if (musicA != null) musicA.mute = paused;
             if (musicB != null) musicB.mute = paused;
+            ambientController?.SetPaused(paused);
         }
 
         private AudioSource CreateMusicSource(string sourceName)

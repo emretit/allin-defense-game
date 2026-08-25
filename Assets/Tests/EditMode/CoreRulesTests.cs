@@ -864,6 +864,25 @@ namespace DefenderChronicles.Tests
         }
 
         [Test]
+        public void EnvironmentAmbienceIsDisabledOnLowAndSubordinateOnHigherProfiles()
+        {
+            DefenderAmbientQualityConfig low = DefenderAmbientAudioController.QualityConfigForName("Low");
+            DefenderAmbientQualityConfig medium = DefenderAmbientAudioController.QualityConfigForName("Medium");
+            DefenderAmbientQualityConfig high = DefenderAmbientAudioController.QualityConfigForName("High");
+
+            Assert.That(low.enabled, Is.False);
+            Assert.That(low.windVolume, Is.Zero);
+            Assert.That(medium.enabled, Is.True);
+            Assert.That(high.enabled, Is.True);
+            Assert.That(medium.windVolume, Is.LessThan(0.06f));
+            Assert.That(high.windVolume, Is.LessThan(0.08f));
+            Assert.That(medium.detailVolume, Is.LessThan(0.1f));
+            Assert.That(high.minimumDetailInterval, Is.GreaterThanOrEqualTo(5f));
+            Assert.That(medium.minimumDetailInterval, Is.GreaterThan(high.minimumDetailInterval));
+            Assert.That(medium.maximumDetailInterval, Is.GreaterThan(medium.minimumDetailInterval));
+        }
+
+        [Test]
         public void EveryActorRoleUsesAnAuthoredAnimatorOverride()
         {
             var catalog = Resources.Load<DefenderPresentationCatalog>("Presentation/DefenderPresentationCatalog");
