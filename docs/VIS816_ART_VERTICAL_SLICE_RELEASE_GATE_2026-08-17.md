@@ -17,7 +17,7 @@ Decision: The art vertical slice is not fully releasable yet because physical iP
 | Geometry optimization decision | In review | `docs/VIS805_GEOMETRY_OPTIMIZATION_DECISION_2026-08-25.md`; no mesh mutation applied without physical draw-pass proof |
 | VFX quality profile | In review | `docs/VIS806_VFX_QUALITY_PROFILE_2026-08-17.md`, `Builds/unity-vfx-quality-profile-checkpoint.log` |
 | Simulator performance acceptance | In review | `docs/VIS807_PERFORMANCE_ACCEPTANCE_SIMULATOR_2026-08-17.md`, `Builds/ios-performance-acceptance.log` |
-| Physical device Profiler | Open | Required for VIS-006/VIS-807; no iPhone 13-class Profiler capture is present. |
+| Physical device Profiler | Open | Required for VIS-006/VIS-807; readiness report `docs/evidence/visual-development/ios-physical-readiness-2026-08-25.json` is blocked before install/profiling. |
 | Frame/Rendering Debugger | Open | Required for VIS-007; final draw pass, shadow caster, overdraw and texture screens are missing. |
 | Catalog QA | Passed | Current integrated EditMode suite passed 65/65. Raw XML is intentionally ignored. |
 | Gameplay QA | Passed | Current integrated PlayMode suite passed 12/12. Raw XML is intentionally ignored. |
@@ -47,11 +47,11 @@ Decision: The art vertical slice is not fully releasable yet because physical iP
 
 ## Current Device Availability Check
 
-2026-08-25 discovery finds the iPhone 13-class device paired, wired, connected and in Developer Mode. The Development build reaches Xcode, but installation/profiling stops before launch because the developer disk image cannot be mounted:
+2026-08-25 discovery finds the iPhone 13-class device paired, wired and in Developer Mode. `tools/check_ios_physical_readiness.py` writes a sanitized report at `docs/evidence/visual-development/ios-physical-readiness-2026-08-25.json`; installation/profiling remains blocked before launch because DDI services are unavailable:
 
 - Device: `Emre iPhone’u (2)`, iPhone 13 (`iPhone14,5`), iOS 26.6 beta (`23G5028e`).
-- Installed toolchain: Xcode 26.6 (`17F113`) with iOS 26.5 SDK/DeviceSupport.
-- Failure: Xcode destination unavailable, developer disk image mount failed (exit 70).
+- Installed toolchain: Xcode 26.6 (`17F113`); the visible DeviceSupport set does not include iOS 26.6.
+- Failure: DDI services unavailable; matching iOS 26.6 DeviceSupport/DDI is not available to the installed toolchain.
 
 The actionable unblock is installing an Xcode/DeviceSupport build that includes the iOS 26.6 beta DDI, or returning the phone to a supported iOS version. Pairing, cable trust and Developer Mode are no longer the blockers.
 

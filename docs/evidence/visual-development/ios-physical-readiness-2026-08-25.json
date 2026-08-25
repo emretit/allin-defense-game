@@ -1,0 +1,52 @@
+{
+  "schema": "defender-chronicles.visual-development.ios-physical-readiness.v1",
+  "capturedOn": "2026-08-25",
+  "xcode": {
+    "ok": "true",
+    "version": "Xcode 26.6",
+    "build": "17F113",
+    "error": ""
+  },
+  "deviceSupportVersions": [
+    "15.0",
+    "15.2",
+    "15.4",
+    "15.5",
+    "16.0",
+    "16.1",
+    "16.4"
+  ],
+  "devicectlOk": true,
+  "physicalDevices": [
+    {
+      "name": "Emre iPhone’u (2)",
+      "coreDeviceIdentifierRedacted": true,
+      "marketingName": "iPhone 13",
+      "productType": "iPhone14,5",
+      "platform": "iOS",
+      "osVersion": "26.6",
+      "osBuild": "23G5028e",
+      "releaseType": "Beta",
+      "developerModeStatus": "enabled",
+      "ddiServicesAvailable": false,
+      "pairingState": "paired",
+      "transportType": "wired",
+      "tunnelState": "disconnected"
+    }
+  ],
+  "xctrace": {
+    "ok": true,
+    "sanitizedPhysicalDeviceLines": [
+      "Emre iPhone’u (2) (26.6)"
+    ],
+    "error": ""
+  },
+  "status": {
+    "readyForPhysicalAcceptance": false,
+    "blockers": [
+      "Emre iPhone’u (2) DDI services are not available.",
+      "Xcode DeviceSupport does not include iOS 26.6."
+    ]
+  },
+  "note": "Sanitized report: serial number, ECID, UDID and CoreDevice identifier are intentionally omitted."
+}

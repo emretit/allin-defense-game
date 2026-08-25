@@ -20,7 +20,7 @@ This update supersedes the older test counts and release-risk summary below whil
 | Automated QA | EditMode 65/65; PlayMode 12/12. Raw XML/log output remains outside version control. |
 | Ratio QA | Selected 16:9, 20:9 and 4:3 preparation screenshots under `docs/evidence/runtime/`. |
 | Simulator performance | Preparation/normal/dense/boss median 60 FPS, boss p95 17.1 ms and longest continuous under-30 interval 0.10 s; 90-second soak median 60 FPS, p95 17.1 ms, 8.9% post-warm-up memory growth, no low-memory warning, nominal thermal proxy. |
-| Physical iPhone | Blocked: attached iPhone 13 runs iOS 26.6 beta while installed Xcode 26.6 supplies iOS 26.5 SDK/DDI; developer disk image cannot be mounted. |
+| Physical iPhone | Blocked: attached iPhone 13 is paired/wired with Developer Mode enabled, but `docs/evidence/visual-development/ios-physical-readiness-2026-08-25.json` reports DDI services unavailable and no iOS 26.6 DeviceSupport match. |
 | Audio-visual polish | Eight-minute Simulator combat acceptance passed: 22/22 cues, 6/6 music states, 3/3 review levels and 40/40 stress cycles. Human listening/video sign-off is now standardized in `docs/VIS706_708_813_814_HUMAN_REVIEW_GATE_2026-08-25.md`. |
 | Release decision | VIS-816 remains blocked; Simulator approval is not a substitute for physical Profiler/Frame Debugger or human speaker/headphone polish review. |
 
@@ -55,6 +55,7 @@ Selected final authoring evidence:
 | VIS-805 | In review | `docs/VIS805_GEOMETRY_OPTIMIZATION_DECISION_2026-08-25.md`, `docs/evidence/visual-development/vis805-geometry-optimization-decision-2026-08-25.json`; no geometry mutation applied before physical Frame Debugger evidence |
 | VIS-806 | In review | `docs/VIS806_VFX_QUALITY_PROFILE_2026-08-17.md`, `Builds/unity-vfx-quality-profile-checkpoint.log`, `docs/evidence/visual-development/vfx-quality-profile-report-2026-08-17.json` |
 | VIS-807 | In progress | `docs/VIS807_PERFORMANCE_ACCEPTANCE_SIMULATOR_2026-08-17.md`, `Builds/ios-performance-acceptance.log`, `tools/run_ios_performance_acceptance.sh` |
+| VIS-807 physical readiness | Blocked | `docs/VIS807_PHYSICAL_READINESS_CHECK_2026-08-25.md`, `docs/evidence/visual-development/ios-physical-readiness-2026-08-25.json`, `tools/check_ios_physical_readiness.py` |
 | VIS-221/VIS-222 | In review | `ArtSource/Blender/Guard.blend`, `Assets/Art/Models/Generated/Guard.fbx`, `docs/evidence/visual-development/actor-proxy-metrics-2026-08-17.json`, `Builds/unity-actor-catalog-visual-vis221222.log`, `Builds/editmode-results-vis221222.xml` passed 40/40 |
 | VIS-213/VIS-223/VIS-233 | In review | `Assets/Art/GeneratedPresentation/DC_Knight_Actors.overrideController`, `Assets/Art/GeneratedPresentation/DC_Guard_Actors.overrideController`, `Assets/Art/GeneratedPresentation/DC_Raider_Actors.overrideController`, `Builds/unity-actor-animator-override-vis223.log`, `Builds/editmode-results-vis223.xml` passed 40/40, `Builds/playmode-results-vis223.xml` passed 6/6 |
 | VIS-224/VIS-507 | In review | `Builds/unity-actor-vfx-visual-vis224.log`, `Builds/unity-physical-vfx-family-vis224.log`, `Builds/unity-arrow-vfx-family-vis224.log`, `Builds/editmode-results-vis224.xml` passed 40/40 |

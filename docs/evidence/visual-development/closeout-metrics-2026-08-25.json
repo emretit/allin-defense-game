@@ -79,7 +79,8 @@
     "model": "iPhone 13 (iPhone14,5)",
     "os": "iOS 26.6 beta (23G5028e)",
     "state": "blocked",
-    "reason": "Installed Xcode provides iOS 26.5 DeviceSupport/DDI; developer disk image cannot be mounted on iOS 26.6 beta."
+    "readiness_report": "docs/evidence/visual-development/ios-physical-readiness-2026-08-25.json",
+    "reason": "DDI services are unavailable and the installed Xcode DeviceSupport set does not include iOS 26.6."
   },
   "release_gate": "blocked"
 }
