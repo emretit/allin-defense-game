@@ -689,6 +689,48 @@ namespace DefenderChronicles.Tests
         }
 
         [Test]
+        public void CinematicFramingContractOnlyTargetsBossAndResultMoments()
+        {
+            PresentationCinematicFramingSpec bossPhase = PresentationCinematicFramingContract.Describe(
+                new PresentationSignal(PresentationCue.BossPhase, Vector3.zero, actor: PresentationActorKind.Boss));
+            PresentationCinematicFramingSpec bossAttack = PresentationCinematicFramingContract.Describe(
+                new PresentationSignal(PresentationCue.BossAttack, Vector3.zero, actor: PresentationActorKind.Boss));
+            PresentationCinematicFramingSpec victory = PresentationCinematicFramingContract.Describe(
+                new PresentationSignal(PresentationCue.Victory, Vector3.zero));
+            PresentationCinematicFramingSpec defeat = PresentationCinematicFramingContract.Describe(
+                new PresentationSignal(PresentationCue.Defeat, Vector3.zero));
+            PresentationCinematicFramingSpec enemyHit = PresentationCinematicFramingContract.Describe(
+                new PresentationSignal(PresentationCue.EnemyHit, Vector3.zero, actor: PresentationActorKind.Raider));
+
+            Assert.That(bossPhase.enabled, Is.True);
+            Assert.That(bossAttack.enabled, Is.True);
+            Assert.That(victory.enabled, Is.True);
+            Assert.That(defeat.enabled, Is.True);
+            Assert.That(enemyHit.enabled, Is.False);
+            Assert.That(bossPhase.orthographicSizeMultiplier, Is.LessThan(1f));
+            Assert.That(bossPhase.holdSeconds, Is.GreaterThan(bossAttack.holdSeconds));
+        }
+
+        [Test]
+        public void CinematicFramingContractHonorsReducedAndOffIntensityModes()
+        {
+            var signal = new PresentationSignal(PresentationCue.BossPhase, Vector3.zero,
+                actor: PresentationActorKind.Boss);
+            PresentationCinematicFramingSpec full = PresentationCinematicFramingContract.Describe(signal);
+            PresentationCinematicFramingSpec reduced = PresentationCinematicFramingContract.Describe(signal,
+                PresentationFeedbackIntensityMode.Reduced);
+            PresentationCinematicFramingSpec off = PresentationCinematicFramingContract.Describe(signal,
+                PresentationFeedbackIntensityMode.Off);
+
+            Assert.That(reduced.enabled, Is.True);
+            Assert.That(reduced.normalizedFocusOffset.magnitude, Is.LessThan(full.normalizedFocusOffset.magnitude));
+            Assert.That(reduced.orthographicSizeMultiplier, Is.GreaterThan(full.orthographicSizeMultiplier));
+            Assert.That(reduced.holdSeconds, Is.LessThan(full.holdSeconds));
+            Assert.That(off.enabled, Is.False);
+            Assert.That(off.orthographicSizeMultiplier, Is.EqualTo(1f));
+        }
+
+        [Test]
         public void ActorVfxSocketOriginsPreferNamedRuntimeSockets()
         {
             var root = new GameObject("Socket Test Actor");
