@@ -142,11 +142,11 @@ namespace DefenderChronicles.Presentation
         private const int BarracksCost = 100;
         private const int MageCost = 125;
 
-        private static readonly Color RailTint = new(0.018f, 0.034f, 0.055f, 0.965f);
-        private static readonly Color PanelTint = new(0.024f, 0.052f, 0.082f, 0.975f);
-        private static readonly Color ButtonReadyTint = new(0.078f, 0.205f, 0.315f, 0.985f);
+        private static readonly Color RailTint = new(0.012f, 0.026f, 0.045f, 0.30f);
+        private static readonly Color PanelTint = new(0.024f, 0.052f, 0.082f, 0.94f);
+        private static readonly Color ButtonReadyTint = new(0.060f, 0.145f, 0.225f, 0.90f);
         private static readonly Color ButtonPressedTint = new(0.145f, 0.34f, 0.48f, 1f);
-        private static readonly Color ButtonDisabledTint = new(0.035f, 0.052f, 0.068f, 0.86f);
+        private static readonly Color ButtonDisabledTint = new(0.026f, 0.042f, 0.058f, 0.72f);
         private static readonly Color TextPrimary = new(0.96f, 0.94f, 0.86f, 1f);
         private static readonly Color TextMuted = new(0.62f, 0.68f, 0.72f, 1f);
         private static readonly Color GoldAccent = new(1f, 0.77f, 0.28f, 1f);
@@ -340,7 +340,8 @@ namespace DefenderChronicles.Presentation
             if (previewChromeImage != null)
             {
                 Color accent = boss ? KeepAccent : upcoming ? GoldAccent : WaveAccent;
-                previewChromeImage.color = new Color(accent.r * 0.16f, accent.g * 0.16f, accent.b * 0.16f, 0.96f);
+                previewChromeImage.color = new Color(0.025f + accent.r * 0.10f,
+                    0.045f + accent.g * 0.10f, 0.065f + accent.b * 0.10f, 0.88f);
                 previewChromeImage.gameObject.SetActive(!string.IsNullOrWhiteSpace(body));
             }
         }
@@ -481,21 +482,21 @@ namespace DefenderChronicles.Presentation
             StylePanel("ResultPanel", new Color(0.005f, 0.012f, 0.02f, 0.90f), false);
             StyleImage(selectedHeaderImage, new Color(0.055f, 0.11f, 0.16f, 0.98f), frame: false);
 
-            StyleText(goldText, 27f, GoldAccent, FontStyles.Bold);
-            StyleText(livesText, 27f, TextPrimary, FontStyles.Bold);
-            StyleText(waveText, 27f, WaveAccent, FontStyles.Bold);
-            StyleText(phaseText, 21f, TextPrimary, FontStyles.Bold);
+            StyleText(goldText, 24f, GoldAccent, FontStyles.Bold);
+            StyleText(livesText, 24f, TextPrimary, FontStyles.Bold);
+            StyleText(waveText, 24f, WaveAccent, FontStyles.Bold);
+            StyleText(phaseText, 19f, TextPrimary, FontStyles.Bold);
             phaseText.alignment = TextAlignmentOptions.MidlineLeft;
             phaseText.enableWordWrapping = false;
-            StyleText(phaseHintText, 15f, TextMuted, FontStyles.Bold);
+            StyleText(phaseHintText, 12f, TextMuted, FontStyles.Bold);
             phaseHintText.gameObject.SetActive(true);
-            StyleText(previewText, 22f, TextPrimary, FontStyles.Bold);
+            StyleText(previewText, 20f, TextPrimary, FontStyles.Bold);
             previewText.enableWordWrapping = true;
             previewText.alignment = TextAlignmentOptions.TopLeft;
-            StyleText(previewTitleText, 16f, TextMuted, FontStyles.Bold);
+            StyleText(previewTitleText, 13f, TextMuted, FontStyles.Bold);
             previewTitleText.alignment = TextAlignmentOptions.TopLeft;
-            StyleText(messageText, 22f, TextPrimary, FontStyles.Bold);
-            StyleText(heroText, 18f, TextMuted, FontStyles.Bold);
+            StyleText(messageText, 19f, TextPrimary, FontStyles.Bold);
+            StyleText(heroText, 15f, TextMuted, FontStyles.Bold);
             StyleText(selectedText, 18f, TextPrimary);
             selectedText.enableWordWrapping = true;
             selectedText.overflowMode = TextOverflowModes.Overflow;
@@ -632,7 +633,7 @@ namespace DefenderChronicles.Presentation
             if (phaseChromeImage != null)
                 phaseChromeImage.color = new Color(spec.accent.r * (0.15f + spec.pulseAlpha * 0.05f),
                     spec.accent.g * (0.15f + spec.pulseAlpha * 0.05f),
-                    spec.accent.b * (0.15f + spec.pulseAlpha * 0.05f), 0.97f);
+                    spec.accent.b * (0.15f + spec.pulseAlpha * 0.05f), 0.86f);
             if (phaseStripeImage != null)
             {
                 phaseStripeImage.color = spec.accent;
@@ -731,7 +732,7 @@ namespace DefenderChronicles.Presentation
                 button.targetGraphic.color = spec.state switch
                 {
                     BuildButtonAvailabilityState.Affordable => ButtonReadyTint,
-                    BuildButtonAvailabilityState.NoSlot => new Color(0.045f, 0.075f, 0.095f, 0.92f),
+                    BuildButtonAvailabilityState.NoSlot => new Color(0.040f, 0.068f, 0.090f, 0.78f),
                     _ => ButtonDisabledTint
                 };
             }
@@ -830,10 +831,10 @@ namespace DefenderChronicles.Presentation
             if (abilityButton.targetGraphic != null)
             {
                 abilityButton.targetGraphic.color = blocked
-                    ? new Color(0.060f, 0.090f, 0.120f, 0.94f)
+                    ? new Color(0.050f, 0.075f, 0.100f, 0.82f)
                     : ready
-                        ? new Color(0.115f, 0.255f, 0.190f, 0.98f)
-                        : new Color(0.060f, 0.110f, 0.155f, 0.96f);
+                        ? new Color(0.095f, 0.225f, 0.165f, 0.92f)
+                        : new Color(0.050f, 0.095f, 0.135f, 0.86f);
             }
         }
 
@@ -872,7 +873,16 @@ namespace DefenderChronicles.Presentation
         {
             Transform item = transform.Find(path);
             if (item != null && item.TryGetComponent(out Image image))
-                StyleImage(image, color, !rail);
+            {
+                if (rail)
+                {
+                    image.color = color;
+                    image.sprite = null;
+                    image.type = Image.Type.Simple;
+                    return;
+                }
+                StyleImage(image, color, true);
+            }
         }
 
         private void StyleImage(Image image, Color color, bool frame)
@@ -968,10 +978,10 @@ namespace DefenderChronicles.Presentation
             TMP_Text label = button.GetComponentInChildren<TMP_Text>(true);
             if (label != null)
             {
-                label.fontSize = 20f;
+                label.fontSize = 18f;
                 label.enableAutoSizing = true;
-                label.fontSizeMin = 15f;
-                label.fontSizeMax = 21f;
+                label.fontSizeMin = 13f;
+                label.fontSizeMax = 19f;
                 label.alignment = TextAlignmentOptions.Center;
                 label.fontStyle = FontStyles.Bold;
                 label.color = TextPrimary;
@@ -992,12 +1002,12 @@ namespace DefenderChronicles.Presentation
         private static void StylePrimaryButton(Button button)
         {
             if (button == null) return;
-            Color normal = new(0.43f, 0.27f, 0.075f, 0.98f);
+            Color normal = new(0.20f, 0.135f, 0.045f, 0.92f);
             ColorBlock colors = button.colors;
             colors.normalColor = normal;
-            colors.highlightedColor = new Color(0.62f, 0.40f, 0.11f, 1f);
-            colors.pressedColor = new Color(0.78f, 0.49f, 0.12f, 1f);
-            colors.selectedColor = new Color(0.54f, 0.34f, 0.09f, 1f);
+            colors.highlightedColor = new Color(0.34f, 0.235f, 0.070f, 0.98f);
+            colors.pressedColor = new Color(0.50f, 0.325f, 0.080f, 1f);
+            colors.selectedColor = new Color(0.28f, 0.185f, 0.055f, 0.96f);
             colors.disabledColor = ButtonDisabledTint;
             button.colors = colors;
             if (button.targetGraphic != null) button.targetGraphic.color = normal;
@@ -1041,13 +1051,13 @@ namespace DefenderChronicles.Presentation
             rect.anchorMin = new Vector2(0f, 0.5f);
             rect.anchorMax = new Vector2(0f, 0.5f);
             rect.pivot = new Vector2(0f, 0.5f);
-            rect.anchoredPosition = new Vector2(2f, 0f);
-            rect.sizeDelta = new Vector2(34f, 34f);
+            rect.anchoredPosition = new Vector2(3f, 0f);
+            rect.sizeDelta = new Vector2(30f, 30f);
             var image = iconObject.GetComponent<Image>();
             image.sprite = sprite;
             image.preserveAspect = true;
             image.raycastTarget = false;
-            text.margin = new Vector4(text.margin.x + 42f, text.margin.y, text.margin.z, text.margin.w);
+            text.margin = new Vector4(text.margin.x + 38f, text.margin.y, text.margin.z, text.margin.w);
         }
 
         private static void AddButtonIcon(Button button, Sprite sprite)
@@ -1059,8 +1069,8 @@ namespace DefenderChronicles.Presentation
             rect.anchorMin = new Vector2(0f, 0.5f);
             rect.anchorMax = new Vector2(0f, 0.5f);
             rect.pivot = new Vector2(0f, 0.5f);
-            rect.anchoredPosition = new Vector2(8f, 0f);
-            rect.sizeDelta = new Vector2(42f, 42f);
+            rect.anchoredPosition = new Vector2(7f, 0f);
+            rect.sizeDelta = new Vector2(38f, 38f);
             var image = iconObject.GetComponent<Image>();
             image.sprite = sprite;
             image.preserveAspect = true;
@@ -1069,7 +1079,7 @@ namespace DefenderChronicles.Presentation
             if (label != null)
             {
                 RectTransform labelRect = label.rectTransform;
-                labelRect.offsetMin = new Vector2(Mathf.Max(labelRect.offsetMin.x, 48f), labelRect.offsetMin.y);
+                labelRect.offsetMin = new Vector2(Mathf.Max(labelRect.offsetMin.x, 44f), labelRect.offsetMin.y);
             }
         }
 
@@ -1105,7 +1115,7 @@ namespace DefenderChronicles.Presentation
             if (label == null || label.transform.parent == null) return;
             RectTransform labelRect = label.rectTransform;
             Image card = EnsureImage(label.transform.parent, name,
-                new Color(0.025f, 0.060f, 0.100f, 0.94f), labelRect.anchorMin, labelRect.anchorMax,
+                new Color(0.025f, 0.060f, 0.100f, 0.76f), labelRect.anchorMin, labelRect.anchorMax,
                 labelRect.anchoredPosition, labelRect.sizeDelta);
             card.sprite = panelSprite;
             card.type = panelSprite != null ? Image.Type.Sliced : Image.Type.Simple;
@@ -1119,9 +1129,9 @@ namespace DefenderChronicles.Presentation
         {
             RectTransform parent = archerButton?.transform.parent as RectTransform;
             if (parent == null) return;
-            EnsureDeckPanel(parent, "CommandDeck", new Color(0.030f, 0.065f, 0.100f, 0.92f));
-            EnsureDeckPanel(parent, "HeroDeck", new Color(0.025f, 0.080f, 0.095f, 0.92f));
-            EnsureDeckPanel(parent, "BuildDeck", new Color(0.030f, 0.060f, 0.095f, 0.92f));
+            EnsureDeckPanel(parent, "CommandDeck", new Color(0.030f, 0.065f, 0.100f, 0.38f));
+            EnsureDeckPanel(parent, "HeroDeck", new Color(0.025f, 0.080f, 0.095f, 0.38f));
+            EnsureDeckPanel(parent, "BuildDeck", new Color(0.030f, 0.060f, 0.095f, 0.38f));
         }
 
         private void EnsureDeckPanel(RectTransform parent, string name, Color color)
@@ -1138,7 +1148,7 @@ namespace DefenderChronicles.Presentation
             RectTransform rootRect = transform as RectTransform;
             if (rootRect == null) return;
             messageChromeImage = EnsureImage(rootRect, "MessageChrome",
-                new Color(0.020f, 0.050f, 0.080f, 0.92f), new Vector2(0.5f, 1f), new Vector2(0.5f, 1f),
+                new Color(0.020f, 0.050f, 0.080f, 0.84f), new Vector2(0.5f, 1f), new Vector2(0.5f, 1f),
                 new Vector2(0f, -190f), new Vector2(760f, 54f));
             messageChromeImage.sprite = buttonSprite;
             messageChromeImage.type = buttonSprite != null ? Image.Type.Sliced : Image.Type.Simple;
@@ -1183,7 +1193,7 @@ namespace DefenderChronicles.Presentation
             RectTransform rootRect = previewRect.parent as RectTransform;
             if (rootRect == null) return;
 
-            previewChromeImage = EnsureImage(rootRect, "PreviewChrome", new Color(0.06f, 0.10f, 0.15f, 0.96f),
+            previewChromeImage = EnsureImage(rootRect, "PreviewChrome", new Color(0.04f, 0.08f, 0.13f, 0.86f),
                 new Vector2(0.5f, 1f), new Vector2(0.5f, 1f), new Vector2(0f, -96f), new Vector2(760f, 86f));
             previewChromeImage.sprite = panelSprite;
             previewChromeImage.type = panelSprite != null ? Image.Type.Sliced : Image.Type.Simple;
@@ -1209,18 +1219,18 @@ namespace DefenderChronicles.Presentation
             RectTransform parentRect = phaseRect.parent as RectTransform;
             if (parentRect == null) return;
 
-            phaseChromeImage = EnsureImage(parentRect, "PhaseChrome", new Color(0.05f, 0.09f, 0.15f, 0.96f),
+            phaseChromeImage = EnsureImage(parentRect, "PhaseChrome", new Color(0.05f, 0.09f, 0.15f, 0.84f),
                 phaseRect.anchorMin, phaseRect.anchorMax, phaseRect.offsetMin, phaseRect.offsetMax);
             phaseChromeImage.sprite = panelSprite;
             phaseChromeImage.type = panelSprite != null ? Image.Type.Sliced : Image.Type.Simple;
             phaseChromeImage.transform.SetSiblingIndex(phaseText.transform.GetSiblingIndex());
 
             phaseHintText = EnsureLabel(phaseChromeImage.rectTransform, "PhaseHint",
-                new Vector2(0f, 0f), new Vector2(1f, 1f), new Vector2(16f, 46f), new Vector2(-12f, -6f),
+                new Vector2(0f, 0f), new Vector2(1f, 1f), new Vector2(14f, 38f), new Vector2(-12f, -5f),
                 TextAlignmentOptions.MidlineLeft);
 
             phaseText.alignment = TextAlignmentOptions.MidlineLeft;
-            phaseText.margin = new Vector4(16f, 24f, 12f, 4f);
+            phaseText.margin = new Vector4(14f, 19f, 12f, 3f);
 
             phaseStripeImage = EnsureImage(phaseChromeImage.rectTransform, "Stripe", WaveAccent,
                 new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(10f, 6f), new Vector2(-10f, 11f));
@@ -1265,7 +1275,7 @@ namespace DefenderChronicles.Presentation
                 new Vector2(0.5f, 1f), new Vector2(0.5f, 1f), new Vector2(0f, -34f), new Vector2(240f, 26f),
                 TextAlignmentOptions.Center);
             resultHintText = EnsureLabel(resultCardImage.rectTransform, "Hint",
-                new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(0f, 74f), new Vector2(740f, 76f),
+                new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(0f, 130f), new Vector2(740f, 56f),
                 TextAlignmentOptions.Center);
 
             RectTransform titleRect = resultTitle.rectTransform;

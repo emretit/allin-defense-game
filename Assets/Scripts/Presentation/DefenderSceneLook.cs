@@ -51,15 +51,15 @@ namespace DefenderChronicles.Presentation
             cameraData.stopNaN = true;
 
             RenderSettings.ambientMode = AmbientMode.Trilight;
-            RenderSettings.ambientSkyColor = new Color(0.18f, 0.26f, 0.38f);
-            RenderSettings.ambientEquatorColor = new Color(0.075f, 0.135f, 0.18f);
-            RenderSettings.ambientGroundColor = new Color(0.020f, 0.045f, 0.052f);
-            RenderSettings.reflectionIntensity = 0.30f;
+            RenderSettings.ambientSkyColor = new Color(0.21f, 0.30f, 0.44f);
+            RenderSettings.ambientEquatorColor = new Color(0.085f, 0.15f, 0.205f);
+            RenderSettings.ambientGroundColor = new Color(0.024f, 0.052f, 0.062f);
+            RenderSettings.reflectionIntensity = 0.38f;
             RenderSettings.fog = true;
             RenderSettings.fogMode = FogMode.Linear;
             RenderSettings.fogColor = new Color(0.026f, 0.068f, 0.105f);
-            RenderSettings.fogStartDistance = 23f;
-            RenderSettings.fogEndDistance = 48f;
+            RenderSettings.fogStartDistance = 25f;
+            RenderSettings.fogEndDistance = 50f;
 
             ConfigureSun(quality);
             EnsureFillLight("Moon Fill", new Vector3(11f, 9f, 5.5f), new Color(0.22f, 0.43f, 0.82f), quality, 0.96f, 24f);
@@ -107,9 +107,9 @@ namespace DefenderChronicles.Presentation
 
             sun.name = "Greenwatch Moon Key";
             sun.color = new Color(0.66f, 0.78f, 0.96f);
-            sun.intensity = 1.48f;
+            sun.intensity = 1.58f;
             sun.shadows = (qualityTier == VisualQualityTier.High || qualityTier == VisualQualityTier.Unknown) ? LightShadows.Soft : LightShadows.None;
-            sun.shadowStrength = 0.68f;
+            sun.shadowStrength = 0.74f;
             sun.shadowBias = 0.045f;
             sun.shadowNormalBias = 0.32f;
             sun.transform.rotation = Quaternion.Euler(48f, -38f, 0f);
@@ -151,7 +151,7 @@ namespace DefenderChronicles.Presentation
             bloom = runtimeProfile.Add<Bloom>();
             bloom.active = true;
             bloom.threshold.Override(1.08f);
-            bloom.intensity.Override(0.22f);
+            bloom.intensity.Override(0.28f);
             bloom.scatter.Override(0.58f);
             bloom.clamp.Override(4.5f);
 
@@ -159,9 +159,9 @@ namespace DefenderChronicles.Presentation
             tonemapping.mode.Override(TonemappingMode.ACES);
 
             colorAdjustments = runtimeProfile.Add<ColorAdjustments>();
-            colorAdjustments.postExposure.Override(0.02f);
-            colorAdjustments.contrast.Override(13f);
-            colorAdjustments.saturation.Override(4f);
+            colorAdjustments.postExposure.Override(0.08f);
+            colorAdjustments.contrast.Override(18f);
+            colorAdjustments.saturation.Override(8f);
             colorAdjustments.colorFilter.Override(new Color(0.96f, 0.98f, 0.99f));
 
             WhiteBalance whiteBalance = runtimeProfile.Add<WhiteBalance>();
@@ -170,7 +170,7 @@ namespace DefenderChronicles.Presentation
 
             vignette = runtimeProfile.Add<Vignette>();
             vignette.color.Override(new Color(0.01f, 0.025f, 0.055f));
-            vignette.intensity.Override(0.15f);
+            vignette.intensity.Override(0.17f);
             vignette.smoothness.Override(0.48f);
         }
 
@@ -198,13 +198,13 @@ namespace DefenderChronicles.Presentation
                 elapsed += Time.unscaledDeltaTime;
                 float t = Mathf.Clamp01(elapsed / duration);
                 float envelope = Mathf.Sin(t * Mathf.PI);
-                bloom.intensity.Override(Mathf.Lerp(0.22f, peakBloom, envelope));
+                bloom.intensity.Override(Mathf.Lerp(0.28f, peakBloom, envelope));
                 vignette.intensity.Override(Mathf.Lerp(0.13f, 0.24f, envelope));
                 colorAdjustments.colorFilter.Override(Color.Lerp(baseFilter, peakFilter, envelope * 0.62f));
                 yield return null;
             }
-            bloom.intensity.Override(0.22f);
-            vignette.intensity.Override(0.13f);
+            bloom.intensity.Override(0.28f);
+            vignette.intensity.Override(0.17f);
             colorAdjustments.colorFilter.Override(baseFilter);
             pulseRoutine = null;
         }

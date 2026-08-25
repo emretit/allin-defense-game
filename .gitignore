@@ -7,6 +7,17 @@
 [Ll]ogs/
 [Uu]ser[Ss]ettings/
 [Mm]emoryCaptures/
+/TestResults/
+/mono_crash.*
+/Assets/InitTestScene*.unity
+/Assets/InitTestScene*.unity.meta
+/Assets/Resources/PerformanceTestRunInfo.json
+/Assets/Resources/PerformanceTestRunInfo.json.meta
+/Assets/Resources/PerformanceTestRunSettings.json
+/Assets/Resources/PerformanceTestRunSettings.json.meta
+
+# Runtime evidence: keep curated readable captures, leave raw screenshots out
+docs/evidence/runtime/*-raw.png
 
 # Accidental nested Unity project kept outside the active game project
 /My project/

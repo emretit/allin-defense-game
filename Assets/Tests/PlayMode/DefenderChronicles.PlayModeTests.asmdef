@@ -2,7 +2,8 @@
   "name": "DefenderChronicles.PlayModeTests",
   "rootNamespace": "DefenderChronicles.Tests",
   "references": [
-    "DefenderChronicles.Runtime"
+    "DefenderChronicles.Runtime",
+    "Unity.TextMeshPro"
   ],
   "optionalUnityReferences": [
     "TestAssemblies"

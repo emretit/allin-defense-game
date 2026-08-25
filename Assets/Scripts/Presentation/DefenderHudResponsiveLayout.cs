@@ -44,8 +44,8 @@ namespace DefenderChronicles.Presentation
             public float MessageY { get; }
         }
 
-        public const float TopContentHeight = 96f;
-        public const float BottomContentHeight = 148f;
+        public const float TopContentHeight = 78f;
+        public const float BottomContentHeight = 116f;
 
         private RectTransform root;
         private RectTransform topBar;
@@ -120,17 +120,17 @@ namespace DefenderChronicles.Presentation
 
             if (previewChrome != null)
                 SetTopCenteredBanner(previewChrome, new Vector2(metrics.SafeCenterX, metrics.SafeMaxY), metrics.PreviewY,
-                    new Vector2(metrics.PreviewWidth, 78f));
+                    new Vector2(metrics.PreviewWidth, 64f));
             if (previewTitle != null)
                 SetTopCenteredBanner(previewTitle, new Vector2(metrics.SafeCenterX, metrics.SafeMaxY),
-                    metrics.PreviewY - 10f, new Vector2(metrics.PreviewWidth - 72f, 20f));
+                    metrics.PreviewY - 8f, new Vector2(metrics.PreviewWidth - 56f, 18f));
             SetTopCenteredBanner(preview, new Vector2(metrics.SafeCenterX, metrics.SafeMaxY),
-                metrics.PreviewY - 32f, new Vector2(metrics.PreviewWidth - 72f, 34f));
+                metrics.PreviewY - 27f, new Vector2(metrics.PreviewWidth - 56f, 30f));
             if (messageChrome != null)
                 SetTopCenteredBanner(messageChrome, new Vector2(metrics.SafeCenterX, metrics.SafeMaxY),
-                    metrics.MessageY, new Vector2(metrics.MessageWidth, 54f));
+                    metrics.MessageY, new Vector2(metrics.MessageWidth, 48f));
             SetTopCenteredBanner(message, new Vector2(metrics.SafeCenterX, metrics.SafeMaxY),
-                metrics.MessageY - 6f, new Vector2(metrics.MessageWidth - 48f, 42f));
+                metrics.MessageY - 4f, new Vector2(metrics.MessageWidth - 40f, 38f));
 
             selectedPanel.anchorMin = selectedPanel.anchorMax = new Vector2(metrics.SafeMaxX, metrics.SafeMinY);
             selectedPanel.pivot = new Vector2(1f, 0f);
@@ -156,53 +156,53 @@ namespace DefenderChronicles.Presentation
             float safeWidth = rootSize.x * Mathf.Max(0.1f, safeMaxX - safeMinX);
             // Battle is landscape-only: threat and toast surfaces should remain compact so they
             // never become a second rail across the battlefield on phones or tablets.
-            float previewWidth = Mathf.Min(safeWidth * 0.40f, 760f);
-            float messageWidth = Mathf.Min(safeWidth * 0.44f, 840f);
-            float previewY = -(TopContentHeight + topInset + 12f);
-            float messageY = previewY - 86f;
+            float previewWidth = Mathf.Min(safeWidth * 0.34f, 640f);
+            float messageWidth = Mathf.Min(safeWidth * 0.38f, 720f);
+            float previewY = -(TopContentHeight + topInset + 8f);
+            float messageY = previewY - 70f;
             return new LayoutMetrics(safeMinX, safeMaxX, safeMinY, safeMaxY, bottomInset, topInset,
                 safeCenterX, safeWidth, previewWidth, messageWidth, previewY, messageY);
         }
 
         private void LayoutTopContent()
         {
-            SetRange(RequireRect(topContent, "Gold"), 0f, 0.18f, 10f, 10f);
-            SetRange(RequireRect(topContent, "Lives"), 0.18f, 0.34f, 10f, 10f);
-            SetRange(RequireRect(topContent, "Wave"), 0.34f, 0.52f, 10f, 10f);
+            SetRange(RequireRect(topContent, "Gold"), 0f, 0.15f, 7f, 7f);
+            SetRange(RequireRect(topContent, "Lives"), 0.152f, 0.285f, 7f, 7f);
+            SetRange(RequireRect(topContent, "Wave"), 0.287f, 0.43f, 7f, 7f);
             MatchOptionalChrome(topContent, "Gold", "GoldChrome");
             MatchOptionalChrome(topContent, "Lives", "LivesChrome");
             MatchOptionalChrome(topContent, "Wave", "WaveChrome");
             RectTransform phase = RequireRect(topContent, "Phase");
-            SetRange(phase, 0.52f, 0.76f, 10f, 10f);
+            SetRange(phase, 0.44f, 0.67f, 7f, 7f);
             RectTransform phaseChrome = FindOptionalRect(topContent, "PhaseChrome");
             if (phaseChrome != null) MatchRect(phase, phaseChrome);
             RectTransform speed = FindOptionalRect(topContent, "Speed");
-            if (speed != null) SetRange(speed, 0.77f, 0.855f, 12f, 12f);
-            SetRange(RequireRect(topContent, "Pause"), 0.86f, 1f, 12f, 12f);
+            if (speed != null) SetRange(speed, 0.83f, 0.895f, 8f, 8f);
+            SetRange(RequireRect(topContent, "Pause"), 0.90f, 1f, 8f, 8f);
         }
 
         private void LayoutBottomContent()
         {
-            SetButtonRange(RequireRect(bottomContent, "Archer"), 0f, 0.14f);
-            SetButtonRange(RequireRect(bottomContent, "Barracks"), 0.14f, 0.28f);
-            SetButtonRange(RequireRect(bottomContent, "Mage"), 0.28f, 0.42f);
-            SetButtonRange(RequireRect(bottomContent, "Ability"), 0.42f, 0.595f);
-            SetButtonRange(RequireRect(bottomContent, "Cancel"), 0.60f, 0.70f);
-            SetButtonRange(RequireRect(bottomContent, "NextWave"), 0.76f, 1f);
+            SetButtonRange(RequireRect(bottomContent, "Archer"), 0.055f, 0.175f);
+            SetButtonRange(RequireRect(bottomContent, "Barracks"), 0.18f, 0.30f);
+            SetButtonRange(RequireRect(bottomContent, "Mage"), 0.305f, 0.425f);
+            SetButtonRange(RequireRect(bottomContent, "Ability"), 0.44f, 0.575f);
+            SetButtonRange(RequireRect(bottomContent, "Cancel"), 0.585f, 0.665f);
+            SetButtonRange(RequireRect(bottomContent, "NextWave"), 0.73f, 0.965f);
 
             RectTransform buildDeck = FindOptionalRect(bottomContent, "BuildDeck");
-            if (buildDeck != null) SetRange(buildDeck, 0f, 0.42f, 4f, 4f);
+            if (buildDeck != null) SetRange(buildDeck, 0.045f, 0.435f, 3f, 3f);
             RectTransform heroDeck = FindOptionalRect(bottomContent, "HeroDeck");
-            if (heroDeck != null) SetRange(heroDeck, 0.42f, 0.70f, 4f, 4f);
+            if (heroDeck != null) SetRange(heroDeck, 0.435f, 0.68f, 3f, 3f);
             RectTransform commandDeck = FindOptionalRect(bottomContent, "CommandDeck");
-            if (commandDeck != null) SetRange(commandDeck, 0.70f, 1f, 4f, 4f);
+            if (commandDeck != null) SetRange(commandDeck, 0.70f, 0.975f, 3f, 3f);
 
             RectTransform hero = RequireRect(bottomContent, "Hero");
-            hero.anchorMin = new Vector2(0.42f, 0f);
-            hero.anchorMax = new Vector2(0.70f, 0f);
+            hero.anchorMin = new Vector2(0.44f, 0f);
+            hero.anchorMax = new Vector2(0.675f, 0f);
             hero.pivot = Vector2.zero;
-            hero.offsetMin = new Vector2(8f, 5f);
-            hero.offsetMax = new Vector2(-8f, 38f);
+            hero.offsetMin = new Vector2(8f, 3f);
+            hero.offsetMax = new Vector2(-8f, 27f);
         }
 
         private static void SetButtonRange(RectTransform rect, float minX, float maxX)
@@ -210,8 +210,8 @@ namespace DefenderChronicles.Presentation
             rect.anchorMin = new Vector2(minX, 0f);
             rect.anchorMax = new Vector2(maxX, 0f);
             rect.pivot = Vector2.zero;
-            rect.offsetMin = new Vector2(6f, 42f);
-            rect.offsetMax = new Vector2(-6f, 124f);
+            rect.offsetMin = new Vector2(5f, 27f);
+            rect.offsetMax = new Vector2(-5f, 102f);
         }
 
         private static void SetRange(RectTransform rect, float minX, float maxX, float bottom, float top)

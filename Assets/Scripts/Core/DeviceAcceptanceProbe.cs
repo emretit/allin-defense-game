@@ -25,6 +25,10 @@ namespace DefenderChronicles.Core
         private long firstWaveAllocatedBytes;
         private bool lowMemoryWarning;
         private bool finalReported;
+        private string currentScenario = "preparation";
+
+        public float MedianFps { get; private set; }
+        public float P95FrameMilliseconds { get; private set; }
 
 #if UNITY_IOS && !UNITY_EDITOR
         [DllImport("__Internal")]
@@ -71,7 +75,7 @@ namespace DefenderChronicles.Core
 
             if (Time.realtimeSinceStartup >= nextReport)
             {
-                LogMetrics("sample", allocatedBytes);
+                LogMetrics(currentScenario, allocatedBytes);
                 nextReport += ReportIntervalSeconds;
             }
 
@@ -82,6 +86,24 @@ namespace DefenderChronicles.Core
                 LogMetrics(session.Phase.ToString().ToLowerInvariant(), allocatedBytes);
             }
         }
+
+        public void MarkScenario(string scenario)
+        {
+            currentScenario = string.IsNullOrWhiteSpace(scenario) ? "unknown" : scenario;
+            Debug.Log(FormattableString.Invariant(
+                $"[DC_DEVICE_SCENARIO] stage={currentScenario} realtime_seconds={Time.realtimeSinceStartup:F2}"));
+        }
+
+        public void LogCheckpoint(string stage)
+        {
+            LogMetrics(string.IsNullOrWhiteSpace(stage) ? currentScenario : stage,
+                Profiler.GetTotalAllocatedMemoryLong());
+        }
+
+        public bool HasLowMemoryWarning => lowMemoryWarning;
+
+        public bool MeetsPerformanceGate => frameTimes.Count > 0 && MedianFps >= 55f &&
+                                            P95FrameMilliseconds <= 18f && !lowMemoryWarning;
 
         private void OnLowMemory()
         {
@@ -97,6 +119,8 @@ namespace DefenderChronicles.Core
             float medianMs = Percentile(sorted, 0.50f);
             float p95Ms = Percentile(sorted, 0.95f);
             float medianFps = medianMs <= 0f ? 0f : 1000f / medianMs;
+            MedianFps = medianFps;
+            P95FrameMilliseconds = p95Ms;
             float memoryGrowth = firstWaveAllocatedBytes <= 0
                 ? 0f
                 : (allocatedBytes - firstWaveAllocatedBytes) * 100f / firstWaveAllocatedBytes;

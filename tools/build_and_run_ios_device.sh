@@ -7,13 +7,15 @@ unity_output="$project_root/Builds/iOS-Device"
 derived_data="$project_root/Builds/XcodeDeviceDerivedData"
 unity_log="$project_root/Builds/unity-ios-device-build.log"
 xcode_log="$project_root/Builds/xcodebuild-ios-device.log"
+device_run_log="$project_root/Builds/ios-device-acceptance.log"
 bundle_id="com.emreaydin.defenderchronicles"
 
 mkdir -p "$project_root/Builds"
 
 device_id="${DC_IOS_DEVICE_ID:-}"
 if [[ -z "$device_id" ]]; then
-  device_json="$(mktemp "$project_root/Builds/device-list.XXXXXX.json")"
+  device_json="$(mktemp "$project_root/Builds/device-list.XXXXXX")"
+  trap 'rm -f "$device_json"' EXIT
   xcrun devicectl list devices --json-output "$device_json" >/dev/null
   connected_count="$(jq '[.result.devices[] | select(
     .hardwareProperties.reality == "physical" and
@@ -57,10 +59,19 @@ xcrun devicectl device install app --device "$device_id" "$app_path"
 
 if [[ "${DC_IOS_SMOKE:-0}" == "1" ]]; then
   DEVICECTL_CHILD_DC_SMOKE=1 xcrun devicectl device process launch --console --timeout 180 \
-    --terminate-existing --device "$device_id" "$bundle_id"
+    --terminate-existing --device "$device_id" "$bundle_id" | tee "$device_run_log"
+  rg -q "\[DC_SMOKE_PASS\]" "$device_run_log"
 elif [[ "${DC_IOS_DEFEAT_SMOKE:-0}" == "1" ]]; then
   DEVICECTL_CHILD_DC_SMOKE_DEFEAT=1 xcrun devicectl device process launch --console --timeout 60 \
-    --terminate-existing --device "$device_id" "$bundle_id"
+    --terminate-existing --device "$device_id" "$bundle_id" | tee "$device_run_log"
+elif [[ "${DC_IOS_PERFORMANCE_ACCEPTANCE:-0}" == "1" ]]; then
+  DEVICECTL_CHILD_DC_PERFORMANCE_ACCEPTANCE=1 xcrun devicectl device process launch --console --timeout 120 \
+    --terminate-existing --device "$device_id" "$bundle_id" | tee "$device_run_log"
+  rg -q "\[DC_PERFORMANCE_ACCEPTANCE_PASS\]" "$device_run_log"
+elif [[ "${DC_IOS_SOAK_ACCEPTANCE:-0}" == "1" ]]; then
+  DEVICECTL_CHILD_DC_SOAK_ACCEPTANCE=1 xcrun devicectl device process launch --console --timeout 150 \
+    --terminate-existing --device "$device_id" "$bundle_id" | tee "$device_run_log"
+  rg -q "\[DC_SOAK_ACCEPTANCE_PASS\]" "$device_run_log"
 else
   xcrun devicectl device process launch --terminate-existing --device "$device_id" "$bundle_id"
 fi

@@ -14,7 +14,7 @@ namespace DefenderChronicles.Presentation
         public const float MinimumOrthographicSize = 7.25f;
         public const float MaximumOrthographicSize = 18f;
 
-        private const float UpwardScreenFramingOffset = 0.72f;
+        private const float UpwardScreenFramingOffset = 0.60f;
         private Camera targetCamera;
         private int previousWidth;
         private int previousHeight;

@@ -346,7 +346,7 @@ namespace DefenderChronicles.Core
             Vector3 focus = new Vector3(11f, 0.25f, 5.5f);
             gameCamera.transform.position = focus + new Vector3(0f, 15.8f, -16.9f);
             gameCamera.transform.rotation = Quaternion.LookRotation(focus - gameCamera.transform.position, Vector3.up);
-            gameCamera.backgroundColor = new Color(0.025f, 0.07f, 0.12f);
+            gameCamera.backgroundColor = new Color(0.035f, 0.085f, 0.145f);
             gameCamera.clearFlags = CameraClearFlags.SolidColor;
             gameCamera.nearClipPlane = 0.1f;
             gameCamera.farClipPlane = 100f;
@@ -431,10 +431,14 @@ namespace DefenderChronicles.Core
                 environment.transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
                 foreach (Renderer renderer in environment.GetComponentsInChildren<Renderer>(true))
                 {
-                    if (renderer.name.StartsWith("Road", StringComparison.OrdinalIgnoreCase) ||
-                        renderer.name.StartsWith("DeepBackdrop", StringComparison.OrdinalIgnoreCase) ||
-                        renderer.sharedMaterial == presentationCatalog.navyMaterial)
+                    bool deepBackdrop = renderer.name.StartsWith("DeepBackdrop", StringComparison.OrdinalIgnoreCase);
+                    bool rigidBoundary = renderer.name.StartsWith("NorthRidge", StringComparison.OrdinalIgnoreCase) ||
+                                         renderer.name.StartsWith("SouthRidge", StringComparison.OrdinalIgnoreCase);
+                    if (renderer.name.StartsWith("Road", StringComparison.OrdinalIgnoreCase) || rigidBoundary ||
+                        (!deepBackdrop && renderer.sharedMaterial == presentationCatalog.navyMaterial))
                         renderer.enabled = false;
+                    else if (deepBackdrop)
+                        renderer.enabled = true;
                 }
             }
             DefenderBattlefieldDressing.Install(world, presentationCatalog, gameCamera, path);
