@@ -41,7 +41,7 @@
       "ddiServicesAvailable": false,
       "pairingState": "paired",
       "transportType": "localNetwork",
-      "tunnelState": "connected"
+      "tunnelState": "disconnected"
     }
   ],
   "ddiServiceProbes": [

@@ -1,0 +1,79 @@
+{
+  "schema": "defender-chronicles.visual-device-acceptance.v1",
+  "acceptedBuildId": "TODO-build-id-from-the-physical-device-run",
+  "deviceClass": "TODO-iPhone-13-class",
+  "deviceModel": "TODO-device-model",
+  "osVersion": "TODO-ios-version",
+  "capturedOn": "TODO-YYYY-MM-DD",
+  "reviewer": "TODO-reviewer-name",
+  "profilerScenarios": {
+    "preparation": {
+      "durationSeconds": 0,
+      "fpsMedian": null,
+      "fpsMinimum": null,
+      "cpuFrameMsP95": null,
+      "gpuFrameMsP95": null,
+      "drawCallsP95": null,
+      "trianglesP95": null,
+      "gcAllocBytesPerSecond": null,
+      "memoryMbPeak": null,
+      "thermalState": ""
+    },
+    "normal": {
+      "durationSeconds": 0,
+      "fpsMedian": null,
+      "fpsMinimum": null,
+      "cpuFrameMsP95": null,
+      "gpuFrameMsP95": null,
+      "drawCallsP95": null,
+      "trianglesP95": null,
+      "gcAllocBytesPerSecond": null,
+      "memoryMbPeak": null,
+      "thermalState": ""
+    },
+    "dense": {
+      "durationSeconds": 0,
+      "fpsMedian": null,
+      "fpsMinimum": null,
+      "cpuFrameMsP95": null,
+      "gpuFrameMsP95": null,
+      "drawCallsP95": null,
+      "trianglesP95": null,
+      "gcAllocBytesPerSecond": null,
+      "memoryMbPeak": null,
+      "thermalState": ""
+    },
+    "bossPhase3": {
+      "durationSeconds": 0,
+      "fpsMedian": null,
+      "fpsMinimum": null,
+      "cpuFrameMsP95": null,
+      "gpuFrameMsP95": null,
+      "drawCallsP95": null,
+      "trianglesP95": null,
+      "gcAllocBytesPerSecond": null,
+      "memoryMbPeak": null,
+      "thermalState": ""
+    }
+  },
+  "frameDebugger": {
+    "captured": false,
+    "topRenderCosts": [],
+    "shadowCasterNotes": "",
+    "additionalLightNotes": "",
+    "overdrawNotes": "",
+    "textureUsageNotes": "",
+    "screenshots": []
+  },
+  "stressAndSoak": {
+    "actorCount": 0,
+    "soakSeconds": 0,
+    "persistentGcSpike": null,
+    "lowMemoryWarning": null,
+    "controlLoss": null,
+    "bossPhase3FpsFloor": null
+  },
+  "notes": [
+    "Template intentionally fails validation until real physical-device measurements and curated evidence are attached."
+  ]
+}

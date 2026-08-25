@@ -28,9 +28,16 @@ The script runs:
 2. `tools/build_and_run_ios_device.sh` with `DC_IOS_SMOKE=1`
 3. `tools/build_and_run_ios_device.sh` with `DC_IOS_PERFORMANCE_ACCEPTANCE=1`
 4. `tools/build_and_run_ios_device.sh` with `DC_IOS_SOAK_ACCEPTANCE=1`
-5. `tools/validate_visual_human_signoff.py`
+5. `tools/validate_visual_device_acceptance.py`
+6. `tools/validate_visual_human_signoff.py`
 
 Build logs are written under `Builds/` and remain uncommitted. Curated acceptance summaries should be copied into `docs/evidence` only after review.
+
+Physical Profiler and Frame/Rendering Debugger summaries must be copied into `docs/evidence/visual-development/physical-device-acceptance-2026-08-25.json` and validated with:
+
+```bash
+python3 tools/validate_visual_device_acceptance.py docs/evidence/visual-development/physical-device-acceptance-2026-08-25.json
+```
 
 ## TODO mapping
 
@@ -39,7 +46,7 @@ Build logs are written under `Builds/` and remain uncommitted. Curated acceptanc
 | NEXT-001 | `check_ios_physical_readiness.py` | None after `[DC_IOS_PHYSICAL_READY]` |
 | NEXT-002 | device smoke phase | Confirm install/launch on the target physical iPhone |
 | NEXT-003 | performance phase | Attach 60-second Profiler notes for preparation, normal, dense and boss phase 3 |
-| NEXT-004 | not automated | Capture Frame/Rendering Debugger screenshots/notes manually from Unity |
+| NEXT-004 | not automated | Capture Frame/Rendering Debugger screenshots/notes manually from Unity and pass `validate_visual_device_acceptance.py` |
 | NEXT-005 | soak phase | Attach 60-actor/VFX stress and 90-second soak evidence |
 | NEXT-006 | sign-off validator | Human reviewer must fill `human-review-signoff-2026-08-25.json` |
 
