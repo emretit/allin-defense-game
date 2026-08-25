@@ -61,7 +61,7 @@
     "human_masking_signoff": false
   },
   "visual_accessibility_review": {
-    "status": "in_review",
+    "status": "blocked",
     "grayscale_contact_sheet": "docs/evidence/visual-development/vis813-accessibility-grayscale-contact-sheet-2026-08-25.png",
     "before_after_contact_sheet": "docs/evidence/visual-development/vis814-before-after-contact-sheet-2026-08-25.png",
     "audit_report": "docs/evidence/visual-development/vis813-814-visual-audit-report-2026-08-25.json",
@@ -70,7 +70,7 @@
     "blind_recognition_signoff": false
   },
   "geometry_optimization": {
-    "status": "in_review",
+    "status": "blocked",
     "decision_report": "docs/evidence/visual-development/vis805-geometry-optimization-decision-2026-08-25.json",
     "geometry_mutation_applied": false,
     "physical_frame_debugger_required": true

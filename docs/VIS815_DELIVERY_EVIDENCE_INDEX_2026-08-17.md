@@ -50,10 +50,10 @@ Selected final authoring evidence:
 
 | VIS ID | Status | Evidence |
 |---|---|---|
-| VIS-801/VIS-802/VIS-803 | In review | `docs/VIS800_QUALITY_PROFILE_MATRIX_2026-08-17.md`, `Builds/playmode-results-vis801-803.xml`, `Builds/unity-quality-profile-matrix-checkpoint.log` |
-| VIS-804 | In review | `docs/VIS804_TEXTURE_IMPORT_PROFILE_2026-08-17.md`, `Builds/unity-texture-import-profile-checkpoint.log`, `docs/evidence/visual-development/texture-import-profile-report-2026-08-17.json` |
-| VIS-805 | In review | `docs/VIS805_GEOMETRY_OPTIMIZATION_DECISION_2026-08-25.md`, `docs/evidence/visual-development/vis805-geometry-optimization-decision-2026-08-25.json`; no geometry mutation applied before physical Frame Debugger evidence |
-| VIS-806 | In review | `docs/VIS806_VFX_QUALITY_PROFILE_2026-08-17.md`, `Builds/unity-vfx-quality-profile-checkpoint.log`, `docs/evidence/visual-development/vfx-quality-profile-report-2026-08-17.json` |
+| VIS-801/VIS-802/VIS-803 | Blocked | `docs/VIS800_QUALITY_PROFILE_MATRIX_2026-08-17.md`, `Builds/playmode-results-vis801-803.xml`, `Builds/unity-quality-profile-matrix-checkpoint.log`; matrix is implemented, final profile tuning waits for physical Profiler/Frame Debugger |
+| VIS-804 | Blocked | `docs/VIS804_TEXTURE_IMPORT_PROFILE_2026-08-17.md`, `Builds/unity-texture-import-profile-checkpoint.log`, `docs/evidence/visual-development/texture-import-profile-report-2026-08-17.json`; import profile is implemented, final memory delta waits for physical device |
+| VIS-805 | Blocked | `docs/VIS805_GEOMETRY_OPTIMIZATION_DECISION_2026-08-25.md`, `docs/evidence/visual-development/vis805-geometry-optimization-decision-2026-08-25.json`; no geometry mutation applied before physical Frame Debugger evidence |
+| VIS-806 | Blocked | `docs/VIS806_VFX_QUALITY_PROFILE_2026-08-17.md`, `Builds/unity-vfx-quality-profile-checkpoint.log`, `docs/evidence/visual-development/vfx-quality-profile-report-2026-08-17.json`; config is implemented, final GC/overdraw capture waits for physical device |
 | VIS-807 | Blocked | `docs/VIS807_PERFORMANCE_ACCEPTANCE_SIMULATOR_2026-08-17.md`, `Builds/ios-performance-acceptance.log`, `tools/run_ios_performance_acceptance.sh` |
 | VIS-807 physical readiness | Blocked | `docs/VIS807_PHYSICAL_READINESS_CHECK_2026-08-25.md`, `docs/evidence/visual-development/ios-physical-readiness-2026-08-25.json`, `tools/check_ios_physical_readiness.py` |
 | VIS-221/VIS-222 | Passed | `ArtSource/Blender/Guard.blend`, `Assets/Art/Models/Generated/Guard.fbx`, `docs/evidence/visual-development/actor-proxy-metrics-2026-08-17.json`, `Builds/unity-actor-catalog-visual-vis221222.log`, `Builds/editmode-results-vis221222.xml` passed 40/40 |
@@ -81,12 +81,12 @@ Selected final authoring evidence:
 | VIS-276 | Passed | `Assets/Scripts/Core/GameSessionController.cs`, `Builds/editmode-results-vis276.xml` passed 40/40, `Builds/playmode-results-vis276.xml` passed 6/6, `Builds/ios-actor-capture.log` passed with `siege_spawn=true siege_heavy=true`, `docs/evidence/runtime/defender-simulator-actor-runtime-vfx-animation-20260817-213948-landscape-upright.png` |
 | VIS-266 | Passed | `Builds/editmode-results-vis266.xml` passed 40/40, `Builds/playmode-results-vis266.xml` passed 6/6, `Builds/ios-actor-capture.log`, `docs/evidence/runtime/defender-simulator-actor-runtime-vfx-animation-20260817-211833-landscape-upright.png` |
 | VIS-701–705 | Passed | `docs/VIS700_AUDIO_VISUAL_POLISH_ACCEPTANCE_2026-08-25.md`, `docs/evidence/runtime/audio-visual-acceptance-20260825.txt`; 480-second run passed 22/22 cues and 40/40 combat cycles. |
-| VIS-706 | In review | Procedural wind/leaf/crystal layer integrated; final-source 60-second Medium smoke played 4 details and Low-off profile test passed. Human masking/loudness review is prepared in `docs/VIS706_708_813_814_HUMAN_REVIEW_GATE_2026-08-25.md`. |
-| VIS-707/VIS-708 | In review | Automated matrix/full-run passed; human audio-only/visual-only, speaker/headphone and final video sign-off are prepared in `docs/VIS706_708_813_814_HUMAN_REVIEW_GATE_2026-08-25.md`. |
+| VIS-706 | Blocked | Procedural wind/leaf/crystal layer integrated; final-source 60-second Medium smoke played 4 details and Low-off profile test passed. Human masking/loudness review is prepared in `docs/VIS706_708_813_814_HUMAN_REVIEW_GATE_2026-08-25.md`. |
+| VIS-707/VIS-708 | Blocked | Automated matrix/full-run passed; human audio-only/visual-only, speaker/headphone and final video sign-off are prepared in `docs/VIS706_708_813_814_HUMAN_REVIEW_GATE_2026-08-25.md`. |
 | VIS-810 | Passed | Current integrated EditMode suite passed 65/65; raw XML intentionally remains ignored. |
 | VIS-811 | Passed | Current integrated PlayMode suite passed 12/12, including audio voice-budget and result layout regressions; raw XML intentionally remains ignored. |
 | VIS-812 | Passed on Simulator | `docs/VIS812_FINAL_VISUAL_EVIDENCE_SIMULATOR_2026-08-17.md`, accepted stamp `vis812-final-20260825-210559`, `Builds/ios-vis812-final-evidence.log`, `Builds/ios-vis812-final-evidence-defeat.log` |
-| VIS-813/VIS-814 | In review | `docs/VIS813_814_ACCESSIBILITY_COMPARISON_2026-08-17.md`, `docs/evidence/visual-development/vis813-accessibility-grayscale-contact-sheet-2026-08-25.png`, `docs/evidence/visual-development/vis814-before-after-contact-sheet-2026-08-25.png`, `docs/evidence/visual-development/vis813-814-visual-audit-report-2026-08-25.json`, `docs/VIS706_708_813_814_HUMAN_REVIEW_GATE_2026-08-25.md` |
+| VIS-813/VIS-814 | Blocked | `docs/VIS813_814_ACCESSIBILITY_COMPARISON_2026-08-17.md`, `docs/evidence/visual-development/vis813-accessibility-grayscale-contact-sheet-2026-08-25.png`, `docs/evidence/visual-development/vis814-before-after-contact-sheet-2026-08-25.png`, `docs/evidence/visual-development/vis813-814-visual-audit-report-2026-08-25.json`, `docs/VIS706_708_813_814_HUMAN_REVIEW_GATE_2026-08-25.md`; automated evidence is current, human/assistive-tech sign-off is missing |
 
 ## Accepted Runtime Visual Set
 
