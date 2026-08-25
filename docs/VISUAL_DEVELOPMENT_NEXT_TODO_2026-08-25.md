@@ -34,7 +34,7 @@ These are intentionally outside the current vertical-slice closeout. Do not mix 
 |---|---:|---|---|
 | NEXT-201 | P1 | Prepared: actor rig migration decision | `docs/NEXT201_ACTOR_RIG_MIGRATION_DECISION_2026-08-25.md` and `docs/evidence/visual-development/actor-rig-source-inspection-2026-08-25.json` confirm current Generic rigs are acceptable until real authored Humanoid/skinned animation sources exist |
 | NEXT-202 | P1 | Prepared: Frostfen Hollow second-biome paint-over and kit | `docs/FROSTFEN_HOLLOW_SECOND_BIOME_PLAN_2026-08-25.md` and `docs/evidence/visual-development/frostfen-hollow-paintover-plan-2026-08-25.*` prove the visual language can scale beyond Greenwatch Valley without changing runtime scope |
-| NEXT-203 | P1 | Create final marketing-quality logo/splash variants from accepted brand direction | Storefront and first-impression polish |
+| NEXT-203 | P1 | Blocked by accepted brand/logo handoff | Do not create final logo/splash variants until the logo task's accepted direction, changed files and final Dynamic-Island-safe screenshot are available |
 | NEXT-204 | P2 | Prepared: cinematic boss/result framing contract | `Assets/Scripts/Presentation/PresentationCinematicFramingContract.cs` and `docs/CINEMATIC_BOSS_RESULT_FRAMING_PLAN_2026-08-25.md` define tested framing specs without changing runtime camera behavior |
 | NEXT-205 | P2 | Prepared: Android visual/performance acceptance matrix | `docs/ANDROID_VISUAL_PERFORMANCE_ACCEPTANCE_MATRIX_2026-08-25.md` defines post-iOS device tiers, scenarios, profile rules and evidence package |
 
