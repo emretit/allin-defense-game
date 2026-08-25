@@ -60,6 +60,15 @@
     "low_profile_disabled": true,
     "human_masking_signoff": false
   },
+  "visual_accessibility_review": {
+    "status": "in_review",
+    "grayscale_contact_sheet": "docs/evidence/visual-development/vis813-accessibility-grayscale-contact-sheet-2026-08-25.png",
+    "before_after_contact_sheet": "docs/evidence/visual-development/vis814-before-after-contact-sheet-2026-08-25.png",
+    "audit_report": "docs/evidence/visual-development/vis813-814-visual-audit-report-2026-08-25.json",
+    "human_signoff_template": "docs/evidence/visual-development/human-review-signoff-template-2026-08-25.json",
+    "voiceover_signoff": false,
+    "blind_recognition_signoff": false
+  },
   "physical_device": {
     "model": "iPhone 13 (iPhone14,5)",
     "os": "iOS 26.6 beta (23G5028e)",

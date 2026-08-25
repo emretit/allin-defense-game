@@ -43,8 +43,8 @@ KayKit Medieval Hexagon/Adventurers and Kenney Fantasy UI provenance remains rec
 
 1. Physical iPhone Profiler, Frame Debugger and Rendering Debugger capture. The connected iPhone 13 runs iOS 26.6 beta, but installed Xcode supplies iOS 26.5 DeviceSupport/DDI; developer disk image mount fails before installation.
 2. Physical-device 60-actor/VFX stress and final 90-second soak.
-3. Human speaker/headphone listening, audio-only/visual-only and final video sign-off. The automated Silent/Low/Normal matrix and eight-minute combat run passed.
-4. Optional human blind-recognition sign-off for the eight actor silhouettes; automated color/grayscale/64 px evidence exists.
+3. Human speaker/headphone listening, audio-only/visual-only, VoiceOver/blind-recognition and final video sign-off. The review protocol and JSON validator are in `docs/VIS706_708_813_814_HUMAN_REVIEW_GATE_2026-08-25.md`.
+4. Final human sign-off file is not present yet; `docs/evidence/visual-development/human-review-signoff-template-2026-08-25.json` currently validates as pending by design.
 
 Do not close VIS-816 until items 1–3 pass or the product owner explicitly waives them. Simulator FPS must not be presented as physical GPU or thermal acceptance.
 
@@ -57,6 +57,8 @@ DC_SIMULATOR_ID=<iphone-17-pro-udid> tools/run_ios_soak_acceptance.sh
 DC_SIMULATOR_ID=<iphone-17-pro-udid> DC_REUSE_INSTALLED_BUILD=1 tools/run_ios_vis812_capture.sh
 DC_SIMULATOR_ID=<iphone-17-pro-udid> DC_REUSE_INSTALLED_BUILD=1 DC_AUDIO_ACCEPTANCE_SECONDS=480 tools/run_ios_audio_visual_acceptance.sh
 tools/run_ios_ratio_acceptance.sh
+python3 tools/art_pipeline/render_vis813_814_evidence.py
+python3 tools/validate_visual_human_signoff.py docs/evidence/visual-development/human-review-signoff-template-2026-08-25.json --allow-pending
 ```
 
 For physical acceptance, install an Xcode/DeviceSupport build compatible with iOS 26.6 beta, then run:

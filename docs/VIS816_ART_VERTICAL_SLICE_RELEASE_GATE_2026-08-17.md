@@ -21,10 +21,10 @@ Decision: The art vertical slice is not fully releasable yet because physical iP
 | Catalog QA | Passed | Current integrated EditMode suite passed 65/65. Raw XML is intentionally ignored. |
 | Gameplay QA | Passed | Current integrated PlayMode suite passed 12/12. Raw XML is intentionally ignored. |
 | Automated audio-visual combat | Passed on Simulator | `docs/VIS700_AUDIO_VISUAL_POLISH_ACCEPTANCE_2026-08-25.md`; 480 seconds, 22/22 cues, 6/6 music states, 3/3 levels and 40/40 combat cycles. |
-| Human audio polish | Open | Speaker/headphone fatigue, loudness, pop/click, audio-only/visual-only and final video review are not signed off. |
+| Human audio polish | Open | Speaker/headphone fatigue, loudness, pop/click, audio-only/visual-only and final video review are prepared in `docs/VIS706_708_813_814_HUMAN_REVIEW_GATE_2026-08-25.md`, but not signed off. |
 | Final visual evidence | Passed on Simulator | `docs/VIS812_FINAL_VISUAL_EVIDENCE_SIMULATOR_2026-08-17.md`, accepted stamp `vis812-final-20260825-210559` |
-| Accessibility visual audit | In review | `docs/VIS813_814_ACCESSIBILITY_COMPARISON_2026-08-17.md` |
-| Before/after comparison | In review | `docs/evidence/visual-development/vis814-before-after-contact-sheet-2026-08-17.png` |
+| Accessibility visual audit | In review | `docs/VIS813_814_ACCESSIBILITY_COMPARISON_2026-08-17.md`, `docs/evidence/visual-development/vis813-accessibility-grayscale-contact-sheet-2026-08-25.png` |
+| Before/after comparison | In review | `docs/evidence/visual-development/vis814-before-after-contact-sheet-2026-08-25.png` |
 | Delivery index | In review | `docs/VIS815_DELIVERY_EVIDENCE_INDEX_2026-08-17.md` |
 
 ## Accepted Simulator Evidence
@@ -33,7 +33,7 @@ Decision: The art vertical slice is not fully releasable yet because physical iP
 - PlayMode QA: current integrated suite passed 12/12.
 - Audio-visual combat: the eight-minute Simulator runner passed all 22 cues, six music states, three review levels, 40 stress cycles and the ten-voice cap.
 - Visual state set: `vis812-final-20260825-210559` includes preparation, ability, normal, dense, boss1, boss2, boss3, victory and defeat from the same installed build.
-- Grayscale accessibility and before/after sheets are generated under `docs/evidence/visual-development/`.
+- Grayscale accessibility and before/after sheets are regenerated from accepted stamp `vis812-final-20260825-210559` under `docs/evidence/visual-development/`.
 - Simulator performance proxy reports preparation/normal/dense/boss metrics with median 60 FPS, boss p95 17.1 ms and no low-memory warning; the 90-second soak also passed.
 
 ## Required To Close
@@ -41,7 +41,7 @@ Decision: The art vertical slice is not fully releasable yet because physical iP
 1. Capture iPhone 13-class physical-device Profiler evidence for preparation, normal/dense and boss scenarios.
 2. Capture Unity Frame Debugger and Rendering Debugger evidence for draw passes, shadow casters, overdraw and texture budget.
 3. Update `docs/VIS807_PERFORMANCE_ACCEPTANCE_SIMULATOR_2026-08-17.md` or create a physical-device successor report.
-4. Complete the human speaker/headphone audio-only/visual-only polish and final video sign-off for VIS-707/VIS-708.
+4. Complete the human speaker/headphone audio-only/visual-only polish, VoiceOver/blind-recognition review and final video sign-off using `docs/VIS706_708_813_814_HUMAN_REVIEW_GATE_2026-08-25.md`.
 5. Revisit this checklist and mark VIS-816 complete only if no critical visual/performance regression remains.
 
 ## Current Device Availability Check

@@ -1,0 +1,38 @@
+{
+  "schema": "defender-chronicles.visual-human-signoff.v1",
+  "acceptedVisualStamp": "vis812-final-20260825-210559",
+  "reviewDate": "",
+  "reviewer": "",
+  "evidence": {
+    "audioVisualAcceptanceLog": "docs/evidence/runtime/audio-visual-acceptance-20260825.txt",
+    "visualAuditReport": "docs/evidence/visual-development/vis813-814-visual-audit-report-2026-08-25.json",
+    "grayscaleContactSheet": "docs/evidence/visual-development/vis813-accessibility-grayscale-contact-sheet-2026-08-25.png",
+    "beforeAfterContactSheet": "docs/evidence/visual-development/vis814-before-after-contact-sheet-2026-08-25.png",
+    "finalVideo": "",
+    "speakerDevice": "",
+    "headphoneDevice": "",
+    "assistiveTechDevice": ""
+  },
+  "signoffs": {
+    "audio": {
+      "vis706AmbienceMaskingApproved": false,
+      "vis707SpeakerReviewApproved": false,
+      "vis707HeadphoneReviewApproved": false,
+      "vis707AudioOnlyStateReviewApproved": false,
+      "vis707VisualOnlyStateReviewApproved": false,
+      "vis708EightMinuteHumanReviewApproved": false,
+      "vis708FinalVideoApproved": false
+    },
+    "accessibility": {
+      "vis813GrayscaleReviewApproved": false,
+      "vis813TouchTargetReviewApproved": false,
+      "vis813NonColorStateReviewApproved": false,
+      "vis813VoiceOverReviewApproved": false,
+      "vis813BlindRecognitionApproved": false,
+      "vis814BeforeAfterReviewApproved": false
+    }
+  },
+  "notes": [
+    "Pending human review. Copy this template to a dated signoff file, fill reviewer/date/devices/video, then set each approved field to true only after the matching review has passed."
+  ]
+}

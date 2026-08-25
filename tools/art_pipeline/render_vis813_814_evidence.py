@@ -14,8 +14,8 @@ from PIL import Image, ImageDraw, ImageFont, ImageOps, ImageStat
 ROOT = Path(__file__).resolve().parents[2]
 RUNTIME = ROOT / "docs" / "evidence" / "runtime"
 VISUAL = ROOT / "docs" / "evidence" / "visual-development"
-STAMP = "2026-08-17"
-ACCEPTED = "vis812-final-20260817-191207"
+STAMP = "2026-08-25"
+ACCEPTED = "vis812-final-20260825-210559"
 
 
 @dataclass(frozen=True)
@@ -58,6 +58,8 @@ def load_captures() -> list[Capture]:
     captures: list[Capture] = []
     for state in states:
         path = RUNTIME / f"defender-simulator-{ACCEPTED}-{state}-landscape-upright.png"
+        if not path.exists():
+            path = RUNTIME / f"defender-simulator-{ACCEPTED}-{state}-landscape-readable.png"
         if not path.exists():
             raise FileNotFoundError(path)
         captures.append(Capture(state, path))
@@ -182,9 +184,13 @@ def write_report(captures: list[Capture], grayscale: Path, comparison: Path) -> 
             "status": "in_review",
             "grayscaleContactSheet": str(grayscale.relative_to(ROOT)),
             "statesChecked": [capture.state for capture in captures],
-            "allCapturesLandscape1334x750": all(
-                item["width"] == 1334 and item["height"] == 750 for item in metrics
-            ),
+            "allCapturesSameLandscapeSize": len(
+                {(item["width"], item["height"]) for item in metrics}
+            ) == 1,
+            "captureSize": {
+                "width": metrics[0]["width"] if metrics else 0,
+                "height": metrics[0]["height"] if metrics else 0,
+            },
             "luminanceStdDevAverage": round(mean(item["luminanceStdDev"] for item in metrics), 2),
             "notes": [
                 "Critical state labels, result overlays and major silhouettes remain distinguishable in grayscale contact sheet.",

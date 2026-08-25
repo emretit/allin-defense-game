@@ -64,8 +64,8 @@ Raw runtime log: ignored `Builds/ios-audio-visual-acceptance.log`
 - VIS-703 is complete: all six music states have deterministic crossfade targets; pause/normal snapshot transition passed.
 - VIS-704 is complete: build/upgrade/sell remain success-only gameplay emissions and share the protected Economy feedback group.
 - VIS-705 is complete: HeroAbility, BossPhase, BossAttack, Victory and Defeat are Critical and duck music.
-- VIS-706 is in review: the wind/leaf/crystal layer is integrated, Low-off behavior and Medium runtime playback passed; human masking/loudness review remains open.
-- VIS-707 is in review: automated Silent/Low/Normal coverage passed, but the requested video and human audio-only/visual-only sign-off are not present.
+- VIS-706 is in review: the wind/leaf/crystal layer is integrated, Low-off behavior and Medium runtime playback passed; human masking/loudness review is standardized in `docs/VIS706_708_813_814_HUMAN_REVIEW_GATE_2026-08-25.md`.
+- VIS-707 is in review: automated Silent/Low/Normal coverage passed, but the requested video and human audio-only/visual-only sign-off are not present yet.
 - VIS-708 is in review: the eight-minute combat run passed with timestamped evidence, but subjective speaker/headphone fatigue, loudness balance, pop/click and perceived synchronization still require a listening pass.
 
 ## Reproduction
