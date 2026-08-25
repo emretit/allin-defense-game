@@ -1,0 +1,24 @@
+Defender Chronicles — Audio/Visual Acceptance Evidence
+Date: 2026-08-25
+Platform: iPhone 17 Pro, iOS 26.5 Simulator
+Unity: 6000.4.1f1
+Run duration: 480 seconds
+
+Selected runtime markers from Builds/ios-audio-visual-acceptance.log:
+
+[DC_AUDIO_VISUAL_ACCEPTANCE] duration_seconds=480 levels=Silent/Low/Normal cues=22 music_states=6
+[DC_AUDIO_REVIEW_LEVEL] level=Silent elapsed_seconds=0.0
+[DC_AUDIO_REVIEW_LEVEL] level=Low elapsed_seconds=160.2
+[DC_AUDIO_SNAPSHOT_PASS] normal_pause_normal=true
+[DC_AUDIO_REVIEW_LEVEL] level=Normal elapsed_seconds=320.2
+[DC_AUDIO_COMBAT_CYCLE] cycle=4 enemies=17 boss=True elapsed_seconds=36.6
+[DC_AUDIO_COMBAT_CYCLE] cycle=20 enemies=17 boss=True elapsed_seconds=228.4
+[DC_AUDIO_COMBAT_CYCLE] cycle=40 enemies=17 boss=True elapsed_seconds=468.5
+[DC_AUDIO_VISUAL_ACCEPTANCE_PASS] duration_seconds=480 cues=22/22 music_states=6/6 levels=3/3 combat_cycles=40/40 pause_snapshot=True max_active_voices=10/10
+
+Automated QA from the same source state:
+
+EditMode: 64/64 passed
+PlayMode: 12/12 passed
+
+This is curated automated evidence. The ignored raw log remains under Builds/. It does not replace a human speaker/headphone loudness, pop/click and fatigue review.

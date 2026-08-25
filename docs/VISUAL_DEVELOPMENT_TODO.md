@@ -23,15 +23,17 @@ Bu bölüm, aşağıdaki tarihsel satırlardan daha güncel ve kapanış için b
 | VIS-401–414 | Tamamlandı | Quaternius doğrudan import edilmedi; provenance kayıtlı KayKit + özgün/generated çevre, rota, giriş, kale, slot, sınır ve oran QA tamamlandı. |
 | VIS-501–514 | Tamamlandı | Role override'lar, gameplay'den bağımsız event sözleşmesi, 22 cue mapping'i ve pooled şekil/hareket tabanlı VFX aileleri mevcut. Fiziksel stres VIS-515 altında açık. |
 | VIS-601–613 | Tamamlandı | Runtime responsive HUD, safe area, input, sekiz slot ve 16:9/20:9/4:3 otomasyonları geçti. |
-| VIS-701–708 | Bekliyor | Cue/snapshot altyapısı mevcut; sessiz/düşük/normal ses matrisi ve 8–12 dakikalık zaman damgalı tam oyun review kanıtı henüz üretilmedi. |
+| VIS-701–705 | Tamamlandı | 22 cue timing/priority/concurrency sözleşmesi, altı müzik geçişi, kritik ducking ve ekonomi feedback'i entegre edildi; EditMode 64/64, PlayMode 12/12 ve iOS Simulator stres koşusu geçti. |
+| VIS-706 | Bekliyor | Low profilde kapanabilen özgün rüzgâr/yaprak/kristal environment SFX katmanı henüz üretilmedi. |
+| VIS-707/708 | İncelemede | Silent/Low/Normal matrisi ile 480 saniyelik, 40 savaş çevrimli otomatik koşu geçti. İnsan speaker/headphone dinleme, audio-only/visual-only değerlendirme ve final video imzası açık. |
 | VIS-801–806 | İncelemede | Kalite profilleri, shadow/additional-light limitleri, texture kuralları ve VFX concurrency ayarları mevcut; fiziksel ölçümle son ayar bekliyor. |
 | VIS-807 | Bloke | Simulator dört senaryoda 60 FPS ve 90 saniye soak geçti; fiziksel iPhone Profiler kaydı DDI sürüm engeline takıldı. |
 | VIS-808/809 | Tamamlandı | Aynı Simulator build'iyle 16:9, 20:9 ve 4:3 safe-area/input görüntüleri görsel olarak kontrol edildi. |
-| VIS-810/811 | Tamamlandı | Güncel baseline EditMode 62/62, PlayMode 11/11. |
+| VIS-810/811 | Tamamlandı | Güncel baseline EditMode 64/64, PlayMode 12/12. |
 | VIS-812 | Tamamlandı | Dokuz durumluk final set `vis812-final-20260825-210559` damgasıyla aynı kabul build'inden üretildi; geçiş anına denk gelen önceki setler reddedildi. |
 | VIS-813/814 | İncelemede | Renk/gri ton/64 px actor, boss fazı ve building okunabilirlik kanıtları mevcut; gerçek assistive-tech ve bağımsız insan kör tanıma imzası yok. |
 | VIS-815 | Tamamlandı | Araştırma, TODO, teslim indeksi, metrik JSON'u ve kapanış handoff'u aynı 25 Ağustos sonuçlarıyla güncellendi. |
-| VIS-816 | Bloke | Fiziksel cihaz Profiler + Frame Debugger, 60 actor stres ve 8–12 dakikalık ses-görsel review tamamlanmadan release gate kapatılmayacak. |
+| VIS-816 | Bloke | 480 saniyelik otomatik ses-görsel koşu geçti; fiziksel cihaz Profiler + Frame Debugger, 60 actor stres ve insan speaker/headphone polish imzası tamamlanmadan release gate kapatılmayacak. |
 
 ## Kullanım Kuralları
 
@@ -557,14 +559,16 @@ VIS-613 durum notu: `Assets/Tests/PlayMode/GreyboxSceneTests.cs` içindeki `Prod
 
 | ID | Kategori | Öncelik | Durum | Görev | Teslimat | Bağımlılık | Kabul kriteri |
 |---|---|---:|---|---|---|---|---|
-| VIS-701 | Audio/VFX | P1 | Bekliyor | 22 presentation cue'yu yeni animasyon/VFX impact anlarıyla eşle | Cue timing tablosu ve uygulama | VIS-501–VIS-512 | Görülen impact ile duyulan transient aynı frame penceresinde |
-| VIS-702 | Audio | P1 | Bekliyor | Aynı anda çalan savaş sesleri için concurrency/priority ayarla | Mixer/cue concurrency presetleri | VIS-701 | Yoğun savaşta hero/boss/tehlike sesleri kaybolmuyor |
-| VIS-703 | Music | P1 | Bekliyor | Preparation, Combat, Intense, Boss, Victory, Defeat geçişlerini görsel state'lerle hizala | Snapshot/transition timing seti | VIS-605, VIS-701 | Görsel state ve müzik değişimi tutarlı; sert pop yok |
-| VIS-704 | Polish | P1 | Bekliyor | İnşa/upgrade/sell ses ve VFX'lerini ekonomi işlemiyle hizala | Üç eylem için tamamlanmış feedback | VIS-341–VIS-343, VIS-701 | İşlem başarısızsa başarı feedback'i oynatılmaz |
-| VIS-705 | Polish | P1 | Bekliyor | Ability, boss phase ve victory için önem hiyerarşisi uygula | Ducking/priority ve VFX priority ayarı | VIS-512, VIS-608, VIS-702, VIS-703 | Kritik olaylar kalabalık feedback içinde seçilir |
+| VIS-701 | Audio/VFX | P1 | Tamamlandı | 22 presentation cue'yu yeni animasyon/VFX impact anlarıyla eşle | Cue timing tablosu ve uygulama | VIS-501–VIS-512 | Görülen impact ile duyulan transient aynı frame penceresinde |
+| VIS-702 | Audio | P1 | Tamamlandı | Aynı anda çalan savaş sesleri için concurrency/priority ayarla | Mixer/cue concurrency presetleri | VIS-701 | Yoğun savaşta hero/boss/tehlike sesleri kaybolmuyor |
+| VIS-703 | Music | P1 | Tamamlandı | Preparation, Combat, Intense, Boss, Victory, Defeat geçişlerini görsel state'lerle hizala | Snapshot/transition timing seti | VIS-605, VIS-701 | Görsel state ve müzik değişimi tutarlı; sert pop yok |
+| VIS-704 | Polish | P1 | Tamamlandı | İnşa/upgrade/sell ses ve VFX'lerini ekonomi işlemiyle hizala | Üç eylem için tamamlanmış feedback | VIS-341–VIS-343, VIS-701 | İşlem başarısızsa başarı feedback'i oynatılmaz |
+| VIS-705 | Polish | P1 | Tamamlandı | Ability, boss phase ve victory için önem hiyerarşisi uygula | Ducking/priority ve VFX priority ayarı | VIS-512, VIS-608, VIS-702, VIS-703 | Kritik olaylar kalabalık feedback içinde seçilir |
 | VIS-706 | Polish | P2 | Bekliyor | Küçük ambient motion ve environment SFX ekle | Bayrak, yaprak, kristal, rüzgâr polish seti | VIS-411, VIS-703 | Low profilde kapanabilir; oynanış sinyalini maskelemez |
-| VIS-707 | Polish QA | P1 | Bekliyor | Sessiz, düşük ses ve normal ses senaryolarını doğrula | Ayar matrisi ve video | VIS-701–VIS-706 | Oyun yalnız görselle ve yalnız ses açıkken temel durumları aktarır |
-| VIS-708 | Polish QA | P1 | Bekliyor | 8–12 dakikalık tam bölüm polish review yap | Zaman damgalı issue listesi ve final video | VIS-701–VIS-707 | Tekrarlayan rahatsız edici efekt, senkron kayması veya state kopması yok |
+| VIS-707 | Polish QA | P1 | İncelemede | Sessiz, düşük ses ve normal ses senaryolarını doğrula | Ayar matrisi ve video | VIS-701–VIS-706 | Oyun yalnız görselle ve yalnız ses açıkken temel durumları aktarır |
+| VIS-708 | Polish QA | P1 | İncelemede | 8–12 dakikalık tam bölüm polish review yap | Zaman damgalı issue listesi ve final video | VIS-701–VIS-707 | Tekrarlayan rahatsız edici efekt, senkron kayması veya state kopması yok |
+
+VIS-701–708 durum notu: `docs/VIS700_AUDIO_VISUAL_POLISH_ACCEPTANCE_2026-08-25.md` 22 cue için timing, concurrency group, importance ve ducking sözleşmesini kaydeder. `PresentationAudioPolicy` ile `DefenderAudioController` kritik Hero/Boss/Result seslerini düşük öncelikli savaş seslerinden korur; on SFX voice üst sınırı ve Silent/Low/Normal review gain'leri uygulanır. iPhone 17 Pro Simulator koşusu 480 saniye boyunca 40/40 gerçek savaş çevrimi, 22/22 cue, 6/6 müzik state'i, 3/3 ses seviyesi ve normal→pause→normal snapshot geçişini geçti; maksimum aktif voice 10/10 oldu. Seçilmiş çıktı `docs/evidence/runtime/audio-visual-acceptance-20260825.txt` dosyasındadır. VIS-701–705 tamamlandı; özgün environment ambience VIS-706 altında, insan speaker/headphone + audio-only/visual-only video imzası VIS-707/708 altında açık kalır.
 
 ## VIS-800 — Optimizasyon, Test ve Kabul
 
@@ -579,8 +583,8 @@ VIS-613 durum notu: `Assets/Tests/PlayMode/GreyboxSceneTests.cs` içindeki `Prod
 | VIS-807 | Performance | P0 | Yapılıyor | Hazırlık, normal, yoğun ve boss senaryolarını iPhone 13 sınıfında ölç | Final Profiler capture seti | VIS-802–VIS-806 | Normal savaş 60 FPS hedefinde; boss kalıcı 30 FPS altına düşmez |
 | VIS-808 | Performance | P1 | Tamamlandı | iPhone 17 Pro simülatöründe 20:9 ekran ve input doğrulaması yap | Screenshot/video ve test sonucu | VIS-612, VIS-613, VIS-807 | Safe area, kamera ve bütün kontroller geçer |
 | VIS-809 | Compatibility | P1 | Tamamlandı | 16:9 telefon ve 4:3 tablet layout/kamera doğrulaması yap | Oran başına kabul görüntüsü | VIS-612, VIS-807 | Rota ve sekiz slot görünür; HUD overlap yok |
-| VIS-810 | Catalog QA | P0 | Tamamlandı | Presentation catalog validation ve provenance testlerini çalıştır | EditMode test sonucu | VIS-208, VIS-304, VIS-403 | Güncel entegre EditMode paketi 62/62 geçti |
-| VIS-811 | Gameplay QA | P0 | Tamamlandı | Build, upgrade, sell, ability, pause, victory ve defeat PlayMode testlerini çalıştır | PlayMode raporu | VIS-345, VIS-613, VIS-705 | Güncel entegre PlayMode paketi 11/11 geçti |
+| VIS-810 | Catalog QA | P0 | Tamamlandı | Presentation catalog validation ve provenance testlerini çalıştır | EditMode test sonucu | VIS-208, VIS-304, VIS-403 | Güncel entegre EditMode paketi 64/64 geçti |
+| VIS-811 | Gameplay QA | P0 | Tamamlandı | Build, upgrade, sell, ability, pause, victory ve defeat PlayMode testlerini çalıştır | PlayMode raporu | VIS-345, VIS-613, VIS-705 | Güncel entegre PlayMode paketi 12/12 geçti |
 | VIS-812 | Visual QA | P0 | Tamamlandı | Hazırlık, yoğun dalga, boss 1/2/3, ability, victory ve defeat final evidence setini üret | Etiketli final PNG/video seti | VIS-807–VIS-811 | Dokuz durum `vis812-final-20260825-210559` damgasıyla aynı build'den alındı |
 | VIS-813 | Accessibility | P0 | İncelemede | Actor/yapı/HUD grayscale, contrast, shape ve touch-target final denetimini yap | Checklist ve başarısızlık kanıtları/düzeltmeleri | VIS-290, VIS-344, VIS-611, VIS-812 | Kritik bilgi yalnız renge bağlı değil; bütün P0 maddeleri geçer |
 | VIS-814 | Comparison | P0 | İncelemede | Baseline ile final görüntüleri aynı kadrajda karşılaştır | Before/after contact sheet | VIS-008, VIS-812 | Siluet, yapı seviyesi, çevre hiyerarşisi ve HUD state farkı görünür |
@@ -595,17 +599,17 @@ VIS-806 durum notu: `DefenderVfxPool.InitializeForCurrentQuality()` artık Low/M
 
 VIS-807 durum notu: `DeviceAcceptanceProbe` artık preparation/normal/dense/boss senaryo etiketlerini `[DC_DEVICE_SCENARIO]` ve `[DC_DEVICE_METRICS]` satırlarıyla raporlar. `tools/run_ios_performance_acceptance.sh` iOS Simulator Development build'ini çalıştırıp `Builds/ios-performance-acceptance.log` içinde dört senaryo metriği üretti ve `[DC_PERFORMANCE_ACCEPTANCE_PASS] scenarios=preparation/normal/dense/boss metrics=true` satırıyla geçti. Simülatör proxy sonucu `docs/VIS807_PERFORMANCE_ACCEPTANCE_SIMULATOR_2026-08-17.md` dosyasındadır. Final iPhone 13 sınıfı fiziksel cihaz Profiler capture seti hâlâ açık olduğu için madde Yapılıyor durumunda tutulur.
 
-VIS-810 durum notu: 2026-08-25 güncel entegre EditMode paketi `62/62 geçti`. Bu paket production catalog completeness, visual-development catalog gate, actor animator, rig/socket, HUD/accessibility, VFX contract ve kalite profil regresyonlarını aynı kapıda doğrular. Ham XML `TestResults/` altında tutulur ve commitlenmez.
+VIS-810 durum notu: 2026-08-25 güncel entegre EditMode paketi `64/64 geçti`. Bu paket production catalog completeness, visual-development catalog gate, actor animator, rig/socket, HUD/accessibility, VFX contract, audio policy ve kalite profil regresyonlarını aynı kapıda doğrular. Ham XML `TestResults/` altında tutulur ve commitlenmez.
 
-VIS-811 durum notu: 2026-08-25 güncel entegre PlayMode paketi `11/11 geçti`: build/upgrade/sell, ability, pause, HUD input, production scene/economy/presentation sinyalleri, victory/defeat sonuç fazları ve sonuç açıklaması ile yeniden dene eyleminin çakışmaması doğrulandı. Ham XML `TestResults/` altında tutulur ve commitlenmez.
+VIS-811 durum notu: 2026-08-25 güncel entegre PlayMode paketi `12/12 geçti`: build/upgrade/sell, ability, pause, HUD input, production scene/economy/presentation sinyalleri, audio review/music/voice-budget sözleşmesi, victory/defeat sonuç fazları ve sonuç açıklaması ile yeniden dene eyleminin çakışmaması doğrulandı. Ham XML `TestResults/` altında tutulur ve commitlenmez.
 
 VIS-812 durum notu: `tools/run_ios_vis812_capture.sh` tek kabul edilen iOS Simulator build/profile üzerinden etiketli final görsel setini üretir. `docs/VIS812_FINAL_VISUAL_EVIDENCE_SIMULATOR_2026-08-17.md` accepted `vis812-final-20260825-210559` setini bağlar: preparation, ability, normal, dense, boss1, boss2, boss3, victory ve defeat için 2622x1206 landscape PNG dosyaları üretildi. Geçiş anı veya sonuç metni çakışması içeren önceki denemeler kabul edilmedi. `Builds/ios-vis812-final-evidence.log` `[DC_VIS812_CAPTURE_PASS]`, `Builds/ios-vis812-final-evidence-defeat.log` `[DC_VIS812_CAPTURE_DEFEAT_PASS]` sonucunu verir. Bu Simulator görsel acceptance kanıtıdır; fiziksel cihaz Profiler ve Frame Debugger kapanışı VIS-807/VIS-006/VIS-007 altında açık kalır.
 
 VIS-813/VIS-814 durum notu: `tools/art_pipeline/render_vis813_814_evidence.py` accepted VIS-812 capture setinden `docs/evidence/visual-development/vis813-accessibility-grayscale-contact-sheet-2026-08-17.png`, `docs/evidence/visual-development/vis814-before-after-contact-sheet-2026-08-17.png` ve `docs/evidence/visual-development/vis813-814-visual-audit-report-2026-08-17.json` çıktılarını üretti. `docs/VIS813_814_ACCESSIBILITY_COMPARISON_2026-08-17.md` grayscale readability ve before/after kararını kaydeder. Tüm accepted final capture'lar 1334x750 landscape; route, outpost placement, HUD state labels, boss/result overlays ve ana siluetler grayscale sheet'te ayrışıyor. Gerçek VoiceOver/assistive-tech ve fiziksel cihaz review VIS-807/final accessibility kapanışı altında açık kalır.
 
-VIS-815 durum notu: `docs/VIS815_DELIVERY_EVIDENCE_INDEX_2026-08-17.md`, `docs/evidence/visual-development/closeout-metrics-2026-08-25.json` ve `docs/VISUAL_SLICE_CLOSEOUT_HANDOFF_2026-08-25.md` art bible, provenance, catalog, güncel 62/62 + 11/11 QA, Simulator visual evidence ve reproduction commands için güncel teslim indeksini oluşturur. Bu indeks, başka bir geliştiricinin VIS-810–VIS-814 kanıtlarını yeniden koşturması ve incelemesi için ana handoff noktasıdır.
+VIS-815 durum notu: `docs/VIS815_DELIVERY_EVIDENCE_INDEX_2026-08-17.md`, `docs/evidence/visual-development/closeout-metrics-2026-08-25.json` ve `docs/VISUAL_SLICE_CLOSEOUT_HANDOFF_2026-08-25.md` art bible, provenance, catalog, güncel 64/64 + 12/12 QA, Simulator visual/audio evidence ve reproduction commands için güncel teslim indeksini oluşturur. Bu indeks, başka bir geliştiricinin VIS-701–VIS-708 ve VIS-810–VIS-814 kanıtlarını yeniden koşturması ve incelemesi için ana handoff noktasıdır.
 
-VIS-816 durum notu: `docs/VIS816_ART_VERTICAL_SLICE_RELEASE_GATE_2026-08-17.md` release gate durumunu açıkça `Not closed` olarak kaydeder. Simulator visual acceptance, EditMode 62/62, PlayMode 11/11 ve VIS-812/VIS-815 kanıtları mevcut; ancak iPhone 13 sınıfı fiziksel cihaz Profiler capture'ı, Frame/Rendering Debugger ve 8–12 dakikalık ses-görsel review eksik olduğu için VIS-816 `Bloke` tutulur.
+VIS-816 durum notu: `docs/VIS816_ART_VERTICAL_SLICE_RELEASE_GATE_2026-08-17.md` release gate durumunu açıkça `Not closed` olarak kaydeder. Simulator visual acceptance, EditMode 64/64, PlayMode 12/12, 480 saniyelik otomatik ses-görsel stres ve VIS-812/VIS-815 kanıtları mevcut; ancak iPhone 13 sınıfı fiziksel cihaz Profiler capture'ı, Frame/Rendering Debugger ve insan speaker/headphone polish imzası eksik olduğu için VIS-816 `Bloke` tutulur.
 
 ## Definition of Done
 

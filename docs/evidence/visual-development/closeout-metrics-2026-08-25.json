@@ -5,8 +5,8 @@
   "accepted_ratios": ["16:9", "20:9", "4:3"],
   "unity": {
     "version": "6000.4.1f1",
-    "editmode": { "passed": 62, "total": 62 },
-    "playmode": { "passed": 11, "total": 11 }
+    "editmode": { "passed": 64, "total": 64 },
+    "playmode": { "passed": 12, "total": 12 }
   },
   "actors": {
     "expected": 8,
@@ -39,6 +39,17 @@
     "p95_frame_ms": 17.1,
     "memory_growth_percent": 8.9,
     "low_memory_warning": false
+  },
+  "simulator_audio_visual": {
+    "duration_seconds": 480,
+    "presentation_cues": { "passed": 22, "total": 22 },
+    "music_states": { "passed": 6, "total": 6 },
+    "review_levels": { "passed": 3, "total": 3 },
+    "combat_cycles": { "passed": 40, "total": 40 },
+    "pause_snapshot_passed": true,
+    "maximum_active_sfx_voices": 10,
+    "voice_budget": 10,
+    "human_listening_signoff": false
   },
   "physical_device": {
     "model": "iPhone 13 (iPhone14,5)",
