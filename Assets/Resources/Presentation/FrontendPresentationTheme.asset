@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b71ac4eff184040dbbc0d73eecc0fa31, type: 3}
+  m_Name: FrontendPresentationTheme
+  m_EditorClassIdentifier: DefenderChronicles.Runtime::DefenderChronicles.Presentation.FrontendPresentationTheme
+  night: {r: 0.024, g: 0.063, b: 0.125, a: 1}
+  nightDeep: {r: 0.008, g: 0.02, b: 0.04, a: 1}
+  defenderBlue: {r: 0.031, g: 0.216, b: 0.522, a: 1}
+  moonEdge: {r: 0.608, g: 0.796, b: 1, a: 1}
+  commandGold: {r: 0.949, g: 0.722, b: 0.294, a: 1}
+  roadEarth: {r: 0.545, g: 0.416, b: 0.29, a: 1}
+  enemyRed: {r: 0.698, g: 0.227, b: 0.18, a: 1}
+  textPrimary: {r: 0.957, g: 0.98, b: 1, a: 1}
+  textMuted: {r: 0.647, g: 0.733, b: 0.8, a: 1}
+  panel: {r: 0.018, g: 0.043, b: 0.078, a: 0.94}
+  panelRaised: {r: 0.035, g: 0.082, b: 0.133, a: 0.96}
+  fadeDuration: 0.18
+  slideDuration: 0.22
+  reducedMotionDuration: 0.1
+  buttonPressDuration: 0.09
+  brandLogo: {fileID: 21300000, guid: ef9d0b865ce9e451f99b079cf51eb724, type: 3}
+  brandMark: {fileID: 21300000, guid: 3ec2a18e80afa4afeab5eb3e2c55b308, type: 3}
+  welcomeBackdrop: {fileID: 2800000, guid: 7eeb9a190012345fba224baf3de34e86, type: 3}
+  warTableBackdrop: {fileID: 2800000, guid: 3779ccba394a34abaaecfff13255ccbc, type: 3}
+  warTableShader: {fileID: 4800000, guid: 650dd9526735d5b46b79224bc6e94025, type: 3}
+  panelSprite: {fileID: 21300000, guid: a4399d56b6e44443eb15a46596281f93, type: 3}
+  buttonSprite: {fileID: 21300000, guid: 137f0411915e447e9aa161139ddaaf83, type: 3}
+  menuAmbience: {fileID: 8300000, guid: e4190316a2dbe460b90298d32398a156, type: 3}
+  mapOpen: {fileID: 8300000, guid: c945def296b4f4c76ac5eaaf825d31df, type: 3}
+  levelSelect: {fileID: 8300000, guid: c945def296b4f4c76ac5eaaf825d31df, type: 3}
+  starReveal: {fileID: 8300000, guid: 8da7ff52043c2422eae2829a4e246311, type: 3}
+  privacyPolicyUrl: 
+  termsOfServiceUrl: 

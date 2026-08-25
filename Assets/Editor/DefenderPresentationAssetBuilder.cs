@@ -27,7 +27,76 @@ namespace DefenderChronicles.Editor
         private const string AdventurersRoot = "Assets/ThirdParty/KayKit/Adventurers/Models";
         private const string MedievalRoot = "Assets/ThirdParty/KayKit/MedievalHexagon/Models";
         private const string UiFramePath = "Assets/ThirdParty/Kenney/FantasyUiBorders/HudFrameBorder.png";
+        private const string FrontendUiRoot = "Assets/Art/UI/Frontend";
+        private const string BrandLogoPath =
+            "Assets/Resources/Presentation/Brand/DefenderChronicles-Logo-v2.png";
+        private const string BrandMarkPath =
+            "Assets/Resources/Presentation/Brand/DefenderChronicles-Mark-v2.png";
+        private const string BrandAppIconPath =
+            "Assets/Art/AppIcon/BrandV2/DefenderChronicles-AppIcon-v2-1024.png";
+        private const string BrandLaunchPath = "Assets/Art/Brand/Launch/GreenwatchLaunch-v2.png";
         private static Sprite activeUiFrameSprite;
+
+        [MenuItem("Defender Chronicles/Build Frontend Presentation Assets")]
+        public static void BuildFrontendPresentationAssets()
+        {
+            Directory.CreateDirectory(GeneratedRoot);
+            Directory.CreateDirectory(ResourceRoot);
+            AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
+            EnsureTmpResources();
+            ConfigureBrandImports();
+
+            TMP_FontAsset bodyFont = CreateFontAsset("Assets/Art/Fonts/NotoSans-Regular.ttf", "NotoSans-DC");
+            TMP_FontAsset titleFont = CreateFontAsset("Assets/Art/Fonts/Cinzel-SemiBold.ttf", "Cinzel-SemiBold-DC");
+            FrontendPresentationTheme frontendTheme = CreateFrontendTheme();
+            (frontendTheme.panelSprite, frontendTheme.buttonSprite) = CreateFrontendUiSprites();
+            string catalogPath = $"{ResourceRoot}/DefenderPresentationCatalog.asset";
+            DefenderPresentationCatalog catalog = AssetDatabase.LoadAssetAtPath<DefenderPresentationCatalog>(catalogPath);
+            if (catalog == null)
+                throw new InvalidOperationException($"Presentation catalog was not found at {catalogPath}.");
+
+            catalog.bodyFont = bodyFont;
+            catalog.titleFont = titleFont;
+            catalog.frontendTheme = frontendTheme;
+            var entries = (catalog.provenance ?? Array.Empty<AssetProvenanceEntry>())
+                .Where(entry => entry != null && entry.assetName != "Cinzel SemiBold" &&
+                                entry.assetName != "Greenwatch welcome artwork" &&
+                                entry.assetName != "Greenwatch war table artwork" &&
+                                entry.assetName != "Medieval frontend panel" &&
+                                entry.assetName != "Medieval frontend button" &&
+                                entry.assetName != "Defender Chronicles V2 logo" &&
+                                entry.assetName != "Defender Chronicles V2 brand mark" &&
+                                entry.assetName != "Defender Chronicles V2 application icon" &&
+                                entry.assetName != "Defender Chronicles V2 launch artwork")
+                .ToList();
+            entries.Add(Provenance("Cinzel SemiBold", "Assets/Art/Fonts/Cinzel-SemiBold.ttf",
+                AssetLicenseKind.OpenFontLicense, "https://github.com/google/fonts/tree/main/ofl/cinzel", "2026-08-25"));
+            entries.Add(Provenance("Greenwatch welcome artwork",
+                "Assets/Resources/Presentation/Frontend/GreenwatchWelcome.png", AssetLicenseKind.OpenAIGenerated,
+                "OpenAI image generation / this project session", "2026-08-25"));
+            entries.Add(Provenance("Greenwatch war table artwork",
+                "Assets/Resources/Presentation/Frontend/GreenwatchWarTable.png", AssetLicenseKind.OpenAIGenerated,
+                "OpenAI image generation / this project session", "2026-08-25"));
+            entries.Add(Provenance("Medieval frontend panel", $"{FrontendUiRoot}/MedievalPanel.png",
+                AssetLicenseKind.Original, "Procedurally authored for Defender Chronicles", "2026-08-25"));
+            entries.Add(Provenance("Medieval frontend button", $"{FrontendUiRoot}/MedievalButton.png",
+                AssetLicenseKind.Original, "Procedurally authored for Defender Chronicles", "2026-08-25"));
+            entries.Add(Provenance("Defender Chronicles V2 logo", BrandLogoPath, AssetLicenseKind.Original,
+                "Defender Chronicles vector brand system", "2026-08-25"));
+            entries.Add(Provenance("Defender Chronicles V2 brand mark", BrandMarkPath, AssetLicenseKind.Original,
+                "Defender Chronicles vector brand system", "2026-08-25"));
+            entries.Add(Provenance("Defender Chronicles V2 application icon", BrandAppIconPath,
+                AssetLicenseKind.Original, "Derived from the Defender Chronicles V2 brand mark", "2026-08-25"));
+            entries.Add(Provenance("Defender Chronicles V2 launch artwork", BrandLaunchPath,
+                AssetLicenseKind.Original, "Greenwatch artwork with the Defender Chronicles V2 logo", "2026-08-25"));
+            catalog.provenance = entries.ToArray();
+
+            EditorUtility.SetDirty(frontendTheme);
+            EditorUtility.SetDirty(catalog);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
+            Debug.Log("[DC_FRONTEND_ASSETS] Frontend theme, artwork and Cinzel title font are ready.");
+        }
 
         [MenuItem("Defender Chronicles/Build Artistic Presentation Assets")]
         public static void BuildPresentationAssets()
@@ -42,8 +111,74 @@ namespace DefenderChronicles.Editor
             Sprite panelSprite = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/UI/DefenderHudPanel.png");
             Sprite uiFrameSprite = AssetDatabase.LoadAssetAtPath<Sprite>(UiFramePath);
             TMP_FontAsset bodyFont = CreateFontAsset("Assets/Art/Fonts/NotoSans-Regular.ttf", "NotoSans-DC");
-            TMP_FontAsset titleFont = CreateFontAsset("Assets/Art/Fonts/NotoSerif-SemiBold.ttf", "NotoSerif-DC");
+            TMP_FontAsset titleFont = CreateFontAsset("Assets/Art/Fonts/Cinzel-SemiBold.ttf", "Cinzel-SemiBold-DC");
+            FrontendPresentationTheme frontendTheme = CreateFrontendTheme();
             (RuntimeAnimatorController actorAnimator, AnimationClip[] actorClips) = CreateActorAnimator();
+            var actorAnimatorController = actorAnimator as AnimatorController;
+            if (actorAnimatorController == null)
+                throw new InvalidOperationException("Shared actor animator was not created as an AnimatorController.");
+            RuntimeAnimatorController knightAnimator = CreateRoleAnimatorOverride(
+                PresentationActorKind.Knight,
+                actorAnimatorController,
+                PresentationActorAnimationContract.IdleState,
+                PresentationActorAnimationContract.MoveState,
+                PresentationActorAnimationContract.AttackState,
+                PresentationActorAnimationContract.HitState,
+                PresentationActorAnimationContract.DefeatState,
+                PresentationActorAnimationContract.AbilityState);
+            RuntimeAnimatorController guardAnimator = CreateRoleAnimatorOverride(
+                PresentationActorKind.Guard,
+                actorAnimatorController,
+                PresentationActorAnimationContract.IdleState,
+                PresentationActorAnimationContract.MoveState,
+                PresentationActorAnimationContract.AttackState,
+                PresentationActorAnimationContract.HitState,
+                PresentationActorAnimationContract.DefeatState,
+                PresentationActorAnimationContract.AbilityState);
+            RuntimeAnimatorController raiderAnimator = CreateRoleAnimatorOverride(
+                PresentationActorKind.Raider,
+                actorAnimatorController,
+                PresentationActorAnimationContract.IdleState,
+                PresentationActorAnimationContract.MoveState,
+                PresentationActorAnimationContract.AttackState,
+                PresentationActorAnimationContract.HitState,
+                PresentationActorAnimationContract.DefeatState);
+            RuntimeAnimatorController vanguardAnimator = CreateRoleAnimatorOverride(
+                PresentationActorKind.Vanguard,
+                actorAnimatorController,
+                PresentationActorAnimationContract.IdleState,
+                PresentationActorAnimationContract.MoveState,
+                PresentationActorAnimationContract.AttackState,
+                PresentationActorAnimationContract.HitState,
+                PresentationActorAnimationContract.DefeatState,
+                PresentationActorAnimationContract.AbilityState);
+            RuntimeAnimatorController regeneratorAnimator = CreateRoleAnimatorOverride(
+                PresentationActorKind.Regenerator,
+                actorAnimatorController,
+                PresentationActorAnimationContract.IdleState,
+                PresentationActorAnimationContract.MoveState,
+                PresentationActorAnimationContract.AttackState,
+                PresentationActorAnimationContract.HitState,
+                PresentationActorAnimationContract.DefeatState,
+                PresentationActorAnimationContract.AbilityState);
+            RuntimeAnimatorController supportAnimator = CreateRoleAnimatorOverride(
+                PresentationActorKind.Support,
+                actorAnimatorController,
+                PresentationActorAnimationContract.IdleState,
+                PresentationActorAnimationContract.MoveState,
+                PresentationActorAnimationContract.AttackState,
+                PresentationActorAnimationContract.HitState,
+                PresentationActorAnimationContract.DefeatState,
+                PresentationActorAnimationContract.AbilityState);
+            RuntimeAnimatorController siegeAnimator = CreateRoleAnimatorOverride(
+                PresentationActorKind.Siege,
+                actorAnimatorController,
+                PresentationActorAnimationContract.IdleState,
+                PresentationActorAnimationContract.MoveState,
+                PresentationActorAnimationContract.AttackState,
+                PresentationActorAnimationContract.HitState,
+                PresentationActorAnimationContract.DefeatState,
+                PresentationActorAnimationContract.AbilityState);
             UiCopyCatalog copy = CreateCopyCatalog();
             var materials = CreatePaletteMaterials();
             LicensedAtlasMaterialEntry[] licensedMaterials = CreateLicensedAtlasMaterials();
@@ -66,14 +201,14 @@ namespace DefenderChronicles.Editor
             catalog.commandPointPrefab = Model("CommandPoint");
             catalog.actorVisuals = new[]
             {
-                Actor(PresentationActorKind.Knight, LicensedCharacter("KnightLicensed"), 0.74f),
-                Actor(PresentationActorKind.Guard, LicensedCharacter("KnightLicensed"), 0.66f),
-                Actor(PresentationActorKind.Raider, LicensedCharacter("BarbarianLicensed"), 0.64f),
-                Actor(PresentationActorKind.Vanguard, LicensedCharacter("RogueLicensed"), 0.68f),
-                Actor(PresentationActorKind.Regenerator, LicensedCharacter("MageLicensed"), 0.60f),
-                Actor(PresentationActorKind.Support, LicensedCharacter("MageLicensed"), 0.62f),
-                Actor(PresentationActorKind.Siege, "Siege", 0.92f),
-                Actor(PresentationActorKind.Boss, LicensedCharacter("BarbarianLicensed"), 1.02f)
+                Actor(PresentationActorKind.Knight, "Knight", 0.74f, knightAnimator),
+                Actor(PresentationActorKind.Guard, "Guard", 0.66f, guardAnimator),
+                Actor(PresentationActorKind.Raider, "Raider", 0.64f, raiderAnimator),
+                Actor(PresentationActorKind.Vanguard, "Vanguard", 0.68f, vanguardAnimator),
+                Actor(PresentationActorKind.Regenerator, "Regenerator", 0.60f, regeneratorAnimator),
+                Actor(PresentationActorKind.Support, "Support", 0.62f, supportAnimator),
+                Actor(PresentationActorKind.Siege, "Siege", 0.92f, siegeAnimator),
+                Actor(PresentationActorKind.Boss, "Boss", 1.02f)
             };
             catalog.outpostVisuals = new[]
             {
@@ -89,6 +224,7 @@ namespace DefenderChronicles.Editor
             catalog.uiFrameSprite = uiFrameSprite;
             catalog.bodyFont = bodyFont;
             catalog.titleFont = titleFont;
+            catalog.frontendTheme = frontendTheme;
             catalog.uiCopy = copy;
             catalog.goldIcon = Icon("Gold");
             catalog.keepIcon = Icon("Keep");
@@ -133,8 +269,20 @@ namespace DefenderChronicles.Editor
             {
                 Provenance("Noto Sans", "Assets/Art/Fonts/NotoSans-Regular.ttf", AssetLicenseKind.OpenFontLicense,
                     "https://github.com/notofonts/noto-fonts", "2026-08-16"),
-                Provenance("Noto Serif", "Assets/Art/Fonts/NotoSerif-SemiBold.ttf", AssetLicenseKind.OpenFontLicense,
-                    "https://github.com/notofonts/noto-fonts", "2026-08-16"),
+                Provenance("Cinzel SemiBold", "Assets/Art/Fonts/Cinzel-SemiBold.ttf", AssetLicenseKind.OpenFontLicense,
+                    "https://github.com/google/fonts/tree/main/ofl/cinzel", "2026-08-25"),
+                Provenance("Greenwatch welcome artwork", "Assets/Resources/Presentation/Frontend/GreenwatchWelcome.png",
+                    AssetLicenseKind.OpenAIGenerated, "OpenAI image generation / this project session", "2026-08-25"),
+                Provenance("Greenwatch war table artwork", "Assets/Resources/Presentation/Frontend/GreenwatchWarTable.png",
+                    AssetLicenseKind.OpenAIGenerated, "OpenAI image generation / this project session", "2026-08-25"),
+                Provenance("Defender Chronicles V2 logo", BrandLogoPath, AssetLicenseKind.Original,
+                    "Defender Chronicles vector brand system", "2026-08-25"),
+                Provenance("Defender Chronicles V2 brand mark", BrandMarkPath, AssetLicenseKind.Original,
+                    "Defender Chronicles vector brand system", "2026-08-25"),
+                Provenance("Defender Chronicles V2 application icon", BrandAppIconPath, AssetLicenseKind.Original,
+                    "Derived from the Defender Chronicles V2 brand mark", "2026-08-25"),
+                Provenance("Defender Chronicles V2 launch artwork", BrandLaunchPath, AssetLicenseKind.Original,
+                    "Greenwatch artwork with the Defender Chronicles V2 logo", "2026-08-25"),
                 Provenance("HUD panel", "Assets/Art/UI/DefenderHudPanel.png", AssetLicenseKind.OpenAIGenerated,
                     "OpenAI image generation / this project session", "2026-08-16"),
                 Provenance("HUD icons", "Assets/Art/UI/DefenderIconAtlas.png", AssetLicenseKind.OpenAIGenerated,
@@ -170,6 +318,15 @@ namespace DefenderChronicles.Editor
                 throw new InvalidOperationException("Presentation asset build is incomplete:\n- " + string.Join("\n- ", errors));
             Debug.Log($"[DC_ART_ASSETS_READY] Artistic presentation catalog built with {catalog.actorVisuals.Length} actors, " +
                       $"{catalog.outpostVisuals.Length} outposts and {catalog.audioCues.Length} audio cues.");
+        }
+
+        [MenuItem("Defender Chronicles/Apply Mobile Texture Import Profile")]
+        public static void ApplyMobileTextureImportProfile()
+        {
+            ConfigureImports();
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
+            Debug.Log("Defender Chronicles mobile texture import profile applied.");
         }
 
         public static void LogPresentationBounds()
@@ -263,52 +420,37 @@ namespace DefenderChronicles.Editor
 
         private static void ConfigureImports()
         {
-            var panel = AssetImporter.GetAtPath("Assets/Art/UI/DefenderHudPanel.png") as TextureImporter;
-            if (panel != null)
-            {
-                panel.textureType = TextureImporterType.Sprite;
-                panel.spriteImportMode = SpriteImportMode.Single;
-                panel.spriteBorder = new Vector4(128, 128, 128, 128);
-                panel.maxTextureSize = 1024;
-                panel.textureCompression = TextureImporterCompression.Compressed;
-                panel.mipmapEnabled = false;
-                panel.SaveAndReimport();
-            }
-
-            if (AssetImporter.GetAtPath(UiFramePath) is TextureImporter frame)
-            {
-                frame.textureType = TextureImporterType.Sprite;
-                frame.spriteImportMode = SpriteImportMode.Single;
-                frame.spriteBorder = new Vector4(12, 12, 12, 12);
-                frame.maxTextureSize = 64;
-                frame.textureCompression = TextureImporterCompression.Uncompressed;
-                frame.filterMode = FilterMode.Bilinear;
-                frame.mipmapEnabled = false;
-                frame.SaveAndReimport();
-            }
+            ConfigureTextureImport("Assets/Art/UI/DefenderHudPanel.png", TextureImporterType.Sprite,
+                1024, false, TextureImporterCompression.Compressed, TextureImporterFormat.ASTC_4x4,
+                new Vector4(128, 128, 128, 128));
+            ConfigureTextureImport(UiFramePath, TextureImporterType.Sprite, 64, false,
+                TextureImporterCompression.Uncompressed, TextureImporterFormat.RGBA32,
+                new Vector4(12, 12, 12, 12));
+            ConfigureTextureImport("Assets/Art/UI/DefenderIconAtlas.png", TextureImporterType.Sprite,
+                512, false, TextureImporterCompression.Compressed, TextureImporterFormat.ASTC_4x4);
+            ConfigureTextureImport("Assets/Art/White32.png", TextureImporterType.Default,
+                32, false, TextureImporterCompression.Uncompressed, TextureImporterFormat.RGBA32);
+            ConfigureTextureImport("Assets/Art/AppIcon/DefenderChronicles-AppIcon-1024.png",
+                TextureImporterType.Default, 1024, false, TextureImporterCompression.CompressedHQ,
+                TextureImporterFormat.ASTC_4x4);
+            ConfigureBrandImports();
 
             foreach (string path in Directory.GetFiles("Assets/ThirdParty/KayKit", "*.png", SearchOption.AllDirectories))
             {
                 string assetPath = path.Replace('\\', '/');
-                if (AssetImporter.GetAtPath(assetPath) is not TextureImporter atlas) continue;
-                atlas.textureType = TextureImporterType.Default;
-                atlas.sRGBTexture = true;
-                atlas.mipmapEnabled = true;
-                atlas.maxTextureSize = assetPath.Contains("MedievalHexagon") ? 1024 : 512;
-                atlas.textureCompression = TextureImporterCompression.CompressedHQ;
-                atlas.SaveAndReimport();
+                int maxSize = assetPath.Contains("MedievalHexagon") ? 1024 : 512;
+                TextureImporterFormat iosFormat = assetPath.Contains("MedievalHexagon")
+                    ? TextureImporterFormat.ASTC_8x8
+                    : TextureImporterFormat.ASTC_6x6;
+                ConfigureTextureImport(assetPath, TextureImporterType.Default, maxSize, true,
+                    TextureImporterCompression.CompressedHQ, iosFormat);
             }
 
             foreach (string path in Directory.GetFiles("Assets/Art/UI", "Icon*.png", SearchOption.TopDirectoryOnly))
             {
                 string assetPath = path.Replace('\\', '/');
-                if (AssetImporter.GetAtPath(assetPath) is not TextureImporter icon) continue;
-                icon.textureType = TextureImporterType.Sprite;
-                icon.spriteImportMode = SpriteImportMode.Single;
-                icon.mipmapEnabled = false;
-                icon.maxTextureSize = 256;
-                icon.textureCompression = TextureImporterCompression.Compressed;
-                icon.SaveAndReimport();
+                ConfigureTextureImport(assetPath, TextureImporterType.Sprite, 256, false,
+                    TextureImporterCompression.Compressed, TextureImporterFormat.ASTC_4x4);
             }
 
             foreach (string path in Directory.GetFiles("Assets/Audio/Presentation", "*.wav", SearchOption.AllDirectories))
@@ -328,6 +470,52 @@ namespace DefenderChronicles.Editor
             }
         }
 
+        private static void ConfigureTextureImport(string assetPath, TextureImporterType type, int maxTextureSize,
+            bool mipmapEnabled, TextureImporterCompression compression, TextureImporterFormat iosFormat,
+            Vector4? spriteBorder = null)
+        {
+            if (AssetImporter.GetAtPath(assetPath) is not TextureImporter importer) return;
+            importer.textureType = type;
+            importer.sRGBTexture = true;
+            importer.mipmapEnabled = mipmapEnabled;
+            importer.maxTextureSize = maxTextureSize;
+            importer.textureCompression = compression;
+            importer.filterMode = FilterMode.Bilinear;
+            if (type == TextureImporterType.Sprite)
+            {
+                importer.spriteImportMode = SpriteImportMode.Single;
+                if (spriteBorder.HasValue)
+                    importer.spriteBorder = spriteBorder.Value;
+            }
+
+            TextureImporterPlatformSettings ios = importer.GetPlatformTextureSettings("iPhone");
+            ios.overridden = true;
+            ios.maxTextureSize = maxTextureSize;
+            ios.format = iosFormat;
+            ios.compressionQuality = 50;
+            importer.SetPlatformTextureSettings(ios);
+
+            TextureImporterPlatformSettings android = importer.GetPlatformTextureSettings("Android");
+            android.overridden = true;
+            android.maxTextureSize = maxTextureSize;
+            android.format = iosFormat;
+            android.compressionQuality = 50;
+            importer.SetPlatformTextureSettings(android);
+            importer.SaveAndReimport();
+        }
+
+        private static void ConfigureBrandImports()
+        {
+            ConfigureTextureImport(BrandLogoPath, TextureImporterType.Sprite, 1024, false,
+                TextureImporterCompression.Compressed, TextureImporterFormat.ASTC_4x4);
+            ConfigureTextureImport(BrandMarkPath, TextureImporterType.Sprite, 1024, false,
+                TextureImporterCompression.Compressed, TextureImporterFormat.ASTC_4x4);
+            ConfigureTextureImport(BrandAppIconPath, TextureImporterType.Default, 1024, false,
+                TextureImporterCompression.CompressedHQ, TextureImporterFormat.ASTC_4x4);
+            ConfigureTextureImport(BrandLaunchPath, TextureImporterType.Default, 2048, false,
+                TextureImporterCompression.CompressedHQ, TextureImporterFormat.ASTC_6x6);
+        }
+
         private static Sprite Icon(string name)
         {
             return AssetDatabase.LoadAssetAtPath<Sprite>($"Assets/Art/UI/Icon{name}.png");
@@ -335,7 +523,7 @@ namespace DefenderChronicles.Editor
 
         private static (RuntimeAnimatorController controller, AnimationClip[] clips) CreateActorAnimator()
         {
-            string[] names = { "Idle", "Move", "Attack", "Hit", "Defeat", "Ability", "Victory", "Phase", "BossAttack" };
+            string[] names = PresentationActorAnimationContract.ClipNames;
             var clips = new List<AnimationClip>();
             foreach (string clipName in names)
             {
@@ -356,60 +544,215 @@ namespace DefenderChronicles.Editor
             if (controller == null)
             {
                 controller = AnimatorController.CreateAnimatorControllerAtPath(controllerPath);
-                controller.AddParameter("Moving", AnimatorControllerParameterType.Bool);
-                foreach (string trigger in names.Skip(2))
+                controller.AddParameter(PresentationActorAnimationContract.MovingParameter, AnimatorControllerParameterType.Bool);
+                foreach (string trigger in PresentationActorAnimationContract.TriggerParameters)
                     controller.AddParameter(trigger, AnimatorControllerParameterType.Trigger);
 
                 AnimatorStateMachine machine = controller.layers[0].stateMachine;
-                AnimatorState idle = machine.AddState("Idle");
+                AnimatorState idle = machine.AddState(PresentationActorAnimationContract.IdleState);
                 idle.motion = clips[0];
                 machine.defaultState = idle;
-                AnimatorState move = machine.AddState("Move");
+                AnimatorState move = machine.AddState(PresentationActorAnimationContract.MoveState);
                 move.motion = clips[1];
                 AnimatorStateTransition toMove = idle.AddTransition(move);
                 toMove.hasExitTime = false;
                 toMove.duration = 0.08f;
-                toMove.AddCondition(AnimatorConditionMode.If, 0f, "Moving");
+                toMove.AddCondition(AnimatorConditionMode.If, 0f, PresentationActorAnimationContract.MovingParameter);
                 AnimatorStateTransition toIdle = move.AddTransition(idle);
                 toIdle.hasExitTime = false;
                 toIdle.duration = 0.08f;
-                toIdle.AddCondition(AnimatorConditionMode.IfNot, 0f, "Moving");
+                toIdle.AddCondition(AnimatorConditionMode.IfNot, 0f, PresentationActorAnimationContract.MovingParameter);
 
                 for (int i = 2; i < names.Length; i++)
                 {
                     AnimatorState state = machine.AddState(names[i]);
                     state.motion = clips[i];
                     AnimatorStateTransition enter = machine.AddAnyStateTransition(state);
-                    enter.hasExitTime = false;
-                    enter.duration = 0.025f;
                     enter.AddCondition(AnimatorConditionMode.If, 0f, names[i]);
                     AnimatorStateTransition exit = state.AddTransition(idle);
-                    exit.hasExitTime = true;
-                    exit.exitTime = 1f;
-                    exit.duration = 0.05f;
                 }
             }
+            ConfigureActorAnimatorTransitions(controller);
             return (controller, clips.ToArray());
         }
 
-        private static AnimationClip CreateMotionClip(string clipName)
+        private static void ConfigureActorAnimatorTransitions(AnimatorController controller)
         {
-            float duration = clipName is "Idle" or "Move" ? 0.8f : clipName == "Defeat" ? 0.58f : 0.34f;
-            float lift = clipName switch
+            if (controller == null || controller.layers.Length == 0) return;
+            AnimatorStateMachine machine = controller.layers[0].stateMachine;
+            foreach (AnimatorStateTransition transition in machine.anyStateTransitions)
             {
-                "Idle" => 0.025f, "Move" => 0.09f, "Victory" => 0.15f, "Phase" => 0.12f, _ => 0.04f
-            };
-            float thrust = clipName switch
+                string trigger = transition.conditions.FirstOrDefault().parameter;
+                transition.hasExitTime = false;
+                transition.canTransitionToSelf = trigger is not PresentationActorAnimationContract.HitState;
+                transition.duration = trigger switch
+                {
+                    PresentationActorAnimationContract.DefeatState => 0f,
+                    PresentationActorAnimationContract.HitState => 0.012f,
+                    PresentationActorAnimationContract.VictoryState => 0.04f,
+                    _ => 0.025f
+                };
+                transition.interruptionSource = trigger == PresentationActorAnimationContract.DefeatState
+                    ? TransitionInterruptionSource.SourceThenDestination
+                    : TransitionInterruptionSource.None;
+                transition.orderedInterruption = trigger == PresentationActorAnimationContract.DefeatState;
+            }
+
+            foreach (ChildAnimatorState child in machine.states)
             {
-                "Attack" => 0.2f, "Ability" => 0.13f, "BossAttack" => 0.27f, "Hit" => -0.08f, _ => 0f
-            };
-            float scale = clipName switch
+                foreach (AnimatorStateTransition transition in child.state.transitions)
+                {
+                    transition.hasExitTime = true;
+                    transition.exitTime = 1f;
+                    transition.duration = child.state.name == PresentationActorAnimationContract.DefeatState ? 0f : 0.05f;
+                    transition.interruptionSource = TransitionInterruptionSource.None;
+                    transition.orderedInterruption = false;
+                }
+            }
+
+            EditorUtility.SetDirty(controller);
+        }
+
+        private static RuntimeAnimatorController CreateRoleAnimatorOverride(
+            PresentationActorKind kind,
+            AnimatorController sharedController,
+            params string[] overriddenClipNames)
+        {
+            string roleName = kind.ToString();
+            var roleClips = overriddenClipNames.ToDictionary(
+                clipName => clipName,
+                clipName => CreateRoleMotionClip(roleName, clipName));
+
+            string path = $"{GeneratedRoot}/DC_{roleName}_Actors.overrideController";
+            AnimatorOverrideController controller = AssetDatabase.LoadAssetAtPath<AnimatorOverrideController>(path);
+            if (controller == null)
             {
-                "Hit" => 0.9f, "Defeat" => 0.62f, "Ability" => 1.16f, "Victory" => 1.12f,
-                "Phase" => 1.2f, "BossAttack" => 1.14f, _ => 1f
+                controller = new AnimatorOverrideController(sharedController)
+                {
+                    name = $"DC_{roleName}_Actors"
+                };
+                AssetDatabase.CreateAsset(controller, path);
+            }
+
+            controller.runtimeAnimatorController = sharedController;
+            var overrides = new List<KeyValuePair<AnimationClip, AnimationClip>>();
+            controller.GetOverrides(overrides);
+            for (int i = 0; i < overrides.Count; i++)
+            {
+                AnimationClip sharedClip = overrides[i].Key;
+                if (sharedClip == null) continue;
+                if (roleClips.TryGetValue(sharedClip.name, out AnimationClip roleClip))
+                    overrides[i] = new KeyValuePair<AnimationClip, AnimationClip>(sharedClip, roleClip);
+            }
+            controller.ApplyOverrides(overrides);
+            EditorUtility.SetDirty(controller);
+            return controller;
+        }
+
+        private static AnimationClip CreateRoleMotionClip(string roleName, string clipName)
+        {
+            string path = $"{GeneratedRoot}/DC_{roleName}_{clipName}.anim";
+            AnimationClip clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(path);
+            if (clip == null)
+            {
+                clip = new AnimationClip();
+                AssetDatabase.CreateAsset(clip, path);
+            }
+
+            ConfigureRoleMotionClip(clip, roleName, clipName);
+            EditorUtility.SetDirty(clip);
+            return clip;
+        }
+
+        private static void ConfigureRoleMotionClip(AnimationClip clip, string roleName, string clipName)
+        {
+            bool loopClip = clipName == PresentationActorAnimationContract.IdleState ||
+                            clipName == PresentationActorAnimationContract.MoveState;
+            float duration = clipName switch
+            {
+                PresentationActorAnimationContract.IdleState => roleName == "Raider" ? 0.62f : roleName == "Vanguard" ? 1.02f : roleName == "Regenerator" ? 1.08f : roleName == "Support" ? 0.96f : roleName == "Siege" ? 1.18f : 0.86f,
+                PresentationActorAnimationContract.MoveState => roleName == "Raider" ? 0.46f : roleName == "Guard" ? 0.66f : roleName == "Vanguard" ? 0.88f : roleName == "Regenerator" ? 0.82f : roleName == "Support" ? 0.78f : roleName == "Siege" ? 0.94f : 0.72f,
+                PresentationActorAnimationContract.DefeatState => roleName == "Raider" ? 0.48f : roleName == "Vanguard" ? 0.78f : roleName == "Regenerator" ? 0.72f : roleName == "Support" ? 0.66f : roleName == "Siege" ? 0.92f : 0.62f,
+                PresentationActorAnimationContract.AbilityState => roleName == "Guard" ? 0.34f : roleName == "Vanguard" ? 0.52f : roleName == "Regenerator" ? 0.68f : roleName == "Support" ? 0.58f : roleName == "Siege" ? 0.74f : 0.42f,
+                _ => roleName == "Raider" ? 0.26f : roleName == "Vanguard" ? 0.58f : roleName == "Regenerator" ? 0.46f : roleName == "Support" ? 0.44f : roleName == "Siege" ? 0.64f : 0.38f
             };
-            var clip = new AnimationClip { name = clipName, frameRate = 30f };
-            clip.wrapMode = clipName is "Idle" or "Move" ? WrapMode.Loop : WrapMode.Once;
+            float lift = roleName == "Raider" ? 0.055f : roleName == "Guard" ? 0.045f : roleName == "Vanguard" ? 0.028f : roleName == "Regenerator" ? 0.025f : roleName == "Support" ? 0.050f : roleName == "Siege" ? 0.018f : 0.035f;
+            float thrust = (roleName, clipName) switch
+            {
+                ("Knight", PresentationActorAnimationContract.AttackState) => 0.24f,
+                ("Knight", PresentationActorAnimationContract.AbilityState) => 0.10f,
+                ("Guard", PresentationActorAnimationContract.AttackState) => 0.31f,
+                ("Guard", PresentationActorAnimationContract.AbilityState) => -0.06f,
+                ("Raider", PresentationActorAnimationContract.AttackState) => 0.28f,
+                ("Raider", PresentationActorAnimationContract.HitState) => -0.10f,
+                ("Vanguard", PresentationActorAnimationContract.AttackState) => 0.18f,
+                ("Vanguard", PresentationActorAnimationContract.HitState) => -0.16f,
+                ("Vanguard", PresentationActorAnimationContract.AbilityState) => -0.08f,
+                ("Regenerator", PresentationActorAnimationContract.AttackState) => 0.11f,
+                ("Regenerator", PresentationActorAnimationContract.HitState) => -0.08f,
+                ("Regenerator", PresentationActorAnimationContract.AbilityState) => -0.03f,
+                ("Support", PresentationActorAnimationContract.AttackState) => 0.08f,
+                ("Support", PresentationActorAnimationContract.HitState) => -0.07f,
+                ("Support", PresentationActorAnimationContract.AbilityState) => 0.04f,
+                ("Siege", PresentationActorAnimationContract.AttackState) => 0.34f,
+                ("Siege", PresentationActorAnimationContract.HitState) => -0.24f,
+                ("Siege", PresentationActorAnimationContract.AbilityState) => -0.18f,
+                _ => 0.0f
+            };
+            float lateral = (roleName, clipName) switch
+            {
+                ("Knight", PresentationActorAnimationContract.AbilityState) => -0.035f,
+                ("Guard", PresentationActorAnimationContract.MoveState) => -0.025f,
+                ("Guard", PresentationActorAnimationContract.AbilityState) => -0.08f,
+                ("Raider", PresentationActorAnimationContract.MoveState) => 0.045f,
+                ("Raider", PresentationActorAnimationContract.AttackState) => 0.06f,
+                ("Vanguard", PresentationActorAnimationContract.AttackState) => -0.04f,
+                ("Vanguard", PresentationActorAnimationContract.HitState) => 0.035f,
+                ("Regenerator", PresentationActorAnimationContract.MoveState) => -0.035f,
+                ("Regenerator", PresentationActorAnimationContract.AttackState) => 0.025f,
+                ("Regenerator", PresentationActorAnimationContract.AbilityState) => -0.055f,
+                ("Support", PresentationActorAnimationContract.MoveState) => 0.030f,
+                ("Support", PresentationActorAnimationContract.AttackState) => 0.035f,
+                ("Support", PresentationActorAnimationContract.AbilityState) => 0.065f,
+                ("Siege", PresentationActorAnimationContract.MoveState) => -0.020f,
+                ("Siege", PresentationActorAnimationContract.AttackState) => 0.050f,
+                ("Siege", PresentationActorAnimationContract.HitState) => 0.030f,
+                ("Siege", PresentationActorAnimationContract.AbilityState) => -0.040f,
+                _ => 0.0f
+            };
+            float scale = (roleName, clipName) switch
+            {
+                ("Knight", PresentationActorAnimationContract.AbilityState) => 1.12f,
+                ("Knight", PresentationActorAnimationContract.AttackState) => 1.06f,
+                ("Guard", PresentationActorAnimationContract.AttackState) => 1.08f,
+                ("Guard", PresentationActorAnimationContract.AbilityState) => 1.14f,
+                ("Guard", PresentationActorAnimationContract.HitState) => 0.94f,
+                ("Raider", PresentationActorAnimationContract.AttackState) => 1.10f,
+                ("Raider", PresentationActorAnimationContract.HitState) => 0.92f,
+                ("Raider", PresentationActorAnimationContract.DefeatState) => 0.58f,
+                ("Vanguard", PresentationActorAnimationContract.AttackState) => 1.18f,
+                ("Vanguard", PresentationActorAnimationContract.HitState) => 0.90f,
+                ("Vanguard", PresentationActorAnimationContract.DefeatState) => 0.64f,
+                ("Regenerator", PresentationActorAnimationContract.AbilityState) => 1.20f,
+                ("Regenerator", PresentationActorAnimationContract.AttackState) => 1.08f,
+                ("Regenerator", PresentationActorAnimationContract.HitState) => 0.88f,
+                ("Regenerator", PresentationActorAnimationContract.DefeatState) => 0.58f,
+                ("Support", PresentationActorAnimationContract.AbilityState) => 1.16f,
+                ("Support", PresentationActorAnimationContract.AttackState) => 1.05f,
+                ("Support", PresentationActorAnimationContract.HitState) => 0.92f,
+                ("Support", PresentationActorAnimationContract.DefeatState) => 0.62f,
+                ("Siege", PresentationActorAnimationContract.AbilityState) => 1.10f,
+                ("Siege", PresentationActorAnimationContract.AttackState) => 1.24f,
+                ("Siege", PresentationActorAnimationContract.HitState) => 0.86f,
+                ("Siege", PresentationActorAnimationContract.DefeatState) => 0.68f,
+                _ => 1.0f
+            };
+
+            clip.name = $"{roleName}_{clipName}";
+            clip.frameRate = 30f;
+            clip.wrapMode = loopClip ? WrapMode.Loop : WrapMode.Once;
+            clip.SetCurve("", typeof(Transform), "m_LocalPosition.x", new AnimationCurve(
+                new Keyframe(0f, 0f), new Keyframe(duration * 0.5f, lateral), new Keyframe(duration, 0f)));
             clip.SetCurve("", typeof(Transform), "m_LocalPosition.y", new AnimationCurve(
                 new Keyframe(0f, 0f), new Keyframe(duration * 0.5f, lift), new Keyframe(duration, 0f)));
             clip.SetCurve("", typeof(Transform), "m_LocalPosition.z", new AnimationCurve(
@@ -419,7 +762,55 @@ namespace DefenderChronicles.Editor
                     new Keyframe(0f, 1f), new Keyframe(duration * 0.55f, scale), new Keyframe(duration, 1f)));
             AnimationUtility.SetAnimationClipSettings(clip, new AnimationClipSettings
             {
-                loopTime = clipName is "Idle" or "Move",
+                loopTime = loopClip,
+                stopTime = duration
+            });
+        }
+
+        private static AnimationClip CreateMotionClip(string clipName)
+        {
+            bool loopClip = clipName == PresentationActorAnimationContract.IdleState ||
+                            clipName == PresentationActorAnimationContract.MoveState;
+            float duration = loopClip ? 0.8f :
+                clipName == PresentationActorAnimationContract.DefeatState ? 0.58f : 0.34f;
+            float lift = clipName switch
+            {
+                PresentationActorAnimationContract.IdleState => 0.025f,
+                PresentationActorAnimationContract.MoveState => 0.09f,
+                PresentationActorAnimationContract.VictoryState => 0.15f,
+                PresentationActorAnimationContract.PhaseState => 0.12f,
+                _ => 0.04f
+            };
+            float thrust = clipName switch
+            {
+                PresentationActorAnimationContract.AttackState => 0.2f,
+                PresentationActorAnimationContract.AbilityState => 0.13f,
+                PresentationActorAnimationContract.BossAttackState => 0.27f,
+                PresentationActorAnimationContract.HitState => -0.08f,
+                _ => 0f
+            };
+            float scale = clipName switch
+            {
+                PresentationActorAnimationContract.HitState => 0.9f,
+                PresentationActorAnimationContract.DefeatState => 0.62f,
+                PresentationActorAnimationContract.AbilityState => 1.16f,
+                PresentationActorAnimationContract.VictoryState => 1.12f,
+                PresentationActorAnimationContract.PhaseState => 1.2f,
+                PresentationActorAnimationContract.BossAttackState => 1.14f,
+                _ => 1f
+            };
+            var clip = new AnimationClip { name = clipName, frameRate = 30f };
+            clip.wrapMode = loopClip ? WrapMode.Loop : WrapMode.Once;
+            clip.SetCurve("", typeof(Transform), "m_LocalPosition.y", new AnimationCurve(
+                new Keyframe(0f, 0f), new Keyframe(duration * 0.5f, lift), new Keyframe(duration, 0f)));
+            clip.SetCurve("", typeof(Transform), "m_LocalPosition.z", new AnimationCurve(
+                new Keyframe(0f, 0f), new Keyframe(duration * 0.45f, thrust), new Keyframe(duration, 0f)));
+            foreach (string axis in new[] { "x", "y", "z" })
+                clip.SetCurve("", typeof(Transform), $"m_LocalScale.{axis}", new AnimationCurve(
+                    new Keyframe(0f, 1f), new Keyframe(duration * 0.55f, scale), new Keyframe(duration, 1f)));
+            AnimationUtility.SetAnimationClipSettings(clip, new AnimationClipSettings
+            {
+                loopTime = loopClip,
                 stopTime = duration
             });
             return clip;
@@ -453,6 +844,102 @@ namespace DefenderChronicles.Editor
                 if (!AssetDatabase.Contains(atlas)) AssetDatabase.AddObjectToAsset(atlas, asset);
             EditorUtility.SetDirty(asset);
             return asset;
+        }
+
+        private static FrontendPresentationTheme CreateFrontendTheme()
+        {
+            string path = $"{ResourceRoot}/FrontendPresentationTheme.asset";
+            FrontendPresentationTheme theme = AssetDatabase.LoadAssetAtPath<FrontendPresentationTheme>(path);
+            if (theme == null)
+            {
+                theme = ScriptableObject.CreateInstance<FrontendPresentationTheme>();
+                theme.name = "Frontend Presentation Theme";
+                AssetDatabase.CreateAsset(theme, path);
+            }
+
+            theme.brandLogo = AssetDatabase.LoadAssetAtPath<Sprite>(BrandLogoPath);
+            theme.brandMark = AssetDatabase.LoadAssetAtPath<Sprite>(BrandMarkPath);
+            theme.welcomeBackdrop = AssetDatabase.LoadAssetAtPath<Texture2D>(
+                "Assets/Resources/Presentation/Frontend/GreenwatchWelcome.png");
+            theme.warTableBackdrop = AssetDatabase.LoadAssetAtPath<Texture2D>(
+                "Assets/Resources/Presentation/Frontend/GreenwatchWarTable.png");
+            theme.warTableShader = Shader.Find("Universal Render Pipeline/Unlit") ?? Shader.Find("UI/Default");
+            (theme.panelSprite, theme.buttonSprite) = CreateFrontendUiSprites();
+            theme.menuAmbience = AssetDatabase.LoadAssetAtPath<AudioClip>(
+                "Assets/Audio/Presentation/Music/Preparation.wav");
+            theme.mapOpen = AssetDatabase.LoadAssetAtPath<AudioClip>(
+                "Assets/Audio/Presentation/SFX/UiClick.wav");
+            theme.levelSelect = AssetDatabase.LoadAssetAtPath<AudioClip>(
+                "Assets/Audio/Presentation/SFX/UiClick.wav");
+            theme.starReveal = AssetDatabase.LoadAssetAtPath<AudioClip>(
+                "Assets/Audio/Presentation/SFX/Victory.wav");
+            EditorUtility.SetDirty(theme);
+            return theme;
+        }
+
+        private static (Sprite panel, Sprite button) CreateFrontendUiSprites()
+        {
+            Directory.CreateDirectory(FrontendUiRoot);
+            string panelPath = $"{FrontendUiRoot}/MedievalPanel.png";
+            string buttonPath = $"{FrontendUiRoot}/MedievalButton.png";
+            WriteFrontendFrame(panelPath, 12, false);
+            WriteFrontendFrame(buttonPath, 16, true);
+            ConfigureFrontendSprite(panelPath, 20f);
+            ConfigureFrontendSprite(buttonPath, 22f);
+            return (AssetDatabase.LoadAssetAtPath<Sprite>(panelPath), AssetDatabase.LoadAssetAtPath<Sprite>(buttonPath));
+        }
+
+        private static void WriteFrontendFrame(string path, int cornerCut, bool button)
+        {
+            const int size = 128;
+            var texture = new Texture2D(size, size, TextureFormat.RGBA32, false, true)
+            {
+                name = Path.GetFileNameWithoutExtension(path),
+                filterMode = FilterMode.Bilinear,
+                wrapMode = TextureWrapMode.Clamp
+            };
+
+            float diagonalScale = 0.70710678f;
+            for (int y = 0; y < size; y++)
+            {
+                for (int x = 0; x < size; x++)
+                {
+                    int right = size - 1 - x;
+                    int top = size - 1 - y;
+                    float edge = Mathf.Min(x, y, right, top,
+                        (x + y - cornerCut) * diagonalScale,
+                        (right + y - cornerCut) * diagonalScale,
+                        (x + top - cornerCut) * diagonalScale,
+                        (right + top - cornerCut) * diagonalScale);
+                    Color32 pixel;
+                    if (edge < 0f) pixel = new Color32(255, 255, 255, 0);
+                    else if (edge < 2f) pixel = new Color32(255, 255, 255, 245);
+                    else if (edge < 5f) pixel = new Color32(178, 188, 198, 220);
+                    else if (edge < 8f) pixel = new Color32(255, 255, 255, 95);
+                    else if (button && (y < 17 || y > size - 18)) pixel = new Color32(235, 241, 247, 238);
+                    else pixel = new Color32(255, 255, 255, button ? (byte)238 : (byte)226);
+                    texture.SetPixel(x, y, pixel);
+                }
+            }
+            texture.Apply(false, false);
+            File.WriteAllBytes(path, texture.EncodeToPNG());
+            UnityEngine.Object.DestroyImmediate(texture);
+        }
+
+        private static void ConfigureFrontendSprite(string path, float border)
+        {
+            AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceSynchronousImport);
+            var importer = AssetImporter.GetAtPath(path) as TextureImporter;
+            if (importer == null) throw new InvalidOperationException($"Frontend sprite import failed: {path}");
+            importer.textureType = TextureImporterType.Sprite;
+            importer.spriteImportMode = SpriteImportMode.Single;
+            importer.spritePixelsPerUnit = 100f;
+            importer.spriteBorder = new Vector4(border, border, border, border);
+            importer.mipmapEnabled = false;
+            importer.alphaIsTransparency = true;
+            importer.filterMode = FilterMode.Bilinear;
+            importer.wrapMode = TextureWrapMode.Clamp;
+            importer.SaveAndReimport();
         }
 
         private static UiCopyCatalog CreateCopyCatalog()
@@ -892,8 +1379,9 @@ namespace DefenderChronicles.Editor
             AssetDatabase.LoadAssetAtPath<GameObject>($"{AdventurersRoot}/{name}.fbx");
         private static GameObject LicensedBuilding(string name) =>
             AssetDatabase.LoadAssetAtPath<GameObject>($"{MedievalRoot}/{name}.fbx");
-        private static ActorVisualEntry Actor(PresentationActorKind kind, string name, float scale) =>
-            new() { kind = kind, prefab = Model(name), scale = scale };
+        private static ActorVisualEntry Actor(PresentationActorKind kind, string name, float scale,
+            RuntimeAnimatorController animatorOverride = null) =>
+            new() { kind = kind, prefab = Model(name), scale = scale, animatorOverride = animatorOverride };
         private static ActorVisualEntry Actor(PresentationActorKind kind, GameObject prefab, float scale) =>
             new() { kind = kind, prefab = prefab, scale = scale };
         private static OutpostVisualEntry Outpost(OutpostKind kind, int level, string name) =>

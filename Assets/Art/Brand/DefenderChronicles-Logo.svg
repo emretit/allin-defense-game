@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200" role="img" aria-labelledby="title desc">
+  <title id="title">Defender Chronicles logo</title>
+  <desc id="desc">A restrained blue and brass heraldic shield with a castle tower, crossed swords, and the Defender Chronicles wordmark.</desc>
+  <defs>
+    <style>
+      @font-face {
+        font-family: "DC Cinzel";
+        src: url("../Fonts/Cinzel-SemiBold.ttf");
+        font-weight: 600;
+      }
+      .outline { stroke-linejoin: round; stroke-linecap: round; }
+    </style>
+    <linearGradient id="shieldBlue" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2459a5"/>
+      <stop offset="1" stop-color="#102d58"/>
+    </linearGradient>
+    <linearGradient id="brass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e0b85d"/>
+      <stop offset="0.48" stop-color="#b77b2c"/>
+      <stop offset="1" stop-color="#77501f"/>
+    </linearGradient>
+    <linearGradient id="steel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f1efe7"/>
+      <stop offset="1" stop-color="#9ba7b2"/>
+    </linearGradient>
+    <filter id="logoShadow" x="-25%" y="-25%" width="150%" height="165%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="24" stdDeviation="17" flood-color="#020814" flood-opacity="0.58"/>
+    </filter>
+    <filter id="typeShadow" x="-15%" y="-30%" width="130%" height="170%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="7" stdDeviation="4" flood-color="#030814" flood-opacity="0.7"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#logoShadow)">
+    <!-- Crossed swords: intentionally simple, readable silhouettes. -->
+    <g transform="rotate(-39 600 390)" class="outline">
+      <rect x="573" y="82" width="54" height="530" rx="24" fill="url(#steel)" stroke="#182638" stroke-width="10"/>
+      <path d="M600 36 636 112H564Z" fill="url(#steel)" stroke="#182638" stroke-width="10"/>
+      <rect x="498" y="585" width="204" height="34" rx="15" fill="url(#brass)" stroke="#5c3c18" stroke-width="10"/>
+      <rect x="580" y="615" width="40" height="120" rx="18" fill="#173865" stroke="#5c3c18" stroke-width="10"/>
+      <circle cx="600" cy="752" r="30" fill="url(#brass)" stroke="#5c3c18" stroke-width="10"/>
+    </g>
+    <g transform="rotate(39 600 390)" class="outline">
+      <rect x="573" y="82" width="54" height="530" rx="24" fill="url(#steel)" stroke="#182638" stroke-width="10"/>
+      <path d="M600 36 636 112H564Z" fill="url(#steel)" stroke="#182638" stroke-width="10"/>
+      <rect x="498" y="585" width="204" height="34" rx="15" fill="url(#brass)" stroke="#5c3c18" stroke-width="10"/>
+      <rect x="580" y="615" width="40" height="120" rx="18" fill="#173865" stroke="#5c3c18" stroke-width="10"/>
+      <circle cx="600" cy="752" r="30" fill="url(#brass)" stroke="#5c3c18" stroke-width="10"/>
+    </g>
+
+    <!-- Shield -->
+    <path class="outline" d="M600 110 846 204V430c0 152-93 266-246 346-153-80-246-194-246-346V204Z"
+          fill="#0a1b34" stroke="#513516" stroke-width="28"/>
+    <path class="outline" d="M600 133 820 218V425c0 133-78 235-220 312-142-77-220-179-220-312V218Z"
+          fill="url(#shieldBlue)" stroke="url(#brass)" stroke-width="22"/>
+    <path d="M600 158V704c118-69 183-159 183-278V244Z" fill="#0b2345" opacity="0.34"/>
+
+    <!-- Castle mark -->
+    <g class="outline">
+      <path d="M458 310v-70h66v44h45v-44h62v44h45v-44h66v70l-32 30v252H490V340Z"
+            fill="#e8e7df" stroke="#293747" stroke-width="16"/>
+      <path d="M490 340h220" fill="none" stroke="#9ca7ae" stroke-width="13"/>
+      <path d="M535 590V475c0-44 28-78 65-78s65 34 65 78v115Z" fill="#183967" stroke="#293747" stroke-width="15"/>
+      <path d="M600 410v168" fill="none" stroke="#b77b2c" stroke-width="12"/>
+      <rect x="520" y="335" width="160" height="18" rx="9" fill="#c99b48"/>
+    </g>
+
+    <!-- Compact wordmark plaque -->
+    <path class="outline" d="M76 755H1124L1086 1038H114L76 755Z" fill="#07162b" stroke="#523718" stroke-width="26"/>
+    <path class="outline" d="M96 774H1104L1070 1018H130L96 774Z" fill="#102f5c" stroke="url(#brass)" stroke-width="12"/>
+    <path d="M132 916H1068" fill="none" stroke="#d4a84d" stroke-width="5" opacity="0.9"/>
+
+    <g text-anchor="middle" font-family="DC Cinzel, Cinzel, Georgia, serif" font-weight="600" filter="url(#typeShadow)">
+      <text x="600" y="884" font-size="130" letter-spacing="3" fill="#f1eee3" stroke="#061225" stroke-width="13" paint-order="stroke fill">DEFENDER</text>
+      <text x="600" y="988" font-size="62" letter-spacing="18" fill="#d8b462" stroke="#061225" stroke-width="7" paint-order="stroke fill">CHRONICLES</text>
+    </g>
+
+    <!-- Small authored accents, kept geometric rather than ornamental. -->
+    <path d="M162 962h115M923 962h115" stroke="#d8b462" stroke-width="8" stroke-linecap="round"/>
+    <path d="m302 962 18-18 18 18-18 18ZM862 962l18-18 18 18-18 18Z" fill="#d8b462"/>
+  </g>
+</svg>

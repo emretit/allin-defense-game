@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200" role="img" aria-labelledby="title desc">
+  <title id="title">Defender Chronicles refined logo</title>
+  <desc id="desc">A clean royal-blue shield, castle keep and a restrained two-line fantasy wordmark.</desc>
+  <defs>
+    <style>
+      @font-face {
+        font-family: "DC Cinzel";
+        src: url("../Fonts/Cinzel-SemiBold.ttf");
+        font-weight: 600;
+      }
+      @font-face {
+        font-family: "DC Noto Serif";
+        src: url("../Fonts/NotoSerif-SemiBold.ttf");
+        font-weight: 600;
+      }
+      .join { stroke-linejoin: round; stroke-linecap: round; }
+    </style>
+    <linearGradient id="gold" x1="0" y1="0" x2="0.85" y2="1">
+      <stop offset="0" stop-color="#f0c86f"/>
+      <stop offset="0.52" stop-color="#c18a35"/>
+      <stop offset="1" stop-color="#8d5a20"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="0.12" y1="0" x2="0.88" y2="1">
+      <stop offset="0" stop-color="#275da7"/>
+      <stop offset="0.52" stop-color="#173f78"/>
+      <stop offset="1" stop-color="#0b2448"/>
+    </linearGradient>
+    <linearGradient id="silver" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fffdf3"/>
+      <stop offset="0.55" stop-color="#dce1e3"/>
+      <stop offset="1" stop-color="#99a9b5"/>
+    </linearGradient>
+    <filter id="mainShadow" x="-25%" y="-25%" width="150%" height="165%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="26" stdDeviation="18" flood-color="#020714" flood-opacity="0.55"/>
+    </filter>
+    <filter id="textShadow" x="-15%" y="-30%" width="130%" height="170%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="6" stdDeviation="3" flood-color="#020714" flood-opacity="0.75"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#mainShadow)">
+    <!-- Refined shield with a thinner dark keyline and a brighter brass rim. -->
+    <path class="join" d="M600 104 842 199v221c0 159-91 273-242 355-151-82-242-196-242-355V199Z"
+          fill="#07182e" stroke="#07182e" stroke-width="34"/>
+    <path class="join" d="M600 120 824 208v210c0 143-79 246-224 326-145-80-224-183-224-326V208Z"
+          fill="url(#blue)" stroke="url(#gold)" stroke-width="22"/>
+    <path d="M600 147v565c117-69 190-166 190-294V232Z" fill="#061c3a" opacity="0.28"/>
+    <path d="M411 227 600 152l189 75" fill="none" stroke="#f2d07d" stroke-width="6" opacity="0.62"/>
+
+    <!-- Purpose-built castle pictogram: few shapes, consistent radii, strong negative space. -->
+    <g class="join">
+      <path d="M452 298v-74h76v52h42v-52h60v52h42v-52h76v74l-31 31v279H483V329Z"
+            fill="url(#silver)" stroke="#263647" stroke-width="16"/>
+      <path d="M482 331h236" fill="none" stroke="#8496a3" stroke-width="12"/>
+      <path d="M521 608V467c0-48 35-87 79-87s79 39 79 87v141Z" fill="#123668" stroke="#263647" stroke-width="15"/>
+      <path d="M600 397v195" fill="none" stroke="#d19a41" stroke-width="11"/>
+      <path d="M502 362h196" fill="none" stroke="#ffffff" stroke-width="6" opacity="0.46"/>
+    </g>
+
+    <!-- Wordmark is lighter and slightly overlaps the crest, like a designed lockup. -->
+    <path class="join" d="M82 716h1036l-42 306H124Z" fill="#07172d" stroke="#07172d" stroke-width="28"/>
+    <path class="join" d="M103 738h994l-36 259H139Z" fill="#123768" stroke="url(#gold)" stroke-width="11"/>
+    <path d="M174 893h852" fill="none" stroke="#d8a64d" stroke-width="4" opacity="0.78"/>
+
+    <g text-anchor="middle" filter="url(#textShadow)">
+      <text x="600" y="861" font-family="DC Cinzel, Cinzel, Georgia, serif" font-weight="600"
+            font-size="126" letter-spacing="2" fill="#f5f1e7" stroke="#061326" stroke-width="11" paint-order="stroke fill">DEFENDER</text>
+    </g>
+
+    <!-- Chronicles shares the plaque so the lockup remains one compact object. -->
+    <g>
+      <path d="M188 950H314M886 950h126" stroke="#c8943d" stroke-width="6" stroke-linecap="round"/>
+      <path d="m163 950 12-12 12 12-12 12ZM1013 950l12-12 12 12-12 12Z" fill="#d9ae58"/>
+      <text x="600" y="972" text-anchor="middle" font-family="DC Noto Serif, Georgia, serif" font-weight="600"
+            font-size="54" letter-spacing="11" fill="#e7c477" stroke="#061326" stroke-width="5" paint-order="stroke fill"
+            filter="url(#textShadow)">CHRONICLES</text>
+    </g>
+  </g>
+</svg>

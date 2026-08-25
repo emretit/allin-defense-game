@@ -79,6 +79,7 @@ namespace DefenderChronicles.Presentation
     {
         public PresentationActorKind kind;
         public GameObject prefab;
+        public RuntimeAnimatorController animatorOverride;
         [Min(0.1f)] public float scale = 1f;
     }
 
@@ -131,6 +132,7 @@ namespace DefenderChronicles.Presentation
 
         [Header("HUD")]
         public GameObject hudPrefab;
+        public FrontendPresentationTheme frontendTheme;
         public Sprite panelSprite;
         public Sprite uiFrameSprite;
         public TMP_FontAsset bodyFont;
@@ -189,6 +191,18 @@ namespace DefenderChronicles.Presentation
             return actorVisuals.FirstOrDefault(entry => entry != null && entry.kind == kind)?.scale ?? 1f;
         }
 
+        public RuntimeAnimatorController ActorAnimator(PresentationActorKind kind)
+        {
+            ActorVisualEntry entry = actorVisuals.FirstOrDefault(item => item != null && item.kind == kind);
+            return entry != null && entry.animatorOverride != null ? entry.animatorOverride : actorAnimator;
+        }
+
+        public bool UsesSharedActorAnimator(PresentationActorKind kind)
+        {
+            ActorVisualEntry entry = actorVisuals.FirstOrDefault(item => item != null && item.kind == kind);
+            return entry == null || entry.animatorOverride == null || entry.animatorOverride == actorAnimator;
+        }
+
         public GameObject OutpostPrefab(OutpostKind kind, int level)
         {
             int clamped = Mathf.Clamp(level, 1, 2);
@@ -238,6 +252,173 @@ namespace DefenderChronicles.Presentation
             return darkMaterial;
         }
 
+        public IReadOnlyList<string> VisualDevelopmentValidationWarnings()
+        {
+            var warnings = new List<string>();
+            ValidateActorVisualDevelopmentGates(warnings);
+            ValidateOutpostVisualDevelopmentGates(warnings);
+            ValidateActorAnimationDevelopmentGates(warnings);
+            return warnings;
+        }
+
+        private void ValidateActorVisualDevelopmentGates(List<string> warnings)
+        {
+            var expectedKinds = Enum.GetValues(typeof(PresentationActorKind)).Cast<PresentationActorKind>().ToArray();
+            var entries = actorVisuals.Where(entry => entry != null).ToArray();
+            if (entries.Length != expectedKinds.Length)
+                warnings.Add($"Visual gate VIS-208: expected {expectedKinds.Length} actor visual entries, found {entries.Length}.");
+
+            foreach (PresentationActorKind kind in expectedKinds)
+            {
+                ActorVisualEntry[] matches = entries.Where(entry => entry.kind == kind).ToArray();
+                if (matches.Length != 1)
+                {
+                    warnings.Add($"Visual gate VIS-208: actor role {kind} has {matches.Length} catalog entries.");
+                    continue;
+                }
+
+                ActorVisualEntry entry = matches[0];
+                if (entry.prefab == null)
+                {
+                    warnings.Add($"Visual gate VIS-208: actor role {kind} has no prefab.");
+                    continue;
+                }
+
+                if (entry.scale < 0.45f || entry.scale > 1.25f)
+                    warnings.Add($"Visual gate VIS-208: actor role {kind} scale {entry.scale:0.00} is outside the proxy review band.");
+
+                Renderer[] renderers = entry.prefab.GetComponentsInChildren<Renderer>(true);
+                int materialCount = renderers.SelectMany(renderer => renderer.sharedMaterials)
+                    .Where(material => material != null)
+                    .Select(material => material.name)
+                    .Distinct()
+                    .Count();
+                int materialTarget = kind == PresentationActorKind.Boss ? 3 : 2;
+                if (materialCount > materialTarget)
+                    warnings.Add($"Visual gate VIS-206: actor role {kind} uses {materialCount} source materials; final target is <= {materialTarget}.");
+
+                string[] requiredSockets = RequiredRuntimeSockets(kind);
+                var socketNames = new HashSet<string>(entry.prefab.GetComponentsInChildren<Transform>(true)
+                    .Select(transform => transform.name));
+                foreach (string socket in requiredSockets)
+                    if (!socketNames.Contains(socket))
+                        warnings.Add($"Visual gate VIS-203: actor role {kind} is missing runtime socket {socket}.");
+            }
+
+            foreach (var group in entries.Where(entry => entry.prefab != null).GroupBy(entry => entry.prefab)
+                         .Where(group => group.Select(entry => entry.kind).Distinct().Count() > 1))
+            {
+                string roles = string.Join(", ", group.Select(entry => entry.kind).Distinct());
+                warnings.Add($"Visual gate VIS-201: actor prefab is shared by multiple roles: {roles}.");
+            }
+        }
+
+        private void ValidateOutpostVisualDevelopmentGates(List<string> warnings)
+        {
+            var expectedKinds = Enum.GetValues(typeof(OutpostKind)).Cast<OutpostKind>().ToArray();
+            var entries = outpostVisuals.Where(entry => entry != null).ToArray();
+            int expectedCount = expectedKinds.Length * 2;
+            if (entries.Length != expectedCount)
+                warnings.Add($"Visual gate VIS-304: expected {expectedCount} outpost visual entries, found {entries.Length}.");
+
+            foreach (OutpostKind kind in expectedKinds)
+            {
+                for (int level = 1; level <= 2; level++)
+                {
+                    OutpostVisualEntry[] matches = entries.Where(entry => entry.kind == kind && entry.level == level).ToArray();
+                    if (matches.Length != 1)
+                    {
+                        warnings.Add($"Visual gate VIS-304: outpost {kind} level {level} has {matches.Length} catalog entries.");
+                        continue;
+                    }
+
+                    OutpostVisualEntry entry = matches[0];
+                    if (entry.prefab == null)
+                    {
+                        warnings.Add($"Visual gate VIS-304: outpost {kind} level {level} has no prefab.");
+                        continue;
+                    }
+
+                    if (entry.scale < 0.45f || entry.scale > 1.25f)
+                        warnings.Add($"Visual gate VIS-301: outpost {kind} level {level} scale {entry.scale:0.00} is outside the proxy review band.");
+
+                    Renderer[] renderers = entry.prefab.GetComponentsInChildren<Renderer>(true);
+                    int materialCount = renderers.SelectMany(renderer => renderer.sharedMaterials)
+                        .Where(material => material != null)
+                        .Select(material => material.name)
+                        .Distinct()
+                        .Count();
+                    if (materialCount > 3)
+                        warnings.Add($"Visual gate VIS-302: outpost {kind} level {level} uses {materialCount} source materials; final target is <= 3.");
+
+                    var socketNames = new HashSet<string>(entry.prefab.GetComponentsInChildren<Transform>(true)
+                        .Select(transform => transform.name));
+                    foreach (string runtimeSocket in StylizedPresentationFactory.RuntimeSocketNamesForOutpost(kind))
+                        socketNames.Add(runtimeSocket);
+                    foreach (string socket in RequiredOutpostSockets(kind))
+                        if (!socketNames.Contains(socket))
+                            warnings.Add($"Visual gate VIS-303: outpost {kind} level {level} is missing runtime socket {socket}.");
+                }
+            }
+
+            foreach (var group in entries.Where(entry => entry.prefab != null).GroupBy(entry => entry.prefab)
+                         .Where(group => group.Select(entry => $"{entry.kind} L{entry.level}").Distinct().Count() > 1))
+            {
+                string roles = string.Join(", ", group.Select(entry => $"{entry.kind} L{entry.level}").Distinct());
+                warnings.Add($"Visual gate VIS-304: outpost prefab is shared by multiple entries: {roles}.");
+            }
+        }
+
+        private void ValidateActorAnimationDevelopmentGates(List<string> warnings)
+        {
+            foreach (string clipName in PresentationActorAnimationContract.ClipNames)
+                if (actorClips.All(clip => clip == null || clip.name != clipName))
+                    warnings.Add($"Visual gate VIS-205: shared actor animation clip is missing: {clipName}.");
+
+            if (actorAnimator == null)
+                warnings.Add("Visual gate VIS-205: shared actor AnimatorController is missing.");
+        }
+
+        private static string[] RequiredRuntimeSockets(PresentationActorKind kind)
+        {
+            string[] common = kind == PresentationActorKind.Siege
+                ? new[] { "Socket_Root", "Socket_Ground", "Socket_Chest" }
+                : new[] { "Socket_Root", "Socket_Ground", "Socket_Chest", "Socket_Head" };
+            string[] role = kind switch
+            {
+                PresentationActorKind.Knight => new[] { "Socket_Hand_R", "Socket_Hand_L", "Socket_Weapon_Tip" },
+                PresentationActorKind.Guard => new[] { "Socket_Hand_R", "Socket_Hand_L", "Socket_Weapon_Tip" },
+                PresentationActorKind.Raider => new[] { "Socket_Hand_R", "Socket_Weapon_Tip" },
+                PresentationActorKind.Vanguard => new[] { "Socket_Hand_R", "Socket_Hand_L", "Socket_Weapon_Tip" },
+                PresentationActorKind.Regenerator => new[] { "Socket_Back", "Socket_Cast", "Socket_Core" },
+                PresentationActorKind.Support => new[] { "Socket_Hand_R", "Socket_Cast", "Socket_Weapon_Tip" },
+                PresentationActorKind.Siege => new[] { "Socket_Muzzle", "Socket_Core" },
+                PresentationActorKind.Boss => new[]
+                {
+                    "Socket_Hand_R", "Socket_Hand_L", "Socket_Weapon_Tip", "Socket_Cast", "Socket_Core", "Socket_Back"
+                },
+                _ => Array.Empty<string>()
+            };
+            return common.Concat(role).Distinct().ToArray();
+        }
+
+        private static string[] RequiredOutpostSockets(OutpostKind kind)
+        {
+            string[] common =
+            {
+                "Socket_Root", "Socket_Ground", "Socket_Target", "Socket_Projectile",
+                "Socket_VFX", "Socket_Banner", "Socket_Upgrade"
+            };
+            string[] role = kind switch
+            {
+                OutpostKind.Archer => new[] { "Socket_Muzzle" },
+                OutpostKind.Barracks => new[] { "Socket_Spawn" },
+                OutpostKind.Mage => new[] { "Socket_Crystal", "Socket_Cast" },
+                _ => Array.Empty<string>()
+            };
+            return common.Concat(role).Distinct().ToArray();
+        }
+
         public IReadOnlyList<string> ValidationErrors()
         {
             var errors = new List<string>();
@@ -248,11 +429,14 @@ namespace DefenderChronicles.Presentation
             if (panelSprite == null) errors.Add("HUD panel sprite is missing.");
             if (uiFrameSprite == null) errors.Add("Licensed HUD frame sprite is missing.");
             if (bodyFont == null || titleFont == null) errors.Add("TMP font assets are incomplete.");
+            if (frontendTheme == null) errors.Add("Frontend presentation theme is missing.");
+            else if (frontendTheme.brandLogo == null || frontendTheme.brandMark == null)
+                errors.Add("Frontend V2 brand sprites are incomplete.");
             if (uiCopy == null || uiCopy.ValidationErrors().Count > 0) errors.Add("Turkish UI copy is incomplete.");
             if (new[] { goldIcon, keepIcon, waveIcon, archerIcon, barracksIcon, mageIcon, abilityIcon }
                 .Any(item => item == null)) errors.Add("HUD icon sprites are incomplete.");
             if (actorAnimator == null) errors.Add("Shared actor AnimatorController is missing.");
-            foreach (string clipName in new[] { "Idle", "Move", "Attack", "Hit", "Defeat", "Ability", "Victory", "Phase", "BossAttack" })
+            foreach (string clipName in PresentationActorAnimationContract.ClipNames)
                 if (actorClips.All(clip => clip == null || clip.name != clipName))
                     errors.Add($"Actor animation clip is missing: {clipName}.");
 

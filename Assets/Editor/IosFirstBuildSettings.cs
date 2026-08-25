@@ -9,7 +9,10 @@ namespace DefenderChronicles.Editor
     public static class IosFirstBuildSettings
     {
         private const string BundleIdentifier = "com.emreaydin.defenderchronicles";
-        private const string AppIconPath = "Assets/Art/AppIcon/DefenderChronicles-AppIcon-1024.png";
+        private const string AppIconPath =
+            "Assets/Art/AppIcon/BrandV2/DefenderChronicles-AppIcon-v2-1024.png";
+        private const string LaunchArtworkPath =
+            "Assets/Art/Brand/Launch/GreenwatchLaunch-v2.png";
 
         [MenuItem("Defender Chronicles/Apply iOS First Settings")]
         public static void Apply()
@@ -96,13 +99,11 @@ namespace DefenderChronicles.Editor
             PlayerSettings.productName = "Defender Chronicles";
             PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.iOS, BundleIdentifier);
             PlayerSettings.iOS.targetOSVersionString = "15.0";
-            PlayerSettings.defaultInterfaceOrientation = UIOrientation.AutoRotation;
-            PlayerSettings.allowedAutorotateToPortrait = false;
-            PlayerSettings.allowedAutorotateToPortraitUpsideDown = false;
-            PlayerSettings.allowedAutorotateToLandscapeLeft = true;
-            PlayerSettings.allowedAutorotateToLandscapeRight = true;
+            PlayerSettings.iOS.targetDevice = iOSTargetDevice.iPhoneAndiPad;
+            MobileOrientationBuildSettings.ApplySupportedOrientations();
             PlayerSettings.iOS.requiresFullScreen = true;
             ApplyAppIcon();
+            ApplyLaunchScreen();
         }
 
         private static void ApplyAppIcon()
@@ -117,6 +118,19 @@ namespace DefenderChronicles.Editor
 
             PlayerSettings.SetIconsForTargetGroup(BuildTargetGroup.iOS,
                 Enumerable.Repeat(icon, sizes.Length).ToArray());
+        }
+
+        private static void ApplyLaunchScreen()
+        {
+            var artwork = AssetDatabase.LoadAssetAtPath<Texture2D>(LaunchArtworkPath);
+            if (artwork == null)
+                throw new FileNotFoundException($"Required iOS launch artwork is missing: {LaunchArtworkPath}");
+
+            PlayerSettings.iOS.SetiPhoneLaunchScreenType(iOSLaunchScreenType.ImageAndBackgroundRelative);
+            PlayerSettings.iOS.SetiPadLaunchScreenType(iOSLaunchScreenType.ImageAndBackgroundRelative);
+            PlayerSettings.iOS.SetLaunchScreenImage(artwork, iOSLaunchScreenImageType.iPhoneLandscapeImage);
+            PlayerSettings.iOS.SetLaunchScreenImage(artwork, iOSLaunchScreenImageType.iPhonePortraitImage);
+            PlayerSettings.iOS.SetLaunchScreenImage(artwork, iOSLaunchScreenImageType.iPadImage);
         }
     }
 }
