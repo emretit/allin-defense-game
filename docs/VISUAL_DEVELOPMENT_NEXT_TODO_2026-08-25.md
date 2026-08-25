@@ -36,7 +36,7 @@ These are intentionally outside the current vertical-slice closeout. Do not mix 
 | NEXT-202 | P1 | Add a second map biome paint-over and asset kit | Proves visual language scales beyond Greenwatch Valley |
 | NEXT-203 | P1 | Create final marketing-quality logo/splash variants from accepted brand direction | Storefront and first-impression polish |
 | NEXT-204 | P2 | Add optional cinematic camera framing for boss intro/result moments | Stronger presentation without changing gameplay |
-| NEXT-205 | P2 | Prepare Android visual/performance acceptance matrix | Expands device coverage after iOS closeout |
+| NEXT-205 | P2 | Prepared: Android visual/performance acceptance matrix | `docs/ANDROID_VISUAL_PERFORMANCE_ACCEPTANCE_MATRIX_2026-08-25.md` defines post-iOS device tiers, scenarios, profile rules and evidence package |
 
 ## Rules for the next session
 
