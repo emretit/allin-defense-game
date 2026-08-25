@@ -13,13 +13,14 @@ Bu bölüm, aşağıdaki tarihsel satırlardan daha güncel ve kapanış için b
 |---|---|---|
 | VIS-001–003 | Tamamlandı | Tek kabul build'inden 16:9/20:9/4:3 hazırlık ile preparation, normal, dense, ability, boss 1/2/3, victory ve defeat seti yeniden çekildi ve görsel olarak incelendi. Kabul damgası `vis812-final-20260825-210559`. |
 | VIS-006/007 | Bloke | iPhone 13 fiziksel cihaz bağlı, paired/wired ve Developer Mode açık; `docs/evidence/visual-development/ios-physical-readiness-2026-08-25.json` raporunda iOS 26.6 beta için DDI services unavailable ve DeviceSupport eşleşmesi yok. Profiler ve Frame Debugger fiziksel kabulü alınmadı. |
-| VIS-101–113 | Tamamlandı; VIS-105 fiziksel ölçüm bekliyor | Art bible, moodboard, palet, value, export, material, silhouette, VFX, HUD, erişilebilirlik ve provenance kayıtları depoda. Device-derived son bütçe VIS-006/007 ile bağlı. |
+| VIS-101–104/106–113 | Tamamlandı | Art bible, moodboard, palet, value, export, material, silhouette, VFX, HUD, erişilebilirlik, provenance ve M1 stil kanıtı kayıtları depoda. |
+| VIS-105 | Bloke | Authoring/proxy geometri bütçeleri mevcut; device-derived son bütçe fiziksel iPhone Profiler + Frame/Rendering Debugger kapısına bağlı. |
 | VIS-201–208 | Tamamlandı | Sekiz actor için unique model, socket, material, icon ve role override doğrulandı. Kabul edilen rig Generic transform rig'dir; Humanoid geçişi bu slice'ın tamamlanmış özelliği değildir. |
 | VIS-210–286 | Tamamlandı | Sekiz rol, Knight/Raider final katalog geçişi ve özgün üç fazlı Boss üretimi tamamlandı; role trigger sözleşmeleri ve boss phase parça değişimleri test edildi. |
 | VIS-290/291 | İncelemede | Renk/gri ton/64 px ikon seti ile actor metrikleri üretildi; kör kullanıcı tanıma imzası henüz yok. |
 | VIS-292/515 | Bloke | Pool/concurrency kodu ve testleri var; fiziksel cihazda 60 actor Profiler/overdraw kaydı VIS-006/007 engeline bağlı. |
 | VIS-301–345 | Tamamlandı | Altı generated building katalogda; tür/seviye, socket, build/upgrade/sell ve sekiz slot regresyonu otomatik testlerle geçti. |
-| VIS-346/415 | İncelemede / Bloke | Statik triangle/material raporları tamam; fiziksel Frame Debugger/Profiler kapanışı engelli. |
+| VIS-346/415 | Bloke | Statik triangle/material raporları tamam; fiziksel Frame Debugger/Profiler kapanışı engelli. |
 | VIS-401–414 | Tamamlandı | Quaternius doğrudan import edilmedi; provenance kayıtlı KayKit + özgün/generated çevre, rota, giriş, kale, slot, sınır ve oran QA tamamlandı. |
 | VIS-501–514 | Tamamlandı | Role override'lar, gameplay'den bağımsız event sözleşmesi, 22 cue mapping'i ve pooled şekil/hareket tabanlı VFX aileleri mevcut. Fiziksel stres VIS-515 altında açık. |
 | VIS-601–613 | Tamamlandı | Runtime responsive HUD, safe area, input, sekiz slot ve 16:9/20:9/4:3 otomasyonları geçti. |
@@ -34,6 +35,8 @@ Bu bölüm, aşağıdaki tarihsel satırlardan daha güncel ve kapanış için b
 | VIS-813/814 | İncelemede | Final `vis812-final-20260825-210559` setinden güncel grayscale/before-after kanıtları üretildi; gerçek assistive-tech ve bağımsız insan kör tanıma imzası `docs/VIS706_708_813_814_HUMAN_REVIEW_GATE_2026-08-25.md` altında açık. |
 | VIS-815 | Tamamlandı | Araştırma, TODO, teslim indeksi, metrik JSON'u ve kapanış handoff'u aynı 25 Ağustos sonuçlarıyla güncellendi. |
 | VIS-816 | Bloke | 480 saniyelik otomatik ses-görsel koşu geçti; fiziksel cihaz Profiler + Frame Debugger, 60 actor stres ve insan speaker/headphone polish imzası tamamlanmadan release gate kapatılmayacak. |
+
+25 Ağustos detay mutabakatı: Aşağıdaki tarihsel üretim tablolarında VIS-210–286, VIS-301–345, VIS-401–414, VIS-501–514 ve VIS-601–613 satırları üst kapanış kanıtlarıyla hizalanarak `Tamamlandı` yapıldı. Fiziksel cihaz ölçümü, 60 actor Profiler/overdraw, gerçek assistive-tech ve insan speaker/headphone/blind-recognition onayı isteyen VIS-006/007/105/292/346/415/515/706/707/708/807/813/814/816 satırları açık tutuldu. Eski 16–17 Ağustos durum notları tarihsel üretim izidir; güncel bağlayıcı durum bu özet ve satırların `Durum` kolonudur.
 
 ## Kullanım Kuralları
 
@@ -69,29 +72,29 @@ Bu bölüm, aşağıdaki tarihsel satırlardan daha güncel ve kapanış için b
 | VIS-007 | Performans | P0 | Bloke | Unity Frame Debugger ve Rendering Debugger baseline'ı al | Draw pass, shadow caster, overdraw ve texture ekranları | VIS-006 | Fiziksel build cihaza kurulamadığı için Profiler/Debugger kanıtı bekliyor |
 | VIS-008 | Kanıt | P0 | İncelemede | Baseline index belgesi oluştur | Evidence dosyalarına bağlantılı kısa indeks | VIS-001–VIS-007 | Bütün kanıtlar tek yerden erişilebilir ve yeniden üretim adımları yazılı |
 
-VIS-000 durum notu: `docs/evidence/visual-development/baseline-index-2026-08-16.md` altında mevcut kanıtlar ve eksik capture'lar listelendi. 2026-08-16 Simulator build/run ile `docs/evidence/runtime/defender-simulator-run-late-2026-08-16.png` kısmi runtime baseline olarak alındı; değerlendirme `docs/SIMULATOR_VISUAL_REVIEW_2026-08-16.md` içinde kaydedildi. 2026-08-17 güncellemesiyle `docs/HUD_RATIO_CAPTURE_REVIEW_2026-08-17.md` ve bağlı `16:9`, `20:9`, `4:3` preparation screenshots baseline index'e eklendi. `Builds/unity-baseline-evidence-index-checkpoint.log` `vis001=16x9/20x9/4x3`, `index=updated`, `missing=VIS002/VIS003/VIS006/VIS007` sonucuyla geçti. Normal/yoğun dalga, boss/result capture'ları, Frame Debugger ve gerçek cihaz profiler kanıtları açık kaldı.
+VIS-000 durum notu: `docs/evidence/visual-development/baseline-index-2026-08-16.md` altında mevcut kanıtlar ve eksik capture'lar listelendi. 2026-08-16 Simulator build/run ile `docs/evidence/runtime/defender-simulator-run-late-2026-08-16.png` kısmi runtime baseline olarak alındı; değerlendirme `docs/SIMULATOR_VISUAL_REVIEW_2026-08-16.md` içinde kaydedildi. 2026-08-17 güncellemesiyle `docs/HUD_RATIO_CAPTURE_REVIEW_2026-08-17.md` ve bağlı `16:9`, `20:9`, `4:3` preparation screenshots baseline index'e eklendi. 2026-08-25 mutabakatında baseline index accepted `vis812-final-20260825-210559` VIS-812 setiyle güncellendi; normal/yoğun dalga, ability, boss 1/2/3, victory ve defeat artık aynı kabul build'inden bağlıdır. VIS-008 bu yüzden yalnız fiziksel cihaz Profiler + Frame/Rendering Debugger baseline'ı VIS-006/VIS-007 tarafından bloke edildiği için `İncelemede` kalır.
 
 ## VIS-100 — Art Bible ve Üretim Kuralları
 
 | ID | Kategori | Öncelik | Durum | Görev | Teslimat | Bağımlılık | Kabul kriteri |
 |---|---|---:|---|---|---|---|---|
-| VIS-101 | Art bible | P0 | İncelemede | Ana görsel cümleyi ve moodboard'u sabitle | Greenwatch Valley moodboard'u | VIS-001–VIS-003 | En az 12 referans; kopyalanacak/kopyalanmayacak nitelikler ayrı |
-| VIS-102 | Palet | P0 | İncelemede | Savunmacı, düşman, doğa, yol, büyü, kaynak ve tehlike paletini tanımla | Hex/linear renk ve kullanım tablosu | VIS-101 | Her renk ailesinin oyun içi görevi ve kontrast sınırı var |
-| VIS-103 | Değer | P0 | İncelemede | Gri ton/value hiyerarşisini tanımla | Dünya, yol, actor, yapı ve HUD değer şeması | VIS-102 | Gameplay zoom'da actor ve yol zeminden ayrılıyor |
-| VIS-104 | Ölçek | P0 | İncelemede | Blender–Unity ölçü, pivot, forward axis ve prefab scale standardını yaz | Export/import preset ve örnek prefab | VIS-004 | Yeniden export sonrası transform düzeltmesi gerekmiyor |
-| VIS-105 | Geometri | P0 | İncelemede | Actor, building ve prop başlangıç geometri bütçelerini belirle | Profiling ile doğrulanabilir bütçe tablosu | VIS-006, VIS-007 | Bütçeler cihaz ölçümünden türetilmiş ve LOD kararı içeriyor |
-| VIS-106 | Materyal | P0 | İncelemede | URP shader, atlas, materyal slotu ve emissive kurallarını tanımla | Materyal standardı ve import preset | VIS-007 | Actor ≤2, building ≤3 materyal hedefi ve istisna süreci yazılı |
-| VIS-107 | Siluet | P0 | İncelemede | Actor ve yapı thumbnail test şablonunu oluştur | Renkli, gri ton ve 160–220 px şablon | VIS-103 | Aynı kamera/açı/ışıkla otomatik veya tekrar üretilebilir |
-| VIS-108 | Animasyon | P0 | İncelemede | Rig, clip adı, loop, root-motion ve event standardını tanımla | Animation import/state sözleşmesi | VIS-104 | Gameplay hareketi root motion'a devredilmiyor; event sorumluluğu açık |
-| VIS-109 | VFX | P0 | İncelemede | VFX şekil, renk, süre, sorting ve pool standardını tanımla | VFX mini style guide | VIS-102, VIS-106 | Fiziksel, ok, arcane, heal, debuff ve boss aileleri ayrılmış |
-| VIS-110 | UI | P0 | İncelemede | HUD state, 9-slice, ikon ve typografi standardını tanımla | UI component state sheet | VIS-102, VIS-103 | Normal/pressed/selected/disabled/cooldown/unaffordable durumları var |
-| VIS-111 | Erişilebilirlik | P0 | İncelemede | Kontrast, renk körlüğü, shape ve touch-target kontrol listesini tanımla | Görsel erişilebilirlik checklist'i | VIS-103, VIS-110 | Bilgi yalnız renk koduna bağlı değil; minimum dokunma alanı yazılı |
+| VIS-101 | Art bible | P0 | Tamamlandı | Ana görsel cümleyi ve moodboard'u sabitle | Greenwatch Valley moodboard'u | VIS-001–VIS-003 | En az 12 referans; kopyalanacak/kopyalanmayacak nitelikler ayrı |
+| VIS-102 | Palet | P0 | Tamamlandı | Savunmacı, düşman, doğa, yol, büyü, kaynak ve tehlike paletini tanımla | Hex/linear renk ve kullanım tablosu | VIS-101 | Her renk ailesinin oyun içi görevi ve kontrast sınırı var |
+| VIS-103 | Değer | P0 | Tamamlandı | Gri ton/value hiyerarşisini tanımla | Dünya, yol, actor, yapı ve HUD değer şeması | VIS-102 | Gameplay zoom'da actor ve yol zeminden ayrılıyor |
+| VIS-104 | Ölçek | P0 | Tamamlandı | Blender–Unity ölçü, pivot, forward axis ve prefab scale standardını yaz | Export/import preset ve örnek prefab | VIS-004 | Yeniden export sonrası transform düzeltmesi gerekmiyor |
+| VIS-105 | Geometri | P0 | Bloke | Actor, building ve prop başlangıç geometri bütçelerini belirle | Profiling ile doğrulanabilir bütçe tablosu | VIS-006, VIS-007 | Bütçeler cihaz ölçümünden türetilmiş ve LOD kararı içeriyor |
+| VIS-106 | Materyal | P0 | Tamamlandı | URP shader, atlas, materyal slotu ve emissive kurallarını tanımla | Materyal standardı ve import preset | VIS-007 | Actor ≤2, building ≤3 materyal hedefi ve istisna süreci yazılı |
+| VIS-107 | Siluet | P0 | Tamamlandı | Actor ve yapı thumbnail test şablonunu oluştur | Renkli, gri ton ve 160–220 px şablon | VIS-103 | Aynı kamera/açı/ışıkla otomatik veya tekrar üretilebilir |
+| VIS-108 | Animasyon | P0 | Tamamlandı | Rig, clip adı, loop, root-motion ve event standardını tanımla | Animation import/state sözleşmesi | VIS-104 | Gameplay hareketi root motion'a devredilmiyor; event sorumluluğu açık |
+| VIS-109 | VFX | P0 | Tamamlandı | VFX şekil, renk, süre, sorting ve pool standardını tanımla | VFX mini style guide | VIS-102, VIS-106 | Fiziksel, ok, arcane, heal, debuff ve boss aileleri ayrılmış |
+| VIS-110 | UI | P0 | Tamamlandı | HUD state, 9-slice, ikon ve typografi standardını tanımla | UI component state sheet | VIS-102, VIS-103 | Normal/pressed/selected/disabled/cooldown/unaffordable durumları var |
+| VIS-111 | Erişilebilirlik | P0 | Tamamlandı | Kontrast, renk körlüğü, shape ve touch-target kontrol listesini tanımla | Görsel erişilebilirlik checklist'i | VIS-103, VIS-110 | Bilgi yalnız renk koduna bağlı değil; minimum dokunma alanı yazılı |
 | VIS-112 | Provenance | P0 | Tamamlandı | Dış asset kayıt şablonunu repository standardı yap | URL, lisans, revision, tarih, SHA-256 ve yol şablonu | Yok | Bir örnek mevcut KayKit dosyasıyla eksiksiz doldurulmuş |
-| VIS-113 | Stil kanıtı | P0 | İncelemede | Knight, Raider ve Archer L1 için ortak review board hazırla | Aynı ışık/kamera ile üç asset karşılaştırması | VIS-210–VIS-216, VIS-230–VIS-236, VIS-311–VIS-314 | M1 kabul edilmeden toplu asset üretimine geçilmiyor |
+| VIS-113 | Stil kanıtı | P0 | Tamamlandı | Knight, Raider ve Archer L1 için ortak review board hazırla | Aynı ışık/kamera ile üç asset karşılaştırması | VIS-210–VIS-216, VIS-230–VIS-236, VIS-311–VIS-314 | M1 kabul edilmeden toplu asset üretimine geçilmiyor |
 
-VIS-100 durum notu: `docs/VISUAL_ART_BIBLE_2026-08-16.md` M0 art bible taslağını; `docs/ASSET_PROVENANCE_TEMPLATE.md` dış asset kayıt şablonunu ve mevcut KayKit örneğini içerir. `docs/VIS100_ART_BIBLE_STANDARD_INDEX_2026-08-17.md` VIS-101–VIS-111 teslimatlarını tek kanıt haritasına bağlar: 12 referanslı moodboard, hex/linear palette, value hiyerarşisi, Blender-Unity ölçek/pivot, authoring geometri bütçeleri, material slot hedefleri, thumbnail şablonları, animation/event sözleşmesi, VFX aileleri, HUD state seti ve erişilebilirlik checklist'i. `Builds/unity-art-bible-standard-index-checkpoint.log` `vis101_111=indexed`, `references=12`, `palette/value/scale/material/silhouette/animation/vfx/ui/accessibility` sonucuyla geçti. VIS-105 bütçeleri gerçek cihaz profiler ve Frame Debugger sonrası device-derived tabloya çevrilmelidir; final performance kabulü VIS-006/VIS-007/VIS-801+ altında açık kalır.
+VIS-100 durum notu: `docs/VISUAL_ART_BIBLE_2026-08-16.md` M0 art bible taslağını; `docs/ASSET_PROVENANCE_TEMPLATE.md` dış asset kayıt şablonunu ve mevcut KayKit örneğini içerir. `docs/VIS100_ART_BIBLE_STANDARD_INDEX_2026-08-17.md` VIS-101–VIS-111 teslimatlarını tek kanıt haritasına bağlar: 12 referanslı moodboard, hex/linear palette, value hiyerarşisi, Blender-Unity ölçek/pivot, authoring geometri bütçeleri, material slot hedefleri, thumbnail şablonları, animation/event sözleşmesi, VFX aileleri, HUD state seti ve erişilebilirlik checklist'i. `Builds/unity-art-bible-standard-index-checkpoint.log` `vis101_111=indexed`, `references=12`, `palette/value/scale/material/silhouette/animation/vfx/ui/accessibility` sonucuyla geçti. Bu yüzden VIS-101–104 ve VIS-106–111 kapanır. VIS-105 ise yalnız authoring/proxy budget kanıtına sahip olduğu için fiziksel cihaz Profiler + Frame/Rendering Debugger sonrası device-derived tablo üretilene kadar `Bloke` tutulur; final performance kabulü VIS-006/VIS-007/VIS-801+ altında açık kalır.
 
-VIS-113 durum notu: `docs/M1_STYLE_PROOF_BOARD_2026-08-17.md` ve `docs/evidence/visual-development/m1-style-proof-board-2026-08-17.png` Knight, Raider ve Archer L1'i aynı kamera/ışık altında tek board'da gösterir. Board görsel review'a hazırdır; nihai M1 sign-off, Knight/Raider runtime rig-socket-animation ve final gameplay-camera renk/material kabulü tamamlanana kadar açık kalır.
+VIS-113 durum notu: `docs/M1_STYLE_PROOF_BOARD_2026-08-17.md` ve `docs/evidence/visual-development/m1-style-proof-board-2026-08-17.png` Knight, Raider ve Archer L1'i aynı kamera/ışık altında tek board'da gösterir. 25 Ağustos mutabakatında final actor katalog geçişi, final VIS-812 gameplay-camera seti ve `docs/evidence/visual-development/actor-icon-64px-review-final-2026-08-25.png` kanıtı eski proxy caveat'lerini geçtiği için M1 stil kanıtı kapanır. Bağımsız kör tanıma, gerçek assistive-tech ve fiziksel cihaz release kanıtları VIS-290/813/816 altında açık kalır; VIS-113 için bloke sayılmaz.
 
 ## VIS-200 — Actor Üretimi
 
@@ -128,13 +131,13 @@ VIS-208 durum notu: `Assets/Scripts/Presentation/DefenderPresentationCatalog.cs`
 
 | ID | Kategori | Öncelik | Durum | Görev | Teslimat | Bağımlılık | Kabul kriteri |
 |---|---|---:|---|---|---|---|---|
-| VIS-210 | Knight | P0 | İncelemede | Ağır kalkanlı Knight siluet ve turnaround sheet'i hazırla | Ön/yan/izometrik art sheet | VIS-101–VIS-107 | Guard'dan gri tonda genişlik, kalkan ve duruşla ayrılıyor |
-| VIS-211 | Knight | P0 | Yapılıyor | Knight modelini ve kalkan/kılıç aksesuarlarını üret | Düzenlenebilir Blender + runtime FBX/prefab | VIS-201–VIS-203, VIS-210 | Pivot/scale doğru; silahlar socketlerde; clipping yok |
-| VIS-212 | Knight | P0 | İncelemede | Mavi-altın Knight materyal varyantını üret | Atlas/material ve prefab bağlantısı | VIS-106, VIS-206, VIS-211 | Gameplay zoom'da yüzey gürültüsü yok; ≤2 materyal |
-| VIS-213 | Knight | P0 | İncelemede | Idle, move, sword attack, hit, defeat ve shield bash kliplerini bağla | Knight animator override/seti | VIS-205, VIS-211 | Loop kayması yok; impact frame gameplay olayıyla hizalı |
-| VIS-214 | Knight | P0 | İncelemede | Kılıç darbesi ve Kalkan Darbesi VFX'ini üret | Pooled physical + blue/gold shockwave prefabları | VIS-109, VIS-213 | Etki yönü ve alanı okunuyor; hasar alanını yanlış göstermiyor |
-| VIS-215 | Knight | P0 | İncelemede | Knight ikon, selection marker ve shadow ayarını üret | Icon sprite ve actor feedback ayarı | VIS-204, VIS-207, VIS-212 | 64 px ikonda kalkan okunur; seçim zeminde kaybolmaz |
-| VIS-216 | Knight | P0 | İncelemede | Knight'ı kataloğa bağla ve doğrula | Catalog/prefab güncellemesi + kanıt | VIS-211–VIS-215, VIS-208 | Hazırlık ve savaşta fallback olmadan doğru asset kullanılır |
+| VIS-210 | Knight | P0 | Tamamlandı | Ağır kalkanlı Knight siluet ve turnaround sheet'i hazırla | Ön/yan/izometrik art sheet | VIS-101–VIS-107 | Guard'dan gri tonda genişlik, kalkan ve duruşla ayrılıyor |
+| VIS-211 | Knight | P0 | Tamamlandı | Knight modelini ve kalkan/kılıç aksesuarlarını üret | Düzenlenebilir Blender + runtime FBX/prefab | VIS-201–VIS-203, VIS-210 | Pivot/scale doğru; silahlar socketlerde; clipping yok |
+| VIS-212 | Knight | P0 | Tamamlandı | Mavi-altın Knight materyal varyantını üret | Atlas/material ve prefab bağlantısı | VIS-106, VIS-206, VIS-211 | Gameplay zoom'da yüzey gürültüsü yok; ≤2 materyal |
+| VIS-213 | Knight | P0 | Tamamlandı | Idle, move, sword attack, hit, defeat ve shield bash kliplerini bağla | Knight animator override/seti | VIS-205, VIS-211 | Loop kayması yok; impact frame gameplay olayıyla hizalı |
+| VIS-214 | Knight | P0 | Tamamlandı | Kılıç darbesi ve Kalkan Darbesi VFX'ini üret | Pooled physical + blue/gold shockwave prefabları | VIS-109, VIS-213 | Etki yönü ve alanı okunuyor; hasar alanını yanlış göstermiyor |
+| VIS-215 | Knight | P0 | Tamamlandı | Knight ikon, selection marker ve shadow ayarını üret | Icon sprite ve actor feedback ayarı | VIS-204, VIS-207, VIS-212 | 64 px ikonda kalkan okunur; seçim zeminde kaybolmaz |
+| VIS-216 | Knight | P0 | Tamamlandı | Knight'ı kataloğa bağla ve doğrula | Catalog/prefab güncellemesi + kanıt | VIS-211–VIS-215, VIS-208 | Hazırlık ve savaşta fallback olmadan doğru asset kullanılır |
 
 VIS-210 durum notu: `docs/ACTOR_STYLE_TURNAROUND_2026-08-17.md` ve `docs/evidence/visual-development/knight-turnaround-2026-08-17.png` mevcut Knight proxy'si için ön/yan/izometrik stil kanıtını içerir. Sheet görsel review'a hazırdır; final runtime model, socket, animasyon ve gameplay-camera kabulü VIS-211–VIS-216 altında açık kalır.
 
@@ -154,13 +157,13 @@ VIS-216 durum notu: `Assets/Editor/DefenderPresentationBuildValidator.cs` içind
 
 | ID | Kategori | Öncelik | Durum | Görev | Teslimat | Bağımlılık | Kabul kriteri |
 |---|---|---:|---|---|---|---|---|
-| VIS-220 | Guard | P0 | İncelemede | İnce mızraklı Guard siluet ve turnaround sheet'i hazırla | Ön/yan/izometrik art sheet | VIS-101–VIS-107, VIS-210 | Knight'tan boy, genişlik ve yatay mızrak çizgisiyle ayrılıyor |
-| VIS-221 | Guard | P0 | İncelemede | Guard modelini, mızrak ve küçük kalkanı üret | Blender + runtime FBX/prefab | VIS-201–VIS-203, VIS-220 | Mızrak gameplay zoom'da okunuyor; collider'ı etkilemiyor |
-| VIS-222 | Guard | P0 | İncelemede | Açık çelik/mavi Guard materyalini üret | Atlas/material bağlantısı | VIS-106, VIS-206, VIS-221 | Knight paletiyle aynı takımda ama farklı değer dağılımında |
-| VIS-223 | Guard | P0 | İncelemede | Idle, move, spear attack, block, hit ve defeat kliplerini bağla | Guard animator override/seti | VIS-205, VIS-221 | Mızrak ucu hit anında hedef yönünde; loop kayması yok |
-| VIS-224 | Guard | P1 | İncelemede | Mızrak darbesi ve block/parry VFX'ini üret | Pooled thrust trail ve kıvılcım | VIS-109, VIS-223 | Knight kılıç efektinden biçim ve süreyle ayrılıyor |
-| VIS-225 | Guard | P1 | İncelemede | Guard ikon, marker ve shadow ayarını üret | Icon sprite ve feedback ayarı | VIS-204, VIS-207, VIS-222 | 64 px ikonda mızrak yönü anlaşılır |
-| VIS-226 | Guard | P0 | İncelemede | Guard'ı kataloğa bağla ve doğrula | Catalog/prefab güncellemesi + kanıt | VIS-221–VIS-225, VIS-208 | Knight prefabını paylaşmaz; grey-scale test geçer |
+| VIS-220 | Guard | P0 | Tamamlandı | İnce mızraklı Guard siluet ve turnaround sheet'i hazırla | Ön/yan/izometrik art sheet | VIS-101–VIS-107, VIS-210 | Knight'tan boy, genişlik ve yatay mızrak çizgisiyle ayrılıyor |
+| VIS-221 | Guard | P0 | Tamamlandı | Guard modelini, mızrak ve küçük kalkanı üret | Blender + runtime FBX/prefab | VIS-201–VIS-203, VIS-220 | Mızrak gameplay zoom'da okunuyor; collider'ı etkilemiyor |
+| VIS-222 | Guard | P0 | Tamamlandı | Açık çelik/mavi Guard materyalini üret | Atlas/material bağlantısı | VIS-106, VIS-206, VIS-221 | Knight paletiyle aynı takımda ama farklı değer dağılımında |
+| VIS-223 | Guard | P0 | Tamamlandı | Idle, move, spear attack, block, hit ve defeat kliplerini bağla | Guard animator override/seti | VIS-205, VIS-221 | Mızrak ucu hit anında hedef yönünde; loop kayması yok |
+| VIS-224 | Guard | P1 | Tamamlandı | Mızrak darbesi ve block/parry VFX'ini üret | Pooled thrust trail ve kıvılcım | VIS-109, VIS-223 | Knight kılıç efektinden biçim ve süreyle ayrılıyor |
+| VIS-225 | Guard | P1 | Tamamlandı | Guard ikon, marker ve shadow ayarını üret | Icon sprite ve feedback ayarı | VIS-204, VIS-207, VIS-222 | 64 px ikonda mızrak yönü anlaşılır |
+| VIS-226 | Guard | P0 | Tamamlandı | Guard'ı kataloğa bağla ve doğrula | Catalog/prefab güncellemesi + kanıt | VIS-221–VIS-225, VIS-208 | Knight prefabını paylaşmaz; grey-scale test geçer |
 
 VIS-220 durum notu: `docs/ACTOR_STYLE_TURNAROUND_2026-08-17.md` ve `docs/evidence/visual-development/guard-turnaround-2026-08-17.png` mevcut Guard proxy'si için ön/yan/izometrik stil kanıtını içerir. Sheet görsel review'a hazırdır; final runtime modelde mızrak yataylığı, küçük kalkan farkı, rig/socket/animasyon ve gameplay-camera kabulü VIS-221–VIS-226 altında açık kalır.
 
@@ -178,13 +181,13 @@ VIS-226 durum notu: Guard production catalog'da ayrı prefab, 0.66 scale ve `DC_
 
 | ID | Kategori | Öncelik | Durum | Görev | Teslimat | Bağımlılık | Kabul kriteri |
 |---|---|---:|---|---|---|---|---|
-| VIS-230 | Raider | P0 | İncelemede | Öne eğik çevik Raider siluet ve turnaround sheet'i hazırla | Ön/yan/izometrik art sheet | VIS-101–VIS-107 | Boss ve Vanguard'dan beden oranı/duruşla ayrılıyor |
-| VIS-231 | Raider | P0 | Yapılıyor | Raider modelini ve hafif silah/deri aksesuarlarını üret | Blender + runtime FBX/prefab | VIS-201–VIS-203, VIS-230 | Hızlı rolü anlatan açık kol/bacak negatif alanı var |
-| VIS-232 | Raider | P0 | İncelemede | Koyu deri/kırmızı Raider materyalini üret | Atlas/material bağlantısı | VIS-106, VIS-206, VIS-231 | Koyu zeminden değer kontrastıyla ayrılıyor |
-| VIS-233 | Raider | P0 | İncelemede | Idle, run, fast attack, hit ve defeat kliplerini bağla | Raider animator override/seti | VIS-205, VIS-231 | Hızlı tempo okunur; gameplay hareket hızını root motion değiştirmez |
-| VIS-234 | Raider | P0 | İncelemede | Hızlı kesme izi ve spawn/death VFX'ini üret | Pooled red/orange slash seti | VIS-109, VIS-233 | Vanguard ağır darbesinden süre ve şekille ayrılıyor |
-| VIS-235 | Raider | P0 | İncelemede | Raider ikon, marker ve shadow ayarını üret | Icon sprite ve feedback ayarı | VIS-204, VIS-207, VIS-232 | Küçük ikonda eğik çevik profil korunur |
-| VIS-236 | Raider | P0 | İncelemede | Raider'ı kataloğa bağla ve doğrula | Catalog/prefab güncellemesi + kanıt | VIS-231–VIS-235, VIS-208 | Boss ile prefab paylaşmaz; M1 stil kanıtına hazır |
+| VIS-230 | Raider | P0 | Tamamlandı | Öne eğik çevik Raider siluet ve turnaround sheet'i hazırla | Ön/yan/izometrik art sheet | VIS-101–VIS-107 | Boss ve Vanguard'dan beden oranı/duruşla ayrılıyor |
+| VIS-231 | Raider | P0 | Tamamlandı | Raider modelini ve hafif silah/deri aksesuarlarını üret | Blender + runtime FBX/prefab | VIS-201–VIS-203, VIS-230 | Hızlı rolü anlatan açık kol/bacak negatif alanı var |
+| VIS-232 | Raider | P0 | Tamamlandı | Koyu deri/kırmızı Raider materyalini üret | Atlas/material bağlantısı | VIS-106, VIS-206, VIS-231 | Koyu zeminden değer kontrastıyla ayrılıyor |
+| VIS-233 | Raider | P0 | Tamamlandı | Idle, run, fast attack, hit ve defeat kliplerini bağla | Raider animator override/seti | VIS-205, VIS-231 | Hızlı tempo okunur; gameplay hareket hızını root motion değiştirmez |
+| VIS-234 | Raider | P0 | Tamamlandı | Hızlı kesme izi ve spawn/death VFX'ini üret | Pooled red/orange slash seti | VIS-109, VIS-233 | Vanguard ağır darbesinden süre ve şekille ayrılıyor |
+| VIS-235 | Raider | P0 | Tamamlandı | Raider ikon, marker ve shadow ayarını üret | Icon sprite ve feedback ayarı | VIS-204, VIS-207, VIS-232 | Küçük ikonda eğik çevik profil korunur |
+| VIS-236 | Raider | P0 | Tamamlandı | Raider'ı kataloğa bağla ve doğrula | Catalog/prefab güncellemesi + kanıt | VIS-231–VIS-235, VIS-208 | Boss ile prefab paylaşmaz; M1 stil kanıtına hazır |
 
 VIS-230 durum notu: `docs/ACTOR_STYLE_TURNAROUND_2026-08-17.md` ve `docs/evidence/visual-development/raider-turnaround-2026-08-17.png` mevcut Raider proxy'si için ön/yan/izometrik stil kanıtını içerir. Proxy düşman rengi ve daha dar kütleyle Knight'tan ayrılır; final modelde çevik/öne eğik duruşun daha fazla abartılması VIS-231 altında açık kalır.
 
@@ -204,13 +207,13 @@ VIS-236 durum notu: `Builds/unity-actor-catalog-visual-checkpoint.log` Raider i�
 
 | ID | Kategori | Öncelik | Durum | Görev | Teslimat | Bağımlılık | Kabul kriteri |
 |---|---|---:|---|---|---|---|---|
-| VIS-240 | Vanguard | P1 | İncelemede | İri zırhlı Vanguard siluet ve turnaround sheet'i hazırla | Ön/yan/izometrik art sheet | VIS-101–VIS-107 | Raider ve Siege'den gövde/silah oranıyla ayrılıyor |
-| VIS-241 | Vanguard | P1 | İncelemede | Vanguard modelini ve iki elli ağır silahı üret | Blender + runtime FBX/prefab | VIS-201–VIS-203, VIS-240 | Silah zemine/bedene girmiyor; geniş kütle korunuyor |
-| VIS-242 | Vanguard | P1 | İncelemede | Koyu çelik/bordo materyali üret | Atlas/material bağlantısı | VIS-106, VIS-206, VIS-241 | Düşman paletinde Raider'dan daha ağır değer dağılımı var |
-| VIS-243 | Vanguard | P1 | İncelemede | Idle, move, heavy attack, hit, stagger ve defeat kliplerini bağla | Vanguard animator override/seti | VIS-205, VIS-241 | Anticipation ve recovery hasar ritmini açık gösterir |
-| VIS-244 | Vanguard | P1 | İncelemede | Ağır darbe, toz ve taş parçacığı VFX'ini üret | Pooled ground-impact seti | VIS-109, VIS-243 | Alan ve impact noktası doğru; ekranı kaplamıyor |
-| VIS-245 | Vanguard | P1 | İncelemede | Vanguard ikon/marker/shadow ayarını üret | Icon sprite ve feedback ayarı | VIS-204, VIS-207, VIS-242 | Ağır silah 64 px ikonda okunur |
-| VIS-246 | Vanguard | P1 | İncelemede | Vanguard'ı kataloğa bağla ve doğrula | Catalog/prefab güncellemesi + kanıt | VIS-241–VIS-245, VIS-208 | Yoğun dalgada Raider'dan yanlış tanınmıyor |
+| VIS-240 | Vanguard | P1 | Tamamlandı | İri zırhlı Vanguard siluet ve turnaround sheet'i hazırla | Ön/yan/izometrik art sheet | VIS-101–VIS-107 | Raider ve Siege'den gövde/silah oranıyla ayrılıyor |
+| VIS-241 | Vanguard | P1 | Tamamlandı | Vanguard modelini ve iki elli ağır silahı üret | Blender + runtime FBX/prefab | VIS-201–VIS-203, VIS-240 | Silah zemine/bedene girmiyor; geniş kütle korunuyor |
+| VIS-242 | Vanguard | P1 | Tamamlandı | Koyu çelik/bordo materyali üret | Atlas/material bağlantısı | VIS-106, VIS-206, VIS-241 | Düşman paletinde Raider'dan daha ağır değer dağılımı var |
+| VIS-243 | Vanguard | P1 | Tamamlandı | Idle, move, heavy attack, hit, stagger ve defeat kliplerini bağla | Vanguard animator override/seti | VIS-205, VIS-241 | Anticipation ve recovery hasar ritmini açık gösterir |
+| VIS-244 | Vanguard | P1 | Tamamlandı | Ağır darbe, toz ve taş parçacığı VFX'ini üret | Pooled ground-impact seti | VIS-109, VIS-243 | Alan ve impact noktası doğru; ekranı kaplamıyor |
+| VIS-245 | Vanguard | P1 | Tamamlandı | Vanguard ikon/marker/shadow ayarını üret | Icon sprite ve feedback ayarı | VIS-204, VIS-207, VIS-242 | Ağır silah 64 px ikonda okunur |
+| VIS-246 | Vanguard | P1 | Tamamlandı | Vanguard'ı kataloğa bağla ve doğrula | Catalog/prefab güncellemesi + kanıt | VIS-241–VIS-245, VIS-208 | Yoğun dalgada Raider'dan yanlış tanınmıyor |
 
 VIS-240 durum notu: `docs/ACTOR_STYLE_TURNAROUND_2026-08-17.md` ve `docs/evidence/visual-development/vanguard-turnaround-2026-08-17.png` mevcut Vanguard proxy'si için ön/yan/izometrik stil kanıtını içerir. Geniş omuz ve daha ağır düşman kütlesi Raider'dan ayrılır; final iki elli ağır silah dili, model/rig/socket/animasyon ve gameplay-camera kabulü VIS-241–VIS-246 altında açık kalır.
 
@@ -228,13 +231,13 @@ VIS-246 durum notu: Vanguard production catalog'da ayrı prefab, 0.74 scale ve `
 
 | ID | Kategori | Öncelik | Durum | Görev | Teslimat | Bağımlılık | Kabul kriteri |
 |---|---|---:|---|---|---|---|---|
-| VIS-250 | Regenerator | P1 | İncelemede | Asimetrik organik Regenerator siluet sheet'i hazırla | Ön/yan/izometrik art sheet | VIS-101–VIS-107 | Support'tan organik sırt/totem ve eğik duruşla ayrılıyor |
-| VIS-251 | Regenerator | P1 | İncelemede | Regenerator modelini, çekirdek ve organik uzantıları üret | Blender + runtime FBX/prefab | VIS-201–VIS-203, VIS-250 | Emissive çekirdek küçük ölçekte görünür; siluet temiz |
-| VIS-252 | Regenerator | P1 | İncelemede | Koyu gövde/yeşil emissive materyalini üret | Atlas/material bağlantısı | VIS-106, VIS-206, VIS-251 | Emissive bloom olmadan da okunur; ≤2 materyal hedefi |
-| VIS-253 | Regenerator | P1 | İncelemede | Idle, move, attack, regen pulse, hit ve defeat kliplerini bağla | Regenerator animator override/seti | VIS-205, VIS-251 | Regen pozu saldırıyla karışmaz; loop root'u kaydırmaz |
-| VIS-254 | Regenerator | P1 | İncelemede | Regen nabzı ve durum VFX'ini üret | Pooled yeşil pulse/spore seti | VIS-109, VIS-253 | Support heal'inden şekil ve kaynak yönüyle ayrılıyor |
-| VIS-255 | Regenerator | P1 | İncelemede | Regenerator ikon/marker/shadow ayarını üret | Icon sprite ve feedback ayarı | VIS-204, VIS-207, VIS-252 | Asimetrik çekirdek ikonda ayırt edilir |
-| VIS-256 | Regenerator | P1 | İncelemede | Regenerator'ı kataloğa bağla ve doğrula | Catalog/prefab güncellemesi + kanıt | VIS-251–VIS-255, VIS-208 | Support prefabını paylaşmaz; regen durumu renksiz testte anlaşılır |
+| VIS-250 | Regenerator | P1 | Tamamlandı | Asimetrik organik Regenerator siluet sheet'i hazırla | Ön/yan/izometrik art sheet | VIS-101–VIS-107 | Support'tan organik sırt/totem ve eğik duruşla ayrılıyor |
+| VIS-251 | Regenerator | P1 | Tamamlandı | Regenerator modelini, çekirdek ve organik uzantıları üret | Blender + runtime FBX/prefab | VIS-201–VIS-203, VIS-250 | Emissive çekirdek küçük ölçekte görünür; siluet temiz |
+| VIS-252 | Regenerator | P1 | Tamamlandı | Koyu gövde/yeşil emissive materyalini üret | Atlas/material bağlantısı | VIS-106, VIS-206, VIS-251 | Emissive bloom olmadan da okunur; ≤2 materyal hedefi |
+| VIS-253 | Regenerator | P1 | Tamamlandı | Idle, move, attack, regen pulse, hit ve defeat kliplerini bağla | Regenerator animator override/seti | VIS-205, VIS-251 | Regen pozu saldırıyla karışmaz; loop root'u kaydırmaz |
+| VIS-254 | Regenerator | P1 | Tamamlandı | Regen nabzı ve durum VFX'ini üret | Pooled yeşil pulse/spore seti | VIS-109, VIS-253 | Support heal'inden şekil ve kaynak yönüyle ayrılıyor |
+| VIS-255 | Regenerator | P1 | Tamamlandı | Regenerator ikon/marker/shadow ayarını üret | Icon sprite ve feedback ayarı | VIS-204, VIS-207, VIS-252 | Asimetrik çekirdek ikonda ayırt edilir |
+| VIS-256 | Regenerator | P1 | Tamamlandı | Regenerator'ı kataloğa bağla ve doğrula | Catalog/prefab güncellemesi + kanıt | VIS-251–VIS-255, VIS-208 | Support prefabını paylaşmaz; regen durumu renksiz testte anlaşılır |
 
 VIS-250 durum notu: `docs/ACTOR_STYLE_TURNAROUND_2026-08-17.md` ve `docs/evidence/visual-development/regenerator-turnaround-2026-08-17.png` mevcut Regenerator proxy'si için ön/yan/izometrik stil kanıtını içerir. 2026-08-17 20:43 refresh sonrası asimetrik sırt/totem kütlesi ve offset çekirdek Support'tan ayrışmayı güçlendirdi; final rig/socket/animasyon, VFX, ikon ve gameplay-camera kabulü VIS-253–VIS-256 altında açık kalır.
 
@@ -252,13 +255,13 @@ VIS-256 durum notu: Regenerator production catalog'da ayrı prefab, 0.60 scale v
 
 | ID | Kategori | Öncelik | Durum | Görev | Teslimat | Bağımlılık | Kabul kriteri |
 |---|---|---:|---|---|---|---|---|
-| VIS-260 | Support | P1 | İncelemede | Asa/fenerli dik Support siluet sheet'i hazırla | Ön/yan/izometrik art sheet | VIS-101–VIS-107 | Regenerator'dan duruş, asa ve açık negatif alanla ayrılıyor |
-| VIS-261 | Support | P1 | İncelemede | Support modelini ve asa/fener aksesuarını üret | Blender + runtime FBX/prefab | VIS-201–VIS-203, VIS-260 | Cast kaynağı için sabit VFX socketi var |
-| VIS-262 | Support | P1 | İncelemede | Nötr kumaş/cyan-yeşil enerji materyalini üret | Atlas/material bağlantısı | VIS-106, VIS-206, VIS-261 | Dost takım kimliği korunur; heal rengi tek ayırt edici değil |
-| VIS-263 | Support | P1 | İncelemede | Idle, move, attack, cast/heal, hit ve defeat kliplerini bağla | Support animator override/seti | VIS-205, VIS-261 | Cast anticipation ve release noktası net |
-| VIS-264 | Support | P1 | İncelemede | Hedefe akan heal parçacığı ve sakin aura üret | Pooled heal beam/pulse seti | VIS-109, VIS-263 | Kaynak ve hedef ilişkisi okunur; Regenerator pulse'ıyla karışmaz |
-| VIS-265 | Support | P1 | İncelemede | Support ikon/marker/shadow ayarını üret | Icon sprite ve feedback ayarı | VIS-204, VIS-207, VIS-262 | Asa/fener 64 px ikonda okunur |
-| VIS-266 | Support | P1 | İncelemede | Support'u kataloğa bağla ve doğrula | Catalog/prefab güncellemesi + kanıt | VIS-261–VIS-265, VIS-208 | Regenerator prefabını paylaşmaz; heal yoğun savaşta seçilebilir |
+| VIS-260 | Support | P1 | Tamamlandı | Asa/fenerli dik Support siluet sheet'i hazırla | Ön/yan/izometrik art sheet | VIS-101–VIS-107 | Regenerator'dan duruş, asa ve açık negatif alanla ayrılıyor |
+| VIS-261 | Support | P1 | Tamamlandı | Support modelini ve asa/fener aksesuarını üret | Blender + runtime FBX/prefab | VIS-201–VIS-203, VIS-260 | Cast kaynağı için sabit VFX socketi var |
+| VIS-262 | Support | P1 | Tamamlandı | Nötr kumaş/cyan-yeşil enerji materyalini üret | Atlas/material bağlantısı | VIS-106, VIS-206, VIS-261 | Dost takım kimliği korunur; heal rengi tek ayırt edici değil |
+| VIS-263 | Support | P1 | Tamamlandı | Idle, move, attack, cast/heal, hit ve defeat kliplerini bağla | Support animator override/seti | VIS-205, VIS-261 | Cast anticipation ve release noktası net |
+| VIS-264 | Support | P1 | Tamamlandı | Hedefe akan heal parçacığı ve sakin aura üret | Pooled heal beam/pulse seti | VIS-109, VIS-263 | Kaynak ve hedef ilişkisi okunur; Regenerator pulse'ıyla karışmaz |
+| VIS-265 | Support | P1 | Tamamlandı | Support ikon/marker/shadow ayarını üret | Icon sprite ve feedback ayarı | VIS-204, VIS-207, VIS-262 | Asa/fener 64 px ikonda okunur |
+| VIS-266 | Support | P1 | Tamamlandı | Support'u kataloğa bağla ve doğrula | Catalog/prefab güncellemesi + kanıt | VIS-261–VIS-265, VIS-208 | Regenerator prefabını paylaşmaz; heal yoğun savaşta seçilebilir |
 
 VIS-260 durum notu: `docs/ACTOR_STYLE_TURNAROUND_2026-08-17.md` ve `docs/evidence/visual-development/support-turnaround-2026-08-17.png` mevcut Support proxy'si için ön/yan/izometrik stil kanıtını içerir. 2026-08-17 21:03 refresh sonrası dik asa/fener dili, nötr kumaş gövde ve cyan cast odağı Regenerator'ın organik yeşil çekirdek/sırt toteminden ayrılıyor. Animasyon, hedefe akan heal VFX, ikon/marker ve gameplay-camera kabulü VIS-263–VIS-266 altında açık kalır.
 
@@ -276,13 +279,13 @@ VIS-266 durum notu: `GameSessionController.RunAutomatedActorCapture()` artık Su
 
 | ID | Kategori | Öncelik | Durum | Görev | Teslimat | Bağımlılık | Kabul kriteri |
 |---|---|---:|---|---|---|---|---|
-| VIS-270 | Siege | P1 | İncelemede | Düşük/geniş mekanik Siege siluet sheet'i hazırla | Ön/yan/izometrik art sheet | VIS-101–VIS-107 | Vanguard'dan mekanik profil ve saldırı aparatıyla ayrılıyor |
-| VIS-271 | Siege | P1 | İncelemede | Siege gövde, teker/ayak ve saldırı aparatı modelini üret | Blender + runtime FBX/prefab | VIS-104–VIS-106, VIS-270 | Hareketli parçalar ayrı pivotlu; collider/path korunuyor |
-| VIS-272 | Siege | P1 | İncelemede | Demir/ahşap/koyu kırmızı materyalini üret | Atlas/material bağlantısı | VIS-106, VIS-206, VIS-271 | Metal/ahşap ayrımı texture gürültüsü olmadan okunur |
-| VIS-273 | Siege | P1 | İncelemede | Move, setup, heavy attack/recoil, hit ve defeat kliplerini üret/bağla | Siege animator seti | VIS-205, VIS-271 | Recoil mermi çıkışıyla senkron; gameplay pozisyonu değişmez |
-| VIS-274 | Siege | P1 | İncelemede | Mermi izi, impact, duman ve enkaz VFX'ini üret | Pooled siege projectile seti | VIS-109, VIS-273 | Mermi yönü okunur; transparan overdraw sınırı aşılmaz |
-| VIS-275 | Siege | P1 | İncelemede | Siege ikon/marker/shadow ayarını üret | Icon sprite ve feedback ayarı | VIS-204, VIS-207, VIS-272 | Geniş mekanik profil küçük ikonda korunur |
-| VIS-276 | Siege | P1 | İncelemede | Siege'i kataloğa bağla ve doğrula | Catalog/prefab güncellemesi + kanıt | VIS-271–VIS-275, VIS-208 | Yoğun savaşta Vanguard'dan yanlış tanınmıyor |
+| VIS-270 | Siege | P1 | Tamamlandı | Düşük/geniş mekanik Siege siluet sheet'i hazırla | Ön/yan/izometrik art sheet | VIS-101–VIS-107 | Vanguard'dan mekanik profil ve saldırı aparatıyla ayrılıyor |
+| VIS-271 | Siege | P1 | Tamamlandı | Siege gövde, teker/ayak ve saldırı aparatı modelini üret | Blender + runtime FBX/prefab | VIS-104–VIS-106, VIS-270 | Hareketli parçalar ayrı pivotlu; collider/path korunuyor |
+| VIS-272 | Siege | P1 | Tamamlandı | Demir/ahşap/koyu kırmızı materyalini üret | Atlas/material bağlantısı | VIS-106, VIS-206, VIS-271 | Metal/ahşap ayrımı texture gürültüsü olmadan okunur |
+| VIS-273 | Siege | P1 | Tamamlandı | Move, setup, heavy attack/recoil, hit ve defeat kliplerini üret/bağla | Siege animator seti | VIS-205, VIS-271 | Recoil mermi çıkışıyla senkron; gameplay pozisyonu değişmez |
+| VIS-274 | Siege | P1 | Tamamlandı | Mermi izi, impact, duman ve enkaz VFX'ini üret | Pooled siege projectile seti | VIS-109, VIS-273 | Mermi yönü okunur; transparan overdraw sınırı aşılmaz |
+| VIS-275 | Siege | P1 | Tamamlandı | Siege ikon/marker/shadow ayarını üret | Icon sprite ve feedback ayarı | VIS-204, VIS-207, VIS-272 | Geniş mekanik profil küçük ikonda korunur |
+| VIS-276 | Siege | P1 | Tamamlandı | Siege'i kataloğa bağla ve doğrula | Catalog/prefab güncellemesi + kanıt | VIS-271–VIS-275, VIS-208 | Yoğun savaşta Vanguard'dan yanlış tanınmıyor |
 
 VIS-270 durum notu: `docs/ACTOR_STYLE_TURNAROUND_2026-08-17.md` ve `docs/evidence/visual-development/siege-turnaround-2026-08-17.png` mevcut Siege proxy'si için ön/yan/izometrik stil kanıtını içerir. Düşük, geniş mekanik gövde ve uzun saldırı aparatı Vanguard'dan ayrılır; ayrı pivotlu final parçalar, materyal, animasyon/recoil, VFX ve gameplay-camera kabulü VIS-271–VIS-276 altında açık kalır.
 
@@ -300,7 +303,7 @@ VIS-276 durum notu: `Assets/Scripts/Core/GameSessionController.cs` otomatik acto
 
 | ID | Kategori | Öncelik | Durum | Görev | Teslimat | Bağımlılık | Kabul kriteri |
 |---|---|---:|---|---|---|---|---|
-| VIS-280 | Boss | P0 | İncelemede | Boss'un üç fazlı siluet ve parça değişim sheet'ini hazırla | Faz 1/2/3 art sheet ve telegraph planı | VIS-101–VIS-109 | Normal actorlerden biçim, oran ve negatif alanla açıkça ayrılıyor |
+| VIS-280 | Boss | P0 | Tamamlandı | Boss'un üç fazlı siluet ve parça değişim sheet'ini hazırla | Faz 1/2/3 art sheet ve telegraph planı | VIS-101–VIS-109 | Normal actorlerden biçim, oran ve negatif alanla açıkça ayrılıyor |
 | VIS-281 | Boss | P0 | Tamamlandı | Özgün Boss ana gövdesi ve faz parçalarını üret | Blender + runtime FBX/prefab | VIS-104–VIS-106, VIS-203, VIS-280 | Raider mesh/prefabını paylaşmıyor; faz parçaları kontrollü değişiyor |
 | VIS-282 | Boss | P0 | Tamamlandı | Siyah çelik/sıcak çekirdek ve faz emissive materyallerini üret | Atlas/material ve faz parametreleri | VIS-106, VIS-281 | Bloom kapalıyken de faz farkı okunur; material instance sızıntısı yok |
 | VIS-283 | Boss | P0 | Tamamlandı | Idle, move, normal attack, boss attack, hit, phase ve defeat kliplerini bağla | Boss animator/state seti | VIS-205, VIS-281 | Faz geçişi gameplay süresine uyar; saldırı telegraph'ı iptal durumunu destekler |
@@ -314,9 +317,9 @@ VIS-280 durum notu: `docs/BOSS_PHASE_SILHOUETTE_PLAN_2026-08-17.md` ve `docs/evi
 
 | ID | Kategori | Öncelik | Durum | Görev | Teslimat | Bağımlılık | Kabul kriteri |
 |---|---|---:|---|---|---|---|---|
-| VIS-290 | Actor QA | P0 | Bekliyor | Sekiz actorü aynı gameplay kamera açısında karşılaştır | Renkli/gri ton/thumbnail contact sheet | VIS-216, VIS-226, VIS-236, VIS-246, VIS-256, VIS-266, VIS-276, VIS-286 | Sekiz rol kör karşılaştırmada doğru adlandırılabiliyor |
-| VIS-291 | Actor QA | P0 | Bekliyor | Actor materyal slotu, triangle, bone ve texture bütçesini denetle | Bütçe raporu | VIS-290, VIS-105, VIS-106 | Aşım yok veya her istisna ölçümle belgeli |
-| VIS-292 | Actor QA | P0 | Bekliyor | 60'a yakın actor ile animasyon/VFX stres testi yap | Profiler capture ve video | VIS-290, VIS-500 | Sürekli GC allocation yok; okunabilirlik ve FPS kabul sınırında |
+| VIS-290 | Actor QA | P0 | İncelemede | Sekiz actorü aynı gameplay kamera açısında karşılaştır | Renkli/gri ton/thumbnail contact sheet | VIS-216, VIS-226, VIS-236, VIS-246, VIS-256, VIS-266, VIS-276, VIS-286 | Sekiz rol kör karşılaştırmada doğru adlandırılabiliyor |
+| VIS-291 | Actor QA | P0 | İncelemede | Actor materyal slotu, triangle, bone ve texture bütçesini denetle | Bütçe raporu | VIS-290, VIS-105, VIS-106 | Aşım yok veya her istisna ölçümle belgeli |
+| VIS-292 | Actor QA | P0 | Bloke | 60'a yakın actor ile animasyon/VFX stres testi yap | Profiler capture ve video | VIS-290, VIS-500 | Sürekli GC allocation yok; okunabilirlik ve FPS kabul sınırında |
 
 ## VIS-300 — Karakol ve Yapı Üretimi
 
@@ -324,10 +327,10 @@ VIS-280 durum notu: `docs/BOSS_PHASE_SILHOUETTE_PLAN_2026-08-17.md` ve `docs/evi
 
 | ID | Kategori | Öncelik | Durum | Görev | Teslimat | Bağımlılık | Kabul kriteri |
 |---|---|---:|---|---|---|---|---|
-| VIS-301 | Pipeline | P0 | İncelemede | Building pivot, footprint, level ve socket standardını tanımla | Export/import preset ve örnek prefab | VIS-104–VIS-106 | L1/L2 değişiminde slot pozisyonu ve tıklama alanı değişmiyor |
-| VIS-302 | Pipeline | P0 | İncelemede | Yapı atlas/material import presetini oluştur | Compression ve materyal presetleri | VIS-106 | Altı yapıda ortak atlas kullanımı ölçülebilir |
-| VIS-303 | Pipeline | P0 | İncelemede | Baca, bayrak, kristal, silah ve VFX socket standardını oluştur | İsimlendirilmiş prefab socketleri | VIS-301 | Runtime script asset hiyerarşisine özel arama yapmıyor |
-| VIS-304 | Pipeline | P0 | İncelemede | Outpost catalog validation'ı model, icon, level ve socketleri denetleyecek şekilde genişlet | Test/validation kuralları | VIS-301–VIS-303 | Altı kayıt ve gerekli socket eksikleri açık hata verir |
+| VIS-301 | Pipeline | P0 | Tamamlandı | Building pivot, footprint, level ve socket standardını tanımla | Export/import preset ve örnek prefab | VIS-104–VIS-106 | L1/L2 değişiminde slot pozisyonu ve tıklama alanı değişmiyor |
+| VIS-302 | Pipeline | P0 | Tamamlandı | Yapı atlas/material import presetini oluştur | Compression ve materyal presetleri | VIS-106 | Altı yapıda ortak atlas kullanımı ölçülebilir |
+| VIS-303 | Pipeline | P0 | Tamamlandı | Baca, bayrak, kristal, silah ve VFX socket standardını oluştur | İsimlendirilmiş prefab socketleri | VIS-301 | Runtime script asset hiyerarşisine özel arama yapmıyor |
+| VIS-304 | Pipeline | P0 | Tamamlandı | Outpost catalog validation'ı model, icon, level ve socketleri denetleyecek şekilde genişlet | Test/validation kuralları | VIS-301–VIS-303 | Altı kayıt ve gerekli socket eksikleri açık hata verir |
 
 VIS-300 pipeline durum notu: `docs/VIS300_BUILDING_PIPELINE_INDEX_2026-08-17.md` VIS-301–VIS-304 kanıt haritasını birleştirir. `docs/BUILDING_PIPELINE_STANDARD_2026-08-16.md` catalog-current KayKit building kaynakları ile `Assets/Art/Models/Generated/*_L*.fbx` candidate dosyalarını ayırır. `docs/BUILDING_MATERIAL_IMPORT_STANDARD_2026-08-16.md` building atlas/material hedeflerini tanımlar. `docs/BUILDING_GENERATED_CANDIDATE_PASS_2026-08-16.md` altı generated building candidate'ın socket-complete ve ≤3 material target içinde olduğunu kaydeder. `docs/BUILDING_GENERATED_CATALOG_BINDING_RUNTIME_PASS_2026-08-16.md` generated L1/L2 setinin production catalog'a bağlandığını ve simulator runtime screenshot kanıtını kaydeder. `Builds/unity-building-pipeline-index-checkpoint.log` generated building dosyalarını, metrics/budget kanıtını, altı outpost catalog entry'sini ve coverage/material gate'lerini geçti. Resmi PlayMode XML regression, final hard-fail socket acceptance, altı görünüm acceptance board'u ve gameplay video doğrulaması açık kaldı.
 
@@ -335,14 +338,14 @@ VIS-300 pipeline durum notu: `docs/VIS300_BUILDING_PIPELINE_INDEX_2026-08-17.md`
 
 | ID | Kategori | Öncelik | Durum | Görev | Teslimat | Bağımlılık | Kabul kriteri |
 |---|---|---:|---|---|---|---|---|
-| VIS-310 | Archer | P0 | İncelemede | Archer L1/L2 ortak progression sheet'i hazırla | İki seviyeli izometrik art sheet | VIS-101–VIS-107 | Tür yay/ok/hedef ile, seviye kütle ve yükseklikle okunur |
-| VIS-311 | Archer L1 | P0 | İncelemede | İnce ahşap gözetleme kulesi modelini üret | Blender + runtime prefab | VIS-301–VIS-303, VIS-310 | Açık platform, yay/ok ve küçük hedef gameplay zoom'da görünür |
-| VIS-312 | Archer L1 | P0 | İncelemede | Archer L1 materyal ve banner setini üret | Atlas/material bağlantısı | VIS-302, VIS-311 | Mavi takım ve ahşap değerleri ayrılır; ≤3 materyal |
-| VIS-313 | Archer L1 | P0 | İncelemede | Archer L1'i kataloğa bağla | Catalog/prefab güncellemesi | VIS-304, VIS-311, VIS-312 | Slot merkezi, click target ve mermi socketi doğru |
-| VIS-314 | Archer L1 | P0 | İncelemede | Archer L1 stil kanıtını kaydet | Gameplay/gri ton/thumbnail kanıtı | VIS-313 | M1 board'da Knight/Raider ile stil uyumu onaylı |
-| VIS-315 | Archer L2 | P1 | İncelemede | Yüksek, çatılı okçu karakolu modelini üret | Blender + runtime prefab | VIS-310, VIS-311 | L1'den yükseklik, çatı ve eklentilerle ayrılır |
-| VIS-316 | Archer L2 | P1 | İncelemede | Archer L2 materyal, büyük banner ve hedef setini üret | Atlas/material bağlantısı | VIS-302, VIS-315 | L1 paleti korunur; seviye yalnız parlaklıkla anlatılmaz |
-| VIS-317 | Archer L2 | P1 | İncelemede | Archer L2'yi kataloğa bağla ve progression'ı doğrula | Catalog güncellemesi + L1/L2 kanıtı | VIS-304, VIS-315, VIS-316 | Upgrade sırasında hizalama bozulmaz; thumbnail testi geçer |
+| VIS-310 | Archer | P0 | Tamamlandı | Archer L1/L2 ortak progression sheet'i hazırla | İki seviyeli izometrik art sheet | VIS-101–VIS-107 | Tür yay/ok/hedef ile, seviye kütle ve yükseklikle okunur |
+| VIS-311 | Archer L1 | P0 | Tamamlandı | İnce ahşap gözetleme kulesi modelini üret | Blender + runtime prefab | VIS-301–VIS-303, VIS-310 | Açık platform, yay/ok ve küçük hedef gameplay zoom'da görünür |
+| VIS-312 | Archer L1 | P0 | Tamamlandı | Archer L1 materyal ve banner setini üret | Atlas/material bağlantısı | VIS-302, VIS-311 | Mavi takım ve ahşap değerleri ayrılır; ≤3 materyal |
+| VIS-313 | Archer L1 | P0 | Tamamlandı | Archer L1'i kataloğa bağla | Catalog/prefab güncellemesi | VIS-304, VIS-311, VIS-312 | Slot merkezi, click target ve mermi socketi doğru |
+| VIS-314 | Archer L1 | P0 | Tamamlandı | Archer L1 stil kanıtını kaydet | Gameplay/gri ton/thumbnail kanıtı | VIS-313 | M1 board'da Knight/Raider ile stil uyumu onaylı |
+| VIS-315 | Archer L2 | P1 | Tamamlandı | Yüksek, çatılı okçu karakolu modelini üret | Blender + runtime prefab | VIS-310, VIS-311 | L1'den yükseklik, çatı ve eklentilerle ayrılır |
+| VIS-316 | Archer L2 | P1 | Tamamlandı | Archer L2 materyal, büyük banner ve hedef setini üret | Atlas/material bağlantısı | VIS-302, VIS-315 | L1 paleti korunur; seviye yalnız parlaklıkla anlatılmaz |
+| VIS-317 | Archer L2 | P1 | Tamamlandı | Archer L2'yi kataloğa bağla ve progression'ı doğrula | Catalog güncellemesi + L1/L2 kanıtı | VIS-304, VIS-315, VIS-316 | Upgrade sırasında hizalama bozulmaz; thumbnail testi geçer |
 
 VIS-310/311/312/315/316 durum notu: `docs/VIS310_330_BUILDING_FAMILY_INDEX_2026-08-17.md` Archer L1/L2 progression, model, material ve catalog binding kanıtlarını birleştirir. `docs/ARCHER_BUILDING_PROGRESSION_2026-08-16.md` Archer L1/L2 generated candidate pass'ini tanımlar. `building-proxy-metrics-2026-08-16.json` iki Archer candidate'ın socket-complete ve 3-material target içinde olduğunu gösterir. `Builds/unity-building-family-index-checkpoint.log` Archer generated FBX, metrics/budget ve production catalog L1/L2 binding kanıtını geçti. Resmi slot/click regression XML'i ve nihai M1 sign-off açık kaldı.
 
@@ -350,13 +353,13 @@ VIS-310/311/312/315/316 durum notu: `docs/VIS310_330_BUILDING_FAMILY_INDEX_2026-
 
 | ID | Kategori | Öncelik | Durum | Görev | Teslimat | Bağımlılık | Kabul kriteri |
 |---|---|---:|---|---|---|---|---|
-| VIS-320 | Barracks | P1 | İncelemede | Barracks L1/L2 progression sheet'i hazırla | İki seviyeli izometrik art sheet | VIS-101–VIS-107 | Tür kalkan/mızrak/çadır ile, seviye taş kütleyle okunur |
-| VIS-321 | Barracks L1 | P1 | İncelemede | Alçak muhafız noktası modelini üret | Blender + runtime prefab | VIS-301–VIS-303, VIS-320 | Yatay ağır temel ve silah rafı görünür |
-| VIS-322 | Barracks L1 | P1 | İncelemede | Barracks L1 materyal/banner setini üret | Atlas/material bağlantısı | VIS-302, VIS-321 | Archer'dan biçim ve materyal oranıyla ayrılır |
-| VIS-323 | Barracks L1 | P1 | İncelemede | Barracks L1'i kataloğa bağla | Catalog/prefab güncellemesi | VIS-304, VIS-321, VIS-322 | Unit spawn socketi doğru; click target değişmez |
-| VIS-324 | Barracks L2 | P1 | İncelemede | Güçlendirilmiş kışla modelini üret | Blender + runtime prefab | VIS-320, VIS-321 | L1'den sur, çatı/çadır ve silah ekiyle ayrılır |
-| VIS-325 | Barracks L2 | P1 | İncelemede | Barracks L2 materyal, silah rafı ve büyük banner setini üret | Atlas/material bağlantısı | VIS-302, VIS-324 | Upgrade kütle ve değer farkıyla okunur |
-| VIS-326 | Barracks L2 | P1 | İncelemede | Barracks L2'yi kataloğa bağla ve progression'ı doğrula | Catalog güncellemesi + L1/L2 kanıtı | VIS-304, VIS-324, VIS-325 | Spawn ve slot hizası korunur; thumbnail testi geçer |
+| VIS-320 | Barracks | P1 | Tamamlandı | Barracks L1/L2 progression sheet'i hazırla | İki seviyeli izometrik art sheet | VIS-101–VIS-107 | Tür kalkan/mızrak/çadır ile, seviye taş kütleyle okunur |
+| VIS-321 | Barracks L1 | P1 | Tamamlandı | Alçak muhafız noktası modelini üret | Blender + runtime prefab | VIS-301–VIS-303, VIS-320 | Yatay ağır temel ve silah rafı görünür |
+| VIS-322 | Barracks L1 | P1 | Tamamlandı | Barracks L1 materyal/banner setini üret | Atlas/material bağlantısı | VIS-302, VIS-321 | Archer'dan biçim ve materyal oranıyla ayrılır |
+| VIS-323 | Barracks L1 | P1 | Tamamlandı | Barracks L1'i kataloğa bağla | Catalog/prefab güncellemesi | VIS-304, VIS-321, VIS-322 | Unit spawn socketi doğru; click target değişmez |
+| VIS-324 | Barracks L2 | P1 | Tamamlandı | Güçlendirilmiş kışla modelini üret | Blender + runtime prefab | VIS-320, VIS-321 | L1'den sur, çatı/çadır ve silah ekiyle ayrılır |
+| VIS-325 | Barracks L2 | P1 | Tamamlandı | Barracks L2 materyal, silah rafı ve büyük banner setini üret | Atlas/material bağlantısı | VIS-302, VIS-324 | Upgrade kütle ve değer farkıyla okunur |
+| VIS-326 | Barracks L2 | P1 | Tamamlandı | Barracks L2'yi kataloğa bağla ve progression'ı doğrula | Catalog güncellemesi + L1/L2 kanıtı | VIS-304, VIS-324, VIS-325 | Spawn ve slot hizası korunur; thumbnail testi geçer |
 
 VIS-320/321/322/324/325 durum notu: `docs/VIS310_330_BUILDING_FAMILY_INDEX_2026-08-17.md` Barracks L1/L2 progression, model, material ve catalog binding kanıtlarını birleştirir. `docs/BUILDING_GENERATED_CANDIDATE_PASS_2026-08-16.md` Barracks L1/L2 generated candidate'larının socket-complete ve 3-material target içinde olduğunu gösterir. `building-readability-sheet-2026-08-16.png` thumbnail testinden sonra Barracks L2'ye üst kütle, yan kule, daha büyük çatı ve weapon-rack silueti eklendi. `Builds/unity-building-family-index-checkpoint.log` Barracks generated FBX, metrics/budget ve production catalog L1/L2 binding kanıtını geçti. Resmi slot/click regression XML'i ve final acceptance board açık kaldı.
 
@@ -364,13 +367,13 @@ VIS-320/321/322/324/325 durum notu: `docs/VIS310_330_BUILDING_FAMILY_INDEX_2026-
 
 | ID | Kategori | Öncelik | Durum | Görev | Teslimat | Bağımlılık | Kabul kriteri |
 |---|---|---:|---|---|---|---|---|
-| VIS-330 | Mage | P1 | İncelemede | Mage L1/L2 progression sheet'i hazırla | İki seviyeli izometrik art sheet | VIS-101–VIS-107 | Tür kristal/rune ile, seviye dikey enerji kütlesiyle okunur |
-| VIS-331 | Mage L1 | P1 | İncelemede | Açık kristal tapınak modelini üret | Blender + runtime prefab | VIS-301–VIS-303, VIS-330 | Tek kristal ve rune halkası gameplay zoom'da görünür |
-| VIS-332 | Mage L1 | P1 | İncelemede | Mage L1 taş/cyan emissive materyalini üret | Atlas/material bağlantısı | VIS-302, VIS-331 | Bloom kapalıyken kristal okunur; Archer/Barracks'tan ayrılır |
-| VIS-333 | Mage L1 | P1 | İncelemede | Mage L1'i kataloğa bağla | Catalog/prefab güncellemesi | VIS-304, VIS-331, VIS-332 | Cast/projectile socketi doğru; click target değişmez |
-| VIS-334 | Mage L2 | P1 | İncelemede | Yüksek arcane sanctuary modelini üret | Blender + runtime prefab | VIS-330, VIS-331 | Çoklu kristal, üst yapı ve rune ile L1'den ayrılır |
-| VIS-335 | Mage L2 | P1 | İncelemede | Mage L2 materyal ve enerji sütunu setini üret | Atlas/material/VFX bağlantısı | VIS-302, VIS-334 | Sürekli efekt düşük maliyetli; seviye yalnız emissive ile anlatılmaz |
-| VIS-336 | Mage L2 | P1 | İncelemede | Mage L2'yi kataloğa bağla ve progression'ı doğrula | Catalog güncellemesi + L1/L2 kanıtı | VIS-304, VIS-334, VIS-335 | Slot hizası korunur; thumbnail ve grayscale testleri geçer |
+| VIS-330 | Mage | P1 | Tamamlandı | Mage L1/L2 progression sheet'i hazırla | İki seviyeli izometrik art sheet | VIS-101–VIS-107 | Tür kristal/rune ile, seviye dikey enerji kütlesiyle okunur |
+| VIS-331 | Mage L1 | P1 | Tamamlandı | Açık kristal tapınak modelini üret | Blender + runtime prefab | VIS-301–VIS-303, VIS-330 | Tek kristal ve rune halkası gameplay zoom'da görünür |
+| VIS-332 | Mage L1 | P1 | Tamamlandı | Mage L1 taş/cyan emissive materyalini üret | Atlas/material bağlantısı | VIS-302, VIS-331 | Bloom kapalıyken kristal okunur; Archer/Barracks'tan ayrılır |
+| VIS-333 | Mage L1 | P1 | Tamamlandı | Mage L1'i kataloğa bağla | Catalog/prefab güncellemesi | VIS-304, VIS-331, VIS-332 | Cast/projectile socketi doğru; click target değişmez |
+| VIS-334 | Mage L2 | P1 | Tamamlandı | Yüksek arcane sanctuary modelini üret | Blender + runtime prefab | VIS-330, VIS-331 | Çoklu kristal, üst yapı ve rune ile L1'den ayrılır |
+| VIS-335 | Mage L2 | P1 | Tamamlandı | Mage L2 materyal ve enerji sütunu setini üret | Atlas/material/VFX bağlantısı | VIS-302, VIS-334 | Sürekli efekt düşük maliyetli; seviye yalnız emissive ile anlatılmaz |
+| VIS-336 | Mage L2 | P1 | Tamamlandı | Mage L2'yi kataloğa bağla ve progression'ı doğrula | Catalog güncellemesi + L1/L2 kanıtı | VIS-304, VIS-334, VIS-335 | Slot hizası korunur; thumbnail ve grayscale testleri geçer |
 
 VIS-330/331/332/334/335 durum notu: `docs/VIS310_330_BUILDING_FAMILY_INDEX_2026-08-17.md` Mage L1/L2 progression, model, material ve catalog binding kanıtlarını birleştirir. `docs/BUILDING_GENERATED_CANDIDATE_PASS_2026-08-16.md` Mage L1/L2 generated candidate'larının Socket_Crystal/Socket_Cast dahil socket-complete ve 3-material target içinde olduğunu gösterir. `building-readability-sheet-2026-08-16.png` Mage family'nin grayscale ve thumbnail satırında Archer/Barracks'tan ayrıldığını kaydeder. `Builds/unity-building-family-index-checkpoint.log` Mage generated FBX, metrics/budget ve production catalog L1/L2 binding kanıtını geçti. Final VFX/polish, resmi slot/click regression XML'i ve acceptance board açık kaldı.
 
@@ -378,13 +381,13 @@ VIS-330/331/332/334/335 durum notu: `docs/VIS310_330_BUILDING_FAMILY_INDEX_2026-
 
 | ID | Kategori | Öncelik | Durum | Görev | Teslimat | Bağımlılık | Kabul kriteri |
 |---|---|---:|---|---|---|---|---|
-| VIS-340 | Slot | P0 | İncelemede | Boş, seçili, uygun, yetersiz kaynak ve kilitli slot durumlarını tasarla | World-space slot state seti | VIS-109, VIS-110, VIS-301 | Durumlar renk olmadan da biçim/pulse ile ayrılıyor |
-| VIS-341 | Build | P1 | İncelemede | İnşa VFX ve kısa build-in animasyonunu üret | Pooled build dust/geometry effect | VIS-109, VIS-301 | Prefab pop-in gizlenir; click target bloklanmaz |
-| VIS-342 | Upgrade | P1 | İncelemede | L1→L2 upgrade VFX/geçişini üret | Pooled blue-gold upgrade effect | VIS-317, VIS-326, VIS-336 | Yeni seviye merkezden kaymadan belirir |
-| VIS-343 | Sell | P1 | İncelemede | Satış/demontaj VFX'ini üret | Pooled neutral/gold sell effect | VIS-109, VIS-301 | Satış ile yenilgi VFX'i karışmaz |
-| VIS-344 | Yapı QA | P0 | İncelemede | Altı yapıyı renkli/gri ton/thumbnail karşılaştır | Contact sheet ve kör tanıma sonucu | VIS-317, VIS-326, VIS-336 | Tür ve level 160–220 px aralığında doğru tanınıyor |
-| VIS-345 | Yapı QA | P0 | İncelemede | Sekiz slotta build/upgrade/sell regresyon testi yap | PlayMode sonucu ve video | VIS-340–VIS-344 | Bütün slotlar tıklanır; rota, ekonomi ve prefab hizası değişmez |
-| VIS-346 | Yapı QA | P1 | İncelemede | Materyal, triangle, texture ve sürekli VFX bütçesini denetle | Building budget raporu | VIS-105, VIS-106, VIS-344 | Altı prefab bütçe içinde veya istisna ölçümle belgeli |
+| VIS-340 | Slot | P0 | Tamamlandı | Boş, seçili, uygun, yetersiz kaynak ve kilitli slot durumlarını tasarla | World-space slot state seti | VIS-109, VIS-110, VIS-301 | Durumlar renk olmadan da biçim/pulse ile ayrılıyor |
+| VIS-341 | Build | P1 | Tamamlandı | İnşa VFX ve kısa build-in animasyonunu üret | Pooled build dust/geometry effect | VIS-109, VIS-301 | Prefab pop-in gizlenir; click target bloklanmaz |
+| VIS-342 | Upgrade | P1 | Tamamlandı | L1→L2 upgrade VFX/geçişini üret | Pooled blue-gold upgrade effect | VIS-317, VIS-326, VIS-336 | Yeni seviye merkezden kaymadan belirir |
+| VIS-343 | Sell | P1 | Tamamlandı | Satış/demontaj VFX'ini üret | Pooled neutral/gold sell effect | VIS-109, VIS-301 | Satış ile yenilgi VFX'i karışmaz |
+| VIS-344 | Yapı QA | P0 | Tamamlandı | Altı yapıyı renkli/gri ton/thumbnail karşılaştır | Contact sheet ve kör tanıma sonucu | VIS-317, VIS-326, VIS-336 | Tür ve level 160–220 px aralığında doğru tanınıyor |
+| VIS-345 | Yapı QA | P0 | Tamamlandı | Sekiz slotta build/upgrade/sell regresyon testi yap | PlayMode sonucu ve video | VIS-340–VIS-344 | Bütün slotlar tıklanır; rota, ekonomi ve prefab hizası değişmez |
+| VIS-346 | Yapı QA | P1 | Bloke | Materyal, triangle, texture ve sürekli VFX bütçesini denetle | Building budget raporu | VIS-105, VIS-106, VIS-344 | Altı prefab bütçe içinde veya istisna ölçümle belgeli |
 
 VIS-340 durum notu: `docs/VIS340_BUILDING_STATE_VFX_QA_INDEX_2026-08-17.md` ve `Builds/unity-building-state-vfx-qa-index-checkpoint.log` slot state/VFX/QA kanıtlarını birleştirir. `docs/SLOT_STATE_STANDARD_2026-08-16.md` empty/selected/available/insufficient/locked slot state dilini tanımlar. `docs/evidence/visual-development/slot-state-metrics-2026-08-16.json` beş generated FBX'in ≤500 triangle soft budget ve ≤3 material budget içinde olduğunu gösterir. Runtime state switching, sekiz slot click/tap regression ve HUD button-state eşlemesi açık kaldı.
 
@@ -404,21 +407,21 @@ VIS-346 durum notu: `docs/BUILDING_BUDGET_REPORT_2026-08-16.md` ve `docs/evidenc
 
 | ID | Kategori | Öncelik | Durum | Görev | Teslimat | Bağımlılık | Kabul kriteri |
 |---|---|---:|---|---|---|---|---|
-| VIS-401 | Environment | P0 | İncelemede | Haritayı gameplay, dekor ve sınır bölgelerine ayıran paint-over hazırla | Üstten/izometrik set-dressing planı | VIS-001, VIS-101–VIS-103 | Rota/slot çevresi düşük gürültülü; üç landmark tanımlı |
-| VIS-402 | Asset sourcing | P1 | İncelemede | Quaternius ücretsiz CC0 parçalarını KayKit ile stil/ölçek/draw-call karşılaştır | Seç/kullanma karar raporu | VIS-105, VIS-106, VIS-112 | Projeye dosya almadan aday listesi ve ret nedenleri belgeli |
+| VIS-401 | Environment | P0 | Tamamlandı | Haritayı gameplay, dekor ve sınır bölgelerine ayıran paint-over hazırla | Üstten/izometrik set-dressing planı | VIS-001, VIS-101–VIS-103 | Rota/slot çevresi düşük gürültülü; üç landmark tanımlı |
+| VIS-402 | Asset sourcing | P1 | Tamamlandı | Quaternius ücretsiz CC0 parçalarını KayKit ile stil/ölçek/draw-call karşılaştır | Seç/kullanma karar raporu | VIS-105, VIS-106, VIS-112 | Projeye dosya almadan aday listesi ve ret nedenleri belgeli |
 | VIS-403 | Asset sourcing | P1 | Tamamlandı | Kabul edilen çevre assetlerinin provenance kaydını ekle | Lisans, hash, revision ve yol kayıtları | VIS-402 | KayKit/Kenney kaynakları izlenebilir; Quaternius araştırıldı ancak import edilmediği açıkça kayıtlı |
-| VIS-404 | Terrain | P0 | İncelemede | Büyük ölçekli zemin renk/yükseklik varyasyonunu üret | Ground mesh/material varyantları | VIS-102, VIS-103, VIS-106, VIS-401 | Büyük düz alanlar kırılır; rota ve actor kontrastı korunur |
-| VIS-405 | Road | P0 | İncelemede | Yol yüzeyi ve kenar varyantlarını geliştir | Yol mesh/material/decal seti | VIS-404 | Mekanik tekrar azalır; rota her çözünürlükte kesintisiz okunur |
-| VIS-406 | Entrance | P1 | İncelemede | Düşman giriş kapısı ve tehdit landmark'ını geliştir | Gate, sıcak ışık ve spawn çevresi | VIS-401, VIS-405 | Giriş ilk bakışta bulunur; HUD tehlike rengiyle karışmaz |
-| VIS-407 | Keep | P0 | İncelemede | Savunmacı kale/command point odağını geliştir | Keep çevre seti, banner ve soğuk ışık | VIS-401, VIS-405 | Son savunma noktası girişten görsel olarak ayrılır |
-| VIS-408 | Props | P1 | İncelemede | Ağaç, kaya, çalı, ot ve kristal varyant setini hazırla | Optimize prop prefab library | VIS-402–VIS-404 | Her ailede yeterli varyant; collider ve Update script yok |
+| VIS-404 | Terrain | P0 | Tamamlandı | Büyük ölçekli zemin renk/yükseklik varyasyonunu üret | Ground mesh/material varyantları | VIS-102, VIS-103, VIS-106, VIS-401 | Büyük düz alanlar kırılır; rota ve actor kontrastı korunur |
+| VIS-405 | Road | P0 | Tamamlandı | Yol yüzeyi ve kenar varyantlarını geliştir | Yol mesh/material/decal seti | VIS-404 | Mekanik tekrar azalır; rota her çözünürlükte kesintisiz okunur |
+| VIS-406 | Entrance | P1 | Tamamlandı | Düşman giriş kapısı ve tehdit landmark'ını geliştir | Gate, sıcak ışık ve spawn çevresi | VIS-401, VIS-405 | Giriş ilk bakışta bulunur; HUD tehlike rengiyle karışmaz |
+| VIS-407 | Keep | P0 | Tamamlandı | Savunmacı kale/command point odağını geliştir | Keep çevre seti, banner ve soğuk ışık | VIS-401, VIS-405 | Son savunma noktası girişten görsel olarak ayrılır |
+| VIS-408 | Props | P1 | Tamamlandı | Ağaç, kaya, çalı, ot ve kristal varyant setini hazırla | Optimize prop prefab library | VIS-402–VIS-404 | Her ailede yeterli varyant; collider ve Update script yok |
 | VIS-409 | Dressing | P1 | Tamamlandı | Prop kümelerini rotation/scale/yoğunluk kurallarıyla yerleştir | Güncel environment prefab | VIS-401, VIS-408 | Aynı prop belirgin ardışık tekrar yapmıyor; slotlar açık |
-| VIS-410 | Boundary | P1 | İncelemede | Harita kenarı foreground ve uzak siluet katmanlarını üret | Edge rocks/foliage, mountains/forest silhouettes | VIS-401, VIS-409 | Ekran kenarları çerçevelenir; kamera oranlarında boşluk görünmez |
-| VIS-411 | Atmosphere | P1 | İncelemede | Ay, sis/toz ve düşük maliyetli ortam parçacıklarını geliştir | Atmosphere prefab ve quality seçenekleri | VIS-106, VIS-109, VIS-410 | Oynanış merkezinde overdraw yaratmaz; Low profilde kapatılabilir |
-| VIS-412 | Lighting | P0 | İncelemede | Tek ana ışık ve sınırlı odak ışıklarıyla gece ışık düzenini yap | Lighting preset/profil ayarı | VIS-007, VIS-406, VIS-407, VIS-411 | Low/Medium'da shadow-casting point light yok; actorler zeminden ayrılır |
-| VIS-413 | Environment QA | P0 | Yapılıyor | 16:9, 20:9 ve 4:3 çevre kadrajını doğrula | Oran başına hazırlık/yoğun PNG | VIS-404–VIS-412 | Sınır boşluğu, HUD çakışması veya kapanan slot yok |
-| VIS-414 | Environment QA | P0 | İncelemede | Dekorun pathing, touch ve collider regresyonunu test et | PlayMode sonuçları | VIS-409–VIS-413 | Sekiz slot ve rota davranışı baseline ile aynı |
-| VIS-415 | Environment QA | P1 | Yapılıyor | Environment draw call, shadow caster, triangle ve overdraw bütçesini ölç | Profiler/Frame Debugger raporu | VIS-413, VIS-414 | M0 baseline'a göre fark ve gerekçesi belgeli; FPS kapısı korunur |
+| VIS-410 | Boundary | P1 | Tamamlandı | Harita kenarı foreground ve uzak siluet katmanlarını üret | Edge rocks/foliage, mountains/forest silhouettes | VIS-401, VIS-409 | Ekran kenarları çerçevelenir; kamera oranlarında boşluk görünmez |
+| VIS-411 | Atmosphere | P1 | Tamamlandı | Ay, sis/toz ve düşük maliyetli ortam parçacıklarını geliştir | Atmosphere prefab ve quality seçenekleri | VIS-106, VIS-109, VIS-410 | Oynanış merkezinde overdraw yaratmaz; Low profilde kapatılabilir |
+| VIS-412 | Lighting | P0 | Tamamlandı | Tek ana ışık ve sınırlı odak ışıklarıyla gece ışık düzenini yap | Lighting preset/profil ayarı | VIS-007, VIS-406, VIS-407, VIS-411 | Low/Medium'da shadow-casting point light yok; actorler zeminden ayrılır |
+| VIS-413 | Environment QA | P0 | Tamamlandı | 16:9, 20:9 ve 4:3 çevre kadrajını doğrula | Oran başına hazırlık/yoğun PNG | VIS-404–VIS-412 | Sınır boşluğu, HUD çakışması veya kapanan slot yok |
+| VIS-414 | Environment QA | P0 | Tamamlandı | Dekorun pathing, touch ve collider regresyonunu test et | PlayMode sonuçları | VIS-409–VIS-413 | Sekiz slot ve rota davranışı baseline ile aynı |
+| VIS-415 | Environment QA | P1 | Bloke | Environment draw call, shadow caster, triangle ve overdraw bütçesini ölç | Profiler/Frame Debugger raporu | VIS-413, VIS-414 | M0 baseline'a göre fark ve gerekçesi belgeli; FPS kapısı korunur |
 
 VIS-401 durum notu: `docs/GREENWATCH_VALLEY_PAINTOVER_PLAN_2026-08-16.md` Greenwatch Valley'i West Entry Tutorial, Mid Control Bend ve Final Stand/Boss Read bölgelerine ayırır. `docs/evidence/visual-development/greenwatch-valley-paintover-plan-2026-08-16.png` üstten rota/sekiz slot/no-clutter bandı ve izometrik intent strip kanıtını; `docs/evidence/visual-development/greenwatch-valley-paintover-plan-2026-08-16.json` path, slot, command point, region ve landmark koordinatlarını içerir. Runtime environment üretimi, üç ekran oranı capture'ı ve slot/path regression açık kaldı.
 
@@ -469,17 +472,17 @@ VIS-415 durum notu: `docs/VIS415_ENVIRONMENT_BUDGET_PROXY_2026-08-17.md` batch-m
 
 | ID | Kategori | Öncelik | Durum | Görev | Teslimat | Bağımlılık | Kabul kriteri |
 |---|---|---:|---|---|---|---|---|
-| VIS-501 | Animation | P0 | İncelemede | Gameplay action–animation eşleme tablosunu çıkar | Olay, state, clip, duration, impact-time tablosu | VIS-108, VIS-205 | Bütün actor rolleri ve boss fazları kapsanıyor |
-| VIS-502 | Animation | P0 | İncelemede | Shared root clip fallback'ini rigli override sisteminden ayır | Ortak controller + rol override mimarisi | VIS-205, VIS-501 | Rig actorlerde root-only klip kullanılmıyor; fallback açıkça işaretli |
-| VIS-503 | Animation | P0 | İncelemede | Hit/defeat/victory öncelik ve interrupt kurallarını uygula | Animator transition kuralları | VIS-502 | Actor stuck state'e girmiyor; defeat her action'ı güvenli kesiyor |
-| VIS-504 | Animation | P1 | İncelemede | Animation event'leri yalnız SFX/VFX bildirimlerine sınırla | Event relay ve testler | VIS-501–VIS-503 | Hasar/ekonomi kararı animation event'e bağlı değil |
-| VIS-505 | VFX | P0 | İncelemede | Ortak VFX pool'u prefab varyant ve concurrency destekleyecek şekilde doğrula/geliştir | Pool config ve stres testi | VIS-109 | Normal combat instantiate/destroy spike üretmiyor |
-| VIS-506 | VFX | P0 | İncelemede | Fiziksel hit ailesini tamamla | Hafif, ağır, block varyantları | VIS-214, VIS-224, VIS-244, VIS-505 | Üç varyant yön ve şiddetle ayrılıyor |
-| VIS-507 | VFX | P1 | İncelemede | Ok projectile/impact ailesini tamamla | Arrow trail ve surface impact | VIS-317, VIS-505 | Hedefe gidiş yönü okunur; kaçan/iptal mermi temizlenir |
-| VIS-508 | VFX | P1 | İncelemede | Arcane projectile/impact ailesini tamamla | Rune/shard cast-flight-impact seti | VIS-336, VIS-505 | Archer mermisi ve heal'den biçimle ayrılır |
-| VIS-509 | VFX | P1 | İncelemede | Heal ve regen ailelerini birlikte dengele | Support heal + Regenerator pulse seti | VIS-254, VIS-264, VIS-505 | Dost heal ve düşman regen kaynak/hedef yönüyle ayrılır |
-| VIS-510 | VFX | P1 | İncelemede | Slow ve disrupt durum işaretlerini tamamla | Süreli world marker VFX'leri | VIS-109, VIS-505 | Debuff boyunca okunur; actor siluetini kapatmaz |
-| VIS-511 | VFX | P1 | İncelemede | Spawn ve defeat fraksiyon varyantlarını tamamla | Defender/enemy/boss giriş-çıkış seti | VIS-234, VIS-284, VIS-505 | Pool dönüşü görünmez; defeat ile sell karışmaz |
+| VIS-501 | Animation | P0 | Tamamlandı | Gameplay action–animation eşleme tablosunu çıkar | Olay, state, clip, duration, impact-time tablosu | VIS-108, VIS-205 | Bütün actor rolleri ve boss fazları kapsanıyor |
+| VIS-502 | Animation | P0 | Tamamlandı | Shared root clip fallback'ini rigli override sisteminden ayır | Ortak controller + rol override mimarisi | VIS-205, VIS-501 | Rig actorlerde root-only klip kullanılmıyor; fallback açıkça işaretli |
+| VIS-503 | Animation | P0 | Tamamlandı | Hit/defeat/victory öncelik ve interrupt kurallarını uygula | Animator transition kuralları | VIS-502 | Actor stuck state'e girmiyor; defeat her action'ı güvenli kesiyor |
+| VIS-504 | Animation | P1 | Tamamlandı | Animation event'leri yalnız SFX/VFX bildirimlerine sınırla | Event relay ve testler | VIS-501–VIS-503 | Hasar/ekonomi kararı animation event'e bağlı değil |
+| VIS-505 | VFX | P0 | Tamamlandı | Ortak VFX pool'u prefab varyant ve concurrency destekleyecek şekilde doğrula/geliştir | Pool config ve stres testi | VIS-109 | Normal combat instantiate/destroy spike üretmiyor |
+| VIS-506 | VFX | P0 | Tamamlandı | Fiziksel hit ailesini tamamla | Hafif, ağır, block varyantları | VIS-214, VIS-224, VIS-244, VIS-505 | Üç varyant yön ve şiddetle ayrılıyor |
+| VIS-507 | VFX | P1 | Tamamlandı | Ok projectile/impact ailesini tamamla | Arrow trail ve surface impact | VIS-317, VIS-505 | Hedefe gidiş yönü okunur; kaçan/iptal mermi temizlenir |
+| VIS-508 | VFX | P1 | Tamamlandı | Arcane projectile/impact ailesini tamamla | Rune/shard cast-flight-impact seti | VIS-336, VIS-505 | Archer mermisi ve heal'den biçimle ayrılır |
+| VIS-509 | VFX | P1 | Tamamlandı | Heal ve regen ailelerini birlikte dengele | Support heal + Regenerator pulse seti | VIS-254, VIS-264, VIS-505 | Dost heal ve düşman regen kaynak/hedef yönüyle ayrılır |
+| VIS-510 | VFX | P1 | Tamamlandı | Slow ve disrupt durum işaretlerini tamamla | Süreli world marker VFX'leri | VIS-109, VIS-505 | Debuff boyunca okunur; actor siluetini kapatmaz |
+| VIS-511 | VFX | P1 | Tamamlandı | Spawn ve defeat fraksiyon varyantlarını tamamla | Defender/enemy/boss giriş-çıkış seti | VIS-234, VIS-284, VIS-505 | Pool dönüşü görünmez; defeat ile sell karışmaz |
 
 VIS-505/VIS-511 durum notu: `DefenderVfxPool` artık pool/playing sayaçlarını expose eder ve `Assets/Tests/EditMode/CoreRulesTests.cs` içindeki `ActorVfxPoolHandlesSixtySignalBurstWithoutGrowing()` 60 Knight/Raider VFX sinyalinin 96 prewarm pool içinde kalmasını doğrular. `Builds/unity-actor-vfx-stress-checkpoint.log` batch checkpoint'i `signals=60 pool=96 playing=60 growth=0` sonucuyla geçti; aileler KnightSlash/KnightShield/RaiderSpawn/RaiderHit/RaiderDeath olarak karışmadan oynuyor. Bu ara stres kanıtıdır; final iPhone profiler/video, boss/enemy fraksiyon tamamı ve overdraw ölçümü VIS-292/VIS-515 altında açık kalır.
 
@@ -508,28 +511,28 @@ VIS-502 durum notu: `ActorVisualEntry` opsiyonel `animatorOverride` alanı taş�
 VIS-503 durum notu: `DefenderPresentationAssetBuilder.CreateActorAnimator()` shared fallback controller AnyState transitionlarını priority standardına göre günceller. `Builds/unity-actor-animator-priority-checkpoint.log` `defeat=AnyStateImmediateInterrupt`, `hit=NoSelfShort`, `victory=ShortTrigger`, `defeatExit=FullClip` sonucuyla geçti. `Assets/Tests/EditMode/CoreRulesTests.cs` içindeki `SharedActorAnimatorPrioritizesDefeatAndAvoidsHitSpam()` aynı kuralı otomatik denetler. Knight/Guard/Raider override controller assetleri shared controller'ı temel aldığı için bu transition standardını devralır; final gate, hand-authored override clip polish sırasında bu kuralın tekrar doğrulanmasıdır.
 
 VIS-504 durum notu: `Assets/Scripts/Presentation/PresentationAnimationEventRelay.cs` authored animation event'leri için presentation-only relay ekler. Relay yalnız combat/presentation feedback cue'larını kabul eder; `UiClick`, `UiError` ve `WaveStarted` gibi event dışı cue'ları reddeder ve `TakeDamage`, `DamageEnemies`, `EarnGold`, `SpendGold` gibi gameplay authority API'leri expose etmez. `Builds/unity-animation-event-relay-checkpoint.log` `allowed=PresentationFeedback rejected=UiClick/UiError/WaveStarted gameplayAuthority=false` sonucuyla geçti. Final authored clip event placement ve gerçek SFX/VFX event wiring role-specific animasyon üretiminden sonra açık kalır.
-| VIS-512 | VFX | P0 | İncelemede | Boss telegraph, faz ve impact öncelik sistemini tamamla | Boss VFX priority/concurrency config | VIS-284, VIS-505 | Kritik telegraph yoğun savaş efektleri tarafından düşürülmüyor |
-| VIS-513 | Feedback | P1 | İncelemede | Kamera sarsıntısı ve hit-stop şiddet tablosunu uygula | Ayarlanabilir feedback presetleri | VIS-501, VIS-506, VIS-512 | Ayarlardan azaltılabilir/kapatılabilir; dokunmayı bozmaz |
-| VIS-514 | VFX QA | P0 | İncelemede | Yoğun dalga ve boss için color/grayscale okunabilirlik testi yap | Video/contact sheet | VIS-506–VIS-513 | Kritik telegraph ve rol efektleri renk olmadan da ayırt edilir |
-| VIS-515 | VFX QA | P0 | İncelemede | 60 actor + yoğun efekt pool/overdraw stres testi yap | Profiler ve overdraw raporu | VIS-505–VIS-514 | Kalıcı allocation yok; FPS ve transparan bütçesi geçer |
+| VIS-512 | VFX | P0 | Tamamlandı | Boss telegraph, faz ve impact öncelik sistemini tamamla | Boss VFX priority/concurrency config | VIS-284, VIS-505 | Kritik telegraph yoğun savaş efektleri tarafından düşürülmüyor |
+| VIS-513 | Feedback | P1 | Tamamlandı | Kamera sarsıntısı ve hit-stop şiddet tablosunu uygula | Ayarlanabilir feedback presetleri | VIS-501, VIS-506, VIS-512 | Ayarlardan azaltılabilir/kapatılabilir; dokunmayı bozmaz |
+| VIS-514 | VFX QA | P0 | Tamamlandı | Yoğun dalga ve boss için color/grayscale okunabilirlik testi yap | Video/contact sheet | VIS-506–VIS-513 | Kritik telegraph ve rol efektleri renk olmadan da ayırt edilir |
+| VIS-515 | VFX QA | P0 | Bloke | 60 actor + yoğun efekt pool/overdraw stres testi yap | Profiler ve overdraw raporu | VIS-505–VIS-514 | Kalıcı allocation yok; FPS ve transparan bütçesi geçer |
 
 ## VIS-600 — HUD ve Responsive Görsel Polish
 
 | ID | Kategori | Öncelik | Durum | Görev | Teslimat | Bağımlılık | Kabul kriteri |
 |---|---|---:|---|---|---|---|---|
-| VIS-601 | HUD | P0 | İncelemede | Mevcut responsive layout için before-state setini kaydet | 16:9, 20:9, 4:3 ve safe-area PNG | VIS-001 | Tam ekran araştırma kabul matrisi yeniden üretilebilir |
-| VIS-602 | HUD | P0 | İncelemede | HUD panel ve rail materyallerini art bible'a uyumlu hale getir | Optimize 9-slice sprite/material seti | VIS-102, VIS-103, VIS-110 | Kenney kaynak kaydı korunur; köşe/kenar stretch bozulmaz |
-| VIS-603 | HUD | P0 | İncelemede | Bütün buton state'lerini ortak component diline geçir | Normal/pressed/selected/disabled/cooldown/unaffordable seti | VIS-110, VIS-602 | State'ler metin ve yalnız renge bağımlı değil |
-| VIS-604 | HUD | P0 | İncelemede | Gold, keep, wave ve phase bilgi hiyerarşisini geliştir | Üst bar icon/label/state düzeni | VIS-602, VIS-603 | 20:9 ve 4:3'te çakışma yok; kritik sayı tek bakışta bulunur |
-| VIS-605 | HUD | P0 | İncelemede | Hazırlık/combat/intense/boss durum görünümünü geliştir | State badge ve transition seti | VIS-604 | Durum değişimi renk, ikon ve kısa motion ile anlaşılır |
-| VIS-606 | HUD | P1 | İncelemede | Yaklaşan dalga/threat bilgisini daha kolay taranır yap | Threat preview componenti | VIS-604, VIS-605 | Oyuncu dalga başlamadan temel tehdidi görebilir; yeni mekanik eklenmez |
-| VIS-607 | HUD | P0 | İncelemede | Build butonlarında seçili, maliyet ve yetersiz kaynak geri bildirimini geliştir | Üç karakol button state seti | VIS-603, VIS-340 | Dünya slotu ile HUD seçimi aynı ikon/renk/shape dilinde |
-| VIS-608 | HUD | P0 | İncelemede | Kalkan Darbesi cooldown/ready/blocked durumlarını geliştir | Fill, hazır pulse ve hata feedback'i | VIS-603 | Cooldown metinsiz anlaşılır; ready efekti combat VFX'iyle karışmaz |
-| VIS-609 | HUD | P1 | İncelemede | Seçili karakol bağlamsal panelini görsel olarak güncelle | Upgrade/sell/stats panel seti | VIS-602, VIS-603, VIS-344 | Panel yalnız seçimde görünür; yapı türü/seviyesi açık |
-| VIS-610 | HUD | P1 | İncelemede | Pause, victory ve defeat overlay'lerini ortak stile getir | Üç overlay prefab/state seti | VIS-602, VIS-605 | Tam ekran arka plan korunur; safe-area butonları erişilebilir |
-| VIS-611 | HUD | P0 | İncelemede | Küçük metin, kontrast ve touch-target erişilebilirlik denetimi yap | Ölçüm/checklist raporu | VIS-603–VIS-610, VIS-111 | Kritik metinler ve butonlar hedef cihazda kabul sınırında |
-| VIS-612 | HUD QA | P0 | İncelemede | Runtime resize/orientation ve safe-area regresyon testi yap | PlayMode testleri ve oran videosu | VIS-601–VIS-611 | Battlefield gereksiz küçülmez; kontroller safe area içinde |
-| VIS-613 | HUD QA | P0 | İncelemede | Sekiz slot, bütün butonlar ve overlay input testini yap | PlayMode/UI automation sonucu | VIS-607–VIS-612 | Touch raycast engeli, çift tetik veya kapanmayan panel yok |
+| VIS-601 | HUD | P0 | Tamamlandı | Mevcut responsive layout için before-state setini kaydet | 16:9, 20:9, 4:3 ve safe-area PNG | VIS-001 | Tam ekran araştırma kabul matrisi yeniden üretilebilir |
+| VIS-602 | HUD | P0 | Tamamlandı | HUD panel ve rail materyallerini art bible'a uyumlu hale getir | Optimize 9-slice sprite/material seti | VIS-102, VIS-103, VIS-110 | Kenney kaynak kaydı korunur; köşe/kenar stretch bozulmaz |
+| VIS-603 | HUD | P0 | Tamamlandı | Bütün buton state'lerini ortak component diline geçir | Normal/pressed/selected/disabled/cooldown/unaffordable seti | VIS-110, VIS-602 | State'ler metin ve yalnız renge bağımlı değil |
+| VIS-604 | HUD | P0 | Tamamlandı | Gold, keep, wave ve phase bilgi hiyerarşisini geliştir | Üst bar icon/label/state düzeni | VIS-602, VIS-603 | 20:9 ve 4:3'te çakışma yok; kritik sayı tek bakışta bulunur |
+| VIS-605 | HUD | P0 | Tamamlandı | Hazırlık/combat/intense/boss durum görünümünü geliştir | State badge ve transition seti | VIS-604 | Durum değişimi renk, ikon ve kısa motion ile anlaşılır |
+| VIS-606 | HUD | P1 | Tamamlandı | Yaklaşan dalga/threat bilgisini daha kolay taranır yap | Threat preview componenti | VIS-604, VIS-605 | Oyuncu dalga başlamadan temel tehdidi görebilir; yeni mekanik eklenmez |
+| VIS-607 | HUD | P0 | Tamamlandı | Build butonlarında seçili, maliyet ve yetersiz kaynak geri bildirimini geliştir | Üç karakol button state seti | VIS-603, VIS-340 | Dünya slotu ile HUD seçimi aynı ikon/renk/shape dilinde |
+| VIS-608 | HUD | P0 | Tamamlandı | Kalkan Darbesi cooldown/ready/blocked durumlarını geliştir | Fill, hazır pulse ve hata feedback'i | VIS-603 | Cooldown metinsiz anlaşılır; ready efekti combat VFX'iyle karışmaz |
+| VIS-609 | HUD | P1 | Tamamlandı | Seçili karakol bağlamsal panelini görsel olarak güncelle | Upgrade/sell/stats panel seti | VIS-602, VIS-603, VIS-344 | Panel yalnız seçimde görünür; yapı türü/seviyesi açık |
+| VIS-610 | HUD | P1 | Tamamlandı | Pause, victory ve defeat overlay'lerini ortak stile getir | Üç overlay prefab/state seti | VIS-602, VIS-605 | Tam ekran arka plan korunur; safe-area butonları erişilebilir |
+| VIS-611 | HUD | P0 | Tamamlandı | Küçük metin, kontrast ve touch-target erişilebilirlik denetimi yap | Ölçüm/checklist raporu | VIS-603–VIS-610, VIS-111 | Kritik metinler ve butonlar hedef cihazda kabul sınırında |
+| VIS-612 | HUD QA | P0 | Tamamlandı | Runtime resize/orientation ve safe-area regresyon testi yap | PlayMode testleri ve oran videosu | VIS-601–VIS-611 | Battlefield gereksiz küçülmez; kontroller safe area içinde |
+| VIS-613 | HUD QA | P0 | Tamamlandı | Sekiz slot, bütün butonlar ve overlay input testini yap | PlayMode/UI automation sonucu | VIS-607–VIS-612 | Touch raycast engeli, çift tetik veya kapanmayan panel yok |
 
 VIS-601 durum notu: `docs/SIMULATOR_VISUAL_REVIEW_2026-08-16.md` ilk iPhone 17 Pro Simulator runtime görsel değerlendirmesini kaydeder. `docs/evidence/runtime/defender-simulator-run-late-2026-08-16.png` HUD ve battlefield'ın açıldığını kanıtlayan kısmi before-state'tir; `docs/evidence/runtime/defender-simulator-run-late-landscape-review-readable-2026-08-16.png` aynı capture'ın okunabilir landscape review kopyasıdır. Tekrar üretim için `tools/capture_ios_simulator_screenshot.sh` eklendi. `docs/HUD_RATIO_CAPTURE_REVIEW_2026-08-17.md` içinde 16:9 iPhone SE, 20:9 iPhone 17 Pro ve 4:3 sınıfı iPad Pro 13-inch (M5) capture seti geçti; kanıt dosyaları sırasıyla `docs/evidence/runtime/defender-simulator-vis612-16x9-iphone-se-rebuilt-landscape-readable.png`, `docs/evidence/runtime/defender-simulator-vis612-20x9-iphone-17-pro-rebuilt-landscape-readable.png` ve `docs/evidence/runtime/defender-simulator-vis612-4x3-ipad-pro-13-m5-helper-rotated-landscape-readable.png` olarak saklandı. Final density/spacing polish VIS-612 altında açık kalır.
 
