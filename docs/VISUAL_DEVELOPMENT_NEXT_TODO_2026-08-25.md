@@ -56,3 +56,4 @@ Latest local preflight:
 - The same report shows DDI services are unavailable until the phone is unlocked and kept awake.
 - `tools/validate_visual_human_signoff.py docs/evidence/visual-development/human-review-signoff-template-2026-08-25.json --allow-pending` lists the expected missing human-review approvals for NEXT-006.
 - `tools/validate_visual_device_acceptance.py` and `docs/evidence/visual-development/physical-device-acceptance-template-2026-08-25.json` now define the required physical Profiler, Frame Debugger and 60-actor stress evidence before NEXT-003/NEXT-004/NEXT-005 can pass.
+- Latest local Unity regression after NEXT-201/NEXT-202/NEXT-204/NEXT-205 preparation: EditMode `67/67` and PlayMode `12/12` passed; reports are under ignored `Builds/`.
