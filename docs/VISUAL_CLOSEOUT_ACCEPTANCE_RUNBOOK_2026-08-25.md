@@ -7,12 +7,12 @@ This runbook turns `VISUAL_DEVELOPMENT_NEXT_TODO_2026-08-25.md` into an executab
 
 ## Current gate state
 
-The next TODO is intentionally blocked on two external inputs:
+The next TODO is now blocked on the remaining manual review inputs:
 
-- A physical iPhone 13-class device must be connected over wired USB, unlocked, awake and trusted.
 - A human reviewer must complete the audio/accessibility sign-off JSON.
+- Unity Profiler and Frame/Rendering Debugger summaries must be captured from the physical iPhone run.
 
-The latest readiness probe still returns `[DC_IOS_PHYSICAL_BLOCKED]` because the visible iPhone is on `localNetwork` transport and DDI services cannot mount while the device is locked.
+The 2026-08-26 readiness probe returns `[DC_IOS_PHYSICAL_READY]`, and the physical iPhone development build installs and launches. The automated smoke, performance and 90-second soak paths pass, but they do not replace the manual Profiler/Frame Debugger evidence needed for the final release gate.
 
 ## One-command closeout path
 
@@ -31,7 +31,7 @@ The script runs:
 5. `tools/validate_visual_device_acceptance.py`
 6. `tools/validate_visual_human_signoff.py`
 
-Build logs are written under `Builds/` and remain uncommitted. Curated acceptance summaries should be copied into `docs/evidence` only after review.
+Build logs are written under `Builds/` and remain uncommitted. Smoke, defeat smoke, performance and soak modes now write separate log files so one run does not overwrite another. Curated acceptance summaries should be copied into `docs/evidence` only after review.
 
 Physical Profiler and Frame/Rendering Debugger summaries must be copied into `docs/evidence/visual-development/physical-device-acceptance-2026-08-25.json` and validated with:
 

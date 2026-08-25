@@ -9,11 +9,11 @@ Current closeout state: `VISUAL_DEVELOPMENT_TODO.md` has 165 completed rows and 
 
 | ID | Priority | Status | Task | Acceptance |
 |---|---:|---|---|---|
-| NEXT-001 | P0 | Blocked by USB/unlock | Connect iPhone over USB, unlock it, keep screen awake, accept Trust/Developer prompts | `python3 tools/check_ios_physical_readiness.py` returns `[DC_IOS_PHYSICAL_READY]` |
-| NEXT-002 | P0 | Blocked by NEXT-001 | Run physical iPhone development build | App installs and launches on iPhone 13-class device |
-| NEXT-003 | P0 | Blocked by NEXT-002 | Capture physical Profiler scenarios: preparation, normal, dense, boss phase 3 | 60-second capture per scenario with FPS, CPU/GPU frame time, draw calls, triangles, GC, memory and thermal notes |
+| NEXT-001 | P0 | Tamamlandı | Connect iPhone over USB, unlock it, keep screen awake, accept Trust/Developer prompts | `docs/evidence/visual-development/ios-physical-readiness-2026-08-26.json` returns `[DC_IOS_PHYSICAL_READY]` |
+| NEXT-002 | P0 | Tamamlandı | Run physical iPhone development build | App installed and launched on the connected iPhone 13-class device; smoke automation reached `[DC_SMOKE_PASS]` |
+| NEXT-003 | P0 | İncelemede | Capture physical Profiler scenarios: preparation, normal, dense, boss phase 3 | Automated physical performance run passed, but final 60-second Unity Profiler notes with FPS, CPU/GPU frame time, draw calls, triangles, GC, memory and thermal notes are still required |
 | NEXT-004 | P0 | Blocked by NEXT-003 | Capture Frame/Rendering Debugger evidence | Top render costs, shadow casters, additional lights, overdraw and texture usage are recorded |
-| NEXT-005 | P0 | Blocked by NEXT-003 | Run physical 60-actor/VFX stress and 90-second soak | No persistent GC allocation spike, no low-memory warning, boss scene stays above 30 FPS floor |
+| NEXT-005 | P0 | İncelemede | Run physical 60-actor/VFX stress and 90-second soak | 90-second physical soak passed with no low-memory warning; 60-actor Profiler/overdraw evidence is still required |
 | NEXT-006 | P0 | Blocked by human reviewer | Complete human audio/accessibility sign-off JSON | `tools/validate_visual_human_signoff.py` passes without `--allow-pending` |
 
 ## B. Close blocked VIS rows after unblock
@@ -51,10 +51,10 @@ These are intentionally outside the current vertical-slice closeout. Do not mix 
 
 Latest local preflight:
 
-- `tools/run_visual_closeout_acceptance.sh` stops at NEXT-001 with `[DC_VISUAL_CLOSEOUT_BLOCKED]`.
-- `docs/evidence/visual-development/ios-physical-readiness-2026-08-25.json` shows the iPhone is paired and tunnel-connected, but still visible through `localNetwork` instead of wired USB.
-- The same report shows DDI services are unavailable until the phone is unlocked and kept awake.
+- `python3 tools/check_ios_physical_readiness.py --output docs/evidence/visual-development/ios-physical-readiness-2026-08-26.json` returns `[DC_IOS_PHYSICAL_READY]` for the connected, wired, paired iPhone 13-class device.
+- `tools/build_and_run_ios_device.sh` now selects the provisioning-profile team before falling back to the first Apple Development identity. This fixes the previous local mismatch where the certificate team and usable wildcard provisioning profile team differed.
+- Physical iPhone smoke, automated performance and 90-second soak runs passed on 2026-08-26. Details and caveats are recorded in `docs/IOS_PHYSICAL_DEVICE_ACCEPTANCE_PROGRESS_2026-08-26.md`.
 - `tools/validate_visual_human_signoff.py docs/evidence/visual-development/human-review-signoff-template-2026-08-25.json --allow-pending` lists the expected missing human-review approvals for NEXT-006.
-- `tools/validate_visual_device_acceptance.py` and `docs/evidence/visual-development/physical-device-acceptance-template-2026-08-25.json` now define the required physical Profiler, Frame Debugger and 60-actor stress evidence before NEXT-003/NEXT-004/NEXT-005 can pass.
+- `tools/validate_visual_device_acceptance.py` and `docs/evidence/visual-development/physical-device-acceptance-template-2026-08-25.json` still define the required manual Unity Profiler, Frame Debugger and 60-actor stress evidence before NEXT-003/NEXT-004/NEXT-005 can be fully closed.
 - Latest local Unity regression after NEXT-201/NEXT-202/NEXT-204/NEXT-205 preparation: EditMode `67/67` and PlayMode `12/12` passed; reports are under ignored `Builds/`.
 - `tools/validate_brand_handoff.py` and `docs/evidence/visual-development/brand-handoff-template-2026-08-26.json` now prevent NEXT-203 from moving forward without the accepted logo/splash handoff and Dynamic-Island-safe evidence.

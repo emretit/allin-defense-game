@@ -49,9 +49,11 @@ namespace DefenderChronicles.Editor
         public static void BuildDeviceDevelopmentProject()
         {
             Apply();
-            BuildXcodeProject("Builds/iOS-Device",
-                BuildOptions.Development | BuildOptions.AllowDebugging | BuildOptions.ConnectWithProfiler,
-                "iOS Device Development");
+            BuildOptions options = BuildOptions.Development | BuildOptions.AllowDebugging;
+            if (System.Environment.GetEnvironmentVariable("DC_IOS_CONNECT_PROFILER") == "1")
+                options |= BuildOptions.ConnectWithProfiler;
+
+            BuildXcodeProject("Builds/iOS-Device", options, "iOS Device Development");
         }
 
         private static void BuildSimulator(string relativeOutputPath, bool development)

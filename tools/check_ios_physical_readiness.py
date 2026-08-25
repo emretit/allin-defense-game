@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import datetime
 import json
 import subprocess
 import tempfile
@@ -195,7 +196,9 @@ def readiness_status(
             blockers.append(f"{name} is visible over {device.get('transportType', 'unknown')} rather than wired USB.")
         if device.get("ddiServicesAvailable") is not True:
             probe = probe_by_name.get(name, {})
-            if probe.get("result") == "deviceLocked":
+            if probe.get("ok") is True or probe.get("result") == "available":
+                pass
+            elif probe.get("result") == "deviceLocked":
                 blockers.append(f"{name} must be unlocked and kept awake before DDI services can mount.")
             else:
                 blockers.append(f"{name} DDI services are not available.")
@@ -212,6 +215,7 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     args = parser.parse_args()
+    output_path = args.output if args.output.is_absolute() else ROOT / args.output
 
     devicectl = load_devicectl()
     devices = sanitized_physical_devices(devicectl["devices"])
@@ -222,7 +226,7 @@ def main() -> int:
     status = readiness_status(devices, support_versions, preferred_ddi, ddi_probes)
     report = {
         "schema": "defender-chronicles.visual-development.ios-physical-readiness.v1",
-        "capturedOn": "2026-08-25",
+        "capturedOn": datetime.date.today().isoformat(),
         "xcode": xcode_version(),
         "legacyDeviceSupportVersions": support_versions,
         "preferredIosDDI": preferred_ddi,
@@ -234,9 +238,9 @@ def main() -> int:
         "note": "Sanitized report: serial number, ECID, UDID and CoreDevice identifier are intentionally omitted.",
     }
 
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    print(args.output.relative_to(ROOT))
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    print(output_path.relative_to(ROOT))
     if status["readyForPhysicalAcceptance"]:
         print("[DC_IOS_PHYSICAL_READY]")
     else:
