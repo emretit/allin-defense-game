@@ -1,0 +1,24 @@
+fileFormatVersion: 2
+guid: f94c9fba5806c810ed6bee20ee64c2a4
+ModelImporter:
+  serializedVersion: 24200
+  materials:
+    materialImportMode: 2
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    importAnimation: 1
+    animationType: 2
+  meshes:
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useFileScale: 1
+    useFileUnits: 1
+    weldVertices: 1
+  importAnimation: 1
+  animationType: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

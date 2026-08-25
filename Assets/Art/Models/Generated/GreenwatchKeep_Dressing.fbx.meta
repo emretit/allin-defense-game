@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 90403be1a30e4b7893d0a86cd237576a
+ModelImporter:
+  serializedVersion: 21300
+  globalScale: 1
+  meshCompression: 0
+  useFileScale: 1
+  importAnimation: 0
+  animationType: 0
+  addColliders: 0
+  materialImportMode: 2
+  importVisibility: 1
+  importCameras: 0
+  importLights: 0
+  fileIdsGeneration: 2
+  userData:
+  assetBundleName:
+  assetBundleVariant:

@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
+using UnityEngine.Profiling;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -39,6 +40,9 @@ namespace DefenderChronicles.Core
         private const int StartingGold = 200;
         private const int StartingLives = 20;
         private const float IntermissionSeconds = 8f;
+        public const float BaselineGameplayPace = 2f;
+        private static readonly float[] SpeedSteps = { 1f, 2f, 4f, 8f };
+        private static readonly string[] SpeedLabels = { "1x", "2x", "4x", "8x" };
         private static readonly Vector3[] OutpostSlotPositions =
         {
             new(2f, 0.15f, 0f), new(2f, 0.15f, 5f),
@@ -59,6 +63,36 @@ namespace DefenderChronicles.Core
         public int WaveCount => waves?.Length ?? 0;
         public int CurrentWaveIndex => currentWaveIndex;
         public int SlotCount => slots.Count;
+        public float CurrentGameSpeed => currentGameSpeed;
+        public float GameplayDeltaTime => Time.deltaTime * BaselineGameplayPace;
+        public int CampaignLevelNumber { get; private set; } = 10;
+        public int StartingLivesForLevel { get; private set; } = StartingLives;
+        public bool IsInitialized => initialized;
+
+        public void SetCampaignLevel(int levelNumber)
+        {
+            CampaignLevelNumber = Mathf.Clamp(levelNumber, 1, CampaignCatalog.LevelCount);
+        }
+
+        public static float SpeedForStep(int index) => SpeedSteps[Mathf.Clamp(index, 0, SpeedSteps.Length - 1)];
+        public static string SpeedLabelForStep(int index) => SpeedLabels[Mathf.Clamp(index, 0, SpeedLabels.Length - 1)];
+
+        public static string SpeedLabelForScale(float scale)
+        {
+            int closestIndex = 0;
+            float closestDistance = float.MaxValue;
+            for (int index = 0; index < SpeedSteps.Length; index++)
+            {
+                float distance = Mathf.Abs(SpeedSteps[index] - scale);
+                if (distance >= closestDistance) continue;
+                closestDistance = distance;
+                closestIndex = index;
+            }
+            return SpeedLabels[closestIndex];
+        }
+
+        public static float GameplayDelay(float authoredSeconds) =>
+            Mathf.Max(0f, authoredSeconds) / BaselineGameplayPace;
 
         public event Action<GamePhase> PhaseChanged;
         public event Action<int> GoldChanged;
@@ -75,6 +109,9 @@ namespace DefenderChronicles.Core
         private readonly List<GreyboxOutpostSlot> slots = new();
 
         private WaveDefinition[] waves;
+        private CampaignLevelDefinition activeLevelDefinition;
+        private Vector3[] activeOutpostSlotPositions = (Vector3[])OutpostSlotPositions.Clone();
+        private Vector3 activeGuardianPosition = new(21.7f, 0.12f, 8.15f);
         private int currentWaveIndex;
         private int plannedThisWave;
         private int removedThisWave;
@@ -82,6 +119,14 @@ namespace DefenderChronicles.Core
         private bool initialized;
         private bool automatedSmoke;
         private bool automatedDefeatSmoke;
+        private bool automatedSlotRegressionSmoke;
+        private bool automatedAbilityCapture;
+        private bool automatedPauseCapture;
+        private bool automatedActorCapture;
+        private bool automatedPerformanceAcceptance;
+        private bool automatedSoakAcceptance;
+        private bool automatedVisualAcceptance;
+        private bool automatedVisualAcceptanceDefeat;
         private static bool defeatRestartRequested;
         private float intermissionRemaining;
         private GamePhase phaseBeforePause;
@@ -104,6 +149,8 @@ namespace DefenderChronicles.Core
         private Text nextWaveButtonLabel;
         private Button pauseButton;
         private Text pauseButtonLabel;
+        private Button speedButton;
+        private Text speedButtonLabel;
         private Button heroAbilityButton;
         private Button upgradeButton;
         private Button sellButton;
@@ -113,6 +160,9 @@ namespace DefenderChronicles.Core
         private DefenderPresentationCatalog presentationCatalog;
         private DefenderPresentationDirector presentationDirector;
         private DefenderHudController artHud;
+        private Action returnToMainMenu;
+        private float currentGameSpeed = 1f;
+        private int speedStepIndex;
 
         private readonly Color groundColor = new(0.18f, 0.34f, 0.22f);
         private readonly Color roadColor = new(0.66f, 0.56f, 0.39f);
@@ -141,16 +191,21 @@ namespace DefenderChronicles.Core
             presentationCatalog = catalog;
         }
 
+        public void ConfigureMainMenuAction(Action action)
+        {
+            if (initialized) throw new InvalidOperationException("Main menu action must be configured before initialization.");
+            returnToMainMenu = action;
+        }
+
         public void Initialize()
         {
             if (initialized) return;
             if (presentationCatalog == null && !Application.isEditor)
                 throw new InvalidOperationException("Primitive presentation is restricted to automated editor tests.");
             initialized = true;
-            Time.timeScale = 1f;
-            Application.targetFrameRate = 60;
-            QualitySettings.vSyncCount = 0;
-
+            speedStepIndex = 0;
+            currentGameSpeed = SpeedSteps[speedStepIndex];
+            Time.timeScale = currentGameSpeed;
             BuildDefinitions();
             ConfigureCameraAndLight();
             BuildWorld();
@@ -165,20 +220,58 @@ namespace DefenderChronicles.Core
             }
             ValidateContent();
             SetPhase(GamePhase.Preparing);
-            if (Debug.isDebugBuild && Application.platform == RuntimePlatform.IPhonePlayer)
+            bool explicitAcceptanceProbe = Environment.GetEnvironmentVariable("DC_PERFORMANCE_ACCEPTANCE") == "1" ||
+                                           Environment.GetEnvironmentVariable("DC_SOAK_ACCEPTANCE") == "1";
+            if (explicitAcceptanceProbe) Application.runInBackground = true;
+            if (!Application.isEditor &&
+                ((Debug.isDebugBuild && Application.platform == RuntimePlatform.IPhonePlayer) || explicitAcceptanceProbe))
                 gameObject.AddComponent<DeviceAcceptanceProbe>();
-            ShowMessage("Bir karakol platformuna dokun ve savunmanı kur.", 6f);
+            if (CampaignLevelNumber == 1)
+                ShowMessage("Bir karakol platformuna dokun ve savunmanı kur.", 6f);
             RefreshUi();
+            RefreshThreatPreviewForPhase();
 
             automatedSmoke = !Application.isEditor &&
                              (Environment.GetCommandLineArgs().Contains("-dc-smoke") ||
                               Environment.GetEnvironmentVariable("DC_SMOKE") == "1");
             automatedDefeatSmoke = !Application.isEditor &&
                                    Environment.GetEnvironmentVariable("DC_SMOKE_DEFEAT") == "1";
-            if (automatedSmoke)
+            automatedSlotRegressionSmoke = !Application.isEditor &&
+                                           Environment.GetEnvironmentVariable("DC_SLOT_REGRESSION") == "1";
+            automatedAbilityCapture = !Application.isEditor &&
+                                      Environment.GetEnvironmentVariable("DC_ABILITY_CAPTURE") == "1";
+            automatedPauseCapture = !Application.isEditor &&
+                                    Environment.GetEnvironmentVariable("DC_PAUSE_CAPTURE") == "1";
+            automatedActorCapture = !Application.isEditor &&
+                                    Environment.GetEnvironmentVariable("DC_ACTOR_CAPTURE") == "1";
+            automatedPerformanceAcceptance = !Application.isEditor &&
+                                             Environment.GetEnvironmentVariable("DC_PERFORMANCE_ACCEPTANCE") == "1";
+            automatedSoakAcceptance = !Application.isEditor &&
+                                      Environment.GetEnvironmentVariable("DC_SOAK_ACCEPTANCE") == "1";
+            automatedVisualAcceptance = !Application.isEditor &&
+                                        Environment.GetEnvironmentVariable("DC_VIS812_CAPTURE") == "1";
+            automatedVisualAcceptanceDefeat = !Application.isEditor &&
+                                              Environment.GetEnvironmentVariable("DC_VIS812_CAPTURE_DEFEAT") == "1";
+            if (automatedVisualAcceptance)
+                StartCoroutine(RunAutomatedVis812VisualAcceptance());
+            else if (automatedVisualAcceptanceDefeat)
+                StartCoroutine(RunAutomatedVis812DefeatAcceptance());
+            else if (automatedPerformanceAcceptance)
+                StartCoroutine(RunAutomatedPerformanceAcceptance());
+            else if (automatedSoakAcceptance)
+                StartCoroutine(RunAutomatedSoakAcceptance());
+            else if (automatedSlotRegressionSmoke)
+                StartCoroutine(RunAutomatedSlotRegressionSmoke());
+            else if (automatedSmoke)
                 StartCoroutine(RunAutomatedSmoke());
             else if (automatedDefeatSmoke)
                 StartCoroutine(RunAutomatedDefeatAndRestartSmoke());
+            else if (automatedAbilityCapture)
+                StartCoroutine(RunAutomatedAbilityCapture());
+            else if (automatedPauseCapture)
+                StartCoroutine(RunAutomatedPauseCapture());
+            else if (automatedActorCapture)
+                StartCoroutine(RunAutomatedActorCapture());
         }
 
         private void Update()
@@ -208,49 +301,33 @@ namespace DefenderChronicles.Core
             RefreshUi();
         }
 
+        private void RefreshThreatPreviewForPhase()
+        {
+            if (waves == null || waves.Length == 0) return;
+            string preview = Phase switch
+            {
+                GamePhase.Preparing when currentWaveIndex < waves.Length => $"Sıradaki: {waves[currentWaveIndex].preview}",
+                GamePhase.Intermission when currentWaveIndex < waves.Length => $"Sıradaki: {waves[currentWaveIndex].preview}",
+                GamePhase.Wave when currentWaveIndex < waves.Length => waves[currentWaveIndex].preview,
+                _ => previewText != null ? previewText.text : string.Empty
+            };
+
+            if (previewText != null) previewText.text = preview;
+            artHud?.SetPreview(preview);
+        }
+
         private void BuildDefinitions()
         {
+            RuntimeCampaignLevel level = CampaignLevelFactory.Create(CampaignLevelNumber);
+            activeLevelDefinition = level.campaign;
             path.Clear();
-            path.AddRange(new[]
-            {
-                new Vector3(-2f, 0f, 2f),
-                new Vector3(4f, 0f, 2f),
-                new Vector3(4f, 0f, 8f),
-                new Vector3(10f, 0f, 8f),
-                new Vector3(10f, 0f, 3.5f),
-                new Vector3(16f, 0f, 3.5f),
-                new Vector3(16f, 0f, 9f),
-                new Vector3(24f, 0f, 9f)
-            });
-
-            waves = new[]
-            {
-                new WaveDefinition("wave_01", "Hızlı yağmacılar", 25, false,
-                    new SpawnGroupDefinition(EnemyArchetype.Raider, 10, 0f, 0.85f)),
-                new WaveDefinition("wave_02", "Yağmacılar + zırhlı öncü", 35, false,
-                    new SpawnGroupDefinition(EnemyArchetype.Raider, 9, 0f, 0.78f),
-                    new SpawnGroupDefinition(EnemyArchetype.Vanguard, 4, 1.2f, 1.15f)),
-                new WaveDefinition("wave_03", "İki koldan karma baskı", 45, false,
-                    new SpawnGroupDefinition(EnemyArchetype.Vanguard, 6, 0f, 1.05f),
-                    new SpawnGroupDefinition(EnemyArchetype.Raider, 12, 0.5f, 0.68f)),
-                new WaveDefinition("wave_04", "Yenilenen muhafızlar", 55, false,
-                    new SpawnGroupDefinition(EnemyArchetype.Regenerator, 5, 0f, 1.35f),
-                    new SpawnGroupDefinition(EnemyArchetype.Raider, 12, 1f, 0.7f)),
-                new WaveDefinition("wave_05", "Şifacı desteği", 70, false,
-                    new SpawnGroupDefinition(EnemyArchetype.Vanguard, 8, 0f, 0.95f),
-                    new SpawnGroupDefinition(EnemyArchetype.Support, 3, 0.5f, 2.1f),
-                    new SpawnGroupDefinition(EnemyArchetype.Raider, 10, 0.5f, 0.65f)),
-                new WaveDefinition("wave_06", "Kuşatma birliği", 90, false,
-                    new SpawnGroupDefinition(EnemyArchetype.Siege, 3, 0f, 2.4f),
-                    new SpawnGroupDefinition(EnemyArchetype.Regenerator, 5, 0.4f, 1.2f),
-                    new SpawnGroupDefinition(EnemyArchetype.Vanguard, 9, 0.5f, 0.88f),
-                    new SpawnGroupDefinition(EnemyArchetype.Raider, 10, 0.5f, 0.58f)),
-                new WaveDefinition("wave_boss", "Kızıl Muhafız — üç safhalı boss", 150, true,
-                    new SpawnGroupDefinition(EnemyArchetype.Raider, 6, 0f, 0.72f),
-                    new SpawnGroupDefinition(EnemyArchetype.Vanguard, 4, 0.5f, 1.05f),
-                    new SpawnGroupDefinition(EnemyArchetype.Support, 2, 0.5f, 2.2f),
-                    new SpawnGroupDefinition(EnemyArchetype.Boss, 1, 2f, 1f))
-            };
+            path.AddRange(level.path);
+            waves = level.waves;
+            activeOutpostSlotPositions = level.outpostSlots;
+            activeGuardianPosition = level.guardianPosition;
+            Gold = activeLevelDefinition.startingGold;
+            Lives = activeLevelDefinition.startingLives;
+            StartingLivesForLevel = activeLevelDefinition.startingLives;
         }
 
         private void ConfigureCameraAndLight()
@@ -285,7 +362,13 @@ namespace DefenderChronicles.Core
             }
 
             if (presentationCatalog != null)
+            {
                 DefenderSceneLook.Apply(gameCamera);
+                var responsiveCamera = gameCamera.GetComponent<AdaptiveBattlefieldCamera>();
+                if (responsiveCamera == null)
+                    responsiveCamera = gameCamera.gameObject.AddComponent<AdaptiveBattlefieldCamera>();
+                responsiveCamera.Configure(gameCamera);
+            }
         }
 
         private void BuildWorld()
@@ -348,22 +431,22 @@ namespace DefenderChronicles.Core
                 environment.transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
                 foreach (Renderer renderer in environment.GetComponentsInChildren<Renderer>(true))
                 {
-                    if (renderer.name.StartsWith("RoadEdge", StringComparison.OrdinalIgnoreCase) ||
+                    if (renderer.name.StartsWith("Road", StringComparison.OrdinalIgnoreCase) ||
                         renderer.name.StartsWith("DeepBackdrop", StringComparison.OrdinalIgnoreCase) ||
                         renderer.sharedMaterial == presentationCatalog.navyMaterial)
                         renderer.enabled = false;
                 }
             }
-            DefenderBattlefieldDressing.Install(world, presentationCatalog, gameCamera);
+            DefenderBattlefieldDressing.Install(world, presentationCatalog, gameCamera, path);
 
             CreateStylizedOutpostSlots(world);
         }
 
         private void CreateGreyboxOutpostSlots(Transform world)
         {
-            for (int i = 0; i < OutpostSlotPositions.Length; i++)
+            for (int i = 0; i < activeOutpostSlotPositions.Length; i++)
             {
-                Vector3 position = OutpostSlotPositions[i];
+                Vector3 position = activeOutpostSlotPositions[i];
                 var slotRoot = CreatePrimitive($"Outpost Slot {i + 1}", PrimitiveType.Cylinder, position,
                     new Vector3(1.18f, 0.16f, 1.18f), stoneColor, world, true);
                 CreatePrimitive($"Outpost Slot {i + 1} Glow", PrimitiveType.Cylinder, position + Vector3.up * 0.08f,
@@ -377,10 +460,10 @@ namespace DefenderChronicles.Core
 
         private void CreateStylizedOutpostSlots(Transform world)
         {
-            for (int i = 0; i < OutpostSlotPositions.Length; i++)
+            for (int i = 0; i < activeOutpostSlotPositions.Length; i++)
             {
                 GameObject root = StylizedPresentationFactory.CreateRoot($"Outpost Slot {i + 1}",
-                    OutpostSlotPositions[i], new Vector3(1.25f, 0.24f, 1.25f),
+                    activeOutpostSlotPositions[i], new Vector3(1.25f, 0.24f, 1.25f),
                     presentationCatalog.outpostSlotPrefab, presentationCatalog, PresentationCollider.Cylinder);
                 root.transform.SetParent(world, true);
                 AddOutpostSlot(root);
@@ -434,14 +517,15 @@ namespace DefenderChronicles.Core
 
         private void BuildHero()
         {
-            Vector3 guardianPosition = new(21.7f, 0.12f, 8.15f);
+            Vector3 guardianPosition = activeGuardianPosition;
             GameObject go;
             if (presentationCatalog != null)
             {
                 go = StylizedPresentationFactory.CreateRoot("Knight Commander",
                     guardianPosition, new Vector3(0.72f, 1.9f, 0.72f),
                     presentationCatalog.ActorPrefab(PresentationActorKind.Knight), presentationCatalog,
-                    PresentationCollider.Capsule, presentationCatalog.ActorScale(PresentationActorKind.Knight));
+                    PresentationCollider.Capsule, presentationCatalog.ActorScale(PresentationActorKind.Knight),
+                    presentationCatalog.ActorAnimator(PresentationActorKind.Knight), PresentationActorKind.Knight);
                 go.transform.SetParent(transform, true);
             }
             else
@@ -471,23 +555,25 @@ namespace DefenderChronicles.Core
             scaler.matchWidthOrHeight = 0.5f;
             canvasObject.AddComponent<GraphicRaycaster>();
 
-            var safeRoot = CreateUiObject("Safe Area", canvasObject.transform);
-            Stretch(safeRoot.GetComponent<RectTransform>());
-            safeRoot.AddComponent<RuntimeSafeArea>();
-
             if (presentationCatalog != null)
             {
-                GameObject hudObject = Instantiate(presentationCatalog.hudPrefab, safeRoot.transform);
+                // Decorative rails render edge-to-edge. DefenderHudResponsiveLayout keeps
+                // their controls inside Screen.safeArea without shrinking the whole HUD.
+                GameObject hudObject = Instantiate(presentationCatalog.hudPrefab, canvasObject.transform);
                 hudObject.name = "Defender HUD";
                 Stretch(hudObject.GetComponent<RectTransform>());
                 artHud = hudObject.GetComponent<DefenderHudController>();
                 if (artHud == null)
                     throw new InvalidOperationException("Presentation HUD prefab has no DefenderHudController.");
                 artHud.Initialize(presentationCatalog, TryBuildSelected, UseHeroAbility, CancelSelection,
-                    StartNextWave, OnPausePressed, UpgradeSelected, SellSelected, RestartLevel,
+                    StartNextWave, OnPausePressed, ReturnToMainMenu, ToggleGameSpeed, UpgradeSelected, SellSelected, RestartLevel,
                     () => EmitPresentation(PresentationCue.UiClick, Vector3.zero));
                 return;
             }
+
+            var safeRoot = CreateUiObject("Safe Area", canvasObject.transform);
+            Stretch(safeRoot.GetComponent<RectTransform>());
+            safeRoot.AddComponent<RuntimeSafeArea>();
 
             var topBar = CreatePanel("Top Bar", safeRoot.transform, new Color(0.035f, 0.055f, 0.075f, 0.94f));
             SetAnchors(topBar.GetComponent<RectTransform>(), new Vector2(0f, 1f), new Vector2(1f, 1f),
@@ -503,6 +589,9 @@ namespace DefenderChronicles.Core
             pauseButton = CreateButton("Pause", topBar.transform, "DURAKLAT", new Vector2(190f, 52f), OnPausePressed);
             SetRect(pauseButton.GetComponent<RectTransform>(), new Vector2(-210f, 12f), new Vector2(190f, 52f), new Vector2(1f, 0f), new Vector2(1f, 0f));
             pauseButtonLabel = pauseButton.GetComponentInChildren<Text>();
+            speedButton = CreateButton("Speed", topBar.transform, "1x", new Vector2(92f, 52f), ToggleGameSpeed);
+            SetRect(speedButton.GetComponent<RectTransform>(), new Vector2(-314f, 12f), new Vector2(92f, 52f), new Vector2(1f, 0f), new Vector2(1f, 0f));
+            speedButtonLabel = speedButton.GetComponentInChildren<Text>();
 
             previewText = CreateText("Preview", safeRoot.transform, "", 26, TextAnchor.MiddleCenter);
             previewText.color = new Color(1f, 0.86f, 0.42f);
@@ -575,8 +664,7 @@ namespace DefenderChronicles.Core
             spawning = true;
             plannedThisWave = wave.groups?.Sum(group => Mathf.Max(0, group.count)) ?? 0;
             removedThisWave = 0;
-            if (previewText != null) previewText.text = wave.preview;
-            artHud?.SetPreview(wave.preview);
+            RefreshThreatPreviewForPhase();
             EmitPresentation(PresentationCue.WaveStarted, path[0], value: currentWaveIndex);
 
             if (plannedThisWave <= 0)
@@ -591,12 +679,12 @@ namespace DefenderChronicles.Core
             {
                 if (group == null || group.count <= 0) continue;
                 if (group.startDelay > 0f)
-                    yield return new WaitForSeconds(group.startDelay);
+                    yield return new WaitForSeconds(GameplayDelay(group.startDelay));
 
                 for (int i = 0; i < group.count; i++)
                 {
                     SpawnEnemy(group.enemy);
-                    yield return new WaitForSeconds(group.interval);
+                    yield return new WaitForSeconds(GameplayDelay(group.interval));
                 }
             }
 
@@ -613,7 +701,7 @@ namespace DefenderChronicles.Core
                 return;
             }
 
-            EnemyStats stats = GetStats(archetype);
+            EnemyStats stats = GetScaledStats(archetype);
             float size = archetype == EnemyArchetype.Boss ? 1.7f : archetype == EnemyArchetype.Siege ? 1.25f : 0.85f;
             GameObject go;
             if (presentationCatalog != null)
@@ -621,7 +709,8 @@ namespace DefenderChronicles.Core
                 PresentationActorKind actorKind = ActorKind(archetype);
                 go = StylizedPresentationFactory.CreateRoot(archetype.ToString(), path[0],
                     new Vector3(size, Mathf.Max(1.4f, size * 1.7f), size), presentationCatalog.ActorPrefab(actorKind),
-                    presentationCatalog, PresentationCollider.Capsule, presentationCatalog.ActorScale(actorKind));
+                    presentationCatalog, PresentationCollider.Capsule, presentationCatalog.ActorScale(actorKind),
+                    presentationCatalog.ActorAnimator(actorKind), actorKind);
                 go.transform.SetParent(transform, true);
             }
             else
@@ -633,6 +722,7 @@ namespace DefenderChronicles.Core
             var enemy = go.AddComponent<GreyboxEnemy>();
             enemy.Configure(this, archetype, stats, path);
             enemies.Add(enemy);
+            EmitPresentation(PresentationCue.UnitSpawned, go.transform.position, go, ActorKind(archetype));
         }
 
         internal void EnemyRemoved(GreyboxEnemy enemy, bool defeated)
@@ -686,9 +776,7 @@ namespace DefenderChronicles.Core
 
             intermissionRemaining = IntermissionSeconds;
             SetPhase(GamePhase.Intermission);
-            string nextPreview = $"Sıradaki: {waves[currentWaveIndex].preview}";
-            if (previewText != null) previewText.text = nextPreview;
-            artHud?.SetPreview(nextPreview);
+            RefreshThreatPreviewForPhase();
             if (currentWaveIndex == 1)
                 ShowMessage("Kale muhafızı son savunma hattını otomatik korur.", 5f);
             else if (currentWaveIndex == 2)
@@ -708,7 +796,7 @@ namespace DefenderChronicles.Core
             if (Phase == GamePhase.Victory || Phase == GamePhase.Defeat) return;
             if (Phase == GamePhase.Paused)
             {
-                Time.timeScale = 1f;
+                Time.timeScale = currentGameSpeed;
                 SetPhase(phaseBeforePause);
                 if (pauseButtonLabel != null) pauseButtonLabel.text = "DURAKLAT";
             }
@@ -722,6 +810,22 @@ namespace DefenderChronicles.Core
         }
 
         public void TogglePause() => OnPausePressed();
+
+        private void ReturnToMainMenu()
+        {
+            if (Phase != GamePhase.Paused || returnToMainMenu == null) return;
+            Time.timeScale = 0f;
+            returnToMainMenu.Invoke();
+        }
+
+        private void ToggleGameSpeed()
+        {
+            speedStepIndex = (speedStepIndex + 1) % SpeedSteps.Length;
+            currentGameSpeed = SpeedForStep(speedStepIndex);
+            if (Phase != GamePhase.Paused && Phase != GamePhase.Victory && Phase != GamePhase.Defeat)
+                Time.timeScale = currentGameSpeed;
+            RefreshUi();
+        }
 
         private void RestartLevel()
         {
@@ -909,6 +1013,8 @@ namespace DefenderChronicles.Core
                 if (!TryBuildOutpost(i, layout[i]))
                 {
                     Debug.LogError($"[DC_SMOKE_FAIL] Could not build outpost at slot {i}.");
+                    yield return new WaitForSecondsRealtime(0.5f);
+                    Application.Quit(2);
                     yield break;
                 }
                 TryUpgradeOutpost(i);
@@ -930,10 +1036,637 @@ namespace DefenderChronicles.Core
             }
 
             Time.timeScale = 1f;
-            if (Phase == GamePhase.Victory)
+            bool passed = Phase == GamePhase.Victory;
+            if (passed)
                 Debug.Log("[DC_SMOKE_PASS] Build, upgrade, hero, pause and all seven waves completed with victory.");
             else
                 Debug.LogError($"[DC_SMOKE_FAIL] Functional run ended in phase {Phase}.");
+            yield return new WaitForSecondsRealtime(0.5f);
+            Application.Quit(passed ? 0 : 2);
+        }
+
+        private IEnumerator RunAutomatedPerformanceAcceptance()
+        {
+            Debug.Log("[DC_PERFORMANCE_ACCEPTANCE] VIS-807 scenario run started.");
+            yield return new WaitForSecondsRealtime(0.5f);
+
+            var probe = GetComponent<DeviceAcceptanceProbe>();
+            if (probe == null)
+            {
+                Debug.LogError("[DC_PERFORMANCE_ACCEPTANCE_FAIL] device_probe_missing=true");
+                yield break;
+            }
+
+            probe.MarkScenario("preparation");
+            yield return new WaitForSecondsRealtime(6f);
+            probe.LogCheckpoint("preparation");
+
+            EarnGold(2600);
+            OutpostKind[] layout =
+            {
+                OutpostKind.Archer, OutpostKind.Barracks, OutpostKind.Mage, OutpostKind.Archer,
+                OutpostKind.Mage, OutpostKind.Barracks, OutpostKind.Archer, OutpostKind.Mage
+            };
+
+            for (int i = 0; i < layout.Length; i++)
+            {
+                if (!TryBuildOutpost(i, layout[i]) || !TryUpgradeOutpost(i))
+                {
+                    Debug.LogError($"[DC_PERFORMANCE_ACCEPTANCE_FAIL] setup_slot={i + 1} kind={layout[i]}");
+                    yield break;
+                }
+            }
+
+            Time.timeScale = 4f;
+            probe.MarkScenario("normal");
+            SetPhase(GamePhase.Wave);
+            SpawnPerformanceMix(10, 3, 0, 0);
+            yield return RunPerformanceSample(8f);
+            probe.LogCheckpoint("normal");
+
+            probe.MarkScenario("dense");
+            ClearPerformanceEnemies();
+            SpawnPerformanceMix(24, 10, 5, 3);
+            yield return RunPerformanceSample(10f);
+            probe.LogCheckpoint("dense");
+
+            probe.MarkScenario("boss");
+            ClearPerformanceEnemies();
+            SpawnPerformanceMix(8, 5, 2, 2);
+            SpawnEnemy(EnemyArchetype.Boss);
+            EmitPresentation(PresentationCue.BossPhase, path[0], actor: PresentationActorKind.Boss, value: 1);
+            yield return RunPerformanceSample(12f);
+            probe.LogCheckpoint("boss");
+
+            Time.timeScale = 1f;
+            if (probe.MeetsPerformanceGate)
+            {
+                Debug.Log($"[DC_PERFORMANCE_ACCEPTANCE_PASS] scenarios=preparation/normal/dense/boss " +
+                          $"median_fps={probe.MedianFps:F1} p95_frame_ms={probe.P95FrameMilliseconds:F1}");
+            }
+            else
+            {
+                Debug.LogError($"[DC_PERFORMANCE_ACCEPTANCE_FAIL] scenarios=preparation/normal/dense/boss " +
+                               $"median_fps={probe.MedianFps:F1} p95_frame_ms={probe.P95FrameMilliseconds:F1} " +
+                               $"low_memory_warning={probe.HasLowMemoryWarning}");
+            }
+            yield return new WaitForSecondsRealtime(1f);
+            Application.Quit(probe.MeetsPerformanceGate ? 0 : 2);
+        }
+
+        private IEnumerator RunAutomatedSoakAcceptance()
+        {
+            Debug.Log("[DC_SOAK_ACCEPTANCE] 90-second dense combat run started.");
+            yield return new WaitForSecondsRealtime(0.5f);
+
+            var probe = GetComponent<DeviceAcceptanceProbe>();
+            if (probe == null)
+            {
+                Debug.LogError("[DC_SOAK_ACCEPTANCE_FAIL] device_probe_missing=true");
+                yield break;
+            }
+
+            BuildVis812DefenseLayout();
+            Time.timeScale = 8f;
+            SetPhase(GamePhase.Wave);
+            float startedAt = Time.realtimeSinceStartup;
+            float warmupEndsAt = startedAt + 30f;
+            float deadline = startedAt + 90f;
+            long startingMemory = 0;
+            float nextCycle = Time.realtimeSinceStartup;
+            int cycles = 0;
+
+            while (Time.realtimeSinceStartup < deadline)
+            {
+                if (Time.realtimeSinceStartup >= nextCycle)
+                {
+                    ClearPerformanceEnemies();
+                    SpawnPerformanceMix(24, 10, 5, 3);
+                    if (cycles % 3 == 2) SpawnEnemy(EnemyArchetype.Boss);
+                    cycles++;
+                    probe.MarkScenario($"soak-{cycles:00}");
+                    probe.LogCheckpoint($"soak-{cycles:00}");
+                    nextCycle += 10f;
+                }
+                if (startingMemory == 0 && Time.realtimeSinceStartup >= warmupEndsAt)
+                {
+                    startingMemory = Profiler.GetTotalAllocatedMemoryLong();
+                    Debug.Log($"[DC_SOAK_WARMUP_COMPLETE] memory_mb={startingMemory / (1024f * 1024f):F1}");
+                }
+                if (hero != null && hero.IsAlive && hero.AbilityRemaining <= 0f)
+                    hero.TryUseShieldBash();
+                yield return null;
+            }
+
+            long endingMemory = Profiler.GetTotalAllocatedMemoryLong();
+            if (startingMemory == 0) startingMemory = endingMemory;
+            float growthPercent = startingMemory <= 0
+                ? 0f
+                : (endingMemory - startingMemory) * 100f / startingMemory;
+            probe.LogCheckpoint("soak-final");
+            Time.timeScale = 1f;
+
+            bool passed = growthPercent <= 20f && !probe.HasLowMemoryWarning && Phase != GamePhase.Defeat;
+            if (passed)
+            {
+                Debug.Log($"[DC_SOAK_ACCEPTANCE_PASS] cycles={cycles} duration_seconds=90 " +
+                          $"memory_growth_pct={growthPercent:F1}");
+            }
+            else
+            {
+                Debug.LogError($"[DC_SOAK_ACCEPTANCE_FAIL] cycles={cycles} memory_growth_pct={growthPercent:F1} " +
+                               $"low_memory_warning={probe.HasLowMemoryWarning} phase={Phase}");
+            }
+            yield return new WaitForSecondsRealtime(1f);
+            Application.Quit();
+        }
+
+        private IEnumerator RunAutomatedVis812VisualAcceptance()
+        {
+            Debug.Log("[DC_VIS812_CAPTURE] final visual evidence run started.");
+            yield return new WaitForSecondsRealtime(0.5f);
+
+            yield return HoldVis812State("preparation", 3f);
+
+            BuildVis812DefenseLayout();
+            if (hero != null && hero.IsAlive)
+                hero.TryUseShieldBash();
+            EmitPresentation(PresentationCue.HeroAbility, hero != null ? hero.Position : path[^1],
+                hero != null ? hero.gameObject : null, PresentationActorKind.Knight);
+            yield return HoldVis812State("ability", 3f);
+
+            Time.timeScale = 1f;
+            SetPhase(GamePhase.Wave);
+            EmitPresentation(PresentationCue.WaveStarted, path[0], value: currentWaveIndex);
+            SpawnPerformanceMix(6, 2, 0, 0);
+            yield return HoldVis812State("normal", 4f);
+
+            ClearPerformanceEnemies();
+            SetPhase(GamePhase.Wave);
+            SpawnPerformanceMix(22, 8, 4, 3);
+            EmitPresentation(PresentationCue.SlowApplied, path[Mathf.Min(2, path.Count - 1)]);
+            yield return HoldVis812State("dense", 4f);
+
+            ClearPerformanceEnemies();
+            SetPhase(GamePhase.Wave);
+            SpawnPerformanceMix(6, 3, 1, 1);
+            SpawnEnemy(EnemyArchetype.Boss);
+            for (int phase = 1; phase <= 3; phase++)
+            {
+                EmitPresentation(PresentationCue.BossPhase, path[0], actor: PresentationActorKind.Boss, value: phase);
+                EmitPresentation(PresentationCue.BossAttack, path[Mathf.Min(1, path.Count - 1)], actor: PresentationActorKind.Boss, value: phase);
+                yield return HoldVis812State($"boss{phase}", 3f);
+            }
+
+            ClearPerformanceEnemies();
+            while (Phase != GamePhase.Victory && currentWaveIndex < WaveCount)
+                CompleteWave();
+            yield return HoldVis812State("victory", 12f);
+
+            Time.timeScale = 1f;
+            Debug.Log("[DC_VIS812_CAPTURE_PASS] states=preparation/ability/normal/dense/boss1/boss2/boss3/victory");
+            yield return new WaitForSecondsRealtime(6f);
+            Application.Quit();
+        }
+
+        private IEnumerator RunAutomatedVis812DefeatAcceptance()
+        {
+            Debug.Log("[DC_VIS812_CAPTURE_DEFEAT] final visual evidence defeat run started.");
+            yield return new WaitForSecondsRealtime(0.5f);
+
+            BuildVis812DefenseLayout();
+            LoseLives(StartingLives);
+            yield return HoldVis812State("defeat", 4f);
+
+            Time.timeScale = 1f;
+            Debug.Log("[DC_VIS812_CAPTURE_DEFEAT_PASS] state=defeat");
+            yield return new WaitForSecondsRealtime(3f);
+            Application.Quit();
+        }
+
+        private void BuildVis812DefenseLayout()
+        {
+            EarnGold(2600);
+            OutpostKind[] layout =
+            {
+                OutpostKind.Archer, OutpostKind.Barracks, OutpostKind.Mage, OutpostKind.Archer,
+                OutpostKind.Mage, OutpostKind.Barracks, OutpostKind.Archer, OutpostKind.Mage
+            };
+
+            for (int i = 0; i < layout.Length; i++)
+            {
+                if (slots.ElementAtOrDefault(i)?.Occupant == null)
+                    TryBuildOutpost(i, layout[i]);
+                TryUpgradeOutpost(i);
+            }
+        }
+
+        private IEnumerator HoldVis812State(string state, float seconds)
+        {
+            RefreshUi();
+            yield return null;
+            RefreshUi();
+            Canvas.ForceUpdateCanvases();
+            yield return null;
+            yield return null;
+            Canvas.ForceUpdateCanvases();
+            Debug.Log($"[DC_VIS812_STATE] state={state} phase={Phase} wave={currentWaveIndex}/{WaveCount} " +
+                      $"gold={Gold} lives={Lives} enemies={enemies.Count}");
+
+            float deadline = Time.realtimeSinceStartup + seconds;
+            float heartbeat = Time.realtimeSinceStartup + 0.75f;
+            while (Time.realtimeSinceStartup < deadline)
+            {
+                if (Time.realtimeSinceStartup >= heartbeat)
+                {
+                    Debug.Log($"[DC_VIS812_HEARTBEAT] state={state} phase={Phase}");
+                    heartbeat = Time.realtimeSinceStartup + 0.75f;
+                }
+                yield return null;
+            }
+        }
+
+        private IEnumerator RunPerformanceSample(float seconds)
+        {
+            float deadline = Time.realtimeSinceStartup + seconds;
+            while (Time.realtimeSinceStartup < deadline)
+            {
+                if (hero != null && hero.IsAlive && hero.AbilityRemaining <= 0f) hero.TryUseShieldBash();
+                yield return null;
+            }
+        }
+
+        private void SpawnPerformanceMix(int raiders, int vanguards, int regenerators, int supports)
+        {
+            for (int i = 0; i < raiders; i++) SpawnEnemy(EnemyArchetype.Raider);
+            for (int i = 0; i < vanguards; i++) SpawnEnemy(EnemyArchetype.Vanguard);
+            for (int i = 0; i < regenerators; i++) SpawnEnemy(EnemyArchetype.Regenerator);
+            for (int i = 0; i < supports; i++) SpawnEnemy(EnemyArchetype.Support);
+        }
+
+        private void ClearPerformanceEnemies()
+        {
+            foreach (GreyboxEnemy enemy in enemies.ToArray())
+                if (enemy != null)
+                    Destroy(enemy.gameObject);
+            enemies.Clear();
+            spawning = false;
+        }
+
+        private IEnumerator RunAutomatedSlotRegressionSmoke()
+        {
+            Debug.Log("[DC_SLOT_REGRESSION] Slot regression smoke started.");
+            yield return null;
+
+            EarnGold(2200);
+            OutpostKind[] layout =
+            {
+                OutpostKind.Archer, OutpostKind.Barracks, OutpostKind.Mage, OutpostKind.Archer,
+                OutpostKind.Mage, OutpostKind.Barracks, OutpostKind.Archer, OutpostKind.Mage
+            };
+
+            for (int i = 0; i < layout.Length; i++)
+            {
+                OutpostKind kind = layout[i];
+                if (!TryBuildOutpost(i, kind))
+                {
+                    Debug.LogError($"[DC_SLOT_REGRESSION_FAIL] slot={i + 1} action=build kind={kind}");
+                    Application.Quit();
+                    yield break;
+                }
+
+                GreyboxOutpost built = slots[i]?.Occupant;
+                if (built == null || built.Kind != kind || built.Level != 1)
+                {
+                    Debug.LogError($"[DC_SLOT_REGRESSION_FAIL] slot={i + 1} action=build-verify expectedKind={kind} actualKind={built?.Kind} actualLevel={built?.Level.ToString() ?? "null"}");
+                    Application.Quit();
+                    yield break;
+                }
+
+                if (!TryUpgradeOutpost(i))
+                {
+                    Debug.LogError($"[DC_SLOT_REGRESSION_FAIL] slot={i + 1} action=upgrade kind={kind}");
+                    Application.Quit();
+                    yield break;
+                }
+
+                GreyboxOutpost upgraded = slots[i]?.Occupant;
+                if (upgraded == null || upgraded.Kind != kind || upgraded.Level != 2 || upgraded.CanUpgrade)
+                {
+                    Debug.LogError($"[DC_SLOT_REGRESSION_FAIL] slot={i + 1} action=upgrade-verify expectedKind={kind} actualKind={upgraded?.Kind} actualLevel={upgraded?.Level.ToString() ?? "null"} canUpgrade={upgraded?.CanUpgrade.ToString() ?? "null"}");
+                    Application.Quit();
+                    yield break;
+                }
+
+                if (!TrySellOutpost(i) || slots[i]?.Occupant != null)
+                {
+                    Debug.LogError($"[DC_SLOT_REGRESSION_FAIL] slot={i + 1} action=sell kind={kind}");
+                    Application.Quit();
+                    yield break;
+                }
+
+                if (!TryBuildOutpost(i, OutpostKind.Archer))
+                {
+                    Debug.LogError($"[DC_SLOT_REGRESSION_FAIL] slot={i + 1} action=rebuild kind=Archer");
+                    Application.Quit();
+                    yield break;
+                }
+
+                GreyboxOutpost rebuilt = slots[i]?.Occupant;
+                if (rebuilt == null || rebuilt.Kind != OutpostKind.Archer || rebuilt.Level != 1)
+                {
+                    Debug.LogError($"[DC_SLOT_REGRESSION_FAIL] slot={i + 1} action=rebuild-verify actualKind={rebuilt?.Kind} actualLevel={rebuilt?.Level.ToString() ?? "null"}");
+                    Application.Quit();
+                    yield break;
+                }
+
+                if (!TrySellOutpost(i) || slots[i]?.Occupant != null)
+                {
+                    Debug.LogError($"[DC_SLOT_REGRESSION_FAIL] slot={i + 1} action=resell kind=Archer");
+                    Application.Quit();
+                    yield break;
+                }
+
+                Debug.Log($"[DC_SLOT_REGRESSION_PASS] slot={i + 1} primary={kind} upgradedLevel=2 reuse=Archer slotCount={SlotCount}");
+                yield return null;
+            }
+
+            Debug.Log("[DC_SLOT_REGRESSION_COMPLETE] all_slots_passed=true");
+            yield return null;
+            Application.Quit();
+        }
+
+        private IEnumerator RunAutomatedAbilityCapture()
+        {
+            Debug.Log("[DC_ABILITY_CAPTURE] startup");
+            yield return new WaitForSeconds(0.45f);
+
+            if (hero == null || !hero.IsAlive)
+            {
+                Debug.LogError("[DC_ABILITY_CAPTURE_FAIL] hero_missing_or_downed");
+                yield break;
+            }
+
+            bool triggered = hero.TryUseShieldBash();
+            RefreshUi();
+            yield return null;
+            RefreshUi();
+            Debug.Log(triggered
+                ? $"[DC_ABILITY_CAPTURE_PASS] cooldown_remaining={hero.AbilityRemaining:0.0}"
+                : $"[DC_ABILITY_CAPTURE_FAIL] cooldown_remaining={hero.AbilityRemaining:0.0}");
+        }
+
+        private IEnumerator RunAutomatedPauseCapture()
+        {
+            Debug.Log("[DC_PAUSE_CAPTURE] startup");
+            yield return new WaitForSeconds(0.45f);
+
+            if (Phase == GamePhase.Victory || Phase == GamePhase.Defeat)
+            {
+                Debug.LogError($"[DC_PAUSE_CAPTURE_FAIL] invalid_phase={Phase}");
+                yield break;
+            }
+
+            OnPausePressed();
+            RefreshUi();
+            yield return null;
+            RefreshUi();
+            Debug.Log(Phase == GamePhase.Paused
+                ? "[DC_PAUSE_CAPTURE_PASS] overlay_visible=true"
+                : $"[DC_PAUSE_CAPTURE_FAIL] phase={Phase}");
+        }
+
+        private IEnumerator RunAutomatedActorCapture()
+        {
+            Debug.Log("[DC_ACTOR_CAPTURE] startup");
+            yield return new WaitForSeconds(0.45f);
+
+            bool sawKnightAttack = false;
+            bool sawKnightAbility = false;
+            bool sawGuardSpawn = false;
+            bool sawGuardThrust = false;
+            bool sawGuardBlock = false;
+            bool sawRaiderSpawn = false;
+            bool sawRaiderHit = false;
+            bool sawRaiderDeath = false;
+            bool sawVanguardSpawn = false;
+            bool sawVanguardHeavy = false;
+            bool sawRegeneratorSpawn = false;
+            bool sawRegeneratorPulse = false;
+            bool sawSupportSpawn = false;
+            bool sawSupportHeal = false;
+            bool sawSiegeSpawn = false;
+            bool sawSiegeHeavy = false;
+            void TrackActorSignal(PresentationSignal signal)
+            {
+                if (signal.actor == PresentationActorKind.Knight && signal.cue == PresentationCue.HeroAttacked)
+                    sawKnightAttack = true;
+                if (signal.actor == PresentationActorKind.Knight && signal.cue == PresentationCue.HeroAbility)
+                    sawKnightAbility = true;
+                if (signal.actor == PresentationActorKind.Guard && signal.cue == PresentationCue.UnitSpawned)
+                    sawGuardSpawn = true;
+                if (signal.actor == PresentationActorKind.Guard && signal.cue == PresentationCue.OutpostAttacked)
+                    sawGuardThrust = true;
+                if (signal.actor == PresentationActorKind.Guard && signal.cue == PresentationCue.HeroAbility)
+                    sawGuardBlock = true;
+                if (signal.actor == PresentationActorKind.Raider && signal.cue == PresentationCue.UnitSpawned)
+                    sawRaiderSpawn = true;
+                if (signal.actor == PresentationActorKind.Raider && signal.cue == PresentationCue.EnemyHit)
+                    sawRaiderHit = true;
+                if (signal.actor == PresentationActorKind.Raider && signal.cue == PresentationCue.EnemyDefeated)
+                    sawRaiderDeath = true;
+                if (signal.actor == PresentationActorKind.Vanguard && signal.cue == PresentationCue.UnitSpawned)
+                    sawVanguardSpawn = true;
+                if (signal.actor == PresentationActorKind.Vanguard && signal.cue == PresentationCue.OutpostDisrupted)
+                    sawVanguardHeavy = true;
+                if (signal.actor == PresentationActorKind.Regenerator && signal.cue == PresentationCue.UnitSpawned)
+                    sawRegeneratorSpawn = true;
+                if (signal.actor == PresentationActorKind.Regenerator && signal.cue == PresentationCue.HealPulse)
+                    sawRegeneratorPulse = true;
+                if (signal.actor == PresentationActorKind.Support && signal.cue == PresentationCue.UnitSpawned)
+                    sawSupportSpawn = true;
+                if (signal.actor == PresentationActorKind.Support && signal.cue == PresentationCue.HealPulse)
+                    sawSupportHeal = true;
+                if (signal.actor == PresentationActorKind.Siege && signal.cue == PresentationCue.UnitSpawned)
+                    sawSiegeSpawn = true;
+                if (signal.actor == PresentationActorKind.Siege && signal.cue == PresentationCue.OutpostDisrupted)
+                    sawSiegeHeavy = true;
+
+                bool actorCaptureCue = signal.cue is PresentationCue.HeroAttacked or PresentationCue.HeroAbility
+                    or PresentationCue.UnitSpawned or PresentationCue.OutpostAttacked
+                    or PresentationCue.EnemyHit or PresentationCue.EnemyDefeated or PresentationCue.OutpostDisrupted
+                    or PresentationCue.HealPulse;
+                if (actorCaptureCue && (signal.actor is PresentationActorKind.Knight or PresentationActorKind.Guard
+                        or PresentationActorKind.Raider or PresentationActorKind.Vanguard
+                        or PresentationActorKind.Regenerator or PresentationActorKind.Support
+                        or PresentationActorKind.Siege))
+                {
+                    DefenderVfxSpec vfx = DefenderVfxPool.Describe(signal);
+                    string animation = DefenderPresentationDirector.AnimationTriggerFor(signal) ?? "none";
+                    Debug.Log($"[DC_ACTOR_CAPTURE_SIGNAL] actor={signal.actor} cue={signal.cue} " +
+                              $"animation={animation} vfx={vfx.materialRole}/{vfx.shape} projectile={vfx.projectile}");
+                }
+            }
+
+            PresentationSignaled += TrackActorSignal;
+            StartNextWave();
+
+            float deadline = Time.realtimeSinceStartup + 3f;
+            GreyboxEnemy raider = null;
+            while (Time.realtimeSinceStartup < deadline)
+            {
+                raider = enemies.FirstOrDefault(enemy => enemy != null && enemy.Archetype == EnemyArchetype.Raider);
+                if (raider != null) break;
+                yield return null;
+            }
+
+            if (raider == null || hero == null || !hero.IsAlive)
+            {
+                PresentationSignaled -= TrackActorSignal;
+                Debug.LogError($"[DC_ACTOR_CAPTURE_FAIL] raider_found={raider != null} hero_ready={hero != null && hero.IsAlive}");
+                yield break;
+            }
+
+            raider.transform.position = hero.Position + new Vector3(-1.15f, 0f, -0.35f);
+            raider.transform.rotation = Quaternion.LookRotation((hero.Position - raider.Position).normalized, Vector3.up);
+            yield return null;
+
+            deadline = Time.realtimeSinceStartup + 2f;
+            while (!sawKnightAttack && Time.realtimeSinceStartup < deadline)
+                yield return null;
+
+            if (!sawRaiderHit && raider != null && raider.IsAlive)
+                raider.TakeDamage(5);
+            yield return null;
+
+            if (!sawKnightAbility)
+                hero.TryUseShieldBash();
+            yield return new WaitForSeconds(0.15f);
+
+            if (!sawRaiderDeath && raider != null && raider.IsAlive)
+                raider.TakeDamage(999);
+            yield return new WaitForSeconds(0.15f);
+
+            Vector3 guardPreviewPosition = hero.Position + new Vector3(-3.15f, 0f, -0.95f);
+            Vector3 raiderPreviewPosition = hero.Position + new Vector3(-4.25f, 0f, -0.95f);
+            Vector3 vanguardPreviewPosition = hero.Position + new Vector3(-2.05f, 0f, -0.95f);
+            Vector3 regeneratorPreviewPosition = hero.Position + new Vector3(-0.95f, 0f, -0.95f);
+            Vector3 supportPreviewPosition = hero.Position + new Vector3(0.18f, 0f, -0.95f);
+            Vector3 siegePreviewPosition = hero.Position + new Vector3(1.72f, 0f, -0.98f);
+            GameObject guardPreview = null;
+            GameObject raiderPreview = null;
+            GameObject vanguardPreview = null;
+            GameObject regeneratorPreview = null;
+            GameObject supportPreview = null;
+            GameObject siegePreview = null;
+            if (presentationCatalog != null)
+            {
+                guardPreview = StylizedPresentationFactory.CreateRoot("Guard Capture Preview", guardPreviewPosition,
+                    new Vector3(0.72f, 1.28f, 0.72f), presentationCatalog.ActorPrefab(PresentationActorKind.Guard),
+                    presentationCatalog, PresentationCollider.Capsule, presentationCatalog.ActorScale(PresentationActorKind.Guard),
+                    presentationCatalog.ActorAnimator(PresentationActorKind.Guard), PresentationActorKind.Guard);
+                guardPreview.transform.SetParent(transform, true);
+
+                raiderPreview = StylizedPresentationFactory.CreateRoot("Raider Capture Preview", raiderPreviewPosition,
+                    new Vector3(0.85f, 1.45f, 0.85f), presentationCatalog.ActorPrefab(PresentationActorKind.Raider),
+                    presentationCatalog, PresentationCollider.Capsule, presentationCatalog.ActorScale(PresentationActorKind.Raider),
+                    presentationCatalog.ActorAnimator(PresentationActorKind.Raider), PresentationActorKind.Raider);
+                raiderPreview.transform.SetParent(transform, true);
+
+                vanguardPreview = StylizedPresentationFactory.CreateRoot("Vanguard Capture Preview", vanguardPreviewPosition,
+                    new Vector3(1.0f, 1.72f, 1.0f), presentationCatalog.ActorPrefab(PresentationActorKind.Vanguard),
+                    presentationCatalog, PresentationCollider.Capsule, presentationCatalog.ActorScale(PresentationActorKind.Vanguard),
+                    presentationCatalog.ActorAnimator(PresentationActorKind.Vanguard), PresentationActorKind.Vanguard);
+                vanguardPreview.transform.SetParent(transform, true);
+
+                regeneratorPreview = StylizedPresentationFactory.CreateRoot("Regenerator Capture Preview", regeneratorPreviewPosition,
+                    new Vector3(0.9f, 1.58f, 0.9f), presentationCatalog.ActorPrefab(PresentationActorKind.Regenerator),
+                    presentationCatalog, PresentationCollider.Capsule, presentationCatalog.ActorScale(PresentationActorKind.Regenerator),
+                    presentationCatalog.ActorAnimator(PresentationActorKind.Regenerator), PresentationActorKind.Regenerator);
+                regeneratorPreview.transform.SetParent(transform, true);
+
+                supportPreview = StylizedPresentationFactory.CreateRoot("Support Capture Preview", supportPreviewPosition,
+                    new Vector3(0.9f, 1.58f, 0.9f), presentationCatalog.ActorPrefab(PresentationActorKind.Support),
+                    presentationCatalog, PresentationCollider.Capsule, presentationCatalog.ActorScale(PresentationActorKind.Support),
+                    presentationCatalog.ActorAnimator(PresentationActorKind.Support), PresentationActorKind.Support);
+                supportPreview.transform.SetParent(transform, true);
+
+                siegePreview = StylizedPresentationFactory.CreateRoot("Siege Capture Preview", siegePreviewPosition,
+                    new Vector3(1.34f, 1.08f, 1.34f), presentationCatalog.ActorPrefab(PresentationActorKind.Siege),
+                    presentationCatalog, PresentationCollider.Capsule, presentationCatalog.ActorScale(PresentationActorKind.Siege),
+                    presentationCatalog.ActorAnimator(PresentationActorKind.Siege), PresentationActorKind.Siege);
+                siegePreview.transform.SetParent(transform, true);
+            }
+
+            float reviewUntil = Time.realtimeSinceStartup + 12f;
+            bool reportedCapturePass = false;
+            while (Time.realtimeSinceStartup < reviewUntil)
+            {
+                GameObject guardSource = guardPreview != null ? guardPreview : null;
+                GameObject raiderSource = raiderPreview != null ? raiderPreview : null;
+                GameObject vanguardSource = vanguardPreview != null ? vanguardPreview : null;
+                GameObject regeneratorSource = regeneratorPreview != null ? regeneratorPreview : null;
+                GameObject supportSource = supportPreview != null ? supportPreview : null;
+                GameObject siegeSource = siegePreview != null ? siegePreview : null;
+                EmitPresentation(PresentationCue.UnitSpawned, guardPreviewPosition, guardSource, PresentationActorKind.Guard);
+                EmitPresentation(PresentationCue.OutpostAttacked, guardPreviewPosition, guardSource,
+                    PresentationActorKind.Guard, OutpostKind.Barracks);
+                EmitPresentation(PresentationCue.HeroAbility, guardPreviewPosition, guardSource, PresentationActorKind.Guard);
+                EmitPresentation(PresentationCue.UnitSpawned, raiderPreviewPosition, raiderSource, PresentationActorKind.Raider);
+                EmitPresentation(PresentationCue.HeroAttacked, raiderPreviewPosition, hero.gameObject, PresentationActorKind.Knight);
+                EmitPresentation(PresentationCue.HeroAbility, hero.Position, hero.gameObject, PresentationActorKind.Knight);
+                EmitPresentation(PresentationCue.EnemyHit, raiderPreviewPosition, raiderSource, PresentationActorKind.Raider);
+                EmitPresentation(PresentationCue.EnemyDefeated, raiderPreviewPosition, raiderSource, PresentationActorKind.Raider);
+                EmitPresentation(PresentationCue.UnitSpawned, vanguardPreviewPosition, vanguardSource,
+                    PresentationActorKind.Vanguard);
+                EmitPresentation(PresentationCue.OutpostDisrupted, vanguardPreviewPosition, vanguardSource,
+                    PresentationActorKind.Vanguard);
+                EmitPresentation(PresentationCue.UnitSpawned, regeneratorPreviewPosition, regeneratorSource,
+                    PresentationActorKind.Regenerator);
+                EmitPresentation(PresentationCue.HealPulse, regeneratorPreviewPosition, regeneratorSource,
+                    PresentationActorKind.Regenerator);
+                EmitPresentation(PresentationCue.UnitSpawned, supportPreviewPosition, supportSource,
+                    PresentationActorKind.Support);
+                EmitPresentation(PresentationCue.HealPulse, supportPreviewPosition + new Vector3(0.95f, 0f, 0.24f),
+                    supportSource, PresentationActorKind.Support);
+                EmitPresentation(PresentationCue.UnitSpawned, siegePreviewPosition, siegeSource,
+                    PresentationActorKind.Siege);
+                EmitPresentation(PresentationCue.OutpostDisrupted, siegePreviewPosition + new Vector3(0.95f, 0f, 0.26f),
+                    siegeSource, PresentationActorKind.Siege);
+                if (!reportedCapturePass && sawKnightAttack && sawKnightAbility && sawGuardSpawn &&
+                    sawGuardThrust && sawGuardBlock && sawRaiderSpawn && sawRaiderHit && sawRaiderDeath &&
+                    sawVanguardSpawn && sawVanguardHeavy && sawRegeneratorSpawn && sawRegeneratorPulse &&
+                    sawSupportSpawn && sawSupportHeal && sawSiegeSpawn && sawSiegeHeavy)
+                {
+                    Debug.Log("[DC_ACTOR_CAPTURE_PASS] knight_attack=true knight_ability=true " +
+                              "guard_spawn=true guard_thrust=true guard_block=true " +
+                              "raider_spawn=true raider_hit=true raider_death=true " +
+                              "vanguard_spawn=true vanguard_heavy=true " +
+                              "regenerator_spawn=true regenerator_pulse=true " +
+                              "support_spawn=true support_heal=true " +
+                              "siege_spawn=true siege_heavy=true");
+                    reportedCapturePass = true;
+                }
+                yield return new WaitForSeconds(0.9f);
+            }
+
+            PresentationSignaled -= TrackActorSignal;
+            bool passed = sawKnightAttack && sawKnightAbility && sawGuardSpawn && sawGuardThrust && sawGuardBlock &&
+                          sawRaiderSpawn && sawRaiderHit && sawRaiderDeath && sawVanguardSpawn && sawVanguardHeavy &&
+                          sawRegeneratorSpawn && sawRegeneratorPulse && sawSupportSpawn && sawSupportHeal &&
+                          sawSiegeSpawn && sawSiegeHeavy;
+            if (!reportedCapturePass)
+            {
+                Debug.Log(passed
+                    ? "[DC_ACTOR_CAPTURE_PASS] knight_attack=true knight_ability=true guard_spawn=true guard_thrust=true guard_block=true raider_spawn=true raider_hit=true raider_death=true vanguard_spawn=true vanguard_heavy=true regenerator_spawn=true regenerator_pulse=true support_spawn=true support_heal=true siege_spawn=true siege_heavy=true"
+                    : $"[DC_ACTOR_CAPTURE_FAIL] knight_attack={sawKnightAttack} knight_ability={sawKnightAbility} " +
+                      $"guard_spawn={sawGuardSpawn} guard_thrust={sawGuardThrust} guard_block={sawGuardBlock} " +
+                      $"raider_spawn={sawRaiderSpawn} raider_hit={sawRaiderHit} raider_death={sawRaiderDeath} " +
+                      $"vanguard_spawn={sawVanguardSpawn} vanguard_heavy={sawVanguardHeavy} " +
+                      $"regenerator_spawn={sawRegeneratorSpawn} regenerator_pulse={sawRegeneratorPulse} " +
+                      $"support_spawn={sawSupportSpawn} support_heal={sawSupportHeal} " +
+                      $"siege_spawn={sawSiegeSpawn} siege_heavy={sawSiegeHeavy}");
+            }
         }
 
         private IEnumerator RunAutomatedDefeatAndRestartSmoke()
@@ -1032,11 +1765,11 @@ namespace DefenderChronicles.Core
             if (artHud != null)
             {
                 if (selectedOutpost != null)
-                    artHud.SetSelected(selectedOutpost.Description, selectedOutpost.CanUpgrade, true, true);
+                    artHud.SetSelected(selectedOutpost, null, true);
                 else if (selectedSlot != null)
-                    artHud.SetSelected($"KARAKOL PLATFORMU {selectedSlot.Index + 1}\n\nAşağıdan bir karakol seç.", false, false, true);
+                    artHud.SetSelected(null, selectedSlot, true);
                 else
-                    artHud.SetSelected(string.Empty, false, false, false);
+                    artHud.SetSelected(null, null, false);
                 return;
             }
             if (selectedText == null) return;
@@ -1066,9 +1799,8 @@ namespace DefenderChronicles.Core
             if (artHud != null)
             {
                 artHud.Refresh(this);
-                artHud.SetBuildInteractable(Gold >= GetOutpostStats(OutpostKind.Archer).cost,
-                    Gold >= GetOutpostStats(OutpostKind.Barracks).cost,
-                    Gold >= GetOutpostStats(OutpostKind.Mage).cost);
+                bool canBuildOnSelection = Phase != GamePhase.Paused && selectedSlot != null && selectedSlot.Occupant == null;
+                artHud.SetBuildAvailability(canBuildOnSelection, Gold);
                 if (Phase == GamePhase.Preparing)
                     artHud.SetNextWaveLabel(presentationCatalog.uiCopy.Get(UiTextKey.FirstWave));
                 RefreshSelectedPanel();
@@ -1099,6 +1831,8 @@ namespace DefenderChronicles.Core
             }
             if (Phase == GamePhase.Preparing && nextWaveButtonLabel != null)
                 nextWaveButtonLabel.text = "İLK DALGAYI BAŞLAT";
+            if (speedButtonLabel != null)
+                speedButtonLabel.text = SpeedLabelForStep(speedStepIndex);
             RefreshSelectedPanel();
         }
 
@@ -1138,6 +1872,7 @@ namespace DefenderChronicles.Core
         private void LoseLives(int amount)
         {
             if (Phase == GamePhase.Defeat || Phase == GamePhase.Victory) return;
+            if (automatedPerformanceAcceptance || automatedSoakAcceptance) return;
             Lives = Mathf.Max(0, Lives - Mathf.Max(0, amount));
             LivesChanged?.Invoke(Lives);
             if (Lives > 0) return;
@@ -1205,24 +1940,33 @@ namespace DefenderChronicles.Core
 
         internal void DamageEnemies(Vector3 position, float radius, int damage, float slowFactor = 1f, float slowDuration = 0f)
         {
+            _ = slowFactor;
+            _ = slowDuration;
             float sqr = radius * radius;
             foreach (var enemy in enemies.ToArray())
             {
                 if (enemy == null || !enemy.IsAlive || (enemy.Position - position).sqrMagnitude > sqr) continue;
                 enemy.TakeDamage(damage);
-                if (slowFactor < 1f && enemy != null && enemy.IsAlive)
-                    enemy.ApplySlow(slowFactor, slowDuration);
             }
         }
 
-        internal void HealEnemies(Vector3 position, float radius, int amount, GreyboxEnemy source)
+        internal bool HealEnemies(Vector3 position, float radius, int amount, GreyboxEnemy source, out Vector3 primaryTargetPosition)
         {
             float sqr = radius * radius;
+            float bestTargetSqr = float.MaxValue;
+            primaryTargetPosition = position;
+            bool healedAny = false;
             foreach (var enemy in enemies)
             {
                 if (enemy == null || enemy == source || !enemy.IsAlive || (enemy.Position - position).sqrMagnitude > sqr) continue;
                 enemy.Heal(amount);
+                healedAny = true;
+                float targetSqr = source != null ? (enemy.Position - source.Position).sqrMagnitude : (enemy.Position - position).sqrMagnitude;
+                if (targetSqr >= bestTargetSqr) continue;
+                bestTargetSqr = targetSqr;
+                primaryTargetPosition = enemy.Position;
             }
+            return healedAny;
         }
 
         internal void RegisterFriendly(GreyboxFriendlyUnit unit)
@@ -1235,7 +1979,8 @@ namespace DefenderChronicles.Core
             if (presentationCatalog == null) return null;
             GameObject root = StylizedPresentationFactory.CreateRoot(objectName, position,
                 new Vector3(0.52f, 1.25f, 0.52f), presentationCatalog.ActorPrefab(PresentationActorKind.Guard),
-                presentationCatalog, PresentationCollider.Capsule, presentationCatalog.ActorScale(PresentationActorKind.Guard));
+                presentationCatalog, PresentationCollider.Capsule, presentationCatalog.ActorScale(PresentationActorKind.Guard),
+                presentationCatalog.ActorAnimator(PresentationActorKind.Guard), PresentationActorKind.Guard);
             root.transform.SetParent(transform, true);
             EmitPresentation(PresentationCue.UnitSpawned, position, root, PresentationActorKind.Guard);
             return root;
@@ -1283,8 +2028,10 @@ namespace DefenderChronicles.Core
             var errors = new List<string>();
             if (path.Count < 2) errors.Add("Level path needs at least two points.");
             if (slots.Count != 8) errors.Add("Greybox level needs exactly eight outpost slots.");
-            if (waves == null || waves.Length != 7) errors.Add("Greybox level needs six waves and one boss wave.");
-            if (waves != null && (waves.Length == 0 || !waves[^1].bossWave)) errors.Add("Final wave must be a boss wave.");
+            if (waves == null || activeLevelDefinition == null || waves.Length != activeLevelDefinition.waveCount)
+                errors.Add("Campaign wave count does not match its level definition.");
+            if (waves != null && waves.Length > 0 && waves[^1].bossWave != activeLevelDefinition.isBoss)
+                errors.Add("Boss wave does not match the campaign milestone.");
             if (uiFont == null) errors.Add("Unity LegacyRuntime font is unavailable.");
             if (presentationCatalog != null)
                 errors.AddRange(presentationCatalog.ValidationErrors());
@@ -1303,6 +2050,22 @@ namespace DefenderChronicles.Core
             EnemyArchetype.Boss => new EnemyStats(2600, 0.62f, 220, 5, 30, new Color(0.72f, 0.08f, 0.08f)),
             _ => new EnemyStats(100, 1f, 10, 1, 10, Color.red)
         };
+
+        private EnemyStats GetScaledStats(EnemyArchetype archetype)
+        {
+            EnemyStats baseStats = GetStats(archetype);
+            float progress = Mathf.Clamp01((CampaignLevelNumber - 1f) / (CampaignCatalog.LevelCount - 1f));
+            float healthMultiplier = Mathf.Lerp(1f, 2.7f, progress);
+            float speedMultiplier = Mathf.Lerp(1f, 1.16f, progress);
+            float attackMultiplier = Mathf.Lerp(1f, 1.85f, progress);
+            return new EnemyStats(
+                Mathf.RoundToInt(baseStats.maxHealth * healthMultiplier),
+                baseStats.speed * speedMultiplier,
+                Mathf.RoundToInt(baseStats.reward * Mathf.Lerp(1f, 1.4f, progress)),
+                Mathf.Max(1, Mathf.RoundToInt(baseStats.baseDamage * Mathf.Lerp(1f, 1.6f, progress))),
+                Mathf.Max(1, Mathf.RoundToInt(baseStats.attackDamage * attackMultiplier)),
+                baseStats.color);
+        }
 
         internal static PresentationActorKind ActorKind(EnemyArchetype archetype) => archetype switch
         {

@@ -10,7 +10,7 @@ namespace DefenderChronicles.Presentation
     /// </summary>
     public sealed class DefenderBattlefieldDressing : MonoBehaviour
     {
-        private static readonly Vector3[] RoadPath =
+        private static readonly Vector3[] DefaultRoadPath =
         {
             new(-2f, 0f, 2f), new(4f, 0f, 2f), new(4f, 0f, 8f), new(10f, 0f, 8f),
             new(10f, 0f, 3.5f), new(16f, 0f, 3.5f), new(16f, 0f, 9f), new(24f, 0f, 9f)
@@ -18,9 +18,10 @@ namespace DefenderChronicles.Presentation
 
         private readonly List<Mesh> runtimeMeshes = new();
         private readonly List<Material> runtimeMaterials = new();
+        private IReadOnlyList<Vector3> roadPath = DefaultRoadPath;
 
         public static DefenderBattlefieldDressing Install(Transform parent, DefenderPresentationCatalog catalog,
-            Camera camera)
+            Camera camera, IReadOnlyList<Vector3> path = null)
         {
             if (parent == null || catalog == null) return null;
             Transform existing = parent.Find("Scenic Battlefield Dressing");
@@ -29,6 +30,7 @@ namespace DefenderChronicles.Presentation
             var root = new GameObject("Scenic Battlefield Dressing");
             root.transform.SetParent(parent, false);
             DefenderBattlefieldDressing dressing = root.AddComponent<DefenderBattlefieldDressing>();
+            if (path != null && path.Count > 1) dressing.roadPath = path;
             dressing.Build(catalog, camera);
             return dressing;
         }
@@ -36,9 +38,58 @@ namespace DefenderChronicles.Presentation
         private void Build(DefenderPresentationCatalog catalog, Camera camera)
         {
             CreateCliffSkirt(catalog.darkMaterial);
-            CreateRoadCobbles(catalog.stoneMaterial);
+            CreateGroundValueFields(catalog.grassAccentMaterial, catalog.earthMaterial);
+            CreateLandmarkReadabilityFields(catalog.fireMaterial, catalog.magicMaterial);
+            CreateRoadSurface();
+            CreateRoadCobbles();
             CreateRoadWear(catalog.earthMaterial);
             CreateNightBackdrop(camera);
+        }
+
+        private void CreateGroundValueFields(Material grassSource, Material earthSource)
+        {
+            Material coldGrass = CreateRuntimeMaterial("DC Cold Grass Value", new Color(0.026f, 0.165f, 0.145f), false, grassSource);
+            Material moonGrass = CreateRuntimeMaterial("DC Moon Grass Value", new Color(0.040f, 0.205f, 0.185f), false, grassSource);
+            Material warmScuff = CreateRuntimeMaterial("DC Gate Ground Scuff", new Color(0.125f, 0.115f, 0.078f), false, earthSource);
+
+            var coldVertices = new List<Vector3>(96);
+            var coldTriangles = new List<int>(180);
+            AddGroundPatch(coldVertices, coldTriangles, new Vector3(2.5f, 0.068f, 5.3f), 2.35f, 0.56f, -6f, 0.12f);
+            AddGroundPatch(coldVertices, coldTriangles, new Vector3(7.9f, 0.066f, 5.2f), 1.72f, 0.48f, 11f, 1.33f);
+            AddGroundPatch(coldVertices, coldTriangles, new Vector3(13.1f, 0.067f, 6.4f), 2.12f, 0.58f, -12f, 2.25f);
+            AddGroundPatch(coldVertices, coldTriangles, new Vector3(20.0f, 0.066f, 5.0f), 2.38f, 0.54f, 8f, 3.4f);
+            CreateMeshObject("Ground Low-Contrast Valley Fields", coldVertices, coldTriangles, coldGrass, true);
+
+            var moonVertices = new List<Vector3>(80);
+            var moonTriangles = new List<int>(150);
+            AddGroundPatch(moonVertices, moonTriangles, new Vector3(7.0f, 0.071f, 9.6f), 1.70f, 0.42f, 18f, 0.72f);
+            AddGroundPatch(moonVertices, moonTriangles, new Vector3(12.2f, 0.072f, 2.1f), 1.92f, 0.40f, -3f, 1.62f);
+            AddGroundPatch(moonVertices, moonTriangles, new Vector3(18.5f, 0.071f, 10.5f), 1.62f, 0.44f, 9f, 2.83f);
+            CreateMeshObject("Ground Moonlit Grass Breakup", moonVertices, moonTriangles, moonGrass, true);
+
+            var scuffVertices = new List<Vector3>(48);
+            var scuffTriangles = new List<int>(90);
+            AddGroundPatch(scuffVertices, scuffTriangles, new Vector3(-1.0f, 0.074f, 2.0f), 1.15f, 0.42f, 0f, 0.9f);
+            AddGroundPatch(scuffVertices, scuffTriangles, new Vector3(3.8f, 0.073f, 2.4f), 1.05f, 0.26f, 16f, 1.9f);
+            CreateMeshObject("Ground Warm Entry Scuffs", scuffVertices, scuffTriangles, warmScuff, true);
+        }
+
+        private void CreateLandmarkReadabilityFields(Material fireSource, Material magicSource)
+        {
+            Material gateRead = CreateRuntimeMaterial("DC Gate Readability Pool", new Color(0.22f, 0.08f, 0.045f), false, fireSource);
+            Material keepRead = CreateRuntimeMaterial("DC Keep Readability Pool", new Color(0.036f, 0.125f, 0.185f), false, magicSource);
+
+            var gateVertices = new List<Vector3>(32);
+            var gateTriangles = new List<int>(60);
+            AddGroundPatch(gateVertices, gateTriangles, new Vector3(-2.05f, 0.086f, 2.0f), 0.92f, 0.46f, 0f, 0.15f);
+            AddGroundPatch(gateVertices, gateTriangles, new Vector3(0.25f, 0.084f, 2.0f), 0.68f, 0.22f, 0f, 1.2f);
+            CreateMeshObject("Enemy Gate Warm Read Pool", gateVertices, gateTriangles, gateRead, false);
+
+            var keepVertices = new List<Vector3>(32);
+            var keepTriangles = new List<int>(60);
+            AddGroundPatch(keepVertices, keepTriangles, new Vector3(23.25f, 0.086f, 9.0f), 1.12f, 0.52f, 0f, 0.4f);
+            AddGroundPatch(keepVertices, keepTriangles, new Vector3(20.4f, 0.084f, 9.0f), 0.74f, 0.26f, 0f, 1.6f);
+            CreateMeshObject("Defender Keep Cool Read Pool", keepVertices, keepTriangles, keepRead, false);
         }
 
         private void CreateCliffSkirt(Material material)
@@ -69,36 +120,121 @@ namespace DefenderChronicles.Presentation
             CreateMeshObject("Dark Irregular Cliff Skirt", vertices, triangles, material, true);
         }
 
-        private void CreateRoadCobbles(Material material)
+        private void CreateRoadSurface()
         {
-            Material cobble = CreateRuntimeMaterial("DC Road Cobble", new Color(0.40f, 0.36f, 0.32f), false, material);
-            var vertices = new List<Vector3>(8000);
-            var triangles = new List<int>(12000);
-            int stoneIndex = 0;
-            for (int segment = 0; segment < RoadPath.Length - 1; segment++)
+            Material surface = CreateRuntimeMaterial("DC Organic Road Surface", new Color(0.455f, 0.355f, 0.245f), false);
+            var vertices = new List<Vector3>(420);
+            var triangles = new List<int>(720);
+            int sample = 0;
+            for (int segment = 0; segment < roadPath.Count - 1; segment++)
             {
-                Vector3 from = RoadPath[segment];
-                Vector3 to = RoadPath[segment + 1];
+                Vector3 from = roadPath[segment];
+                Vector3 to = roadPath[segment + 1];
                 Vector3 direction = (to - from).normalized;
                 Vector3 side = new(-direction.z, 0f, direction.x);
                 float length = Vector3.Distance(from, to);
-                int count = Mathf.Max(1, Mathf.CeilToInt(length / 0.52f));
+                int count = Mathf.Max(2, Mathf.CeilToInt(length / 0.72f));
+                int start = vertices.Count;
+
                 for (int i = 0; i <= count; i++)
                 {
-                    float distance = Mathf.Min(length, i * length / count);
-                    Vector3 along = from + direction * distance;
+                    float t = i / (float)count;
+                    float endpointFeather = Mathf.Sin(t * Mathf.PI);
+                    Vector3 center = Vector3.Lerp(from - direction * 0.22f, to + direction * 0.22f, t);
+                    float wobble = Mathf.Sin((sample + i) * 1.83f) * 0.055f +
+                                   Mathf.Cos((sample + i) * 3.17f) * 0.025f;
+                    center += side * wobble * endpointFeather;
+                    center.y = 0.082f;
+
+                    float width = 0.78f + Mathf.Sin((sample + i) * 2.41f) * 0.055f;
+                    float leftNoise = 1f + Mathf.Sin((sample + i) * 4.13f) * 0.045f;
+                    float rightNoise = 1f + Mathf.Cos((sample + i) * 3.77f) * 0.045f;
+                    vertices.Add(center - side * width * leftNoise);
+                    vertices.Add(center + side * width * rightNoise);
+                }
+
+                for (int i = 0; i < count; i++)
+                {
+                    int a = start + i * 2;
+                    triangles.Add(a);
+                    triangles.Add(a + 3);
+                    triangles.Add(a + 1);
+                    triangles.Add(a);
+                    triangles.Add(a + 2);
+                    triangles.Add(a + 3);
+                }
+
+                sample += count + 1;
+            }
+
+            for (int i = 1; i < roadPath.Count - 1; i++)
+                AddGroundPatch(vertices, triangles, roadPath[i] + Vector3.up * 0.084f, 1.06f, 0.84f,
+                    i % 2 == 0 ? 0f : 90f, i * 0.61f);
+
+            AddGroundPatch(vertices, triangles, roadPath[0] + Vector3.up * 0.084f, 0.96f, 0.70f, 0f, 0.13f);
+            AddGroundPatch(vertices, triangles, roadPath[^1] + Vector3.up * 0.084f, 1.14f, 0.82f, 0f, 1.47f);
+            CreateMeshObject("Road Organic Earth Surface", vertices, triangles, surface, true);
+        }
+
+        private void CreateRoadCobbles()
+        {
+            Material cobble = CreateRuntimeMaterial("DC Road Cobble", new Color(0.30f, 0.315f, 0.30f), false);
+            var vertices = new List<Vector3>(8000);
+            var triangles = new List<int>(12000);
+            int stoneIndex = 0;
+            for (int segment = 0; segment < roadPath.Count - 1; segment++)
+            {
+                Vector3 from = roadPath[segment];
+                Vector3 to = roadPath[segment + 1];
+                Vector3 direction = (to - from).normalized;
+                Vector3 side = new(-direction.z, 0f, direction.x);
+                float length = Vector3.Distance(from, to);
+                float distance = -0.08f;
+                while (distance <= length + 0.18f)
+                {
+                    float clampedDistance = Mathf.Clamp(distance, 0f, length);
+                    Vector3 along = from + direction * clampedDistance;
                     for (int edge = -1; edge <= 1; edge += 2)
                     {
+                        bool nearEndpoint = clampedDistance < 0.55f || clampedDistance > length - 0.55f;
+                        float omitSignal = Mathf.Sin((stoneIndex + segment * 13) * 2.37f + edge * 0.51f);
+                        if (!nearEndpoint && omitSignal > 0.82f)
+                        {
+                            stoneIndex++;
+                            continue;
+                        }
+
                         float wave = Mathf.Sin((stoneIndex + 1) * 4.73f);
-                        Vector3 center = along + side * (edge * (0.92f + wave * 0.025f));
-                        center += direction * Mathf.Sin((stoneIndex + 3) * 2.19f) * 0.035f;
-                        center.y = 0.105f + Mathf.Abs(wave) * 0.025f;
-                        float yaw = Mathf.Atan2(direction.z, direction.x) + wave * 0.08f;
+                        float scatter = Mathf.Cos((stoneIndex + 5) * 3.09f);
+                        Vector3 center = along + side * (edge * (0.88f + wave * 0.055f));
+                        center += direction * scatter * 0.085f;
+                        center.y = 0.105f + Mathf.Abs(wave) * 0.018f;
+                        float yaw = Mathf.Atan2(direction.z, direction.x) + wave * 0.16f + scatter * 0.055f;
                         AddCobble(vertices, triangles, center, yaw,
-                            new Vector3(0.43f + wave * 0.035f, 0.19f + Mathf.Abs(wave) * 0.035f,
-                                0.27f - wave * 0.02f));
+                            new Vector3(0.36f + wave * 0.075f, 0.13f + Mathf.Abs(wave) * 0.04f,
+                                0.23f - wave * 0.035f));
                         stoneIndex++;
                     }
+                    distance += 0.54f + Mathf.Abs(Mathf.Sin((stoneIndex + segment) * 1.91f)) * 0.22f;
+                }
+            }
+
+            for (int i = 1; i < roadPath.Count - 1; i++)
+            {
+                Vector3 from = roadPath[i - 1];
+                Vector3 corner = roadPath[i];
+                Vector3 to = roadPath[i + 1];
+                Vector3 incoming = (corner - from).normalized;
+                Vector3 outgoing = (to - corner).normalized;
+                Vector3 sideA = new(-incoming.z, 0f, incoming.x);
+                Vector3 sideB = new(-outgoing.z, 0f, outgoing.x);
+                for (int edge = -1; edge <= 1; edge += 2)
+                {
+                    float yaw = Mathf.Atan2((incoming + outgoing).z, (incoming + outgoing).x) + edge * 0.13f;
+                    Vector3 center = corner + (sideA + sideB).normalized * edge * 0.88f;
+                    center.y = 0.125f;
+                    AddCobble(vertices, triangles, center, yaw,
+                        new Vector3(0.52f, 0.17f, 0.34f));
                 }
             }
             CreateMeshObject("Road Hand-Laid Stone Borders", vertices, triangles, cobble, true);
@@ -106,14 +242,14 @@ namespace DefenderChronicles.Presentation
 
         private void CreateRoadWear(Material source)
         {
-            Material wear = CreateRuntimeMaterial("DC Road Wear", new Color(0.46f, 0.33f, 0.23f), false, source);
+            Material wear = CreateRuntimeMaterial("DC Road Wear", new Color(0.31f, 0.235f, 0.18f), false, source);
             var vertices = new List<Vector3>();
             var triangles = new List<int>();
             int patch = 0;
-            for (int segment = 0; segment < RoadPath.Length - 1; segment++)
+            for (int segment = 0; segment < roadPath.Count - 1; segment++)
             {
-                Vector3 from = RoadPath[segment];
-                Vector3 to = RoadPath[segment + 1];
+                Vector3 from = roadPath[segment];
+                Vector3 to = roadPath[segment + 1];
                 Vector3 direction = (to - from).normalized;
                 Vector3 side = new(-direction.z, 0f, direction.x);
                 float length = Vector3.Distance(from, to);
@@ -212,6 +348,12 @@ namespace DefenderChronicles.Presentation
             mesh.SetVertices(vertices);
             mesh.SetTriangles(triangles, 0);
             mesh.RecalculateNormals();
+            if (objectName == "Road Organic Earth Surface")
+            {
+                var normals = new List<Vector3>(vertices.Count);
+                for (int i = 0; i < vertices.Count; i++) normals.Add(Vector3.up);
+                mesh.SetNormals(normals);
+            }
             mesh.RecalculateBounds();
             runtimeMeshes.Add(mesh);
 
@@ -222,7 +364,7 @@ namespace DefenderChronicles.Presentation
             MeshRenderer renderer = go.AddComponent<MeshRenderer>();
             renderer.sharedMaterial = material;
             renderer.shadowCastingMode = ShadowCastingMode.Off;
-            renderer.receiveShadows = receiveShadows;
+            renderer.receiveShadows = false;
         }
 
         private Material CreateRuntimeMaterial(string materialName, Color color, bool unlit, Material source = null)
@@ -301,6 +443,31 @@ namespace DefenderChronicles.Presentation
             triangles.Add(start);
             triangles.Add(start + 3);
             triangles.Add(start + 2);
+        }
+
+        private static void AddGroundPatch(List<Vector3> vertices, List<int> triangles, Vector3 center,
+            float halfLength, float halfWidth, float yawDegrees, float phase)
+        {
+            const int segments = 14;
+            int start = vertices.Count;
+            vertices.Add(center);
+            float yaw = yawDegrees * Mathf.Deg2Rad;
+            float c = Mathf.Cos(yaw);
+            float s = Mathf.Sin(yaw);
+            for (int i = 0; i < segments; i++)
+            {
+                float angle = i * Mathf.PI * 2f / segments;
+                float wobble = 1f + Mathf.Sin(angle * 2.7f + phase) * 0.10f + Mathf.Cos(angle * 5.1f + phase) * 0.045f;
+                float localX = Mathf.Cos(angle) * halfLength * wobble;
+                float localZ = Mathf.Sin(angle) * halfWidth * wobble;
+                vertices.Add(center + new Vector3(localX * c - localZ * s, 0f, localX * s + localZ * c));
+            }
+            for (int i = 0; i < segments; i++)
+            {
+                triangles.Add(start);
+                triangles.Add(start + 1 + ((i + 1) % segments));
+                triangles.Add(start + 1 + i);
+            }
         }
 
         private static Mesh BuildDisc(int segments)

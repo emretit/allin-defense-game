@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f912ffde76bc43c38d142e1b21c0e2e, type: 3}
   m_Name: DefenderPresentationCatalog
   m_EditorClassIdentifier: DefenderChronicles.Runtime::DefenderChronicles.Presentation.DefenderPresentationCatalog
-  environmentPrefab: {fileID: 8814414287970383512, guid: 3865bce0e266445a695ef27240a4830d,
+  environmentPrefab: {fileID: 7272399280310038372, guid: 3865bce0e266445a695ef27240a4830d,
     type: 3}
   outpostSlotPrefab: {fileID: 919132149155446097, guid: d4bb914a8bbc44025898f9feea783db0,
     type: 3}
@@ -20,60 +20,69 @@ MonoBehaviour:
     type: 3}
   actorVisuals:
   - kind: 0
-    prefab: {fileID: 919132149155446097, guid: 1fe96d3be194f4d7a951455268fa923e, type: 3}
+    prefab: {fileID: 919132149155446097, guid: ca86211f0d59c42c3a59ef4012912ecf, type: 3}
+    animatorOverride: {fileID: 22100000, guid: 1ee0e4eb24a7341839ff6a3a01a8405e, type: 2}
     scale: 0.74
   - kind: 1
-    prefab: {fileID: 919132149155446097, guid: 1fe96d3be194f4d7a951455268fa923e, type: 3}
+    prefab: {fileID: 919132149155446097, guid: 4af9ec369fb8b42e3a8a128f9653dc90, type: 3}
+    animatorOverride: {fileID: 22100000, guid: 56157ea9e3c1b457b895396454aed07e, type: 2}
     scale: 0.66
   - kind: 2
-    prefab: {fileID: 919132149155446097, guid: 1beaabf1e192a48048d7b24812f66167, type: 3}
+    prefab: {fileID: 919132149155446097, guid: 35ede50e5d4af46b6b65d0a533522257, type: 3}
+    animatorOverride: {fileID: 22100000, guid: cb227477ade444807a11a4f4207d2163, type: 2}
     scale: 0.64
   - kind: 3
-    prefab: {fileID: 919132149155446097, guid: 6698432a20c934b5e82c7b9539363c64, type: 3}
+    prefab: {fileID: 919132149155446097, guid: 92a664c5553364d679574a52bd92676c, type: 3}
+    animatorOverride: {fileID: 22100000, guid: dbc725429aea1436cb8ca8d745daae48, type: 2}
     scale: 0.68
   - kind: 4
-    prefab: {fileID: 919132149155446097, guid: aad07cdf9f45f4428b9ec24109d5f2bc, type: 3}
+    prefab: {fileID: 919132149155446097, guid: f382a95ee783c4e069f7ecc6ee955d69, type: 3}
+    animatorOverride: {fileID: 22100000, guid: f7a02ced2875a408e9a59650976765e4, type: 2}
     scale: 0.6
   - kind: 5
-    prefab: {fileID: 919132149155446097, guid: aad07cdf9f45f4428b9ec24109d5f2bc, type: 3}
+    prefab: {fileID: 919132149155446097, guid: af8b985f82eff4928a7e89c9d859c70a, type: 3}
+    animatorOverride: {fileID: 22100000, guid: e6c5bf60768a74cb0823c05942f14cd2, type: 2}
     scale: 0.62
   - kind: 6
     prefab: {fileID: 919132149155446097, guid: 521a8c7e7877e46029ce3e7c3771366f, type: 3}
+    animatorOverride: {fileID: 22100000, guid: 0511d5358967f43f993ecd59e8330431, type: 2}
     scale: 0.92
   - kind: 7
-    prefab: {fileID: 919132149155446097, guid: 1beaabf1e192a48048d7b24812f66167, type: 3}
+    prefab: {fileID: 919132149155446097, guid: ac0cfbb859c1e4699a54973c59f9924b, type: 3}
+    animatorOverride: {fileID: 22100000, guid: 85540070a2ceb4598bedc26813b0c7e8, type: 2}
     scale: 1.02
   outpostVisuals:
   - kind: 0
     level: 1
-    prefab: {fileID: 919132149155446097, guid: 5efd1874c34414624a989e17aa368b8c, type: 3}
-    scale: 0.72
+    prefab: {fileID: 919132149155446097, guid: 7a9d1afe6007e45cd824beade4c79e1b, type: 3}
+    scale: 0.86
   - kind: 0
     level: 2
-    prefab: {fileID: 919132149155446097, guid: 32291c7b067fa47d0bf2c4965fd7ecd1, type: 3}
-    scale: 0.72
+    prefab: {fileID: 919132149155446097, guid: bac5a0bfb001e4ee2adff39969fa0553, type: 3}
+    scale: 0.82
   - kind: 1
     level: 1
-    prefab: {fileID: 919132149155446097, guid: 524bc77976bb64eab9d2fc533d8c77bd, type: 3}
-    scale: 0.76
+    prefab: {fileID: 919132149155446097, guid: 3a3093b70c9d04e388e1e693c94d264f, type: 3}
+    scale: 0.88
   - kind: 1
     level: 2
-    prefab: {fileID: 919132149155446097, guid: ad4763606b853428288e900958fdf7b9, type: 3}
-    scale: 0.72
+    prefab: {fileID: 919132149155446097, guid: 1499894568b0a4e759da8189b924c1cb, type: 3}
+    scale: 0.84
   - kind: 2
     level: 1
-    prefab: {fileID: 919132149155446097, guid: 0c89efcb31e2e4f0d9bf1a391f54d097, type: 3}
-    scale: 0.66
+    prefab: {fileID: 919132149155446097, guid: 7c095fd12c14640bfafb7e9cf5b31cf9, type: 3}
+    scale: 0.86
   - kind: 2
     level: 2
-    prefab: {fileID: 919132149155446097, guid: 3dc9f1c202a2e407a90d41c5154a988e, type: 3}
-    scale: 0.76
+    prefab: {fileID: 919132149155446097, guid: 1df86af8f5df64309a5cdd53d8b40beb, type: 3}
+    scale: 0.82
   hudPrefab: {fileID: 4932434759920830639, guid: d0eb9a43eadfb4d768c166ba3b9a6beb,
     type: 3}
+  frontendTheme: {fileID: 11400000, guid: 04385863704694e25be000a8f280a34d, type: 2}
   panelSprite: {fileID: 21300000, guid: 56271692c10584855bf39edc4905b029, type: 3}
   uiFrameSprite: {fileID: 21300000, guid: a9ae2dbcf4084403382d431049f6023a, type: 3}
   bodyFont: {fileID: 11400000, guid: 55ffe4fbd2df8412797e0ec01dabc31e, type: 2}
-  titleFont: {fileID: 11400000, guid: a5a920af6a43545b7a6375b5e3994f71, type: 2}
+  titleFont: {fileID: 11400000, guid: a932ae89f23a945cdbbe0da95b81c007, type: 2}
   uiCopy: {fileID: 11400000, guid: 0213a3cedcd6c45198b884a9c0577ffe, type: 2}
   goldIcon: {fileID: 21300000, guid: 77904f3d96ebe4c64b8b350aa172fc60, type: 3}
   keepIcon: {fileID: 21300000, guid: 60c75de6f2127498698a10372a44a8bd, type: 3}
@@ -275,6 +284,41 @@ MonoBehaviour:
     license: 1
     sourceUrl: https://github.com/notofonts/noto-fonts
     acquiredOn: 2026-08-16
+  - assetName: Cinzel SemiBold
+    assetPath: Assets/Art/Fonts/Cinzel-SemiBold.ttf
+    license: 1
+    sourceUrl: https://github.com/google/fonts/tree/main/ofl/cinzel
+    acquiredOn: 2026-08-25
+  - assetName: Greenwatch welcome artwork
+    assetPath: Assets/Resources/Presentation/Frontend/GreenwatchWelcome.png
+    license: 3
+    sourceUrl: OpenAI image generation / this project session
+    acquiredOn: 2026-08-25
+  - assetName: Greenwatch war table artwork
+    assetPath: Assets/Resources/Presentation/Frontend/GreenwatchWarTable.png
+    license: 3
+    sourceUrl: OpenAI image generation / this project session
+    acquiredOn: 2026-08-25
+  - assetName: Defender Chronicles V2 logo
+    assetPath: Assets/Resources/Presentation/Brand/DefenderChronicles-Logo-v2.png
+    license: 0
+    sourceUrl: Defender Chronicles vector brand system
+    acquiredOn: 2026-08-25
+  - assetName: Defender Chronicles V2 brand mark
+    assetPath: Assets/Resources/Presentation/Brand/DefenderChronicles-Mark-v2.png
+    license: 0
+    sourceUrl: Defender Chronicles vector brand system
+    acquiredOn: 2026-08-25
+  - assetName: Defender Chronicles V2 application icon
+    assetPath: Assets/Art/AppIcon/BrandV2/DefenderChronicles-AppIcon-v2-1024.png
+    license: 0
+    sourceUrl: Derived from the Defender Chronicles V2 brand mark
+    acquiredOn: 2026-08-25
+  - assetName: Defender Chronicles V2 launch artwork
+    assetPath: Assets/Art/Brand/Launch/GreenwatchLaunch-v2.png
+    license: 0
+    sourceUrl: Greenwatch artwork with the Defender Chronicles V2 logo
+    acquiredOn: 2026-08-25
   - assetName: HUD panel
     assetPath: Assets/Art/UI/DefenderHudPanel.png
     license: 3

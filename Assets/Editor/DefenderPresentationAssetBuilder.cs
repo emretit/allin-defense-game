@@ -179,6 +179,16 @@ namespace DefenderChronicles.Editor
                 PresentationActorAnimationContract.HitState,
                 PresentationActorAnimationContract.DefeatState,
                 PresentationActorAnimationContract.AbilityState);
+            RuntimeAnimatorController bossAnimator = CreateRoleAnimatorOverride(
+                PresentationActorKind.Boss,
+                actorAnimatorController,
+                PresentationActorAnimationContract.IdleState,
+                PresentationActorAnimationContract.MoveState,
+                PresentationActorAnimationContract.AttackState,
+                PresentationActorAnimationContract.HitState,
+                PresentationActorAnimationContract.DefeatState,
+                PresentationActorAnimationContract.PhaseState,
+                PresentationActorAnimationContract.BossAttackState);
             UiCopyCatalog copy = CreateCopyCatalog();
             var materials = CreatePaletteMaterials();
             LicensedAtlasMaterialEntry[] licensedMaterials = CreateLicensedAtlasMaterials();
@@ -208,16 +218,16 @@ namespace DefenderChronicles.Editor
                 Actor(PresentationActorKind.Regenerator, "Regenerator", 0.60f, regeneratorAnimator),
                 Actor(PresentationActorKind.Support, "Support", 0.62f, supportAnimator),
                 Actor(PresentationActorKind.Siege, "Siege", 0.92f, siegeAnimator),
-                Actor(PresentationActorKind.Boss, "Boss", 1.02f)
+                Actor(PresentationActorKind.Boss, "Boss", 1.02f, bossAnimator)
             };
             catalog.outpostVisuals = new[]
             {
-                Outpost(OutpostKind.Archer, 1, LicensedBuilding("building_tower_A_blue"), 0.72f),
-                Outpost(OutpostKind.Archer, 2, LicensedBuilding("building_archeryrange_blue"), 0.72f),
-                Outpost(OutpostKind.Barracks, 1, LicensedBuilding("building_tower_base_blue"), 0.76f),
-                Outpost(OutpostKind.Barracks, 2, LicensedBuilding("building_barracks_blue"), 0.72f),
-                Outpost(OutpostKind.Mage, 1, LicensedBuilding("building_tower_B_blue"), 0.66f),
-                Outpost(OutpostKind.Mage, 2, LicensedBuilding("building_church_blue"), 0.76f)
+                Outpost(OutpostKind.Archer, 1, Model("Archer_L1"), 0.86f),
+                Outpost(OutpostKind.Archer, 2, Model("Archer_L2"), 0.82f),
+                Outpost(OutpostKind.Barracks, 1, Model("Barracks_L1"), 0.88f),
+                Outpost(OutpostKind.Barracks, 2, Model("Barracks_L2"), 0.84f),
+                Outpost(OutpostKind.Mage, 1, Model("Mage_L1"), 0.86f),
+                Outpost(OutpostKind.Mage, 2, Model("Mage_L2"), 0.82f)
             };
             catalog.hudPrefab = hudPrefab;
             catalog.panelSprite = panelSprite;
@@ -268,6 +278,8 @@ namespace DefenderChronicles.Editor
             catalog.provenance = new[]
             {
                 Provenance("Noto Sans", "Assets/Art/Fonts/NotoSans-Regular.ttf", AssetLicenseKind.OpenFontLicense,
+                    "https://github.com/notofonts/noto-fonts", "2026-08-16"),
+                Provenance("Noto Serif", "Assets/Art/Fonts/NotoSerif-SemiBold.ttf", AssetLicenseKind.OpenFontLicense,
                     "https://github.com/notofonts/noto-fonts", "2026-08-16"),
                 Provenance("Cinzel SemiBold", "Assets/Art/Fonts/Cinzel-SemiBold.ttf", AssetLicenseKind.OpenFontLicense,
                     "https://github.com/google/fonts/tree/main/ofl/cinzel", "2026-08-25"),
@@ -760,11 +772,55 @@ namespace DefenderChronicles.Editor
             foreach (string axis in new[] { "x", "y", "z" })
                 clip.SetCurve("", typeof(Transform), $"m_LocalScale.{axis}", new AnimationCurve(
                     new Keyframe(0f, 1f), new Keyframe(duration * 0.55f, scale), new Keyframe(duration, 1f)));
+            AddRigMotionCurves(clip, roleName, clipName, duration);
             AnimationUtility.SetAnimationClipSettings(clip, new AnimationClipSettings
             {
                 loopTime = loopClip,
                 stopTime = duration
             });
+        }
+
+        private static void AddRigMotionCurves(AnimationClip clip, string roleName, string clipName, float duration)
+        {
+            // The generated actors use a lightweight mobile skeleton. Root curves above preserve
+            // gameplay timing, while these curves give limbs, weapons and the torso authored motion
+            // without ever moving the gameplay root.
+            const string rig = "Art/DC_HumanoidRig";
+            float armSwing = clipName switch
+            {
+                PresentationActorAnimationContract.MoveState => roleName == "Raider" ? 34f : 24f,
+                PresentationActorAnimationContract.AttackState => roleName == "Vanguard" ? 72f : 58f,
+                PresentationActorAnimationContract.AbilityState => roleName == "Support" ? 48f : 38f,
+                PresentationActorAnimationContract.HitState => -22f,
+                PresentationActorAnimationContract.DefeatState => -58f,
+                _ => 7f
+            };
+            float legSwing = clipName == PresentationActorAnimationContract.MoveState
+                ? (roleName == "Raider" ? 30f : 20f)
+                : clipName == PresentationActorAnimationContract.DefeatState ? -18f : 0f;
+            float torsoLean = clipName switch
+            {
+                PresentationActorAnimationContract.AttackState => 12f,
+                PresentationActorAnimationContract.AbilityState => -9f,
+                PresentationActorAnimationContract.HitState => -14f,
+                PresentationActorAnimationContract.DefeatState => 68f,
+                _ => 3f
+            };
+
+            SetRigRotationCurve(clip, $"{rig}/Spine", "x", duration, torsoLean);
+            SetRigRotationCurve(clip, $"{rig}/Arm.L", "x", duration, -armSwing * 0.72f);
+            SetRigRotationCurve(clip, $"{rig}/Arm.R", "x", duration, armSwing);
+            SetRigRotationCurve(clip, $"{rig}/Leg.L", "x", duration, legSwing);
+            SetRigRotationCurve(clip, $"{rig}/Leg.R", "x", duration, -legSwing);
+        }
+
+        private static void SetRigRotationCurve(AnimationClip clip, string path, string axis, float duration,
+            float peakDegrees)
+        {
+            clip.SetCurve(path, typeof(Transform), $"localEulerAnglesRaw.{axis}", new AnimationCurve(
+                new Keyframe(0f, 0f),
+                new Keyframe(duration * 0.45f, peakDegrees),
+                new Keyframe(duration, 0f)));
         }
 
         private static AnimationClip CreateMotionClip(string clipName)

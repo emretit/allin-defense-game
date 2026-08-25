@@ -30,8 +30,6 @@ namespace DefenderChronicles.Core
         private float siegeTimer;
         private float regenerationTimer;
         private float stunRemaining;
-        private float slowRemaining;
-        private float slowFactor = 1f;
         private bool removed;
         private int bossPhase = 1;
 
@@ -59,15 +57,12 @@ namespace DefenderChronicles.Core
         {
             if (!IsAlive || session == null || path == null || path.Count < 2) return;
 
-            float delta = Time.deltaTime;
+            float delta = session.GameplayDeltaTime;
             attackTimer -= delta;
             supportTimer -= delta;
             siegeTimer -= delta;
             regenerationTimer -= delta;
             stunRemaining = Mathf.Max(0f, stunRemaining - delta);
-            slowRemaining = Mathf.Max(0f, slowRemaining - delta);
-            if (slowRemaining <= 0f) slowFactor = 1f;
-
             RunSpecialBehaviour();
             if (stunRemaining > 0f)
             {
@@ -103,9 +98,12 @@ namespace DefenderChronicles.Core
 
             if (archetype == EnemyArchetype.Support && supportTimer <= 0f)
             {
-                session.HealEnemies(transform.position, 3.5f, 24, this);
-                session.EmitPresentation(PresentationCue.HealPulse, transform.position, gameObject,
-                    GameSessionController.ActorKind(archetype));
+                Vector3 healTargetPosition = transform.position;
+                if (session.HealEnemies(transform.position, 3.5f, 24, this, out healTargetPosition))
+                {
+                    session.EmitPresentation(PresentationCue.HealPulse, healTargetPosition, gameObject,
+                        GameSessionController.ActorKind(archetype));
+                }
                 supportTimer = 2.4f;
             }
 
@@ -127,12 +125,8 @@ namespace DefenderChronicles.Core
             int nextPhase = fraction <= 0.33f ? 3 : fraction <= 0.66f ? 2 : 1;
             if (nextPhase == bossPhase) return;
             bossPhase = nextPhase;
-            transform.localScale *= 1.08f;
-            if (bodyRenderer != null)
-                bodyRenderer.material.color = bossPhase == 2
-                    ? new Color(0.95f, 0.18f, 0.08f)
-                    : new Color(1f, 0.42f, 0.05f);
-            session.DamageEnemies(transform.position, 3.5f, 0, 0.45f, 1.5f);
+            GetComponent<BossPhaseVisual>()?.SetPhase(bossPhase);
+            session.DamageEnemies(transform.position, 3.5f, 0);
             session.EmitPresentation(PresentationCue.BossPhase, transform.position, gameObject,
                 PresentationActorKind.Boss, value: bossPhase);
         }
@@ -150,7 +144,7 @@ namespace DefenderChronicles.Core
             target.y = current.y;
             float phaseMultiplier = archetype == EnemyArchetype.Boss ? 1f + (bossPhase - 1) * 0.22f : 1f;
             transform.position = Vector3.MoveTowards(current, target,
-                stats.speed * slowFactor * phaseMultiplier * delta);
+                stats.speed * phaseMultiplier * delta);
 
             Vector3 direction = target - current;
             direction.y = 0f;
@@ -199,9 +193,8 @@ namespace DefenderChronicles.Core
 
         public void ApplySlow(float factor, float duration)
         {
-            if (!IsAlive) return;
-            slowFactor = Mathf.Clamp(factor, 0.15f, 1f);
-            slowRemaining = Mathf.Max(slowRemaining, duration);
+            _ = factor;
+            _ = duration;
         }
 
         public void Stun(float duration)
@@ -281,11 +274,18 @@ namespace DefenderChronicles.Core
 
         public GreyboxOutpostSlot Slot { get; private set; }
         public OutpostKind Kind { get; private set; }
+        public int Level => level;
         public bool IsAlive => !sold;
         public Vector3 Position => transform.position;
         public bool CanUpgrade => IsAlive && level < 2;
         public int UpgradeCost => baseStats.upgradeCost;
         public int SellValue => CombatMath.Refund(invested);
+        public int DamageValue => CurrentDamage();
+        public float RangeValue => CurrentRange();
+        public float AttackRateValue => CurrentRate();
+        public string RoleLabel => RoleName();
+        public bool IsDisrupted => disabledRemaining > 0f;
+        public float DisabledRemaining => disabledRemaining;
         public string Description =>
             $"{GameSessionController.OutpostDisplayName(Kind)}  •  SV {level}\n\n" +
             $"Rol: {RoleName()}\nHasar: {CurrentDamage()}\nHız: {CurrentRate():0.0}/sn\n" +
@@ -308,10 +308,11 @@ namespace DefenderChronicles.Core
         private void Update()
         {
             if (!IsAlive || session == null) return;
-            attackTimer -= Time.deltaTime;
+            float delta = session.GameplayDeltaTime;
+            attackTimer -= delta;
             if (disabledRemaining > 0f)
             {
-                disabledRemaining = Mathf.Max(0f, disabledRemaining - Time.deltaTime);
+                disabledRemaining = Mathf.Max(0f, disabledRemaining - delta);
                 if (disabledRemaining <= 0f && bodyRenderer != null) bodyRenderer.material.color = activeColor;
                 return;
             }
@@ -332,7 +333,7 @@ namespace DefenderChronicles.Core
             if (target == null) return;
             if (Kind == OutpostKind.Mage)
             {
-                session.DamageEnemies(target.Position, 1.65f, CurrentDamage(), 0.70f, 1.5f);
+                session.DamageEnemies(target.Position, 1.65f, CurrentDamage());
                 session.EmitPresentation(PresentationCue.MageImpact, target.Position, gameObject, outpost: Kind);
             }
             else
@@ -413,7 +414,7 @@ namespace DefenderChronicles.Core
         {
             OutpostKind.Archer => "Hızlı tek hedef",
             OutpostKind.Barracks => "İki engelleyici birlik",
-            OutpostKind.Mage => "Alan hasarı ve yavaşlatma",
+            OutpostKind.Mage => "Alan hasarı",
             _ => "Savunma"
         };
     }
@@ -450,7 +451,8 @@ namespace DefenderChronicles.Core
         private void Update()
         {
             if (!IsAlive || session == null) return;
-            attackTimer -= Time.deltaTime;
+            float delta = session.GameplayDeltaTime;
+            attackTimer -= delta;
             GreyboxEnemy target = session.FindFirstEnemy(transform.position, 1.45f);
             if (target != null)
             {
@@ -466,7 +468,7 @@ namespace DefenderChronicles.Core
 
             Vector3 targetPosition = rally;
             targetPosition.y = transform.position.y;
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, 2.8f * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, 2.8f * delta);
         }
 
         public void TakeDamage(int amount)
@@ -497,6 +499,7 @@ namespace DefenderChronicles.Core
         public bool IsAlive => !downed && health > 0;
         public Vector3 Position => transform.position;
         public float HealthFraction => Mathf.Clamp01(health / (float)MaxHealth);
+        public float AbilityCooldownDuration => AbilityCooldown;
         public float AbilityRemaining { get; private set; }
         public float RespawnRemaining { get; private set; }
 
@@ -511,15 +514,18 @@ namespace DefenderChronicles.Core
 
         private void Update()
         {
-            AbilityRemaining = CombatMath.TickCooldown(AbilityRemaining, Time.deltaTime);
+            float delta = session != null
+                ? session.GameplayDeltaTime
+                : Time.deltaTime * GameSessionController.BaselineGameplayPace;
+            AbilityRemaining = CombatMath.TickCooldown(AbilityRemaining, delta);
             if (downed)
             {
-                RespawnRemaining = Mathf.Max(0f, RespawnRemaining - Time.deltaTime);
+                RespawnRemaining = Mathf.Max(0f, RespawnRemaining - delta);
                 if (RespawnRemaining <= 0f) Respawn();
                 return;
             }
 
-            attackTimer -= Time.deltaTime;
+            attackTimer -= delta;
             GreyboxEnemy enemy = session == null ? null : session.FindFirstEnemy(transform.position, 1.65f);
             if (enemy != null)
             {
@@ -558,13 +564,13 @@ namespace DefenderChronicles.Core
         {
             if (session != null && session.HasProductionPresentation)
             {
-                yield return new WaitForSeconds(0.28f);
+                yield return new WaitForSeconds(GameSessionController.GameplayDelay(0.28f));
                 yield break;
             }
             var preview = GameSessionController.CreatePrimitive("Shield Bash Range", PrimitiveType.Cylinder,
                 new Vector3(transform.position.x, 0.08f, transform.position.z), new Vector3(3.2f, 0.03f, 3.2f),
                 new Color(0.25f, 0.75f, 1f, 0.45f), transform.parent, false);
-            yield return new WaitForSeconds(0.28f);
+            yield return new WaitForSeconds(GameSessionController.GameplayDelay(0.28f));
             if (preview != null) Destroy(preview);
         }
 

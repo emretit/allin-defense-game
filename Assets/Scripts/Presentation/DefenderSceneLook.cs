@@ -36,6 +36,8 @@ namespace DefenderChronicles.Presentation
 
         private void Configure(Camera camera)
         {
+            var quality = GetQualityTier();
+
             camera.allowHDR = true;
             // SMAA gives the fixed isometric scene clean edges without the iOS overlay/subpass
             // sample-count mismatch caused by combining MSAA with uGUI post-processing.
@@ -49,23 +51,44 @@ namespace DefenderChronicles.Presentation
             cameraData.stopNaN = true;
 
             RenderSettings.ambientMode = AmbientMode.Trilight;
-            RenderSettings.ambientSkyColor = new Color(0.21f, 0.30f, 0.44f);
-            RenderSettings.ambientEquatorColor = new Color(0.09f, 0.17f, 0.23f);
-            RenderSettings.ambientGroundColor = new Color(0.025f, 0.055f, 0.065f);
-            RenderSettings.reflectionIntensity = 0.38f;
+            RenderSettings.ambientSkyColor = new Color(0.18f, 0.26f, 0.38f);
+            RenderSettings.ambientEquatorColor = new Color(0.075f, 0.135f, 0.18f);
+            RenderSettings.ambientGroundColor = new Color(0.020f, 0.045f, 0.052f);
+            RenderSettings.reflectionIntensity = 0.30f;
             RenderSettings.fog = true;
             RenderSettings.fogMode = FogMode.Linear;
-            RenderSettings.fogColor = new Color(0.035f, 0.085f, 0.14f);
-            RenderSettings.fogStartDistance = 21f;
-            RenderSettings.fogEndDistance = 45f;
+            RenderSettings.fogColor = new Color(0.026f, 0.068f, 0.105f);
+            RenderSettings.fogStartDistance = 23f;
+            RenderSettings.fogEndDistance = 48f;
 
-            ConfigureSun();
-            EnsureFillLight("Moon Fill", new Vector3(11f, 9f, 5.5f), new Color(0.25f, 0.52f, 1f), 1.15f, 25f);
-            EnsureFillLight("Gate Ember Fill", new Vector3(-1.2f, 3.4f, 2f), new Color(1f, 0.28f, 0.055f), 2.15f, 8f);
+            ConfigureSun(quality);
+            EnsureFillLight("Moon Fill", new Vector3(11f, 9f, 5.5f), new Color(0.22f, 0.43f, 0.82f), quality, 0.96f, 24f);
+            EnsureFillLight("Gate Ember Fill", new Vector3(-1.2f, 3.4f, 2f), new Color(1f, 0.30f, 0.075f), quality, 1.82f, 7.2f);
             ConfigureVolume();
         }
 
-        private static void ConfigureSun()
+        private enum VisualQualityTier
+        {
+            Low,
+            Medium,
+            High,
+            Unknown
+        }
+
+        private static VisualQualityTier GetQualityTier()
+        {
+            string qualityName = QualitySettings.names != null && QualitySettings.names.Length > 0
+                ? QualitySettings.names[Mathf.Clamp(QualitySettings.GetQualityLevel(), 0, QualitySettings.names.Length - 1)]
+                : string.Empty;
+
+            qualityName = (qualityName ?? string.Empty).ToLowerInvariant();
+            if (qualityName.Contains("low")) return VisualQualityTier.Low;
+            if (qualityName.Contains("medium")) return VisualQualityTier.Medium;
+            if (qualityName.Contains("high")) return VisualQualityTier.High;
+            return VisualQualityTier.Unknown;
+        }
+
+        private static void ConfigureSun(VisualQualityTier qualityTier)
         {
             Light sun = null;
             foreach (Light candidate in FindObjectsByType<Light>(FindObjectsSortMode.None))
@@ -83,9 +106,9 @@ namespace DefenderChronicles.Presentation
             }
 
             sun.name = "Greenwatch Moon Key";
-            sun.color = new Color(0.70f, 0.82f, 1f);
-            sun.intensity = 1.65f;
-            sun.shadows = LightShadows.Soft;
+            sun.color = new Color(0.66f, 0.78f, 0.96f);
+            sun.intensity = 1.48f;
+            sun.shadows = (qualityTier == VisualQualityTier.High || qualityTier == VisualQualityTier.Unknown) ? LightShadows.Soft : LightShadows.None;
             sun.shadowStrength = 0.68f;
             sun.shadowBias = 0.045f;
             sun.shadowNormalBias = 0.32f;
@@ -93,7 +116,13 @@ namespace DefenderChronicles.Presentation
             RenderSettings.sun = sun;
         }
 
-        private static void EnsureFillLight(string lightName, Vector3 position, Color color, float intensity, float range)
+        private static void EnsureFillLight(
+            string lightName,
+            Vector3 position,
+            Color color,
+            VisualQualityTier qualityTier,
+            float intensity,
+            float range)
         {
             GameObject lightObject = GameObject.Find(lightName);
             if (lightObject == null) lightObject = new GameObject(lightName);
@@ -102,8 +131,8 @@ namespace DefenderChronicles.Presentation
             if (light == null) light = lightObject.AddComponent<Light>();
             light.type = LightType.Point;
             light.color = color;
-            light.intensity = intensity;
-            light.range = range;
+            light.intensity = (qualityTier == VisualQualityTier.Low) ? intensity * 0.65f : intensity;
+            light.range = (qualityTier == VisualQualityTier.Low) ? range * 0.6f : range;
             light.shadows = LightShadows.None;
         }
 
@@ -130,18 +159,18 @@ namespace DefenderChronicles.Presentation
             tonemapping.mode.Override(TonemappingMode.ACES);
 
             colorAdjustments = runtimeProfile.Add<ColorAdjustments>();
-            colorAdjustments.postExposure.Override(0.1f);
-            colorAdjustments.contrast.Override(11f);
-            colorAdjustments.saturation.Override(8f);
-            colorAdjustments.colorFilter.Override(new Color(0.95f, 0.98f, 1f));
+            colorAdjustments.postExposure.Override(0.02f);
+            colorAdjustments.contrast.Override(13f);
+            colorAdjustments.saturation.Override(4f);
+            colorAdjustments.colorFilter.Override(new Color(0.96f, 0.98f, 0.99f));
 
             WhiteBalance whiteBalance = runtimeProfile.Add<WhiteBalance>();
-            whiteBalance.temperature.Override(-7f);
-            whiteBalance.tint.Override(2f);
+            whiteBalance.temperature.Override(-4f);
+            whiteBalance.tint.Override(1f);
 
             vignette = runtimeProfile.Add<Vignette>();
             vignette.color.Override(new Color(0.01f, 0.025f, 0.055f));
-            vignette.intensity.Override(0.13f);
+            vignette.intensity.Override(0.15f);
             vignette.smoothness.Override(0.48f);
         }
 

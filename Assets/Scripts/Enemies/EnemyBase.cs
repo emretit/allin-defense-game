@@ -28,7 +28,6 @@ namespace DefenderChronicles.Enemies
         private UnityEngine.UI.Slider healthSlider;
 
         private float _speedMultiplier = 1f;
-        private Coroutine _slowRoutine;
 
         public int CurrentHealth => currentHealth;
         public float HealthPercent => enemyData != null && enemyData.maxHealth > 0 ? (float)currentHealth / enemyData.maxHealth : 0f;
@@ -172,22 +171,9 @@ namespace DefenderChronicles.Enemies
 
         public virtual void ApplySlow(float slowFactor, float duration)
         {
-            if (_slowRoutine != null)
-            {
-                StopCoroutine(_slowRoutine);
-                _slowRoutine = null;
-                _speedMultiplier = 1f;
-            }
-            _slowRoutine = StartCoroutine(SlowCoroutine(slowFactor, duration));
-        }
-
-        private IEnumerator SlowCoroutine(float factor, float duration)
-        {
-            factor = Mathf.Clamp(factor, 0f, 1f);
-            _speedMultiplier = factor;
-            yield return new WaitForSeconds(duration);
+            _ = slowFactor;
+            _ = duration;
             _speedMultiplier = 1f;
-            _slowRoutine = null;
         }
     }
 }

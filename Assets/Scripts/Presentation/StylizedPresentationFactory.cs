@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Linq;
 using DefenderChronicles.Core;
+using DefenderChronicles.Data;
 using UnityEngine;
 
 namespace DefenderChronicles.Presentation
@@ -15,10 +16,12 @@ namespace DefenderChronicles.Presentation
     public static class StylizedPresentationFactory
     {
         private static Mesh groundingRingMesh;
+        private static Mesh contactShadowMesh;
 
         public static GameObject CreateRoot(string name, Vector3 position, Vector3 colliderSize,
             GameObject visualPrefab, DefenderPresentationCatalog catalog, PresentationCollider collider,
-            float visualScale = 1f)
+            float visualScale = 1f, RuntimeAnimatorController actorAnimator = null,
+            PresentationActorKind actorKind = PresentationActorKind.Raider)
         {
             var root = new GameObject(name);
             root.transform.position = position;
@@ -38,6 +41,7 @@ namespace DefenderChronicles.Presentation
                     body.radius = Mathf.Max(colliderSize.x, colliderSize.z) * 0.5f;
                     body.height = Mathf.Max(0.2f, colliderSize.y);
                     body.center = Vector3.up * body.height * 0.5f;
+                    CreateOutpostRuntimeSockets(root.transform, name, colliderSize);
                     break;
                 }
             }
@@ -54,11 +58,69 @@ namespace DefenderChronicles.Presentation
                 ApplyPalette(visual, catalog, true);
                 if (collider == PresentationCollider.Capsule)
                 {
-                    root.AddComponent<StylizedActorView>().Configure(motion.transform, catalog);
+                    root.AddComponent<StylizedActorView>().Configure(motion.transform, catalog, actorAnimator,
+                        actorKind);
+                    if (actorKind == PresentationActorKind.Boss)
+                        root.AddComponent<BossPhaseVisual>().Configure(visual.transform, catalog);
                     CreateGroundingAccent(root.transform, name, colliderSize.x, catalog);
                 }
             }
             return root;
+        }
+
+        public static string[] RuntimeSocketNamesForOutpost(OutpostKind kind)
+        {
+            string[] common =
+            {
+                "Socket_Root", "Socket_Ground", "Socket_Target", "Socket_Projectile",
+                "Socket_VFX", "Socket_Banner", "Socket_Upgrade"
+            };
+            string[] role = kind switch
+            {
+                OutpostKind.Archer => new[] { "Socket_Muzzle" },
+                OutpostKind.Barracks => new[] { "Socket_Spawn" },
+                OutpostKind.Mage => new[] { "Socket_Crystal", "Socket_Cast" },
+                _ => System.Array.Empty<string>()
+            };
+            return common.Concat(role).Distinct().ToArray();
+        }
+
+        private static void CreateOutpostRuntimeSockets(Transform root, string identity, Vector3 colliderSize)
+        {
+            OutpostKind kind = OutpostKind.Archer;
+            string value = identity?.ToLowerInvariant() ?? string.Empty;
+            if (value.Contains("barracks")) kind = OutpostKind.Barracks;
+            else if (value.Contains("mage")) kind = OutpostKind.Mage;
+
+            float radius = Mathf.Max(colliderSize.x, colliderSize.z) * 0.5f;
+            float height = Mathf.Max(0.2f, colliderSize.y);
+            foreach (string socketName in RuntimeSocketNamesForOutpost(kind))
+                CreateSocket(root, socketName, OutpostSocketPosition(socketName, radius, height));
+        }
+
+        private static Vector3 OutpostSocketPosition(string socketName, float radius, float height)
+        {
+            return socketName switch
+            {
+                "Socket_Ground" => Vector3.up * 0.03f,
+                "Socket_Target" => Vector3.up * (height * 0.65f),
+                "Socket_Projectile" => new Vector3(0f, height * 0.84f, radius * 0.38f),
+                "Socket_VFX" => Vector3.up * 0.08f,
+                "Socket_Banner" => new Vector3(radius * 0.35f, height * 1.08f, 0f),
+                "Socket_Upgrade" => Vector3.up * (height * 1.12f),
+                "Socket_Muzzle" => new Vector3(0f, height * 0.92f, radius * 0.46f),
+                "Socket_Spawn" => new Vector3(0f, 0.05f, -radius * 0.45f),
+                "Socket_Crystal" => Vector3.up * (height * 1.04f),
+                "Socket_Cast" => new Vector3(0f, height * 0.95f, radius * 0.18f),
+                _ => Vector3.zero
+            };
+        }
+
+        private static void CreateSocket(Transform root, string name, Vector3 localPosition)
+        {
+            var socket = new GameObject(name);
+            socket.transform.SetParent(root, false);
+            socket.transform.localPosition = localPosition;
         }
 
         private static void CreateGroundingAccent(Transform root, string identity, float actorWidth,
@@ -67,6 +129,7 @@ namespace DefenderChronicles.Presentation
             string value = identity?.ToLowerInvariant() ?? string.Empty;
             bool boss = value.Contains("boss");
             bool defender = value.Contains("knight") || value.Contains("guard");
+            CreateContactShadow(root, actorWidth, catalog, boss);
             if (!boss && !defender) return;
 
             var accent = new GameObject(boss ? "Boss Ground Aura" : "Defender Ground Aura");
@@ -78,13 +141,30 @@ namespace DefenderChronicles.Presentation
             groundingRingMesh ??= BuildGroundingRing(28);
             filter.sharedMesh = groundingRingMesh;
             var renderer = accent.AddComponent<MeshRenderer>();
-            renderer.sharedMaterial = boss ? catalog.fireMaterial : catalog.magicMaterial;
+            renderer.sharedMaterial = boss ? catalog.fireMaterial : catalog.defenderMaterial;
             renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             renderer.receiveShadows = false;
             accent.AddComponent<StylizedGroundingAura>().Configure(radius, boss);
         }
 
-        private static Mesh BuildGroundingRing(int segments)
+        private static void CreateContactShadow(Transform root, float actorWidth, DefenderPresentationCatalog catalog,
+            bool boss)
+        {
+            var shadow = new GameObject("Actor Contact Shadow");
+            shadow.transform.SetParent(root, false);
+            shadow.transform.localPosition = Vector3.up * 0.022f;
+            float radius = Mathf.Max(boss ? 0.58f : 0.36f, actorWidth * (boss ? 0.88f : 0.62f));
+            shadow.transform.localScale = new Vector3(radius * 1.18f, 1f, radius * 0.74f);
+            var filter = shadow.AddComponent<MeshFilter>();
+            contactShadowMesh ??= BuildGroundingRing(28, 0.38f);
+            filter.sharedMesh = contactShadowMesh;
+            var renderer = shadow.AddComponent<MeshRenderer>();
+            renderer.sharedMaterial = boss ? catalog.darkMaterial : catalog.stoneMaterial;
+            renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            renderer.receiveShadows = false;
+        }
+
+        private static Mesh BuildGroundingRing(int segments, float innerRadius = 0.79f)
         {
             var mesh = new Mesh { name = "DC Grounding Aura Ring" };
             var vertices = new Vector3[segments * 2];
@@ -93,7 +173,7 @@ namespace DefenderChronicles.Presentation
             {
                 float angle = Mathf.PI * 2f * i / segments;
                 Vector3 direction = new(Mathf.Cos(angle), 0f, Mathf.Sin(angle));
-                vertices[i * 2] = direction * 0.79f;
+                vertices[i * 2] = direction * innerRadius;
                 vertices[i * 2 + 1] = direction;
                 int next = (i + 1) % segments;
                 int offset = i * 6;
@@ -200,32 +280,81 @@ namespace DefenderChronicles.Presentation
         }
     }
 
+    public sealed class BossPhaseVisual : MonoBehaviour
+    {
+        private GameObject[] phaseTwo = System.Array.Empty<GameObject>();
+        private GameObject[] phaseThree = System.Array.Empty<GameObject>();
+
+        public int CurrentPhase { get; private set; } = 1;
+
+        public void Configure(Transform visualRoot, DefenderPresentationCatalog catalog)
+        {
+            if (visualRoot == null) return;
+            phaseTwo = visualRoot.GetComponentsInChildren<Transform>(true)
+                .Where(child => child != visualRoot && child.name.StartsWith("Phase2_",
+                    System.StringComparison.Ordinal))
+                .Select(child => child.gameObject).ToArray();
+            phaseThree = visualRoot.GetComponentsInChildren<Transform>(true)
+                .Where(child => child != visualRoot && child.name.StartsWith("Phase3_",
+                    System.StringComparison.Ordinal))
+                .Select(child => child.gameObject).ToArray();
+
+            foreach (GameObject part in phaseTwo)
+                SetPhaseMaterial(part, part.name.Contains("Core", System.StringComparison.Ordinal)
+                    ? catalog.fireMaterial : catalog.enemyMaterial);
+            foreach (GameObject part in phaseThree)
+                SetPhaseMaterial(part, part.name.Contains("Core", System.StringComparison.Ordinal)
+                    ? catalog.magicMaterial : catalog.darkMaterial);
+            SetPhase(1);
+        }
+
+        public void SetPhase(int phase)
+        {
+            CurrentPhase = Mathf.Clamp(phase, 1, 3);
+            foreach (GameObject part in phaseTwo)
+                if (part != null) part.SetActive(CurrentPhase >= 2);
+            foreach (GameObject part in phaseThree)
+                if (part != null) part.SetActive(CurrentPhase >= 3);
+        }
+
+        private static void SetPhaseMaterial(GameObject part, Material material)
+        {
+            if (part == null || material == null) return;
+            foreach (Renderer renderer in part.GetComponentsInChildren<Renderer>(true))
+                renderer.sharedMaterial = material;
+        }
+    }
+
     public sealed class StylizedActorView : MonoBehaviour
     {
         private Animator animator;
         private Vector3 previousPosition;
 
-        public void Configure(Transform target, DefenderPresentationCatalog catalog)
+        public void Configure(Transform target, DefenderPresentationCatalog catalog,
+            RuntimeAnimatorController actorAnimatorOverride = null,
+            PresentationActorKind actorKind = PresentationActorKind.Raider)
         {
             animator = target.gameObject.AddComponent<Animator>();
-            animator.runtimeAnimatorController = catalog.actorAnimator;
+            animator.runtimeAnimatorController = actorAnimatorOverride != null ? actorAnimatorOverride : catalog.actorAnimator;
+            var relay = target.gameObject.AddComponent<PresentationAnimationEventRelay>();
+            relay.Configure(gameObject, actorKind);
             previousPosition = transform.position;
         }
 
-        public void Attack() => Trigger("Attack");
-        public void Hit() => Trigger("Hit");
-        public void Disabled() => Trigger("Hit");
-        public void Ability() => Trigger("Ability");
-        public void Victory() => Trigger("Victory");
-        public void Phase() => Trigger("Phase");
-        public void BossAttack() => Trigger("BossAttack");
+        public void Attack() => Trigger(PresentationActorAnimationContract.AttackState);
+        public void Hit() => Trigger(PresentationActorAnimationContract.HitState);
+        public void Disabled() => Trigger(PresentationActorAnimationContract.HitState);
+        public void Ability() => Trigger(PresentationActorAnimationContract.AbilityState);
+        public void Victory() => Trigger(PresentationActorAnimationContract.VictoryState);
+        public void Phase() => Trigger(PresentationActorAnimationContract.PhaseState);
+        public void BossAttack() => Trigger(PresentationActorAnimationContract.BossAttackState);
 
         private void Update()
         {
             if (animator == null) return;
             float moved = (transform.position - previousPosition).sqrMagnitude;
             previousPosition = transform.position;
-            animator.SetBool("Moving", moved > 0.0001f);
+            animator.SetBool(PresentationActorAnimationContract.MovingParameter, moved > 0.0001f);
         }
 
         private void Trigger(string parameter)
@@ -234,7 +363,7 @@ namespace DefenderChronicles.Presentation
         }
 
         public static void PlayDefeatEcho(GameObject prefab, DefenderPresentationCatalog catalog, Vector3 position,
-            float scale = 1f)
+            float scale = 1f, RuntimeAnimatorController actorAnimatorOverride = null)
         {
             if (prefab == null) return;
             var echo = new GameObject("Defeat Echo");
@@ -246,8 +375,8 @@ namespace DefenderChronicles.Presentation
             visual.transform.localScale = Vector3.one * scale;
             StylizedPresentationFactory.ApplyPalette(visual, catalog, true);
             var animator = echo.AddComponent<Animator>();
-            animator.runtimeAnimatorController = catalog.actorAnimator;
-            animator.Play("Defeat", 0, 0f);
+            animator.runtimeAnimatorController = actorAnimatorOverride != null ? actorAnimatorOverride : catalog.actorAnimator;
+            animator.Play(PresentationActorAnimationContract.DefeatState, 0, 0f);
             var host = echo.AddComponent<DefeatEcho>();
             host.Begin();
         }
