@@ -34,7 +34,7 @@ These are intentionally outside the current vertical-slice closeout. Do not mix 
 |---|---:|---|---|
 | NEXT-201 | P1 | Prepared: actor rig migration decision | `docs/NEXT201_ACTOR_RIG_MIGRATION_DECISION_2026-08-25.md` and `docs/evidence/visual-development/actor-rig-source-inspection-2026-08-25.json` confirm current Generic rigs are acceptable until real authored Humanoid/skinned animation sources exist |
 | NEXT-202 | P1 | Prepared: Frostfen Hollow second-biome paint-over and kit | `docs/FROSTFEN_HOLLOW_SECOND_BIOME_PLAN_2026-08-25.md` and `docs/evidence/visual-development/frostfen-hollow-paintover-plan-2026-08-25.*` prove the visual language can scale beyond Greenwatch Valley without changing runtime scope |
-| NEXT-203 | P1 | Blocked by accepted brand/logo handoff | Do not create final logo/splash variants until the logo task's accepted direction, changed files and final Dynamic-Island-safe screenshot are available |
+| NEXT-203 | P1 | Blocked by accepted brand/logo handoff | `tools/validate_brand_handoff.py` and `docs/BRAND_HANDOFF_ACCEPTANCE_STANDARD_2026-08-26.md` define the required accepted direction, changed files, Dynamic-Island-safe screenshot, frontend evidence and signoffs before final logo/splash variants can proceed |
 | NEXT-204 | P2 | Prepared: cinematic boss/result framing contract | `Assets/Scripts/Presentation/PresentationCinematicFramingContract.cs` and `docs/CINEMATIC_BOSS_RESULT_FRAMING_PLAN_2026-08-25.md` define tested framing specs without changing runtime camera behavior |
 | NEXT-205 | P2 | Prepared: Android visual/performance acceptance matrix | `docs/ANDROID_VISUAL_PERFORMANCE_ACCEPTANCE_MATRIX_2026-08-25.md` defines post-iOS device tiers, scenarios, profile rules and evidence package |
 
@@ -57,3 +57,4 @@ Latest local preflight:
 - `tools/validate_visual_human_signoff.py docs/evidence/visual-development/human-review-signoff-template-2026-08-25.json --allow-pending` lists the expected missing human-review approvals for NEXT-006.
 - `tools/validate_visual_device_acceptance.py` and `docs/evidence/visual-development/physical-device-acceptance-template-2026-08-25.json` now define the required physical Profiler, Frame Debugger and 60-actor stress evidence before NEXT-003/NEXT-004/NEXT-005 can pass.
 - Latest local Unity regression after NEXT-201/NEXT-202/NEXT-204/NEXT-205 preparation: EditMode `67/67` and PlayMode `12/12` passed; reports are under ignored `Builds/`.
+- `tools/validate_brand_handoff.py` and `docs/evidence/visual-development/brand-handoff-template-2026-08-26.json` now prevent NEXT-203 from moving forward without the accepted logo/splash handoff and Dynamic-Island-safe evidence.

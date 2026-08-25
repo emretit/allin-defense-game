@@ -1,0 +1,38 @@
+{
+  "schema": "defender-chronicles.brand-handoff.v1",
+  "acceptedDirection": "TODO-accepted-logo-and-splash-direction",
+  "sourceTaskTitle": "TODO-Oyun logosu tasarla",
+  "sourceTaskStatus": "TODO-accepted",
+  "handoffDate": "TODO-YYYY-MM-DD",
+  "reviewer": "TODO-reviewer-name",
+  "changedFiles": [
+    "Assets/Resources/Presentation/Brand/DefenderChronicles-Logo-v2.png",
+    "Assets/Resources/Presentation/Brand/DefenderChronicles-Mark-v2.png",
+    "Assets/Art/AppIcon/BrandV2/DefenderChronicles-AppIcon-v2-1024.png",
+    "Assets/Art/Brand/Launch/GreenwatchLaunch-v2.png"
+  ],
+  "evidence": {
+    "dynamicIslandSafeScreenshot": "",
+    "bootScreenshot": "",
+    "welcomeScreenshot": "",
+    "mainMenuScreenshot": "",
+    "brandCaptureDirectory": ""
+  },
+  "tests": {
+    "editModeResult": "",
+    "playModeResult": "",
+    "passed": [
+      "BrandAssetsMeetTheMobileImportAndAlphaContract",
+      "BrandScreensCaptureAtAcceptanceRatios",
+      "FrontendFlowUsesBrandAssetsAndSafeArea"
+    ]
+  },
+  "signoffs": {
+    "productOwnerAccepted": false,
+    "dynamicIslandSafeAreaAccepted": false,
+    "frontendFlowRegressionAccepted": false
+  },
+  "notes": [
+    "Template intentionally fails until the accepted logo task handoff, final screenshots and regression evidence are attached."
+  ]
+}
