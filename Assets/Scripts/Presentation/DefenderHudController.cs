@@ -437,7 +437,7 @@ namespace DefenderChronicles.Presentation
             SetBuildButtonState(archerButton, BuildButtonSpec(copy.Get(UiTextKey.Archer), ArcherCost, true, GoldAccent));
             SetBuildButtonState(barracksButton, BuildButtonSpec(copy.Get(UiTextKey.Barracks), BarracksCost, true, WaveAccent));
             SetBuildButtonState(mageButton, BuildButtonSpec(copy.Get(UiTextKey.Mage), MageCost, true, new Color(0.74f, 0.47f, 1f, 1f)));
-            SetButtonLabel(abilityButton, $"KALKAN\n{copy.Get(UiTextKey.AbilityReady)}");
+            SetButtonLabel(abilityButton, $"{copy.Get(UiTextKey.ShieldBash)}\n{copy.Get(UiTextKey.AbilityReady)}");
             SetButtonLabel(cancelButton, copy.Get(UiTextKey.Cancel));
             SetButtonLabel(upgradeButton, copy.Get(UiTextKey.Upgrade));
             SetButtonLabel(sellButton, copy.Get(UiTextKey.Sell));
@@ -756,10 +756,10 @@ namespace DefenderChronicles.Presentation
             }
         }
 
-        private static void SetAbilityLabel(Button button, GreyboxHero hero, bool ready, bool paused)
+        private void SetAbilityLabel(Button button, GreyboxHero hero, bool ready, bool paused)
         {
             if (hero == null) return;
-            string title = GameLocalization.Text("KALKAN", "SHIELD");
+            string title = copy.Get(UiTextKey.ShieldBash);
             string state = ready ? GameLocalization.Text("HAZIR", "READY") : !hero.IsAlive ? GameLocalization.Text("DÖNÜYOR", "RETURNING") : paused ? GameLocalization.Text("DURAKLADI", "PAUSED") : $"{Mathf.CeilToInt(hero.AbilityRemaining)} s";
             SetButtonLabel(button, $"{title}\n{state}");
         }

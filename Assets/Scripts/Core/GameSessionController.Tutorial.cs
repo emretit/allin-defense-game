@@ -26,7 +26,7 @@ namespace DefenderChronicles.Core
                 0 => GameLocalization.Text($"Sarı halkalı noktaya dokun · OKÇU {TowerProgression.Base(OutpostKind.Archer).cost} altın", $"Tap the gold ring · ARCHER costs {TowerProgression.Base(OutpostKind.Archer).cost} gold"),
                 1 => GameLocalization.Text("Sonraki yol kıvrımına bir okçu daha kur.", "Build one more archer at the next bend."),
                 2 => GameLocalization.Text("İLK DALGAYI BAŞLAT · Düşmanlardan altın kazanırsın.", "START FIRST WAVE · Enemies reward gold."),
-                3 => GameLocalization.Text("Kaleye yaklaşanı KALKAN ile durdur · Basılı tutarak alanı gör.", "Hold SHIELD to preview, then release to stun enemies near the keep."),
+                3 => GameLocalization.Text("Muhafızın SARSICI DARBE ile yakındaki düşmanları sersemlet · Basılı tutarak alanı gör.", "Use the guardian's STUNNING STRIKE to stun nearby enemies · Hold to preview the area."),
                 4 => GameLocalization.Text("Üçüncü yol kıvrımına bir okçu daha kur.", "Build another archer at the third bend."),
                 5 => GameLocalization.Text($"Bir okçu seç · {TowerProgression.Base(OutpostKind.Archer).upgradeCost} altınla YÜKSELT.", $"Select an archer · UPGRADE for {TowerProgression.Base(OutpostKind.Archer).upgradeCost} gold."),
                 _ => ""

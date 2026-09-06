@@ -659,7 +659,7 @@ namespace DefenderChronicles.Core
             SetRect(barracks.GetComponent<RectTransform>(), new Vector2(222f, 34f), new Vector2(190f, 62f), Vector2.zero, Vector2.zero);
             var mage = CreateButton("Mage", bottomBar.transform, "BÜYÜ  125", new Vector2(190f, 62f), () => TryBuildSelected(OutpostKind.Mage));
             SetRect(mage.GetComponent<RectTransform>(), new Vector2(426f, 34f), new Vector2(190f, 62f), Vector2.zero, Vector2.zero);
-            heroAbilityButton = CreateButton("Special", bottomBar.transform, "KALKAN DARBESİ", new Vector2(238f, 62f), UseHeroAbility);
+            heroAbilityButton = CreateButton("Special", bottomBar.transform, "SARSICI DARBE", new Vector2(238f, 62f), UseHeroAbility);
             SetRect(heroAbilityButton.GetComponent<RectTransform>(), new Vector2(638f, 34f), new Vector2(238f, 62f), Vector2.zero, Vector2.zero);
             var cancel = CreateButton("Cancel", bottomBar.transform, "İPTAL", new Vector2(150f, 62f), CancelSelection);
             SetRect(cancel.GetComponent<RectTransform>(), new Vector2(894f, 34f), new Vector2(150f, 62f), Vector2.zero, Vector2.zero);
@@ -823,7 +823,7 @@ namespace DefenderChronicles.Core
             if (currentWaveIndex == 1)
                 ShowMessage("Kale muhafızı son savunma hattını otomatik korur.", 5f);
             else if (currentWaveIndex == 2)
-                ShowMessage("Kalkan Darbesi kalabalıkları kısa süre durdurur.", 5f);
+                ShowMessage("Sarsıcı Darbe kalabalıkları kısa süre durdurur.", 5f);
         }
 
         private void SetPhase(GamePhase next)

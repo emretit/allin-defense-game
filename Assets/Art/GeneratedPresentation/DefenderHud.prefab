@@ -3483,7 +3483,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "KALKAN DARBES\u0130"
+  m_text: SARSICI DARBE
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 55ffe4fbd2df8412797e0ec01dabc31e, type: 2}
   m_sharedMaterial: {fileID: 7172212797575951528, guid: 55ffe4fbd2df8412797e0ec01dabc31e,

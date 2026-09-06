@@ -47,7 +47,7 @@ namespace DefenderChronicles.UI
         }
         private static string LearningObjective(int level) => level switch
         {
-            1 => GameLocalization.Text("Okçu kur · Yükselt · Kalkan Darbesi ile kaleyi koru", "Build an archer · Upgrade · Protect the keep with Shield Bash"),
+            1 => GameLocalization.Text("Okçu kur · Yükselt · Sarsıcı Darbe ile kaleyi koru", "Build an archer · Upgrade · Protect the keep with Stunning Strike"),
             2 => GameLocalization.Text("Kışlayla düşmanı okçunun menzilinde tut", "Use barracks to hold enemies within archer range"),
             3 => GameLocalization.Text("Büyücüyle kalabalığı temizle", "Clear crowds with a mage"),
             4 => GameLocalization.Text("Öncü: %50 fiziksel zırh · Büyüye direnç yok", "Vanguard: 50% physical armour · No magic resistance"),
@@ -56,13 +56,13 @@ namespace DefenderChronicles.UI
             7 => GameLocalization.Text("Yeni: Patlama / Buz · Önce şifacıyı durdur", "New: Blast / Frost · Stop the healer first"),
             8 => GameLocalization.Text("Yeni: Kalkan / Hücum Birliği · Kuşatmayı durdur", "New: Shield / Assault Guard · Interrupt siege attacks"),
             9 => GameLocalization.Text("Tek rotada karma baskıya hazırlan", "Prepare for mixed pressure on one route"),
-            _ => GameLocalization.Text("Lord: %66 / %33 fazları · Kırmızı uyarıyı Kalkan Darbesi ile kes", "Lord: 66% / 33% phases · Interrupt the red warning with Shield Bash")
+            _ => GameLocalization.Text("Lord: %66 / %33 fazları · Kırmızı uyarıyı Sarsıcı Darbe ile kes", "Lord: 66% / 33% phases · Interrupt the red warning with Stunning Strike")
         };
         private static string DefenceAdvice(EnemyArchetype enemy) => enemy switch
         {
             EnemyArchetype.Vanguard => GameLocalization.Text("Zırhlı hedefe büyücü yerleştir.", "Place a mage against armoured targets."),
             EnemyArchetype.Support => GameLocalization.Text("Keskin Nişancı şifacıları önce hedefler.", "Sharpshooters target healers first."),
-            EnemyArchetype.Siege or EnemyArchetype.Boss => GameLocalization.Text("Kırmızı uyarı sırasında menzildeyse Kalkan Darbesi kullan.", "Use Shield Bash during the red warning when the attacker is in range."),
+            EnemyArchetype.Siege or EnemyArchetype.Boss => GameLocalization.Text("Kırmızı uyarı sırasında menzildeyse Sarsıcı Darbe kullan.", "Use Stunning Strike during the red warning when the attacker is in range."),
             EnemyArchetype.Regenerator => GameLocalization.Text("Aynı hedefe iki kuleyle yoğunlaş.", "Focus two towers on the same target."),
             _ => GameLocalization.Text("Bir sonraki yol kıvrımına okçu ekle veya yükselt.", "Add or upgrade an archer at the next bend.")
         };

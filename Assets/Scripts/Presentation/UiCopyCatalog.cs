@@ -74,7 +74,7 @@ namespace DefenderChronicles.Presentation
             UiTextKey.Archer => "ARCHER",
             UiTextKey.Barracks => "BARRACKS",
             UiTextKey.Mage => "MAGE",
-            UiTextKey.ShieldBash => "SHIELD BASH",
+            UiTextKey.ShieldBash => "STUNNING STRIKE",
             UiTextKey.Cancel => "CANCEL",
             UiTextKey.FirstWave => "START FIRST WAVE",
             UiTextKey.EarlyWave => "CALL WAVE EARLY",
