@@ -1,0 +1,14 @@
+{
+  "source_commit": "96ce8c9",
+  "method": "Unity Editor camera corner rays intersect the continuous terrain at each target aspect ratio",
+  "terrain_covers_all_four_corners": [
+    "(1920.00, 1080.00): True",
+    "(2532.00, 1170.00): True",
+    "(1440.00, 1080.00): True"
+  ],
+  "playmode_tests": {
+    "passed": 13,
+    "failed": 0
+  },
+  "physical_device_measurement": false
+}

@@ -4,6 +4,10 @@ Sürüm: **ct-20260906-01**, uygulama: **0.4.0**. Tarih: 6 Eylül 2026.
 
 Kod, otomatik savaş testleri, ayrı bulut ortamı ve Android paketi hazır. iOS cihaz kodu derlemesi geçti; imzalı kurulum, fiziksel telefon performansı ve gerçek oyuncu kabulü henüz tamamlanmadı. Bu rapor kapalı testin bütün kabul koşullarının geçtiği anlamına gelmez.
 
+## Son görsel düzeltme — 96ce8c9
+
+Savaş alanının çevresindeki lacivert platform, koyu kenar ve gökyüzü şeridi kaldırıldı. Arazi ekranın dört kenarına ve düğmelerin arkasına kadar uzanıyor. Tam genişlikte alt/üst HUD ve düğme grubu zeminleri çizilmiyor; tekil düğme yüzeyleri ve safe-area kontrolleri korunuyor. Kamera açısı, yol ve kule konumları değişmedi. 13/13 arayüz/oynanış kontrolü geçti; 16:9, iPhone 13 oranı ve 4:3 için zemin kapsaması Editor'de kontrol edildi. Kanıtlar: `evidence/fullscreen-playmode.xml`, `fullscreen-framing.json`, `battlefield-fullscreen-iphone13.png`. Fiziksel cihaz ölçümü değildir.
+
 ## Kaynak ve çalışma alanı
 
 - Çalışma kopyası: `/Users/emreaydin/DefenderChronicles-first-region`
@@ -57,7 +61,7 @@ Otomatik satın alma stratejisinde bölüm 6–9 dalları geç safhada, boss bö
 
 ## Paketler ve kurulum durumu
 
-- **Android:** Unity IL2CPP ARM64 geliştirme APK derlemesi başarılı, sıfır hata. `Builds/ClosedTest-Android/DefenderChronicles-ct-20260906-01.apk`. Gerçek APK dosyası 156.734.517 bayt (yaklaşık 149,5 MiB); imzası doğrulandı. SHA-256 manifestte. Android cihaz çalıştırması ölçülmedi.
+- **Android:** Unity IL2CPP ARM64 geliştirme APK derlemesi başarılı, sıfır hata. `Builds/ClosedTest-Android/DefenderChronicles-ct-20260906-01.apk`. Güncel APK dosyasının boyutu ve SHA-256 değeri manifestte; imzası doğrulandı. Android cihaz çalıştırması ölçülmedi.
 - **iOS:** Unity Xcode projesi dışa aktarımı ve Xcode cihaz kodu derlemesi başarılı. `Builds/ClosedTest-iOS/Unity-iPhone.xcodeproj`; imzasız `.app`, `Builds/ClosedTest-Xcode/Build/Products/Debug-iphoneos/DefenderChroniclesTest.app` içinde.
 - Her iki test uygulaması ayrı `com.emreaydin.defenderchronicles.closedtest` kimliğini kullanır. Mevcut telefondaki uygulamanın üzerine yazmaz.
 - Xcode imzalı derleme, geliştirme ekibi için hesap oturumu ve bu uygulamaya uygun profil bulunmadığından tamamlanamadı. İmzasız iOS uygulaması telefona kurulabilir teslim sayılmaz. Adımlar: `INSTALL_TR.md`.

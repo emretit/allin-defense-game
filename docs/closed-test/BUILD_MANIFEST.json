@@ -1,8 +1,8 @@
 {
   "build": "ct-20260906-01",
   "branch": "codex/first-region-closed-test",
-  "commit": "847f718a0f4747262ed85f10af4220110cfcb6ce",
-  "source_fingerprint_sha256": "cce3dfd80eaf984d935971a768576dc2722168355f0d82bee3db5b907eb723ac",
+  "commit": "96ce8c9eafca68573fdbf7ae4c992a166ad3ab0e",
+  "source_fingerprint_sha256": "6d296b0071f82c9fa1dc6fd752d08d7808c558a3337432211ab007b340f86891",
   "source_files": {
     "Assets/.meta": "d66a9d336e445478036b00afb1e5efbe640dad52bafb3d3af67e68abb9a5c966",
     "Assets/AddressableAssetsData.meta": "b955eed3b6e90d651afe78854fa737aa8be0aaca62dc530c183c06223f98c2ad",
@@ -510,13 +510,13 @@
     "Assets/Editor/ClosedTestServices/ClosedTestServicesEditor.cs.meta": "5a125a7161d2fd43f3775ee495df6f317daed6abe4a6e05f5d733a73402b5ea7",
     "Assets/Editor/ClosedTestServices/DefenderChronicles.ClosedTestServices.Editor.asmdef": "1417590553acdcd547dfb6a750c574ef8c21c2d5350477ec6243dbf1e2db63cf",
     "Assets/Editor/ClosedTestServices/DefenderChronicles.ClosedTestServices.Editor.asmdef.meta": "e748e89dce5b786cfea66af0b9e9f8c9d60c12614034ca797f7c67c41e216cd2",
-    "Assets/Editor/ClosedTestVisualReview.cs": "1efb7858fc1ac260a35ad02ba96cd52918bb8ec071ab3c64139133f795278043",
+    "Assets/Editor/ClosedTestVisualReview.cs": "c306d491bbddb0004f05b0602075eeb74685061fcd49ba634d11ed203319aad8",
     "Assets/Editor/ClosedTestVisualReview.cs.meta": "b2e8ecfa058d563e1ab64c2ad9b01265ea866552340647726ffe79e17f4b33b7",
     "Assets/Editor/DefenderChroniclesEditorBootstrap.cs": "960fabc07248276f3c8fc94bf4427c0dad32ad2a070e60164956cbffdce3d85b",
     "Assets/Editor/DefenderChroniclesEditorBootstrap.cs.meta": "fb9b36742c6a460d29c2e2c634364e311c18698dbff8e3f0f080240881bc13e6",
     "Assets/Editor/DefenderPresentationAssetBuilder.cs": "8ed2bc556bd4d45558c795134c6685a4d61f8262d085630e76633895914f816f",
     "Assets/Editor/DefenderPresentationAssetBuilder.cs.meta": "efc24a4efc9334074c3c5418f27d7f63d746fbda3ffa475af10006f5b1b7a870",
-    "Assets/Editor/DefenderPresentationBuildValidator.cs": "14191ea1a8a3811b3b9cfb6d68006346e26e162dd9f30f66f11cd75d6a8100cc",
+    "Assets/Editor/DefenderPresentationBuildValidator.cs": "0876096e826cd18319fdd823e34eaf17127e310ff8568352187a8dbf4212f99d",
     "Assets/Editor/DefenderPresentationBuildValidator.cs.meta": "8ad4d6008c733879614c2add6a28a7f31986cd3850801fc2a2182973bee6ea12",
     "Assets/Editor/IosFirstBuildSettings.cs": "85450c96d8bddfe0887e28c91c233859e1ce1780620de8eab186e648525c2411",
     "Assets/Editor/IosFirstBuildSettings.cs.meta": "0c9f0ed0b2d5877c9261337764e874ba3bc845744d5ee800c56ae432ae196f58",
@@ -642,7 +642,7 @@
     "Assets/Scripts/Core/GameSessionController.Checkpoints.cs.meta": "91de18df9fdad9d65e4b9f4508266397a20fa95966a0e2eb13eb3cc04dfbd582",
     "Assets/Scripts/Core/GameSessionController.Tutorial.cs": "aa8db710038ef8c454da20d0c668b53c30ea6f39e055e2472d18985677586f20",
     "Assets/Scripts/Core/GameSessionController.Tutorial.cs.meta": "d3297b1cbfa6cc90729fc0ee3430e5391e22fb05742ef21db7b32dc3e0d37919",
-    "Assets/Scripts/Core/GameSessionController.cs": "bc82ce427c291431762533645b982b50e194a8566145a3945d6a0c6a6fed5d82",
+    "Assets/Scripts/Core/GameSessionController.cs": "fc763cf9701f566db9f5af746b4f3c4c60962ff397032dcef2092b76c6f51780",
     "Assets/Scripts/Core/GameSessionController.cs.meta": "cc957fe14e95458f604d905d553d3bdedb367457107332ccfe27dcb69b699ee8",
     "Assets/Scripts/Core/GreyboxCombatants.cs": "5158d3863c5073c3d73c3589041f53ea0271af87f4b987e495d0201251f73e47",
     "Assets/Scripts/Core/GreyboxCombatants.cs.meta": "7f6adc25f8707d542aa4c46f5587d7673947f711edd6f8f63cdcf756608d3bc1",
@@ -725,11 +725,11 @@
     "Assets/Scripts/Presentation/DefenderAmbientAudioController.cs.meta": "373904ff44b03987339d9f251fa231cd74db7c4315cd3681e72cc25356b68bf8",
     "Assets/Scripts/Presentation/DefenderAudioController.cs": "4d92523c74b07f50bf145915ef51152a67aa42aa71c08265d499da61f3e1ae24",
     "Assets/Scripts/Presentation/DefenderAudioController.cs.meta": "07e726feeec13c19b978e9ade922a7aa2a49f6d8a0e3bc2a54862c87a33c5968",
-    "Assets/Scripts/Presentation/DefenderBattlefieldDressing.cs": "6f98985af68cd0cb45d7c93ac2cf98d2ee0db41d317ad330fb00e24b6004c7a9",
+    "Assets/Scripts/Presentation/DefenderBattlefieldDressing.cs": "d7f3174d749f8d4f7cfe64dfb7fcf9fa6083e9d1076a928508645ba65ee26b2b",
     "Assets/Scripts/Presentation/DefenderBattlefieldDressing.cs.meta": "ea1c7ab3334de53bae288b0f4e06854251f3ebb1f6fe4b061e8904174e08ddb8",
     "Assets/Scripts/Presentation/DefenderHudController.Specializations.cs": "7a66984ccc131f711a0bcd0da3029b173882de16aabf235044ee4b7108c32a3f",
     "Assets/Scripts/Presentation/DefenderHudController.Specializations.cs.meta": "b4067649550197fd04fe2397e87dd9d8f3be10885f3dcacbe6f62bddff7cdd18",
-    "Assets/Scripts/Presentation/DefenderHudController.cs": "07666cf534f2610fdf701b7caf0e4bb16aaf59e5b735224d5dd5520ef9f43acc",
+    "Assets/Scripts/Presentation/DefenderHudController.cs": "7327ea8d3c9ba82a08ac4a38cc81b4c0e95d2c7b4791b83da3f29b92ec872b40",
     "Assets/Scripts/Presentation/DefenderHudController.cs.meta": "d69a9fc3146e924fb66b6856daf6a473ec98cdc430543a72a1dca42e86ad1517",
     "Assets/Scripts/Presentation/DefenderHudResponsiveLayout.cs": "7aed819681b95c85dc8048e67cab871b64ac28cb463060d065ea41a35af82e6b",
     "Assets/Scripts/Presentation/DefenderHudResponsiveLayout.cs.meta": "080d386a1cf584a3b1cd6ca8f07134b696584c7a21916a66a408ec82342168ad",
@@ -871,7 +871,7 @@
     "Assets/Tests/PlayMode/FirstRegionBalanceTests.cs.meta": "2f0d7d270a9a0435ca0aa7c8e4930c933e2153313e222fef04cefee2061e50cd",
     "Assets/Tests/PlayMode/FirstRegionRegressionTests.cs": "d25555baaf05b8f3c631ec9c6dd587d4254aeee38e2b8982924e9cecfb7d159e",
     "Assets/Tests/PlayMode/FirstRegionRegressionTests.cs.meta": "b3c0e539a65a4344f7c5bdcd80489e81fc20c2f3f4ecde71f54d60b3caac2a60",
-    "Assets/Tests/PlayMode/GreyboxSceneTests.cs": "30da3bd1da2e1b64e38deac55f74189e775b871ce4e95ccbc730bf602a5615e5",
+    "Assets/Tests/PlayMode/GreyboxSceneTests.cs": "f929171c3d0c5c18ca00910485b63b4a901153cf09813e4b384c6ecaf6d8f97b",
     "Assets/Tests/PlayMode/GreyboxSceneTests.cs.meta": "54175c92e741a6e267d81b466a4f705850ab4d3b52a57114b2cadd4b955027c0",
     "Assets/Tests/PlayMode/SpecializationCombatTests.cs": "28b240709d47451a9a1f1a973fd7b3dc8fea6833fbe467058c50c05b87ea3e6c",
     "Assets/Tests/PlayMode/SpecializationCombatTests.cs.meta": "7cf5500834c777fba69def243d843b5487cf885022b032eda0fa6cbbd9663280",
@@ -1123,6 +1123,17 @@
       "result": "Passed",
       "sha256": "ddf91912e94618ddb0db51848e662130e9e6f7eaacef2062606a21ff299d6c91"
     },
+    "fullscreen-playmode.xml": {
+      "total": "13",
+      "passed": "13",
+      "failed": "0",
+      "skipped": "0",
+      "start-time": "2026-09-06 11:56:29Z",
+      "end-time": "2026-09-06 11:56:36Z",
+      "duration": "6.9213673",
+      "result": "Passed",
+      "sha256": "75864aeee2e02b663a7b0dd2987494ab9a89b63fa030c59be78321974d395832"
+    },
     "cloud-final.trx": {
       "total": "12",
       "executed": "12",
@@ -1147,14 +1158,14 @@
   "cloud_probe": "passed",
   "packages": {
     "Builds/ClosedTest-Android/DefenderChronicles-ct-20260906-01.apk": {
-      "bytes": 156734517,
-      "sha256": "d80260e3d7d3854d8596c6ead3fcbf977c98e318ea92561f2474f2c2f0d91347",
+      "bytes": 98525615,
+      "sha256": "acb5589ec3c88ae618b72ff25f54b02a94d51b8b80ffb15d8712257cc49ace85",
       "kind": "development_apk"
     },
     "Builds/ClosedTest-Xcode/Build/Products/Debug-iphoneos/DefenderChroniclesTest.app": {
-      "bytes": 443512299,
+      "bytes": 443529935,
       "files": 55,
-      "tree_sha256": "2db45df8f7fb38d7b1507e61842212c921b46e82b9db0d9fbeef08d52900e7c4",
+      "tree_sha256": "a5ca44a22e1b9958119dc81395656cc818ebf8cab322d275991452a2e84fc170",
       "hash_method": "SHA-256 of sorted JSON mapping every bundle-relative file path to its SHA-256; includes UnityFramework and data.",
       "signature_status": "unsigned_cannot_install_on_device"
     }
