@@ -278,7 +278,7 @@ namespace DefenderChronicles.Presentation
             SetBuildAvailability(session.CanBuildOnSelection, session.Gold);
             TopBarPresentationSpec topBar = TopBarSpec(copy.Get(UiTextKey.Gold), copy.Get(UiTextKey.Keep),
                 copy.Get(UiTextKey.Wave), session.Gold, session.Lives, session.CurrentWaveIndex,
-                session.WaveCount, session.Phase);
+                session.WaveCount, session.UnpausedPhase);
             goldText.text = topBar.goldText;
             goldText.color = topBar.goldColor;
             livesText.text = topBar.livesText;
@@ -507,11 +507,18 @@ namespace DefenderChronicles.Presentation
             StyleText(previewTitleText, 20f, TextMuted, FontStyles.Bold);
             previewTitleText.alignment = TextAlignmentOptions.TopLeft;
             StyleText(messageText, 28f, TextPrimary, FontStyles.Bold);
+            messageText.enableWordWrapping = true;
+            messageText.enableAutoSizing = true;
+            messageText.fontSizeMin = 24f;
+            messageText.fontSizeMax = 28f;
             StyleText(heroText, 24f, TextMuted, FontStyles.Bold);
             StyleText(selectedText, 30f, TextPrimary);
             selectedText.enableWordWrapping = true;
             selectedText.overflowMode = TextOverflowModes.Overflow;
             StyleText(selectedTitleText, 32f, TextPrimary, FontStyles.Bold);
+            selectedTitleText.enableAutoSizing = true;
+            selectedTitleText.fontSizeMin = 24f;
+            selectedTitleText.fontSizeMax = 32f;
             StyleText(selectedBadgeText, 24f, GoldAccent, FontStyles.Bold);
             StyleText(selectedRoleText, 24f, TextMuted);
             StyleText(selectedHintText, 26f, TextMuted);
@@ -522,7 +529,7 @@ namespace DefenderChronicles.Presentation
             StyleText(pauseOverlayBadgeText, 17f, GoldAccent, FontStyles.Bold);
             StyleText(pauseOverlayHintText, 19f, TextMuted);
             selectedHintText.enableWordWrapping = true;
-            selectedHintText.overflowMode = TextOverflowModes.Overflow;
+            selectedHintText.overflowMode = TextOverflowModes.Ellipsis;
             resultHintText.enableWordWrapping = true;
             resultHintText.overflowMode = TextOverflowModes.Overflow;
             pauseOverlayHintText.enableWordWrapping = true;
@@ -791,12 +798,12 @@ namespace DefenderChronicles.Presentation
 
         public static SelectedPanelPresentationSpec SelectedSlotPanelSpec(int slotIndex)
         {
-            string stats = GameLocalization.Text("BOŞ NOKTA\nMavi halka okçu menzilini gösterir.\nAşağıdan adını ve fiyatını görerek kule kur.",
-                "EMPTY SITE\nThe blue circle shows archer range.\nChoose a tower and its price below.");
+            string stats = GameLocalization.Text("Mavi halka: okçu menzili.\nAşağıdan bir kule seç.",
+                "Blue circle: archer range.\nChoose a tower below.");
 
             return new SelectedPanelPresentationSpec(SelectedPanelState.EmptySlot, GameLocalization.Text("KARAKOL PLATFORMU", "BUILD SITE"),
-                $"#{slotIndex + 1}", GameLocalization.Text("Aşağıdan bir karakol seç ve bu slotu doldur.", "Choose a tower below to build here."),
-                GameLocalization.Text("Okçu hızlı tek hedef, Kışla yol tutar, Büyü alan kontrolü sağlar.", "Archers focus targets, barracks block, and mages damage groups."), stats,
+                $"#{slotIndex + 1}", GameLocalization.Text("Kule kurmaya hazır", "Ready to build"),
+                GameLocalization.Text("Kule adı ve altın maliyeti aşağıda.", "Tower names and gold costs are below."), stats,
                 GameLocalization.Text("YÜKSELT\nKAPALI", "UPGRADE\nLOCKED"), GameLocalization.Text("SAT\nKAPALI", "SELL\nLOCKED"), false, false, true, WaveAccent, WaveAccent);
         }
 
@@ -1180,23 +1187,31 @@ namespace DefenderChronicles.Presentation
             selectedIconImage.raycastTarget = false;
 
             selectedTitleText = EnsureLabel(selectedHeaderImage.rectTransform, "Title",
-                new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(62f, -48f), new Vector2(-82f, -6f),
+                new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(62f, -76f), new Vector2(-12f, -2f),
                 TextAlignmentOptions.Left);
             selectedBadgeText = EnsureLabel(selectedHeaderImage.rectTransform, "Badge",
-                new Vector2(1f, 1f), new Vector2(1f, 1f), new Vector2(-72f, -36f), new Vector2(60f, 24f),
+                new Vector2(1f, 0f), new Vector2(1f, 0f), new Vector2(-12f, 4f), new Vector2(76f, 42f),
                 TextAlignmentOptions.Center);
             selectedRoleText = EnsureLabel(selectedHeaderImage.rectTransform, "Role",
-                new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(12f, 8f), new Vector2(-12f, 54f),
+                new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(12f, 2f), new Vector2(-90f, 44f),
                 TextAlignmentOptions.Left);
             selectedHintText = EnsureLabel(panelRect, "Hint",
-                new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(14f, 74f), new Vector2(-14f, 18f),
+                new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(14f, 150f), new Vector2(-14f, 222f),
                 TextAlignmentOptions.Left);
 
             RectTransform descriptionRect = selectedText.rectTransform;
             descriptionRect.anchorMin = new Vector2(0f, 0f);
             descriptionRect.anchorMax = new Vector2(1f, 1f);
-            descriptionRect.offsetMin = new Vector2(16f, 138f);
-            descriptionRect.offsetMax = new Vector2(-16f, -84f);
+            descriptionRect.offsetMin = new Vector2(16f, 230f);
+            descriptionRect.offsetMax = new Vector2(-16f, -134f);
+            foreach (var button in new[] { upgradeButton, sellButton })
+            {
+                var rect = (RectTransform)button.transform;
+                rect.anchorMin = rect.anchorMax = new Vector2(button == upgradeButton ? .25f : .75f, 0);
+                rect.pivot = new Vector2(.5f, 0);
+                rect.anchoredPosition = new Vector2(0, 12);
+                rect.sizeDelta = new Vector2(196, 130);
+            }
         }
 
         private void EnsurePreviewChrome()

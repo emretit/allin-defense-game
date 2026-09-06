@@ -57,6 +57,7 @@ namespace DefenderChronicles.Core
         public static GameSessionController Instance { get; private set; }
 
         public GamePhase Phase { get; private set; } = GamePhase.Boot;
+        public GamePhase UnpausedPhase => Phase == GamePhase.Paused ? phaseBeforePause : Phase;
         public int Gold { get; private set; } = StartingGold;
         public int Lives { get; private set; } = StartingLives;
         public IReadOnlyList<Vector3> Path => path;
@@ -123,7 +124,7 @@ namespace DefenderChronicles.Core
         private float nextHudRefresh;
         public double LastSimulationMilliseconds { get; private set; }
         public double LastHudMilliseconds { get; private set; }
-        private readonly BattleTelemetry telemetry = new();
+        private BattleTelemetry telemetry;
         private bool firstTowerRecorded;
         public int PeakEnemyCount { get; private set; }
         private bool automatedSmoke;
@@ -182,6 +183,8 @@ namespace DefenderChronicles.Core
 
         private void Awake()
         {
+            // Telemetry queries Unity application state, which is unavailable during player construction.
+            telemetry = new BattleTelemetry();
             if (Instance != null && Instance != this)
             {
                 Destroy(gameObject);
@@ -193,7 +196,7 @@ namespace DefenderChronicles.Core
 
         private void OnDestroy()
         {
-            telemetry.Record(this,"exit",Phase.ToString()); telemetry.Flush();
+            telemetry?.Record(this,"exit",Phase.ToString()); telemetry?.Flush();
             GameLocalization.LanguageChanged -= HandleLanguageChanged;
             if (Instance == this) Instance = null;
         }
@@ -2036,7 +2039,7 @@ namespace DefenderChronicles.Core
             goldText.text = GameLocalization.Text($"ALTIN  {Gold}", $"GOLD  {Gold}");
             livesText.text = GameLocalization.Text($"KALE  {Lives}", $"KEEP  {Lives}");
             livesText.color = Lives <= 5 ? new Color(1f, 0.35f, 0.3f) : Color.white;
-            int visibleWave = Mathf.Min(currentWaveIndex + (Phase == GamePhase.Wave ? 1 : 0), waves.Length);
+            int visibleWave = Mathf.Min(currentWaveIndex + (UnpausedPhase == GamePhase.Wave ? 1 : 0), waves.Length);
             waveText.text = GameLocalization.Text($"DALGA  {visibleWave} / {waves.Length}", $"WAVE  {visibleWave} / {waves.Length}");
             phaseText.text = Phase switch
             {

@@ -17,7 +17,7 @@ def digest(path):
 
 def collect_tests():
     results = {}
-    for name in ("editmode-final.xml", "playmode-final.xml", "playmode-ui-final.xml", "fullscreen-playmode.xml"):
+    for name in ("editmode-final.xml", "playmode-final.xml", "playmode-ui-final.xml", "fullscreen-playmode.xml", "simulator-fix-playmode.xml"):
         path = EVIDENCE / name
         if not path.exists():
             results[name] = {"status": "pending"}
@@ -73,7 +73,9 @@ def main():
     packages = {}
     for path in ROOT.glob("Builds/ClosedTest-Android/*.apk"):
         packages[str(path.relative_to(ROOT))] = {"bytes": path.stat().st_size, "sha256": digest(path), "kind": "development_apk"}
-    for path in ROOT.glob("Builds/ClosedTest-Xcode/Build/Products/Debug-iphoneos/*.app"):
+    app_paths = list(ROOT.glob("Builds/ClosedTest-Xcode/Build/Products/Debug-iphoneos/*.app"))
+    app_paths += list(ROOT.glob("Builds/ClosedTest-Simulator-Xcode/Build/Products/Debug-iphonesimulator/*.app"))
+    for path in app_paths:
         bundle_files = sorted(p for p in path.rglob("*") if p.is_file())
         bundle_hashes = {str(p.relative_to(path)): digest(p) for p in bundle_files}
         result = subprocess.run(["codesign", "--verify", str(path)], capture_output=True)
@@ -82,7 +84,8 @@ def main():
             "files": len(bundle_files),
             "tree_sha256": hashlib.sha256(json.dumps(bundle_hashes, sort_keys=True).encode()).hexdigest(),
             "hash_method": "SHA-256 of sorted JSON mapping every bundle-relative file path to its SHA-256; includes UnityFramework and data.",
-            "signature_status": "signed_requires_device_install" if result.returncode == 0 else "unsigned_cannot_install_on_device",
+            "signature_status": "simulator_only" if "Debug-iphonesimulator" in path.parts else
+                "signed_requires_device_install" if result.returncode == 0 else "unsigned_cannot_install_on_device",
         }
     manifest = {
         "build": BUILD,
@@ -95,6 +98,8 @@ def main():
         "cloud_probe": "passed" if (EVIDENCE / "cloud-integration-proof.txt").exists() else "pending",
         "packages": packages,
         "device": collect_device(),
+        "simulator": json.loads((EVIDENCE / "simulator-acceptance.json").read_text())
+            if (EVIDENCE / "simulator-acceptance.json").exists() else {"status": "not_run"},
         "human_playtest": {"status": "not_run", "planned_cohorts": ["5–8", "30–50"]},
     }
     path = ROOT / "docs/closed-test/BUILD_MANIFEST.json"

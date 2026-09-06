@@ -13,17 +13,6 @@ namespace DefenderChronicles.Presentation
         private void ApplySpecializationSelection(GreyboxOutpost outpost)
         {
             var session = GameSessionController.Instance;
-            foreach (var button in new[] { upgradeButton, sellButton })
-            {
-                var br = (RectTransform)button.transform;
-                br.anchorMin = br.anchorMax = new Vector2(button == upgradeButton ? .25f : .75f, 0);
-                br.pivot = new Vector2(.5f,0); br.anchoredPosition = new Vector2(0,12);
-                br.sizeDelta = new Vector2(196,130);
-            }
-            selectedHintText.rectTransform.offsetMin = new Vector2(14,150);
-            selectedHintText.rectTransform.offsetMax = new Vector2(-14,222);
-            selectedText.rectTransform.offsetMin = new Vector2(16,230);
-            selectedText.rectTransform.offsetMax = new Vector2(-16,-134);
             selectedBadgeText.text = GameLocalization.Text($"SV {outpost.Level}", $"LV {outpost.Level}");
             selectedText.text = GameLocalization.Text(
                 $"HASAR {outpost.DamageValue} · {(outpost.Kind == OutpostKind.Mage ? "Büyü" : "Fiziksel")}\nMENZİL {outpost.RangeValue:0.0}\nATIŞ {outpost.AttackRateValue:0.0}/s",

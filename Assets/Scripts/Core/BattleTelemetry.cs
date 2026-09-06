@@ -26,7 +26,7 @@ namespace DefenderChronicles.Core
         private static bool IsDevelopmentAutomation()
         {
             if (!Debug.isDebugBuild) return false;
-            foreach (string name in new[] { "DC_SMOKE", "DC_SMOKE_DEFEAT", "DC_SLOT_REGRESSION", "DC_ABILITY_CAPTURE", "DC_PAUSE_CAPTURE", "DC_ACTOR_CAPTURE", "DC_AUDIO_ACCEPTANCE", "DC_VIS812_CAPTURE", "DC_VIS812_CAPTURE_DEFEAT" })
+            foreach (string name in new[] { "DC_UI_ACCEPTANCE", "DC_SMOKE", "DC_SMOKE_DEFEAT", "DC_SLOT_REGRESSION", "DC_ABILITY_CAPTURE", "DC_PAUSE_CAPTURE", "DC_ACTOR_CAPTURE", "DC_AUDIO_ACCEPTANCE", "DC_VIS812_CAPTURE", "DC_VIS812_CAPTURE_DEFEAT" })
                 if (Environment.GetEnvironmentVariable(name) == "1") return true;
             return Array.Exists(Environment.GetCommandLineArgs(), a => a.Equals("-dc-smoke", StringComparison.OrdinalIgnoreCase));
         }
