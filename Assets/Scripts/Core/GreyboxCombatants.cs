@@ -498,8 +498,13 @@ namespace DefenderChronicles.Core
         {
             IReadOnlyList<Vector3> route = session.Path;
             float progress = CombatMath.ClosestRouteDistance(route, Position);
+            float roadLength = 0;
+            for (int i = 0; i + 1 < route.Count; i++) roadLength += Vector3.Distance(route[i], route[i + 1]);
+            // Form up beyond the building so the middle soldier is not hidden behind its model.
+            float spacing = Mathf.Min(.8f, roadLength * .5f);
+            float centre = Mathf.Clamp(progress + 1.6f, spacing, roadLength - spacing);
             // Sample along the actual road so short segments and corners never throw a guard off it.
-            Vector3 closest = CombatMath.PointOnRoute(route, progress + (index - 1) * .8f, out _);
+            Vector3 closest = CombatMath.PointOnRoute(route, centre + (index - 1) * spacing, out _);
             closest.y = transform.position.y;
             return closest;
         }
@@ -519,7 +524,6 @@ namespace DefenderChronicles.Core
     public sealed class GreyboxFriendlyUnit : MonoBehaviour, ICombatTarget
     {
         private const float MoveSpeed = 2.8f;
-        private const float MeleeRange = .85f;
         private const float PatrolRange = 2.6f;
 
         private GameSessionController session;
@@ -603,7 +607,7 @@ namespace DefenderChronicles.Core
 
             Vector3 toTarget = target != null ? target.Position - Position : Vector3.zero;
             toTarget.y = 0; // Combat takes place on the road; a model's pivot height is only presentation.
-            if (target != null && toTarget.sqrMagnitude <= MeleeRange * MeleeRange)
+            if (target != null && toTarget.sqrMagnitude <= owner.CombatStats.range * owner.CombatStats.range)
             {
                 Face(target.Position - Position);
                 if (attackTimer <= 0)

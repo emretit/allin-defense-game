@@ -55,7 +55,7 @@ namespace DefenderChronicles.Data
                 stats.guardCount = BarracksSquadSize;
                 stats.damage = level >= 2 ? 26 : 16;
                 stats.guardHealth = level >= 2 ? 175 : 110;
-                stats.range = 1.45f;
+                stats.range = .85f;
                 stats.attacksPerSecond = 1f / .375f;
             }
             if (level < 2 || !Matches(kind, branch)) return stats;

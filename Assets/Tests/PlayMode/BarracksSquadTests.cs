@@ -38,6 +38,9 @@ namespace DefenderChronicles.Tests
             {
                 Assert.That(Vector3.Distance(starts[i], soldiers[i].Position), Is.GreaterThan(.3f), "Soldiers must walk out, not appear on the road.");
                 Assert.That(DistanceToRoad(session, soldiers[i].Position), Is.LessThan(.45f));
+                Assert.That(CombatMath.ClosestRouteDistance(session.Path, soldiers[i].RallyPoint),
+                    Is.GreaterThan(CombatMath.ClosestRouteDistance(session.Path, session.Outposts[0].Position) + .5f),
+                    "The squad must form up beyond the building so all three soldiers remain visible.");
                 for (int j = 0; j < i; j++)
                     Assert.That(Vector3.Distance(soldiers[i].Position, soldiers[j].Position), Is.GreaterThan(.5f));
             }
@@ -159,7 +162,7 @@ namespace DefenderChronicles.Tests
         {
             var store = CreateStore();
             var session = Create(store);
-            Advance(session, .1f);
+            Advance(session, 1f / 60);
             session.Outposts[0].Soldiers.Single(g => g.FormationIndex == 0).TakeDamage(13);
             session.Outposts[0].Soldiers.Single(g => g.FormationIndex == 1).TakeDamage(100000);
             session.StartNextWave();
