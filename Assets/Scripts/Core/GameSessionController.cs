@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DefenderChronicles.Data;
 using DefenderChronicles.Presentation;
+using DefenderChronicles.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -39,6 +40,7 @@ namespace DefenderChronicles.Core
     {
         private const int StartingGold = 200;
         private const int StartingLives = 20;
+        private const string SelectableLayerName = "Selectable";
         private const float IntermissionSeconds = 8f;
         public const float BaselineGameplayPace = 2f;
         private static readonly float[] SpeedSteps = { 1f, 2f, 4f, 8f };
@@ -179,11 +181,19 @@ namespace DefenderChronicles.Core
                 return;
             }
             Instance = this;
+            GameLocalization.LanguageChanged += HandleLanguageChanged;
         }
 
         private void OnDestroy()
         {
+            GameLocalization.LanguageChanged -= HandleLanguageChanged;
             if (Instance == this) Instance = null;
+        }
+
+        private void HandleLanguageChanged()
+        {
+            RefreshThreatPreviewForPhase();
+            RefreshUi();
         }
 
         public void ConfigurePresentation(DefenderPresentationCatalog catalog)
@@ -293,8 +303,9 @@ namespace DefenderChronicles.Core
                 intermissionRemaining = Mathf.Max(0f, intermissionRemaining - Time.unscaledDeltaTime);
                 if (nextWaveButtonLabel != null)
                     nextWaveButtonLabel.text = intermissionRemaining > 0f
-                        ? $"DALGAYI ERKEN ÇAĞIR  {Mathf.CeilToInt(intermissionRemaining)}"
-                        : "SONRAKİ DALGA";
+                        ? GameLocalization.Text($"DALGAYI ERKEN ÇAĞIR  {Mathf.CeilToInt(intermissionRemaining)}",
+                            $"CALL WAVE EARLY  {Mathf.CeilToInt(intermissionRemaining)}")
+                        : GameLocalization.Text("SONRAKİ DALGA", "NEXT WAVE");
                 if (artHud != null)
                     artHud.SetNextWaveLabel(intermissionRemaining > 0f
                         ? $"{presentationCatalog.uiCopy.Get(UiTextKey.EarlyWave)}  {Mathf.CeilToInt(intermissionRemaining)}"
@@ -312,8 +323,10 @@ namespace DefenderChronicles.Core
             if (waves == null || waves.Length == 0) return;
             string preview = Phase switch
             {
-                GamePhase.Preparing when currentWaveIndex < waves.Length => $"Sıradaki: {waves[currentWaveIndex].preview}",
-                GamePhase.Intermission when currentWaveIndex < waves.Length => $"Sıradaki: {waves[currentWaveIndex].preview}",
+                GamePhase.Preparing when currentWaveIndex < waves.Length =>
+                    GameLocalization.Text($"Sıradaki: {waves[currentWaveIndex].preview}", $"Next: {waves[currentWaveIndex].preview}"),
+                GamePhase.Intermission when currentWaveIndex < waves.Length =>
+                    GameLocalization.Text($"Sıradaki: {waves[currentWaveIndex].preview}", $"Next: {waves[currentWaveIndex].preview}"),
                 GamePhase.Wave when currentWaveIndex < waves.Length => waves[currentWaveIndex].preview,
                 _ => previewText != null ? previewText.text : string.Empty
             };
@@ -482,6 +495,7 @@ namespace DefenderChronicles.Core
 
         private void AddOutpostSlot(GameObject root)
         {
+            SetLayerRecursively(root, LayerMask.NameToLayer(SelectableLayerName));
             var slot = root.AddComponent<GreyboxOutpostSlot>();
             slot.Configure(this, slots.Count, slotColor);
             slots.Add(slot);
@@ -900,6 +914,7 @@ namespace DefenderChronicles.Core
                 BuildOutpostSilhouette(kind, go.transform);
             }
             var outpost = go.AddComponent<GreyboxOutpost>();
+            SetLayerRecursively(go, LayerMask.NameToLayer(SelectableLayerName));
             outpost.Configure(this, targetSlot, kind, stats);
             targetSlot.SetOccupant(outpost);
             outposts.Add(outpost);
@@ -1896,16 +1911,18 @@ namespace DefenderChronicles.Core
                 return;
 
             Ray ray = gameCamera.ScreenPointToRay(screen);
-            if (!Physics.Raycast(ray, out RaycastHit hit, 100f)) return;
+            int selectableMask = LayerMask.GetMask(SelectableLayerName);
+            if (selectableMask == 0 || !Physics.Raycast(ray, out RaycastHit hit, 100f,
+                    selectableMask, QueryTriggerInteraction.Ignore)) return;
 
-            var slot = hit.collider.GetComponent<GreyboxOutpostSlot>();
+            var slot = hit.collider.GetComponentInParent<GreyboxOutpostSlot>();
             if (slot != null)
             {
                 SelectSlot(slot);
                 return;
             }
 
-            var outpost = hit.collider.GetComponent<GreyboxOutpost>();
+            var outpost = hit.collider.GetComponentInParent<GreyboxOutpost>();
             if (outpost != null)
             {
                 SelectOutpost(outpost);
@@ -1931,6 +1948,13 @@ namespace DefenderChronicles.Core
             RefreshSelectedPanel();
         }
 
+        private static void SetLayerRecursively(GameObject root, int layer)
+        {
+            if (root == null || layer < 0) return;
+            foreach (Transform child in root.GetComponentsInChildren<Transform>(true))
+                child.gameObject.layer = layer;
+        }
+
         private void RefreshSelectedPanel()
         {
             if (artHud != null)
@@ -1952,13 +1976,15 @@ namespace DefenderChronicles.Core
             }
             else if (selectedSlot != null)
             {
-                selectedText.text = $"KARAKOL PLATFORMU {selectedSlot.Index + 1}\n\nAşağıdan bir karakol seç.";
+                selectedText.text = GameLocalization.Text(
+                    $"KARAKOL PLATFORMU {selectedSlot.Index + 1}\n\nAşağıdan bir karakol seç.",
+                    $"OUTPOST PLATFORM {selectedSlot.Index + 1}\n\nChoose an outpost below.");
                 upgradeButton.interactable = false;
                 sellButton.interactable = false;
             }
             else
             {
-                selectedText.text = "PLATFORM SEÇİLMEDİ";
+                selectedText.text = GameLocalization.Text("PLATFORM SEÇİLMEDİ", "NO PLATFORM SELECTED");
                 upgradeButton.interactable = false;
                 sellButton.interactable = false;
             }
@@ -1978,30 +2004,34 @@ namespace DefenderChronicles.Core
                 return;
             }
             if (goldText == null) return;
-            goldText.text = $"ALTIN  {Gold}";
-            livesText.text = $"KALE  {Lives}";
+            goldText.text = GameLocalization.Text($"ALTIN  {Gold}", $"GOLD  {Gold}");
+            livesText.text = GameLocalization.Text($"KALE  {Lives}", $"KEEP  {Lives}");
             livesText.color = Lives <= 5 ? new Color(1f, 0.35f, 0.3f) : Color.white;
-            waveText.text = $"DALGA  {Mathf.Min(currentWaveIndex + (Phase == GamePhase.Wave ? 1 : 0), waves.Length)} / {waves.Length}";
+            int visibleWave = Mathf.Min(currentWaveIndex + (Phase == GamePhase.Wave ? 1 : 0), waves.Length);
+            waveText.text = GameLocalization.Text($"DALGA  {visibleWave} / {waves.Length}", $"WAVE  {visibleWave} / {waves.Length}");
             phaseText.text = Phase switch
             {
-                GamePhase.Preparing => "HAZIRLIK",
-                GamePhase.Wave => "SAVAŞ",
-                GamePhase.Intermission => "MOLA",
-                GamePhase.Paused => "DURAKLATILDI",
-                GamePhase.Victory => "ZAFER",
-                GamePhase.Defeat => "YENİLGİ",
-                _ => "YÜKLENİYOR"
+                GamePhase.Preparing => GameLocalization.Text("HAZIRLIK", "PREPARING"),
+                GamePhase.Wave => GameLocalization.Text("SAVAŞ", "COMBAT"),
+                GamePhase.Intermission => GameLocalization.Text("MOLA", "INTERMISSION"),
+                GamePhase.Paused => GameLocalization.Text("DURAKLATILDI", "PAUSED"),
+                GamePhase.Victory => GameLocalization.Text("ZAFER", "VICTORY"),
+                GamePhase.Defeat => GameLocalization.Text("YENİLGİ", "DEFEAT"),
+                _ => GameLocalization.Text("YÜKLENİYOR", "LOADING")
             };
             if (hero != null)
             {
                 heroText.text = hero.IsAlive
-                    ? $"ŞÖVALYE  {Mathf.CeilToInt(hero.HealthFraction * 100f)}%  •  YETENEK {(hero.AbilityRemaining <= 0f ? "HAZIR" : Mathf.CeilToInt(hero.AbilityRemaining) + " sn")}"
-                    : $"ŞÖVALYE DÖNÜYOR  {Mathf.CeilToInt(hero.RespawnRemaining)} sn";
+                    ? GameLocalization.Text(
+                        $"ŞÖVALYE  {Mathf.CeilToInt(hero.HealthFraction * 100f)}%  •  YETENEK {(hero.AbilityRemaining <= 0f ? "HAZIR" : Mathf.CeilToInt(hero.AbilityRemaining) + " sn")}",
+                        $"KNIGHT  {Mathf.CeilToInt(hero.HealthFraction * 100f)}%  •  ABILITY {(hero.AbilityRemaining <= 0f ? "READY" : Mathf.CeilToInt(hero.AbilityRemaining) + " sec")}")
+                    : GameLocalization.Text($"ŞÖVALYE DÖNÜYOR  {Mathf.CeilToInt(hero.RespawnRemaining)} sn",
+                        $"KNIGHT RETURNS IN  {Mathf.CeilToInt(hero.RespawnRemaining)} sec");
                 if (heroAbilityButton != null)
                     heroAbilityButton.interactable = hero.IsAlive && hero.AbilityRemaining <= 0f && Phase != GamePhase.Paused;
             }
             if (Phase == GamePhase.Preparing && nextWaveButtonLabel != null)
-                nextWaveButtonLabel.text = "İLK DALGAYI BAŞLAT";
+                nextWaveButtonLabel.text = GameLocalization.Text("İLK DALGAYI BAŞLAT", "START FIRST WAVE");
             if (speedButtonLabel != null)
                 speedButtonLabel.text = SpeedLabelForStep(speedStepIndex);
             RefreshSelectedPanel();
@@ -2348,6 +2378,8 @@ namespace DefenderChronicles.Core
             text.color = Color.white;
             text.supportRichText = true;
             text.resizeTextForBestFit = false;
+            if (GameLocalization.HasTranslation(value))
+                go.AddComponent<LocalizedLegacyText>().Configure(text, value);
             return text;
         }
 

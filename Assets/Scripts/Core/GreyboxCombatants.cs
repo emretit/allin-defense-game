@@ -323,7 +323,7 @@ namespace DefenderChronicles.Core
                 if (soldiers.Count < 2 && attackTimer <= 0f)
                 {
                     SpawnSoldier(soldiers.Count);
-                    attackTimer = 6f;
+                    attackTimer = 4.5f;
                 }
                 return;
             }
@@ -394,8 +394,7 @@ namespace DefenderChronicles.Core
         private void SpawnSoldier(int index)
         {
             if (!IsAlive || session == null || soldiers.Count >= 2) return;
-            Vector3 side = index % 2 == 0 ? Vector3.left : Vector3.right;
-            Vector3 rally = transform.position + side * 0.6f + Vector3.forward * 0.4f;
+            Vector3 rally = FindBarracksRallyPoint(index);
             GameObject go = session.CreateFriendlyVisual($"Barracks Guard {index + 1}", rally);
             if (go == null)
                 go = GameSessionController.CreatePrimitive($"Barracks Guard {index + 1}", PrimitiveType.Capsule,
@@ -405,6 +404,35 @@ namespace DefenderChronicles.Core
             soldier.Configure(session, this, rally, level);
             soldiers.Add(soldier);
             session.RegisterFriendly(soldier);
+        }
+
+        private Vector3 FindBarracksRallyPoint(int index)
+        {
+            IReadOnlyList<Vector3> route = session.Path;
+            Vector3 closest = transform.position;
+            Vector3 routeDirection = Vector3.forward;
+            float closestDistance = float.MaxValue;
+
+            for (int segmentIndex = 0; segmentIndex < route.Count - 1; segmentIndex++)
+            {
+                Vector3 from = route[segmentIndex];
+                Vector3 segment = route[segmentIndex + 1] - from;
+                float lengthSquared = segment.sqrMagnitude;
+                if (lengthSquared <= 0.0001f) continue;
+
+                float projection = Mathf.Clamp01(Vector3.Dot(transform.position - from, segment) / lengthSquared);
+                Vector3 candidate = from + segment * projection;
+                float distance = (candidate - transform.position).sqrMagnitude;
+                if (distance >= closestDistance) continue;
+
+                closestDistance = distance;
+                closest = candidate;
+                routeDirection = segment.normalized;
+            }
+
+            closest += routeDirection * (index % 2 == 0 ? -0.45f : 0.45f);
+            closest.y = transform.position.y;
+            return closest;
         }
 
         private int CurrentDamage() => Mathf.RoundToInt(baseStats.damage * (level == 2 ? 1.55f : 1f));
@@ -421,6 +449,12 @@ namespace DefenderChronicles.Core
 
     public sealed class GreyboxFriendlyUnit : MonoBehaviour, ICombatTarget
     {
+        private const int LevelOneHealth = 110;
+        private const int LevelTwoHealth = 175;
+        private const int LevelOneDamage = 16;
+        private const int LevelTwoDamage = 26;
+        private const float AttackInterval = 0.75f;
+
         private GameSessionController session;
         private GreyboxOutpost owner;
         private Vector3 rally;
@@ -443,9 +477,9 @@ namespace DefenderChronicles.Core
 
         public void SetUpgradeLevel(int level)
         {
-            maxHealth = level >= 2 ? 135 : 90;
+            maxHealth = level >= 2 ? LevelTwoHealth : LevelOneHealth;
             health = Mathf.Max(health, maxHealth);
-            damage = level >= 2 ? 20 : 13;
+            damage = level >= 2 ? LevelTwoDamage : LevelOneDamage;
         }
 
         private void Update()
@@ -461,7 +495,7 @@ namespace DefenderChronicles.Core
                     target.TakeDamage(damage);
                     session.EmitPresentation(PresentationCue.OutpostAttacked, target.Position, gameObject,
                         PresentationActorKind.Guard, owner.Kind);
-                    attackTimer = 0.85f;
+                    attackTimer = AttackInterval;
                 }
                 return;
             }

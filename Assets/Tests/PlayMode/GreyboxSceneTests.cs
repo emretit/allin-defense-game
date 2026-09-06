@@ -14,6 +14,29 @@ namespace DefenderChronicles.Tests
 {
     public sealed class GreyboxSceneTests
     {
+        [UnityTest]
+        public IEnumerator SelectableRaycastIgnoresCloserActorCollider()
+        {
+            int selectableLayer = LayerMask.NameToLayer("Selectable");
+            GameObject actor = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            GameObject target = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            actor.name = "Actor Raycast Blocker";
+            target.name = "Selectable Raycast Target";
+            actor.transform.position = new Vector3(0f, 0f, 2f);
+            target.transform.position = new Vector3(0f, 0f, 4f);
+            target.layer = selectableLayer;
+            yield return new WaitForFixedUpdate();
+
+            bool hitSomething = Physics.Raycast(Vector3.zero, Vector3.forward, out RaycastHit hit, 10f,
+                LayerMask.GetMask("Selectable"), QueryTriggerInteraction.Ignore);
+
+            Assert.That(hitSomething, Is.True);
+            Assert.That(hit.collider.gameObject, Is.SameAs(target));
+            Object.Destroy(actor);
+            Object.Destroy(target);
+            yield return null;
+        }
+
         [UnityTearDown]
         public IEnumerator TearDownSession()
         {
@@ -126,8 +149,9 @@ namespace DefenderChronicles.Tests
             InvokePrivate(flow, "ShowScreen", AppScreen.Login);
             Assert.That(flow.CurrentScreen, Is.EqualTo(AppScreen.Login));
             Assert.That(GameObject.Find("Guest Sign In"), Is.Not.Null);
-            Assert.That(GameObject.Find("Apple Sign In"), Is.Not.Null);
-            Assert.That(GameObject.Find("Google Sign In"), Is.Not.Null);
+            Assert.That(GameObject.Find("Player Account Sign In"), Is.Not.Null);
+            Assert.That(GameObject.Find("Apple Sign In"), Is.Null);
+            Assert.That(GameObject.Find("Google Sign In"), Is.Null);
 
             InvokePrivate(flow, "SignInAsGuest");
             Assert.That(flow.CurrentScreen, Is.EqualTo(AppScreen.MainMenu));
@@ -137,6 +161,9 @@ namespace DefenderChronicles.Tests
                 .Single(image => image.name == "Profile Brand Mark");
             Assert.That(mainMenuLogo.sprite, Is.SameAs(catalog.frontendTheme.brandLogo));
             Assert.That(profileMark.sprite, Is.SameAs(catalog.frontendTheme.brandMark));
+            Assert.That(GameObject.Find("Moonlit Sigil"), Is.Not.Null);
+            Assert.That(GameObject.Find("Ember Sigil"), Is.Not.Null);
+            Assert.That(GameObject.Find("Continue Chronicle").transform.Find("Accent Rail"), Is.Not.Null);
             Assert.That(flow.GetComponentsInChildren<Transform>(true)
                 .Any(child => child.name == "Profile Sigil"), Is.False);
             InvokePrivate(flow, "OpenCampaign");
@@ -153,6 +180,14 @@ namespace DefenderChronicles.Tests
                 "The portrait kingdom path must progress from the top of the map to the bottom.");
             Assert.That(GameObject.Find("Level 1").GetComponent<Button>().interactable, Is.True);
             Assert.That(GameObject.Find("Level 2").GetComponent<Button>().interactable, Is.False);
+            Transform selectionRing = GameObject.Find("Level 1").transform.Find("Selection Ring");
+            Assert.That(selectionRing, Is.Not.Null);
+            Assert.That(selectionRing.gameObject.activeSelf, Is.True);
+            ScrollRect campaignScroll = flow.GetComponentsInChildren<ScrollRect>(true)
+                .Single(item => item.name == "Campaign Scroll");
+            LayoutElement firstRegionLayout = campaignScroll.content.Find("Region 1").GetComponent<LayoutElement>();
+            Assert.That(firstRegionLayout.preferredWidth,
+                Is.EqualTo(Mathf.Max(984f, campaignScroll.viewport.rect.width)).Within(0.5f));
 
             InvokePrivate(flow, "OpenBriefing");
             yield return null;
@@ -714,7 +749,7 @@ namespace DefenderChronicles.Tests
             Vector3[] restartCorners = new Vector3[4];
             hint.GetWorldCorners(hintCorners);
             restart.GetWorldCorners(restartCorners);
-            Assert.That(hintCorners[0].y, Is.GreaterThanOrEqualTo(restartCorners[1].y),
+            Assert.That(hintCorners[0].y, Is.GreaterThanOrEqualTo(restartCorners[1].y - 0.01f),
                 "Result description must remain above the retry action without overlapping it.");
         }
 

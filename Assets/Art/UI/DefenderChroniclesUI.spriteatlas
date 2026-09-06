@@ -1,0 +1,97 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: DefenderChroniclesUI
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 4
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_IgnorePlatformSupport: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 2800000, guid: 56271692c10584855bf39edc4905b029, type: 3}
+    - {fileID: 2800000, guid: 137f0411915e447e9aa161139ddaaf83, type: 3}
+    - {fileID: 2800000, guid: a4399d56b6e44443eb15a46596281f93, type: 3}
+    - {fileID: 2800000, guid: 8ced09abc30be4d1c95a3e67645a4dc4, type: 3}
+    - {fileID: 2800000, guid: 5a9b86bf1d46e4a21956691e6c469456, type: 3}
+    - {fileID: 2800000, guid: dfe5224c4b41048a781beb5c939b5e02, type: 3}
+    - {fileID: 2800000, guid: 77904f3d96ebe4c64b8b350aa172fc60, type: 3}
+    - {fileID: 2800000, guid: 60c75de6f2127498698a10372a44a8bd, type: 3}
+    - {fileID: 2800000, guid: 933850c9f3add4fc3b7ba8bca8b39c88, type: 3}
+    - {fileID: 2800000, guid: 0a1ba2de912d1488fad5982f61331420, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+    packedSpriteRenderDataKeys:
+    - 137f0411915e447e9aa161139ddaaf83: 21300000
+    - 56271692c10584855bf39edc4905b029: 21300000
+    - a4399d56b6e44443eb15a46596281f93: 21300000
+    - 60c75de6f2127498698a10372a44a8bd: 21300000
+    - 933850c9f3add4fc3b7ba8bca8b39c88: 21300000
+    - 8ced09abc30be4d1c95a3e67645a4dc4: 21300000
+    - dfe5224c4b41048a781beb5c939b5e02: 21300000
+    - 77904f3d96ebe4c64b8b350aa172fc60: 21300000
+    - 0a1ba2de912d1488fad5982f61331420: 21300000
+    - 5a9b86bf1d46e4a21956691e6c469456: 21300000
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 137f0411915e447e9aa161139ddaaf83, type: 3}
+  - {fileID: 21300000, guid: 56271692c10584855bf39edc4905b029, type: 3}
+  - {fileID: 21300000, guid: a4399d56b6e44443eb15a46596281f93, type: 3}
+  - {fileID: 21300000, guid: 60c75de6f2127498698a10372a44a8bd, type: 3}
+  - {fileID: 21300000, guid: 933850c9f3add4fc3b7ba8bca8b39c88, type: 3}
+  - {fileID: 21300000, guid: 8ced09abc30be4d1c95a3e67645a4dc4, type: 3}
+  - {fileID: 21300000, guid: dfe5224c4b41048a781beb5c939b5e02, type: 3}
+  - {fileID: 21300000, guid: 77904f3d96ebe4c64b8b350aa172fc60, type: 3}
+  - {fileID: 21300000, guid: 0a1ba2de912d1488fad5982f61331420, type: 3}
+  - {fileID: 21300000, guid: 5a9b86bf1d46e4a21956691e6c469456, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - MedievalButton
+  - DefenderHudPanel
+  - MedievalPanel
+  - IconKeep
+  - IconMage
+  - IconAbility
+  - IconBarracks
+  - IconGold
+  - IconWave
+  - IconArcher
+  m_RenderDataMap: {}
+  m_Tag: DefenderChroniclesUI
+  m_IsVariant: 0

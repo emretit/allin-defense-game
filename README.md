@@ -18,17 +18,22 @@ Bu proje Age of Arena veya FutbolQuiz’den kod, model, ses, font, ikon ya da UI
 - Hazırlık, savaş, 8 saniyelik mola, pause, zafer, yenilgi ve restart durumları
 - Safe-area içinde yatay mobil HUD
 - Gece mavisi/turuncu stilize çevre, aktör ve karakol seti
-- Türkçe TextMeshPro HUD, havuzlu VFX ve duruma bağlı müzik sistemi
+- Anında değişen Türkçe/İngilizce TextMeshPro arayüz, havuzlu VFX ve duruma bağlı müzik sistemi
+- 5 bölge ve 50 bölümden oluşan çevrimdışı oynanabilir kampanya
+- Misafir oyun, tek Unity Player Account bağlantısı ve çevrimdışı hak talebi kuyruğu
+- Cloud Code tarafından doğrulanan bölüm sonucu, ödül ve ilerleme modeli
 
 ## Teknik temel
 
 - Unity: `6000.4.1f1`
 - iOS minimum sürüm: 15.0
+- Android minimum sürüm: API 29; ARM64 + IL2CPP
 - Yön: açılış/menü/kampanya/brifing portre; savaş/pause/sonuç yalnız Landscape Left ve Landscape Right
 - Bundle ID: `com.emreaydin.defenderchronicles`
 - Giriş: Unity Input System
 - Test: Unity Test Framework 1.6.0
-- UI metni: prefab tabanlı UGUI + TextMeshPro; Türkçe metinler `UiCopyCatalog` içindedir
+- UI metni: prefab tabanlı UGUI + TextMeshPro; Türkçe/İngilizce locale varlıkları ve çalışma zamanı kataloğu
+- Canlı oyun: Unity Authentication + Player Accounts + Cloud Code C# modülü + Protected Cloud Save
 - Production sunumu: doğrulanan `DefenderPresentationCatalog`; eksik varlık/lisans build’i durdurur
 
 Ana akış [GameSessionController.cs](/Users/emreaydin/DefenderChronicles/Assets/Scripts/Core/GameSessionController.cs), savaş aktörleri [GreyboxCombatants.cs](/Users/emreaydin/DefenderChronicles/Assets/Scripts/Core/GreyboxCombatants.cs) içindedir. Sunum varlıkları ve doğrulama [DefenderPresentationCatalog.cs](/Users/emreaydin/DefenderChronicles/Assets/Scripts/Presentation/DefenderPresentationCatalog.cs) üzerinden yönetilir.
@@ -45,7 +50,9 @@ EditMode:
 
 PlayMode için `-testPlatform PlayMode` kullanılır.
 
-Doğrulanan sonuçlar (16 Ağustos 2026):
+Doğrulanan sonuçların güncel denetim özeti: [UNITY_AUDIT_REMEDIATION_2026-08-27.md](/Users/emreaydin/DefenderChronicles/docs/UNITY_AUDIT_REMEDIATION_2026-08-27.md).
+
+Önceki fiziksel iOS kabul sonuçları (16 Ağustos 2026):
 
 - EditMode: 9/9 geçti
 - PlayMode: 2/2 geçti; 8 sabit/seçilebilir slot, sabit Knight, ekonomi, pause/devam ve production sunumu kontrol edildi
@@ -79,12 +86,17 @@ Akış cihazı ve geçerli Apple Development takımını otomatik bulur, imzalı
 
 Fiziksel cihaz kabul durumu: [IOS_DEVICE_ACCEPTANCE_2026-08-16.md](/Users/emreaydin/DefenderChronicles/docs/IOS_DEVICE_ACCEPTANCE_2026-08-16.md).
 
+## Android yapı
+
+Unity içinden `Defender Chronicles > Build Android Development APK` geliştirme APK’sı,
+`Defender Chronicles > Build Android Release AAB` ise mağaza AAB çıktısı üretir. Release imzası için yerel/CI keystore yapılandırması ayrıca sağlanmalıdır.
+
 ## Varlık kökeni
 
 Blender kaynakları, üretim betikleri, font lisansları ve kullanılan üretim kaynakları [ASSET_PROVENANCE.md](/Users/emreaydin/DefenderChronicles/docs/ASSET_PROVENANCE.md) içinde kayıtlıdır.
 
 ## Kapsam dışı
 
-Yeni kuleler, diğer kahramanlar, ekipman, hesap, bulut kayıt, PvP, reklam, IAP ve kampanya bu teslimin kapsamında değildir. Kesin 30/60 FPS kapısı fiziksel iPhone profil ölçümüne bırakılmıştır.
+Yeni kuleler, diğer kahramanlar, ekipman, PvP, reklam, IAP, Vivox ve multiplayer bu teslimin kapsamında değildir. Kesin performans/termal kapısı fiziksel iPhone ve Android cihaz profil ölçümüne bırakılmıştır.
 
 Güncel ve gerçek durum sınıflandırması: [DEFENDER_CHRONICLES_MASTER_TODO.md](/Users/emreaydin/DefenderChronicles/docs/DEFENDER_CHRONICLES_MASTER_TODO.md).

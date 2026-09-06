@@ -49,10 +49,8 @@ namespace DefenderChronicles.Core
                 else
                 {
                     string externalProvider = Environment.GetEnvironmentVariable("DC_UGS_EXTERNAL_ACCEPTANCE");
-                    if (string.Equals(externalProvider, nameof(PlayerAuthProvider.Google), StringComparison.OrdinalIgnoreCase))
-                        appFlow.BeginAuthentication(PlayerAuthProvider.Google);
-                    else if (string.Equals(externalProvider, nameof(PlayerAuthProvider.Apple), StringComparison.OrdinalIgnoreCase))
-                        appFlow.BeginAuthentication(PlayerAuthProvider.Apple);
+                    if (!string.IsNullOrWhiteSpace(externalProvider))
+                        appFlow.BeginAuthentication(PlayerAuthProvider.PlayerAccount);
                 }
                 int pendingLevel = AppFlowController.ConsumePendingLevel();
                 if (pendingLevel > 0) appFlow.LaunchCampaignLevel(pendingLevel);

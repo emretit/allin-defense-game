@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ugs-config-schemas.unity3d.com/v1/project-access-policy.schema.json",
+  "statements": [
+    {
+      "Sid": "DenyDirectPlayerCloudSaveWrites",
+      "Effect": "Deny",
+      "Action": ["Write"],
+      "Principal": "Player",
+      "Resource": [
+        "urn:ugs:cloud-save:/**/players/*/items**",
+        "urn:ugs:cloud-save:/**/players/*/item-batch**"
+      ]
+    }
+  ]
+}

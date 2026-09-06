@@ -41,6 +41,12 @@ namespace DefenderChronicles.UI
             set => SetBool(ReducedMotionKey, value);
         }
 
+        public static GameLanguage Language
+        {
+            get => GameLocalization.CurrentLanguage;
+            set => GameLocalization.SetLanguage(value);
+        }
+
         private static bool GetBool(string key, bool fallback) => PlayerPrefs.GetInt(key, fallback ? 1 : 0) != 0;
 
         private static void SetBool(string key, bool value)

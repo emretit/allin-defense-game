@@ -16,6 +16,9 @@ namespace DefenderChronicles.Presentation
         private ColorAdjustments colorAdjustments;
         private Vignette vignette;
         private Coroutine pulseRoutine;
+        private float baseBloomIntensity;
+        private float baseVignetteIntensity;
+        private Color baseColorFilter;
 
         public static void Pulse(PresentationCue cue)
         {
@@ -44,6 +47,7 @@ namespace DefenderChronicles.Presentation
             camera.allowMSAA = false;
 
             UniversalAdditionalCameraData cameraData = camera.GetUniversalAdditionalCameraData();
+            cameraData.requiresDepthTexture = false;
             cameraData.renderPostProcessing = true;
             cameraData.antialiasing = AntialiasingMode.SubpixelMorphologicalAntiAliasing;
             cameraData.antialiasingQuality = AntialiasingQuality.Medium;
@@ -64,7 +68,7 @@ namespace DefenderChronicles.Presentation
             ConfigureSun(quality);
             EnsureFillLight("Moon Fill", new Vector3(11f, 9f, 5.5f), new Color(0.22f, 0.43f, 0.82f), quality, 0.96f, 24f);
             EnsureFillLight("Gate Ember Fill", new Vector3(-1.2f, 3.4f, 2f), new Color(1f, 0.30f, 0.075f), quality, 1.82f, 7.2f);
-            ConfigureVolume();
+            ConfigureVolume(quality);
         }
 
         private enum VisualQualityTier
@@ -136,42 +140,57 @@ namespace DefenderChronicles.Presentation
             light.shadows = LightShadows.None;
         }
 
-        private void ConfigureVolume()
+        private void ConfigureVolume(VisualQualityTier qualityTier)
         {
             Volume volume = GetComponent<Volume>();
             if (volume == null) volume = gameObject.AddComponent<Volume>();
             volume.isGlobal = true;
             volume.priority = 50f;
 
-            if (runtimeProfile != null) Destroy(runtimeProfile);
+            if (runtimeProfile != null)
+            {
+                volume.profile = runtimeProfile;
+                return;
+            }
             runtimeProfile = ScriptableObject.CreateInstance<VolumeProfile>();
             runtimeProfile.name = "Defender Runtime Look";
             volume.profile = runtimeProfile;
 
             bloom = runtimeProfile.Add<Bloom>();
             bloom.active = true;
-            bloom.threshold.Override(1.08f);
-            bloom.intensity.Override(0.28f);
-            bloom.scatter.Override(0.58f);
+            baseBloomIntensity = qualityTier switch
+            {
+                VisualQualityTier.Low => 0.18f,
+                VisualQualityTier.Medium => 0.26f,
+                _ => 0.30f
+            };
+            bloom.threshold.Override(1.04f);
+            bloom.intensity.Override(baseBloomIntensity);
+            bloom.scatter.Override(0.60f);
             bloom.clamp.Override(4.5f);
+            bloom.highQualityFiltering.Override(false);
+            bloom.downscale.Override(BloomDownscaleMode.Quarter);
+            bloom.maxIterations.Override(qualityTier == VisualQualityTier.Low ? 3 : 4);
 
             Tonemapping tonemapping = runtimeProfile.Add<Tonemapping>();
             tonemapping.mode.Override(TonemappingMode.ACES);
 
             colorAdjustments = runtimeProfile.Add<ColorAdjustments>();
-            colorAdjustments.postExposure.Override(0.08f);
-            colorAdjustments.contrast.Override(18f);
+            colorAdjustments.postExposure.Override(qualityTier == VisualQualityTier.Low ? 0.05f : 0.08f);
+            colorAdjustments.contrast.Override(19f);
             colorAdjustments.saturation.Override(8f);
-            colorAdjustments.colorFilter.Override(new Color(0.96f, 0.98f, 0.99f));
+            baseColorFilter = new Color(0.96f, 0.985f, 1f);
+            colorAdjustments.colorFilter.Override(baseColorFilter);
 
             WhiteBalance whiteBalance = runtimeProfile.Add<WhiteBalance>();
-            whiteBalance.temperature.Override(-4f);
+            whiteBalance.temperature.Override(-3f);
             whiteBalance.tint.Override(1f);
 
             vignette = runtimeProfile.Add<Vignette>();
             vignette.color.Override(new Color(0.01f, 0.025f, 0.055f));
-            vignette.intensity.Override(0.17f);
-            vignette.smoothness.Override(0.48f);
+            baseVignetteIntensity = qualityTier == VisualQualityTier.Low ? 0.15f : 0.18f;
+            vignette.intensity.Override(baseVignetteIntensity);
+            vignette.smoothness.Override(0.50f);
         }
 
         private IEnumerator PulseLook(PresentationCue cue)
@@ -191,21 +210,20 @@ namespace DefenderChronicles.Presentation
                 PresentationCue.Victory => new Color(1f, 0.9f, 0.66f),
                 _ => new Color(0.78f, 0.9f, 1f)
             };
-            Color baseFilter = new(0.95f, 0.98f, 1f);
             float elapsed = 0f;
             while (elapsed < duration)
             {
                 elapsed += Time.unscaledDeltaTime;
                 float t = Mathf.Clamp01(elapsed / duration);
                 float envelope = Mathf.Sin(t * Mathf.PI);
-                bloom.intensity.Override(Mathf.Lerp(0.28f, peakBloom, envelope));
-                vignette.intensity.Override(Mathf.Lerp(0.13f, 0.24f, envelope));
-                colorAdjustments.colorFilter.Override(Color.Lerp(baseFilter, peakFilter, envelope * 0.62f));
+                bloom.intensity.Override(Mathf.Lerp(baseBloomIntensity, peakBloom, envelope));
+                vignette.intensity.Override(Mathf.Lerp(baseVignetteIntensity, 0.25f, envelope));
+                colorAdjustments.colorFilter.Override(Color.Lerp(baseColorFilter, peakFilter, envelope * 0.62f));
                 yield return null;
             }
-            bloom.intensity.Override(0.28f);
-            vignette.intensity.Override(0.17f);
-            colorAdjustments.colorFilter.Override(baseFilter);
+            bloom.intensity.Override(baseBloomIntensity);
+            vignette.intensity.Override(baseVignetteIntensity);
+            colorAdjustments.colorFilter.Override(baseColorFilter);
             pulseRoutine = null;
         }
 

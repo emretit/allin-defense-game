@@ -59,6 +59,8 @@ namespace DefenderChronicles.UI
         private TextMeshProUGUI briefingReward;
         private Button nextLevelButton;
         private Button retryButton;
+        private Button turkishLanguageButton;
+        private Button englishLanguageButton;
         private GameObject settingsModal;
         private GameObject orientationCurtain;
         private TextMeshProUGUI orientationCurtainLabel;
@@ -105,6 +107,8 @@ namespace DefenderChronicles.UI
             MobileOrientationController.Request(HasPendingLevel
                 ? MobileOrientationMode.LandscapeBattle
                 : MobileOrientationMode.PortraitFrontend);
+            GameLocalization.LanguageChanged += HandleLanguageChanged;
+            GameLocalization.ApplyStoredUnityLocale();
 
             EnsureEventSystem();
             BuildCanvas();
@@ -224,6 +228,15 @@ namespace DefenderChronicles.UI
             GameObject bottomShade = CreateImage("Bottom Shade", canvasObject.transform, new Color(0.006f, 0.014f, 0.030f, 0.76f));
             SetAnchors(bottomShade.GetComponent<RectTransform>(), Vector2.zero, new Vector2(1f, 0.16f), Vector2.zero, Vector2.zero);
 
+            CreateAmbientSigil("Moonlit Sigil", canvasObject.transform,
+                new Vector2(0.66f, 0.61f), new Vector2(1.08f, 1.05f),
+                new Color(theme.moonEdge.r, theme.moonEdge.g, theme.moonEdge.b, 0.055f),
+                new Vector2(10f, 7f), 0.012f, 1.4f, 0.022f, 0.4f);
+            CreateAmbientSigil("Ember Sigil", canvasObject.transform,
+                new Vector2(-0.10f, -0.05f), new Vector2(0.34f, 0.37f),
+                new Color(theme.commandGold.r, theme.commandGold.g, theme.commandGold.b, 0.040f),
+                new Vector2(8f, 5f), 0.010f, 1.0f, 0.018f, 2.1f);
+
             GameObject warTableObject = new("War Table Presentation");
             warTableObject.transform.SetParent(transform, false);
             warTableObject.transform.position = new Vector3(0f, -10000f, 0f);
@@ -287,6 +300,7 @@ namespace DefenderChronicles.UI
         {
             Transform root = screens[AppScreen.Welcome].transform;
             GameObject card = CreatePanel("Welcome Chronicle", root, new Color(theme.panel.r, theme.panel.g, theme.panel.b, 0.84f));
+            AddCardAccent(card.transform, theme.commandGold);
             SetAnchors(card.GetComponent<RectTransform>(), new Vector2(0.045f, 0.10f), new Vector2(0.445f, 0.90f),
                 Vector2.zero, Vector2.zero);
 
@@ -325,6 +339,7 @@ namespace DefenderChronicles.UI
             GameObject scrim = CreateImage("Account Scrim", root, new Color(0f, 0f, 0f, 0.44f));
             Stretch(scrim.GetComponent<RectTransform>());
             GameObject card = CreatePanel("Account Chronicle", root, theme.panel);
+            AddCardAccent(card.transform, theme.defenderBlue);
             SetRect(card.GetComponent<RectTransform>(), Vector2.zero, new Vector2(760f, 760f), Center(), Center());
 
             Button close = CreateButton("Back", card.transform, "×", new Vector2(64f, 64f), theme.night,
@@ -343,26 +358,21 @@ namespace DefenderChronicles.UI
                 new Vector2(520f, 76f), theme.commandGold, SignInAsGuest);
             SetRect(guest.GetComponent<RectTransform>(), new Vector2(0f, 64f), new Vector2(520f, 76f), Center(), Center());
 
-            Button apple = CreateButton("Apple Sign In", card.transform, "APPLE İLE BAĞLA",
-                new Vector2(520f, 72f), new Color(0.11f, 0.13f, 0.17f),
-                () => RequestExternalSignIn(PlayerAuthProvider.Apple));
-            SetRect(apple.GetComponent<RectTransform>(), new Vector2(0f, -34f), new Vector2(520f, 72f), Center(), Center());
-
-            Button google = CreateButton("Google Sign In", card.transform, "G  GOOGLE İLE BAĞLA",
-                new Vector2(520f, 72f), theme.defenderBlue,
-                () => RequestExternalSignIn(PlayerAuthProvider.Google));
-            SetRect(google.GetComponent<RectTransform>(), new Vector2(0f, -128f), new Vector2(520f, 72f), Center(), Center());
+            Button account = CreateButton("Player Account Sign In", card.transform, "HESABINI BAĞLA",
+                new Vector2(520f, 76f), theme.defenderBlue,
+                () => RequestExternalSignIn(PlayerAuthProvider.PlayerAccount));
+            SetRect(account.GetComponent<RectTransform>(), new Vector2(0f, -42f), new Vector2(520f, 76f), Center(), Center());
 
             loginStatus = CreateText("Login Status", card.transform, "", 19, catalog.bodyFont, FontStyles.Normal,
                 TextAlignmentOptions.Center, theme.commandGold);
-            SetRect(loginStatus.rectTransform, new Vector2(0f, -218f), new Vector2(620f, 62f), Center(), Center());
+            SetRect(loginStatus.rectTransform, new Vector2(0f, -154f), new Vector2(620f, 62f), Center(), Center());
 
             Button privacy = CreateButton("Privacy Policy", card.transform, "GİZLİLİK POLİTİKASI",
                 new Vector2(250f, 50f), theme.night, () => OpenLegalUrl(theme.privacyPolicyUrl, "Gizlilik Politikası"));
-            SetRect(privacy.GetComponent<RectTransform>(), new Vector2(-140f, -292f), new Vector2(250f, 50f), Center(), Center());
+            SetRect(privacy.GetComponent<RectTransform>(), new Vector2(-140f, -244f), new Vector2(250f, 50f), Center(), Center());
             Button terms = CreateButton("Terms Of Service", card.transform, "KULLANIM KOŞULLARI",
                 new Vector2(250f, 50f), theme.night, () => OpenLegalUrl(theme.termsOfServiceUrl, "Kullanım Koşulları"));
-            SetRect(terms.GetComponent<RectTransform>(), new Vector2(140f, -292f), new Vector2(250f, 50f), Center(), Center());
+            SetRect(terms.GetComponent<RectTransform>(), new Vector2(140f, -244f), new Vector2(250f, 50f), Center(), Center());
         }
 
         private void BuildMainMenuScreen()
@@ -385,6 +395,8 @@ namespace DefenderChronicles.UI
             SetRect(settings.GetComponent<RectTransform>(), new Vector2(-100f, -86f), new Vector2(92f, 68f), TopRight(), TopRight());
 
             GameObject continueCard = CreatePanel("Continue Chronicle", root, new Color(theme.panel.r, theme.panel.g, theme.panel.b, 0.92f));
+            AddCardAccent(continueCard.transform, theme.commandGold);
+            AddCardWatermark(continueCard.transform, theme.commandGold);
             SetAnchors(continueCard.GetComponent<RectTransform>(), new Vector2(0.055f, 0.16f), new Vector2(0.58f, 0.78f),
                 Vector2.zero, Vector2.zero);
             TextMeshProUGUI callout = CreateText("Callout", continueCard.transform, "SAVUNMA HATTI\nSENİ BEKLİYOR", 58,
@@ -405,6 +417,7 @@ namespace DefenderChronicles.UI
             SetRect(continueButton.GetComponent<RectTransform>(), new Vector2(58f, 60f), new Vector2(420f, 88f), BottomLeft(), BottomLeft());
 
             GameObject actions = CreatePanel("Menu Actions", root, new Color(theme.panel.r, theme.panel.g, theme.panel.b, 0.90f));
+            AddCardAccent(actions.transform, theme.defenderBlue);
             SetAnchors(actions.GetComponent<RectTransform>(), new Vector2(0.63f, 0.20f), new Vector2(0.945f, 0.70f),
                 Vector2.zero, Vector2.zero);
             Button campaign = CreateButton("Campaign", actions.transform, "KRALLIK HARİTASI", new Vector2(470f, 84f),
@@ -480,6 +493,7 @@ namespace DefenderChronicles.UI
                 BuildRegion(content.transform, CampaignCatalog.Regions[index]);
 
             GameObject selectionBar = CreatePanel("Selection Bar", root, theme.panel);
+            AddCardAccent(selectionBar.transform, theme.commandGold);
             SetAnchors(selectionBar.GetComponent<RectTransform>(), new Vector2(0f, 0f), new Vector2(1f, 0f),
                 new Vector2(70f, 46f), new Vector2(-70f, 145f));
             selectedLevelTitle = CreateText("Selected Level", selectionBar.transform, "", 30, catalog.titleFont,
@@ -499,6 +513,7 @@ namespace DefenderChronicles.UI
             CreateHeader(root, "SAVAŞ BRİFİNGİ", "Greenwatch ön hattı", () => ShowScreen(AppScreen.Campaign));
 
             GameObject leftCard = CreatePanel("Briefing Chronicle", root, new Color(theme.panel.r, theme.panel.g, theme.panel.b, 0.95f));
+            AddCardAccent(leftCard.transform, theme.moonEdge);
             SetAnchors(leftCard.GetComponent<RectTransform>(), new Vector2(0.08f, 0.14f), new Vector2(0.59f, 0.77f),
                 Vector2.zero, Vector2.zero);
             briefingRegion = CreateText("Briefing Region", leftCard.transform, "", 20, catalog.bodyFont,
@@ -521,6 +536,7 @@ namespace DefenderChronicles.UI
 
             GameObject rightCard = CreatePanel("Briefing Intel", root, new Color(theme.panelRaised.r, theme.panelRaised.g,
                 theme.panelRaised.b, 0.96f));
+            AddCardAccent(rightCard.transform, theme.commandGold);
             SetAnchors(rightCard.GetComponent<RectTransform>(), new Vector2(0.63f, 0.20f), new Vector2(0.92f, 0.75f),
                 Vector2.zero, Vector2.zero);
             briefingEnemies = CreateText("Enemy Intel", rightCard.transform, "", 22, catalog.bodyFont,
@@ -540,6 +556,8 @@ namespace DefenderChronicles.UI
             GameObject scrim = CreateImage("Result Scrim", root, new Color(0.004f, 0.010f, 0.020f, 0.76f));
             Stretch(scrim.GetComponent<RectTransform>());
             GameObject card = CreatePanel("Result Chronicle", root, new Color(theme.panel.r, theme.panel.g, theme.panel.b, 0.97f));
+            AddCardAccent(card.transform, theme.commandGold);
+            AddCardWatermark(card.transform, theme.moonEdge);
             SetRect(card.GetComponent<RectTransform>(), Vector2.zero, new Vector2(1180f, 650f), Center(), Center());
 
             TextMeshProUGUI badge = CreateText("Result Badge", card.transform, "SAVAŞ SONUCU", 20,
@@ -582,6 +600,7 @@ namespace DefenderChronicles.UI
             root.AddComponent<LayoutElement>().preferredWidth = 2200f;
             RectTransform rect = root.GetComponent<RectTransform>();
             rect.sizeDelta = new Vector2(2200f, 0f);
+            root.AddComponent<FrontendCampaignPageFitter>().Configure(campaignScroll.viewport, 984f);
 
             TextMeshProUGUI name = CreateText("Region Name", root.transform,
                 $"BÖLGE {region.number}  ·  {region.displayName.ToUpperInvariant()}", 30, catalog.titleFont,
@@ -609,6 +628,7 @@ namespace DefenderChronicles.UI
                 Vector2 position = positions[level.indexInRegion - 1];
                 SetRect(button.GetComponent<RectTransform>(), position - size * 0.5f, size, BottomLeft(), BottomLeft());
                 button.interactable = unlocked;
+                CreateLevelSelectionRing(button.transform);
                 levelButtons.Add(button);
 
                 CampaignLevelProgress levelProgress = progress.ProgressFor(level.number);
@@ -652,17 +672,20 @@ namespace DefenderChronicles.UI
             string id = string.IsNullOrWhiteSpace(progress.Data.playerId)
                 ? $"guest-{Guid.NewGuid():N}"
                 : progress.Data.playerId;
-            progress.SignIn(PlayerAuthProvider.Guest, id, "Misafir Muhafız");
+            progress.SignIn(PlayerAuthProvider.Guest, id, GameLocalization.Text("Misafir Muhafız", "Guest Defender"));
             RefreshProfile();
             ShowScreen(AppScreen.MainMenu);
         }
 
         private void RequestExternalSignIn(PlayerAuthProvider provider)
         {
-            loginStatus.text = $"{(provider == PlayerAuthProvider.Apple ? "Apple" : "Google")} güvenli giriş penceresi açılıyor...";
+            loginStatus.text = GameLocalization.Text("Güvenli hesap penceresi açılıyor...",
+                "Opening the secure account window...");
             if (AuthenticationRequested == null)
             {
-                loginStatus.text = "Çevrimiçi giriş bu geliştirme sürümünde henüz etkin değil. Misafir olarak devam edebilirsin.";
+                loginStatus.text = GameLocalization.Text(
+                    "Çevrimiçi giriş bu geliştirme sürümünde henüz etkin değil. Misafir olarak devam edebilirsin.",
+                    "Online sign-in is not enabled in this development build yet. You can continue as a guest.");
                 return;
             }
             AuthenticationRequested.Invoke(provider);
@@ -692,8 +715,11 @@ namespace DefenderChronicles.UI
             selectedLevel = Mathf.Clamp(level, 1, progress.Data.unlockedLevel);
             CampaignLevelDefinition definition = CampaignCatalog.Level(selectedLevel);
             selectedLevelTitle.text = $"{definition.number}. {definition.displayName}";
-            selectedLevelDetails.text = $"{definition.waveCount} dalga · ~{definition.targetMinutes:0.#} dk · {definition.startingGold} altın\n" +
-                                        $"Ödül: {definition.valorReward} Valor · {definition.heroXpReward} XP";
+            selectedLevelDetails.text = GameLocalization.IsEnglish
+                ? $"{definition.waveCount} waves · ~{definition.targetMinutes:0.#} min · {definition.startingGold} gold\n" +
+                  $"Reward: {definition.valorReward} Valor · {definition.heroXpReward} XP"
+                : $"{definition.waveCount} dalga · ~{definition.targetMinutes:0.#} dk · {definition.startingGold} altın\n" +
+                  $"Ödül: {definition.valorReward} Valor · {definition.heroXpReward} XP";
             playSelectedButton.interactable = selectedLevel <= progress.Data.unlockedLevel;
             RefreshSelectedLevelVisuals();
             PlayFrontendCue(theme.levelSelect, PresentationCue.UiClick);
@@ -715,14 +741,25 @@ namespace DefenderChronicles.UI
         private void RefreshBriefing()
         {
             CampaignLevelDefinition definition = CampaignCatalog.Level(selectedLevel);
-            briefingRegion.text = $"BÖLGE {definition.region}  ·  GREENWATCH ÖN HATTI";
+            briefingRegion.text = GameLocalization.IsEnglish
+                ? $"REGION {definition.region}  ·  GREENWATCH FRONT LINE"
+                : $"BÖLGE {definition.region}  ·  GREENWATCH ÖN HATTI";
             briefingTitle.text = $"{definition.number}. {definition.displayName.ToUpperInvariant()}";
-            briefingObjective.text = $"Kalenin giriş yolunu {definition.waveCount} dalga boyunca savun.\n" +
-                                     $"Tahmini süre: ~{definition.targetMinutes:0.#} dakika\n" +
-                                     $"Başlangıç kaynağı: {definition.startingGold} altın";
-            briefingEnemies.text = $"DÜŞMAN İSTİHBARATI\n{EnemyPreviewForLevel(definition.number)}\n\n" +
-                                   $"TEHDİT SEVİYESİ\n{ThreatLabel(definition.number)}";
-            briefingReward.text = $"SAVAŞ ÖDÜLÜ\n+ {definition.valorReward} Valor\n+ {definition.heroXpReward} Kahraman XP";
+            briefingObjective.text = GameLocalization.IsEnglish
+                ? $"Defend the fortress approach for {definition.waveCount} waves.\n" +
+                  $"Estimated time: ~{definition.targetMinutes:0.#} minutes\n" +
+                  $"Starting resources: {definition.startingGold} gold"
+                : $"Kalenin giriş yolunu {definition.waveCount} dalga boyunca savun.\n" +
+                  $"Tahmini süre: ~{definition.targetMinutes:0.#} dakika\n" +
+                  $"Başlangıç kaynağı: {definition.startingGold} altın";
+            briefingEnemies.text = GameLocalization.IsEnglish
+                ? $"ENEMY INTELLIGENCE\n{EnemyPreviewForLevel(definition.number)}\n\n" +
+                  $"THREAT LEVEL\n{ThreatLabel(definition.number)}"
+                : $"DÜŞMAN İSTİHBARATI\n{EnemyPreviewForLevel(definition.number)}\n\n" +
+                  $"TEHDİT SEVİYESİ\n{ThreatLabel(definition.number)}";
+            briefingReward.text = GameLocalization.IsEnglish
+                ? $"BATTLE REWARD\n+ {definition.valorReward} Valor\n+ {definition.heroXpReward} Hero XP"
+                : $"SAVAŞ ÖDÜLÜ\n+ {definition.valorReward} Valor\n+ {definition.heroXpReward} Kahraman XP";
         }
 
         private void RefreshSelectedLevelVisuals()
@@ -757,30 +794,42 @@ namespace DefenderChronicles.UI
                 if (progressLabel != null)
                 {
                     progressLabel.text = !unlocked
-                        ? "KİLİTLİ"
+                        ? GameLocalization.Text("KİLİTLİ", "LOCKED")
                         : levelProgress != null && levelProgress.stars > 0
-                            ? $"{levelProgress.stars}/3 YILDIZ"
-                            : definition.isBoss ? "LORD" : "AÇIK";
+                            ? GameLocalization.Text($"{levelProgress.stars}/3 YILDIZ", $"{levelProgress.stars}/3 STARS")
+                            : definition.isBoss ? "LORD" : GameLocalization.Text("AÇIK", "READY");
                 }
+                Transform selectionRing = button.transform.Find("Selection Ring");
+                if (selectionRing != null) selectionRing.gameObject.SetActive(unlocked && selected);
             }
         }
 
-        private static string EnemyPreviewForLevel(int level) => level switch
+        private static string EnemyPreviewForLevel(int level) => (level, GameLocalization.IsEnglish) switch
         {
-            <= 1 => "Akıncılar",
-            <= 3 => "Akıncılar · Öncüler",
-            <= 5 => "Akıncılar · Öncüler · Yenileyiciler",
-            <= 7 => "Akıncılar · Destek Birlikleri · Kuşatma",
-            < 10 => "Ağır Öncüler · Destek · Kuşatma",
-            _ => "Bölgesel Lord · Ağır Öncüler · Kuşatma"
+            (<= 1, false) => "Akıncılar",
+            (<= 3, false) => "Akıncılar · Öncüler",
+            (<= 5, false) => "Akıncılar · Öncüler · Yenileyiciler",
+            (<= 7, false) => "Akıncılar · Destek Birlikleri · Kuşatma",
+            (< 10, false) => "Ağır Öncüler · Destek · Kuşatma",
+            (_, false) => "Bölgesel Lord · Ağır Öncüler · Kuşatma",
+            (<= 1, true) => "Raiders",
+            (<= 3, true) => "Raiders · Vanguards",
+            (<= 5, true) => "Raiders · Vanguards · Regenerators",
+            (<= 7, true) => "Raiders · Support · Siege",
+            (< 10, true) => "Heavy Vanguards · Support · Siege",
+            _ => "Regional Lord · Heavy Vanguards · Siege"
         };
 
-        private static string ThreatLabel(int level) => level switch
+        private static string ThreatLabel(int level) => (level, GameLocalization.IsEnglish) switch
         {
-            <= 3 => "I  Düşük",
-            <= 6 => "II  Yükseliyor",
-            < 10 => "III  Yüksek",
-            _ => "LORD SALDIRISI"
+            (<= 3, false) => "I  Düşük",
+            (<= 6, false) => "II  Yükseliyor",
+            (< 10, false) => "III  Yüksek",
+            (_, false) => "LORD SALDIRISI",
+            (<= 3, true) => "I  Low",
+            (<= 6, true) => "II  Rising",
+            (< 10, true) => "III  High",
+            _ => "LORD ASSAULT"
         };
 
         private void FocusRegion(int regionIndex)
@@ -796,23 +845,28 @@ namespace DefenderChronicles.UI
             if (profileLabel == null) return;
             string provider = progress.Data.authProvider switch
             {
-                PlayerAuthProvider.Apple => "Apple",
-                PlayerAuthProvider.Google => "Google",
-                _ => "Misafir"
+                PlayerAuthProvider.PlayerAccount => GameLocalization.Text("Bağlı hesap", "Linked account"),
+                _ => GameLocalization.Text("Misafir", "Guest")
             };
             string displayName = string.IsNullOrWhiteSpace(progress.Data.displayName)
-                ? "Greenwatch Muhafızı"
+                ? GameLocalization.Text("Greenwatch Muhafızı", "Greenwatch Defender")
                 : progress.Data.displayName;
             profileLabel.text = $"{displayName}  ·  {provider}\n" +
-                                $"{progress.Data.TotalStars}/150 yıldız  ·  {progress.Data.valor} Valor";
+                                GameLocalization.Text($"{progress.Data.TotalStars}/150 yıldız  ·  {progress.Data.valor} Valor",
+                                    $"{progress.Data.TotalStars}/150 stars  ·  {progress.Data.valor} Valor");
             if (continueDetails != null)
             {
                 int target = Mathf.Clamp(progress.Data.lastSelectedLevel, 1, progress.Data.unlockedLevel);
                 CampaignLevelDefinition last = CampaignCatalog.Level(target);
                 CampaignLevelProgress result = progress.ProgressFor(target);
-                string stars = result == null || result.stars <= 0 ? "0/3 YILDIZ" : $"{result.stars}/3 YILDIZ";
-                continueDetails.text = $"BÖLGE {last.region}  ·  {last.displayName.ToUpperInvariant()}  ·  {stars}\n" +
-                                       $"{last.waveCount} dalga  ·  ~{last.targetMinutes:0.#} dk  ·  {last.startingGold} başlangıç altını";
+                string stars = result == null || result.stars <= 0
+                    ? GameLocalization.Text("0/3 YILDIZ", "0/3 STARS")
+                    : GameLocalization.Text($"{result.stars}/3 YILDIZ", $"{result.stars}/3 STARS");
+                continueDetails.text = GameLocalization.IsEnglish
+                    ? $"REGION {last.region}  ·  {last.displayName.ToUpperInvariant()}  ·  {stars}\n" +
+                      $"{last.waveCount} waves  ·  ~{last.targetMinutes:0.#} min  ·  {last.startingGold} starting gold"
+                    : $"BÖLGE {last.region}  ·  {last.displayName.ToUpperInvariant()}  ·  {stars}\n" +
+                      $"{last.waveCount} dalga  ·  ~{last.targetMinutes:0.#} dk  ·  {last.startingGold} başlangıç altını";
             }
         }
 
@@ -842,15 +896,20 @@ namespace DefenderChronicles.UI
                 ? Mathf.Min(CampaignCatalog.LevelCount, session.CampaignLevelNumber + 1)
                 : session.CampaignLevelNumber;
             resultTitle.text = victory
-                ? $"ZAFER\n{CampaignCatalog.Level(session.CampaignLevelNumber).displayName.ToUpperInvariant()} TAMAMLANDI"
-                : "SAVUNMA HATTI DÜŞTÜ";
+                ? GameLocalization.Text(
+                    $"ZAFER\n{CampaignCatalog.Level(session.CampaignLevelNumber).displayName.ToUpperInvariant()} TAMAMLANDI",
+                    $"VICTORY\n{CampaignCatalog.Level(session.CampaignLevelNumber).displayName.ToUpperInvariant()} COMPLETE")
+                : GameLocalization.Text("SAVUNMA HATTI DÜŞTÜ", "THE DEFENCE LINE HAS FALLEN");
             resultTitle.color = victory ? theme.textPrimary : theme.enemyRed;
-            resultStars.text = victory ? $"{stars} / 3 YILDIZ" : "0 / 3 YILDIZ";
+            resultStars.text = victory
+                ? GameLocalization.Text($"{stars} / 3 YILDIZ", $"{stars} / 3 STARS")
+                : GameLocalization.Text("0 / 3 YILDIZ", "0 / 3 STARS");
             resultReward.text = victory
                 ? reward.Valor > 0 || reward.HeroXp > 0
-                    ? $"+{reward.Valor} Valor     +{reward.HeroXp} Kahraman XP"
-                    : "Bölüm ödülü daha önce alındı"
-                : "Savunmanı güçlendir ve tekrar dene";
+                    ? GameLocalization.Text($"+{reward.Valor} Valor     +{reward.HeroXp} Kahraman XP",
+                        $"+{reward.Valor} Valor     +{reward.HeroXp} Hero XP")
+                    : GameLocalization.Text("Bölüm ödülü daha önce alındı", "Level reward already claimed")
+                : GameLocalization.Text("Savunmanı güçlendir ve tekrar dene", "Strengthen your defence and try again");
             nextLevelButton.interactable = victory && session.CampaignLevelNumber < CampaignCatalog.LevelCount;
             SetButtonEmphasis(nextLevelButton, victory ? theme.commandGold : theme.night);
             SetButtonEmphasis(retryButton, victory ? theme.defenderBlue : theme.commandGold);
@@ -894,27 +953,41 @@ namespace DefenderChronicles.UI
             scrimButton.onClick.AddListener(CloseSettings);
 
             GameObject card = CreatePanel("Settings Chronicle", settingsModal.transform, theme.panel);
-            SetRect(card.GetComponent<RectTransform>(), Vector2.zero, new Vector2(820f, 760f), Center(), Center());
+            AddCardAccent(card.transform, theme.commandGold);
+            SetRect(card.GetComponent<RectTransform>(), Vector2.zero, new Vector2(820f, 860f), Center(), Center());
             TextMeshProUGUI title = CreateText("Settings Title", card.transform, "AYARLAR", 46, catalog.titleFont,
                 FontStyles.Bold, TextAlignmentOptions.Center, theme.textPrimary);
-            SetRect(title.rectTransform, new Vector2(0f, 292f), new Vector2(620f, 64f), Center(), Center());
+            SetRect(title.rectTransform, new Vector2(0f, 342f), new Vector2(620f, 64f), Center(), Center());
 
-            CreateSliderRow(card.transform, "MÜZİK", new Vector2(0f, 190f), FrontendPreferences.MusicVolume, value =>
+            TextMeshProUGUI languageLabel = CreateText("Language Label", card.transform,
+                "DİL", 21, catalog.bodyFont, FontStyles.Bold,
+                TextAlignmentOptions.Left, theme.textPrimary);
+            SetRect(languageLabel.rectTransform, new Vector2(-250f, 272f), new Vector2(220f, 44f), Center(), Center());
+            turkishLanguageButton = CreateButton("Turkish Language", card.transform, "TÜRKÇE", new Vector2(190f, 54f),
+                FrontendPreferences.Language == GameLanguage.Turkish ? theme.commandGold : theme.night,
+                () => FrontendPreferences.Language = GameLanguage.Turkish);
+            SetRect(turkishLanguageButton.GetComponent<RectTransform>(), new Vector2(40f, 266f), new Vector2(190f, 54f), Center(), Center());
+            englishLanguageButton = CreateButton("English Language", card.transform, "ENGLISH", new Vector2(190f, 54f),
+                FrontendPreferences.Language == GameLanguage.English ? theme.commandGold : theme.night,
+                () => FrontendPreferences.Language = GameLanguage.English);
+            SetRect(englishLanguageButton.GetComponent<RectTransform>(), new Vector2(246f, 266f), new Vector2(190f, 54f), Center(), Center());
+
+            CreateSliderRow(card.transform, "MÜZİK", new Vector2(0f, 172f), FrontendPreferences.MusicVolume, value =>
             {
                 FrontendPreferences.MusicVolume = value;
                 AudioManager.Instance?.SetMusicVolume(value);
             });
-            CreateSliderRow(card.transform, "EFEKTLER", new Vector2(0f, 96f), FrontendPreferences.SfxVolume, value =>
+            CreateSliderRow(card.transform, "EFEKTLER", new Vector2(0f, 78f), FrontendPreferences.SfxVolume, value =>
             {
                 FrontendPreferences.SfxVolume = value;
                 AudioManager.Instance?.SetSFXVolume(value);
                 if (frontendUiSource != null) frontendUiSource.volume = value;
             });
-            CreateToggleRow(card.transform, "TİTREŞİM", new Vector2(0f, 0f), FrontendPreferences.Haptics,
+            CreateToggleRow(card.transform, "TİTREŞİM", new Vector2(0f, -18f), FrontendPreferences.Haptics,
                 value => FrontendPreferences.Haptics = value);
-            CreateToggleRow(card.transform, "KAMERA SARSINTISI", new Vector2(0f, -84f), FrontendPreferences.CameraShake,
+            CreateToggleRow(card.transform, "KAMERA SARSINTISI", new Vector2(0f, -102f), FrontendPreferences.CameraShake,
                 value => FrontendPreferences.CameraShake = value);
-            CreateToggleRow(card.transform, "AZALTILMIŞ HAREKET", new Vector2(0f, -168f), FrontendPreferences.ReducedMotion,
+            CreateToggleRow(card.transform, "AZALTILMIŞ HAREKET", new Vector2(0f, -186f), FrontendPreferences.ReducedMotion,
                 value => FrontendPreferences.ReducedMotion = value);
 
             Button account = CreateButton("Settings Account", card.transform, "HESAP YÖNETİMİ", new Vector2(500f, 64f),
@@ -923,7 +996,7 @@ namespace DefenderChronicles.UI
                     CloseSettings();
                     ShowScreen(AppScreen.Login);
                 });
-            SetRect(account.GetComponent<RectTransform>(), new Vector2(0f, -266f), new Vector2(500f, 64f), Center(), Center());
+            SetRect(account.GetComponent<RectTransform>(), new Vector2(0f, -284f), new Vector2(500f, 64f), Center(), Center());
             Button close = CreateButton("Close Settings", card.transform, "TAMAM", new Vector2(300f, 68f),
                 theme.commandGold, CloseSettings);
             SetRect(close.GetComponent<RectTransform>(), new Vector2(0f, 56f), new Vector2(300f, 68f), BottomCenter(), BottomCenter());
@@ -940,7 +1013,7 @@ namespace DefenderChronicles.UI
                 Center(), Center());
 
             orientationCurtainLabel = CreateText("Orientation Status", orientationCurtain.transform,
-                "SAVAŞ ALANI HAZIRLANIYOR\nCİHAZ YATAYA ALINIYOR", 24, catalog.bodyFont,
+                "", 24, catalog.bodyFont,
                 FontStyles.Bold, TextAlignmentOptions.Center, theme.textPrimary);
             orientationCurtainLabel.characterSpacing = 2f;
             orientationCurtainLabel.lineSpacing = 8f;
@@ -1003,8 +1076,10 @@ namespace DefenderChronicles.UI
         {
             if (orientationCurtain == null) return;
             orientationCurtainLabel.text = mode == MobileOrientationMode.LandscapeBattle
-                ? "SAVAŞ ALANI HAZIRLANIYOR\nCİHAZ YATAYA ALINIYOR"
-                : "KRALLIK HARİTASI HAZIRLANIYOR\nCİHAZ PORTREYE ALINIYOR";
+                ? GameLocalization.Text("SAVAŞ ALANI HAZIRLANIYOR\nCİHAZ YATAYA ALINIYOR",
+                    "PREPARING THE BATTLEFIELD\nROTATING TO LANDSCAPE")
+                : GameLocalization.Text("KRALLIK HARİTASI HAZIRLANIYOR\nCİHAZ PORTREYE ALINIYOR",
+                    "PREPARING THE REALM MAP\nROTATING TO PORTRAIT");
             orientationCurtain.SetActive(true);
             orientationCurtain.transform.SetAsLastSibling();
         }
@@ -1040,7 +1115,7 @@ namespace DefenderChronicles.UI
                 TopRight(), TopRight());
             RectTransform continueChronicle = RequireRect(main, "Continue Chronicle");
             SetAnchors(continueChronicle, new Vector2(0.07f, 0.43f),
-                new Vector2(0.93f, 0.75f), Vector2.zero, Vector2.zero);
+                new Vector2(0.93f, 0.735f), Vector2.zero, Vector2.zero);
             SetRect(RequireRect(continueChronicle, "Callout"), new Vector2(50f, -48f),
                 new Vector2(820f, 140f), TopLeft(), TopLeft());
             SetRect(RequireRect(continueChronicle, "Continue Details"), new Vector2(50f, -205f),
@@ -1082,8 +1157,9 @@ namespace DefenderChronicles.UI
                 for (int regionIndex = 0; regionIndex < content.childCount; regionIndex++)
                 {
                     Transform region = content.GetChild(regionIndex);
-                    if (region.TryGetComponent(out LayoutElement regionLayout)) regionLayout.preferredWidth = 984f;
-                    if (region is RectTransform regionRect) regionRect.sizeDelta = new Vector2(984f, 0f);
+                    float pageWidth = Mathf.Max(984f, campaignScroll.viewport.rect.width);
+                    if (region.TryGetComponent(out LayoutElement regionLayout)) regionLayout.preferredWidth = pageWidth;
+                    if (region is RectTransform regionRect) regionRect.sizeDelta = new Vector2(pageWidth, 0f);
                     ApplyPortraitRegionPath(region, regionIndex);
                 }
             }
@@ -1608,6 +1684,51 @@ namespace DefenderChronicles.UI
             return button;
         }
 
+        private void CreateAmbientSigil(string name, Transform parent, Vector2 anchorMin, Vector2 anchorMax,
+            Color color, Vector2 drift, float scalePulse, float rotationDrift, float speed, float phase)
+        {
+            GameObject sigil = CreateBrandImage(name, parent, theme.brandMark);
+            Image image = sigil.GetComponent<Image>();
+            image.color = color;
+            SetAnchors(sigil.GetComponent<RectTransform>(), anchorMin, anchorMax, Vector2.zero, Vector2.zero);
+            sigil.AddComponent<FrontendAmbientMotion>().Configure(drift, scalePulse, rotationDrift, speed, phase);
+        }
+
+        private void AddCardAccent(Transform parent, Color color)
+        {
+            GameObject rail = CreateImage("Accent Rail", parent,
+                new Color(color.r, color.g, color.b, 0.82f));
+            SetAnchors(rail.GetComponent<RectTransform>(), new Vector2(0f, 1f), Vector2.one,
+                new Vector2(24f, -7f), new Vector2(-24f, -3f));
+
+            GameObject cap = CreateImage("Accent Cap", parent, color);
+            SetRect(cap.GetComponent<RectTransform>(), new Vector2(24f, -8f), new Vector2(92f, 6f),
+                TopLeft(), TopLeft());
+        }
+
+        private void AddCardWatermark(Transform parent, Color color)
+        {
+            GameObject watermark = CreateBrandImage("Card Watermark", parent, theme.brandMark);
+            Image image = watermark.GetComponent<Image>();
+            image.color = new Color(color.r, color.g, color.b, 0.045f);
+            SetRect(watermark.GetComponent<RectTransform>(), new Vector2(-44f, 38f), new Vector2(250f, 250f),
+                BottomRight(), BottomRight());
+            watermark.transform.SetAsFirstSibling();
+        }
+
+        private void CreateLevelSelectionRing(Transform button)
+        {
+            GameObject ring = CreateImage("Selection Ring", button,
+                new Color(theme.commandGold.r, theme.commandGold.g, theme.commandGold.b, 0.30f));
+            Image image = ring.GetComponent<Image>();
+            image.sprite = theme.buttonSprite != null ? theme.buttonSprite : catalog.panelSprite;
+            image.type = image.sprite != null ? Image.Type.Sliced : Image.Type.Simple;
+            Stretch(ring.GetComponent<RectTransform>(), new Vector2(-12f, -12f), new Vector2(12f, 12f));
+            ring.transform.SetAsFirstSibling();
+            ring.AddComponent<FrontendAmbientMotion>().Configure(Vector2.zero, 0.045f, 0f, 0.75f);
+            ring.SetActive(false);
+        }
+
         private static GameObject CreateImage(string name, Transform parent, Color color)
         {
             var root = new GameObject(name, typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
@@ -1658,14 +1779,14 @@ namespace DefenderChronicles.UI
         {
             if (FrontendPreferences.ReducedMotion)
             {
-                resultStars.text = $"{stars} / 3 YILDIZ";
+                resultStars.text = GameLocalization.Text($"{stars} / 3 YILDIZ", $"{stars} / 3 STARS");
                 yield break;
             }
-            resultStars.text = "0 / 3 YILDIZ";
+            resultStars.text = GameLocalization.Text("0 / 3 YILDIZ", "0 / 3 STARS");
             for (int index = 1; index <= stars; index++)
             {
                 yield return new WaitForSecondsRealtime(0.35f);
-                resultStars.text = $"{index} / 3 YILDIZ";
+                resultStars.text = GameLocalization.Text($"{index} / 3 YILDIZ", $"{index} / 3 STARS");
                 PlayFrontendCue(theme.starReveal, PresentationCue.Victory);
             }
         }
@@ -1702,7 +1823,23 @@ namespace DefenderChronicles.UI
             text.color = color;
             text.enableWordWrapping = true;
             text.raycastTarget = false;
+            if (GameLocalization.HasTranslation(value))
+                root.AddComponent<LocalizedTmpText>().Configure(text, value);
             return text;
+        }
+
+        private void HandleLanguageChanged()
+        {
+            SetButtonEmphasis(turkishLanguageButton,
+                FrontendPreferences.Language == GameLanguage.Turkish ? theme.commandGold : theme.night);
+            SetButtonEmphasis(englishLanguageButton,
+                FrontendPreferences.Language == GameLanguage.English ? theme.commandGold : theme.night);
+            RefreshProfile();
+            RefreshSelectedLevelVisuals();
+            RefreshBriefing();
+            RefreshLevelButtons();
+            ShowOrientationCurtain(OrientationForScreen(CurrentScreen));
+            HideOrientationCurtain();
         }
 
         private static void EnsureEventSystem()
@@ -1750,6 +1887,7 @@ namespace DefenderChronicles.UI
 
         private void OnDestroy()
         {
+            GameLocalization.LanguageChanged -= HandleLanguageChanged;
             if (session != null) session.PhaseChanged -= HandleSessionPhaseChanged;
             if (battlePaused) Time.timeScale = 1f;
         }

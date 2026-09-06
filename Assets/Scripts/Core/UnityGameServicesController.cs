@@ -1,18 +1,19 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DefenderChronicles.UI;
 using Unity.Services.Authentication;
 using Unity.Services.Authentication.PlayerAccounts;
-using Unity.Services.CloudSave;
+using Unity.Services.CloudCode;
 using Unity.Services.Core;
 using UnityEngine;
 
 namespace DefenderChronicles.Core
 {
-    public sealed class UnityGameServicesController : MonoBehaviour
+    public sealed class UnityGameServicesController : MonoBehaviour, ICampaignProgressionService
     {
-        private const string CampaignKey = "campaign_save_v1";
+        private const string CampaignModule = "CampaignProgression";
         private AppFlowController flow;
         private CampaignProgressStore progress;
         private PlayerAuthProvider requestedProvider;
@@ -30,6 +31,8 @@ namespace DefenderChronicles.Core
 
         private async void HandleAuthenticationRequested(PlayerAuthProvider provider)
         {
+            if ((int)provider is 2 or 3)
+                provider = PlayerAuthProvider.PlayerAccount;
             requestedProvider = provider;
             flow.SetLoginStatus(provider == PlayerAuthProvider.Guest
                 ? "Misafir hesabı hazırlanıyor..."
@@ -110,21 +113,29 @@ namespace DefenderChronicles.Core
             {
                 await AuthenticationService.Instance.SignInWithUnityAsync(PlayerAccountService.Instance.AccessToken);
             }
-            await CompleteAuthenticationAsync(requestedProvider);
+            await CompleteAuthenticationAsync(PlayerAuthProvider.PlayerAccount);
         }
 
         private async Task CompleteAuthenticationAsync(PlayerAuthProvider provider)
         {
-            await SynchronizeCloudAsync();
-            string displayName = provider switch
+            string displayName = provider == PlayerAuthProvider.PlayerAccount
+                ? await ResolvePlayerNameAsync()
+                : "Misafir Muhafız";
+            syncing = true;
+            try
             {
-                PlayerAuthProvider.Google => "Google Muhafızı",
-                PlayerAuthProvider.Apple => "Apple Muhafızı",
-                _ => "Misafir Muhafız"
-            };
-            flow.CompleteServiceSignIn(provider, AuthenticationService.Instance.PlayerId, displayName);
-            flow.SetLoginStatus("İlerleme Cloud Save ile eşitlendi.");
-            Debug.Log($"[DC_UGS_AUTH_PASS] provider={provider} cloud_sync=true");
+                flow.CompleteServiceSignIn(provider, AuthenticationService.Instance.PlayerId, displayName);
+            }
+            finally
+            {
+                syncing = false;
+            }
+
+            bool synchronized = await SynchronizeCloudAsync();
+            flow.SetLoginStatus(synchronized
+                ? "İlerleme güvenli bulut kaydıyla eşitlendi."
+                : "Çevrimdışı ilerleme korunuyor; bağlantı gelince eşitlenecek.");
+            Debug.Log($"[DC_UGS_AUTH_PASS] provider={provider} cloud_sync={synchronized.ToString().ToLowerInvariant()}");
         }
 
         private async Task EnsureInitializedAsync()
@@ -134,21 +145,29 @@ namespace DefenderChronicles.Core
             initialized = true;
         }
 
-        private async Task SynchronizeCloudAsync()
+        private async Task<bool> SynchronizeCloudAsync()
         {
-            if (!AuthenticationService.Instance.IsSignedIn) return;
+            if (!AuthenticationService.Instance.IsSignedIn) return false;
+            if (syncing) return false;
             syncing = true;
+            progress.BeginSync();
             try
             {
-                var cloudData = await CloudSaveService.Instance.Data.Player.LoadAsync(
-                    new HashSet<string> { CampaignKey });
-                if (cloudData.TryGetValue(CampaignKey, out var cloudItem))
+                CampaignSyncResult result = await GetStateAsync(progress.Data);
+                progress.ApplyServerSync(result);
+                while (progress.PendingClaimCount > 0)
                 {
-                    string json = cloudItem.Value.GetAs<string>();
-                    CampaignSaveData incoming = JsonUtility.FromJson<CampaignSaveData>(json);
-                    progress.Merge(incoming);
+                    IReadOnlyList<CampaignCompletionClaim> pending = progress.PendingClaims();
+                    result = await SubmitPendingAsync(pending);
+                    progress.ApplyServerSync(result);
                 }
-                await SaveCloudAsync();
+                return true;
+            }
+            catch (Exception exception)
+            {
+                progress.FailSync();
+                Debug.LogWarning($"Campaign sync is pending: {exception.Message}");
+                return false;
             }
             finally
             {
@@ -159,23 +178,40 @@ namespace DefenderChronicles.Core
         private async void HandleProgressChanged()
         {
             if (syncing || !initialized || !AuthenticationService.Instance.IsSignedIn) return;
-            try
-            {
-                await SaveCloudAsync();
-            }
-            catch (Exception exception)
-            {
-                Debug.LogWarning($"Cloud Save update will be retried on the next sign-in. {exception.Message}");
-            }
+            await SynchronizeCloudAsync();
         }
 
-        private Task SaveCloudAsync()
+        public Task<CampaignSyncResult> GetStateAsync(CampaignSaveData legacySnapshot = null)
         {
-            var values = new Dictionary<string, object>
+            var arguments = new Dictionary<string, object>
             {
-                { CampaignKey, JsonUtility.ToJson(progress.Data) }
+                { "legacySnapshotJson", legacySnapshot == null ? string.Empty : JsonUtility.ToJson(legacySnapshot) }
             };
-            return CloudSaveService.Instance.Data.Player.SaveAsync(values);
+            return CloudCodeService.Instance.CallModuleEndpointAsync<CampaignSyncResult>(
+                CampaignModule, "GetState", arguments);
+        }
+
+        public Task<CampaignSyncResult> SubmitPendingAsync(IReadOnlyList<CampaignCompletionClaim> claims)
+        {
+            var arguments = new Dictionary<string, object>
+            {
+                { "claims", claims?.Take(20).ToList() ?? new List<CampaignCompletionClaim>() }
+            };
+            return CloudCodeService.Instance.CallModuleEndpointAsync<CampaignSyncResult>(
+                CampaignModule, "SubmitCompletionBatch", arguments);
+        }
+
+        private static async Task<string> ResolvePlayerNameAsync()
+        {
+            try
+            {
+                string playerName = await AuthenticationService.Instance.GetPlayerNameAsync(true);
+                return string.IsNullOrWhiteSpace(playerName) ? "Muhafız" : playerName;
+            }
+            catch (Exception)
+            {
+                return "Muhafız";
+            }
         }
 
         private void HandleSignInFailure(PlayerAuthProvider provider, Exception exception)

@@ -1217,7 +1217,7 @@ namespace DefenderChronicles.Editor
                 SerializedProperty defaultIndex = serialized.FindProperty("m_DefaultRendererIndex");
                 if (defaultIndex != null) defaultIndex.intValue = 0;
                 SerializedProperty depth = serialized.FindProperty("m_RequireDepthTexture");
-                if (depth != null) depth.boolValue = true;
+                if (depth != null) depth.boolValue = false;
                 SerializedProperty msaa = serialized.FindProperty("m_MSAA");
                 if (msaa != null) msaa.intValue = 1;
                 SerializedProperty softShadows = serialized.FindProperty("m_SoftShadowsSupported");

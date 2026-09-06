@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DefenderChronicles.UI;
 using UnityEngine;
 
 namespace DefenderChronicles.Presentation
@@ -54,8 +55,44 @@ namespace DefenderChronicles.Presentation
 
         public string Get(UiTextKey key)
         {
+            if (GameLocalization.IsEnglish) return English(key);
             return entries.FirstOrDefault(entry => entry != null && entry.key == key)?.value ?? $"[{key}]";
         }
+
+        private static string English(UiTextKey key) => key switch
+        {
+            UiTextKey.Gold => "GOLD",
+            UiTextKey.Keep => "KEEP",
+            UiTextKey.Wave => "WAVE",
+            UiTextKey.Preparing => "PREPARING",
+            UiTextKey.Combat => "COMBAT",
+            UiTextKey.Intermission => "INTERMISSION",
+            UiTextKey.Paused => "PAUSED",
+            UiTextKey.Loading => "LOADING",
+            UiTextKey.Pause => "PAUSE",
+            UiTextKey.Continue => "RESUME",
+            UiTextKey.Archer => "ARCHER",
+            UiTextKey.Barracks => "BARRACKS",
+            UiTextKey.Mage => "MAGE",
+            UiTextKey.ShieldBash => "SHIELD BASH",
+            UiTextKey.Cancel => "CANCEL",
+            UiTextKey.FirstWave => "START FIRST WAVE",
+            UiTextKey.EarlyWave => "CALL WAVE EARLY",
+            UiTextKey.NextWave => "NEXT WAVE",
+            UiTextKey.Upgrade => "UPGRADE",
+            UiTextKey.Sell => "SELL",
+            UiTextKey.Knight => "KNIGHT",
+            UiTextKey.AbilityReady => "READY",
+            UiTextKey.KnightReturning => "KNIGHT RETURNS",
+            UiTextKey.Victory => "VICTORY\nGREENWATCH DEFENDED",
+            UiTextKey.Defeat => "DEFEAT\nGREENWATCH HAS FALLEN",
+            UiTextKey.VictoryPhase => "VICTORY",
+            UiTextKey.DefeatPhase => "DEFEAT",
+            UiTextKey.Restart => "TRY AGAIN",
+            UiTextKey.SlotInstruction => "Choose an outpost below.",
+            UiTextKey.BuildInstruction => "Tap an outpost platform and build your defence.",
+            _ => $"[{key}]"
+        };
 
         public IReadOnlyList<string> ValidationErrors()
         {

@@ -3,6 +3,7 @@
   "rootNamespace": "DefenderChronicles.Tests",
   "references": [
     "DefenderChronicles.Runtime",
+    "Unity.Localization",
     "Unity.TextMeshPro"
   ],
   "optionalUnityReferences": [

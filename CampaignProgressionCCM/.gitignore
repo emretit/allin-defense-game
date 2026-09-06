@@ -1,0 +1,5 @@
+[Bb]in/
+[Oo]bj/
+!*.sln
+!*.csproj
+!Properties/PublishProfiles/*.pubxml

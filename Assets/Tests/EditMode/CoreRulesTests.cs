@@ -50,6 +50,25 @@ namespace DefenderChronicles.Tests
         }
 
         [Test]
+        public void SelectableLayerIsReservedForWorldInteraction()
+        {
+            Assert.That(LayerMask.NameToLayer("Selectable"), Is.EqualTo(10));
+            Assert.That(LayerMask.GetMask("Selectable"), Is.EqualTo(1 << 10));
+        }
+
+#if UNITY_EDITOR
+        [TestCase("Assets/Settings/UniversalRP.asset")]
+        [TestCase("Assets/Settings/UniversalRPCustomAxisSort.asset")]
+        public void MobileUrpAssetsDoNotRequestUnusedDepthTexture(string assetPath)
+        {
+            Object pipeline = AssetDatabase.LoadMainAssetAtPath(assetPath);
+            Assert.That(pipeline, Is.Not.Null);
+            var serialized = new SerializedObject(pipeline);
+            Assert.That(serialized.FindProperty("m_RequireDepthTexture").boolValue, Is.False);
+        }
+#endif
+
+        [Test]
         public void EconomyRefundIsSixtyPercent()
         {
             Assert.That(CombatMath.Refund(175), Is.EqualTo(105));
@@ -216,6 +235,75 @@ namespace DefenderChronicles.Tests
                 Assert.That(improvement.HeroXp, Is.Zero);
                 Assert.That(store.Data.valor, Is.EqualTo(level.valorReward + 15));
                 Assert.That(store.Data.heroXp, Is.EqualTo(level.heroXpReward));
+            }
+            finally
+            {
+                if (File.Exists(path)) File.Delete(path);
+                if (File.Exists(path + ".tmp")) File.Delete(path + ".tmp");
+            }
+        }
+
+        [Test]
+        public void CampaignCompletionClaimsPersistInOrderAcrossRestart()
+        {
+            string path = Path.Combine(Path.GetTempPath(), $"dc-claims-{System.Guid.NewGuid():N}.json");
+            try
+            {
+                var store = new CampaignProgressStore(path);
+                store.CompleteLevel(1, 2, 8);
+                store.CompleteLevel(2, 1, 7);
+
+                var reloaded = new CampaignProgressStore(path);
+                Assert.That(reloaded.PendingClaimCount, Is.EqualTo(2));
+                Assert.That(reloaded.PendingClaims().Select(item => item.sequence), Is.EqualTo(new long[] { 1, 2 }));
+                Assert.That(reloaded.PendingClaims().Select(item => item.levelId),
+                    Is.EqualTo(new[] { "level-01", "level-02" }));
+                Assert.That(reloaded.PendingClaims().All(item =>
+                    item.rulesVersion == CampaignRulesVersion.Current), Is.True);
+            }
+            finally
+            {
+                if (File.Exists(path)) File.Delete(path);
+                if (File.Exists(path + ".tmp")) File.Delete(path + ".tmp");
+            }
+        }
+
+        [Test]
+        public void CampaignServerSyncRemovesProcessedClaimsAndUsesCanonicalReward()
+        {
+            string path = Path.Combine(Path.GetTempPath(), $"dc-sync-{System.Guid.NewGuid():N}.json");
+            try
+            {
+                var store = new CampaignProgressStore(path);
+                store.CompleteLevel(1, 3, 9);
+                CampaignCompletionClaim claim = store.PendingClaims().Single();
+                CampaignLevelDefinition definition = CampaignCatalog.Level(1);
+                var result = new CampaignSyncResult
+                {
+                    state = new CampaignServerState
+                    {
+                        revision = 7,
+                        unlockedLevel = 2,
+                        valor = definition.valorReward + 15,
+                        heroXp = definition.heroXpReward,
+                        levels = new List<CampaignLevelProgress>
+                        {
+                            new() { level = 1, stars = 3, bestLives = 9 }
+                        }
+                    },
+                    decisions = new List<CampaignClaimDecision>
+                    {
+                        new() { claimId = claim.claimId, accepted = true, reason = "accepted" }
+                    }
+                };
+
+                store.ApplyServerSync(result);
+
+                Assert.That(store.PendingClaimCount, Is.Zero);
+                Assert.That(store.Data.serverRevision, Is.EqualTo(7));
+                Assert.That(store.Data.valor, Is.EqualTo(definition.valorReward + 15));
+                Assert.That(store.ProgressFor(1).stars, Is.EqualTo(3));
+                Assert.That(store.SyncStatus, Is.EqualTo(CampaignSyncStatus.Current));
             }
             finally
             {
