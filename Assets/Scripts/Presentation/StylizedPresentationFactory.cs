@@ -53,7 +53,10 @@ namespace DefenderChronicles.Presentation
                 var visual = Object.Instantiate(visualPrefab, motion.transform);
                 visual.name = "Art";
                 visual.transform.localPosition = Vector3.zero;
-                visual.transform.localRotation = Quaternion.identity;
+                // Imported actors carry their FBX up-axis correction on this transform.
+                // Erasing it lays humanoids on the road when their gameplay root turns.
+                visual.transform.localRotation = collider == PresentationCollider.Capsule
+                    ? visualPrefab.transform.localRotation : Quaternion.identity;
                 visual.transform.localScale = Vector3.one * visualScale;
                 ApplyPalette(visual, catalog, true);
                 if (collider == PresentationCollider.Capsule)
