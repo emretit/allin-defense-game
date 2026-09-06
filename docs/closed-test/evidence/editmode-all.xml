@@ -1,0 +1,629 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="94" result="Passed" total="94" passed="94" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.3400147">
+  <test-suite type="TestSuite" id="1000" name="Defender Chronicles" fullname="Defender Chronicles" runstate="Runnable" testcasecount="94" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.340015" total="94" passed="94" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1102" name="DefenderChronicles.EditModeTests.dll" fullname="/Users/emreaydin/DefenderChronicles-first-region/Library/ScriptAssemblies/DefenderChronicles.EditModeTests.dll" runstate="Runnable" testcasecount="93" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.336752" total="93" passed="93" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="85383" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1103" name="DefenderChronicles" fullname="DefenderChronicles" runstate="Runnable" testcasecount="93" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.336596" total="93" passed="93" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1104" name="Tests" fullname="DefenderChronicles.Tests" runstate="Runnable" testcasecount="93" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.336462" total="93" passed="93" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1001" name="AuditRemediationTests" fullname="DefenderChronicles.Tests.AuditRemediationTests" classname="DefenderChronicles.Tests.AuditRemediationTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.129219" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1002" name="CanonicalCampaignRulesMatchEveryRuntimeLevel" fullname="DefenderChronicles.Tests.AuditRemediationTests.CanonicalCampaignRulesMatchEveryRuntimeLevel" methodname="CanonicalCampaignRulesMatchEveryRuntimeLevel" classname="DefenderChronicles.Tests.AuditRemediationTests" runstate="Runnable" seed="1818718178" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.017458" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1004" name="MainFontsAreStaticAndExternalNameFallbackStaysDynamic" fullname="DefenderChronicles.Tests.AuditRemediationTests.MainFontsAreStaticAndExternalNameFallbackStaysDynamic" methodname="MainFontsAreStaticAndExternalNameFallbackStaysDynamic" classname="DefenderChronicles.Tests.AuditRemediationTests" runstate="Runnable" seed="1838632755" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.096188" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1006" name="MasterMixerHasSafetyCompressor" fullname="DefenderChronicles.Tests.AuditRemediationTests.MasterMixerHasSafetyCompressor" methodname="MasterMixerHasSafetyCompressor" classname="DefenderChronicles.Tests.AuditRemediationTests" runstate="Runnable" seed="2138188153" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.001833" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1003" name="TurkishAndEnglishLocalesAndCoreCopyAreAvailable" fullname="DefenderChronicles.Tests.AuditRemediationTests.TurkishAndEnglishLocalesAndCoreCopyAreAvailable" methodname="TurkishAndEnglishLocalesAndCoreCopyAreAvailable" classname="DefenderChronicles.Tests.AuditRemediationTests" runstate="Runnable" seed="2073627486" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.004780" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1005" name="UiAtlasUsesNineSliceSafePacking" fullname="DefenderChronicles.Tests.AuditRemediationTests.UiAtlasUsesNineSliceSafePacking" methodname="UiAtlasUsesNineSliceSafePacking" classname="DefenderChronicles.Tests.AuditRemediationTests" runstate="Runnable" seed="1421256550" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.004198" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1007" name="BattleRulesTests" fullname="DefenderChronicles.Tests.BattleRulesTests" classname="DefenderChronicles.Tests.BattleRulesTests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.001845" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1016" name="SlowUsesStrongestEffectAndRefreshesMatchingDuration" fullname="DefenderChronicles.Tests.BattleRulesTests.SlowUsesStrongestEffectAndRefreshesMatchingDuration" methodname="SlowUsesStrongestEffectAndRefreshesMatchingDuration" classname="DefenderChronicles.Tests.BattleRulesTests" runstate="Runnable" seed="1280800639" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000269" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-suite type="ParameterizedMethod" id="1014" name="StarsComeFromLives" fullname="DefenderChronicles.Tests.BattleRulesTests.StarsComeFromLives" classname="DefenderChronicles.Tests.BattleRulesTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000580" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1008" name="StarsComeFromLives(0,20,0)" fullname="DefenderChronicles.Tests.BattleRulesTests.StarsComeFromLives(0,20,0)" methodname="StarsComeFromLives" classname="DefenderChronicles.Tests.BattleRulesTests" runstate="Runnable" seed="877683625" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000103" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1009" name="StarsComeFromLives(1,20,1)" fullname="DefenderChronicles.Tests.BattleRulesTests.StarsComeFromLives(1,20,1)" methodname="StarsComeFromLives" classname="DefenderChronicles.Tests.BattleRulesTests" runstate="Runnable" seed="1693415223" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000021" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1010" name="StarsComeFromLives(8,20,2)" fullname="DefenderChronicles.Tests.BattleRulesTests.StarsComeFromLives(8,20,2)" methodname="StarsComeFromLives" classname="DefenderChronicles.Tests.BattleRulesTests" runstate="Runnable" seed="1662839391" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000016" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1011" name="StarsComeFromLives(14,20,2)" fullname="DefenderChronicles.Tests.BattleRulesTests.StarsComeFromLives(14,20,2)" methodname="StarsComeFromLives" classname="DefenderChronicles.Tests.BattleRulesTests" runstate="Runnable" seed="619171764" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000016" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1012" name="StarsComeFromLives(15,20,3)" fullname="DefenderChronicles.Tests.BattleRulesTests.StarsComeFromLives(15,20,3)" methodname="StarsComeFromLives" classname="DefenderChronicles.Tests.BattleRulesTests" runstate="Runnable" seed="1591807022" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000016" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1013" name="StarsComeFromLives(20,20,3)" fullname="DefenderChronicles.Tests.BattleRulesTests.StarsComeFromLives(20,20,3)" methodname="StarsComeFromLives" classname="DefenderChronicles.Tests.BattleRulesTests" runstate="Runnable" seed="26053043" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000016" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-case id="1015" name="VanguardResistsPhysicalButNotMagic" fullname="DefenderChronicles.Tests.BattleRulesTests.VanguardResistsPhysicalButNotMagic" methodname="VanguardResistsPhysicalButNotMagic" classname="DefenderChronicles.Tests.BattleRulesTests" runstate="Runnable" seed="1301776658" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000170" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1017" name="CoreRulesTests" fullname="DefenderChronicles.Tests.CoreRulesTests" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" testcasecount="72" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.189068" total="72" passed="72" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1059" name="ActionTimingContractDocumentsImpactFramesAndSockets" fullname="DefenderChronicles.Tests.CoreRulesTests.ActionTimingContractDocumentsImpactFramesAndSockets" methodname="ActionTimingContractDocumentsImpactFramesAndSockets" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="716854743" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000819" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1058" name="ActorAnimationCueContractUsesSharedTriggers" fullname="DefenderChronicles.Tests.CoreRulesTests.ActorAnimationCueContractUsesSharedTriggers" methodname="ActorAnimationCueContractUsesSharedTriggers" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="1895836596" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000159" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1047" name="ActorVfxContractUsesRoleSpecificFamilies" fullname="DefenderChronicles.Tests.CoreRulesTests.ActorVfxContractUsesRoleSpecificFamilies" methodname="ActorVfxContractUsesRoleSpecificFamilies" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="1585760061" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000920" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1057" name="ActorVfxPoolHandlesSixtySignalBurstWithoutGrowing" fullname="DefenderChronicles.Tests.CoreRulesTests.ActorVfxPoolHandlesSixtySignalBurstWithoutGrowing" methodname="ActorVfxPoolHandlesSixtySignalBurstWithoutGrowing" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="703446992" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.060691" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1056" name="ActorVfxSocketOriginsPreferNamedRuntimeSockets" fullname="DefenderChronicles.Tests.CoreRulesTests.ActorVfxSocketOriginsPreferNamedRuntimeSockets" methodname="ActorVfxSocketOriginsPreferNamedRuntimeSockets" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="1418323329" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000389" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1091" name="AdaptiveCameraConfigureIsIdempotent" fullname="DefenderChronicles.Tests.CoreRulesTests.AdaptiveCameraConfigureIsIdempotent" methodname="AdaptiveCameraConfigureIsIdempotent" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="1265656104" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.001110" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1041" name="AllFiftyCampaignLevelsHaveBoundedPlayableContentAndRegionalBosses" fullname="DefenderChronicles.Tests.CoreRulesTests.AllFiftyCampaignLevelsHaveBoundedPlayableContentAndRegionalBosses" methodname="AllFiftyCampaignLevelsHaveBoundedPlayableContentAndRegionalBosses" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="56206367" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.003916" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1069" name="AnimationEventRelayIsPresentationOnly" fullname="DefenderChronicles.Tests.CoreRulesTests.AnimationEventRelayIsPresentationOnly" methodname="AnimationEventRelayIsPresentationOnly" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="491864992" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.001022" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1050" name="ArcaneProjectileVfxStaysDistinctFromArrowAndHeal" fullname="DefenderChronicles.Tests.CoreRulesTests.ArcaneProjectileVfxStaysDistinctFromArrowAndHeal" methodname="ArcaneProjectileVfxStaysDistinctFromArrowAndHeal" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="1824769093" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000267" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1049" name="ArrowProjectileVfxUsesMuzzleAndStaysDistinctFromMeleeAndMagic" fullname="DefenderChronicles.Tests.CoreRulesTests.ArrowProjectileVfxUsesMuzzleAndStaysDistinctFromMeleeAndMagic" methodname="ArrowProjectileVfxUsesMuzzleAndStaysDistinctFromMeleeAndMagic" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="825671492" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000254" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1060" name="AudioPolicyCoversEveryCueAndProtectsCriticalSignals" fullname="DefenderChronicles.Tests.CoreRulesTests.AudioPolicyCoversEveryCueAndProtectsCriticalSignals" methodname="AudioPolicyCoversEveryCueAndProtectsCriticalSignals" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="1283318950" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000964" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1061" name="AudioReviewLevelsAndMusicTransitionsHaveDeterministicContracts" fullname="DefenderChronicles.Tests.CoreRulesTests.AudioReviewLevelsAndMusicTransitionsHaveDeterministicContracts" methodname="AudioReviewLevelsAndMusicTransitionsHaveDeterministicContracts" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="1295647589" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000275" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1067" name="BossHasThreePhaseSilhouettePartsAndRuntimeToggleContract" fullname="DefenderChronicles.Tests.CoreRulesTests.BossHasThreePhaseSilhouettePartsAndRuntimeToggleContract" methodname="BossHasThreePhaseSilhouettePartsAndRuntimeToggleContract" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="1408788563" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.001699" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1048" name="BossVfxPriorityKeepsCriticalPhaseAboveCombatBurst" fullname="DefenderChronicles.Tests.CoreRulesTests.BossVfxPriorityKeepsCriticalPhaseAboveCombatBurst" methodname="BossVfxPriorityKeepsCriticalPhaseAboveCombatBurst" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="270913582" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000569" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1086" name="BottomContentReservesBottomInset" fullname="DefenderChronicles.Tests.CoreRulesTests.BottomContentReservesBottomInset" methodname="BottomContentReservesBottomInset" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="1786203746" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000231" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1045" name="BrandAssetsMeetTheMobileImportAndAlphaContract" fullname="DefenderChronicles.Tests.CoreRulesTests.BrandAssetsMeetTheMobileImportAndAlphaContract" methodname="BrandAssetsMeetTheMobileImportAndAlphaContract" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="1709146281" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.074596" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1072" name="BuildButtonStateContractSeparatesNoSlotAffordableAndUnaffordable" fullname="DefenderChronicles.Tests.CoreRulesTests.BuildButtonStateContractSeparatesNoSlotAffordableAndUnaffordable" methodname="BuildButtonStateContractSeparatesNoSlotAffordableAndUnaffordable" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="698824086" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000653" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1077" name="CameraFramingCoversVisualDevelopmentAspectRatios" fullname="DefenderChronicles.Tests.CoreRulesTests.CameraFramingCoversVisualDevelopmentAspectRatios" methodname="CameraFramingCoversVisualDevelopmentAspectRatios" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="1550721743" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000169" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1090" name="CameraFramingReservesUnsafeHorizontalInsets" fullname="DefenderChronicles.Tests.CoreRulesTests.CameraFramingReservesUnsafeHorizontalInsets" methodname="CameraFramingReservesUnsafeHorizontalInsets" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="1103835735" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000063" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1038" name="CampaignCompletionClaimsPersistInOrderAcrossRestart" fullname="DefenderChronicles.Tests.CoreRulesTests.CampaignCompletionClaimsPersistInOrderAcrossRestart" methodname="CampaignCompletionClaimsPersistInOrderAcrossRestart" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="36429335" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.007140" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1033" name="CampaignContainsFiveProgressiveRegionsAndFiftyUniqueLevels" fullname="DefenderChronicles.Tests.CoreRulesTests.CampaignContainsFiveProgressiveRegionsAndFiftyUniqueLevels" methodname="CampaignContainsFiveProgressiveRegionsAndFiftyUniqueLevels" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="42690276" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000621" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1035" name="CampaignMergeKeepsBestLocalAndCloudProgress" fullname="DefenderChronicles.Tests.CoreRulesTests.CampaignMergeKeepsBestLocalAndCloudProgress" methodname="CampaignMergeKeepsBestLocalAndCloudProgress" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="1345106923" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.001916" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1034" name="CampaignProgressUnlocksOneLevelAndKeepsBestResult" fullname="DefenderChronicles.Tests.CoreRulesTests.CampaignProgressUnlocksOneLevelAndKeepsBestResult" methodname="CampaignProgressUnlocksOneLevelAndKeepsBestResult" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="1399732241" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.003308" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1037" name="CampaignRewardsFirstCompletionAndOnlyImprovedStarsAfterward" fullname="DefenderChronicles.Tests.CoreRulesTests.CampaignRewardsFirstCompletionAndOnlyImprovedStarsAfterward" methodname="CampaignRewardsFirstCompletionAndOnlyImprovedStarsAfterward" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="1566515537" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.002358" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1036" name="CampaignSaveNormalizationRepairsInvalidAndDuplicateProgress" fullname="DefenderChronicles.Tests.CoreRulesTests.CampaignSaveNormalizationRepairsInvalidAndDuplicateProgress" methodname="CampaignSaveNormalizationRepairsInvalidAndDuplicateProgress" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="2075771853" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000335" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1039" name="CampaignServerSyncRemovesProcessedClaimsAndUsesCanonicalReward" fullname="DefenderChronicles.Tests.CoreRulesTests.CampaignServerSyncRemovesProcessedClaimsAndUsesCanonicalReward" methodname="CampaignServerSyncRemovesProcessedClaimsAndUsesCanonicalReward" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="1411268808" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.002039" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1055" name="CinematicFramingContractHonorsReducedAndOffIntensityModes" fullname="DefenderChronicles.Tests.CoreRulesTests.CinematicFramingContractHonorsReducedAndOffIntensityModes" methodname="CinematicFramingContractHonorsReducedAndOffIntensityModes" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="837569535" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000316" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1054" name="CinematicFramingContractOnlyTargetsBossAndResultMoments" fullname="DefenderChronicles.Tests.CoreRulesTests.CinematicFramingContractOnlyTargetsBossAndResultMoments" methodname="CinematicFramingContractOnlyTargetsBossAndResultMoments" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="1973435171" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000137" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1031" name="CooldownStopsAtZero" fullname="DefenderChronicles.Tests.CoreRulesTests.CooldownStopsAtZero" methodname="CooldownStopsAtZero" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="1168367816" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000054" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-suite type="ParameterizedMethod" id="1021" name="DamageNeverCreatesNegativeHealth" fullname="DefenderChronicles.Tests.CoreRulesTests.DamageNeverCreatesNegativeHealth" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000727" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1018" name="DamageNeverCreatesNegativeHealth(100,25,75)" fullname="DefenderChronicles.Tests.CoreRulesTests.DamageNeverCreatesNegativeHealth(100,25,75)" methodname="DamageNeverCreatesNegativeHealth" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="435542056" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000052" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1019" name="DamageNeverCreatesNegativeHealth(10,50,0)" fullname="DefenderChronicles.Tests.CoreRulesTests.DamageNeverCreatesNegativeHealth(10,50,0)" methodname="DamageNeverCreatesNegativeHealth" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="1388159621" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000015" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1020" name="DamageNeverCreatesNegativeHealth(10,-2,10)" fullname="DefenderChronicles.Tests.CoreRulesTests.DamageNeverCreatesNegativeHealth(10,-2,10)" methodname="DamageNeverCreatesNegativeHealth" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="1701878266" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000014" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-case id="1029" name="EconomyRefundIsSixtyPercent" fullname="DefenderChronicles.Tests.CoreRulesTests.EconomyRefundIsSixtyPercent" methodname="EconomyRefundIsSixtyPercent" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="152238583" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000100" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1062" name="EnvironmentAmbienceIsDisabledOnLowAndSubordinateOnHigherProfiles" fullname="DefenderChronicles.Tests.CoreRulesTests.EnvironmentAmbienceIsDisabledOnLowAndSubordinateOnHigherProfiles" methodname="EnvironmentAmbienceIsDisabledOnLowAndSubordinateOnHigherProfiles" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="1687261729" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000239" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1063" name="EveryActorRoleUsesAnAuthoredAnimatorOverride" fullname="DefenderChronicles.Tests.CoreRulesTests.EveryActorRoleUsesAnAuthoredAnimatorOverride" methodname="EveryActorRoleUsesAnAuthoredAnimatorOverride" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="1438869898" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000549" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1053" name="FeedbackIntensityContractScalesAndNeverBlocksTouch" fullname="DefenderChronicles.Tests.CoreRulesTests.FeedbackIntensityContractScalesAndNeverBlocksTouch" methodname="FeedbackIntensityContractScalesAndNeverBlocksTouch" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="635466051" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000296" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1065" name="FinalOutpostsUseSixDistinctGeneratedModels" fullname="DefenderChronicles.Tests.CoreRulesTests.FinalOutpostsUseSixDistinctGeneratedModels" methodname="FinalOutpostsUseSixDistinctGeneratedModels" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="1622540786" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000254" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1040" name="FirstRegionHasTenPlayableDataDrivenCombatDefinitions" fullname="DefenderChronicles.Tests.CoreRulesTests.FirstRegionHasTenPlayableDataDrivenCombatDefinitions" methodname="FirstRegionHasTenPlayableDataDrivenCombatDefinitions" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="1780794025" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000736" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1089" name="FourByThreeHasNarrowerSafeContentThanSixteenByNine" fullname="DefenderChronicles.Tests.CoreRulesTests.FourByThreeHasNarrowerSafeContentThanSixteenByNine" methodname="FourByThreeHasNarrowerSafeContentThanSixteenByNine" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="1949249665" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000094" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1044" name="FrontendThemeAndFontsMeetTheMedievalAccessibilityContract" fullname="DefenderChronicles.Tests.CoreRulesTests.FrontendThemeAndFontsMeetTheMedievalAccessibilityContract" methodname="FrontendThemeAndFontsMeetTheMedievalAccessibilityContract" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="1092454702" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000226" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1032" name="GameSpeedLabelsMatchRealTimeScales" fullname="DefenderChronicles.Tests.CoreRulesTests.GameSpeedLabelsMatchRealTimeScales" methodname="GameSpeedLabelsMatchRealTimeScales" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="1891288940" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000240" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1051" name="HealAndRegenVfxUseDistinctActorFamilies" fullname="DefenderChronicles.Tests.CoreRulesTests.HealAndRegenVfxUseDistinctActorFamilies" methodname="HealAndRegenVfxUseDistinctActorFamilies" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="1319925057" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000243" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1064" name="KnightGuardRaiderVanguardRegeneratorSupportAndSiegeAnimatorOverridesBindRoleSpecificClips" fullname="DefenderChronicles.Tests.CoreRulesTests.KnightGuardRaiderVanguardRegeneratorSupportAndSiegeAnimatorOverridesBindRoleSpecificClips" methodname="KnightGuardRaiderVanguardRegeneratorSupportAndSiegeAnimatorOverridesBindRoleSpecificClips" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="1598722152" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.001268" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1082" name="LandscapeHudBannersStayCompactOverTheBattlefield" fullname="DefenderChronicles.Tests.CoreRulesTests.LandscapeHudBannersStayCompactOverTheBattlefield" methodname="LandscapeHudBannersStayCompactOverTheBattlefield" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="1086278094" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000098" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1083" name="LandscapeHudRailsLeaveMostOfTheScreenToTheBattlefield" fullname="DefenderChronicles.Tests.CoreRulesTests.LandscapeHudRailsLeaveMostOfTheScreenToTheBattlefield" methodname="LandscapeHudRailsLeaveMostOfTheScreenToTheBattlefield" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="429508133" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000055" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1080" name="LandscapeLeftAndRightSafeAreasMirrorWithoutChangingHudWidth" fullname="DefenderChronicles.Tests.CoreRulesTests.LandscapeLeftAndRightSafeAreasMirrorWithoutChangingHudWidth" methodname="LandscapeLeftAndRightSafeAreasMirrorWithoutChangingHudWidth" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="2032980873" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000104" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1024" name="MobileRuntimeFallsBackToMiddleQualityWhenPreferredProfileIsMissing" fullname="DefenderChronicles.Tests.CoreRulesTests.MobileRuntimeFallsBackToMiddleQualityWhenPreferredProfileIsMissing" methodname="MobileRuntimeFallsBackToMiddleQualityWhenPreferredProfileIsMissing" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="1644212952" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000098" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1023" name="MobileRuntimeQualitySelectionIsCaseInsensitive" fullname="DefenderChronicles.Tests.CoreRulesTests.MobileRuntimeQualitySelectionIsCaseInsensitive" methodname="MobileRuntimeQualitySelectionIsCaseInsensitive" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="84369745" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000038" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1022" name="MobileRuntimeSelectsMediumQualityByName" fullname="DefenderChronicles.Tests.CoreRulesTests.MobileRuntimeSelectsMediumQualityByName" methodname="MobileRuntimeSelectsMediumQualityByName" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="1290006940" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000036" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-suite type="ParameterizedMethod" id="1028" name="MobileUrpAssetsDoNotRequestUnusedDepthTexture" fullname="DefenderChronicles.Tests.CoreRulesTests.MobileUrpAssetsDoNotRequestUnusedDepthTexture" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.001314" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1026" name="MobileUrpAssetsDoNotRequestUnusedDepthTexture(&quot;Assets/Settings/UniversalRP.asset&quot;)" fullname="DefenderChronicles.Tests.CoreRulesTests.MobileUrpAssetsDoNotRequestUnusedDepthTexture(&quot;Assets/Settings/UniversalRP.asset&quot;)" methodname="MobileUrpAssetsDoNotRequestUnusedDepthTexture" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="1684898501" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000729" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1027" name="MobileUrpAssetsDoNotRequestUnusedDepthTexture(&quot;Assets/Settings/UniversalRPCustomAxisSort.asset&quot;)" fullname="DefenderChronicles.Tests.CoreRulesTests.MobileUrpAssetsDoNotRequestUnusedDepthTexture(&quot;Assets/Settings/UniversalRPCustomAxisSort.asset&quot;)" methodname="MobileUrpAssetsDoNotRequestUnusedDepthTexture" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="428622065" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000307" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-case id="1078" name="OrientationPolicyKeepsFrontendPortraitAndBattleFamilyLandscape" fullname="DefenderChronicles.Tests.CoreRulesTests.OrientationPolicyKeepsFrontendPortraitAndBattleFamilyLandscape" methodname="OrientationPolicyKeepsFrontendPortraitAndBattleFamilyLandscape" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="278053333" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000238" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1074" name="PhaseBadgeSpecUsesMotionPulseAndBossPriorityLanguage" fullname="DefenderChronicles.Tests.CoreRulesTests.PhaseBadgeSpecUsesMotionPulseAndBossPriorityLanguage" methodname="PhaseBadgeSpecUsesMotionPulseAndBossPriorityLanguage" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="356153196" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000264" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1084" name="PortraitCampaignPathRunsFromTopToBottom" fullname="DefenderChronicles.Tests.CoreRulesTests.PortraitCampaignPathRunsFromTopToBottom" methodname="PortraitCampaignPathRunsFromTopToBottom" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="445211632" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000159" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1081" name="PreviewAndMessageWidthsDoNotExceedSafeWidth" fullname="DefenderChronicles.Tests.CoreRulesTests.PreviewAndMessageWidthsDoNotExceedSafeWidth" methodname="PreviewAndMessageWidthsDoNotExceedSafeWidth" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="933327461" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000073" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1071" name="ProductionHudTouchTargetsStayAboveMinimum" fullname="DefenderChronicles.Tests.CoreRulesTests.ProductionHudTouchTargetsStayAboveMinimum" methodname="ProductionHudTouchTargetsStayAboveMinimum" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="1176848966" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000468" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1043" name="ProductionPresentationCatalogIsComplete" fullname="DefenderChronicles.Tests.CoreRulesTests.ProductionPresentationCatalogIsComplete" methodname="ProductionPresentationCatalogIsComplete" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="765591356" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.002355" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1066" name="RoleAnimationClipsContainRigBoneMotion" fullname="DefenderChronicles.Tests.CoreRulesTests.RoleAnimationClipsContainRigBoneMotion" methodname="RoleAnimationClipsContainRigBoneMotion" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="236169362" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000943" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1030" name="RouteProgressUsesXzSegmentProjection" fullname="DefenderChronicles.Tests.CoreRulesTests.RouteProgressUsesXzSegmentProjection" methodname="RouteProgressUsesXzSegmentProjection" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="675677428" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000122" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1079" name="SafeAreaInsetsAreClampedBetweenZeroAndOne" fullname="DefenderChronicles.Tests.CoreRulesTests.SafeAreaInsetsAreClampedBetweenZeroAndOne" methodname="SafeAreaInsetsAreClampedBetweenZeroAndOne" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="746523443" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000091" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1025" name="SelectableLayerIsReservedForWorldInteraction" fullname="DefenderChronicles.Tests.CoreRulesTests.SelectableLayerIsReservedForWorldInteraction" methodname="SelectableLayerIsReservedForWorldInteraction" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="1173945969" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000155" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1075" name="SelectedPanelSpecSeparatesSlotUpgradeMaxAndDisruptedStates" fullname="DefenderChronicles.Tests.CoreRulesTests.SelectedPanelSpecSeparatesSlotUpgradeMaxAndDisruptedStates" methodname="SelectedPanelSpecSeparatesSlotUpgradeMaxAndDisruptedStates" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="137050328" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000667" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1087" name="SelectedPanelStaysInsideSafeArea" fullname="DefenderChronicles.Tests.CoreRulesTests.SelectedPanelStaysInsideSafeArea" methodname="SelectedPanelStaysInsideSafeArea" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="499143579" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000118" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1068" name="SharedActorAnimatorPrioritizesDefeatAndAvoidsHitSpam" fullname="DefenderChronicles.Tests.CoreRulesTests.SharedActorAnimatorPrioritizesDefeatAndAvoidsHitSpam" methodname="SharedActorAnimatorPrioritizesDefeatAndAvoidsHitSpam" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="990331434" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.001290" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1052" name="SlowAndDisruptStatusVfxUseDistinctMarkers" fullname="DefenderChronicles.Tests.CoreRulesTests.SlowAndDisruptStatusVfxUseDistinctMarkers" methodname="SlowAndDisruptStatusVfxUseDistinctMarkers" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="2040571614" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000193" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1042" name="SpawnGroupsRejectInvalidCountsAndIntervals" fullname="DefenderChronicles.Tests.CoreRulesTests.SpawnGroupsRejectInvalidCountsAndIntervals" methodname="SpawnGroupsRejectInvalidCountsAndIntervals" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="1431505922" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000056" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1073" name="TopBarSpecSeparatesStableWarningBossAndTerminalSignals" fullname="DefenderChronicles.Tests.CoreRulesTests.TopBarSpecSeparatesStableWarningBossAndTerminalSignals" methodname="TopBarSpecSeparatesStableWarningBossAndTerminalSignals" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="1122261270" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000388" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1085" name="TopContentReservesTopInset" fullname="DefenderChronicles.Tests.CoreRulesTests.TopContentReservesTopInset" methodname="TopContentReservesTopInset" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="565032262" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000089" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1070" name="TurkishUiCopyHasEveryPublicKey" fullname="DefenderChronicles.Tests.CoreRulesTests.TurkishUiCopyHasEveryPublicKey" methodname="TurkishUiCopyHasEveryPublicKey" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="2069600787" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000139" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1088" name="TwentyByNineHasWiderSafeContentThanSixteenByNine" fullname="DefenderChronicles.Tests.CoreRulesTests.TwentyByNineHasWiderSafeContentThanSixteenByNine" methodname="TwentyByNineHasWiderSafeContentThanSixteenByNine" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="1234420513" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000071" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1076" name="UltrawideCameraUsesMoreOfTheScreenThanSixteenByNine" fullname="DefenderChronicles.Tests.CoreRulesTests.UltrawideCameraUsesMoreOfTheScreenThanSixteenByNine" methodname="UltrawideCameraUsesMoreOfTheScreenThanSixteenByNine" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="367489373" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000068" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1046" name="VisualDevelopmentCatalogPassesActorBuildingSocketAndBudgetGates" fullname="DefenderChronicles.Tests.CoreRulesTests.VisualDevelopmentCatalogPassesActorBuildingSocketAndBudgetGates" methodname="VisualDevelopmentCatalogPassesActorBuildingSocketAndBudgetGates" classname="DefenderChronicles.Tests.CoreRulesTests" runstate="Runnable" seed="446265750" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.004287" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1092" name="SaveRecoveryTests" fullname="DefenderChronicles.Tests.SaveRecoveryTests" classname="DefenderChronicles.Tests.SaveRecoveryTests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.015620" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1098" name="AccountsAndGuestKeepIndependentProgressAcrossRestart" fullname="DefenderChronicles.Tests.SaveRecoveryTests.AccountsAndGuestKeepIndependentProgressAcrossRestart" methodname="AccountsAndGuestKeepIndependentProgressAcrossRestart" classname="DefenderChronicles.Tests.SaveRecoveryTests" runstate="Runnable" seed="324833598" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.008480" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1097" name="CorruptMainRecoversBackup" fullname="DefenderChronicles.Tests.SaveRecoveryTests.CorruptMainRecoversBackup" methodname="CorruptMainRecoversBackup" classname="DefenderChronicles.Tests.SaveRecoveryTests" runstate="Runnable" seed="1919552008" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.001028" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-suite type="ParameterizedMethod" id="1096" name="InterruptedWritesRecoverAnEntireValidVersion" fullname="DefenderChronicles.Tests.SaveRecoveryTests.InterruptedWritesRecoverAnEntireValidVersion" classname="DefenderChronicles.Tests.SaveRecoveryTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.002559" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1093" name="InterruptedWritesRecoverAnEntireValidVersion(TemporaryFlushed)" fullname="DefenderChronicles.Tests.SaveRecoveryTests.InterruptedWritesRecoverAnEntireValidVersion(TemporaryFlushed)" methodname="InterruptedWritesRecoverAnEntireValidVersion" classname="DefenderChronicles.Tests.SaveRecoveryTests" runstate="Runnable" seed="1097756566" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.001015" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1094" name="InterruptedWritesRecoverAnEntireValidVersion(BeforeReplace)" fullname="DefenderChronicles.Tests.SaveRecoveryTests.InterruptedWritesRecoverAnEntireValidVersion(BeforeReplace)" methodname="InterruptedWritesRecoverAnEntireValidVersion" classname="DefenderChronicles.Tests.SaveRecoveryTests" runstate="Runnable" seed="1088385194" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000465" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1095" name="InterruptedWritesRecoverAnEntireValidVersion(Committed)" fullname="DefenderChronicles.Tests.SaveRecoveryTests.InterruptedWritesRecoverAnEntireValidVersion(Committed)" methodname="InterruptedWritesRecoverAnEntireValidVersion" classname="DefenderChronicles.Tests.SaveRecoveryTests" runstate="Runnable" seed="1987998152" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000709" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-case id="1099" name="LegacyLateCampaignIsRetainedWhenMigrationIsIncomplete" fullname="DefenderChronicles.Tests.SaveRecoveryTests.LegacyLateCampaignIsRetainedWhenMigrationIsIncomplete" methodname="LegacyLateCampaignIsRetainedWhenMigrationIsIncomplete" classname="DefenderChronicles.Tests.SaveRecoveryTests" runstate="Runnable" seed="705137121" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.001068" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1101" name="NormalizingOldQueueDoesNotRelabelItsRulesVersion" fullname="DefenderChronicles.Tests.SaveRecoveryTests.NormalizingOldQueueDoesNotRelabelItsRulesVersion" methodname="NormalizingOldQueueDoesNotRelabelItsRulesVersion" classname="DefenderChronicles.Tests.SaveRecoveryTests" runstate="Runnable" seed="1407310405" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000188" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1100" name="RejectedClaimKeepsReasonAndCannotPretendToBeSynchronized" fullname="DefenderChronicles.Tests.SaveRecoveryTests.RejectedClaimKeepsReasonAndCannotPretendToBeSynchronized" methodname="RejectedClaimKeepsReasonAndCannotPretendToBeSynchronized" classname="DefenderChronicles.Tests.SaveRecoveryTests" runstate="Runnable" seed="1554986009" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.001456" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1108" name="Unity.Addressables.DocExampleCode.Editor.Tests.dll" fullname="/Users/emreaydin/DefenderChronicles-first-region/Library/ScriptAssemblies/Unity.Addressables.DocExampleCode.Editor.Tests.dll" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000738" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="85383" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1109" name="AddressableAssets" fullname="AddressableAssets" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000532" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1110" name="DocExampleCode" fullname="AddressableAssets.DocExampleCode" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000449" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1106" name="TestStub" fullname="AddressableAssets.DocExampleCode.TestStub" classname="AddressableAssets.DocExampleCode.TestStub" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000321" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1107" name="RequiredTest" fullname="AddressableAssets.DocExampleCode.TestStub.RequiredTest" methodname="RequiredTest" classname="AddressableAssets.DocExampleCode.TestStub" runstate="Runnable" seed="1110747495" result="Passed" start-time="2026-09-06 09:57:02Z" end-time="2026-09-06 09:57:02Z" duration="0.000027" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Saving results to: /Users/emreaydin/Library/Application Support/Emre Aydin/Defender Chronicles/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

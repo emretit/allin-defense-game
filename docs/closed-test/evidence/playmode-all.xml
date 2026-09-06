@@ -1,0 +1,641 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="26" result="Failed(Child)" total="26" passed="20" failed="6" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-09-06 09:59:36Z" end-time="2026-09-06 10:05:47Z" duration="371.4820766">
+  <test-suite type="TestSuite" id="1038" name="Defender Chronicles" fullname="Defender Chronicles" runstate="Runnable" testcasecount="26" result="Failed" site="Child" start-time="2026-09-06 09:59:36Z" end-time="2026-09-06 10:05:47Z" duration="371.482077" total="26" passed="20" failed="6" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1032" name="DefenderChronicles.PlayModeTests.dll" fullname="/Users/emreaydin/DefenderChronicles-first-region/Library/ScriptAssemblies/DefenderChronicles.PlayModeTests.dll" runstate="Runnable" testcasecount="26" result="Failed" site="Child" start-time="2026-09-06 09:59:36Z" end-time="2026-09-06 10:05:47Z" duration="371.479406" total="26" passed="20" failed="6" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="89324" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1033" name="DefenderChronicles" fullname="DefenderChronicles" runstate="Runnable" testcasecount="26" result="Failed" site="Child" start-time="2026-09-06 09:59:36Z" end-time="2026-09-06 10:05:47Z" duration="371.479091" total="26" passed="20" failed="6" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1034" name="Tests" fullname="DefenderChronicles.Tests" runstate="Runnable" testcasecount="26" result="Failed" site="Child" start-time="2026-09-06 09:59:36Z" end-time="2026-09-06 10:05:47Z" duration="371.478287" total="26" passed="20" failed="6" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestFixture" id="1001" name="ClosedTestAcceptanceTests" fullname="DefenderChronicles.Tests.ClosedTestAcceptanceTests" classname="DefenderChronicles.Tests.ClosedTestAcceptanceTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-09-06 09:59:36Z" end-time="2026-09-06 09:59:38Z" duration="2.425511" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1006" name="EmptyShieldBashDoesNotSpendCooldown" fullname="DefenderChronicles.Tests.ClosedTestAcceptanceTests.EmptyShieldBashDoesNotSpendCooldown" methodname="EmptyShieldBashDoesNotSpendCooldown" classname="DefenderChronicles.Tests.ClosedTestAcceptanceTests" runstate="Runnable" seed="1034245337" result="Passed" start-time="2026-09-06 09:59:36Z" end-time="2026-09-06 09:59:36Z" duration="0.315122" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1004" name="FrameRateAndSpeedHaveIdenticalBattleResults" fullname="DefenderChronicles.Tests.ClosedTestAcceptanceTests.FrameRateAndSpeedHaveIdenticalBattleResults" methodname="FrameRateAndSpeedHaveIdenticalBattleResults" classname="DefenderChronicles.Tests.ClosedTestAcceptanceTests" runstate="Runnable" seed="526966728" result="Passed" start-time="2026-09-06 09:59:36Z" end-time="2026-09-06 09:59:38Z" duration="1.933619" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[WAVE_BALANCE] level=1 wave=1 seconds=42.53 gold=153 lives=20 peak=5
+[WAVE_BALANCE] level=1 wave=2 seconds=46.93 gold=332 lives=20 peak=5
+[WAVE_BALANCE] level=1 wave=3 seconds=51.33 gold=527 lives=20 peak=5
+[CLOCK_PARITY] fps=30 speed=1 result=Victory/542/20/3/140.81
+[WAVE_BALANCE] level=1 wave=1 seconds=42.53 gold=153 lives=20 peak=5
+[WAVE_BALANCE] level=1 wave=2 seconds=46.93 gold=332 lives=20 peak=5
+[WAVE_BALANCE] level=1 wave=3 seconds=51.33 gold=527 lives=20 peak=5
+[CLOCK_PARITY] fps=30 speed=2 result=Victory/542/20/3/140.81
+[WAVE_BALANCE] level=1 wave=1 seconds=42.53 gold=153 lives=20 peak=5
+[WAVE_BALANCE] level=1 wave=2 seconds=46.93 gold=332 lives=20 peak=5
+[WAVE_BALANCE] level=1 wave=3 seconds=51.33 gold=527 lives=20 peak=5
+[CLOCK_PARITY] fps=30 speed=4 result=Victory/542/20/3/140.81
+[WAVE_BALANCE] level=1 wave=1 seconds=42.53 gold=153 lives=20 peak=5
+[WAVE_BALANCE] level=1 wave=2 seconds=46.93 gold=332 lives=20 peak=5
+[WAVE_BALANCE] level=1 wave=3 seconds=51.33 gold=527 lives=20 peak=5
+[CLOCK_PARITY] fps=30 speed=8 result=Victory/542/20/3/140.81
+[WAVE_BALANCE] level=1 wave=1 seconds=42.53 gold=153 lives=20 peak=5
+[WAVE_BALANCE] level=1 wave=2 seconds=46.93 gold=332 lives=20 peak=5
+[WAVE_BALANCE] level=1 wave=3 seconds=51.33 gold=527 lives=20 peak=5
+[CLOCK_PARITY] fps=60 speed=1 result=Victory/542/20/3/140.81
+[WAVE_BALANCE] level=1 wave=1 seconds=42.53 gold=153 lives=20 peak=5
+[WAVE_BALANCE] level=1 wave=2 seconds=46.93 gold=332 lives=20 peak=5
+[WAVE_BALANCE] level=1 wave=3 seconds=51.33 gold=527 lives=20 peak=5
+[CLOCK_PARITY] fps=60 speed=2 result=Victory/542/20/3/140.81
+[WAVE_BALANCE] level=1 wave=1 seconds=42.53 gold=153 lives=20 peak=5
+[WAVE_BALANCE] level=1 wave=2 seconds=46.93 gold=332 lives=20 peak=5
+[WAVE_BALANCE] level=1 wave=3 seconds=51.33 gold=527 lives=20 peak=5
+[CLOCK_PARITY] fps=60 speed=4 result=Victory/542/20/3/140.81
+[WAVE_BALANCE] level=1 wave=1 seconds=42.53 gold=153 lives=20 peak=5
+[WAVE_BALANCE] level=1 wave=2 seconds=46.93 gold=332 lives=20 peak=5
+[WAVE_BALANCE] level=1 wave=3 seconds=51.33 gold=527 lives=20 peak=5
+[CLOCK_PARITY] fps=60 speed=8 result=Victory/542/20/3/140.81
+]]></output>
+            </test-case>
+            <test-case id="1003" name="IncompatibleCheckpointLeavesCampaignFiftyIntact" fullname="DefenderChronicles.Tests.ClosedTestAcceptanceTests.IncompatibleCheckpointLeavesCampaignFiftyIntact" methodname="IncompatibleCheckpointLeavesCampaignFiftyIntact" classname="DefenderChronicles.Tests.ClosedTestAcceptanceTests" runstate="Runnable" seed="845688127" result="Passed" start-time="2026-09-06 09:59:38Z" end-time="2026-09-06 09:59:38Z" duration="0.052626" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1005" name="SpecializationIsExclusiveAndRefundIncludesItsPrice" fullname="DefenderChronicles.Tests.ClosedTestAcceptanceTests.SpecializationIsExclusiveAndRefundIncludesItsPrice" methodname="SpecializationIsExclusiveAndRefundIncludesItsPrice" classname="DefenderChronicles.Tests.ClosedTestAcceptanceTests" runstate="Runnable" seed="1164332570" result="Passed" start-time="2026-09-06 09:59:38Z" end-time="2026-09-06 09:59:38Z" duration="0.047549" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+]]></output>
+            </test-case>
+            <test-case id="1002" name="WaveRestartRestoresExactResourcesWithoutPayingAgain" fullname="DefenderChronicles.Tests.ClosedTestAcceptanceTests.WaveRestartRestoresExactResourcesWithoutPayingAgain" methodname="WaveRestartRestoresExactResourcesWithoutPayingAgain" classname="DefenderChronicles.Tests.ClosedTestAcceptanceTests" runstate="Runnable" seed="2022626291" result="Passed" start-time="2026-09-06 09:59:38Z" end-time="2026-09-06 09:59:38Z" duration="0.072078" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1007" name="FirstRegionBalanceTests" fullname="DefenderChronicles.Tests.FirstRegionBalanceTests" classname="DefenderChronicles.Tests.FirstRegionBalanceTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-09-06 09:59:38Z" end-time="2026-09-06 10:00:13Z" duration="34.916684" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1008" name="RealResourceCampaign" fullname="DefenderChronicles.Tests.FirstRegionBalanceTests.RealResourceCampaign" methodname="RealResourceCampaign" classname="DefenderChronicles.Tests.FirstRegionBalanceTests" runstate="Runnable" seed="830836625" result="Passed" start-time="2026-09-06 09:59:38Z" end-time="2026-09-06 10:00:13Z" duration="34.909741" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[WAVE_BALANCE] level=1 wave=1 seconds=41.13 gold=43 lives=20 peak=5
+[WAVE_BALANCE] level=1 wave=2 seconds=45.68 gold=37 lives=20 peak=5
+[WAVE_BALANCE] level=1 wave=3 seconds=50.02 gold=27 lives=20 peak=5
+[BALANCE] level=1 strategy=0 phase=Victory lives=20 seconds=136.84 gold=42 peak=5 towers=6 specialized=0 target=120-180
+[WAVE_BALANCE] level=2 wave=1 seconds=41.97 gold=43 lives=20 peak=8
+[WAVE_BALANCE] level=2 wave=2 seconds=45.68 gold=37 lives=20 peak=8
+[WAVE_BALANCE] level=2 wave=3 seconds=50.03 gold=27 lives=20 peak=8
+[BALANCE] level=2 strategy=0 phase=Victory lives=20 seconds=137.69 gold=42 peak=8 towers=6 specialized=0 target=120-180
+[WAVE_BALANCE] level=3 wave=1 seconds=42.22 gold=3 lives=20 peak=4
+[WAVE_BALANCE] level=3 wave=2 seconds=46.62 gold=52 lives=20 peak=4
+[WAVE_BALANCE] level=3 wave=3 seconds=51.02 gold=22 lives=20 peak=4
+[BALANCE] level=3 strategy=0 phase=Victory lives=20 seconds=139.86 gold=37 peak=4 towers=5 specialized=0 target=120-180
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=4 wave=1 seconds=45.60 gold=7 lives=20 peak=5
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=4 wave=2 seconds=47.87 gold=37 lives=20 peak=6
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=4 wave=3 seconds=50.05 gold=100 lives=20 peak=7
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=4 wave=4 seconds=52.37 gold=41 lives=20 peak=8
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=4 wave=5 seconds=54.82 gold=30 lives=20 peak=8
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=4 wave=6 seconds=57.02 gold=317 lives=20 peak=8
+[BALANCE] level=4 strategy=0 phase=Victory lives=20 seconds=307.69 gold=342 peak=8 towers=8 specialized=0 target=240-360
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=4 wave=1 seconds=46.98 gold=52 lives=20 peak=13
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=4 wave=2 seconds=48.10 gold=82 lives=20 peak=13
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=4 wave=3 seconds=50.10 gold=60 lives=20 peak=13
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=4 wave=4 seconds=52.47 gold=16 lives=20 peak=13
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=4 wave=5 seconds=55.03 gold=75 lives=20 peak=13
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=4 wave=6 seconds=57.02 gold=277 lives=20 peak=13
+[BALANCE] level=4 strategy=1 phase=Victory lives=20 seconds=309.67 gold=302 peak=13 towers=8 specialized=0 target=240-360
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=5 wave=1 seconds=45.72 gold=7 lives=19 peak=5
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=5 wave=2 seconds=48.62 gold=37 lives=19 peak=8
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=5 wave=3 seconds=51.20 gold=100 lives=19 peak=13
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=5 wave=4 seconds=52.25 gold=41 lives=19 peak=13
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=5 wave=5 seconds=54.67 gold=30 lives=19 peak=13
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=5 wave=6 seconds=57.27 gold=317 lives=19 peak=13
+[BALANCE] level=5 strategy=0 phase=Victory lives=19 seconds=309.69 gold=342 peak=13 towers=8 specialized=0 target=240-360
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=5 wave=1 seconds=49.55 gold=52 lives=19 peak=15
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=5 wave=2 seconds=46.58 gold=82 lives=19 peak=15
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=5 wave=3 seconds=48.92 gold=60 lives=19 peak=15
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=5 wave=4 seconds=51.25 gold=16 lives=19 peak=15
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=5 wave=5 seconds=53.58 gold=75 lives=19 peak=15
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=5 wave=6 seconds=55.92 gold=277 lives=19 peak=15
+[BALANCE] level=5 strategy=1 phase=Victory lives=19 seconds=305.77 gold=302 peak=15 towers=8 specialized=0 target=240-360
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=6 wave=1 seconds=53.12 gold=40 lives=19 peak=15
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=6 wave=2 seconds=47.50 gold=3 lives=19 peak=15
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=6 wave=3 seconds=50.02 gold=13 lives=19 peak=15
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=6 wave=4 seconds=52.13 gold=9 lives=19 peak=15
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=6 wave=5 seconds=54.55 gold=81 lives=19 peak=15
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=6 wave=6 seconds=56.80 gold=104 lives=19 peak=15
+[BALANCE] level=6 strategy=0 phase=Victory lives=19 seconds=314.08 gold=129 peak=15 towers=8 specialized=3 target=240-360
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=6 wave=1 seconds=45.45 gold=5 lives=19 peak=7
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=6 wave=2 seconds=47.35 gold=88 lives=19 peak=11
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=6 wave=3 seconds=49.73 gold=13 lives=19 peak=11
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=6 wave=4 seconds=52.33 gold=94 lives=19 peak=11
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=6 wave=5 seconds=54.22 gold=41 lives=19 peak=11
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=6 wave=6 seconds=56.23 gold=64 lives=19 peak=11
+[BALANCE] level=6 strategy=1 phase=Victory lives=19 seconds=305.29 gold=89 peak=11 towers=8 specialized=3 target=240-360
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=7 wave=1 seconds=55.42 gold=46 lives=19 peak=12
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=7 wave=2 seconds=48.02 gold=15 lives=19 peak=12
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=7 wave=3 seconds=50.35 gold=43 lives=19 peak=12
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=7 wave=4 seconds=52.68 gold=57 lives=19 peak=18
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=7 wave=5 seconds=55.08 gold=153 lives=19 peak=18
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=7 wave=6 seconds=57.42 gold=200 lives=19 peak=18
+[BALANCE] level=7 strategy=0 phase=Victory lives=19 seconds=318.93 gold=225 peak=18 towers=8 specialized=3 target=240-360
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=7 wave=1 seconds=55.10 gold=11 lives=19 peak=11
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=7 wave=2 seconds=47.60 gold=100 lives=19 peak=11
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=7 wave=3 seconds=49.98 gold=43 lives=19 peak=13
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=7 wave=4 seconds=52.58 gold=17 lives=19 peak=14
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=7 wave=5 seconds=54.35 gold=113 lives=19 peak=14
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=7 wave=6 seconds=56.55 gold=160 lives=19 peak=14
+[BALANCE] level=7 strategy=1 phase=Victory lives=19 seconds=316.13 gold=185 peak=14 towers=8 specialized=3 target=240-360
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=8 wave=1 seconds=45.77 gold=8 lives=19 peak=8
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=8 wave=2 seconds=48.10 gold=64 lives=19 peak=8
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=8 wave=3 seconds=49.97 gold=104 lives=19 peak=16
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=8 wave=4 seconds=52.20 gold=57 lives=19 peak=16
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=8 wave=5 seconds=54.77 gold=102 lives=19 peak=16
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=8 wave=6 seconds=56.98 gold=153 lives=19 peak=17
+[BALANCE] level=8 strategy=0 phase=Victory lives=19 seconds=307.75 gold=178 peak=17 towers=8 specialized=4 target=240-360
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=8 wave=1 seconds=64.08 gold=48 lives=19 peak=14
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=8 wave=2 seconds=47.38 gold=49 lives=19 peak=14
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=8 wave=3 seconds=49.70 gold=104 lives=19 peak=14
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=8 wave=4 seconds=52.02 gold=17 lives=19 peak=16
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=8 wave=5 seconds=53.82 gold=62 lives=19 peak=18
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=8 wave=6 seconds=56.15 gold=113 lives=19 peak=18
+[BALANCE] level=8 strategy=1 phase=Victory lives=19 seconds=323.12 gold=138 peak=18 towers=8 specialized=4 target=240-360
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=9 wave=1 seconds=60.03 gold=33 lives=19 peak=13
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=9 wave=2 seconds=47.92 gold=4 lives=19 peak=13
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=9 wave=3 seconds=50.23 gold=29 lives=19 peak=14
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=9 wave=4 seconds=52.55 gold=82 lives=19 peak=19
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=9 wave=5 seconds=54.82 gold=127 lives=19 peak=19
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=9 wave=6 seconds=57.37 gold=178 lives=19 peak=19
+[BALANCE] level=9 strategy=0 phase=Victory lives=19 seconds=322.88 gold=203 peak=19 towers=8 specialized=4 target=240-360
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=9 wave=1 seconds=60.82 gold=18 lives=19 peak=12
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=9 wave=2 seconds=47.82 gold=4 lives=19 peak=12
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=9 wave=3 seconds=49.95 gold=4 lives=19 peak=13
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=9 wave=4 seconds=52.47 gold=42 lives=19 peak=15
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=9 wave=5 seconds=54.15 gold=87 lives=19 peak=15
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=9 wave=6 seconds=56.50 gold=138 lives=19 peak=15
+[BALANCE] level=9 strategy=1 phase=Victory lives=19 seconds=321.67 gold=163 peak=15 towers=8 specialized=4 target=240-360
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=10 wave=1 seconds=45.57 gold=12 lives=20 peak=8
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=10 wave=2 seconds=51.85 gold=22 lives=20 peak=10
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=10 wave=3 seconds=44.40 gold=31 lives=20 peak=13
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=10 wave=4 seconds=45.98 gold=68 lives=20 peak=17
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=10 wave=5 seconds=48.87 gold=97 lives=20 peak=17
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=10 wave=6 seconds=53.78 gold=132 lives=20 peak=17
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=10 wave=7 seconds=59.52 gold=191 lives=20 peak=17
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=10 wave=8 seconds=61.78 gold=258 lives=20 peak=24
+[BALANCE] level=10 strategy=0 phase=Victory lives=20 seconds=411.69 gold=283 peak=24 towers=8 specialized=8 target=360-480
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=10 wave=1 seconds=42.45 gold=12 lives=20 peak=10
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=10 wave=2 seconds=41.88 gold=22 lives=20 peak=10
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=10 wave=3 seconds=43.00 gold=6 lives=20 peak=12
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=10 wave=4 seconds=45.32 gold=28 lives=20 peak=13
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=10 wave=5 seconds=47.55 gold=57 lives=20 peak=13
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=10 wave=6 seconds=50.38 gold=92 lives=20 peak=13
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=10 wave=7 seconds=56.78 gold=111 lives=20 peak=13
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=10 wave=8 seconds=67.32 gold=178 lives=20 peak=23
+[BALANCE] level=10 strategy=1 phase=Victory lives=20 seconds=394.63 gold=203 peak=23 towers=8 specialized=8 target=360-480
+]]></output>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1009" name="FirstRegionRegressionTests" fullname="DefenderChronicles.Tests.FirstRegionRegressionTests" classname="DefenderChronicles.Tests.FirstRegionRegressionTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-09-06 10:00:13Z" end-time="2026-09-06 10:00:23Z" duration="9.201717" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1013" name="GuardsCanReachTheRouteInEveryFirstRegionLayout" fullname="DefenderChronicles.Tests.FirstRegionRegressionTests.GuardsCanReachTheRouteInEveryFirstRegionLayout" methodname="GuardsCanReachTheRouteInEveryFirstRegionLayout" classname="DefenderChronicles.Tests.FirstRegionRegressionTests" runstate="Runnable" seed="258103377" result="Passed" start-time="2026-09-06 10:00:13Z" end-time="2026-09-06 10:00:15Z" duration="1.682551" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+]]></output>
+            </test-case>
+            <test-case id="1010" name="NoDefencesCannotWinFirstLevel" fullname="DefenderChronicles.Tests.FirstRegionRegressionTests.NoDefencesCannotWinFirstLevel" methodname="NoDefencesCannotWinFirstLevel" classname="DefenderChronicles.Tests.FirstRegionRegressionTests" runstate="Runnable" seed="147846253" result="Passed" start-time="2026-09-06 10:00:15Z" end-time="2026-09-06 10:00:18Z" duration="3.144481" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[FIRST_REGION_IDLE] build=False phase=Defeat lives=0 seconds=25.03312
+]]></output>
+            </test-case>
+            <test-case id="1011" name="OneIdleArcherCannotEarnThreeStars" fullname="DefenderChronicles.Tests.FirstRegionRegressionTests.OneIdleArcherCannotEarnThreeStars" methodname="OneIdleArcherCannotEarnThreeStars" classname="DefenderChronicles.Tests.FirstRegionRegressionTests" runstate="Runnable" seed="151249294" result="Passed" start-time="2026-09-06 10:00:18Z" end-time="2026-09-06 10:00:22Z" duration="4.236312" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[FIRST_REGION_IDLE] build=True phase=Defeat lives=0 seconds=33.81632
+]]></output>
+            </test-case>
+            <test-case id="1012" name="StunnedSiegeCannotDisruptAnOutpost" fullname="DefenderChronicles.Tests.FirstRegionRegressionTests.StunnedSiegeCannotDisruptAnOutpost" methodname="StunnedSiegeCannotDisruptAnOutpost" classname="DefenderChronicles.Tests.FirstRegionRegressionTests" runstate="Runnable" seed="1094876959" result="Passed" start-time="2026-09-06 10:00:22Z" end-time="2026-09-06 10:00:23Z" duration="0.031421" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+]]></output>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1014" name="GreyboxSceneTests" fullname="DefenderChronicles.Tests.GreyboxSceneTests" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" testcasecount="13" result="Failed" site="Child" start-time="2026-09-06 10:00:23Z" end-time="2026-09-06 10:00:27Z" duration="4.449125" total="13" passed="7" failed="6" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1017" name="AppFlowOpensWelcomeLoginMenuAndFiftyLevelCampaign" fullname="DefenderChronicles.Tests.GreyboxSceneTests.AppFlowOpensWelcomeLoginMenuAndFiftyLevelCampaign" methodname="AppFlowOpensWelcomeLoginMenuAndFiftyLevelCampaign" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="1973445090" result="Failed" start-time="2026-09-06 10:00:23Z" end-time="2026-09-06 10:00:24Z" duration="1.385654" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  Expected: 50
+  But was:  10
+]]></message>
+                <stack-trace><![CDATA[at DefenderChronicles.Tests.GreyboxSceneTests+<AppFlowOpensWelcomeLoginMenuAndFiftyLevelCampaign>d__3.MoveNext () [0x00511] in /Users/emreaydin/DefenderChronicles-first-region/Assets/Tests/PlayMode/GreyboxSceneTests.cs:174
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
+]]></stack-trace>
+              </failure>
+            </test-case>
+            <test-case id="1026" name="AudioControllerCyclesReviewMusicAndCueContractsWithinVoiceBudget" fullname="DefenderChronicles.Tests.GreyboxSceneTests.AudioControllerCyclesReviewMusicAndCueContractsWithinVoiceBudget" methodname="AudioControllerCyclesReviewMusicAndCueContractsWithinVoiceBudget" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="469421297" result="Passed" start-time="2026-09-06 10:00:24Z" end-time="2026-09-06 10:00:24Z" duration="0.370021" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1018" name="BrandScreensCaptureAtAcceptanceRatios" fullname="DefenderChronicles.Tests.GreyboxSceneTests.BrandScreensCaptureAtAcceptanceRatios" methodname="BrandScreensCaptureAtAcceptanceRatios" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="1803432460" result="Passed" start-time="2026-09-06 10:00:24Z" end-time="2026-09-06 10:00:24Z" duration="0.005081" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1022" name="InterruptedCameraShakeAlwaysReturnsToItsOriginalPosition" fullname="DefenderChronicles.Tests.GreyboxSceneTests.InterruptedCameraShakeAlwaysReturnsToItsOriginalPosition" methodname="InterruptedCameraShakeAlwaysReturnsToItsOriginalPosition" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="1573291492" result="Passed" start-time="2026-09-06 10:00:24Z" end-time="2026-09-06 10:00:25Z" duration="0.383331" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1020" name="PausedBattleCanResumeOrReturnToMainMenu" fullname="DefenderChronicles.Tests.GreyboxSceneTests.PausedBattleCanResumeOrReturnToMainMenu" methodname="PausedBattleCanResumeOrReturnToMainMenu" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="527827748" result="Passed" start-time="2026-09-06 10:00:25Z" end-time="2026-09-06 10:00:26Z" duration="0.954809" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1027" name="ProductionHudButtonsAreInteractableAndClickable" fullname="DefenderChronicles.Tests.GreyboxSceneTests.ProductionHudButtonsAreInteractableAndClickable" methodname="ProductionHudButtonsAreInteractableAndClickable" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="884204425" result="Failed" start-time="2026-09-06 10:00:26Z" end-time="2026-09-06 10:00:26Z" duration="0.041862" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  Expected: False
+  But was:  True
+]]></message>
+                <stack-trace><![CDATA[at DefenderChronicles.Tests.GreyboxSceneTests+<ProductionHudButtonsAreInteractableAndClickable>d__19.MoveNext () [0x003f0] in /Users/emreaydin/DefenderChronicles-first-region/Assets/Tests/PlayMode/GreyboxSceneTests.cs:868
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+]]></output>
+            </test-case>
+            <test-case id="1023" name="ProductionPresentationAllowsBuildUpgradeSellOnEveryFixedSlot" fullname="DefenderChronicles.Tests.GreyboxSceneTests.ProductionPresentationAllowsBuildUpgradeSellOnEveryFixedSlot" methodname="ProductionPresentationAllowsBuildUpgradeSellOnEveryFixedSlot" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="316201272" result="Failed" start-time="2026-09-06 10:00:26Z" end-time="2026-09-06 10:00:26Z" duration="0.065478" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[Unhandled log message: '[Warning] The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                <stack-trace><![CDATA[TMPro.TextMeshProUGUI:SetArraySizes (TMPro.TMP_Text/TextProcessingElement[]) (at ./Library/PackageCache/com.unity.ugui@d8a2716f3013/Runtime/TMP/TextMeshProUGUI.cs:2012)
+TMPro.TMP_Text:ParseInputText () (at ./Library/PackageCache/com.unity.ugui@d8a2716f3013/Runtime/TMP/TMP_Text.cs:2048)
+TMPro.TextMeshProUGUI:OnPreRenderCanvas () (at ./Library/PackageCache/com.unity.ugui@d8a2716f3013/Runtime/TMP/TextMeshProUGUI.cs:2496)
+TMPro.TextMeshProUGUI:Rebuild (UnityEngine.UI.CanvasUpdate) (at ./Library/PackageCache/com.unity.ugui@d8a2716f3013/Runtime/TMP/TextMeshProUGUI.cs:229)
+UnityEngine.Canvas:SendWillRenderCanvases () (at /Users/bokken/build/output/unity/unity/Modules/UI/ScriptBindings/UICanvas.bindings.cs:123)
+
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+]]></output>
+            </test-case>
+            <test-case id="1021" name="ProductionPresentationPreservesEconomyAndEmitsTypedSignals" fullname="DefenderChronicles.Tests.GreyboxSceneTests.ProductionPresentationPreservesEconomyAndEmitsTypedSignals" methodname="ProductionPresentationPreservesEconomyAndEmitsTypedSignals" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="501555322" result="Failed" start-time="2026-09-06 10:00:26Z" end-time="2026-09-06 10:00:26Z" duration="0.029740" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  Expected: 125
+  But was:  325
+]]></message>
+                <stack-trace><![CDATA[at DefenderChronicles.Tests.GreyboxSceneTests+<ProductionPresentationPreservesEconomyAndEmitsTypedSignals>d__7.MoveNext () [0x000eb] in /Users/emreaydin/DefenderChronicles-first-region/Assets/Tests/PlayMode/GreyboxSceneTests.cs:408
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+]]></output>
+            </test-case>
+            <test-case id="1024" name="ProductionPresentationShowsVictoryAndDefeatResults" fullname="DefenderChronicles.Tests.GreyboxSceneTests.ProductionPresentationShowsVictoryAndDefeatResults" methodname="ProductionPresentationShowsVictoryAndDefeatResults" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="1619521058" result="Failed" start-time="2026-09-06 10:00:26Z" end-time="2026-09-06 10:00:26Z" duration="0.066377" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[Unhandled log message: '[Warning] The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                <stack-trace><![CDATA[TMPro.TextMeshProUGUI:SetArraySizes (TMPro.TMP_Text/TextProcessingElement[]) (at ./Library/PackageCache/com.unity.ugui@d8a2716f3013/Runtime/TMP/TextMeshProUGUI.cs:2012)
+TMPro.TMP_Text:ParseInputText () (at ./Library/PackageCache/com.unity.ugui@d8a2716f3013/Runtime/TMP/TMP_Text.cs:2048)
+TMPro.TextMeshProUGUI:OnPreRenderCanvas () (at ./Library/PackageCache/com.unity.ugui@d8a2716f3013/Runtime/TMP/TextMeshProUGUI.cs:2496)
+TMPro.TextMeshProUGUI:Rebuild (UnityEngine.UI.CanvasUpdate) (at ./Library/PackageCache/com.unity.ugui@d8a2716f3013/Runtime/TMP/TextMeshProUGUI.cs:229)
+UnityEngine.Canvas:SendWillRenderCanvases () (at /Users/bokken/build/output/unity/unity/Modules/UI/ScriptBindings/UICanvas.bindings.cs:123)
+
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[WAVE_BALANCE] level=10 wave=1 seconds=0.00 gold=400 lives=20 peak=0
+[WAVE_BALANCE] level=10 wave=2 seconds=0.00 gold=425 lives=20 peak=0
+[WAVE_BALANCE] level=10 wave=3 seconds=0.00 gold=450 lives=20 peak=0
+[WAVE_BALANCE] level=10 wave=4 seconds=0.00 gold=475 lives=20 peak=0
+[WAVE_BALANCE] level=10 wave=5 seconds=0.00 gold=500 lives=20 peak=0
+[WAVE_BALANCE] level=10 wave=6 seconds=0.00 gold=525 lives=20 peak=0
+[WAVE_BALANCE] level=10 wave=7 seconds=0.00 gold=550 lives=20 peak=0
+[WAVE_BALANCE] level=10 wave=8 seconds=0.00 gold=575 lives=20 peak=0
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+]]></output>
+            </test-case>
+            <test-case id="1019" name="ReturningPlayerSkipsWelcomeAndContinueOpensClampedBriefing" fullname="DefenderChronicles.Tests.GreyboxSceneTests.ReturningPlayerSkipsWelcomeAndContinueOpensClampedBriefing" methodname="ReturningPlayerSkipsWelcomeAndContinueOpensClampedBriefing" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="623953199" result="Passed" start-time="2026-09-06 10:00:26Z" end-time="2026-09-06 10:00:27Z" duration="0.715946" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1025" name="SceneLookRespectsQualityLightingProfile" fullname="DefenderChronicles.Tests.GreyboxSceneTests.SceneLookRespectsQualityLightingProfile" methodname="SceneLookRespectsQualityLightingProfile" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="1569281731" result="Passed" start-time="2026-09-06 10:00:27Z" end-time="2026-09-06 10:00:27Z" duration="0.006961" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1015" name="SelectableRaycastIgnoresCloserActorCollider" fullname="DefenderChronicles.Tests.GreyboxSceneTests.SelectableRaycastIgnoresCloserActorCollider" methodname="SelectableRaycastIgnoresCloserActorCollider" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="1311745426" result="Passed" start-time="2026-09-06 10:00:27Z" end-time="2026-09-06 10:00:27Z" duration="0.009335" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1016" name="SessionOpensWithCompleteGreyboxContent" fullname="DefenderChronicles.Tests.GreyboxSceneTests.SessionOpensWithCompleteGreyboxContent" methodname="SessionOpensWithCompleteGreyboxContent" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="521921632" result="Failed" start-time="2026-09-06 10:00:27Z" end-time="2026-09-06 10:00:27Z" duration="0.411101" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  Expected: 200
+  But was:  400
+]]></message>
+                <stack-trace><![CDATA[at DefenderChronicles.Tests.GreyboxSceneTests+<SessionOpensWithCompleteGreyboxContent>d__2.MoveNext () [0x00088] in /Users/emreaydin/DefenderChronicles-first-region/Assets/Tests/PlayMode/GreyboxSceneTests.cs:60
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
+]]></stack-trace>
+              </failure>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1028" name="StrategyBalanceAcceptanceTests" fullname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests" classname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-09-06 10:00:27Z" end-time="2026-09-06 10:05:47Z" duration="320.483730" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1029" name="ArcherHeavyStrategyCanClearTheVerticalSlice" fullname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests.ArcherHeavyStrategyCanClearTheVerticalSlice" methodname="ArcherHeavyStrategyCanClearTheVerticalSlice" classname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests" runstate="Runnable" seed="1667591078" result="Passed" start-time="2026-09-06 10:00:27Z" end-time="2026-09-06 10:02:16Z" duration="108.689215" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="Timeout" value="150000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[WAVE_BALANCE] level=10 wave=1 seconds=52.92 gold=27 lives=20 peak=11
+[WAVE_BALANCE] level=10 wave=2 seconds=49.80 gold=42 lives=20 peak=14
+[WAVE_BALANCE] level=10 wave=3 seconds=45.05 gold=26 lives=20 peak=21
+[WAVE_BALANCE] level=10 wave=4 seconds=47.77 gold=188 lives=20 peak=21
+[WAVE_BALANCE] level=10 wave=5 seconds=51.37 gold=537 lives=20 peak=21
+[WAVE_BALANCE] level=10 wave=6 seconds=56.32 gold=912 lives=20 peak=21
+[WAVE_BALANCE] level=10 wave=7 seconds=64.87 gold=1331 lives=20 peak=22
+[WAVE_BALANCE] level=10 wave=8 seconds=66.47 gold=1780 lives=13 peak=25
+[DC_BALANCE_ACCEPTANCE] strategy=Archer-heavy phase=Victory wave=8/8 lives=13 outposts=8 primary=5 actions=16/16
+]]></output>
+            </test-case>
+            <test-case id="1030" name="BarracksHeavyStrategyCanClearTheVerticalSlice" fullname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests.BarracksHeavyStrategyCanClearTheVerticalSlice" methodname="BarracksHeavyStrategyCanClearTheVerticalSlice" classname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests" runstate="Runnable" seed="320929615" result="Passed" start-time="2026-09-06 10:02:16Z" end-time="2026-09-06 10:04:00Z" duration="104.404836" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="Timeout" value="150000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[WAVE_BALANCE] level=10 wave=1 seconds=42.78 gold=97 lives=20 peak=8
+[WAVE_BALANCE] level=10 wave=2 seconds=42.58 gold=52 lives=20 peak=9
+[WAVE_BALANCE] level=10 wave=3 seconds=43.83 gold=21 lives=20 peak=13
+[WAVE_BALANCE] level=10 wave=4 seconds=48.57 gold=68 lives=20 peak=20
+[WAVE_BALANCE] level=10 wave=5 seconds=53.63 gold=417 lives=20 peak=20
+[WAVE_BALANCE] level=10 wave=6 seconds=55.32 gold=792 lives=20 peak=20
+[WAVE_BALANCE] level=10 wave=7 seconds=62.77 gold=1211 lives=20 peak=22
+[WAVE_BALANCE] level=10 wave=8 seconds=67.42 gold=1651 lives=14 peak=24
+[DC_BALANCE_ACCEPTANCE] strategy=Barracks-heavy phase=Victory wave=8/8 lives=14 outposts=8 primary=5 actions=16/16
+]]></output>
+            </test-case>
+            <test-case id="1031" name="MageHeavyStrategyCanClearTheVerticalSlice" fullname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests.MageHeavyStrategyCanClearTheVerticalSlice" methodname="MageHeavyStrategyCanClearTheVerticalSlice" classname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests" runstate="Runnable" seed="1085284061" result="Passed" start-time="2026-09-06 10:04:00Z" end-time="2026-09-06 10:05:47Z" duration="107.382476" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="Timeout" value="150000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[WAVE_BALANCE] level=10 wave=1 seconds=57.88 gold=32 lives=20 peak=15
+[WAVE_BALANCE] level=10 wave=2 seconds=55.48 gold=47 lives=20 peak=15
+[WAVE_BALANCE] level=10 wave=3 seconds=46.65 gold=31 lives=20 peak=21
+[WAVE_BALANCE] level=10 wave=4 seconds=46.37 gold=33 lives=20 peak=21
+[WAVE_BALANCE] level=10 wave=5 seconds=49.30 gold=257 lives=20 peak=21
+[WAVE_BALANCE] level=10 wave=6 seconds=52.87 gold=632 lives=20 peak=21
+[WAVE_BALANCE] level=10 wave=7 seconds=58.27 gold=1051 lives=20 peak=21
+[WAVE_BALANCE] level=10 wave=8 seconds=62.57 gold=1508 lives=15 peak=24
+[DC_BALANCE_ACCEPTANCE] strategy=Mage-heavy phase=Victory wave=8/8 lives=15 outposts=8 primary=5 actions=16/16
+Saving results to: /Users/emreaydin/Library/Application Support/Emre Aydin/Defender Chronicles/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

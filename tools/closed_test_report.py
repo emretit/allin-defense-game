@@ -71,16 +71,19 @@ def main():
     hashes = {name: digest(ROOT / name) for name in sorted(set(files)) if name and (ROOT / name).is_file() and not any(part in ("bin", "obj") for part in Path(name).parts)}
     fingerprint = hashlib.sha256(json.dumps(hashes, sort_keys=True).encode()).hexdigest()
     packages = {}
-    for pattern in ("Builds/ClosedTest-Android/*.apk", "Builds/ClosedTest-Xcode/Build/Products/Debug-iphoneos/*.app/Defender*"):
-        for path in ROOT.glob(pattern):
-            if path.is_file():
-                package = {"bytes": path.stat().st_size, "sha256": digest(path)}
-                if path.suffix != ".apk":
-                    result = subprocess.run(["codesign", "--verify", str(path.parent)], capture_output=True)
-                    package["signature_status"] = "signed_requires_device_install" if result.returncode == 0 else "unsigned_cannot_install_on_device"
-                else:
-                    package["kind"] = "development_apk"
-                packages[str(path.relative_to(ROOT))] = package
+    for path in ROOT.glob("Builds/ClosedTest-Android/*.apk"):
+        packages[str(path.relative_to(ROOT))] = {"bytes": path.stat().st_size, "sha256": digest(path), "kind": "development_apk"}
+    for path in ROOT.glob("Builds/ClosedTest-Xcode/Build/Products/Debug-iphoneos/*.app"):
+        bundle_files = sorted(p for p in path.rglob("*") if p.is_file())
+        bundle_hashes = {str(p.relative_to(path)): digest(p) for p in bundle_files}
+        result = subprocess.run(["codesign", "--verify", str(path)], capture_output=True)
+        packages[str(path.relative_to(ROOT))] = {
+            "bytes": sum(p.stat().st_size for p in bundle_files),
+            "files": len(bundle_files),
+            "tree_sha256": hashlib.sha256(json.dumps(bundle_hashes, sort_keys=True).encode()).hexdigest(),
+            "hash_method": "SHA-256 of sorted JSON mapping every bundle-relative file path to its SHA-256; includes UnityFramework and data.",
+            "signature_status": "signed_requires_device_install" if result.returncode == 0 else "unsigned_cannot_install_on_device",
+        }
     manifest = {
         "build": BUILD,
         "branch": subprocess.check_output(["git", "branch", "--show-current"], cwd=ROOT, text=True).strip(),

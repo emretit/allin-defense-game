@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="16" result="Passed" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-09-06 09:27:09Z" end-time="2026-09-06 09:27:09Z" duration="0.0518383">
+  <test-suite type="TestSuite" id="1000" name="Defender Chronicles" fullname="Defender Chronicles" runstate="Runnable" testcasecount="94" result="Passed" start-time="2026-09-06 09:27:09Z" end-time="2026-09-06 09:27:09Z" duration="0.051838" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1102" name="DefenderChronicles.EditModeTests.dll" fullname="/Users/emreaydin/DefenderChronicles-first-region/Library/ScriptAssemblies/DefenderChronicles.EditModeTests.dll" runstate="Runnable" testcasecount="93" result="Passed" start-time="2026-09-06 09:27:09Z" end-time="2026-09-06 09:27:09Z" duration="0.048908" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="38108" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1103" name="DefenderChronicles" fullname="DefenderChronicles" runstate="Runnable" testcasecount="93" result="Passed" start-time="2026-09-06 09:27:09Z" end-time="2026-09-06 09:27:09Z" duration="0.048647" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1104" name="Tests" fullname="DefenderChronicles.Tests" runstate="Runnable" testcasecount="93" result="Passed" start-time="2026-09-06 09:27:09Z" end-time="2026-09-06 09:27:09Z" duration="0.048428" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1007" name="BattleRulesTests" fullname="DefenderChronicles.Tests.BattleRulesTests" classname="DefenderChronicles.Tests.BattleRulesTests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-09-06 09:27:09Z" end-time="2026-09-06 09:27:09Z" duration="0.012970" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1016" name="SlowUsesStrongestEffectAndRefreshesMatchingDuration" fullname="DefenderChronicles.Tests.BattleRulesTests.SlowUsesStrongestEffectAndRefreshesMatchingDuration" methodname="SlowUsesStrongestEffectAndRefreshesMatchingDuration" classname="DefenderChronicles.Tests.BattleRulesTests" runstate="Runnable" seed="1255343022" result="Passed" start-time="2026-09-06 09:27:09Z" end-time="2026-09-06 09:27:09Z" duration="0.005660" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-suite type="ParameterizedMethod" id="1014" name="StarsComeFromLives" fullname="DefenderChronicles.Tests.BattleRulesTests.StarsComeFromLives" classname="DefenderChronicles.Tests.BattleRulesTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-09-06 09:27:09Z" end-time="2026-09-06 09:27:09Z" duration="0.001488" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1008" name="StarsComeFromLives(0,20,0)" fullname="DefenderChronicles.Tests.BattleRulesTests.StarsComeFromLives(0,20,0)" methodname="StarsComeFromLives" classname="DefenderChronicles.Tests.BattleRulesTests" runstate="Runnable" seed="877406455" result="Passed" start-time="2026-09-06 09:27:09Z" end-time="2026-09-06 09:27:09Z" duration="0.000284" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1009" name="StarsComeFromLives(1,20,1)" fullname="DefenderChronicles.Tests.BattleRulesTests.StarsComeFromLives(1,20,1)" methodname="StarsComeFromLives" classname="DefenderChronicles.Tests.BattleRulesTests" runstate="Runnable" seed="1540240622" result="Passed" start-time="2026-09-06 09:27:09Z" end-time="2026-09-06 09:27:09Z" duration="0.000025" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1010" name="StarsComeFromLives(8,20,2)" fullname="DefenderChronicles.Tests.BattleRulesTests.StarsComeFromLives(8,20,2)" methodname="StarsComeFromLives" classname="DefenderChronicles.Tests.BattleRulesTests" runstate="Runnable" seed="413060146" result="Passed" start-time="2026-09-06 09:27:09Z" end-time="2026-09-06 09:27:09Z" duration="0.000017" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1011" name="StarsComeFromLives(14,20,2)" fullname="DefenderChronicles.Tests.BattleRulesTests.StarsComeFromLives(14,20,2)" methodname="StarsComeFromLives" classname="DefenderChronicles.Tests.BattleRulesTests" runstate="Runnable" seed="1678204550" result="Passed" start-time="2026-09-06 09:27:09Z" end-time="2026-09-06 09:27:09Z" duration="0.000022" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1012" name="StarsComeFromLives(15,20,3)" fullname="DefenderChronicles.Tests.BattleRulesTests.StarsComeFromLives(15,20,3)" methodname="StarsComeFromLives" classname="DefenderChronicles.Tests.BattleRulesTests" runstate="Runnable" seed="2145978103" result="Passed" start-time="2026-09-06 09:27:09Z" end-time="2026-09-06 09:27:09Z" duration="0.000015" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1013" name="StarsComeFromLives(20,20,3)" fullname="DefenderChronicles.Tests.BattleRulesTests.StarsComeFromLives(20,20,3)" methodname="StarsComeFromLives" classname="DefenderChronicles.Tests.BattleRulesTests" runstate="Runnable" seed="591768326" result="Passed" start-time="2026-09-06 09:27:09Z" end-time="2026-09-06 09:27:09Z" duration="0.000017" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-case id="1015" name="VanguardResistsPhysicalButNotMagic" fullname="DefenderChronicles.Tests.BattleRulesTests.VanguardResistsPhysicalButNotMagic" methodname="VanguardResistsPhysicalButNotMagic" classname="DefenderChronicles.Tests.BattleRulesTests" runstate="Runnable" seed="1055278241" result="Passed" start-time="2026-09-06 09:27:09Z" end-time="2026-09-06 09:27:09Z" duration="0.000234" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1092" name="SaveRecoveryTests" fullname="DefenderChronicles.Tests.SaveRecoveryTests" classname="DefenderChronicles.Tests.SaveRecoveryTests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-09-06 09:27:09Z" end-time="2026-09-06 09:27:09Z" duration="0.034462" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1098" name="AccountsAndGuestKeepIndependentProgressAcrossRestart" fullname="DefenderChronicles.Tests.SaveRecoveryTests.AccountsAndGuestKeepIndependentProgressAcrossRestart" methodname="AccountsAndGuestKeepIndependentProgressAcrossRestart" classname="DefenderChronicles.Tests.SaveRecoveryTests" runstate="Runnable" seed="1423756761" result="Passed" start-time="2026-09-06 09:27:09Z" end-time="2026-09-06 09:27:09Z" duration="0.018776" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1097" name="CorruptMainRecoversBackup" fullname="DefenderChronicles.Tests.SaveRecoveryTests.CorruptMainRecoversBackup" methodname="CorruptMainRecoversBackup" classname="DefenderChronicles.Tests.SaveRecoveryTests" runstate="Runnable" seed="77103646" result="Passed" start-time="2026-09-06 09:27:09Z" end-time="2026-09-06 09:27:09Z" duration="0.002025" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-suite type="ParameterizedMethod" id="1096" name="InterruptedWritesRecoverAnEntireValidVersion" fullname="DefenderChronicles.Tests.SaveRecoveryTests.InterruptedWritesRecoverAnEntireValidVersion" classname="DefenderChronicles.Tests.SaveRecoveryTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-09-06 09:27:09Z" end-time="2026-09-06 09:27:09Z" duration="0.006892" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1093" name="InterruptedWritesRecoverAnEntireValidVersion(TemporaryFlushed)" fullname="DefenderChronicles.Tests.SaveRecoveryTests.InterruptedWritesRecoverAnEntireValidVersion(TemporaryFlushed)" methodname="InterruptedWritesRecoverAnEntireValidVersion" classname="DefenderChronicles.Tests.SaveRecoveryTests" runstate="Runnable" seed="165024981" result="Passed" start-time="2026-09-06 09:27:09Z" end-time="2026-09-06 09:27:09Z" duration="0.002059" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1094" name="InterruptedWritesRecoverAnEntireValidVersion(BeforeReplace)" fullname="DefenderChronicles.Tests.SaveRecoveryTests.InterruptedWritesRecoverAnEntireValidVersion(BeforeReplace)" methodname="InterruptedWritesRecoverAnEntireValidVersion" classname="DefenderChronicles.Tests.SaveRecoveryTests" runstate="Runnable" seed="379431310" result="Passed" start-time="2026-09-06 09:27:09Z" end-time="2026-09-06 09:27:09Z" duration="0.001208" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1095" name="InterruptedWritesRecoverAnEntireValidVersion(Committed)" fullname="DefenderChronicles.Tests.SaveRecoveryTests.InterruptedWritesRecoverAnEntireValidVersion(Committed)" methodname="InterruptedWritesRecoverAnEntireValidVersion" classname="DefenderChronicles.Tests.SaveRecoveryTests" runstate="Runnable" seed="1208133737" result="Passed" start-time="2026-09-06 09:27:09Z" end-time="2026-09-06 09:27:09Z" duration="0.002481" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-case id="1099" name="LegacyLateCampaignIsRetainedWhenMigrationIsIncomplete" fullname="DefenderChronicles.Tests.SaveRecoveryTests.LegacyLateCampaignIsRetainedWhenMigrationIsIncomplete" methodname="LegacyLateCampaignIsRetainedWhenMigrationIsIncomplete" classname="DefenderChronicles.Tests.SaveRecoveryTests" runstate="Runnable" seed="1440066843" result="Passed" start-time="2026-09-06 09:27:09Z" end-time="2026-09-06 09:27:09Z" duration="0.003013" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1101" name="NormalizingOldQueueDoesNotRelabelItsRulesVersion" fullname="DefenderChronicles.Tests.SaveRecoveryTests.NormalizingOldQueueDoesNotRelabelItsRulesVersion" methodname="NormalizingOldQueueDoesNotRelabelItsRulesVersion" classname="DefenderChronicles.Tests.SaveRecoveryTests" runstate="Runnable" seed="2075877364" result="Passed" start-time="2026-09-06 09:27:09Z" end-time="2026-09-06 09:27:09Z" duration="0.000395" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1100" name="RejectedClaimKeepsReasonAndCannotPretendToBeSynchronized" fullname="DefenderChronicles.Tests.SaveRecoveryTests.RejectedClaimKeepsReasonAndCannotPretendToBeSynchronized" methodname="RejectedClaimKeepsReasonAndCannotPretendToBeSynchronized" classname="DefenderChronicles.Tests.SaveRecoveryTests" runstate="Runnable" seed="301510285" result="Passed" start-time="2026-09-06 09:27:09Z" end-time="2026-09-06 09:27:09Z" duration="0.002197" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Saving results to: /Users/emreaydin/Library/Application Support/Emre Aydin/Defender Chronicles/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

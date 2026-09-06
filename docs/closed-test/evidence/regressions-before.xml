@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="4" result="Failed(Child)" total="4" passed="1" failed="3" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-09-06 09:13:05Z" end-time="2026-09-06 09:13:48Z" duration="42.4084077">
+  <test-suite type="TestSuite" id="1030" name="Defender Chronicles" fullname="Defender Chronicles" runstate="Runnable" testcasecount="20" result="Failed" site="Child" start-time="2026-09-06 09:13:05Z" end-time="2026-09-06 09:13:48Z" duration="42.408408" total="4" passed="1" failed="3" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1024" name="DefenderChronicles.PlayModeTests.dll" fullname="/Users/emreaydin/DefenderChronicles-first-region/Library/ScriptAssemblies/DefenderChronicles.PlayModeTests.dll" runstate="Runnable" testcasecount="20" result="Failed" site="Child" start-time="2026-09-06 09:13:05Z" end-time="2026-09-06 09:13:48Z" duration="42.404808" total="4" passed="1" failed="3" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="12762" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1025" name="DefenderChronicles" fullname="DefenderChronicles" runstate="Runnable" testcasecount="20" result="Failed" site="Child" start-time="2026-09-06 09:13:05Z" end-time="2026-09-06 09:13:48Z" duration="42.404211" total="4" passed="1" failed="3" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1026" name="Tests" fullname="DefenderChronicles.Tests" runstate="Runnable" testcasecount="20" result="Failed" site="Child" start-time="2026-09-06 09:13:05Z" end-time="2026-09-06 09:13:48Z" duration="42.403774" total="4" passed="1" failed="3" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestFixture" id="1001" name="FirstRegionRegressionTests" fullname="DefenderChronicles.Tests.FirstRegionRegressionTests" classname="DefenderChronicles.Tests.FirstRegionRegressionTests" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2026-09-06 09:13:05Z" end-time="2026-09-06 09:13:48Z" duration="42.402810" total="4" passed="1" failed="3" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1005" name="GuardsCanReachTheRouteInEveryFirstRegionLayout" fullname="DefenderChronicles.Tests.FirstRegionRegressionTests.GuardsCanReachTheRouteInEveryFirstRegionLayout" methodname="GuardsCanReachTheRouteInEveryFirstRegionLayout" classname="DefenderChronicles.Tests.FirstRegionRegressionTests" runstate="Runnable" seed="1959245689" result="Passed" start-time="2026-09-06 09:13:05Z" end-time="2026-09-06 09:13:06Z" duration="0.603171" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1002" name="NoDefencesCannotWinFirstLevel" fullname="DefenderChronicles.Tests.FirstRegionRegressionTests.NoDefencesCannotWinFirstLevel" methodname="NoDefencesCannotWinFirstLevel" classname="DefenderChronicles.Tests.FirstRegionRegressionTests" runstate="Runnable" seed="1212284044" result="Failed" start-time="2026-09-06 09:13:06Z" end-time="2026-09-06 09:13:27Z" duration="20.792567" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  Expected: Defeat
+  But was:  Victory
+]]></message>
+                <stack-trace><![CDATA[at DefenderChronicles.Tests.FirstRegionRegressionTests+<ObserveFirstLevel>d__2.MoveNext () [0x000db] in /Users/emreaydin/DefenderChronicles-first-region/Assets/Tests/PlayMode/FirstRegionRegressionTests.cs:28
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
+]]></stack-trace>
+              </failure>
+            </test-case>
+            <test-case id="1003" name="OneIdleArcherCannotEarnThreeStars" fullname="DefenderChronicles.Tests.FirstRegionRegressionTests.OneIdleArcherCannotEarnThreeStars" methodname="OneIdleArcherCannotEarnThreeStars" classname="DefenderChronicles.Tests.FirstRegionRegressionTests" runstate="Runnable" seed="670531069" result="Failed" start-time="2026-09-06 09:13:27Z" end-time="2026-09-06 09:13:48Z" duration="20.967068" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  Expected: True
+  But was:  False
+]]></message>
+                <stack-trace><![CDATA[at DefenderChronicles.Tests.FirstRegionRegressionTests+<ObserveFirstLevel>d__2.MoveNext () [0x000f8] in /Users/emreaydin/DefenderChronicles-first-region/Assets/Tests/PlayMode/FirstRegionRegressionTests.cs:29
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
+]]></stack-trace>
+              </failure>
+            </test-case>
+            <test-case id="1004" name="StunnedSiegeCannotDisruptAnOutpost" fullname="DefenderChronicles.Tests.FirstRegionRegressionTests.StunnedSiegeCannotDisruptAnOutpost" methodname="StunnedSiegeCannotDisruptAnOutpost" classname="DefenderChronicles.Tests.FirstRegionRegressionTests" runstate="Runnable" seed="1106709337" result="Failed" start-time="2026-09-06 09:13:48Z" end-time="2026-09-06 09:13:48Z" duration="0.033340" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  Expected: False
+  But was:  True
+]]></message>
+                <stack-trace><![CDATA[at DefenderChronicles.Tests.FirstRegionRegressionTests+<StunnedSiegeCannotDisruptAnOutpost>d__3.MoveNext () [0x000eb] in /Users/emreaydin/DefenderChronicles-first-region/Assets/Tests/PlayMode/FirstRegionRegressionTests.cs:45
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[Saving results to: /Users/emreaydin/Library/Application Support/Emre Aydin/Defender Chronicles/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

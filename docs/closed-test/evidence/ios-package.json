@@ -1,0 +1,11 @@
+{
+  "build": "ct-20260906-01",
+  "native_build": "succeeded",
+  "signed": false,
+  "installable_on_device": false,
+  "bundle": "com.emreaydin.defenderchronicles.closedtest",
+  "version": "0.4.0",
+  "build_number": "2026090601",
+  "app_bytes": 443512299,
+  "signing_blocker": "Xcode account for development team and provisioning profile are unavailable."
+}

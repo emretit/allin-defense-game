@@ -1,0 +1,11 @@
+environment=closed-test
+deployed=2
+Assets/CloudCode/CampaignProgression.ccmr: Up to date
+[13:37:15.039] Compiling...
+[13:37:16.125] Compiled Successfully
+[13:37:16.208] Zipped Successfully
+[13:37:17.035] Uploading...
+[13:37:20.948] Publishing CampaignProgression.ccm...
+[13:37:20.948] Up to date
+
+Assets/CloudCode/CampaignProgression.ac: 

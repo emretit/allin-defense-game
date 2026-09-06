@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Passed" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-09-06 11:32:40Z" end-time="2026-09-06 11:32:41Z" duration="0.888522">
+  <test-suite type="TestSuite" id="1041" name="Defender Chronicles Test" fullname="Defender Chronicles Test" runstate="Runnable" testcasecount="28" result="Passed" start-time="2026-09-06 11:32:40Z" end-time="2026-09-06 11:32:41Z" duration="0.888522" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1035" name="DefenderChronicles.PlayModeTests.dll" fullname="/Users/emreaydin/DefenderChronicles-first-region/Library/ScriptAssemblies/DefenderChronicles.PlayModeTests.dll" runstate="Runnable" testcasecount="28" result="Passed" start-time="2026-09-06 11:32:40Z" end-time="2026-09-06 11:32:41Z" duration="0.884766" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="56661" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1036" name="DefenderChronicles" fullname="DefenderChronicles" runstate="Runnable" testcasecount="28" result="Passed" start-time="2026-09-06 11:32:40Z" end-time="2026-09-06 11:32:41Z" duration="0.884344" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1037" name="Tests" fullname="DefenderChronicles.Tests" runstate="Runnable" testcasecount="28" result="Passed" start-time="2026-09-06 11:32:40Z" end-time="2026-09-06 11:32:41Z" duration="0.884062" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1001" name="ClosedTestAcceptanceTests" fullname="DefenderChronicles.Tests.ClosedTestAcceptanceTests" classname="DefenderChronicles.Tests.ClosedTestAcceptanceTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-09-06 11:32:40Z" end-time="2026-09-06 11:32:41Z" duration="0.883240" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1002" name="GuidedFirstBattleWinsAndPersistsOnceWithoutResultScreen" fullname="DefenderChronicles.Tests.ClosedTestAcceptanceTests.GuidedFirstBattleWinsAndPersistsOnceWithoutResultScreen" methodname="GuidedFirstBattleWinsAndPersistsOnceWithoutResultScreen" classname="DefenderChronicles.Tests.ClosedTestAcceptanceTests" runstate="Runnable" seed="1486087669" result="Passed" start-time="2026-09-06 11:32:40Z" end-time="2026-09-06 11:32:41Z" duration="0.875996" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[WAVE_BALANCE] level=1 wave=1 seconds=41.97 gold=98 lives=20 peak=15
+[WAVE_BALANCE] level=1 wave=2 seconds=46.02 gold=277 lives=20 peak=15
+[WAVE_BALANCE] level=1 wave=3 seconds=50.35 gold=472 lives=20 peak=15
+Saving results to: /Users/emreaydin/Library/Application Support/Emre Aydin/Defender Chronicles Test/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

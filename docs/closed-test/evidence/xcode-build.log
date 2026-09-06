@@ -1,0 +1,58 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -project Builds/ClosedTest-iOS/Unity-iPhone.xcodeproj -scheme Unity-iPhone -configuration Debug -sdk iphoneos -destination generic/platform=iOS -derivedDataPath Builds/ClosedTest-Xcode DEVELOPMENT_TEAM=YL5HQCW4RY CODE_SIGN_STYLE=Automatic -allowProvisioningUpdates -allowProvisioningDeviceRegistration build
+
+Build settings from command line:
+    CODE_SIGN_STYLE = Automatic
+    DEVELOPMENT_TEAM = YL5HQCW4RY
+    SDKROOT = iphoneos26.5
+
+ComputePackagePrebuildTargetDependencyGraph
+
+Prepare packages
+
+CreateBuildRequest
+
+SendProjectDescription
+
+CreateBuildOperation
+
+ComputeTargetDependencyGraph
+note: Building targets in dependency order
+note: Target dependency graph (3 targets)
+    Target 'Unity-iPhone' in project 'Unity-iPhone'
+        ➜ Explicit dependency on target 'UnityFramework' in project 'Unity-iPhone'
+    Target 'UnityFramework' in project 'Unity-iPhone'
+        ➜ Explicit dependency on target 'GameAssembly' in project 'Unity-iPhone'
+    Target 'GameAssembly' in project 'Unity-iPhone' (no dependencies)
+
+GatherProvisioningInputs
+
+CreateBuildDescription
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -x c -c /dev/null
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -x objective-c++ -c /dev/null
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/ibtool --version --output-format xml1
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -x c -c /dev/null
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/actool --version --output-format xml1
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -x objective-c -c /dev/null
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -x c++ -c /dev/null
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld -version_details
+
+Build description signature: 8d61a6fb505a0ec15609a5f76f9ba45a
+Build description path: /Users/emreaydin/DefenderChronicles-first-region/Builds/ClosedTest-Xcode/Build/Intermediates.noindex/XCBuildData/8d61a6fb505a0ec15609a5f76f9ba45a.xcbuilddata
+warning: Run script build phase 'Run Script' will be run during every build because it does not specify any outputs. To address this issue, either add output dependencies to the script phase, or configure it to run in every build by unchecking "Based on dependency analysis" in the script phase. (in target 'GameAssembly' from project 'Unity-iPhone')
+/Users/emreaydin/DefenderChronicles-first-region/Builds/ClosedTest-iOS/Unity-iPhone.xcodeproj: error: No Account for Team "YL5HQCW4RY". Add a new account in Accounts settings or verify that your accounts have valid credentials. (in target 'Unity-iPhone' from project 'Unity-iPhone')
+/Users/emreaydin/DefenderChronicles-first-region/Builds/ClosedTest-iOS/Unity-iPhone.xcodeproj: error: No profiles for 'com.emreaydin.defenderchronicles.closedtest' were found: Xcode couldn't find any iOS App Development provisioning profiles matching 'com.emreaydin.defenderchronicles.closedtest'. (in target 'Unity-iPhone' from project 'Unity-iPhone')
+** BUILD FAILED **
+
+
+The following build commands failed:
+	Building project Unity-iPhone with scheme Unity-iPhone and configuration Debug
+(1 failure)

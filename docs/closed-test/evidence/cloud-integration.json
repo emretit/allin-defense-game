@@ -1,0 +1,44 @@
+{
+    "state": {
+        "schemaVersion": 4,
+        "revision": 1,
+        "migrationIncomplete": false,
+        "unlockedLevel": 2,
+        "valor": 27,
+        "heroXp": 68,
+        "levels": [
+            {
+                "level": 1,
+                "stars": 3,
+                "bestLives": 20
+            }
+        ],
+        "processedClaimIds": [
+            "12a39d00ec9a491eb06483e1c5f60d4a"
+        ]
+    },
+    "decisions": [
+        {
+            "claimId": "12a39d00ec9a491eb06483e1c5f60d4a",
+            "accepted": true,
+            "reason": "accepted",
+            "awardedValor": 27,
+            "awardedHeroXp": 68
+        },
+        {
+            "claimId": "4ca03c0bfea04a47a834555b872a64a3",
+            "accepted": false,
+            "reason": "invalid_lives",
+            "awardedValor": 0,
+            "awardedHeroXp": 0
+        },
+        {
+            "claimId": "be0da19154f14edbbb8ed082954224a2",
+            "accepted": false,
+            "reason": "owner_mismatch",
+            "awardedValor": 0,
+            "awardedHeroXp": 0
+        }
+    ],
+    "rulesVersion": "campaign-rules-v2"
+}

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="14" result="Failed(Child)" total="14" passed="13" failed="1" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-09-06 10:13:15Z" end-time="2026-09-06 10:13:20Z" duration="5.3720875">
+  <test-suite type="TestSuite" id="1040" name="Defender Chronicles" fullname="Defender Chronicles" runstate="Runnable" testcasecount="27" result="Failed" site="Child" start-time="2026-09-06 10:13:15Z" end-time="2026-09-06 10:13:20Z" duration="5.372088" total="14" passed="13" failed="1" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1034" name="DefenderChronicles.PlayModeTests.dll" fullname="/Users/emreaydin/DefenderChronicles-first-region/Library/ScriptAssemblies/DefenderChronicles.PlayModeTests.dll" runstate="Runnable" testcasecount="27" result="Failed" site="Child" start-time="2026-09-06 10:13:15Z" end-time="2026-09-06 10:13:20Z" duration="5.368775" total="14" passed="13" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="11078" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1035" name="DefenderChronicles" fullname="DefenderChronicles" runstate="Runnable" testcasecount="27" result="Failed" site="Child" start-time="2026-09-06 10:13:15Z" end-time="2026-09-06 10:13:20Z" duration="5.368399" total="14" passed="13" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1036" name="Tests" fullname="DefenderChronicles.Tests" runstate="Runnable" testcasecount="27" result="Failed" site="Child" start-time="2026-09-06 10:13:15Z" end-time="2026-09-06 10:13:20Z" duration="5.368191" total="14" passed="13" failed="1" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestFixture" id="1014" name="GreyboxSceneTests" fullname="DefenderChronicles.Tests.GreyboxSceneTests" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" testcasecount="13" result="Failed" site="Child" start-time="2026-09-06 10:13:15Z" end-time="2026-09-06 10:13:20Z" duration="5.162725" total="13" passed="12" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1017" name="AppFlowShowsTenLevelsWhileStorageKeepsFifty" fullname="DefenderChronicles.Tests.GreyboxSceneTests.AppFlowShowsTenLevelsWhileStorageKeepsFifty" methodname="AppFlowShowsTenLevelsWhileStorageKeepsFifty" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="1982594661" result="Passed" start-time="2026-09-06 10:13:15Z" end-time="2026-09-06 10:13:17Z" duration="2.048543" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[There are no audio listeners in the scene. Please ensure there is always one audio listener in the scene
+There are no audio listeners in the scene. Please ensure there is always one audio listener in the scene
+[WAVE_BALANCE] level=1 wave=1 seconds=0.00 gold=230 lives=20 peak=0
+[WAVE_BALANCE] level=1 wave=2 seconds=0.00 gold=245 lives=20 peak=0
+[WAVE_BALANCE] level=1 wave=3 seconds=0.00 gold=260 lives=20 peak=0
+]]></output>
+            </test-case>
+            <test-case id="1026" name="AudioControllerCyclesReviewMusicAndCueContractsWithinVoiceBudget" fullname="DefenderChronicles.Tests.GreyboxSceneTests.AudioControllerCyclesReviewMusicAndCueContractsWithinVoiceBudget" methodname="AudioControllerCyclesReviewMusicAndCueContractsWithinVoiceBudget" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="1549261744" result="Passed" start-time="2026-09-06 10:13:17Z" end-time="2026-09-06 10:13:17Z" duration="0.367029" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1018" name="BrandScreensCaptureAtAcceptanceRatios" fullname="DefenderChronicles.Tests.GreyboxSceneTests.BrandScreensCaptureAtAcceptanceRatios" methodname="BrandScreensCaptureAtAcceptanceRatios" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="163240991" result="Passed" start-time="2026-09-06 10:13:17Z" end-time="2026-09-06 10:13:17Z" duration="0.000896" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1022" name="InterruptedCameraShakeAlwaysReturnsToItsOriginalPosition" fullname="DefenderChronicles.Tests.GreyboxSceneTests.InterruptedCameraShakeAlwaysReturnsToItsOriginalPosition" methodname="InterruptedCameraShakeAlwaysReturnsToItsOriginalPosition" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="896983252" result="Passed" start-time="2026-09-06 10:13:17Z" end-time="2026-09-06 10:13:17Z" duration="0.356162" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1020" name="PausedBattleCanResumeOrReturnToMainMenu" fullname="DefenderChronicles.Tests.GreyboxSceneTests.PausedBattleCanResumeOrReturnToMainMenu" methodname="PausedBattleCanResumeOrReturnToMainMenu" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="947773607" result="Passed" start-time="2026-09-06 10:13:17Z" end-time="2026-09-06 10:13:18Z" duration="0.980666" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1027" name="ProductionHudButtonsAreInteractableAndClickable" fullname="DefenderChronicles.Tests.GreyboxSceneTests.ProductionHudButtonsAreInteractableAndClickable" methodname="ProductionHudButtonsAreInteractableAndClickable" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="260734853" result="Passed" start-time="2026-09-06 10:13:18Z" end-time="2026-09-06 10:13:18Z" duration="0.033101" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1023" name="ProductionPresentationAllowsBuildUpgradeSellOnEveryFixedSlot" fullname="DefenderChronicles.Tests.GreyboxSceneTests.ProductionPresentationAllowsBuildUpgradeSellOnEveryFixedSlot" methodname="ProductionPresentationAllowsBuildUpgradeSellOnEveryFixedSlot" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="1664340017" result="Passed" start-time="2026-09-06 10:13:18Z" end-time="2026-09-06 10:13:19Z" duration="0.044257" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1021" name="ProductionPresentationPreservesEconomyAndEmitsTypedSignals" fullname="DefenderChronicles.Tests.GreyboxSceneTests.ProductionPresentationPreservesEconomyAndEmitsTypedSignals" methodname="ProductionPresentationPreservesEconomyAndEmitsTypedSignals" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="1499192707" result="Passed" start-time="2026-09-06 10:13:19Z" end-time="2026-09-06 10:13:19Z" duration="0.021299" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1024" name="ProductionPresentationShowsVictoryAndDefeatResults" fullname="DefenderChronicles.Tests.GreyboxSceneTests.ProductionPresentationShowsVictoryAndDefeatResults" methodname="ProductionPresentationShowsVictoryAndDefeatResults" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="263844642" result="Failed" start-time="2026-09-06 10:13:19Z" end-time="2026-09-06 10:13:19Z" duration="0.053744" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[Unhandled log message: '[Log] [WAVE_BALANCE] level=10 wave=1 seconds=0.00 gold=400 lives=20 peak=0'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                <stack-trace><![CDATA[DefenderChronicles.Core.GameSessionController:CompleteWave () (at Assets/Scripts/Core/GameSessionController.cs:797)
+System.Reflection.MethodBase:Invoke (object,object[])
+DefenderChronicles.Tests.GreyboxSceneTests:InvokePrivate (object,string,object[]) (at Assets/Tests/PlayMode/GreyboxSceneTests.cs:723)
+DefenderChronicles.Tests.GreyboxSceneTests/<ProductionPresentationShowsVictoryAndDefeatResults>d__10:MoveNext () (at Assets/Tests/PlayMode/GreyboxSceneTests.cs:579)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/Coroutines.cs:17)
+
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[[WAVE_BALANCE] level=10 wave=1 seconds=0.00 gold=400 lives=20 peak=0
+[WAVE_BALANCE] level=10 wave=2 seconds=0.00 gold=425 lives=20 peak=0
+[WAVE_BALANCE] level=10 wave=3 seconds=0.00 gold=450 lives=20 peak=0
+[WAVE_BALANCE] level=10 wave=4 seconds=0.00 gold=475 lives=20 peak=0
+[WAVE_BALANCE] level=10 wave=5 seconds=0.00 gold=500 lives=20 peak=0
+[WAVE_BALANCE] level=10 wave=6 seconds=0.00 gold=525 lives=20 peak=0
+[WAVE_BALANCE] level=10 wave=7 seconds=0.00 gold=550 lives=20 peak=0
+[WAVE_BALANCE] level=10 wave=8 seconds=0.00 gold=575 lives=20 peak=0
+]]></output>
+            </test-case>
+            <test-case id="1019" name="ReturningPlayerSkipsWelcomeAndContinueOpensClampedBriefing" fullname="DefenderChronicles.Tests.GreyboxSceneTests.ReturningPlayerSkipsWelcomeAndContinueOpensClampedBriefing" methodname="ReturningPlayerSkipsWelcomeAndContinueOpensClampedBriefing" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="1922112909" result="Passed" start-time="2026-09-06 10:13:19Z" end-time="2026-09-06 10:13:19Z" duration="0.714459" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1025" name="SceneLookRespectsQualityLightingProfile" fullname="DefenderChronicles.Tests.GreyboxSceneTests.SceneLookRespectsQualityLightingProfile" methodname="SceneLookRespectsQualityLightingProfile" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="303614088" result="Passed" start-time="2026-09-06 10:13:19Z" end-time="2026-09-06 10:13:19Z" duration="0.003959" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1015" name="SelectableRaycastIgnoresCloserActorCollider" fullname="DefenderChronicles.Tests.GreyboxSceneTests.SelectableRaycastIgnoresCloserActorCollider" methodname="SelectableRaycastIgnoresCloserActorCollider" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="1359757025" result="Passed" start-time="2026-09-06 10:13:19Z" end-time="2026-09-06 10:13:19Z" duration="0.016641" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1016" name="SessionOpensWithCompleteGreyboxContent" fullname="DefenderChronicles.Tests.GreyboxSceneTests.SessionOpensWithCompleteGreyboxContent" methodname="SessionOpensWithCompleteGreyboxContent" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="944116463" result="Passed" start-time="2026-09-06 10:13:19Z" end-time="2026-09-06 10:13:20Z" duration="0.515631" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1028" name="SpecializationCombatTests" fullname="DefenderChronicles.Tests.SpecializationCombatTests" classname="DefenderChronicles.Tests.SpecializationCombatTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-09-06 10:13:20Z" end-time="2026-09-06 10:13:20Z" duration="0.204669" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1029" name="SixBranchesProvideTheirPromisedCombatAdvantage" fullname="DefenderChronicles.Tests.SpecializationCombatTests.SixBranchesProvideTheirPromisedCombatAdvantage" methodname="SixBranchesProvideTheirPromisedCombatAdvantage" classname="DefenderChronicles.Tests.SpecializationCombatTests" runstate="Runnable" seed="848557528" result="Passed" start-time="2026-09-06 10:13:20Z" end-time="2026-09-06 10:13:20Z" duration="0.204172" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[SPECIALIZATION_ADVANTAGE] branch=RapidFire baseline=102.000 specialized=120.000 metric=actual_damage
+[SPECIALIZATION_ADVANTAGE] branch=Sharpshooter baseline=102.000 specialized=183.000 metric=actual_damage
+[SPECIALIZATION_ADVANTAGE] branch=Blast baseline=118.000 specialized=142.000 metric=actual_damage
+[SPECIALIZATION_ADVANTAGE] branch=Frost baseline=0.000 specialized=0.250 metric=slow_fraction
+[SPECIALIZATION_ADVANTAGE] branch=ShieldGuard baseline=1.867 specialized=3.733 metric=guard_survival_seconds
+[SPECIALIZATION_ADVANTAGE] branch=AssaultGuard baseline=156.000 specialized=320.000 metric=actual_damage
+Saving results to: /Users/emreaydin/Library/Application Support/Emre Aydin/Defender Chronicles/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

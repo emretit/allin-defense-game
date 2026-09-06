@@ -1,0 +1,7 @@
+build=ct-20260906-01
+environment=closed-test
+canonical_stars=3
+zero_lives=rejected
+wrong_owner=rejected
+duplicate_reward=0
+Evidence: real SDK authentication and Cloud Code calls; assertion success is logged as CLOSED_TEST_CLOUD_PASS in editor-review.log.

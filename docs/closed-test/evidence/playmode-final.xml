@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="27" result="Passed" total="27" passed="27" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-09-06 10:46:55Z" end-time="2026-09-06 10:53:24Z" duration="388.8798034">
+  <test-suite type="TestSuite" id="1040" name="Defender Chronicles" fullname="Defender Chronicles" runstate="Runnable" testcasecount="27" result="Passed" start-time="2026-09-06 10:46:55Z" end-time="2026-09-06 10:53:24Z" duration="388.879803" total="27" passed="27" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1034" name="DefenderChronicles.PlayModeTests.dll" fullname="/Users/emreaydin/DefenderChronicles-first-region/Library/ScriptAssemblies/DefenderChronicles.PlayModeTests.dll" runstate="Runnable" testcasecount="27" result="Passed" start-time="2026-09-06 10:46:55Z" end-time="2026-09-06 10:53:24Z" duration="388.876026" total="27" passed="27" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="69296" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1035" name="DefenderChronicles" fullname="DefenderChronicles" runstate="Runnable" testcasecount="27" result="Passed" start-time="2026-09-06 10:46:55Z" end-time="2026-09-06 10:53:24Z" duration="388.875633" total="27" passed="27" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1036" name="Tests" fullname="DefenderChronicles.Tests" runstate="Runnable" testcasecount="27" result="Passed" start-time="2026-09-06 10:46:55Z" end-time="2026-09-06 10:53:24Z" duration="388.874523" total="27" passed="27" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1001" name="ClosedTestAcceptanceTests" fullname="DefenderChronicles.Tests.ClosedTestAcceptanceTests" classname="DefenderChronicles.Tests.ClosedTestAcceptanceTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-09-06 10:46:55Z" end-time="2026-09-06 10:46:59Z" duration="3.081989" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1006" name="EmptyShieldBashDoesNotSpendCooldown" fullname="DefenderChronicles.Tests.ClosedTestAcceptanceTests.EmptyShieldBashDoesNotSpendCooldown" methodname="EmptyShieldBashDoesNotSpendCooldown" classname="DefenderChronicles.Tests.ClosedTestAcceptanceTests" runstate="Runnable" seed="289081781" result="Passed" start-time="2026-09-06 10:46:55Z" end-time="2026-09-06 10:46:56Z" duration="0.413565" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1004" name="FrameRateAndSpeedHaveIdenticalBattleResults" fullname="DefenderChronicles.Tests.ClosedTestAcceptanceTests.FrameRateAndSpeedHaveIdenticalBattleResults" methodname="FrameRateAndSpeedHaveIdenticalBattleResults" classname="DefenderChronicles.Tests.ClosedTestAcceptanceTests" runstate="Runnable" seed="684985522" result="Passed" start-time="2026-09-06 10:46:56Z" end-time="2026-09-06 10:46:58Z" duration="2.434237" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[WAVE_BALANCE] level=1 wave=1 seconds=42.53 gold=153 lives=20 peak=5
+[WAVE_BALANCE] level=1 wave=2 seconds=46.93 gold=332 lives=20 peak=5
+[WAVE_BALANCE] level=1 wave=3 seconds=51.33 gold=527 lives=20 peak=5
+[CLOCK_PARITY] fps=30 speed=1 result=Victory/542/20/3/140.81
+[WAVE_BALANCE] level=1 wave=1 seconds=42.53 gold=153 lives=20 peak=5
+[WAVE_BALANCE] level=1 wave=2 seconds=46.93 gold=332 lives=20 peak=5
+[WAVE_BALANCE] level=1 wave=3 seconds=51.33 gold=527 lives=20 peak=5
+[CLOCK_PARITY] fps=30 speed=2 result=Victory/542/20/3/140.81
+[WAVE_BALANCE] level=1 wave=1 seconds=42.53 gold=153 lives=20 peak=5
+[WAVE_BALANCE] level=1 wave=2 seconds=46.93 gold=332 lives=20 peak=5
+[WAVE_BALANCE] level=1 wave=3 seconds=51.33 gold=527 lives=20 peak=5
+[CLOCK_PARITY] fps=30 speed=4 result=Victory/542/20/3/140.81
+[WAVE_BALANCE] level=1 wave=1 seconds=42.53 gold=153 lives=20 peak=5
+[WAVE_BALANCE] level=1 wave=2 seconds=46.93 gold=332 lives=20 peak=5
+[WAVE_BALANCE] level=1 wave=3 seconds=51.33 gold=527 lives=20 peak=5
+[CLOCK_PARITY] fps=30 speed=8 result=Victory/542/20/3/140.81
+[WAVE_BALANCE] level=1 wave=1 seconds=42.53 gold=153 lives=20 peak=5
+[WAVE_BALANCE] level=1 wave=2 seconds=46.93 gold=332 lives=20 peak=5
+[WAVE_BALANCE] level=1 wave=3 seconds=51.33 gold=527 lives=20 peak=5
+[CLOCK_PARITY] fps=60 speed=1 result=Victory/542/20/3/140.81
+[WAVE_BALANCE] level=1 wave=1 seconds=42.53 gold=153 lives=20 peak=5
+[WAVE_BALANCE] level=1 wave=2 seconds=46.93 gold=332 lives=20 peak=5
+[WAVE_BALANCE] level=1 wave=3 seconds=51.33 gold=527 lives=20 peak=5
+[CLOCK_PARITY] fps=60 speed=2 result=Victory/542/20/3/140.81
+[WAVE_BALANCE] level=1 wave=1 seconds=42.53 gold=153 lives=20 peak=5
+[WAVE_BALANCE] level=1 wave=2 seconds=46.93 gold=332 lives=20 peak=5
+[WAVE_BALANCE] level=1 wave=3 seconds=51.33 gold=527 lives=20 peak=5
+[CLOCK_PARITY] fps=60 speed=4 result=Victory/542/20/3/140.81
+[WAVE_BALANCE] level=1 wave=1 seconds=42.53 gold=153 lives=20 peak=5
+[WAVE_BALANCE] level=1 wave=2 seconds=46.93 gold=332 lives=20 peak=5
+[WAVE_BALANCE] level=1 wave=3 seconds=51.33 gold=527 lives=20 peak=5
+[CLOCK_PARITY] fps=60 speed=8 result=Victory/542/20/3/140.81
+]]></output>
+            </test-case>
+            <test-case id="1003" name="IncompatibleCheckpointLeavesCampaignFiftyIntact" fullname="DefenderChronicles.Tests.ClosedTestAcceptanceTests.IncompatibleCheckpointLeavesCampaignFiftyIntact" methodname="IncompatibleCheckpointLeavesCampaignFiftyIntact" classname="DefenderChronicles.Tests.ClosedTestAcceptanceTests" runstate="Runnable" seed="1737899096" result="Passed" start-time="2026-09-06 10:46:58Z" end-time="2026-09-06 10:46:58Z" duration="0.074366" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1005" name="SpecializationIsExclusiveAndRefundIncludesItsPrice" fullname="DefenderChronicles.Tests.ClosedTestAcceptanceTests.SpecializationIsExclusiveAndRefundIncludesItsPrice" methodname="SpecializationIsExclusiveAndRefundIncludesItsPrice" classname="DefenderChronicles.Tests.ClosedTestAcceptanceTests" runstate="Runnable" seed="1307425538" result="Passed" start-time="2026-09-06 10:46:58Z" end-time="2026-09-06 10:46:58Z" duration="0.060162" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1002" name="WaveRestartRestoresExactResourcesWithoutPayingAgain" fullname="DefenderChronicles.Tests.ClosedTestAcceptanceTests.WaveRestartRestoresExactResourcesWithoutPayingAgain" methodname="WaveRestartRestoresExactResourcesWithoutPayingAgain" classname="DefenderChronicles.Tests.ClosedTestAcceptanceTests" runstate="Runnable" seed="612666724" result="Passed" start-time="2026-09-06 10:46:58Z" end-time="2026-09-06 10:46:59Z" duration="0.092341" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1007" name="FirstRegionBalanceTests" fullname="DefenderChronicles.Tests.FirstRegionBalanceTests" classname="DefenderChronicles.Tests.FirstRegionBalanceTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-09-06 10:46:59Z" end-time="2026-09-06 10:47:47Z" duration="48.859073" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1008" name="RealResourceCampaign" fullname="DefenderChronicles.Tests.FirstRegionBalanceTests.RealResourceCampaign" methodname="RealResourceCampaign" classname="DefenderChronicles.Tests.FirstRegionBalanceTests" runstate="Runnable" seed="364347273" result="Passed" start-time="2026-09-06 10:46:59Z" end-time="2026-09-06 10:47:47Z" duration="48.847816" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[WAVE_BALANCE] level=1 wave=1 seconds=41.13 gold=43 lives=20 peak=5
+[WAVE_BALANCE] level=1 wave=2 seconds=45.68 gold=37 lives=20 peak=5
+[WAVE_BALANCE] level=1 wave=3 seconds=50.02 gold=27 lives=20 peak=5
+[BALANCE] level=1 strategy=0 phase=Victory lives=20 seconds=136.84 gold=42 peak=5 towers=6 specialized=0 target=120-180
+[WAVE_BALANCE] level=2 wave=1 seconds=41.97 gold=43 lives=20 peak=8
+[WAVE_BALANCE] level=2 wave=2 seconds=45.68 gold=37 lives=20 peak=8
+[WAVE_BALANCE] level=2 wave=3 seconds=50.03 gold=27 lives=20 peak=8
+[BALANCE] level=2 strategy=0 phase=Victory lives=20 seconds=137.69 gold=42 peak=8 towers=6 specialized=0 target=120-180
+[WAVE_BALANCE] level=3 wave=1 seconds=42.22 gold=3 lives=20 peak=4
+[WAVE_BALANCE] level=3 wave=2 seconds=46.62 gold=52 lives=20 peak=4
+[WAVE_BALANCE] level=3 wave=3 seconds=51.02 gold=22 lives=20 peak=4
+[BALANCE] level=3 strategy=0 phase=Victory lives=20 seconds=139.86 gold=37 peak=4 towers=5 specialized=0 target=120-180
+[WAVE_BALANCE] level=4 wave=1 seconds=45.60 gold=7 lives=20 peak=5
+[WAVE_BALANCE] level=4 wave=2 seconds=47.87 gold=37 lives=20 peak=6
+[WAVE_BALANCE] level=4 wave=3 seconds=50.05 gold=100 lives=20 peak=7
+[WAVE_BALANCE] level=4 wave=4 seconds=52.37 gold=41 lives=20 peak=8
+[WAVE_BALANCE] level=4 wave=5 seconds=54.82 gold=30 lives=20 peak=8
+[WAVE_BALANCE] level=4 wave=6 seconds=57.02 gold=317 lives=20 peak=8
+[BALANCE] level=4 strategy=0 phase=Victory lives=20 seconds=307.69 gold=342 peak=8 towers=8 specialized=0 target=240-360
+[WAVE_BALANCE] level=4 wave=1 seconds=46.98 gold=52 lives=20 peak=13
+[WAVE_BALANCE] level=4 wave=2 seconds=48.10 gold=82 lives=20 peak=13
+[WAVE_BALANCE] level=4 wave=3 seconds=50.10 gold=60 lives=20 peak=13
+[WAVE_BALANCE] level=4 wave=4 seconds=52.47 gold=16 lives=20 peak=13
+[WAVE_BALANCE] level=4 wave=5 seconds=55.03 gold=75 lives=20 peak=13
+[WAVE_BALANCE] level=4 wave=6 seconds=57.02 gold=277 lives=20 peak=13
+[BALANCE] level=4 strategy=1 phase=Victory lives=20 seconds=309.67 gold=302 peak=13 towers=8 specialized=0 target=240-360
+[WAVE_BALANCE] level=5 wave=1 seconds=45.72 gold=7 lives=19 peak=5
+[WAVE_BALANCE] level=5 wave=2 seconds=48.62 gold=37 lives=19 peak=8
+[WAVE_BALANCE] level=5 wave=3 seconds=51.20 gold=100 lives=19 peak=13
+[WAVE_BALANCE] level=5 wave=4 seconds=52.25 gold=41 lives=19 peak=13
+[WAVE_BALANCE] level=5 wave=5 seconds=54.67 gold=30 lives=19 peak=13
+[WAVE_BALANCE] level=5 wave=6 seconds=57.27 gold=317 lives=19 peak=13
+[BALANCE] level=5 strategy=0 phase=Victory lives=19 seconds=309.69 gold=342 peak=13 towers=8 specialized=0 target=240-360
+[WAVE_BALANCE] level=5 wave=1 seconds=49.55 gold=52 lives=19 peak=15
+[WAVE_BALANCE] level=5 wave=2 seconds=46.58 gold=82 lives=19 peak=15
+[WAVE_BALANCE] level=5 wave=3 seconds=48.92 gold=60 lives=19 peak=15
+[WAVE_BALANCE] level=5 wave=4 seconds=51.25 gold=16 lives=19 peak=15
+[WAVE_BALANCE] level=5 wave=5 seconds=53.58 gold=75 lives=19 peak=15
+[WAVE_BALANCE] level=5 wave=6 seconds=55.92 gold=277 lives=19 peak=15
+[BALANCE] level=5 strategy=1 phase=Victory lives=19 seconds=305.77 gold=302 peak=15 towers=8 specialized=0 target=240-360
+[WAVE_BALANCE] level=6 wave=1 seconds=53.12 gold=40 lives=19 peak=15
+[WAVE_BALANCE] level=6 wave=2 seconds=47.50 gold=3 lives=19 peak=15
+[WAVE_BALANCE] level=6 wave=3 seconds=50.02 gold=13 lives=19 peak=15
+[WAVE_BALANCE] level=6 wave=4 seconds=52.13 gold=9 lives=19 peak=15
+[WAVE_BALANCE] level=6 wave=5 seconds=54.55 gold=81 lives=19 peak=15
+[WAVE_BALANCE] level=6 wave=6 seconds=56.80 gold=104 lives=19 peak=15
+[BALANCE] level=6 strategy=0 phase=Victory lives=19 seconds=314.08 gold=129 peak=15 towers=8 specialized=3 target=240-360
+[WAVE_BALANCE] level=6 wave=1 seconds=45.45 gold=5 lives=19 peak=7
+[WAVE_BALANCE] level=6 wave=2 seconds=47.35 gold=88 lives=19 peak=11
+[WAVE_BALANCE] level=6 wave=3 seconds=49.73 gold=13 lives=19 peak=11
+[WAVE_BALANCE] level=6 wave=4 seconds=52.33 gold=94 lives=19 peak=11
+[WAVE_BALANCE] level=6 wave=5 seconds=54.22 gold=41 lives=19 peak=11
+[WAVE_BALANCE] level=6 wave=6 seconds=56.23 gold=64 lives=19 peak=11
+[BALANCE] level=6 strategy=1 phase=Victory lives=19 seconds=305.29 gold=89 peak=11 towers=8 specialized=3 target=240-360
+[WAVE_BALANCE] level=7 wave=1 seconds=55.42 gold=46 lives=19 peak=12
+[WAVE_BALANCE] level=7 wave=2 seconds=48.02 gold=15 lives=19 peak=12
+[WAVE_BALANCE] level=7 wave=3 seconds=50.35 gold=43 lives=19 peak=12
+[WAVE_BALANCE] level=7 wave=4 seconds=52.68 gold=57 lives=19 peak=18
+[WAVE_BALANCE] level=7 wave=5 seconds=55.08 gold=153 lives=19 peak=18
+[WAVE_BALANCE] level=7 wave=6 seconds=57.42 gold=200 lives=19 peak=18
+[BALANCE] level=7 strategy=0 phase=Victory lives=19 seconds=318.93 gold=225 peak=18 towers=8 specialized=3 target=240-360
+[WAVE_BALANCE] level=7 wave=1 seconds=55.10 gold=11 lives=19 peak=11
+[WAVE_BALANCE] level=7 wave=2 seconds=47.60 gold=100 lives=19 peak=11
+[WAVE_BALANCE] level=7 wave=3 seconds=49.98 gold=43 lives=19 peak=13
+[WAVE_BALANCE] level=7 wave=4 seconds=52.58 gold=17 lives=19 peak=14
+[WAVE_BALANCE] level=7 wave=5 seconds=54.35 gold=113 lives=19 peak=14
+[WAVE_BALANCE] level=7 wave=6 seconds=56.55 gold=160 lives=19 peak=14
+[BALANCE] level=7 strategy=1 phase=Victory lives=19 seconds=316.13 gold=185 peak=14 towers=8 specialized=3 target=240-360
+[WAVE_BALANCE] level=8 wave=1 seconds=45.77 gold=8 lives=19 peak=8
+[WAVE_BALANCE] level=8 wave=2 seconds=48.10 gold=64 lives=19 peak=8
+[WAVE_BALANCE] level=8 wave=3 seconds=49.97 gold=104 lives=19 peak=16
+[WAVE_BALANCE] level=8 wave=4 seconds=52.20 gold=57 lives=19 peak=16
+[WAVE_BALANCE] level=8 wave=5 seconds=54.77 gold=102 lives=19 peak=16
+[WAVE_BALANCE] level=8 wave=6 seconds=56.98 gold=153 lives=19 peak=17
+[BALANCE] level=8 strategy=0 phase=Victory lives=19 seconds=307.75 gold=178 peak=17 towers=8 specialized=4 target=240-360
+[WAVE_BALANCE] level=8 wave=1 seconds=64.08 gold=48 lives=19 peak=14
+[WAVE_BALANCE] level=8 wave=2 seconds=47.38 gold=49 lives=19 peak=14
+[WAVE_BALANCE] level=8 wave=3 seconds=49.70 gold=104 lives=19 peak=14
+[WAVE_BALANCE] level=8 wave=4 seconds=52.02 gold=17 lives=19 peak=16
+[WAVE_BALANCE] level=8 wave=5 seconds=53.82 gold=62 lives=19 peak=18
+[WAVE_BALANCE] level=8 wave=6 seconds=56.15 gold=113 lives=19 peak=18
+[BALANCE] level=8 strategy=1 phase=Victory lives=19 seconds=323.12 gold=138 peak=18 towers=8 specialized=4 target=240-360
+[WAVE_BALANCE] level=9 wave=1 seconds=60.03 gold=33 lives=19 peak=13
+[WAVE_BALANCE] level=9 wave=2 seconds=47.92 gold=4 lives=19 peak=13
+[WAVE_BALANCE] level=9 wave=3 seconds=50.23 gold=29 lives=19 peak=14
+[WAVE_BALANCE] level=9 wave=4 seconds=52.55 gold=82 lives=19 peak=19
+[WAVE_BALANCE] level=9 wave=5 seconds=54.82 gold=127 lives=19 peak=19
+[WAVE_BALANCE] level=9 wave=6 seconds=57.37 gold=178 lives=19 peak=19
+[BALANCE] level=9 strategy=0 phase=Victory lives=19 seconds=322.88 gold=203 peak=19 towers=8 specialized=4 target=240-360
+[WAVE_BALANCE] level=9 wave=1 seconds=60.82 gold=18 lives=19 peak=12
+[WAVE_BALANCE] level=9 wave=2 seconds=47.82 gold=4 lives=19 peak=12
+[WAVE_BALANCE] level=9 wave=3 seconds=49.95 gold=4 lives=19 peak=13
+[WAVE_BALANCE] level=9 wave=4 seconds=52.47 gold=42 lives=19 peak=15
+[WAVE_BALANCE] level=9 wave=5 seconds=54.15 gold=87 lives=19 peak=15
+[WAVE_BALANCE] level=9 wave=6 seconds=56.50 gold=138 lives=19 peak=15
+[BALANCE] level=9 strategy=1 phase=Victory lives=19 seconds=321.67 gold=163 peak=15 towers=8 specialized=4 target=240-360
+[WAVE_BALANCE] level=10 wave=1 seconds=45.57 gold=12 lives=20 peak=8
+[WAVE_BALANCE] level=10 wave=2 seconds=51.85 gold=22 lives=20 peak=10
+[WAVE_BALANCE] level=10 wave=3 seconds=44.40 gold=31 lives=20 peak=13
+[WAVE_BALANCE] level=10 wave=4 seconds=45.98 gold=68 lives=20 peak=17
+[WAVE_BALANCE] level=10 wave=5 seconds=48.87 gold=97 lives=20 peak=17
+[WAVE_BALANCE] level=10 wave=6 seconds=53.78 gold=132 lives=20 peak=17
+[WAVE_BALANCE] level=10 wave=7 seconds=59.52 gold=191 lives=20 peak=17
+[WAVE_BALANCE] level=10 wave=8 seconds=61.78 gold=258 lives=20 peak=24
+[BALANCE] level=10 strategy=0 phase=Victory lives=20 seconds=411.69 gold=283 peak=24 towers=8 specialized=8 target=360-480
+[WAVE_BALANCE] level=10 wave=1 seconds=42.45 gold=12 lives=20 peak=10
+[WAVE_BALANCE] level=10 wave=2 seconds=41.88 gold=22 lives=20 peak=10
+[WAVE_BALANCE] level=10 wave=3 seconds=43.00 gold=6 lives=20 peak=12
+[WAVE_BALANCE] level=10 wave=4 seconds=45.32 gold=28 lives=20 peak=13
+[WAVE_BALANCE] level=10 wave=5 seconds=47.55 gold=57 lives=20 peak=13
+[WAVE_BALANCE] level=10 wave=6 seconds=50.38 gold=92 lives=20 peak=13
+[WAVE_BALANCE] level=10 wave=7 seconds=56.78 gold=111 lives=20 peak=13
+[WAVE_BALANCE] level=10 wave=8 seconds=67.32 gold=178 lives=20 peak=23
+[BALANCE] level=10 strategy=1 phase=Victory lives=20 seconds=394.63 gold=203 peak=23 towers=8 specialized=8 target=360-480
+]]></output>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1009" name="FirstRegionRegressionTests" fullname="DefenderChronicles.Tests.FirstRegionRegressionTests" classname="DefenderChronicles.Tests.FirstRegionRegressionTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-09-06 10:47:47Z" end-time="2026-09-06 10:47:57Z" duration="9.191536" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1013" name="GuardsCanReachTheRouteInEveryFirstRegionLayout" fullname="DefenderChronicles.Tests.FirstRegionRegressionTests.GuardsCanReachTheRouteInEveryFirstRegionLayout" methodname="GuardsCanReachTheRouteInEveryFirstRegionLayout" classname="DefenderChronicles.Tests.FirstRegionRegressionTests" runstate="Runnable" seed="1701121468" result="Passed" start-time="2026-09-06 10:47:48Z" end-time="2026-09-06 10:47:49Z" duration="1.644926" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1010" name="NoDefencesCannotWinFirstLevel" fullname="DefenderChronicles.Tests.FirstRegionRegressionTests.NoDefencesCannotWinFirstLevel" methodname="NoDefencesCannotWinFirstLevel" classname="DefenderChronicles.Tests.FirstRegionRegressionTests" runstate="Runnable" seed="1182120924" result="Passed" start-time="2026-09-06 10:47:49Z" end-time="2026-09-06 10:47:52Z" duration="3.157632" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[FIRST_REGION_IDLE] build=False phase=Defeat lives=0 seconds=25.03312
+]]></output>
+            </test-case>
+            <test-case id="1011" name="OneIdleArcherCannotEarnThreeStars" fullname="DefenderChronicles.Tests.FirstRegionRegressionTests.OneIdleArcherCannotEarnThreeStars" methodname="OneIdleArcherCannotEarnThreeStars" classname="DefenderChronicles.Tests.FirstRegionRegressionTests" runstate="Runnable" seed="963169189" result="Passed" start-time="2026-09-06 10:47:52Z" end-time="2026-09-06 10:47:57Z" duration="4.245171" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[FIRST_REGION_IDLE] build=True phase=Defeat lives=0 seconds=33.81632
+]]></output>
+            </test-case>
+            <test-case id="1012" name="StunnedSiegeCannotDisruptAnOutpost" fullname="DefenderChronicles.Tests.FirstRegionRegressionTests.StunnedSiegeCannotDisruptAnOutpost" methodname="StunnedSiegeCannotDisruptAnOutpost" classname="DefenderChronicles.Tests.FirstRegionRegressionTests" runstate="Runnable" seed="1994027281" result="Passed" start-time="2026-09-06 10:47:57Z" end-time="2026-09-06 10:47:57Z" duration="0.033987" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1014" name="GreyboxSceneTests" fullname="DefenderChronicles.Tests.GreyboxSceneTests" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" testcasecount="13" result="Passed" start-time="2026-09-06 10:47:57Z" end-time="2026-09-06 10:48:01Z" duration="4.810249" total="13" passed="13" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1017" name="AppFlowShowsTenLevelsWhileStorageKeepsFifty" fullname="DefenderChronicles.Tests.GreyboxSceneTests.AppFlowShowsTenLevelsWhileStorageKeepsFifty" methodname="AppFlowShowsTenLevelsWhileStorageKeepsFifty" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="1410700552" result="Passed" start-time="2026-09-06 10:47:57Z" end-time="2026-09-06 10:47:58Z" duration="1.701532" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1026" name="AudioControllerCyclesReviewMusicAndCueContractsWithinVoiceBudget" fullname="DefenderChronicles.Tests.GreyboxSceneTests.AudioControllerCyclesReviewMusicAndCueContractsWithinVoiceBudget" methodname="AudioControllerCyclesReviewMusicAndCueContractsWithinVoiceBudget" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="1837541371" result="Passed" start-time="2026-09-06 10:47:58Z" end-time="2026-09-06 10:47:59Z" duration="0.363721" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1018" name="BrandScreensCaptureAtAcceptanceRatios" fullname="DefenderChronicles.Tests.GreyboxSceneTests.BrandScreensCaptureAtAcceptanceRatios" methodname="BrandScreensCaptureAtAcceptanceRatios" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="1077463931" result="Passed" start-time="2026-09-06 10:47:59Z" end-time="2026-09-06 10:47:59Z" duration="0.002009" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1022" name="InterruptedCameraShakeAlwaysReturnsToItsOriginalPosition" fullname="DefenderChronicles.Tests.GreyboxSceneTests.InterruptedCameraShakeAlwaysReturnsToItsOriginalPosition" methodname="InterruptedCameraShakeAlwaysReturnsToItsOriginalPosition" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="570136514" result="Passed" start-time="2026-09-06 10:47:59Z" end-time="2026-09-06 10:47:59Z" duration="0.365144" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1020" name="PausedBattleCanResumeOrReturnToMainMenu" fullname="DefenderChronicles.Tests.GreyboxSceneTests.PausedBattleCanResumeOrReturnToMainMenu" methodname="PausedBattleCanResumeOrReturnToMainMenu" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="1512450617" result="Passed" start-time="2026-09-06 10:47:59Z" end-time="2026-09-06 10:48:00Z" duration="0.957814" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1027" name="ProductionHudButtonsAreInteractableAndClickable" fullname="DefenderChronicles.Tests.GreyboxSceneTests.ProductionHudButtonsAreInteractableAndClickable" methodname="ProductionHudButtonsAreInteractableAndClickable" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="1015167682" result="Passed" start-time="2026-09-06 10:48:00Z" end-time="2026-09-06 10:48:00Z" duration="0.028904" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1023" name="ProductionPresentationAllowsBuildUpgradeSellOnEveryFixedSlot" fullname="DefenderChronicles.Tests.GreyboxSceneTests.ProductionPresentationAllowsBuildUpgradeSellOnEveryFixedSlot" methodname="ProductionPresentationAllowsBuildUpgradeSellOnEveryFixedSlot" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="1098430477" result="Passed" start-time="2026-09-06 10:48:00Z" end-time="2026-09-06 10:48:00Z" duration="0.044879" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1021" name="ProductionPresentationPreservesEconomyAndEmitsTypedSignals" fullname="DefenderChronicles.Tests.GreyboxSceneTests.ProductionPresentationPreservesEconomyAndEmitsTypedSignals" methodname="ProductionPresentationPreservesEconomyAndEmitsTypedSignals" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="750338122" result="Passed" start-time="2026-09-06 10:48:00Z" end-time="2026-09-06 10:48:00Z" duration="0.032829" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1024" name="ProductionPresentationShowsVictoryAndDefeatResults" fullname="DefenderChronicles.Tests.GreyboxSceneTests.ProductionPresentationShowsVictoryAndDefeatResults" methodname="ProductionPresentationShowsVictoryAndDefeatResults" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="219684223" result="Passed" start-time="2026-09-06 10:48:00Z" end-time="2026-09-06 10:48:00Z" duration="0.052219" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1019" name="ReturningPlayerSkipsWelcomeAndContinueOpensClampedBriefing" fullname="DefenderChronicles.Tests.GreyboxSceneTests.ReturningPlayerSkipsWelcomeAndContinueOpensClampedBriefing" methodname="ReturningPlayerSkipsWelcomeAndContinueOpensClampedBriefing" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="206955440" result="Passed" start-time="2026-09-06 10:48:00Z" end-time="2026-09-06 10:48:01Z" duration="0.708883" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1025" name="SceneLookRespectsQualityLightingProfile" fullname="DefenderChronicles.Tests.GreyboxSceneTests.SceneLookRespectsQualityLightingProfile" methodname="SceneLookRespectsQualityLightingProfile" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="1444092484" result="Passed" start-time="2026-09-06 10:48:01Z" end-time="2026-09-06 10:48:01Z" duration="0.004708" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1015" name="SelectableRaycastIgnoresCloserActorCollider" fullname="DefenderChronicles.Tests.GreyboxSceneTests.SelectableRaycastIgnoresCloserActorCollider" methodname="SelectableRaycastIgnoresCloserActorCollider" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="1741295361" result="Passed" start-time="2026-09-06 10:48:01Z" end-time="2026-09-06 10:48:01Z" duration="0.017143" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1016" name="SessionOpensWithCompleteGreyboxContent" fullname="DefenderChronicles.Tests.GreyboxSceneTests.SessionOpensWithCompleteGreyboxContent" methodname="SessionOpensWithCompleteGreyboxContent" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="1486973463" result="Passed" start-time="2026-09-06 10:48:01Z" end-time="2026-09-06 10:48:01Z" duration="0.527587" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1028" name="SpecializationCombatTests" fullname="DefenderChronicles.Tests.SpecializationCombatTests" classname="DefenderChronicles.Tests.SpecializationCombatTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-09-06 10:48:01Z" end-time="2026-09-06 10:48:02Z" duration="0.872380" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1029" name="SixBranchesProvideTheirPromisedCombatAdvantage" fullname="DefenderChronicles.Tests.SpecializationCombatTests.SixBranchesProvideTheirPromisedCombatAdvantage" methodname="SixBranchesProvideTheirPromisedCombatAdvantage" classname="DefenderChronicles.Tests.SpecializationCombatTests" runstate="Runnable" seed="1798655944" result="Passed" start-time="2026-09-06 10:48:01Z" end-time="2026-09-06 10:48:02Z" duration="0.871687" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[SPECIALIZATION_ADVANTAGE] branch=RapidFire baseline=102.000 specialized=120.000 metric=actual_damage
+[SPECIALIZATION_ADVANTAGE] branch=Sharpshooter baseline=102.000 specialized=183.000 metric=actual_damage
+[SPECIALIZATION_ADVANTAGE] branch=Blast baseline=118.000 specialized=142.000 metric=actual_damage
+[SPECIALIZATION_ADVANTAGE] branch=Frost baseline=0.000 specialized=0.250 metric=slow_fraction
+[SPECIALIZATION_ADVANTAGE] branch=ShieldGuard baseline=1.867 specialized=3.733 metric=guard_survival_seconds
+[SPECIALIZATION_ADVANTAGE] branch=AssaultGuard baseline=156.000 specialized=320.000 metric=actual_damage
+]]></output>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1030" name="StrategyBalanceAcceptanceTests" fullname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests" classname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-09-06 10:48:02Z" end-time="2026-09-06 10:53:24Z" duration="322.057715" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1031" name="ArcherHeavyStrategyCanClearTheVerticalSlice" fullname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests.ArcherHeavyStrategyCanClearTheVerticalSlice" methodname="ArcherHeavyStrategyCanClearTheVerticalSlice" classname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests" runstate="Runnable" seed="1049067119" result="Passed" start-time="2026-09-06 10:48:02Z" end-time="2026-09-06 10:49:51Z" duration="108.908810" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="Timeout" value="150000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[WAVE_BALANCE] level=10 wave=1 seconds=52.92 gold=27 lives=20 peak=11
+[WAVE_BALANCE] level=10 wave=2 seconds=49.80 gold=42 lives=20 peak=14
+[WAVE_BALANCE] level=10 wave=3 seconds=45.05 gold=26 lives=20 peak=21
+[WAVE_BALANCE] level=10 wave=4 seconds=47.77 gold=188 lives=20 peak=21
+[WAVE_BALANCE] level=10 wave=5 seconds=51.37 gold=537 lives=20 peak=21
+[WAVE_BALANCE] level=10 wave=6 seconds=56.32 gold=912 lives=20 peak=21
+[WAVE_BALANCE] level=10 wave=7 seconds=64.87 gold=1331 lives=20 peak=22
+[WAVE_BALANCE] level=10 wave=8 seconds=66.47 gold=1780 lives=13 peak=25
+[DC_BALANCE_ACCEPTANCE] strategy=Archer-heavy phase=Victory wave=8/8 lives=13 outposts=8 primary=5 actions=16/16
+]]></output>
+            </test-case>
+            <test-case id="1032" name="BarracksHeavyStrategyCanClearTheVerticalSlice" fullname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests.BarracksHeavyStrategyCanClearTheVerticalSlice" methodname="BarracksHeavyStrategyCanClearTheVerticalSlice" classname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests" runstate="Runnable" seed="1953153175" result="Passed" start-time="2026-09-06 10:49:51Z" end-time="2026-09-06 10:51:36Z" duration="104.472485" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="Timeout" value="150000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[WAVE_BALANCE] level=10 wave=1 seconds=42.78 gold=97 lives=20 peak=8
+[WAVE_BALANCE] level=10 wave=2 seconds=42.58 gold=52 lives=20 peak=9
+[WAVE_BALANCE] level=10 wave=3 seconds=43.83 gold=21 lives=20 peak=13
+[WAVE_BALANCE] level=10 wave=4 seconds=48.57 gold=68 lives=20 peak=20
+[WAVE_BALANCE] level=10 wave=5 seconds=53.63 gold=417 lives=20 peak=20
+[WAVE_BALANCE] level=10 wave=6 seconds=55.32 gold=792 lives=20 peak=20
+[WAVE_BALANCE] level=10 wave=7 seconds=62.77 gold=1211 lives=20 peak=22
+[WAVE_BALANCE] level=10 wave=8 seconds=67.42 gold=1651 lives=14 peak=24
+[DC_BALANCE_ACCEPTANCE] strategy=Barracks-heavy phase=Victory wave=8/8 lives=14 outposts=8 primary=5 actions=16/16
+]]></output>
+            </test-case>
+            <test-case id="1033" name="MageHeavyStrategyCanClearTheVerticalSlice" fullname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests.MageHeavyStrategyCanClearTheVerticalSlice" methodname="MageHeavyStrategyCanClearTheVerticalSlice" classname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests" runstate="Runnable" seed="377371708" result="Passed" start-time="2026-09-06 10:51:36Z" end-time="2026-09-06 10:53:24Z" duration="108.661683" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="Timeout" value="150000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[WAVE_BALANCE] level=10 wave=1 seconds=57.88 gold=32 lives=20 peak=15
+[WAVE_BALANCE] level=10 wave=2 seconds=55.48 gold=47 lives=20 peak=15
+[WAVE_BALANCE] level=10 wave=3 seconds=46.65 gold=31 lives=20 peak=21
+[WAVE_BALANCE] level=10 wave=4 seconds=46.37 gold=33 lives=20 peak=21
+[WAVE_BALANCE] level=10 wave=5 seconds=49.30 gold=257 lives=20 peak=21
+[WAVE_BALANCE] level=10 wave=6 seconds=52.87 gold=632 lives=20 peak=21
+[WAVE_BALANCE] level=10 wave=7 seconds=58.27 gold=1051 lives=20 peak=21
+[WAVE_BALANCE] level=10 wave=8 seconds=62.57 gold=1508 lives=15 peak=24
+[DC_BALANCE_ACCEPTANCE] strategy=Mage-heavy phase=Victory wave=8/8 lives=15 outposts=8 primary=5 actions=16/16
+Saving results to: /Users/emreaydin/Library/Application Support/Emre Aydin/Defender Chronicles/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Passed" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-09-06 09:44:38Z" end-time="2026-09-06 09:45:05Z" duration="27.3163009">
+  <test-suite type="TestSuite" id="1032" name="Defender Chronicles" fullname="Defender Chronicles" runstate="Runnable" testcasecount="21" result="Passed" start-time="2026-09-06 09:44:38Z" end-time="2026-09-06 09:45:05Z" duration="27.316301" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1026" name="DefenderChronicles.PlayModeTests.dll" fullname="/Users/emreaydin/DefenderChronicles-first-region/Library/ScriptAssemblies/DefenderChronicles.PlayModeTests.dll" runstate="Runnable" testcasecount="21" result="Passed" start-time="2026-09-06 09:44:38Z" end-time="2026-09-06 09:45:05Z" duration="27.313056" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="66040" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1027" name="DefenderChronicles" fullname="DefenderChronicles" runstate="Runnable" testcasecount="21" result="Passed" start-time="2026-09-06 09:44:38Z" end-time="2026-09-06 09:45:05Z" duration="27.312615" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1028" name="Tests" fullname="DefenderChronicles.Tests" runstate="Runnable" testcasecount="21" result="Passed" start-time="2026-09-06 09:44:38Z" end-time="2026-09-06 09:45:05Z" duration="27.312359" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1001" name="FirstRegionBalanceTests" fullname="DefenderChronicles.Tests.FirstRegionBalanceTests" classname="DefenderChronicles.Tests.FirstRegionBalanceTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-09-06 09:44:38Z" end-time="2026-09-06 09:45:05Z" duration="27.311733" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1002" name="RealResourceCampaign" fullname="DefenderChronicles.Tests.FirstRegionBalanceTests.RealResourceCampaign" methodname="RealResourceCampaign" classname="DefenderChronicles.Tests.FirstRegionBalanceTests" runstate="Runnable" seed="1330293894" result="Passed" start-time="2026-09-06 09:44:38Z" end-time="2026-09-06 09:45:05Z" duration="27.306210" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[BALANCE] level=1 strategy=0 phase=Victory lives=20 seconds=136.84 gold=42 towers=6 specialized=0 target=120-180
+[BALANCE] level=2 strategy=0 phase=Victory lives=20 seconds=137.69 gold=42 towers=6 specialized=0 target=120-180
+[BALANCE] level=3 strategy=0 phase=Victory lives=20 seconds=139.86 gold=37 towers=5 specialized=0 target=120-180
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[BALANCE] level=4 strategy=0 phase=Victory lives=20 seconds=307.69 gold=342 towers=8 specialized=0 target=240-360
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[BALANCE] level=4 strategy=1 phase=Victory lives=20 seconds=309.67 gold=302 towers=8 specialized=0 target=240-360
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[BALANCE] level=5 strategy=0 phase=Victory lives=19 seconds=309.69 gold=342 towers=8 specialized=0 target=240-360
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[BALANCE] level=5 strategy=1 phase=Victory lives=19 seconds=305.77 gold=302 towers=8 specialized=0 target=240-360
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[BALANCE] level=6 strategy=0 phase=Victory lives=19 seconds=314.08 gold=129 towers=8 specialized=3 target=240-360
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[BALANCE] level=6 strategy=1 phase=Victory lives=19 seconds=305.29 gold=89 towers=8 specialized=3 target=240-360
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[BALANCE] level=7 strategy=0 phase=Victory lives=19 seconds=318.93 gold=225 towers=8 specialized=3 target=240-360
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[BALANCE] level=7 strategy=1 phase=Victory lives=19 seconds=316.13 gold=185 towers=8 specialized=3 target=240-360
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[BALANCE] level=8 strategy=0 phase=Victory lives=19 seconds=307.75 gold=178 towers=8 specialized=4 target=240-360
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[BALANCE] level=8 strategy=1 phase=Victory lives=19 seconds=323.12 gold=138 towers=8 specialized=4 target=240-360
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[BALANCE] level=9 strategy=0 phase=Victory lives=19 seconds=322.88 gold=203 towers=8 specialized=4 target=240-360
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[BALANCE] level=9 strategy=1 phase=Victory lives=19 seconds=321.67 gold=163 towers=8 specialized=4 target=240-360
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[BALANCE] level=10 strategy=0 phase=Victory lives=20 seconds=411.69 gold=283 towers=8 specialized=8 target=360-480
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+[BALANCE] level=10 strategy=1 phase=Victory lives=13 seconds=393.73 gold=145 towers=8 specialized=8 target=360-480
+Saving results to: /Users/emreaydin/Library/Application Support/Emre Aydin/Defender Chronicles/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

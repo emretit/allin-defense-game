@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="9" result="Passed" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-09-06 09:54:13Z" end-time="2026-09-06 09:54:24Z" duration="10.2794853">
+  <test-suite type="TestSuite" id="1038" name="Defender Chronicles" fullname="Defender Chronicles" runstate="Runnable" testcasecount="26" result="Passed" start-time="2026-09-06 09:54:13Z" end-time="2026-09-06 09:54:24Z" duration="10.279485" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1032" name="DefenderChronicles.PlayModeTests.dll" fullname="/Users/emreaydin/DefenderChronicles-first-region/Library/ScriptAssemblies/DefenderChronicles.PlayModeTests.dll" runstate="Runnable" testcasecount="26" result="Passed" start-time="2026-09-06 09:54:13Z" end-time="2026-09-06 09:54:24Z" duration="10.276886" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="81029" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1033" name="DefenderChronicles" fullname="DefenderChronicles" runstate="Runnable" testcasecount="26" result="Passed" start-time="2026-09-06 09:54:13Z" end-time="2026-09-06 09:54:24Z" duration="10.276577" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1034" name="Tests" fullname="DefenderChronicles.Tests" runstate="Runnable" testcasecount="26" result="Passed" start-time="2026-09-06 09:54:13Z" end-time="2026-09-06 09:54:24Z" duration="10.276397" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1001" name="ClosedTestAcceptanceTests" fullname="DefenderChronicles.Tests.ClosedTestAcceptanceTests" classname="DefenderChronicles.Tests.ClosedTestAcceptanceTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-09-06 09:54:13Z" end-time="2026-09-06 09:54:16Z" duration="2.553510" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1006" name="EmptyShieldBashDoesNotSpendCooldown" fullname="DefenderChronicles.Tests.ClosedTestAcceptanceTests.EmptyShieldBashDoesNotSpendCooldown" methodname="EmptyShieldBashDoesNotSpendCooldown" classname="DefenderChronicles.Tests.ClosedTestAcceptanceTests" runstate="Runnable" seed="1475765734" result="Passed" start-time="2026-09-06 09:54:13Z" end-time="2026-09-06 09:54:14Z" duration="0.328393" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1004" name="FrameRateAndSpeedHaveIdenticalBattleResults" fullname="DefenderChronicles.Tests.ClosedTestAcceptanceTests.FrameRateAndSpeedHaveIdenticalBattleResults" methodname="FrameRateAndSpeedHaveIdenticalBattleResults" classname="DefenderChronicles.Tests.ClosedTestAcceptanceTests" runstate="Runnable" seed="495822033" result="Passed" start-time="2026-09-06 09:54:14Z" end-time="2026-09-06 09:54:16Z" duration="2.035756" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[CLOCK_PARITY] fps=30 speed=1 result=Victory/542/20/3/140.81
+[CLOCK_PARITY] fps=30 speed=2 result=Victory/542/20/3/140.81
+[CLOCK_PARITY] fps=30 speed=4 result=Victory/542/20/3/140.81
+[CLOCK_PARITY] fps=30 speed=8 result=Victory/542/20/3/140.81
+[CLOCK_PARITY] fps=60 speed=1 result=Victory/542/20/3/140.81
+[CLOCK_PARITY] fps=60 speed=2 result=Victory/542/20/3/140.81
+[CLOCK_PARITY] fps=60 speed=4 result=Victory/542/20/3/140.81
+[CLOCK_PARITY] fps=60 speed=8 result=Victory/542/20/3/140.81
+]]></output>
+            </test-case>
+            <test-case id="1003" name="IncompatibleCheckpointLeavesCampaignFiftyIntact" fullname="DefenderChronicles.Tests.ClosedTestAcceptanceTests.IncompatibleCheckpointLeavesCampaignFiftyIntact" methodname="IncompatibleCheckpointLeavesCampaignFiftyIntact" classname="DefenderChronicles.Tests.ClosedTestAcceptanceTests" runstate="Runnable" seed="867409882" result="Passed" start-time="2026-09-06 09:54:16Z" end-time="2026-09-06 09:54:16Z" duration="0.057312" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1005" name="SpecializationIsExclusiveAndRefundIncludesItsPrice" fullname="DefenderChronicles.Tests.ClosedTestAcceptanceTests.SpecializationIsExclusiveAndRefundIncludesItsPrice" methodname="SpecializationIsExclusiveAndRefundIncludesItsPrice" classname="DefenderChronicles.Tests.ClosedTestAcceptanceTests" runstate="Runnable" seed="244626507" result="Passed" start-time="2026-09-06 09:54:16Z" end-time="2026-09-06 09:54:16Z" duration="0.050728" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+]]></output>
+            </test-case>
+            <test-case id="1002" name="WaveRestartRestoresExactResourcesWithoutPayingAgain" fullname="DefenderChronicles.Tests.ClosedTestAcceptanceTests.WaveRestartRestoresExactResourcesWithoutPayingAgain" methodname="WaveRestartRestoresExactResourcesWithoutPayingAgain" classname="DefenderChronicles.Tests.ClosedTestAcceptanceTests" runstate="Runnable" seed="1188152811" result="Passed" start-time="2026-09-06 09:54:16Z" end-time="2026-09-06 09:54:16Z" duration="0.075972" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1009" name="FirstRegionRegressionTests" fullname="DefenderChronicles.Tests.FirstRegionRegressionTests" classname="DefenderChronicles.Tests.FirstRegionRegressionTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-09-06 09:54:16Z" end-time="2026-09-06 09:54:24Z" duration="7.721893" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1013" name="GuardsCanReachTheRouteInEveryFirstRegionLayout" fullname="DefenderChronicles.Tests.FirstRegionRegressionTests.GuardsCanReachTheRouteInEveryFirstRegionLayout" methodname="GuardsCanReachTheRouteInEveryFirstRegionLayout" classname="DefenderChronicles.Tests.FirstRegionRegressionTests" runstate="Runnable" seed="6499978" result="Passed" start-time="2026-09-06 09:54:16Z" end-time="2026-09-06 09:54:16Z" duration="0.309576" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+]]></output>
+            </test-case>
+            <test-case id="1010" name="NoDefencesCannotWinFirstLevel" fullname="DefenderChronicles.Tests.FirstRegionRegressionTests.NoDefencesCannotWinFirstLevel" methodname="NoDefencesCannotWinFirstLevel" classname="DefenderChronicles.Tests.FirstRegionRegressionTests" runstate="Runnable" seed="1755508529" result="Passed" start-time="2026-09-06 09:54:16Z" end-time="2026-09-06 09:54:19Z" duration="3.150363" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[FIRST_REGION_IDLE] build=False phase=Defeat lives=0 seconds=25.03312
+]]></output>
+            </test-case>
+            <test-case id="1011" name="OneIdleArcherCannotEarnThreeStars" fullname="DefenderChronicles.Tests.FirstRegionRegressionTests.OneIdleArcherCannotEarnThreeStars" methodname="OneIdleArcherCannotEarnThreeStars" classname="DefenderChronicles.Tests.FirstRegionRegressionTests" runstate="Runnable" seed="814619452" result="Passed" start-time="2026-09-06 09:54:19Z" end-time="2026-09-06 09:54:24Z" duration="4.231802" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[FIRST_REGION_IDLE] build=True phase=Defeat lives=0 seconds=33.81632
+]]></output>
+            </test-case>
+            <test-case id="1012" name="StunnedSiegeCannotDisruptAnOutpost" fullname="DefenderChronicles.Tests.FirstRegionRegressionTests.StunnedSiegeCannotDisruptAnOutpost" methodname="StunnedSiegeCannotDisruptAnOutpost" classname="DefenderChronicles.Tests.FirstRegionRegressionTests" runstate="Runnable" seed="2140938121" result="Passed" start-time="2026-09-06 09:54:24Z" end-time="2026-09-06 09:54:24Z" duration="0.022419" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
+Saving results to: /Users/emreaydin/Library/Application Support/Emre Aydin/Defender Chronicles/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
