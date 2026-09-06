@@ -120,6 +120,12 @@ namespace DefenderChronicles.Core
         private int removedThisWave;
         private bool spawning;
         private bool initialized;
+        private float nextHudRefresh;
+        public double LastSimulationMilliseconds { get; private set; }
+        public double LastHudMilliseconds { get; private set; }
+        private readonly BattleTelemetry telemetry = new();
+        private bool firstTowerRecorded;
+        public int PeakEnemyCount { get; private set; }
         private bool automatedSmoke;
         private bool automatedDefeatSmoke;
         private bool automatedSlotRegressionSmoke;
@@ -187,12 +193,14 @@ namespace DefenderChronicles.Core
 
         private void OnDestroy()
         {
+            telemetry.Record(this,"exit",Phase.ToString()); telemetry.Flush();
             GameLocalization.LanguageChanged -= HandleLanguageChanged;
             if (Instance == this) Instance = null;
         }
 
         private void HandleLanguageChanged()
         {
+            if (CampaignLevelNumber <= 10 && waves != null) waves = FirstRegionCampaign.CreateWaves(CampaignLevelNumber);
             RefreshThreatPreviewForPhase();
             RefreshUi();
         }
@@ -232,6 +240,7 @@ namespace DefenderChronicles.Core
             }
             ValidateContent();
             SetPhase(GamePhase.Preparing);
+            RestoreWaveCheckpoint();
             bool explicitAcceptanceProbe = Environment.GetEnvironmentVariable("DC_PERFORMANCE_ACCEPTANCE") == "1" ||
                                            Environment.GetEnvironmentVariable("DC_SOAK_ACCEPTANCE") == "1" ||
                                            Environment.GetEnvironmentVariable("DC_AUDIO_ACCEPTANCE") == "1";
@@ -244,28 +253,28 @@ namespace DefenderChronicles.Core
             RefreshUi();
             RefreshThreatPreviewForPhase();
 
-            automatedSmoke = !Application.isEditor &&
+            automatedSmoke = !Application.isEditor && Debug.isDebugBuild &&
                              (Environment.GetCommandLineArgs().Contains("-dc-smoke") ||
                               Environment.GetEnvironmentVariable("DC_SMOKE") == "1");
-            automatedDefeatSmoke = !Application.isEditor &&
+            automatedDefeatSmoke = !Application.isEditor && Debug.isDebugBuild &&
                                    Environment.GetEnvironmentVariable("DC_SMOKE_DEFEAT") == "1";
-            automatedSlotRegressionSmoke = !Application.isEditor &&
+            automatedSlotRegressionSmoke = !Application.isEditor && Debug.isDebugBuild &&
                                            Environment.GetEnvironmentVariable("DC_SLOT_REGRESSION") == "1";
-            automatedAbilityCapture = !Application.isEditor &&
+            automatedAbilityCapture = !Application.isEditor && Debug.isDebugBuild &&
                                       Environment.GetEnvironmentVariable("DC_ABILITY_CAPTURE") == "1";
-            automatedPauseCapture = !Application.isEditor &&
+            automatedPauseCapture = !Application.isEditor && Debug.isDebugBuild &&
                                     Environment.GetEnvironmentVariable("DC_PAUSE_CAPTURE") == "1";
-            automatedActorCapture = !Application.isEditor &&
+            automatedActorCapture = !Application.isEditor && Debug.isDebugBuild &&
                                     Environment.GetEnvironmentVariable("DC_ACTOR_CAPTURE") == "1";
-            automatedPerformanceAcceptance = !Application.isEditor &&
+            automatedPerformanceAcceptance = !Application.isEditor && Debug.isDebugBuild &&
                                              Environment.GetEnvironmentVariable("DC_PERFORMANCE_ACCEPTANCE") == "1";
-            automatedSoakAcceptance = !Application.isEditor &&
+            automatedSoakAcceptance = !Application.isEditor && Debug.isDebugBuild &&
                                       Environment.GetEnvironmentVariable("DC_SOAK_ACCEPTANCE") == "1";
-            automatedAudioVisualAcceptance = !Application.isEditor &&
+            automatedAudioVisualAcceptance = !Application.isEditor && Debug.isDebugBuild &&
                                               Environment.GetEnvironmentVariable("DC_AUDIO_ACCEPTANCE") == "1";
-            automatedVisualAcceptance = !Application.isEditor &&
+            automatedVisualAcceptance = !Application.isEditor && Debug.isDebugBuild &&
                                         Environment.GetEnvironmentVariable("DC_VIS812_CAPTURE") == "1";
-            automatedVisualAcceptanceDefeat = !Application.isEditor &&
+            automatedVisualAcceptanceDefeat = !Application.isEditor && Debug.isDebugBuild &&
                                               Environment.GetEnvironmentVariable("DC_VIS812_CAPTURE_DEFEAT") == "1";
             if (automatedVisualAcceptance)
                 StartCoroutine(RunAutomatedVis812VisualAcceptance());
@@ -299,7 +308,11 @@ namespace DefenderChronicles.Core
             outposts.RemoveAll(item => item == null);
             friendlyUnits.RemoveAll(item => item == null);
 
+            long simulationStart = System.Diagnostics.Stopwatch.GetTimestamp();
+            Profiler.BeginSample("DC.BattleSimulation");
             AdvanceBattle(Time.deltaTime);
+            Profiler.EndSample();
+            LastSimulationMilliseconds = (System.Diagnostics.Stopwatch.GetTimestamp() - simulationStart) * 1000d / System.Diagnostics.Stopwatch.Frequency;
             if (Phase == GamePhase.Intermission)
             {
                 if (nextWaveButtonLabel != null)
@@ -316,7 +329,14 @@ namespace DefenderChronicles.Core
             }
 
             HandleWorldPointer();
-            RefreshUi();
+            if (Time.unscaledTime >= nextHudRefresh)
+            {
+                long uiStart = System.Diagnostics.Stopwatch.GetTimestamp(); Profiler.BeginSample("DC.BattleHud");
+                RefreshUi(); Profiler.EndSample();
+                LastHudMilliseconds = (System.Diagnostics.Stopwatch.GetTimestamp() - uiStart) * 1000d / System.Diagnostics.Stopwatch.Frequency;
+                nextHudRefresh = Time.unscaledTime + .1f;
+                RefreshFirstBattleGuide();
+            }
         }
 
         private void RefreshThreatPreviewForPhase()
@@ -400,6 +420,7 @@ namespace DefenderChronicles.Core
             }
 
             var world = new GameObject("Greybox World").transform;
+            world.SetParent(transform,false);
             CreatePrimitive("Deep Blue Backdrop", PrimitiveType.Cube, new Vector3(11f, -0.72f, 5.5f),
                 new Vector3(33f, 0.24f, 19f), new Color(0.06f, 0.16f, 0.24f), world, false);
             CreatePrimitive("Valley Ground", PrimitiveType.Cube, new Vector3(11f, -0.35f, 5.5f),
@@ -680,6 +701,7 @@ namespace DefenderChronicles.Core
         {
             if (Phase != GamePhase.Preparing && Phase != GamePhase.Intermission) return;
             if (currentWaveIndex >= waves.Length || spawning) return;
+            SaveWaveCheckpoint();
             StartCoroutine(SpawnWave(waves[currentWaveIndex]));
         }
 
@@ -734,6 +756,7 @@ namespace DefenderChronicles.Core
             var enemy = go.AddComponent<GreyboxEnemy>();
             enemy.Configure(this, archetype, stats, path);
             enemies.Add(enemy);
+            PeakEnemyCount = Mathf.Max(PeakEnemyCount, enemies.Count);
             EmitPresentation(PresentationCue.UnitSpawned, go.transform.position, go, ActorKind(archetype));
         }
 
@@ -753,6 +776,9 @@ namespace DefenderChronicles.Core
 
         internal void EnemyReachedKeep(GreyboxEnemy enemy, int damage)
         {
+            telemetry.Record(this,"leak",enemy.Archetype.ToString(),damage);
+            ShowMessage(GameLocalization.Text("Kaleye sızma: ","Keep breached: ") + FirstRegionCampaign.EnemyName(enemy.Archetype),2);
+            EmitPresentation(PresentationCue.UiError,path[^1],value:damage);
             leakedLives[(int)enemy.Archetype] += Mathf.Max(1, damage);
             LoseLives(Mathf.Max(1, damage));
             EnemyRemoved(enemy, false);
@@ -769,6 +795,8 @@ namespace DefenderChronicles.Core
         {
             if (currentWaveIndex >= waves.Length) return;
             WaveDefinition completed = waves[currentWaveIndex];
+            telemetry.Record(this,"wave_result",completed.id); telemetry.Flush();
+            if (waveElapsed > 0) Debug.Log($"[WAVE_BALANCE] level={CampaignLevelNumber} wave={currentWaveIndex+1} seconds={waveElapsed:F2} gold={Gold} lives={Lives} peak={PeakEnemyCount}");
             EarnGold(completed.clearBonus);
             currentWaveIndex++;
 
@@ -798,6 +826,9 @@ namespace DefenderChronicles.Core
 
         private void SetPhase(GamePhase next)
         {
+            if (next == GamePhase.Victory && campaignStore != null)
+                CompletionReward = campaignStore.CompleteLevel(CampaignLevelNumber, BattleRules.StarsForLives(Lives,StartingLivesForLevel), Lives);
+            else if (next is GamePhase.Victory or GamePhase.Defeat) ClearCheckpoint();
             Phase = next;
             PhaseChanged?.Invoke(next);
             if (nextWaveButton != null)
@@ -867,12 +898,12 @@ namespace DefenderChronicles.Core
                 return;
             }
 
-            ShowMessage($"{OutpostDisplayName(kind)} kuruldu.", 2f);
+            ShowMessage(GameLocalization.Text($"{OutpostDisplayName(kind)} kuruldu.", $"{OutpostDisplayName(kind)} built."), 2f);
         }
 
         public bool TryBuildOutpost(int slotIndex, OutpostKind kind)
         {
-            if (!initialized || slotIndex < 0 || slotIndex >= slots.Count) return false;
+            if (!CanChangeDefence || !CanBuild(kind) || slotIndex < 0 || slotIndex >= slots.Count) return false;
             GreyboxOutpostSlot targetSlot = slots[slotIndex];
             if (targetSlot == null || targetSlot.Occupant != null) return false;
 
@@ -907,6 +938,8 @@ namespace DefenderChronicles.Core
             outpost.Configure(this, targetSlot, kind, stats);
             targetSlot.SetOccupant(outpost);
             outposts.Add(outpost);
+            telemetry.Record(this, firstTowerRecorded ? "build" : "first_tower", kind.ToString(), stats.cost);
+            firstTowerRecorded = true;
             SelectOutpost(outpost);
             EmitPresentation(PresentationCue.OutpostBuilt, go.transform.position, go, outpost: kind);
             return true;
@@ -946,11 +979,13 @@ namespace DefenderChronicles.Core
         private void UpgradeSelected()
         {
             if (selectedOutpost == null) return;
+            if (selectedOutpost.CanSpecialize && artHud != null)
+            { artHud.ShowSpecializationChoices(selectedOutpost, this); return; }
             if (!TryUpgradeOutpost(selectedOutpost.Slot.Index))
             {
                 ShowMessage(selectedOutpost.CanUpgrade
-                    ? "Yükseltme için yeterli altın yok."
-                    : "Bu karakol en yüksek gri kutu seviyesinde.", 2f);
+                    ? GameLocalization.Text("Yükseltme için yeterli altın yok.", "Not enough gold to upgrade.")
+                    : GameLocalization.Text("En yüksek seviyeye ulaşıldı.", "Maximum level reached."), 2f);
                 return;
             }
             RefreshSelectedPanel();
@@ -958,10 +993,11 @@ namespace DefenderChronicles.Core
 
         public bool TryUpgradeOutpost(int slotIndex)
         {
-            if (slotIndex < 0 || slotIndex >= slots.Count) return false;
+            if (!CanChangeDefence || slotIndex < 0 || slotIndex >= slots.Count) return false;
             GreyboxOutpost outpost = slots[slotIndex]?.Occupant;
             if (outpost == null || !outpost.CanUpgrade || !SpendGold(outpost.UpgradeCost)) return false;
             outpost.Upgrade();
+            telemetry.Record(this,"upgrade",outpost.Kind.ToString(),outpost.UpgradeCost);
             ReplaceOutpostVisual(outpost);
             EmitPresentation(PresentationCue.OutpostUpgraded, outpost.Position, outpost.gameObject, outpost: outpost.Kind);
             return true;
@@ -979,10 +1015,11 @@ namespace DefenderChronicles.Core
 
         public bool TrySellOutpost(int slotIndex)
         {
-            if (slotIndex < 0 || slotIndex >= slots.Count) return false;
+            if (!CanChangeDefence || slotIndex < 0 || slotIndex >= slots.Count) return false;
             GreyboxOutpost outpost = slots[slotIndex]?.Occupant;
             if (outpost == null) return false;
             int refund = outpost.SellValue;
+            telemetry.Record(this,"sell",outpost.Kind.ToString(),refund);
             outposts.Remove(outpost);
             EmitPresentation(PresentationCue.OutpostSold, outpost.Position, outpost.gameObject, outpost: outpost.Kind);
             outpost.Sell();
@@ -999,7 +1036,7 @@ namespace DefenderChronicles.Core
                 return;
             }
             if (!hero.TryUseShieldBash())
-                ShowMessage($"Yetenek {Mathf.CeilToInt(hero.AbilityRemaining)} sn sonra hazır.", 2f);
+                ShowMessage(hero.AbilityRemaining > 0 ? GameLocalization.Text($"Yetenek {Mathf.CeilToInt(hero.AbilityRemaining)} sn sonra hazır.", $"Ability ready in {Mathf.CeilToInt(hero.AbilityRemaining)} sec.") : GameLocalization.Text("Menzilde düşman yok · Yetenek harcanmadı.", "No enemy in range · Ability not spent."), 2f);
         }
 
         private void CancelSelection()
@@ -1007,6 +1044,7 @@ namespace DefenderChronicles.Core
             if (selectedSlot != null) selectedSlot.SetSelected(false);
             selectedSlot = null;
             selectedOutpost = null;
+            if (selectionRange != null) selectionRange.Show(Vector3.zero, 1, false);
             RefreshSelectedPanel();
         }
 
@@ -1920,12 +1958,15 @@ namespace DefenderChronicles.Core
 
         }
 
+        private CombatRangeVisual selectionRange;
         private void SelectSlot(GreyboxOutpostSlot slot)
         {
             if (selectedSlot != null) selectedSlot.SetSelected(false);
             selectedSlot = slot;
             selectedSlot.SetSelected(true);
             selectedOutpost = slot.Occupant;
+            if (selectionRange == null) selectionRange = CombatRangeVisual.Create(transform,"Selected tower range",new Color(.35f,.8f,1));
+            selectionRange.Show(slot.transform.position, selectedOutpost != null ? selectedOutpost.RangeValue : TowerProgression.Stats(OutpostKind.Archer,1).range,true);
             RefreshSelectedPanel();
         }
 
@@ -2029,6 +2070,7 @@ namespace DefenderChronicles.Core
         private Coroutine messageRoutine;
         private void ShowMessage(string message, float duration)
         {
+            message = GameLocalization.Translate(message);
             if (messageText == null && artHud == null) return;
             if (messageRoutine != null) StopCoroutine(messageRoutine);
             messageRoutine = StartCoroutine(MessageRoutine(message, duration));
@@ -2243,6 +2285,13 @@ namespace DefenderChronicles.Core
         private EnemyStats GetScaledStats(EnemyArchetype archetype)
         {
             EnemyStats baseStats = GetStats(archetype);
+            if (CampaignLevelNumber <= FirstRegionCampaign.LevelCount)
+            {
+                var balance = FirstRegionCampaign.Level(CampaignLevelNumber);
+                return new EnemyStats(Mathf.RoundToInt(baseStats.maxHealth * balance.healthMultiplier),
+                    baseStats.speed * BattleRules.LegacyPace,
+                    balance.killRewards[(int)archetype], baseStats.baseDamage, baseStats.attackDamage, baseStats.color);
+            }
             float progress = Mathf.Clamp01((CampaignLevelNumber - 1f) / (CampaignCatalog.LevelCount - 1f));
             float healthMultiplier = Mathf.Lerp(1f, 2.7f, progress);
             float speedMultiplier = Mathf.Lerp(1f, 1.16f, progress);
@@ -2267,19 +2316,13 @@ namespace DefenderChronicles.Core
             _ => PresentationActorKind.Raider
         };
 
-        internal static OutpostStats GetOutpostStats(OutpostKind kind) => kind switch
-        {
-            OutpostKind.Archer => new OutpostStats(75, 55, 22, 4.8f, 2.5f),
-            OutpostKind.Barracks => new OutpostStats(100, 70, 14, 1.4f, 1f),
-            OutpostKind.Mage => new OutpostStats(125, 85, 38, 4.2f, 1.3f),
-            _ => new OutpostStats(75, 55, 20, 4f, 1f)
-        };
+        internal static OutpostStats GetOutpostStats(OutpostKind kind) => TowerProgression.Base(kind);
 
         internal static string OutpostDisplayName(OutpostKind kind) => kind switch
         {
-            OutpostKind.Archer => "OKÇU KARAKOLU",
-            OutpostKind.Barracks => "MUHAFIZ KIŞLASI",
-            OutpostKind.Mage => "BÜYÜ OCAĞI",
+            OutpostKind.Archer => GameLocalization.Text("OKÇU KARAKOLU", "ARCHER OUTPOST"),
+            OutpostKind.Barracks => GameLocalization.Text("MUHAFIZ KIŞLASI", "GUARD BARRACKS"),
+            OutpostKind.Mage => GameLocalization.Text("BÜYÜ OCAĞI", "MAGE OUTPOST"),
             _ => kind.ToString().ToUpperInvariant()
         };
 

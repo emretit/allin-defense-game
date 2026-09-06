@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.IO;
 using DefenderChronicles.Core;
 using DefenderChronicles.Data;
@@ -27,7 +28,7 @@ namespace DefenderChronicles.UI
         Result
     }
 
-    public sealed class AppFlowController : MonoBehaviour
+    public sealed partial class AppFlowController : MonoBehaviour
     {
         private readonly Dictionary<AppScreen, GameObject> screens = new();
         private readonly List<Button> levelButtons = new();
@@ -104,6 +105,7 @@ namespace DefenderChronicles.UI
             frontendUiSource.volume = FrontendPreferences.SfxVolume;
             battlePaused = pauseBattle;
             session.PhaseChanged += HandleSessionPhaseChanged;
+            progress.SyncStatusChanged += OnSaveStatusChanged;
             MobileOrientationController.Request(HasPendingLevel
                 ? MobileOrientationMode.LandscapeBattle
                 : MobileOrientationMode.PortraitFrontend);
@@ -120,6 +122,7 @@ namespace DefenderChronicles.UI
             BuildBriefingScreen();
             BuildResultScreen();
             BuildSettingsModal();
+            BuildGuestImportAction();
             BuildOrientationCurtain();
             ApplyPortraitLayout();
             ApplyStoredAudioPreferences();
@@ -133,7 +136,7 @@ namespace DefenderChronicles.UI
                 ApplyDevelopmentCaptureScreen();
                 return;
             }
-            StartCoroutine(FinishBoot(string.IsNullOrWhiteSpace(progress.Data.playerId)
+            StartCoroutine(FinishBoot(progress.Data.playerId == "local-guest" && progress.Data.TotalStars == 0 && progress.Data.checkpoint == null
                 ? AppScreen.Welcome
                 : AppScreen.MainMenu));
         }
@@ -154,7 +157,7 @@ namespace DefenderChronicles.UI
 
         public void SetLoginStatus(string status)
         {
-            if (loginStatus != null) loginStatus.text = status ?? string.Empty;
+            if (loginStatus != null) loginStatus.text = GameLocalization.Translate(status ?? string.Empty);
         }
 
         public void BeginAuthentication(PlayerAuthProvider provider)
@@ -175,7 +178,7 @@ namespace DefenderChronicles.UI
 
         public void LaunchCampaignLevel(int level)
         {
-            selectedLevel = Mathf.Clamp(level, 1, CampaignCatalog.LevelCount);
+            selectedLevel = Mathf.Clamp(level, 1, Mathf.Min(FirstRegionCampaign.LevelCount, progress.Data.unlockedLevel));
             progress.SelectLevel(selectedLevel);
             if (session.IsInitialized)
             {
@@ -319,12 +322,13 @@ namespace DefenderChronicles.UI
             subtitle.lineSpacing = 8f;
             SetRect(subtitle.rectTransform, new Vector2(0f, -32f), new Vector2(650f, 86f), Center(), Center());
 
-            Button start = CreateButton("Start", card.transform, "KRALLIĞA GİR  ›", new Vector2(460f, 92f),
-                theme.commandGold, SignInAsGuest);
+            Button start = CreateButton("Start", card.transform, GameLocalization.Text("OYUNA BAŞLA  ›", "PLAY NOW  ›"), new Vector2(460f, 92f),
+                theme.commandGold, () => LaunchCampaignLevel(1));
             SetRect(start.GetComponent<RectTransform>(), new Vector2(0f, -156f), new Vector2(460f, 92f), Center(), Center());
 
             Button account = CreateButton("Link Account", card.transform, "HESABINI BAĞLA", new Vector2(460f, 64f),
                 theme.defenderBlue, () => ShowScreen(AppScreen.Login));
+            account.gameObject.SetActive(false);
             SetRect(account.GetComponent<RectTransform>(), new Vector2(0f, -254f), new Vector2(460f, 64f), Center(), Center());
 
             TextMeshProUGUI footnote = CreateText("Guest Note", card.transform,
@@ -406,9 +410,9 @@ namespace DefenderChronicles.UI
             callout.fontSizeMax = 58f;
             SetRect(callout.rectTransform, new Vector2(54f, -60f), new Vector2(760f, 150f), TopLeft(), TopLeft());
 
-            CampaignLevelDefinition last = CampaignCatalog.Level(Mathf.Clamp(progress.Data.lastSelectedLevel, 1, progress.Data.unlockedLevel));
+            CampaignLevelDefinition last = CampaignCatalog.Level(progress.NextUnfinishedLevel());
             continueDetails = CreateText("Continue Details", continueCard.transform,
-                $"BÖLGE {last.region}  ·  {last.displayName.ToUpperInvariant()}\n{last.waveCount} dalga  ·  ~{last.targetMinutes:0.#} dk  ·  {last.startingGold} başlangıç altını",
+                $"BÖLGE {last.region}  ·  {last.localizedName.ToUpperInvariant()}\n{last.waveCount} dalga  ·  ~{last.targetMinutes:0.#} dk  ·  {last.startingGold} başlangıç altını",
                 23, catalog.bodyFont, FontStyles.Normal, TextAlignmentOptions.Left, theme.textMuted);
             SetRect(continueDetails.rectTransform, new Vector2(58f, -238f), new Vector2(760f, 88f), TopLeft(), TopLeft());
 
@@ -447,11 +451,11 @@ namespace DefenderChronicles.UI
             tabLayout.childForceExpandWidth = true;
             tabLayout.childControlHeight = true;
 
-            for (int index = 0; index < CampaignCatalog.RegionCount; index++)
+            for (int index = 0; index < 1; index++)
             {
                 int targetIndex = index;
                 CampaignRegionDefinition region = CampaignCatalog.Regions[index];
-                CreateButton($"Region Tab {index + 1}", tabs.transform, $"{index + 1}  {region.displayName.ToUpperInvariant()}",
+                CreateButton($"Region Tab {index + 1}", tabs.transform, $"{index + 1}  {region.localizedName.ToUpperInvariant()}",
                     new Vector2(260f, 60f), new Color(region.primaryColor.r, region.primaryColor.g, region.primaryColor.b, 1f),
                     () => FocusRegion(targetIndex));
             }
@@ -489,7 +493,7 @@ namespace DefenderChronicles.UI
             campaignScroll.viewport = viewport.GetComponent<RectTransform>();
             campaignScroll.content = contentRect;
 
-            for (int index = 0; index < CampaignCatalog.RegionCount; index++)
+            for (int index = 0; index < 1; index++)
                 BuildRegion(content.transform, CampaignCatalog.Regions[index]);
 
             GameObject selectionBar = CreatePanel("Selection Bar", root, theme.panel);
@@ -603,7 +607,7 @@ namespace DefenderChronicles.UI
             root.AddComponent<FrontendCampaignPageFitter>().Configure(campaignScroll.viewport, 984f);
 
             TextMeshProUGUI name = CreateText("Region Name", root.transform,
-                $"BÖLGE {region.number}  ·  {region.displayName.ToUpperInvariant()}", 30, catalog.titleFont,
+                GameLocalization.Text($"BÖLGE {region.number}  ·  {region.localizedName.ToUpperInvariant()}", $"REGION {region.number}  ·  {region.localizedName.ToUpperInvariant()}"), 30, catalog.titleFont,
                 FontStyles.Bold, TextAlignmentOptions.Left, region.number == 1 ? theme.commandGold : region.accentColor);
             SetRect(name.rectTransform, new Vector2(55f, -54f), new Vector2(900f, 48f), TopLeft(), TopLeft());
 
@@ -633,7 +637,7 @@ namespace DefenderChronicles.UI
 
                 CampaignLevelProgress levelProgress = progress.ProgressFor(level.number);
                 string starText = levelProgress == null || levelProgress.stars <= 0
-                    ? (level.isBoss ? "LORD" : level.displayName.ToUpperInvariant())
+                    ? (level.isBoss ? "LORD" : level.localizedName.ToUpperInvariant())
                     : $"{levelProgress.stars}/3";
                 TextMeshProUGUI stars = CreateText("Progress", root.transform, starText, level.isBoss ? 19 : 17,
                     catalog.bodyFont, FontStyles.Bold, TextAlignmentOptions.Center,
@@ -693,7 +697,7 @@ namespace DefenderChronicles.UI
 
         private void ContinueCampaign()
         {
-            selectedLevel = Mathf.Clamp(progress.Data.lastSelectedLevel, 1, progress.Data.unlockedLevel);
+            selectedLevel = progress.NextUnfinishedLevel();
             OpenBriefing();
         }
 
@@ -712,14 +716,14 @@ namespace DefenderChronicles.UI
 
         private void SelectLevel(int level)
         {
-            selectedLevel = Mathf.Clamp(level, 1, progress.Data.unlockedLevel);
+            selectedLevel = Mathf.Clamp(level, 1, Mathf.Min(FirstRegionCampaign.LevelCount, progress.Data.unlockedLevel));
             CampaignLevelDefinition definition = CampaignCatalog.Level(selectedLevel);
-            selectedLevelTitle.text = $"{definition.number}. {definition.displayName}";
+            selectedLevelTitle.text = $"{definition.number}. {definition.localizedName}";
             selectedLevelDetails.text = GameLocalization.IsEnglish
                 ? $"{definition.waveCount} waves · ~{definition.targetMinutes:0.#} min · {definition.startingGold} gold\n" +
-                  $"Reward: {definition.valorReward} Valor · {definition.heroXpReward} XP"
+                  "Earn stars to unlock the next defence."
                 : $"{definition.waveCount} dalga · ~{definition.targetMinutes:0.#} dk · {definition.startingGold} altın\n" +
-                  $"Ödül: {definition.valorReward} Valor · {definition.heroXpReward} XP";
+                  "Yıldız kazan, sıradaki savunmayı aç.";
             playSelectedButton.interactable = selectedLevel <= progress.Data.unlockedLevel;
             RefreshSelectedLevelVisuals();
             PlayFrontendCue(theme.levelSelect, PresentationCue.UiClick);
@@ -727,7 +731,7 @@ namespace DefenderChronicles.UI
 
         private void OpenBriefing()
         {
-            selectedLevel = Mathf.Clamp(selectedLevel, 1, progress.Data.unlockedLevel);
+            selectedLevel = Mathf.Clamp(selectedLevel, 1, Mathf.Min(10, progress.Data.unlockedLevel));
             RefreshBriefing();
             ShowScreen(AppScreen.Briefing);
         }
@@ -744,7 +748,7 @@ namespace DefenderChronicles.UI
             briefingRegion.text = GameLocalization.IsEnglish
                 ? $"REGION {definition.region}  ·  GREENWATCH FRONT LINE"
                 : $"BÖLGE {definition.region}  ·  GREENWATCH ÖN HATTI";
-            briefingTitle.text = $"{definition.number}. {definition.displayName.ToUpperInvariant()}";
+            briefingTitle.text = $"{definition.number}. {definition.localizedName.ToUpperInvariant()}";
             briefingObjective.text = GameLocalization.IsEnglish
                 ? $"Defend the fortress approach for {definition.waveCount} waves.\n" +
                   $"Estimated time: ~{definition.targetMinutes:0.#} minutes\n" +
@@ -757,9 +761,7 @@ namespace DefenderChronicles.UI
                   $"THREAT LEVEL\n{ThreatLabel(definition.number)}"
                 : $"DÜŞMAN İSTİHBARATI\n{EnemyPreviewForLevel(definition.number)}\n\n" +
                   $"TEHDİT SEVİYESİ\n{ThreatLabel(definition.number)}";
-            briefingReward.text = GameLocalization.IsEnglish
-                ? $"BATTLE REWARD\n+ {definition.valorReward} Valor\n+ {definition.heroXpReward} Hero XP"
-                : $"SAVAŞ ÖDÜLÜ\n+ {definition.valorReward} Valor\n+ {definition.heroXpReward} Kahraman XP";
+            briefingReward.text = LearningObjective(selectedLevel);
         }
 
         private void RefreshSelectedLevelVisuals()
@@ -804,21 +806,8 @@ namespace DefenderChronicles.UI
             }
         }
 
-        private static string EnemyPreviewForLevel(int level) => (level, GameLocalization.IsEnglish) switch
-        {
-            (<= 1, false) => "Akıncılar",
-            (<= 3, false) => "Akıncılar · Öncüler",
-            (<= 5, false) => "Akıncılar · Öncüler · Yenileyiciler",
-            (<= 7, false) => "Akıncılar · Destek Birlikleri · Kuşatma",
-            (< 10, false) => "Ağır Öncüler · Destek · Kuşatma",
-            (_, false) => "Bölgesel Lord · Ağır Öncüler · Kuşatma",
-            (<= 1, true) => "Raiders",
-            (<= 3, true) => "Raiders · Vanguards",
-            (<= 5, true) => "Raiders · Vanguards · Regenerators",
-            (<= 7, true) => "Raiders · Support · Siege",
-            (< 10, true) => "Heavy Vanguards · Support · Siege",
-            _ => "Regional Lord · Heavy Vanguards · Siege"
-        };
+        private static string EnemyPreviewForLevel(int level) => string.Join(" · ",
+            CampaignLevelFactory.Create(level).waves.SelectMany(w => w.groups).Select(g => g.enemy).Distinct().Select(FirstRegionCampaign.EnemyName));
 
         private static string ThreatLabel(int level) => (level, GameLocalization.IsEnglish) switch
         {
@@ -851,21 +840,21 @@ namespace DefenderChronicles.UI
             string displayName = string.IsNullOrWhiteSpace(progress.Data.displayName)
                 ? GameLocalization.Text("Greenwatch Muhafızı", "Greenwatch Defender")
                 : progress.Data.displayName;
+            int visibleStars = progress.Data.levels.Where(x => x.level <= 10).Sum(x => x.stars);
             profileLabel.text = $"{displayName}  ·  {provider}\n" +
-                                GameLocalization.Text($"{progress.Data.TotalStars}/150 yıldız  ·  {progress.Data.valor} Valor",
-                                    $"{progress.Data.TotalStars}/150 stars  ·  {progress.Data.valor} Valor");
+                GameLocalization.Text($"{visibleStars}/30 yıldız", $"{visibleStars}/30 stars") + "  ·  " + SaveStatus();
             if (continueDetails != null)
             {
-                int target = Mathf.Clamp(progress.Data.lastSelectedLevel, 1, progress.Data.unlockedLevel);
+                int target = progress.NextUnfinishedLevel();
                 CampaignLevelDefinition last = CampaignCatalog.Level(target);
                 CampaignLevelProgress result = progress.ProgressFor(target);
                 string stars = result == null || result.stars <= 0
                     ? GameLocalization.Text("0/3 YILDIZ", "0/3 STARS")
                     : GameLocalization.Text($"{result.stars}/3 YILDIZ", $"{result.stars}/3 STARS");
                 continueDetails.text = GameLocalization.IsEnglish
-                    ? $"REGION {last.region}  ·  {last.displayName.ToUpperInvariant()}  ·  {stars}\n" +
+                    ? $"REGION {last.region}  ·  {last.localizedName.ToUpperInvariant()}  ·  {stars}\n" +
                       $"{last.waveCount} waves  ·  ~{last.targetMinutes:0.#} min  ·  {last.startingGold} starting gold"
-                    : $"BÖLGE {last.region}  ·  {last.displayName.ToUpperInvariant()}  ·  {stars}\n" +
+                    : $"BÖLGE {last.region}  ·  {last.localizedName.ToUpperInvariant()}  ·  {stars}\n" +
                       $"{last.waveCount} dalga  ·  ~{last.targetMinutes:0.#} dk  ·  {last.startingGold} başlangıç altını";
             }
         }
@@ -882,7 +871,7 @@ namespace DefenderChronicles.UI
                     ? 0f
                     : session.Lives / (float)session.StartingLivesForLevel;
                 stars = lifeRatio >= 0.75f ? 3 : lifeRatio >= 0.4f ? 2 : 1;
-                reward = progress.CompleteLevel(session.CampaignLevelNumber, stars, session.Lives);
+                reward = session.CompletionReward;
             }
             ShowResult(victory, stars, reward);
         }
@@ -893,24 +882,24 @@ namespace DefenderChronicles.UI
             SetCanvasOrientation(MobileOrientationMode.LandscapeBattle);
             RefreshLevelButtons();
             selectedLevel = victory
-                ? Mathf.Min(CampaignCatalog.LevelCount, session.CampaignLevelNumber + 1)
+                ? Mathf.Min(FirstRegionCampaign.LevelCount, session.CampaignLevelNumber + 1)
                 : session.CampaignLevelNumber;
             resultTitle.text = victory
                 ? GameLocalization.Text(
-                    $"ZAFER\n{CampaignCatalog.Level(session.CampaignLevelNumber).displayName.ToUpperInvariant()} TAMAMLANDI",
-                    $"VICTORY\n{CampaignCatalog.Level(session.CampaignLevelNumber).displayName.ToUpperInvariant()} COMPLETE")
+                    $"ZAFER\n{CampaignCatalog.Level(session.CampaignLevelNumber).localizedName.ToUpperInvariant()} TAMAMLANDI",
+                    $"VICTORY\n{CampaignCatalog.Level(session.CampaignLevelNumber).localizedName.ToUpperInvariant()} COMPLETE")
                 : GameLocalization.Text("SAVUNMA HATTI DÜŞTÜ", "THE DEFENCE LINE HAS FALLEN");
             resultTitle.color = victory ? theme.textPrimary : theme.enemyRed;
             resultStars.text = victory
                 ? GameLocalization.Text($"{stars} / 3 YILDIZ", $"{stars} / 3 STARS")
                 : GameLocalization.Text("0 / 3 YILDIZ", "0 / 3 STARS");
-            resultReward.text = victory
-                ? reward.Valor > 0 || reward.HeroXp > 0
-                    ? GameLocalization.Text($"+{reward.Valor} Valor     +{reward.HeroXp} Kahraman XP",
-                        $"+{reward.Valor} Valor     +{reward.HeroXp} Hero XP")
-                    : GameLocalization.Text("Bölüm ödülü daha önce alındı", "Level reward already claimed")
-                : GameLocalization.Text("Savunmanı güçlendir ve tekrar dene", "Strengthen your defence and try again");
-            nextLevelButton.interactable = victory && session.CampaignLevelNumber < CampaignCatalog.LevelCount;
+            resultReward.text = victory ? SaveStatus() + "\n" +
+                (session.CampaignLevelNumber == 1 && progress.Data.authProvider == PlayerAuthProvider.Guest
+                    ? GameLocalization.Text("İlerlemeni korumak için menüden hesabını bağlayabilirsin.", "You can link an account from the menu to protect your progress.")
+                    : LearningObjective(Mathf.Min(10, selectedLevel)))
+                : GameLocalization.Text($"Dalga {session.CurrentWaveIndex + 1} · ", $"Wave {session.CurrentWaveIndex + 1} · ") +
+                    FirstRegionCampaign.EnemyName(session.MostDamagingLeak) + "\n" + DefenceAdvice(session.MostDamagingLeak);
+            nextLevelButton.interactable = victory && session.CampaignLevelNumber < FirstRegionCampaign.LevelCount;
             SetButtonEmphasis(nextLevelButton, victory ? theme.commandGold : theme.night);
             SetButtonEmphasis(retryButton, victory ? theme.defenderBlue : theme.commandGold);
             canvas.gameObject.SetActive(true);
@@ -1034,6 +1023,7 @@ namespace DefenderChronicles.UI
                 yield return WaitForOrientation(MobileOrientationMode.LandscapeBattle);
 
             session.SetCampaignLevel(level);
+            session.ConfigureCampaignStore(progress);
             session.Initialize();
             warTableRenderer?.SetVisible(false);
             HideOrientationCurtain();
@@ -1065,7 +1055,8 @@ namespace DefenderChronicles.UI
         private static IEnumerator WaitForOrientation(MobileOrientationMode mode)
         {
             int stableFrames = 0;
-            while (stableFrames < 2)
+            float deadline = Time.realtimeSinceStartup + 8;
+            while (stableFrames < 2 && Time.realtimeSinceStartup < deadline)
             {
                 stableFrames = MobileOrientationController.IsSettled(mode) ? stableFrames + 1 : 0;
                 yield return null;
@@ -1137,7 +1128,7 @@ namespace DefenderChronicles.UI
             SetAnchors(RequireRect(campaign, "Region Tabs"), new Vector2(0f, 1f), new Vector2(1f, 1f),
                 new Vector2(70f, -278f), new Vector2(-70f, -204f));
             Transform tabs = campaign.Find("Region Tabs");
-            for (int index = 0; index < CampaignCatalog.RegionCount; index++)
+            for (int index = 0; index < 1; index++)
             {
                 Transform tab = tabs?.Find($"Region Tab {index + 1}");
                 TextMeshProUGUI label = tab != null ? tab.GetComponentInChildren<TextMeshProUGUI>(true) : null;
@@ -1394,7 +1385,7 @@ namespace DefenderChronicles.UI
 
         private static void ReloadCampaignLevel(int level)
         {
-            pendingLevel = Mathf.Clamp(level, 1, CampaignCatalog.LevelCount);
+            pendingLevel = Mathf.Clamp(level, 1, FirstRegionCampaign.LevelCount);
             MobileOrientationController.Request(MobileOrientationMode.LandscapeBattle);
             Time.timeScale = 1f;
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
@@ -1889,6 +1880,7 @@ namespace DefenderChronicles.UI
         {
             GameLocalization.LanguageChanged -= HandleLanguageChanged;
             if (session != null) session.PhaseChanged -= HandleSessionPhaseChanged;
+            if (progress != null) progress.SyncStatusChanged -= OnSaveStatusChanged;
             if (battlePaused) Time.timeScale = 1f;
         }
     }

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using DefenderChronicles.Data;
 using DefenderChronicles.Combat;
 using DefenderChronicles.Presentation;
+using DefenderChronicles.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -34,6 +35,7 @@ namespace DefenderChronicles.Core
         private readonly SlowEffect slow = new();
         private float siegeWindup;
         private GreyboxOutpost siegeTarget;
+        private CombatRangeVisual siegeWarning;
         public float StunRemaining => stunRemaining;
         public float SlowFactor => slow.Factor;
         public int Health => health;
@@ -59,6 +61,7 @@ namespace DefenderChronicles.Core
             bodyRenderer = GetComponentInChildren<Renderer>();
             CreateHealthBar();
             State = EnemyCombatState.Moving;
+            if (type is EnemyArchetype.Siege or EnemyArchetype.Boss) siegeWarning = CombatRangeVisual.Create(transform, "Siege warning", new Color(1,.15f,.05f));
         }
 
         internal void Tick(float delta)
@@ -77,6 +80,7 @@ namespace DefenderChronicles.Core
             siegeTimer -= delta;
             regenerationTimer -= delta;
             RunSpecialBehaviour(delta);
+            if (siegeWarning != null) siegeWarning.Show(siegeTarget != null ? siegeTarget.Position : Position, 1.3f, IsWindingUp);
 
             IDamageable blocker = session.FindNearestBlocker(transform.position, AttackRange());
             if (blocker != null && blocker.IsAlive)
@@ -85,6 +89,8 @@ namespace DefenderChronicles.Core
                 if (attackTimer <= 0f)
                 {
                     blocker.TakeDamage(stats.attackDamage);
+                    session.EmitPresentation(PresentationCue.OutpostAttacked, blocker.Position, gameObject,
+                        GameSessionController.ActorKind(archetype), OutpostKind.Barracks);
                     attackTimer += BattleRules.LegacySeconds(archetype == EnemyArchetype.Boss ? .75f : 1.05f);
                 }
                 return;
@@ -164,7 +170,7 @@ namespace DefenderChronicles.Core
             Vector3 target = path[targetWaypoint];
             Vector3 current = transform.position;
             target.y = current.y;
-            float phaseMultiplier = archetype == EnemyArchetype.Boss ? 1f + (bossPhase - 1) * 0.22f : 1f;
+            float phaseMultiplier = archetype == EnemyArchetype.Boss && bossPhase == 3 ? 1.44f : 1f;
             transform.position = Vector3.MoveTowards(current, target,
                 stats.speed * phaseMultiplier * slow.Factor * delta);
 
@@ -226,6 +232,7 @@ namespace DefenderChronicles.Core
             if (!IsAlive || duration <= 0f) return;
             stunRemaining = Mathf.Max(stunRemaining, duration);
             siegeTarget = null;
+            if (siegeWarning != null) siegeWarning.Show(Position,1,false);
             siegeWindup = 0f;
             siegeTimer = archetype == EnemyArchetype.Boss ? 4f : 3f;
         }
@@ -258,7 +265,9 @@ namespace DefenderChronicles.Core
                 fillRect.anchorMax = Vector2.one;
                 fillRect.offsetMin = new Vector2(2f, 2f);
                 fillRect.offsetMax = new Vector2(-2f, -2f);
-                fillObject.GetComponent<Image>().color = new Color(0.25f, 0.95f, 0.3f);
+                fillObject.GetComponent<Image>().color = archetype == EnemyArchetype.Boss
+                    ? new Color(1f,.5f,.15f) : new Color(.95f,.22f,.25f);
+                if (archetype == EnemyArchetype.Vanguard) ShieldStatusIcon.Attach(canvasObject.transform);
                 healthFill = fillObject.transform;
                 return;
             }
@@ -289,6 +298,9 @@ namespace DefenderChronicles.Core
 
     public sealed class GreyboxOutpost : MonoBehaviour, IDamageable
     {
+        public OutpostSpecialization Specialization { get; private set; }
+        public TowerCombatStats CombatStats { get; private set; }
+        public bool CanSpecialize => IsAlive && level == 2 && Specialization == OutpostSpecialization.None;
         private readonly List<GreyboxFriendlyUnit> soldiers = new();
         private GameSessionController session;
         private OutpostStats baseStats;
@@ -327,6 +339,7 @@ namespace DefenderChronicles.Core
             Slot = slot;
             Kind = kind;
             baseStats = stats;
+            CombatStats = TowerProgression.Stats(kind, 1);
             invested = stats.cost;
             bodyRenderer = GetComponentInChildren<Renderer>();
             activeColor = bodyRenderer != null ? bodyRenderer.material.color : Color.white;
@@ -356,29 +369,60 @@ namespace DefenderChronicles.Core
             }
 
             if (attackTimer > 0f) return;
-            GreyboxEnemy target = session.FindFirstEnemy(transform.position, CurrentRange());
+            GreyboxEnemy target = CombatStats.priorityTargets
+                ? session.FindPriorityEnemy(transform.position, CurrentRange())
+                : session.FindFirstEnemy(transform.position, CurrentRange());
             if (target == null) return;
             if (Kind == OutpostKind.Mage)
             {
-                session.DamageEnemies(target.Position, 1.65f, CurrentDamage());
+                session.DamageEnemies(target.Position, CombatStats.splashRadius, CurrentDamage(),
+                    CombatStats.slowFactor, CombatStats.slowSeconds, CombatStats.damageType);
                 session.EmitPresentation(PresentationCue.MageImpact, target.Position, gameObject, outpost: Kind);
             }
             else
             {
-                target.TakeDamage(CurrentDamage());
+                target.TakeDamage(CurrentDamage(), CombatStats.damageType);
                 session.EmitPresentation(PresentationCue.OutpostAttacked, target.Position, gameObject, outpost: Kind);
             }
             attackTimer = 1f / Mathf.Max(0.05f, CurrentRate());
+        }
+
+        internal SavedOutpost CaptureCheckpoint() => new SavedOutpost
+        {
+            slot = Slot.Index, kind = Kind, level = level, specialization = Specialization,
+            attack = attackTimer, disabled = disabledRemaining,
+            guards = soldiers.FindAll(g => g != null && g.IsAlive).ConvertAll(g => g.CaptureCheckpoint())
+        };
+        internal void RestoreCheckpoint(SavedOutpost data)
+        {
+            attackTimer = data.attack; disabledRemaining = data.disabled;
+            for (int i = soldiers.Count - 1; i >= 0; i--)
+            {
+                if (i >= data.guards.Count) { soldiers[i].TakeDamage(int.MaxValue); soldiers.RemoveAt(i); }
+                else soldiers[i].RestoreCheckpoint(data.guards[i]);
+            }
         }
 
         public void Upgrade()
         {
             if (!CanUpgrade) return;
             level = 2;
+            CombatStats = TowerProgression.Stats(Kind, level);
             invested += UpgradeCost;
             if (session == null || !session.HasProductionPresentation) transform.localScale *= 1.15f;
             foreach (var soldier in soldiers)
                 if (soldier != null) soldier.SetUpgradeLevel(level);
+        }
+
+        public bool Specialize(OutpostSpecialization branch)
+        {
+            if (!CanSpecialize || !TowerProgression.Matches(Kind, branch)) return false;
+            Specialization = branch;
+            level = 3;
+            invested += TowerProgression.Cost(Kind);
+            CombatStats = TowerProgression.Stats(Kind, level, branch);
+            foreach (var soldier in soldiers) if (soldier != null) soldier.SetUpgradeLevel(level);
+            return true;
         }
 
         internal void RefreshPresentationRenderer()
@@ -462,15 +506,15 @@ namespace DefenderChronicles.Core
             return closest;
         }
 
-        private int CurrentDamage() => Mathf.RoundToInt(baseStats.damage * (level == 2 ? 1.55f : 1f));
-        private float CurrentRange() => baseStats.range * (level == 2 ? 1.12f : 1f);
-        private float CurrentRate() => baseStats.attacksPerSecond * (level == 2 ? 1.20f : 1f);
-        private string RoleName() => Kind switch
+        private int CurrentDamage() => CombatStats.damage;
+        private float CurrentRange() => CombatStats.range;
+        private float CurrentRate() => CombatStats.attacksPerSecond;
+        private string RoleName() => Specialization != OutpostSpecialization.None ? TowerProgression.Description(Specialization) : Kind switch
         {
-            OutpostKind.Archer => "Hızlı tek hedef",
-            OutpostKind.Barracks => "İki engelleyici birlik",
-            OutpostKind.Mage => "Alan hasarı",
-            _ => "Savunma"
+            OutpostKind.Archer => GameLocalization.Text("Hızlı tek hedef", "Fast single target"),
+            OutpostKind.Barracks => GameLocalization.Text("İki engelleyici birlik", "Two blocking guards"),
+            OutpostKind.Mage => GameLocalization.Text("Alan hasarı", "Area damage"),
+            _ => GameLocalization.Text("Savunma", "Defence")
         };
     }
 
@@ -504,11 +548,13 @@ namespace DefenderChronicles.Core
 
         public void SetUpgradeLevel(int level)
         {
-            maxHealth = level >= 2 ? LevelTwoHealth : LevelOneHealth;
+            maxHealth = owner.CombatStats.guardHealth;
             health = Mathf.Max(health, maxHealth);
-            damage = level >= 2 ? LevelTwoDamage : LevelOneDamage;
+            damage = owner.CombatStats.damage;
         }
 
+        internal ActorCheckpoint CaptureCheckpoint() => new ActorCheckpoint { health = health, attack = attackTimer };
+        internal void RestoreCheckpoint(ActorCheckpoint data) { health = data.health; attackTimer = data.attack; }
         internal void Tick(float delta)
         {
             if (!IsAlive || session == null) return;
@@ -521,7 +567,7 @@ namespace DefenderChronicles.Core
                     target.TakeDamage(damage);
                     session.EmitPresentation(PresentationCue.OutpostAttacked, target.Position, gameObject,
                         PresentationActorKind.Guard, owner.Kind);
-                    attackTimer = AttackInterval;
+                    attackTimer += 1f / owner.CombatStats.attacksPerSecond;
                 }
                 return;
             }
@@ -572,6 +618,14 @@ namespace DefenderChronicles.Core
             bodyCollider = GetComponent<Collider>();
         }
 
+        internal ActorCheckpoint CaptureCheckpoint() => new ActorCheckpoint
+        { health = health, attack = attackTimer, ability = AbilityRemaining, respawn = RespawnRemaining, downed = downed };
+        internal void RestoreCheckpoint(ActorCheckpoint data)
+        {
+            health = data.health; attackTimer = data.attack; AbilityRemaining = data.ability;
+            RespawnRemaining = data.respawn; downed = data.downed;
+            SetVisuals(!downed); if (bodyCollider != null) bodyCollider.enabled = !downed;
+        }
         internal void Tick(float delta)
         {
             AbilityRemaining = CombatMath.TickCooldown(AbilityRemaining, delta);
@@ -602,7 +656,7 @@ namespace DefenderChronicles.Core
 
         public bool TryUseShieldBash()
         {
-            if (!IsAlive || AbilityRemaining > 0f || session == null) return false;
+            if (!IsAlive || AbilityRemaining > 0f || session == null || session.Phase is GamePhase.Paused or GamePhase.Victory or GamePhase.Defeat) return false;
             int targets = session.CountEnemies(transform.position, 3.2f);
             if (targets == 0) return false;
             session.RecordAbility(targets);

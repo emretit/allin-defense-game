@@ -49,6 +49,8 @@ namespace DefenderChronicles.Core
         public long serverRevision;
         public long nextClaimSequence = 1;
         public bool migrationNeedsReview;
+        public bool unreadableSavePreserved;
+        public BattleCheckpoint checkpoint;
         public List<RejectedCompletion> rejectedClaims = new();
         public List<string> guestImports = new();
         public List<CampaignCompletionClaim> pendingClaims = new();
@@ -78,6 +80,8 @@ namespace DefenderChronicles.Core
         public CampaignSaveData Data { get; private set; }
         public string SavePath { get; private set; }
         public string ProfileKey { get; private set; }
+        public bool HasWriteError { get; private set; }
+        public string LocalError { get; private set; }
         public bool RecoveredFromBackup { get; private set; }
         public CampaignSyncStatus SyncStatus { get; private set; } = CampaignSyncStatus.LocalOnly;
         public int PendingClaimCount => Data.pendingClaims?.Count ?? 0;
@@ -135,11 +139,13 @@ namespace DefenderChronicles.Core
             string id = string.IsNullOrWhiteSpace(playerId) ? "local-guest" : playerId;
             string nextKey = provider == PlayerAuthProvider.Guest ? "guest" : AtomicSaveFile.Hash(id);
             Save();
+            if (HasWriteError) throw new IOException("Account switch deferred until the current save can be written.");
             if (nextKey != ProfileKey)
             {
+                var nextData = LoadAt(ProfilePath(nextKey));
                 ProfileKey = nextKey;
                 SavePath = ProfilePath(nextKey);
-                Data = LoadAt(SavePath);
+                Data = nextData;
             }
             string oldOwner = Data.playerId;
             Data.authProvider = provider;
@@ -203,6 +209,7 @@ namespace DefenderChronicles.Core
                 createdAtUtc = DateTime.UtcNow.ToString("O")
             };
             Data.pendingClaims.Add(claim);
+            Data.checkpoint = null; // Completion and checkpoint removal commit in the same atomic save.
             CampaignCompletionReward reward = ApplyCompletion(Data, claim);
             Data.lastSelectedLevel = NextUnfinishedLevel();
             Save();
@@ -296,8 +303,18 @@ namespace DefenderChronicles.Core
         public void Save()
         {
             Normalize(Data);
-            AtomicSaveFile.Write(SavePath, JsonUtility.ToJson(Data));
-            AtomicSaveFile.Write(rootPath + ".active", JsonUtility.ToJson(new ActiveProfile { key = ProfileKey }));
+            try
+            {
+                AtomicSaveFile.Write(SavePath, JsonUtility.ToJson(Data));
+                AtomicSaveFile.Write(rootPath + ".active", JsonUtility.ToJson(new ActiveProfile { key = ProfileKey }));
+                HasWriteError = false; LocalError = null;
+            }
+            catch (Exception error) when (error is IOException || error is UnauthorizedAccessException)
+            {
+                HasWriteError = true; LocalError = error.Message;
+                SetSyncStatus(CampaignSyncStatus.RequiresReview);
+                Debug.LogWarning("Local save retry required: " + error.Message);
+            }
             Changed?.Invoke();
         }
 
@@ -316,7 +333,16 @@ namespace DefenderChronicles.Core
             if (!AtomicSaveFile.TryRead(path, Valid, out string payload, out bool recovered))
             {
                 if (File.Exists(path) || File.Exists(path + ".bak") || File.Exists(path + ".tmp"))
-                    throw new IOException("No valid campaign save can be recovered; existing files were preserved.");
+                {
+                    // Preserve every byte before allowing a fresh local session to write anything.
+                    string recovery = path + ".unreadable-" + DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
+                    Directory.CreateDirectory(recovery);
+                    foreach (string suffix in new[] { "", ".bak", ".tmp" })
+                        if (File.Exists(path+suffix)) File.Copy(path+suffix,Path.Combine(recovery,"save"+suffix));
+                    LocalError = "Unreadable save preserved at " + recovery;
+                    SetSyncStatus(CampaignSyncStatus.RequiresReview);
+                    return Normalize(new CampaignSaveData { migrationNeedsReview = true, unreadableSavePreserved = true });
+                }
                 return Normalize(new CampaignSaveData());
             }
             RecoveredFromBackup |= recovered;
@@ -332,6 +358,8 @@ namespace DefenderChronicles.Core
         public static CampaignSaveData Normalize(CampaignSaveData data)
         {
             data ??= new CampaignSaveData();
+            // JsonUtility materializes null serializable classes as empty objects on some players.
+            if (data.checkpoint != null && string.IsNullOrEmpty(data.checkpoint.owner)) data.checkpoint = null;
             data.version = CurrentVersion;
             if ((int)data.authProvider is 2 or 3)
                 data.authProvider = PlayerAuthProvider.PlayerAccount;
@@ -406,6 +434,7 @@ namespace DefenderChronicles.Core
 
         private void SetSyncStatus(CampaignSyncStatus status)
         {
+            if (HasWriteError || Data?.unreadableSavePreserved == true) status = CampaignSyncStatus.RequiresReview;
             if (SyncStatus == status) return;
             SyncStatus = status;
             SyncStatusChanged?.Invoke(status);

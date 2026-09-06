@@ -44,8 +44,8 @@ namespace DefenderChronicles.Presentation
             public float MessageY { get; }
         }
 
-        public const float TopContentHeight = 78f;
-        public const float BottomContentHeight = 116f;
+        public const float TopContentHeight = 146f;
+        public const float BottomContentHeight = 170f;
 
         private RectTransform root;
         private RectTransform topBar;
@@ -120,22 +120,22 @@ namespace DefenderChronicles.Presentation
 
             if (previewChrome != null)
                 SetTopCenteredBanner(previewChrome, new Vector2(metrics.SafeCenterX, metrics.SafeMaxY), metrics.PreviewY,
-                    new Vector2(metrics.PreviewWidth, 64f));
+                    new Vector2(metrics.PreviewWidth, 116f));
             if (previewTitle != null)
                 SetTopCenteredBanner(previewTitle, new Vector2(metrics.SafeCenterX, metrics.SafeMaxY),
                     metrics.PreviewY - 8f, new Vector2(metrics.PreviewWidth - 56f, 18f));
             SetTopCenteredBanner(preview, new Vector2(metrics.SafeCenterX, metrics.SafeMaxY),
-                metrics.PreviewY - 27f, new Vector2(metrics.PreviewWidth - 56f, 30f));
+                metrics.PreviewY - 27f, new Vector2(metrics.PreviewWidth - 56f, 80f));
             if (messageChrome != null)
                 SetTopCenteredBanner(messageChrome, new Vector2(metrics.SafeCenterX, metrics.SafeMaxY),
-                    metrics.MessageY, new Vector2(metrics.MessageWidth, 48f));
+                    metrics.MessageY, new Vector2(metrics.MessageWidth, 82f));
             SetTopCenteredBanner(message, new Vector2(metrics.SafeCenterX, metrics.SafeMaxY),
-                metrics.MessageY - 4f, new Vector2(metrics.MessageWidth - 40f, 38f));
+                metrics.MessageY - 4f, new Vector2(metrics.MessageWidth - 40f, 72f));
 
             selectedPanel.anchorMin = selectedPanel.anchorMax = new Vector2(metrics.SafeMaxX, metrics.SafeMinY);
             selectedPanel.pivot = new Vector2(1f, 0f);
             selectedPanel.anchoredPosition = new Vector2(-18f, BottomContentHeight + 18f);
-            selectedPanel.sizeDelta = new Vector2(Mathf.Min(360f, metrics.SafeWidth * 0.30f), 340f);
+            selectedPanel.sizeDelta = new Vector2(Mathf.Min(440f, metrics.SafeWidth * 0.34f), 480f);
         }
 
         public static LayoutMetrics CalculateLayoutMetrics(Vector2 rootSize, Rect safeArea, Vector2Int screenSize)
@@ -156,10 +156,10 @@ namespace DefenderChronicles.Presentation
             float safeWidth = rootSize.x * Mathf.Max(0.1f, safeMaxX - safeMinX);
             // Battle is landscape-only: threat and toast surfaces should remain compact so they
             // never become a second rail across the battlefield on phones or tablets.
-            float previewWidth = Mathf.Min(safeWidth * 0.34f, 640f);
+            float previewWidth = Mathf.Min(safeWidth * 0.50f, 1000f);
             float messageWidth = Mathf.Min(safeWidth * 0.38f, 720f);
             float previewY = -(TopContentHeight + topInset + 8f);
-            float messageY = previewY - 70f;
+            float messageY = previewY - 122f;
             return new LayoutMetrics(safeMinX, safeMaxX, safeMinY, safeMaxY, bottomInset, topInset,
                 safeCenterX, safeWidth, previewWidth, messageWidth, previewY, messageY);
         }
@@ -177,7 +177,7 @@ namespace DefenderChronicles.Presentation
             RectTransform phaseChrome = FindOptionalRect(topContent, "PhaseChrome");
             if (phaseChrome != null) MatchRect(phase, phaseChrome);
             RectTransform speed = FindOptionalRect(topContent, "Speed");
-            if (speed != null) SetRange(speed, 0.83f, 0.895f, 8f, 8f);
+            if (speed != null) SetRange(speed, 0.80f, 0.895f, 8f, 8f);
             SetRange(RequireRect(topContent, "Pause"), 0.90f, 1f, 8f, 8f);
         }
 
@@ -211,7 +211,7 @@ namespace DefenderChronicles.Presentation
             rect.anchorMax = new Vector2(maxX, 0f);
             rect.pivot = Vector2.zero;
             rect.offsetMin = new Vector2(5f, 27f);
-            rect.offsetMax = new Vector2(-5f, 102f);
+            rect.offsetMax = new Vector2(-5f, 158f);
         }
 
         private static void SetRange(RectTransform rect, float minX, float maxX, float bottom, float top)

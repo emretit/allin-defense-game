@@ -10,7 +10,7 @@ namespace DefenderChronicles.CloudCode;
 public sealed class CampaignProgressionModule
 {
     public const string StateKey = "campaign_state_v3";
-    public const string RulesVersion = "campaign-rules-v1";
+    public const string RulesVersion = "campaign-rules-v2";
     public const int MaximumBatchSize = 20;
 
     static readonly ConcurrentDictionary<string, SemaphoreSlim> PlayerLocks = new();
@@ -102,8 +102,10 @@ public sealed class CampaignProgressionModule
 
     static CampaignRulesDocument LoadRules()
     {
-        string path = Path.Combine(AppContext.BaseDirectory, "campaign-rules-v1.json");
-        CampaignRulesDocument? rules = JsonConvert.DeserializeObject<CampaignRulesDocument>(File.ReadAllText(path));
+        using var stream = typeof(CampaignProgressionModule).Assembly.GetManifestResourceStream("campaign-rules-v2.json")
+            ?? throw new InvalidOperationException("Embedded campaign rules are missing from the deployed module.");
+        using var reader = new StreamReader(stream);
+        CampaignRulesDocument? rules = JsonConvert.DeserializeObject<CampaignRulesDocument>(reader.ReadToEnd());
         if (rules == null || rules.RulesVersion != RulesVersion || rules.Levels.Count != 50)
             throw new InvalidOperationException("Campaign rules are missing, incomplete, or have the wrong version.");
         return rules;
@@ -195,7 +197,8 @@ public static class CampaignRulesEngine
             return Reject(decision, "owner_mismatch");
         if (!seenInBatch.Add(claim.ClaimId) || state.ProcessedClaimIds.Contains(claim.ClaimId))
             return Accept(decision, "duplicate", 0, 0);
-        if (!string.Equals(claim.RulesVersion, rules.RulesVersion, StringComparison.Ordinal))
+        if (!string.Equals(claim.RulesVersion, rules.RulesVersion, StringComparison.Ordinal) &&
+            !(rules.RulesVersion == "campaign-rules-v2" && claim.RulesVersion == "campaign-rules-v1"))
             return Reject(decision, "rules_mismatch");
         if (claim.Level < 1 || claim.Level > rules.Levels.Count)
             return Reject(decision, "invalid_level");

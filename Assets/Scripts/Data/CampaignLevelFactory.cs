@@ -73,6 +73,8 @@ namespace DefenderChronicles.Data
                 guardianPosition = existingFinal ? new Vector3(21.7f, 0.12f, 8.15f) : BuildGuardianPosition(path),
                 waves = existingFinal ? BuildExistingBossWaves() : BuildProgressiveWaves(campaign)
             };
+            if (campaign.number <= FirstRegionCampaign.LevelCount)
+            { runtime.waves = FirstRegionCampaign.CreateWaves(campaign.number); return runtime; }
             foreach (var wave in runtime.waves)
                 foreach (var group in wave.groups) { group.startDelay *= .5f; group.interval *= .5f; }
             return runtime;

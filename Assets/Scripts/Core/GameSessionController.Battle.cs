@@ -2,12 +2,52 @@ using System;
 using System.Collections.Generic;
 using DefenderChronicles.Combat;
 using DefenderChronicles.Data;
+using DefenderChronicles.Presentation;
 using UnityEngine;
 
 namespace DefenderChronicles.Core
 {
     public sealed partial class GameSessionController
     {
+        public bool NextWaveHasBoss => waves != null && currentWaveIndex < waves.Length && waves[currentWaveIndex].bossWave;
+        public bool CanBuildOnSelection => CanChangeDefence && selectedSlot != null && selectedSlot.Occupant == null;
+        internal void RecordSaveFailure() => telemetry.Record(this,"save_error","local_write_failed");
+        private int unlockedCampaignLevel;
+        public int UnlockedCampaignLevel => unlockedCampaignLevel > 0 ? unlockedCampaignLevel : CampaignLevelNumber;
+        public void ConfigureProgress(int unlockedLevel) => unlockedCampaignLevel = Mathf.Clamp(unlockedLevel, 1, 50);
+        public bool CanBuild(OutpostKind kind) => TowerProgression.CanBuild(kind, UnlockedCampaignLevel);
+        private bool CanChangeDefence => initialized && Phase is GamePhase.Preparing or GamePhase.Intermission or GamePhase.Wave;
+
+        public bool TrySpecializeOutpost(int slotIndex, OutpostSpecialization branch)
+        {
+            if (!CanChangeDefence || slotIndex < 0 || slotIndex >= slots.Count) return false;
+            var outpost = slots[slotIndex]?.Occupant;
+            if (outpost == null || !outpost.CanSpecialize || !TowerProgression.Matches(outpost.Kind, branch) ||
+                UnlockedCampaignLevel < TowerProgression.UnlockLevel(outpost.Kind) || Gold < TowerProgression.Cost(outpost.Kind)) return false;
+            if (!outpost.Specialize(branch)) return false;
+            SpendGold(TowerProgression.Cost(outpost.Kind));
+            telemetry.Record(this,"specialize",branch.ToString(),TowerProgression.Cost(outpost.Kind));
+            ReplaceOutpostVisual(outpost);
+            TowerBranchVisual.Apply(outpost);
+            RefreshSelectedPanel();
+            EmitPresentation(PresentationCue.OutpostUpgraded, outpost.Position, outpost.gameObject, outpost: outpost.Kind);
+            return true;
+        }
+
+        internal GreyboxEnemy FindPriorityEnemy(Vector3 position, float range)
+        {
+            GreyboxEnemy best = null;
+            int bestPriority = -1;
+            foreach (var enemy in enemies)
+            {
+                if (enemy == null || !enemy.IsAlive || (enemy.Position - position).sqrMagnitude > range * range) continue;
+                int priority = enemy.Archetype == EnemyArchetype.Support ? 2 : enemy.Archetype == EnemyArchetype.Siege ? 1 : 0;
+                if (best != null && (priority < bestPriority || priority == bestPriority && enemy.RouteProgress <= best.RouteProgress)) continue;
+                best = enemy; bestPriority = priority;
+            }
+            return best;
+        }
+
         private readonly List<ScheduledSpawn> scheduledSpawns = new();
         private int nextSpawn;
         private double stepAccumulator;
@@ -75,7 +115,7 @@ namespace DefenderChronicles.Core
             }
         }
 
-        internal void RecordAbility(int targets) { AbilityUses++; AbilityTargets += targets; }
+        internal void RecordAbility(int targets) { AbilityUses++; AbilityTargets += targets; telemetry.Record(this,"ability","ShieldBash",targets); }
         public EnemyArchetype MostDamagingLeak
         {
             get

@@ -39,6 +39,7 @@ namespace DefenderChronicles.Core
         public int valor;
         public int heroXp;
         public List<CampaignLevelProgress> levels = new();
+        public List<string> processedClaimIds = new();
     }
 
     [Serializable]
@@ -67,6 +68,6 @@ namespace DefenderChronicles.Core
 
     public static class CampaignRulesVersion
     {
-        public const string Current = "campaign-rules-v1";
+        public const string Current = "campaign-rules-v2";
     }
 }

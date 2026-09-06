@@ -13,7 +13,8 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="../../Assets/Resources/LiveGame/campaign-rules-v1.json" Link="campaign-rules-v1.json">
+    <EmbeddedResource Include="../../Assets/Resources/LiveGame/campaign-rules-v2.json" LogicalName="campaign-rules-v2.json" />
+    <Content Include="../../Assets/Resources/LiveGame/campaign-rules-v2.json" Link="campaign-rules-v2.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

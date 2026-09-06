@@ -12,6 +12,7 @@ namespace DefenderChronicles.Data
         public int indexInRegion;
         public string id;
         public string displayName;
+        public string localizedName => DefenderChronicles.UI.GameLocalization.Translate(displayName);
         public int waveCount;
         public int startingGold;
         public int startingLives;
@@ -29,6 +30,7 @@ namespace DefenderChronicles.Data
         public int number;
         public string id;
         public string displayName;
+        public string localizedName => DefenderChronicles.UI.GameLocalization.Translate(displayName);
         public string subtitle;
         public Color primaryColor;
         public Color accentColor;
@@ -128,6 +130,14 @@ namespace DefenderChronicles.Data
                     region.levels[9].startingGold = 200;
                     region.levels[9].startingLives = 20;
                 }
+                if (regionIndex == 0)
+                    foreach (var level in region.levels)
+                    {
+                        var authored = FirstRegionCampaign.Level(level.number);
+                        level.waveCount = authored.waves.Length;
+                        level.startingGold = authored.startingGold;
+                        level.targetMinutes = (authored.targetMinSeconds + authored.targetMaxSeconds) / 120f;
+                    }
                 result.Add(region);
             }
             return result;

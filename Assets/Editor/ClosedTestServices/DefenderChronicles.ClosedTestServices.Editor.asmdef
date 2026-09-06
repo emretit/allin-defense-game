@@ -1,0 +1,17 @@
+{
+  "name": "DefenderChronicles.ClosedTestServices.Editor",
+  "references": [
+    "DefenderChronicles.Runtime",
+    "Unity.Services.Core.Editor",
+    "Unity.Services.DeploymentApi",
+    "Unity.Services.Core",
+    "Unity.Services.Core.Environments",
+    "Unity.Services.Authentication",
+    "Unity.Services.CloudCode",
+    "Unity.Services.Core.Environments.Editor"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "autoReferenced": true
+}

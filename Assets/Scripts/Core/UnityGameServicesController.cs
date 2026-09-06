@@ -19,6 +19,7 @@ namespace DefenderChronicles.Core
         private CampaignProgressStore progress;
         private PlayerAuthProvider requestedProvider;
         private bool initialized;
+        private bool restoring;
         private bool syncing;
         private bool playerAccountsSubscribed;
         private Task initialization;
@@ -40,7 +41,8 @@ namespace DefenderChronicles.Core
 
         private async void RestoreSession()
         {
-            if (string.IsNullOrWhiteSpace(Application.cloudProjectId)) return;
+            if (restoring || progress == null || string.IsNullOrWhiteSpace(Application.cloudProjectId)) return;
+            restoring = true;
             try
             {
                 await EnsureInitializedAsync();
@@ -52,7 +54,16 @@ namespace DefenderChronicles.Core
                     await AuthenticationService.Instance.SignInAnonymouslyAsync();
                 }
                 if (progress.Data.authProvider == PlayerAuthProvider.Guest)
+                {
+                    var auth = AuthenticationService.Instance;
+                    // A crash during account sign-in can leave a registered token beside the guest save.
+                    if (!CanRestoreGuestOwner(progress.Data.playerId,auth.PlayerId,auth.PlayerInfo?.Identities?.Count > 0))
+                    {
+                        auth.SignOut(true);
+                        await auth.SignInAnonymouslyAsync();
+                    }
                     progress.SignIn(PlayerAuthProvider.Guest, AuthenticationService.Instance.PlayerId, progress.Data.displayName);
+                }
                 RequestSync();
             }
             catch (Exception error)
@@ -61,14 +72,17 @@ namespace DefenderChronicles.Core
                 ScheduleRetry();
                 Debug.LogWarning("Cloud session restore deferred: " + error.Message);
             }
+            finally { restoring = false; }
         }
 
         public void RequestSync() { syncRequested = true; nextAttempt = 0f; }
+        public static bool CanRestoreGuestOwner(string localOwner,string sessionOwner,bool registered) =>
+            !registered && (string.IsNullOrEmpty(localOwner) || localOwner == "local-guest" || localOwner == sessionOwner);
         private void Update()
         {
             if (!syncRequested || syncing || Time.realtimeSinceStartup < nextAttempt) return;
             syncRequested = false;
-            if (!initialized) RestoreSession();
+            if (!initialized || !AuthenticationService.Instance.IsSignedIn) RestoreSession();
             else _ = SynchronizeCloudAsync();
         }
         private void ScheduleRetry()

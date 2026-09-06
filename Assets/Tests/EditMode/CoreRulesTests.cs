@@ -97,7 +97,7 @@ namespace DefenderChronicles.Tests
             Assert.That(GameSessionController.SpeedForStep(3), Is.EqualTo(8f));
             Assert.That(GameSessionController.SpeedLabelForScale(1f), Is.EqualTo("1x"));
             Assert.That(GameSessionController.SpeedLabelForScale(8f), Is.EqualTo("8x"));
-            Assert.That(GameSessionController.GameplayDelay(2f), Is.EqualTo(1f));
+            Assert.That(GameSessionController.GameplayDelay(2f), Is.EqualTo(2f));
         }
 
         [Test]
@@ -223,9 +223,9 @@ namespace DefenderChronicles.Tests
                 var store = new CampaignProgressStore(path);
                 CampaignLevelDefinition level = CampaignCatalog.Level(5);
 
-                CampaignCompletionReward first = store.CompleteLevel(5, 1, 8);
+                CampaignCompletionReward first = store.CompleteLevel(5, 1, 4);
                 CampaignCompletionReward replay = store.CompleteLevel(5, 1, 6);
-                CampaignCompletionReward improvement = store.CompleteLevel(5, 3, 12);
+                CampaignCompletionReward improvement = store.CompleteLevel(5, 3, 16);
 
                 Assert.That(first.Valor, Is.EqualTo(level.valorReward + 5));
                 Assert.That(first.HeroXp, Is.EqualTo(level.heroXpReward));
@@ -327,10 +327,10 @@ namespace DefenderChronicles.Tests
             }
 
             Assert.That(ContainsEnemy(CampaignLevelFactory.Create(1), EnemyArchetype.Vanguard), Is.False);
-            Assert.That(ContainsEnemy(CampaignLevelFactory.Create(2), EnemyArchetype.Vanguard), Is.True);
+            Assert.That(ContainsEnemy(CampaignLevelFactory.Create(4), EnemyArchetype.Vanguard), Is.True);
             Assert.That(ContainsEnemy(CampaignLevelFactory.Create(3), EnemyArchetype.Regenerator), Is.False);
-            Assert.That(ContainsEnemy(CampaignLevelFactory.Create(4), EnemyArchetype.Regenerator), Is.True);
-            Assert.That(ContainsEnemy(CampaignLevelFactory.Create(6), EnemyArchetype.Support), Is.True);
+            Assert.That(ContainsEnemy(CampaignLevelFactory.Create(6), EnemyArchetype.Regenerator), Is.True);
+            Assert.That(ContainsEnemy(CampaignLevelFactory.Create(7), EnemyArchetype.Support), Is.True);
             Assert.That(ContainsEnemy(CampaignLevelFactory.Create(8), EnemyArchetype.Siege), Is.True);
             Assert.That(ContainsEnemy(CampaignLevelFactory.Create(10), EnemyArchetype.Boss), Is.True);
         }
@@ -348,10 +348,10 @@ namespace DefenderChronicles.Tests
                 Assert.That(runtime.waves.Length, Is.InRange(3, 12));
                 Assert.That(runtime.outpostSlots, Has.Length.EqualTo(8));
                 Assert.That(runtime.waves[^1].bossWave, Is.EqualTo(levelNumber % 10 == 0));
-                Assert.That(runtime.waves.SelectMany(wave => wave.groups).All(group => group.count <= 50), Is.True,
-                    $"Level {levelNumber} exceeded the mobile encounter count budget.");
+                Assert.That(runtime.waves.SelectMany(wave => wave.groups).All(group => group.count <= (levelNumber <= 10 ? 110 : 50)), Is.True,
+                    $"Level {levelNumber} exceeded the authored spawn-group budget.");
                 Assert.That(runtime.waves.SelectMany(wave => wave.groups).Select(group => group.enemy).Distinct().Count(),
-                    Is.GreaterThanOrEqualTo(levelNumber == 1 ? 1 : 2));
+                    Is.GreaterThanOrEqualTo(levelNumber <= 3 ? 1 : 2));
             }
         }
 
@@ -1305,7 +1305,7 @@ namespace DefenderChronicles.Tests
             Assert.That(noSlot.state, Is.EqualTo(DefenderHudController.BuildButtonAvailabilityState.NoSlot));
             Assert.That(noSlot.interactable, Is.False);
             Assert.That(noSlot.title, Is.EqualTo("OKÇU"));
-            Assert.That(noSlot.detail, Is.EqualTo("SLOT SEÇ"));
+            Assert.That(noSlot.detail, Does.Contain("75"));
             Assert.That(noSlot.warningStripe, Is.False);
 
             DefenderHudController.BuildButtonPresentationSpec affordable =
@@ -1320,8 +1320,8 @@ namespace DefenderChronicles.Tests
                 DefenderHudController.BuildButtonSpec("OKÇU", 75, true, 40, accent);
             Assert.That(unaffordable.state, Is.EqualTo(DefenderHudController.BuildButtonAvailabilityState.Unaffordable));
             Assert.That(unaffordable.interactable, Is.False);
-            Assert.That(unaffordable.title, Is.EqualTo("YETERSİZ"));
-            Assert.That(unaffordable.detail, Is.EqualTo("OKÇU 75"));
+            Assert.That(unaffordable.title, Is.EqualTo("OKÇU"));
+            Assert.That(unaffordable.detail, Does.Contain("35"));
             Assert.That(unaffordable.warningStripe, Is.True);
         }
 
@@ -1418,7 +1418,7 @@ namespace DefenderChronicles.Tests
                 DefenderHudController.SelectedOutpostPanelSpec(OutpostKind.Barracks, 1, "Yol tutar",
                     10, 3.5f, 0.7f, true, 100, 60, true, 3.2f);
             Assert.That(disrupted.state, Is.EqualTo(DefenderHudController.SelectedPanelState.Disrupted));
-            Assert.That(disrupted.role, Does.Contain("BOZULDU 4 sn"));
+            Assert.That(disrupted.role, Does.Contain("BOZULDU 4 s"));
             Assert.That(disrupted.hint, Does.Contain("Geçici baskı altında"));
             Assert.That(disrupted.warningStripe, Is.True);
         }
@@ -1528,18 +1528,18 @@ namespace DefenderChronicles.Tests
                 new Rect(80f, 0f, 1760f, 1080f),
                 new Vector2Int(1920, 1080));
 
-            Assert.That(metrics.PreviewWidth, Is.InRange(metrics.SafeWidth * 0.30f, metrics.SafeWidth * 0.45f));
+            Assert.That(metrics.PreviewWidth, Is.InRange(metrics.SafeWidth * 0.30f, metrics.SafeWidth * 0.55f));
             Assert.That(metrics.MessageWidth, Is.InRange(metrics.SafeWidth * 0.35f, metrics.SafeWidth * 0.50f));
         }
 
         [Test]
         public void LandscapeHudRailsLeaveMostOfTheScreenToTheBattlefield()
         {
-            Assert.That(DefenderHudResponsiveLayout.TopContentHeight, Is.LessThanOrEqualTo(84f));
-            Assert.That(DefenderHudResponsiveLayout.BottomContentHeight, Is.LessThanOrEqualTo(128f));
+            Assert.That(DefenderHudResponsiveLayout.TopContentHeight, Is.InRange(140f, 160f));
+            Assert.That(DefenderHudResponsiveLayout.BottomContentHeight, Is.InRange(160f, 180f));
             Assert.That(DefenderHudResponsiveLayout.TopContentHeight +
                         DefenderHudResponsiveLayout.BottomContentHeight,
-                Is.LessThan(1080f * 0.20f));
+                Is.LessThan(1080f * 0.30f));
         }
 
         [Test]

@@ -17,6 +17,17 @@ public sealed class CampaignRulesEngineTests
     }
 
     [Test]
+    public void DeploymentCarriesRulesInsideTheAssembly()
+    {
+        using var stream = typeof(CampaignProgressionModule).Assembly.GetManifestResourceStream("campaign-rules-v2.json");
+        Assert.That(stream, Is.Not.Null);
+        using var reader = new StreamReader(stream!);
+        var embedded = JsonConvert.DeserializeObject<CampaignRulesDocument>(reader.ReadToEnd())!;
+        Assert.That(embedded.Levels.Count, Is.EqualTo(50));
+        Assert.That(embedded.RulesVersion, Is.EqualTo("campaign-rules-v2"));
+    }
+
+    [Test]
     public void DuplicateClaimCannotAwardTwice()
     {
         var state = new CampaignServerState();
@@ -113,6 +124,25 @@ public sealed class CampaignRulesEngineTests
         var result = CampaignRulesEngine.ApplyBatch(new CampaignServerState(), new[] { Claim(1, 3, "valid"), null! }, rules);
         Assert.That(result.Decisions.Last().Reason, Is.EqualTo("invalid_claim_id"));
         Assert.That(result.State.UnlockedLevel, Is.EqualTo(2));
+    }
+
+    [Test]
+    public void AnotherAccountsClaimCannotBeSubmitted()
+    {
+        var claim = Claim(1, 3, "wrong-owner"); claim.OwnerPlayerId = "old-player";
+        var result = CampaignRulesEngine.ApplyBatch(new CampaignServerState(), new[] { claim }, rules, "new-player");
+        Assert.That(result.Decisions.Single().Reason, Is.EqualTo("owner_mismatch"));
+        Assert.That(result.State.Valor, Is.Zero);
+    }
+
+    [Test]
+    public void V2ProcessesQueuedV1WithCanonicalStars()
+    {
+        var claim = Claim(1, 3, "old-version"); claim.RemainingLives = 1;
+        rules.RulesVersion = "campaign-rules-v2";
+        var result = CampaignRulesEngine.ApplyBatch(new CampaignServerState(), new[] { claim }, rules);
+        Assert.That(result.Decisions.Single().Accepted, Is.True);
+        Assert.That(result.State.Levels.Single().Stars, Is.EqualTo(1));
     }
 
     CampaignCompletionClaim Claim(int level, int stars, string id, long sequence = 1) => new()

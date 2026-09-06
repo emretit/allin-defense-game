@@ -35,6 +35,7 @@ namespace DefenderChronicles.Core
             if (presentationCatalog == null)
                 throw new System.InvalidOperationException("Production presentation catalog is missing from GameBootstrap.");
             session.ConfigurePresentation(presentationCatalog);
+            if (ClosedTestAutoplay.Enabled) session.SetCampaignLevel(ClosedTestAutoplay.Level);
 
             if (showFrontend)
             {
@@ -62,12 +63,14 @@ namespace DefenderChronicles.Core
                     session.SetCampaignLevel(levelNumber);
                 session.Initialize();
             }
+            if (ClosedTestAutoplay.Enabled) session.gameObject.AddComponent<ClosedTestAutoplay>();
             RuntimeSceneReady = true;
         }
 
         private static bool ShouldShowFrontend()
         {
-            if (Application.isEditor) return false;
+            if (Application.isEditor || ClosedTestAutoplay.Enabled) return false;
+            if (!Debug.isDebugBuild) return true;
             string[] args = Environment.GetCommandLineArgs();
             bool commandLineAutomation = args.Any(item =>
                 string.Equals(item, "-dc-smoke", StringComparison.OrdinalIgnoreCase));

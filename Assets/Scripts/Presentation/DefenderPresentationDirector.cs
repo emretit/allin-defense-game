@@ -101,7 +101,7 @@ namespace DefenderChronicles.Presentation
                 GamePhase.Preparing or GamePhase.Intermission => MusicState.Preparation,
                 GamePhase.Victory => MusicState.Victory,
                 GamePhase.Defeat => MusicState.Defeat,
-                GamePhase.Wave when session.CurrentWaveIndex >= session.WaveCount - 1 => MusicState.Boss,
+                GamePhase.Wave when session.NextWaveHasBoss => MusicState.Boss,
                 GamePhase.Wave when session.CurrentWaveIndex >= 4 => MusicState.Intense,
                 _ => MusicState.Combat
             };

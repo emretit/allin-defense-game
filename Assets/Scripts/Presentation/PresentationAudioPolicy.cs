@@ -44,6 +44,7 @@ namespace DefenderChronicles.Presentation
         public static PresentationAudioCueSpec Describe(PresentationSignal signal) => signal.cue switch
         {
             PresentationCue.UiClick => Spec("UI", 2, PresentationAudioPriority.High),
+            PresentationCue.UiError when signal.value > 0 => Spec("KeepBreach", 1, PresentationAudioPriority.Critical,musicDuck:.4f,duckSeconds:.5f),
             PresentationCue.UiError => Spec("UIError", 1, PresentationAudioPriority.High),
             PresentationCue.OutpostBuilt or PresentationCue.OutpostUpgraded or PresentationCue.OutpostSold =>
                 Spec("Economy", 2, PresentationAudioPriority.High),
@@ -57,9 +58,9 @@ namespace DefenderChronicles.Presentation
             PresentationCue.HealPulse => Spec("Heal", 3, PresentationAudioPriority.High),
             PresentationCue.OutpostDisrupted or PresentationCue.SlowApplied =>
                 Spec("Status", 2, PresentationAudioPriority.High),
-            PresentationCue.HeroAttacked => Spec("HeroAction", 2, PresentationAudioPriority.High, 0.12f),
+            PresentationCue.HeroAttacked => Spec("HeroAction", 2, PresentationAudioPriority.High),
             PresentationCue.HeroAbility => Spec("HeroAbility", 1, PresentationAudioPriority.Critical,
-                0.05f, 0.42f, 0.48f),
+                0f, 0.42f, 0.48f),
             PresentationCue.BossAttack => Spec("BossImpact", 2, PresentationAudioPriority.Critical,
                 0.20f, 0.48f, 0.55f),
             PresentationCue.BossPhase => Spec("BossPhase", 1, PresentationAudioPriority.Critical,

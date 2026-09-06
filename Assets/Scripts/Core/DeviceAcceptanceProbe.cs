@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using UnityEngine;
@@ -15,7 +16,10 @@ namespace DefenderChronicles.Core
     {
         private const float ReportIntervalSeconds = 10f;
         private const float TargetFrameMilliseconds = 1000f / 30f;
-        private readonly List<float> frameTimes = new(65536);
+        private List<float> frameTimes = new(4096);
+        private readonly Dictionary<string,List<float>> stageFrames = new();
+        private float seriousThermalSeconds;
+        private float longestSeriousThermalSeconds;
         private GameSessionController session;
         private float samplingStartsAt;
         private float nextReport;
@@ -48,6 +52,11 @@ namespace DefenderChronicles.Core
         private void OnDestroy()
         {
             Application.lowMemory -= OnLowMemory;
+            foreach (var entry in stageFrames)
+            {
+                frameTimes = entry.Value;
+                LogMetrics(entry.Key, Profiler.GetTotalAllocatedMemoryLong());
+            }
         }
 
         private void Update()
@@ -55,7 +64,16 @@ namespace DefenderChronicles.Core
             float frameMilliseconds = Time.unscaledDeltaTime * 1000f;
             if (Time.realtimeSinceStartup < samplingStartsAt) return;
 
-            if (frameMilliseconds > 0f && frameMilliseconds < 1000f) frameTimes.Add(frameMilliseconds);
+            if (session != null && session.Phase is GamePhase.Paused or GamePhase.Victory or GamePhase.Defeat) return;
+            string stage = session == null || session.Phase != GamePhase.Wave ? "preparation"
+                : session.Enemies.Any(e => e != null && e.Archetype == Data.EnemyArchetype.Boss) ? "boss"
+                : session.Enemies.Count >= 18 ? "dense" : "normal";
+            currentScenario = stage;
+            if (!stageFrames.TryGetValue(stage, out frameTimes)) stageFrames[stage] = frameTimes = new List<float>(4096);
+            string thermal = ThermalState();
+            seriousThermalSeconds = thermal is "serious" or "critical" ? seriousThermalSeconds + Time.unscaledDeltaTime : 0f;
+            longestSeriousThermalSeconds = Mathf.Max(longestSeriousThermalSeconds, seriousThermalSeconds);
+            if (frameMilliseconds > 0f) frameTimes.Add(frameMilliseconds);
 
             if (frameMilliseconds > TargetFrameMilliseconds)
             {
@@ -102,8 +120,13 @@ namespace DefenderChronicles.Core
 
         public bool HasLowMemoryWarning => lowMemoryWarning;
 
-        public bool MeetsPerformanceGate => frameTimes.Count > 0 && MedianFps >= 55f &&
-                                            P95FrameMilliseconds <= 18f && !lowMemoryWarning;
+        public bool MeetsPerformanceGate => !lowMemoryWarning && longestSeriousThermalSeconds < 30f &&
+            new[] { "preparation", "normal", "dense", "boss" }.All(stage =>
+            {
+                if (!stageFrames.TryGetValue(stage,out var samples) || samples.Count < 60) return false;
+                var sorted = samples.OrderBy(x=>x).ToArray();
+                return 1000f/Percentile(sorted,.5f) >= 55f && Percentile(sorted,.95f) <= 18f;
+            });
 
         private void OnLowMemory()
         {
@@ -124,6 +147,8 @@ namespace DefenderChronicles.Core
             float memoryGrowth = firstWaveAllocatedBytes <= 0
                 ? 0f
                 : (allocatedBytes - firstWaveAllocatedBytes) * 100f / firstWaveAllocatedBytes;
+            Debug.Log($"[DC_PROFILE_COST] build={ClosedTestBuild.Id} stage={stage} simulation_ms={session?.LastSimulationMilliseconds:F3} hud_ms={session?.LastHudMilliseconds:F3} enemies={session?.Enemies.Count} samples={frameTimes.Count}");
+            Debug.Log(FormattableString.Invariant($"[DC_MEMORY_SAMPLE] level={session?.CampaignLevelNumber} wave={session?.CurrentWaveIndex} battle_seconds={session?.BattleElapsedSeconds:F1} current_mb={BytesToMegabytes(allocatedBytes):F1} serious_thermal_seconds={longestSeriousThermalSeconds:F1}"));
             Debug.Log(string.Format(CultureInfo.InvariantCulture,
                 "[DC_DEVICE_METRICS] stage={0} median_fps={1:F1} p95_frame_ms={2:F1} " +
                 "peak_memory_mb={3:F1} memory_growth_pct={4:F1} max_under_30_seconds={5:F2} " +

@@ -43,7 +43,7 @@ namespace DefenderChronicles.Tests
         [Test]
         public void CanonicalCampaignRulesMatchEveryRuntimeLevel()
         {
-            TextAsset asset = Resources.Load<TextAsset>("LiveGame/campaign-rules-v1");
+            TextAsset asset = Resources.Load<TextAsset>("LiveGame/campaign-rules-v2");
             Assert.That(asset, Is.Not.Null);
             RulesDocument document = JsonUtility.FromJson<RulesDocument>(asset.text);
             Assert.That(document.rulesVersion, Is.EqualTo(CampaignRulesVersion.Current));

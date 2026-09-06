@@ -7,6 +7,15 @@ namespace DefenderChronicles.Tests
 {
     public class SaveRecoveryTests
     {
+        [TestCase("local-guest","anonymous-new",false,true)]
+        [TestCase("guest-a","guest-a",false,true)]
+        [TestCase("guest-a","account-b",true,false)]
+        [TestCase("local-guest","account-b",true,false)]
+        [TestCase("guest-a","guest-b",false,false)]
+        public void InterruptedAccountSignInCannotAttachGuestClaimsToAnotherOwner(string local,string cached,bool registered,bool expected)
+        {
+            Assert.That(UnityGameServicesController.CanRestoreGuestOwner(local,cached,registered),Is.EqualTo(expected));
+        }
         private string directory;
         private string path;
         [SetUp] public void Setup()
@@ -35,6 +44,45 @@ namespace DefenderChronicles.Tests
             File.WriteAllText(path, "broken");
             Assert.That(AtomicSaveFile.TryRead(path, x => x is "old" or "new", out string data, out bool recovered), Is.True);
             Assert.That(recovered, Is.True); Assert.That(data, Is.EqualTo("old"));
+        }
+
+        [Test]
+        public void VictoryCommitsCheckpointRemovalAndClaimTogether()
+        {
+            var store = new CampaignProgressStore(path);
+            store.Data.checkpoint = new BattleCheckpoint { level=1,nextWave=2,gold=95,lives=20 };
+            store.Save(); store.CompleteLevel(1,3,20);
+            var reloaded = new CampaignProgressStore(path);
+            Assert.That(reloaded.Data.checkpoint,Is.Null);
+            Assert.That(reloaded.PendingClaimCount,Is.EqualTo(1));
+            Assert.That(reloaded.ProgressFor(1).stars,Is.EqualTo(3));
+        }
+
+        [Test]
+        public void FailedWriteKeepsInMemoryProgressAndRecoversOnRetry()
+        {
+            var store = new CampaignProgressStore(path);
+            Directory.CreateDirectory(store.SavePath);
+            UnityEngine.TestTools.LogAssert.Expect(UnityEngine.LogType.Warning,new System.Text.RegularExpressions.Regex("Local save retry required:"));
+            store.CompleteLevel(1,3,20);
+            Assert.That(store.HasWriteError,Is.True);
+            Assert.That(store.ProgressFor(1).stars,Is.EqualTo(3));
+            Directory.Delete(store.SavePath);
+            store.Save();
+            Assert.That(store.HasWriteError,Is.False);
+            Assert.That(new CampaignProgressStore(path).ProgressFor(1).stars,Is.EqualTo(3));
+        }
+
+        [Test]
+        public void UnreadableVersionsAreQuarantinedBeforeNewProgressCanWrite()
+        {
+            File.WriteAllText(path,"broken original"); File.WriteAllText(path+".bak","broken backup");
+            var store = new CampaignProgressStore(path);
+            Assert.That(store.Data.migrationNeedsReview,Is.True);
+            string recovery = Directory.GetDirectories(directory,"*.unreadable-*")[0];
+            store.CompleteLevel(1,3,20);
+            Assert.That(File.ReadAllText(Path.Combine(recovery,"save")),Is.EqualTo("broken original"));
+            Assert.That(File.ReadAllText(Path.Combine(recovery,"save.bak")),Is.EqualTo("broken backup"));
         }
 
         [Test]

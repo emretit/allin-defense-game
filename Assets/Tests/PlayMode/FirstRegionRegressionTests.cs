@@ -52,6 +52,7 @@ namespace DefenderChronicles.Tests
             for (int level = 1; level <= 10; level++)
             {
                 var session = Create(level);
+                session.ConfigureProgress(50);
                 typeof(GameSessionController).GetMethod("EarnGold", BindingFlags.Instance | BindingFlags.NonPublic)
                     .Invoke(session, new object[] { 2000 }); // Geometry only.
                 for (int slot = 0; slot < session.SlotCount; slot++)

@@ -1,0 +1,1602 @@
+{
+  "version": "first-region-v1",
+  "levels": [
+    {
+      "number": 1,
+      "targetMinSeconds": 120,
+      "targetMaxSeconds": 180,
+      "healthMultiplier": 1,
+      "killRewards": [
+        2,
+        5,
+        8,
+        6,
+        12,
+        50
+      ],
+      "waves": [
+        {
+          "id": "level_01_wave_01",
+          "clearBonus": 15,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 74,
+              "startDelay": 0,
+              "interval": 0.55
+            }
+          ]
+        },
+        {
+          "id": "level_01_wave_02",
+          "clearBonus": 15,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 82,
+              "startDelay": 0,
+              "interval": 0.55
+            }
+          ]
+        },
+        {
+          "id": "level_01_wave_03",
+          "clearBonus": 15,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 90,
+              "startDelay": 0,
+              "interval": 0.55
+            }
+          ]
+        }
+      ],
+      "startingGold": 230
+    },
+    {
+      "number": 2,
+      "targetMinSeconds": 120,
+      "targetMaxSeconds": 180,
+      "healthMultiplier": 1,
+      "killRewards": [
+        2,
+        5,
+        8,
+        6,
+        12,
+        50
+      ],
+      "waves": [
+        {
+          "id": "level_02_wave_01",
+          "clearBonus": 15,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 74,
+              "startDelay": 0,
+              "interval": 0.55
+            }
+          ]
+        },
+        {
+          "id": "level_02_wave_02",
+          "clearBonus": 15,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 82,
+              "startDelay": 0,
+              "interval": 0.55
+            }
+          ]
+        },
+        {
+          "id": "level_02_wave_03",
+          "clearBonus": 15,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 90,
+              "startDelay": 0,
+              "interval": 0.55
+            }
+          ]
+        }
+      ],
+      "startingGold": 230
+    },
+    {
+      "number": 3,
+      "targetMinSeconds": 120,
+      "targetMaxSeconds": 180,
+      "healthMultiplier": 1,
+      "killRewards": [
+        2,
+        5,
+        8,
+        6,
+        12,
+        50
+      ],
+      "waves": [
+        {
+          "id": "level_03_wave_01",
+          "clearBonus": 15,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 74,
+              "startDelay": 0,
+              "interval": 0.55
+            }
+          ]
+        },
+        {
+          "id": "level_03_wave_02",
+          "clearBonus": 15,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 82,
+              "startDelay": 0,
+              "interval": 0.55
+            }
+          ]
+        },
+        {
+          "id": "level_03_wave_03",
+          "clearBonus": 15,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 90,
+              "startDelay": 0,
+              "interval": 0.55
+            }
+          ]
+        }
+      ],
+      "startingGold": 230
+    },
+    {
+      "number": 4,
+      "targetMinSeconds": 240,
+      "targetMaxSeconds": 360,
+      "healthMultiplier": 1.04,
+      "killRewards": [
+        2,
+        5,
+        8,
+        6,
+        12,
+        50
+      ],
+      "waves": [
+        {
+          "id": "level_04_wave_01",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 76,
+              "startDelay": 0,
+              "interval": 0.58
+            },
+            {
+              "enemy": 1,
+              "count": 1,
+              "startDelay": 32,
+              "interval": 3
+            }
+          ]
+        },
+        {
+          "id": "level_04_wave_02",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 80,
+              "startDelay": 0,
+              "interval": 0.58
+            },
+            {
+              "enemy": 1,
+              "count": 6,
+              "startDelay": 5,
+              "interval": 3
+            }
+          ]
+        },
+        {
+          "id": "level_04_wave_03",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 84,
+              "startDelay": 0,
+              "interval": 0.58
+            },
+            {
+              "enemy": 1,
+              "count": 8,
+              "startDelay": 5,
+              "interval": 3
+            }
+          ]
+        },
+        {
+          "id": "level_04_wave_04",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 88,
+              "startDelay": 0,
+              "interval": 0.58
+            },
+            {
+              "enemy": 1,
+              "count": 10,
+              "startDelay": 5,
+              "interval": 3
+            }
+          ]
+        },
+        {
+          "id": "level_04_wave_05",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 92,
+              "startDelay": 0,
+              "interval": 0.58
+            },
+            {
+              "enemy": 1,
+              "count": 12,
+              "startDelay": 5,
+              "interval": 3
+            }
+          ]
+        },
+        {
+          "id": "level_04_wave_06",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 96,
+              "startDelay": 0,
+              "interval": 0.58
+            },
+            {
+              "enemy": 1,
+              "count": 14,
+              "startDelay": 5,
+              "interval": 3
+            }
+          ]
+        }
+      ],
+      "startingGold": 225
+    },
+    {
+      "number": 5,
+      "targetMinSeconds": 240,
+      "targetMaxSeconds": 360,
+      "healthMultiplier": 1.08,
+      "killRewards": [
+        2,
+        5,
+        8,
+        6,
+        12,
+        50
+      ],
+      "waves": [
+        {
+          "id": "level_05_wave_01",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 76,
+              "startDelay": 0,
+              "interval": 0.58
+            },
+            {
+              "enemy": 1,
+              "count": 1,
+              "startDelay": 32,
+              "interval": 3
+            }
+          ]
+        },
+        {
+          "id": "level_05_wave_02",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 80,
+              "startDelay": 0,
+              "interval": 0.58
+            },
+            {
+              "enemy": 1,
+              "count": 6,
+              "startDelay": 5,
+              "interval": 3
+            }
+          ]
+        },
+        {
+          "id": "level_05_wave_03",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 84,
+              "startDelay": 0,
+              "interval": 0.58
+            },
+            {
+              "enemy": 1,
+              "count": 8,
+              "startDelay": 5,
+              "interval": 3
+            }
+          ]
+        },
+        {
+          "id": "level_05_wave_04",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 88,
+              "startDelay": 0,
+              "interval": 0.58
+            },
+            {
+              "enemy": 1,
+              "count": 10,
+              "startDelay": 5,
+              "interval": 3
+            }
+          ]
+        },
+        {
+          "id": "level_05_wave_05",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 92,
+              "startDelay": 0,
+              "interval": 0.58
+            },
+            {
+              "enemy": 1,
+              "count": 12,
+              "startDelay": 5,
+              "interval": 3
+            }
+          ]
+        },
+        {
+          "id": "level_05_wave_06",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 96,
+              "startDelay": 0,
+              "interval": 0.58
+            },
+            {
+              "enemy": 1,
+              "count": 14,
+              "startDelay": 5,
+              "interval": 3
+            }
+          ]
+        }
+      ],
+      "startingGold": 225
+    },
+    {
+      "number": 6,
+      "targetMinSeconds": 240,
+      "targetMaxSeconds": 360,
+      "healthMultiplier": 1.12,
+      "killRewards": [
+        2,
+        5,
+        8,
+        6,
+        12,
+        50
+      ],
+      "waves": [
+        {
+          "id": "level_06_wave_01",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 76,
+              "startDelay": 0,
+              "interval": 0.58
+            },
+            {
+              "enemy": 1,
+              "count": 1,
+              "startDelay": 32,
+              "interval": 3
+            },
+            {
+              "enemy": 2,
+              "count": 1,
+              "startDelay": 32,
+              "interval": 5
+            }
+          ]
+        },
+        {
+          "id": "level_06_wave_02",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 80,
+              "startDelay": 0,
+              "interval": 0.58
+            },
+            {
+              "enemy": 1,
+              "count": 6,
+              "startDelay": 5,
+              "interval": 3
+            },
+            {
+              "enemy": 2,
+              "count": 1,
+              "startDelay": 30,
+              "interval": 5
+            }
+          ]
+        },
+        {
+          "id": "level_06_wave_03",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 84,
+              "startDelay": 0,
+              "interval": 0.58
+            },
+            {
+              "enemy": 1,
+              "count": 8,
+              "startDelay": 5,
+              "interval": 3
+            },
+            {
+              "enemy": 2,
+              "count": 4,
+              "startDelay": 12,
+              "interval": 5
+            }
+          ]
+        },
+        {
+          "id": "level_06_wave_04",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 88,
+              "startDelay": 0,
+              "interval": 0.58
+            },
+            {
+              "enemy": 1,
+              "count": 10,
+              "startDelay": 5,
+              "interval": 3
+            },
+            {
+              "enemy": 2,
+              "count": 5,
+              "startDelay": 12,
+              "interval": 5
+            }
+          ]
+        },
+        {
+          "id": "level_06_wave_05",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 92,
+              "startDelay": 0,
+              "interval": 0.58
+            },
+            {
+              "enemy": 1,
+              "count": 12,
+              "startDelay": 5,
+              "interval": 3
+            },
+            {
+              "enemy": 2,
+              "count": 6,
+              "startDelay": 12,
+              "interval": 5
+            }
+          ]
+        },
+        {
+          "id": "level_06_wave_06",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 96,
+              "startDelay": 0,
+              "interval": 0.58
+            },
+            {
+              "enemy": 1,
+              "count": 14,
+              "startDelay": 5,
+              "interval": 3
+            },
+            {
+              "enemy": 2,
+              "count": 7,
+              "startDelay": 12,
+              "interval": 5
+            }
+          ]
+        }
+      ],
+      "startingGold": 300
+    },
+    {
+      "number": 7,
+      "targetMinSeconds": 240,
+      "targetMaxSeconds": 360,
+      "healthMultiplier": 1.16,
+      "killRewards": [
+        2,
+        5,
+        8,
+        6,
+        12,
+        50
+      ],
+      "waves": [
+        {
+          "id": "level_07_wave_01",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 76,
+              "startDelay": 0,
+              "interval": 0.58
+            },
+            {
+              "enemy": 1,
+              "count": 1,
+              "startDelay": 32,
+              "interval": 3
+            },
+            {
+              "enemy": 2,
+              "count": 1,
+              "startDelay": 32,
+              "interval": 5
+            },
+            {
+              "enemy": 3,
+              "count": 1,
+              "startDelay": 32,
+              "interval": 8
+            }
+          ]
+        },
+        {
+          "id": "level_07_wave_02",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 80,
+              "startDelay": 0,
+              "interval": 0.58
+            },
+            {
+              "enemy": 1,
+              "count": 6,
+              "startDelay": 5,
+              "interval": 3
+            },
+            {
+              "enemy": 2,
+              "count": 1,
+              "startDelay": 30,
+              "interval": 5
+            },
+            {
+              "enemy": 3,
+              "count": 1,
+              "startDelay": 30,
+              "interval": 8
+            }
+          ]
+        },
+        {
+          "id": "level_07_wave_03",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 84,
+              "startDelay": 0,
+              "interval": 0.58
+            },
+            {
+              "enemy": 1,
+              "count": 8,
+              "startDelay": 5,
+              "interval": 3
+            },
+            {
+              "enemy": 2,
+              "count": 4,
+              "startDelay": 12,
+              "interval": 5
+            },
+            {
+              "enemy": 3,
+              "count": 3,
+              "startDelay": 16,
+              "interval": 8
+            }
+          ]
+        },
+        {
+          "id": "level_07_wave_04",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 88,
+              "startDelay": 0,
+              "interval": 0.58
+            },
+            {
+              "enemy": 1,
+              "count": 10,
+              "startDelay": 5,
+              "interval": 3
+            },
+            {
+              "enemy": 2,
+              "count": 5,
+              "startDelay": 12,
+              "interval": 5
+            },
+            {
+              "enemy": 3,
+              "count": 3,
+              "startDelay": 16,
+              "interval": 8
+            }
+          ]
+        },
+        {
+          "id": "level_07_wave_05",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 92,
+              "startDelay": 0,
+              "interval": 0.58
+            },
+            {
+              "enemy": 1,
+              "count": 12,
+              "startDelay": 5,
+              "interval": 3
+            },
+            {
+              "enemy": 2,
+              "count": 6,
+              "startDelay": 12,
+              "interval": 5
+            },
+            {
+              "enemy": 3,
+              "count": 4,
+              "startDelay": 16,
+              "interval": 8
+            }
+          ]
+        },
+        {
+          "id": "level_07_wave_06",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 96,
+              "startDelay": 0,
+              "interval": 0.58
+            },
+            {
+              "enemy": 1,
+              "count": 14,
+              "startDelay": 5,
+              "interval": 3
+            },
+            {
+              "enemy": 2,
+              "count": 7,
+              "startDelay": 12,
+              "interval": 5
+            },
+            {
+              "enemy": 3,
+              "count": 4,
+              "startDelay": 16,
+              "interval": 8
+            }
+          ]
+        }
+      ],
+      "startingGold": 300
+    },
+    {
+      "number": 8,
+      "targetMinSeconds": 240,
+      "targetMaxSeconds": 360,
+      "healthMultiplier": 1.2,
+      "killRewards": [
+        2,
+        5,
+        8,
+        6,
+        12,
+        50
+      ],
+      "waves": [
+        {
+          "id": "level_08_wave_01",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 76,
+              "startDelay": 0,
+              "interval": 0.58
+            },
+            {
+              "enemy": 1,
+              "count": 1,
+              "startDelay": 32,
+              "interval": 3
+            },
+            {
+              "enemy": 2,
+              "count": 1,
+              "startDelay": 32,
+              "interval": 5
+            },
+            {
+              "enemy": 3,
+              "count": 1,
+              "startDelay": 32,
+              "interval": 8
+            },
+            {
+              "enemy": 4,
+              "count": 1,
+              "startDelay": 32,
+              "interval": 10
+            }
+          ]
+        },
+        {
+          "id": "level_08_wave_02",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 80,
+              "startDelay": 0,
+              "interval": 0.58
+            },
+            {
+              "enemy": 1,
+              "count": 6,
+              "startDelay": 5,
+              "interval": 3
+            },
+            {
+              "enemy": 2,
+              "count": 1,
+              "startDelay": 30,
+              "interval": 5
+            },
+            {
+              "enemy": 3,
+              "count": 1,
+              "startDelay": 30,
+              "interval": 8
+            },
+            {
+              "enemy": 4,
+              "count": 1,
+              "startDelay": 30,
+              "interval": 10
+            }
+          ]
+        },
+        {
+          "id": "level_08_wave_03",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 84,
+              "startDelay": 0,
+              "interval": 0.58
+            },
+            {
+              "enemy": 1,
+              "count": 8,
+              "startDelay": 5,
+              "interval": 3
+            },
+            {
+              "enemy": 2,
+              "count": 4,
+              "startDelay": 12,
+              "interval": 5
+            },
+            {
+              "enemy": 3,
+              "count": 3,
+              "startDelay": 16,
+              "interval": 8
+            },
+            {
+              "enemy": 4,
+              "count": 1,
+              "startDelay": 18,
+              "interval": 10
+            }
+          ]
+        },
+        {
+          "id": "level_08_wave_04",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 88,
+              "startDelay": 0,
+              "interval": 0.58
+            },
+            {
+              "enemy": 1,
+              "count": 10,
+              "startDelay": 5,
+              "interval": 3
+            },
+            {
+              "enemy": 2,
+              "count": 5,
+              "startDelay": 12,
+              "interval": 5
+            },
+            {
+              "enemy": 3,
+              "count": 3,
+              "startDelay": 16,
+              "interval": 8
+            },
+            {
+              "enemy": 4,
+              "count": 2,
+              "startDelay": 18,
+              "interval": 10
+            }
+          ]
+        },
+        {
+          "id": "level_08_wave_05",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 92,
+              "startDelay": 0,
+              "interval": 0.58
+            },
+            {
+              "enemy": 1,
+              "count": 12,
+              "startDelay": 5,
+              "interval": 3
+            },
+            {
+              "enemy": 2,
+              "count": 6,
+              "startDelay": 12,
+              "interval": 5
+            },
+            {
+              "enemy": 3,
+              "count": 4,
+              "startDelay": 16,
+              "interval": 8
+            },
+            {
+              "enemy": 4,
+              "count": 2,
+              "startDelay": 18,
+              "interval": 10
+            }
+          ]
+        },
+        {
+          "id": "level_08_wave_06",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 96,
+              "startDelay": 0,
+              "interval": 0.58
+            },
+            {
+              "enemy": 1,
+              "count": 14,
+              "startDelay": 5,
+              "interval": 3
+            },
+            {
+              "enemy": 2,
+              "count": 7,
+              "startDelay": 12,
+              "interval": 5
+            },
+            {
+              "enemy": 3,
+              "count": 4,
+              "startDelay": 16,
+              "interval": 8
+            },
+            {
+              "enemy": 4,
+              "count": 2,
+              "startDelay": 18,
+              "interval": 10
+            }
+          ]
+        }
+      ],
+      "startingGold": 325
+    },
+    {
+      "number": 9,
+      "targetMinSeconds": 240,
+      "targetMaxSeconds": 360,
+      "healthMultiplier": 1.24,
+      "killRewards": [
+        2,
+        5,
+        8,
+        6,
+        12,
+        50
+      ],
+      "waves": [
+        {
+          "id": "level_09_wave_01",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 76,
+              "startDelay": 0,
+              "interval": 0.58
+            },
+            {
+              "enemy": 1,
+              "count": 1,
+              "startDelay": 32,
+              "interval": 3
+            },
+            {
+              "enemy": 2,
+              "count": 1,
+              "startDelay": 32,
+              "interval": 5
+            },
+            {
+              "enemy": 3,
+              "count": 1,
+              "startDelay": 32,
+              "interval": 8
+            },
+            {
+              "enemy": 4,
+              "count": 1,
+              "startDelay": 32,
+              "interval": 10
+            }
+          ]
+        },
+        {
+          "id": "level_09_wave_02",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 80,
+              "startDelay": 0,
+              "interval": 0.58
+            },
+            {
+              "enemy": 1,
+              "count": 6,
+              "startDelay": 5,
+              "interval": 3
+            },
+            {
+              "enemy": 2,
+              "count": 1,
+              "startDelay": 30,
+              "interval": 5
+            },
+            {
+              "enemy": 3,
+              "count": 1,
+              "startDelay": 30,
+              "interval": 8
+            },
+            {
+              "enemy": 4,
+              "count": 1,
+              "startDelay": 30,
+              "interval": 10
+            }
+          ]
+        },
+        {
+          "id": "level_09_wave_03",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 84,
+              "startDelay": 0,
+              "interval": 0.58
+            },
+            {
+              "enemy": 1,
+              "count": 8,
+              "startDelay": 5,
+              "interval": 3
+            },
+            {
+              "enemy": 2,
+              "count": 4,
+              "startDelay": 12,
+              "interval": 5
+            },
+            {
+              "enemy": 3,
+              "count": 3,
+              "startDelay": 16,
+              "interval": 8
+            },
+            {
+              "enemy": 4,
+              "count": 1,
+              "startDelay": 18,
+              "interval": 10
+            }
+          ]
+        },
+        {
+          "id": "level_09_wave_04",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 88,
+              "startDelay": 0,
+              "interval": 0.58
+            },
+            {
+              "enemy": 1,
+              "count": 10,
+              "startDelay": 5,
+              "interval": 3
+            },
+            {
+              "enemy": 2,
+              "count": 5,
+              "startDelay": 12,
+              "interval": 5
+            },
+            {
+              "enemy": 3,
+              "count": 3,
+              "startDelay": 16,
+              "interval": 8
+            },
+            {
+              "enemy": 4,
+              "count": 2,
+              "startDelay": 18,
+              "interval": 10
+            }
+          ]
+        },
+        {
+          "id": "level_09_wave_05",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 92,
+              "startDelay": 0,
+              "interval": 0.58
+            },
+            {
+              "enemy": 1,
+              "count": 12,
+              "startDelay": 5,
+              "interval": 3
+            },
+            {
+              "enemy": 2,
+              "count": 6,
+              "startDelay": 12,
+              "interval": 5
+            },
+            {
+              "enemy": 3,
+              "count": 4,
+              "startDelay": 16,
+              "interval": 8
+            },
+            {
+              "enemy": 4,
+              "count": 2,
+              "startDelay": 18,
+              "interval": 10
+            }
+          ]
+        },
+        {
+          "id": "level_09_wave_06",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 96,
+              "startDelay": 0,
+              "interval": 0.58
+            },
+            {
+              "enemy": 1,
+              "count": 14,
+              "startDelay": 5,
+              "interval": 3
+            },
+            {
+              "enemy": 2,
+              "count": 7,
+              "startDelay": 12,
+              "interval": 5
+            },
+            {
+              "enemy": 3,
+              "count": 4,
+              "startDelay": 16,
+              "interval": 8
+            },
+            {
+              "enemy": 4,
+              "count": 2,
+              "startDelay": 18,
+              "interval": 10
+            }
+          ]
+        }
+      ],
+      "startingGold": 350
+    },
+    {
+      "number": 10,
+      "targetMinSeconds": 360,
+      "targetMaxSeconds": 480,
+      "healthMultiplier": 1.28,
+      "killRewards": [
+        2,
+        5,
+        8,
+        6,
+        12,
+        50
+      ],
+      "waves": [
+        {
+          "id": "level_10_wave_01",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 68,
+              "startDelay": 0,
+              "interval": 0.56
+            },
+            {
+              "enemy": 1,
+              "count": 1,
+              "startDelay": 32,
+              "interval": 3
+            },
+            {
+              "enemy": 2,
+              "count": 1,
+              "startDelay": 32,
+              "interval": 5
+            },
+            {
+              "enemy": 3,
+              "count": 1,
+              "startDelay": 32,
+              "interval": 8
+            },
+            {
+              "enemy": 4,
+              "count": 1,
+              "startDelay": 32,
+              "interval": 10
+            }
+          ]
+        },
+        {
+          "id": "level_10_wave_02",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 72,
+              "startDelay": 0,
+              "interval": 0.56
+            },
+            {
+              "enemy": 1,
+              "count": 6,
+              "startDelay": 5,
+              "interval": 3
+            },
+            {
+              "enemy": 2,
+              "count": 1,
+              "startDelay": 30,
+              "interval": 5
+            },
+            {
+              "enemy": 3,
+              "count": 1,
+              "startDelay": 30,
+              "interval": 8
+            },
+            {
+              "enemy": 4,
+              "count": 1,
+              "startDelay": 30,
+              "interval": 10
+            }
+          ]
+        },
+        {
+          "id": "level_10_wave_03",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 76,
+              "startDelay": 0,
+              "interval": 0.56
+            },
+            {
+              "enemy": 1,
+              "count": 8,
+              "startDelay": 5,
+              "interval": 3
+            },
+            {
+              "enemy": 2,
+              "count": 4,
+              "startDelay": 12,
+              "interval": 5
+            },
+            {
+              "enemy": 3,
+              "count": 3,
+              "startDelay": 16,
+              "interval": 8
+            },
+            {
+              "enemy": 4,
+              "count": 1,
+              "startDelay": 18,
+              "interval": 10
+            }
+          ]
+        },
+        {
+          "id": "level_10_wave_04",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 80,
+              "startDelay": 0,
+              "interval": 0.56
+            },
+            {
+              "enemy": 1,
+              "count": 10,
+              "startDelay": 5,
+              "interval": 3
+            },
+            {
+              "enemy": 2,
+              "count": 5,
+              "startDelay": 12,
+              "interval": 5
+            },
+            {
+              "enemy": 3,
+              "count": 3,
+              "startDelay": 16,
+              "interval": 8
+            },
+            {
+              "enemy": 4,
+              "count": 2,
+              "startDelay": 18,
+              "interval": 10
+            }
+          ]
+        },
+        {
+          "id": "level_10_wave_05",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 84,
+              "startDelay": 0,
+              "interval": 0.56
+            },
+            {
+              "enemy": 1,
+              "count": 12,
+              "startDelay": 5,
+              "interval": 3
+            },
+            {
+              "enemy": 2,
+              "count": 6,
+              "startDelay": 12,
+              "interval": 5
+            },
+            {
+              "enemy": 3,
+              "count": 4,
+              "startDelay": 16,
+              "interval": 8
+            },
+            {
+              "enemy": 4,
+              "count": 2,
+              "startDelay": 18,
+              "interval": 10
+            }
+          ]
+        },
+        {
+          "id": "level_10_wave_06",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 88,
+              "startDelay": 0,
+              "interval": 0.56
+            },
+            {
+              "enemy": 1,
+              "count": 14,
+              "startDelay": 5,
+              "interval": 3
+            },
+            {
+              "enemy": 2,
+              "count": 7,
+              "startDelay": 12,
+              "interval": 5
+            },
+            {
+              "enemy": 3,
+              "count": 4,
+              "startDelay": 16,
+              "interval": 8
+            },
+            {
+              "enemy": 4,
+              "count": 2,
+              "startDelay": 18,
+              "interval": 10
+            }
+          ]
+        },
+        {
+          "id": "level_10_wave_07",
+          "clearBonus": 25,
+          "bossWave": false,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 92,
+              "startDelay": 0,
+              "interval": 0.56
+            },
+            {
+              "enemy": 1,
+              "count": 16,
+              "startDelay": 5,
+              "interval": 3
+            },
+            {
+              "enemy": 2,
+              "count": 8,
+              "startDelay": 12,
+              "interval": 5
+            },
+            {
+              "enemy": 3,
+              "count": 5,
+              "startDelay": 16,
+              "interval": 8
+            },
+            {
+              "enemy": 4,
+              "count": 3,
+              "startDelay": 18,
+              "interval": 10
+            }
+          ]
+        },
+        {
+          "id": "level_10_wave_08",
+          "clearBonus": 25,
+          "bossWave": true,
+          "groups": [
+            {
+              "enemy": 0,
+              "count": 96,
+              "startDelay": 0,
+              "interval": 0.56
+            },
+            {
+              "enemy": 1,
+              "count": 18,
+              "startDelay": 5,
+              "interval": 3
+            },
+            {
+              "enemy": 2,
+              "count": 9,
+              "startDelay": 12,
+              "interval": 5
+            },
+            {
+              "enemy": 3,
+              "count": 5,
+              "startDelay": 16,
+              "interval": 8
+            },
+            {
+              "enemy": 4,
+              "count": 3,
+              "startDelay": 18,
+              "interval": 10
+            },
+            {
+              "enemy": 5,
+              "count": 1,
+              "startDelay": 28,
+              "interval": 1
+            }
+          ]
+        }
+      ],
+      "startingGold": 400
+    }
+  ]
+}

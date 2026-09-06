@@ -46,6 +46,14 @@ namespace DefenderChronicles.Editor
 
         private static void ReplacePlayerAccountsSafariView(string outputPath)
         {
+            string systemSessionPath = Path.Combine(outputPath,"Libraries/com.unity.services.authentication/Player Accounts/Runtime/Plugins/IOS/SafariView.m");
+            if (File.Exists(systemSessionPath) && File.ReadAllText(systemSessionPath).Contains("ASWebAuthenticationSession"))
+            {
+                // New SDK uses a system OAuth session with a callback ABI. Preserve its .m implementation.
+                // Account entry happens from our portrait front-end; replacing it with the old Safari wrapper loses the callback.
+                Debug.Log("Player Accounts system authentication session preserved.");
+                return;
+            }
             string safariViewPath = Path.Combine(outputPath, "Libraries/com.unity.services.authentication/Player Accounts/Runtime/Plugins/IOS/SafariView.mm");
             if (!File.Exists(safariViewPath))
                 throw new BuildFailedException($"Player Accounts SafariView.mm was not generated: {safariViewPath}");

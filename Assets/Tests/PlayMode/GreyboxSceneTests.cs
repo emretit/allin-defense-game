@@ -57,11 +57,11 @@ namespace DefenderChronicles.Tests
             yield return null;
 
             Assert.That(session.Phase, Is.EqualTo(GamePhase.Preparing));
-            Assert.That(session.Gold, Is.EqualTo(200));
+            Assert.That(session.Gold, Is.EqualTo(Data.CampaignCatalog.Level(10).startingGold));
             Assert.That(session.Lives, Is.EqualTo(20));
             Assert.That(session.CurrentGameSpeed, Is.EqualTo(1f));
             Assert.That(Time.timeScale, Is.EqualTo(1f));
-            Assert.That(session.WaveCount, Is.EqualTo(7));
+            Assert.That(session.WaveCount, Is.EqualTo(8));
             Assert.That(session.SlotCount, Is.EqualTo(8));
             Assert.That(session.Hero, Is.Not.Null);
             for (int i = 1; i <= 8; i++)
@@ -72,29 +72,29 @@ namespace DefenderChronicles.Tests
             }
 
             Assert.That(session.TryBuildOutpost(0, Data.OutpostKind.Archer), Is.True);
-            Assert.That(session.Gold, Is.EqualTo(125));
+            Assert.That(session.Gold, Is.EqualTo(Data.CampaignCatalog.Level(10).startingGold - 75));
             Assert.That(session.TryBuildOutpost(0, Data.OutpostKind.Mage), Is.False,
                 "An occupied fixed slot must reject another outpost.");
             Assert.That(session.TryBuildOutpost(-1, Data.OutpostKind.Mage), Is.False,
                 "A tap outside the fixed slot range must not build.");
             Assert.That(session.TryBuildOutpost(8, Data.OutpostKind.Mage), Is.False,
                 "A tap outside the fixed slot range must not build.");
-            Assert.That(session.Gold, Is.EqualTo(125));
+            Assert.That(session.Gold, Is.EqualTo(Data.CampaignCatalog.Level(10).startingGold - 75));
             Assert.That(session.TryUpgradeOutpost(0), Is.True);
-            Assert.That(session.Gold, Is.EqualTo(70));
+            Assert.That(session.Gold, Is.EqualTo(Data.CampaignCatalog.Level(10).startingGold - 130));
             Assert.That(session.TrySellOutpost(0), Is.True);
-            Assert.That(session.Gold, Is.EqualTo(148));
+            Assert.That(session.Gold, Is.EqualTo(Data.CampaignCatalog.Level(10).startingGold - 52));
             Assert.That(session.TryBuildOutpost(0, Data.OutpostKind.Mage), Is.True,
                 "Selling must make the same fixed slot reusable.");
-            Assert.That(session.Gold, Is.EqualTo(23));
+            Assert.That(session.Gold, Is.EqualTo(Data.CampaignCatalog.Level(10).startingGold - 177));
             Assert.That(session.SlotCount, Is.EqualTo(8));
 
             Vector3 guardianPosition = session.Hero.Position;
             yield return null;
             Assert.That(session.Hero.Position, Is.EqualTo(guardianPosition),
                 "The keep guardian must remain stationary.");
-            Assert.That(session.Hero.TryUseShieldBash(), Is.True);
-            Assert.That(session.Hero.AbilityRemaining, Is.GreaterThan(0f));
+            Assert.That(session.Hero.TryUseShieldBash(), Is.False);
+            Assert.That(session.Hero.AbilityRemaining, Is.Zero);
             session.Hero.TakeDamage(10000);
             Assert.That(session.Hero.IsAlive, Is.False);
             Time.timeScale = 20f;
@@ -114,7 +114,7 @@ namespace DefenderChronicles.Tests
         }
 
         [UnityTest]
-        public IEnumerator AppFlowOpensWelcomeLoginMenuAndFiftyLevelCampaign()
+        public IEnumerator AppFlowShowsTenLevelsWhileStorageKeepsFifty()
         {
             string savePath = Path.Combine(Path.GetTempPath(), $"dc-ui-{System.Guid.NewGuid():N}.json");
             var catalog = Resources.Load<DefenderPresentationCatalog>("Presentation/DefenderPresentationCatalog");
@@ -171,7 +171,7 @@ namespace DefenderChronicles.Tests
             Assert.That(flow.CurrentScreen, Is.EqualTo(AppScreen.Campaign));
             int levelButtonCount = flow.GetComponentsInChildren<Button>(true)
                 .Count(button => button.name.StartsWith("Level "));
-            Assert.That(levelButtonCount, Is.EqualTo(50));
+            Assert.That(levelButtonCount, Is.EqualTo(10));
             RectTransform firstLevel = flow.GetComponentsInChildren<Button>(true)
                 .First(button => button.name == "Level 1").GetComponent<RectTransform>();
             RectTransform tenthLevel = flow.GetComponentsInChildren<Button>(true)
@@ -405,10 +405,10 @@ namespace DefenderChronicles.Tests
 
             Assert.That(session.HasProductionPresentation, Is.True);
             Assert.That(session.TryBuildOutpost(0, Data.OutpostKind.Archer), Is.True);
-            Assert.That(session.Gold, Is.EqualTo(125));
+            Assert.That(session.Gold, Is.EqualTo(Data.CampaignCatalog.Level(10).startingGold - 75));
             Assert.That(buildSignals, Is.EqualTo(1));
             Assert.That(session.TryBuildOutpost(0, Data.OutpostKind.Mage), Is.False);
-            Assert.That(session.Gold, Is.EqualTo(125));
+            Assert.That(session.Gold, Is.EqualTo(Data.CampaignCatalog.Level(10).startingGold - 75));
             Assert.That(buildSignals, Is.EqualTo(1));
             GameObject greenwatchEnvironment = GameObject.Find("Greenwatch Environment");
             Assert.That(greenwatchEnvironment, Is.Not.Null);

@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace DefenderChronicles.Presentation
 {
-    public sealed class DefenderHudController : MonoBehaviour
+    public sealed partial class DefenderHudController : MonoBehaviour
     {
         public enum BuildButtonAvailabilityState
         {
@@ -138,9 +138,9 @@ namespace DefenderChronicles.Presentation
             }
         }
 
-        private const int ArcherCost = 75;
-        private const int BarracksCost = 100;
-        private const int MageCost = 125;
+        private static int ArcherCost => TowerProgression.Base(OutpostKind.Archer).cost;
+        private static int BarracksCost => TowerProgression.Base(OutpostKind.Barracks).cost;
+        private static int MageCost => TowerProgression.Base(OutpostKind.Mage).cost;
 
         private static readonly Color RailTint = new(0.012f, 0.026f, 0.045f, 0.30f);
         private static readonly Color PanelTint = new(0.024f, 0.052f, 0.082f, 0.94f);
@@ -267,6 +267,7 @@ namespace DefenderChronicles.Presentation
             if (responsiveLayout == null)
                 responsiveLayout = gameObject.AddComponent<DefenderHudResponsiveLayout>();
             responsiveLayout.Initialize();
+            abilityButton.gameObject.AddComponent<AbilityRangePreview>();
             selectedPanel.SetActive(false);
             resultPanel.SetActive(false);
         }
@@ -274,6 +275,7 @@ namespace DefenderChronicles.Presentation
         public void Refresh(GameSessionController session)
         {
             if (session == null || goldText == null) return;
+            SetBuildAvailability(session.CanBuildOnSelection, session.Gold);
             TopBarPresentationSpec topBar = TopBarSpec(copy.Get(UiTextKey.Gold), copy.Get(UiTextKey.Keep),
                 copy.Get(UiTextKey.Wave), session.Gold, session.Lives, session.CurrentWaveIndex,
                 session.WaveCount, session.Phase);
@@ -299,8 +301,8 @@ namespace DefenderChronicles.Presentation
             {
                 heroText.text = hero.IsAlive
                     ? $"{copy.Get(UiTextKey.Knight)}  {Mathf.CeilToInt(hero.HealthFraction * 100f)}%  ·  " +
-                      (hero.AbilityRemaining <= 0f ? copy.Get(UiTextKey.AbilityReady) : $"{Mathf.CeilToInt(hero.AbilityRemaining)} sn")
-                    : $"{copy.Get(UiTextKey.KnightReturning)}  {Mathf.CeilToInt(hero.RespawnRemaining)} sn";
+                      (hero.AbilityRemaining <= 0f ? copy.Get(UiTextKey.AbilityReady) : $"{Mathf.CeilToInt(hero.AbilityRemaining)} s")
+                    : $"{copy.Get(UiTextKey.KnightReturning)}  {Mathf.CeilToInt(hero.RespawnRemaining)} s";
                 bool abilityReady = hero.IsAlive && hero.AbilityRemaining <= 0f && session.Phase != GamePhase.Paused;
                 abilityButton.interactable = abilityReady;
                 SetAbilityLabel(abilityButton, hero, abilityReady, session.Phase == GamePhase.Paused);
@@ -313,20 +315,19 @@ namespace DefenderChronicles.Presentation
         {
             string raw = value ?? string.Empty;
             string body = raw.Trim();
-            bool upcoming = body.StartsWith("Sıradaki:", StringComparison.OrdinalIgnoreCase);
+            bool upcoming = body.StartsWith("Sıradaki:", StringComparison.OrdinalIgnoreCase) || body.StartsWith("Next:", StringComparison.OrdinalIgnoreCase);
             if (upcoming)
-                body = body["Sıradaki:".Length..].Trim();
+                body = body[(body.IndexOf(':')+1)..].Trim();
 
-            bool boss = body.Contains("boss", StringComparison.OrdinalIgnoreCase) ||
-                        body.Contains("muhafız", StringComparison.OrdinalIgnoreCase);
+            bool boss = GameSessionController.Instance != null && GameSessionController.Instance.NextWaveHasBoss;
 
             if (previewTitleText != null)
             {
                 previewTitleText.text = string.IsNullOrWhiteSpace(body)
                     ? string.Empty
                     : boss
-                        ? (upcoming ? "YAKLAŞAN BOSS" : "BOSS BASKISI")
-                        : (upcoming ? "SIRADAKİ TEHDİT" : "AKTİF BASKI");
+                        ? (upcoming ? GameLocalization.Text("YAKLAŞAN BOSS", "BOSS APPROACHING") : GameLocalization.Text("BOSS BASKISI", "BOSS PRESSURE"))
+                        : (upcoming ? GameLocalization.Text("SIRADAKİ TEHDİT", "NEXT WAVE") : GameLocalization.Text("AKTİF BASKI", "CURRENT WAVE"));
             }
 
             if (previewText != null)
@@ -362,6 +363,7 @@ namespace DefenderChronicles.Presentation
             if (outpost != null)
             {
                 ApplySelectedOutpostView(outpost);
+                ApplySpecializationSelection(outpost);
             }
             else if (slot != null)
             {
@@ -381,15 +383,15 @@ namespace DefenderChronicles.Presentation
             resultTitle.color = victory ? new Color(1f, 0.74f, 0.18f) : new Color(1f, 0.32f, 0.22f);
             if (resultBadgeText != null)
             {
-                resultBadgeText.text = victory ? "SONUÇ" : "KRİTİK";
+                resultBadgeText.text = victory ? GameLocalization.Text("SONUÇ", "RESULT") : GameLocalization.Text("KRİTİK", "CRITICAL");
                 resultBadgeText.color = victory ? GoldAccent : KeepAccent;
             }
 
             if (resultHintText != null)
             {
                 resultHintText.text = victory
-                    ? "Greenwatch savunması geceyi atlattı. Bir sonraki kuşatmaya hazırlan."
-                    : "Kale düştü. Savunma düzenini güçlendir ve kuşatmayı yeniden başlat.";
+                    ? GameLocalization.Text("Greenwatch savunması geceyi atlattı. Bir sonraki kuşatmaya hazırlan.", "Greenwatch held through the night. Prepare for the next siege.")
+                    : GameLocalization.Text("Kale düştü. Savunma düzenini güçlendir ve kuşatmayı yeniden başlat.", "The keep fell. Adjust your defence and try again.");
                 resultHintText.color = victory ? TextMuted : new Color(0.92f, 0.74f, 0.72f, 1f);
             }
 
@@ -419,6 +421,15 @@ namespace DefenderChronicles.Presentation
             ApplyBuildButtonState(archerButton, copy.Get(UiTextKey.Archer), ArcherCost, slotSelected, gold, GoldAccent);
             ApplyBuildButtonState(barracksButton, copy.Get(UiTextKey.Barracks), BarracksCost, slotSelected, gold, WaveAccent);
             ApplyBuildButtonState(mageButton, copy.Get(UiTextKey.Mage), MageCost, slotSelected, gold, new Color(0.74f, 0.47f, 1f, 1f));
+            var session = GameSessionController.Instance;
+            if (session != null)
+                foreach (var pair in new[] { (barracksButton, OutpostKind.Barracks), (mageButton, OutpostKind.Mage) })
+                    if (!session.CanBuild(pair.Item2))
+                    {
+                        pair.Item1.interactable = false;
+                        SetButtonLabel(pair.Item1, GameSessionController.OutpostDisplayName(pair.Item2) + "\n" +
+                            GameLocalization.Text($"Bölüm {(pair.Item2 == OutpostKind.Barracks ? 2 : 3)}", $"Level {(pair.Item2 == OutpostKind.Barracks ? 2 : 3)}"));
+                    }
         }
 
         private void ApplyStaticCopy()
@@ -482,28 +493,28 @@ namespace DefenderChronicles.Presentation
             StylePanel("ResultPanel", new Color(0.005f, 0.012f, 0.02f, 0.90f), false);
             StyleImage(selectedHeaderImage, new Color(0.055f, 0.11f, 0.16f, 0.98f), frame: false);
 
-            StyleText(goldText, 24f, GoldAccent, FontStyles.Bold);
-            StyleText(livesText, 24f, TextPrimary, FontStyles.Bold);
-            StyleText(waveText, 24f, WaveAccent, FontStyles.Bold);
-            StyleText(phaseText, 19f, TextPrimary, FontStyles.Bold);
+            StyleText(goldText, 36f, GoldAccent, FontStyles.Bold);
+            StyleText(livesText, 36f, TextPrimary, FontStyles.Bold);
+            StyleText(waveText, 36f, WaveAccent, FontStyles.Bold);
+            StyleText(phaseText, 30f, TextPrimary, FontStyles.Bold);
             phaseText.alignment = TextAlignmentOptions.MidlineLeft;
             phaseText.enableWordWrapping = false;
-            StyleText(phaseHintText, 12f, TextMuted, FontStyles.Bold);
+            StyleText(phaseHintText, 20f, TextMuted, FontStyles.Bold);
             phaseHintText.gameObject.SetActive(true);
-            StyleText(previewText, 20f, TextPrimary, FontStyles.Bold);
+            StyleText(previewText, 26f, TextPrimary, FontStyles.Bold);
             previewText.enableWordWrapping = true;
             previewText.alignment = TextAlignmentOptions.TopLeft;
-            StyleText(previewTitleText, 13f, TextMuted, FontStyles.Bold);
+            StyleText(previewTitleText, 20f, TextMuted, FontStyles.Bold);
             previewTitleText.alignment = TextAlignmentOptions.TopLeft;
-            StyleText(messageText, 19f, TextPrimary, FontStyles.Bold);
-            StyleText(heroText, 15f, TextMuted, FontStyles.Bold);
-            StyleText(selectedText, 18f, TextPrimary);
+            StyleText(messageText, 28f, TextPrimary, FontStyles.Bold);
+            StyleText(heroText, 24f, TextMuted, FontStyles.Bold);
+            StyleText(selectedText, 30f, TextPrimary);
             selectedText.enableWordWrapping = true;
             selectedText.overflowMode = TextOverflowModes.Overflow;
-            StyleText(selectedTitleText, 20f, TextPrimary, FontStyles.Bold);
-            StyleText(selectedBadgeText, 16f, GoldAccent, FontStyles.Bold);
-            StyleText(selectedRoleText, 16f, TextMuted);
-            StyleText(selectedHintText, 16f, TextMuted);
+            StyleText(selectedTitleText, 32f, TextPrimary, FontStyles.Bold);
+            StyleText(selectedBadgeText, 24f, GoldAccent, FontStyles.Bold);
+            StyleText(selectedRoleText, 24f, TextMuted);
+            StyleText(selectedHintText, 26f, TextMuted);
             StyleText(resultTitle, 68f, GoldAccent, FontStyles.Bold);
             StyleText(resultBadgeText, 17f, GoldAccent, FontStyles.Bold);
             StyleText(resultHintText, 19f, TextMuted);
@@ -644,16 +655,16 @@ namespace DefenderChronicles.Presentation
         public static PhaseBadgePresentationSpec PhaseBadgeSpec(GamePhase phase, bool bossUpcoming,
             bool bossActive, float transitionPulse)
         {
-            string hint = "DURUM";
+            string hint = GameLocalization.Text("DURUM", "STATUS");
             string label = phase switch
             {
-                GamePhase.Preparing => "DALGA ÖNCESİ",
-                GamePhase.Wave => "SAVUNMA HATTI",
-                GamePhase.Intermission => "KISA MOLA",
-                GamePhase.Paused => "DURAKLATILDI",
-                GamePhase.Victory => "ZAFER",
-                GamePhase.Defeat => "YENİLGİ",
-                _ => "YÜKLENİYOR"
+                GamePhase.Preparing => GameLocalization.Text("DALGA ÖNCESİ", "PREPARING"),
+                GamePhase.Wave => GameLocalization.Text("SAVUNMA HATTI", "DEFENDING"),
+                GamePhase.Intermission => GameLocalization.Text("KISA MOLA", "INTERMISSION"),
+                GamePhase.Paused => GameLocalization.Text("DURAKLATILDI", "PAUSED"),
+                GamePhase.Victory => GameLocalization.Text("ZAFER", "VICTORY"),
+                GamePhase.Defeat => GameLocalization.Text("YENİLGİ", "DEFEAT"),
+                _ => GameLocalization.Text("YÜKLENİYOR", "LOADING")
             };
 
             Color accent = PhaseColor(phase);
@@ -663,16 +674,16 @@ namespace DefenderChronicles.Presentation
 
             if (bossUpcoming)
             {
-                hint = "KRİTİK";
-                label = "BOSS YAKLAŞIYOR";
+                hint = GameLocalization.Text("KRİTİK", "CRITICAL");
+                label = GameLocalization.Text("BOSS YAKLAŞIYOR", "BOSS APPROACHING");
                 accent = KeepAccent;
                 stripeHeight = Mathf.Lerp(7f, 11f, clampedPulse);
                 pulseAlpha = Mathf.Max(pulseAlpha, 0.22f);
             }
             else if (bossActive)
             {
-                hint = "KRİTİK";
-                label = "BOSS BASKISI";
+                hint = GameLocalization.Text("KRİTİK", "CRITICAL");
+                label = GameLocalization.Text("BOSS BASKISI", "BOSS PRESSURE");
                 accent = KeepAccent;
                 stripeHeight = Mathf.Lerp(8f, 12f, clampedPulse);
                 pulseAlpha = Mathf.Max(pulseAlpha, 0.30f);
@@ -697,14 +708,14 @@ namespace DefenderChronicles.Presentation
         {
             if (!selectedSlot)
                 return new BuildButtonPresentationSpec(BuildButtonAvailabilityState.NoSlot, false,
-                    label, "SLOT SEÇ", TextMuted, false);
+                    label, GameLocalization.Text($"{cost} · Yer seç", $"{cost} · Select site"), TextMuted, false);
 
             if (gold >= cost)
                 return new BuildButtonPresentationSpec(BuildButtonAvailabilityState.Affordable, true,
                     label, cost.ToString(), accent, false);
 
             return new BuildButtonPresentationSpec(BuildButtonAvailabilityState.Unaffordable, false,
-                "YETERSİZ", $"{label} {cost}", DisabledAccent, true);
+                label, GameLocalization.Text($"{cost} altın · {cost-gold} eksik", $"{cost} gold · Need {cost-gold}"), DisabledAccent, true);
         }
 
         private static BuildButtonPresentationSpec BuildButtonSpec(string label, int cost, bool available, Color accent)
@@ -741,8 +752,8 @@ namespace DefenderChronicles.Presentation
         private static void SetAbilityLabel(Button button, GreyboxHero hero, bool ready, bool paused)
         {
             if (hero == null) return;
-            string title = ready ? "KALKAN" : !hero.IsAlive ? "ŞÖVALYE" : paused ? "BEKLE" : "KALKAN";
-            string state = ready ? "HAZIR" : !hero.IsAlive ? "DÖNÜYOR" : paused ? "DURAKLADI" : $"{Mathf.CeilToInt(hero.AbilityRemaining)} sn";
+            string title = GameLocalization.Text("KALKAN", "SHIELD");
+            string state = ready ? GameLocalization.Text("HAZIR", "READY") : !hero.IsAlive ? GameLocalization.Text("DÖNÜYOR", "RETURNING") : paused ? GameLocalization.Text("DURAKLADI", "PAUSED") : $"{Mathf.CeilToInt(hero.AbilityRemaining)} s";
             SetButtonLabel(button, $"{title}\n{state}");
         }
 
@@ -757,7 +768,7 @@ namespace DefenderChronicles.Presentation
             string rate = $"{attackRate:0.0}/sn";
             string upgrade = canUpgrade ? $"{upgradeCost} altın" : "Maks";
             string disruptedSuffix = isDisrupted
-                ? $"  •  BOZULDU {Mathf.CeilToInt(disabledRemaining)} sn"
+                ? $"  •  BOZULDU {Mathf.CeilToInt(disabledRemaining)} s"
                 : string.Empty;
             string hint = isDisrupted
                 ? $"Geçici baskı altında • Satış {sellValue} altın"
@@ -780,16 +791,13 @@ namespace DefenderChronicles.Presentation
 
         public static SelectedPanelPresentationSpec SelectedSlotPanelSpec(int slotIndex)
         {
-            string stats =
-                $"{StatLabel("DURUM", "BOŞ")}\n" +
-                $"{StatLabel("SEVİYE", "SV 0")}\n\n" +
-                "<size=70%><color=#A6B4B8>İPUCU</color></size>\n" +
-                "Düşman yol kıvrımlarına yakın slotlar Kışla ve Büyü için daha güçlüdür.";
+            string stats = GameLocalization.Text("BOŞ NOKTA\nMavi halka okçu menzilini gösterir.\nAşağıdan adını ve fiyatını görerek kule kur.",
+                "EMPTY SITE\nThe blue circle shows archer range.\nChoose a tower and its price below.");
 
-            return new SelectedPanelPresentationSpec(SelectedPanelState.EmptySlot, "KARAKOL PLATFORMU",
-                $"#{slotIndex + 1}", "Aşağıdan bir karakol seç ve bu slotu doldur.",
-                "Okçu hızlı tek hedef, Kışla yol tutar, Büyü alan kontrolü sağlar.", stats,
-                "YÜKSELT\nKAPALI", "SAT\nKAPALI", false, false, true, WaveAccent, WaveAccent);
+            return new SelectedPanelPresentationSpec(SelectedPanelState.EmptySlot, GameLocalization.Text("KARAKOL PLATFORMU", "BUILD SITE"),
+                $"#{slotIndex + 1}", GameLocalization.Text("Aşağıdan bir karakol seç ve bu slotu doldur.", "Choose a tower below to build here."),
+                GameLocalization.Text("Okçu hızlı tek hedef, Kışla yol tutar, Büyü alan kontrolü sağlar.", "Archers focus targets, barracks block, and mages damage groups."), stats,
+                GameLocalization.Text("YÜKSELT\nKAPALI", "UPGRADE\nLOCKED"), GameLocalization.Text("SAT\nKAPALI", "SELL\nLOCKED"), false, false, true, WaveAccent, WaveAccent);
         }
 
         private void ApplyAbilityVisualState(GreyboxHero hero, GamePhase phase, bool ready)
@@ -866,7 +874,7 @@ namespace DefenderChronicles.Presentation
                 pauseOverlayTitleText.text = copy.Get(UiTextKey.Paused).ToUpperInvariant();
 
             if (pauseOverlayHintText != null)
-                pauseOverlayHintText.text = "Savaşa devam edebilir veya mevcut kuşatmadan ayrılıp ana menüye dönebilirsin.";
+                pauseOverlayHintText.text = GameLocalization.Text("Savaşa devam edebilir veya mevcut kuşatmadan ayrılıp ana menüye dönebilirsin.", "Resume the battle or return to the main menu.");
         }
 
         private void StylePanel(string path, Color color, bool rail)
@@ -978,10 +986,10 @@ namespace DefenderChronicles.Presentation
             TMP_Text label = button.GetComponentInChildren<TMP_Text>(true);
             if (label != null)
             {
-                label.fontSize = 18f;
+                label.fontSize = 30f;
                 label.enableAutoSizing = true;
-                label.fontSizeMin = 13f;
-                label.fontSizeMax = 19f;
+                label.fontSizeMin = 26f;
+                label.fontSizeMax = 32f;
                 label.alignment = TextAlignmentOptions.Center;
                 label.fontStyle = FontStyles.Bold;
                 label.color = TextPrimary;
@@ -1161,20 +1169,20 @@ namespace DefenderChronicles.Presentation
         {
             RectTransform panelRect = selectedPanel.GetComponent<RectTransform>();
             selectedHeaderImage = EnsureImage(panelRect, "Header", new Color(0.045f, 0.11f, 0.17f, 0.96f),
-                new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(10f, -72f), new Vector2(-10f, -14f));
+                new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(10f, -124f), new Vector2(-10f, -14f));
             selectedIconImage = EnsureImage(selectedHeaderImage.rectTransform, "Icon", Color.white,
                 new Vector2(0f, 0.5f), new Vector2(0f, 0.5f), new Vector2(12f, 0f), new Vector2(42f, 42f));
             selectedIconImage.preserveAspect = true;
             selectedIconImage.raycastTarget = false;
 
             selectedTitleText = EnsureLabel(selectedHeaderImage.rectTransform, "Title",
-                new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(62f, -36f), new Vector2(-82f, -6f),
+                new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(62f, -48f), new Vector2(-82f, -6f),
                 TextAlignmentOptions.Left);
             selectedBadgeText = EnsureLabel(selectedHeaderImage.rectTransform, "Badge",
                 new Vector2(1f, 1f), new Vector2(1f, 1f), new Vector2(-72f, -36f), new Vector2(60f, 24f),
                 TextAlignmentOptions.Center);
             selectedRoleText = EnsureLabel(selectedHeaderImage.rectTransform, "Role",
-                new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(12f, 8f), new Vector2(-12f, 28f),
+                new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(12f, 8f), new Vector2(-12f, 54f),
                 TextAlignmentOptions.Left);
             selectedHintText = EnsureLabel(panelRect, "Hint",
                 new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(14f, 74f), new Vector2(-14f, 18f),
@@ -1340,7 +1348,7 @@ namespace DefenderChronicles.Presentation
 
             pauseResumeButton = EnsureActionButton(pauseCard.rectTransform, "Resume", "DEVAM ET",
                 new Vector2(-184f, -122f), new Vector2(328f, 80f));
-            pauseMainMenuButton = EnsureActionButton(pauseCard.rectTransform, "MainMenu", "ANA MENÜ",
+            pauseMainMenuButton = EnsureActionButton(pauseCard.rectTransform, "MainMenu", GameLocalization.Text("ANA MENÜ", "MAIN MENU"),
                 new Vector2(184f, -122f), new Vector2(328f, 80f));
 
             pauseOverlay.transform.SetAsLastSibling();
@@ -1484,9 +1492,9 @@ namespace DefenderChronicles.Presentation
             ApplySelectedActionState(SelectedSlotPanelSpec(-1));
             selectedHeaderImage.color = new Color(0.035f, 0.08f, 0.13f, 0.95f);
             selectedIconImage.sprite = null;
-            selectedTitleText.text = "SEÇİM YOK";
+            selectedTitleText.text = GameLocalization.Text("SEÇİM YOK", "NO SELECTION");
             selectedBadgeText.text = string.Empty;
-            selectedRoleText.text = "Bir slot ya da karakol seçildiğinde detaylar burada görünür.";
+            selectedRoleText.text = GameLocalization.Text("Bir slot ya da karakol seçildiğinde detaylar burada görünür.", "Select a site or tower to see details.");
             selectedRoleText.color = TextMuted;
             selectedHintText.text = string.Empty;
             selectedText.text = string.Empty;

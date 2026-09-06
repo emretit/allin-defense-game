@@ -35,3 +35,8 @@ docs/evidence/runtime/*-raw.png
 # OS
 .DS_Store
 Thumbs.db
+
+# Local device identifiers and Python cache
+docs/closed-test/evidence/device-details.json
+docs/closed-test/evidence/device-lock.json
+__pycache__/

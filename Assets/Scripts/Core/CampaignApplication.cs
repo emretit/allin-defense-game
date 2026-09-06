@@ -19,8 +19,27 @@ namespace DefenderChronicles.Core
             instance = this;
             DontDestroyOnLoad(gameObject);
             Progress = new CampaignProgressStore();
+            Progress.Changed += RecordLocalSaveFailure;
             Services = gameObject.AddComponent<UnityGameServicesController>();
         }
-        private void OnDestroy() { if (instance == this) instance = null; }
+        private float nextLocalRetry;
+        private void Update()
+        {
+            if (Progress == null || !Progress.HasWriteError || Time.realtimeSinceStartup < nextLocalRetry) return;
+            nextLocalRetry = Time.realtimeSinceStartup + 10;
+            Progress.Save();
+        }
+        private bool reportedWriteFailure;
+        private void RecordLocalSaveFailure()
+        {
+            if (Progress.HasWriteError && !reportedWriteFailure)
+                GameSessionController.Instance?.RecordSaveFailure();
+            reportedWriteFailure = Progress.HasWriteError;
+        }
+        private void OnDestroy()
+        {
+            if (Progress != null) Progress.Changed -= RecordLocalSaveFailure;
+            if (instance == this) instance = null;
+        }
     }
 }
