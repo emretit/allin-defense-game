@@ -20,7 +20,9 @@ namespace DefenderChronicles.Editor
             if (Application.dataPath.Contains("DefenderChronicles-first-region")) EditorApplication.Exit(0);
         }
         [MenuItem("Defender Chronicles/Closed Test/Capture Game UI")]
-        public static async void Capture()
+        public static void Capture() => CaptureAt(1920, 1080, "docs/closed-test/evidence/battle-ui-overlay.png");
+
+        public static async void CaptureAt(int width, int height, string output)
         {
             if (!Application.isPlaying) return;
             var view = EditorWindow.GetWindow(Type.GetType("UnityEditor.GameView,UnityEditor"));
@@ -32,13 +34,13 @@ namespace DefenderChronicles.Editor
             var groupType = sizesType.GetProperty("currentGroupType",flags).GetValue(sizes);
             var group = sizesType.GetMethod("GetGroup").Invoke(sizes,new[]{groupType});
             var sizeType = assembly.GetType("UnityEditor.GameViewSize");
-            var size = Activator.CreateInstance(sizeType,Enum.ToObject(assembly.GetType("UnityEditor.GameViewSizeType"),1),1920,1080,"Closed test landscape");
+            var size = Activator.CreateInstance(sizeType,Enum.ToObject(assembly.GetType("UnityEditor.GameViewSizeType"),1),width,height,$"Closed test {width}x{height}");
             group.GetType().GetMethod("AddCustomSize").Invoke(group,new[]{size});
             int total = (int)group.GetType().GetMethod("GetTotalCount").Invoke(group,null);
             view.GetType().GetProperty("selectedSizeIndex",flags).SetValue(view,total-1);
             view.Show(); view.Focus();
             await Task.Delay(1000);
-            ScreenCapture.CaptureScreenshot("docs/closed-test/evidence/battle-ui-overlay.png");
+            ScreenCapture.CaptureScreenshot(output);
             Debug.Log("[CLOSED_TEST_CAPTURE] UI capture requested.");
         }
         [MenuItem("Defender Chronicles/Closed Test/Show Specialization UI")]

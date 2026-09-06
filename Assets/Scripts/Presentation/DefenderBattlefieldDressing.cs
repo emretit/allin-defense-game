@@ -37,13 +37,26 @@ namespace DefenderChronicles.Presentation
 
         private void Build(DefenderPresentationCatalog catalog, Camera camera)
         {
-            CreateCliffSkirt(catalog.darkMaterial);
+            CreateContinuousGround(catalog.forestMaterial);
             CreateGroundValueFields(catalog.grassAccentMaterial, catalog.earthMaterial);
             CreateLandmarkReadabilityFields(catalog.fireMaterial, catalog.magicMaterial);
             CreateRoadSurface();
             CreateRoadCobbles();
             CreateRoadWear(catalog.earthMaterial);
-            CreateNightBackdrop(camera);
+            // The battle fills the screen with terrain; no raised board edge or sky band.
+        }
+
+        private void CreateContinuousGround(Material material)
+        {
+            const string name = "Continuous Battlefield Ground";
+            // Extend well beyond all supported camera frames, under the HUD and device insets.
+            // Match the authored ground height without adding a collider to the battle path.
+            CreateMeshObject(name, new List<Vector3>
+            {
+                new(-39f, -0.145f, -44.5f), new(61f, -0.145f, -44.5f),
+                new(61f, -0.145f, 55.5f), new(-39f, -0.145f, 55.5f)
+            }, new List<int> { 0, 2, 1, 0, 3, 2 }, material, true);
+            transform.Find(name).GetComponent<MeshRenderer>().receiveShadows = true;
         }
 
         private void CreateGroundValueFields(Material grassSource, Material earthSource)

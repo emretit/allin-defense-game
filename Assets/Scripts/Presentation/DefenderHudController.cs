@@ -142,7 +142,7 @@ namespace DefenderChronicles.Presentation
         private static int BarracksCost => TowerProgression.Base(OutpostKind.Barracks).cost;
         private static int MageCost => TowerProgression.Base(OutpostKind.Mage).cost;
 
-        private static readonly Color RailTint = new(0.012f, 0.026f, 0.045f, 0.30f);
+        private static readonly Color RailTint = Color.clear;
         private static readonly Color PanelTint = new(0.024f, 0.052f, 0.082f, 0.94f);
         private static readonly Color ButtonReadyTint = new(0.060f, 0.145f, 0.225f, 0.90f);
         private static readonly Color ButtonPressedTint = new(0.145f, 0.34f, 0.48f, 1f);
@@ -884,6 +884,8 @@ namespace DefenderChronicles.Presentation
             {
                 if (rail)
                 {
+                    image.enabled = false;
+                    image.raycastTarget = false;
                     image.color = color;
                     image.sprite = null;
                     image.type = Image.Type.Simple;
@@ -1148,6 +1150,8 @@ namespace DefenderChronicles.Presentation
                 new Vector2(4f, 4f), new Vector2(-4f, -4f));
             image.sprite = panelSprite;
             image.type = panelSprite != null ? Image.Type.Sliced : Image.Type.Simple;
+            image.enabled = false;
+            image.raycastTarget = false;
             image.transform.SetAsFirstSibling();
         }
 

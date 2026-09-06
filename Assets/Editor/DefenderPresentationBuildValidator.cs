@@ -844,7 +844,7 @@ namespace DefenderChronicles.Editor
                     "Ground Warm Entry Scuffs",
                     "Enemy Gate Warm Read Pool",
                     "Defender Keep Cool Read Pool",
-                    "Moon Disc"
+                    "Continuous Battlefield Ground"
                 };
                 foreach (string objectName in requiredObjects)
                 {

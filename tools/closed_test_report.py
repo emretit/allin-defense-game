@@ -17,7 +17,7 @@ def digest(path):
 
 def collect_tests():
     results = {}
-    for name in ("editmode-final.xml", "playmode-final.xml", "playmode-ui-final.xml"):
+    for name in ("editmode-final.xml", "playmode-final.xml", "playmode-ui-final.xml", "fullscreen-playmode.xml"):
         path = EVIDENCE / name
         if not path.exists():
             results[name] = {"status": "pending"}

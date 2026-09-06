@@ -415,13 +415,13 @@ namespace DefenderChronicles.Tests
             Renderer deepBackdrop = greenwatchEnvironment.GetComponentsInChildren<Renderer>(true)
                 .FirstOrDefault(renderer => renderer.name.StartsWith("DeepBackdrop", System.StringComparison.OrdinalIgnoreCase));
             Assert.That(deepBackdrop, Is.Not.Null);
-            Assert.That(deepBackdrop.enabled, Is.True,
-                "The production battlefield must extend behind floating HUD rails instead of revealing black bands.");
+            Assert.That(deepBackdrop.enabled, Is.False,
+                "Continuous terrain replaces the dark platform backdrop.");
             foreach (Renderer rigidBoundary in greenwatchEnvironment.GetComponentsInChildren<Renderer>(true)
                          .Where(renderer => renderer.name.StartsWith("NorthRidge", System.StringComparison.OrdinalIgnoreCase) ||
                                             renderer.name.StartsWith("SouthRidge", System.StringComparison.OrdinalIgnoreCase)))
                 Assert.That(rigidBoundary.enabled, Is.False,
-                    "Straight greybox boundary slabs are replaced by the organic scenic cliff skirt.");
+                    "The battlefield must have no raised platform border.");
             Assert.That(GameObject.Find("Licensed Nature 01 trees_A_medium"), Is.Not.Null);
             Assert.That(GameObject.Find("Scenic Battlefield Dressing"), Is.Not.Null);
             AssertVisualOnlyDressing("Road Organic Earth Surface");
@@ -431,7 +431,7 @@ namespace DefenderChronicles.Tests
             AssertVisualOnlyDressing("Ground Warm Entry Scuffs");
             AssertVisualOnlyDressing("Enemy Gate Warm Read Pool");
             AssertVisualOnlyDressing("Defender Keep Cool Read Pool");
-            Assert.That(GameObject.Find("Moon Disc"), Is.Not.Null);
+            AssertVisualOnlyDressing("Continuous Battlefield Ground");
             for (int i = 1; i <= 8; i++)
             {
                 GameObject slot = GameObject.Find($"Outpost Slot {i}");
@@ -451,9 +451,9 @@ namespace DefenderChronicles.Tests
             Assert.That(defenderHud.GetComponent<DefenderHudResponsiveLayout>(), Is.Not.Null);
             var topRail = defenderHud.transform.Find("TopBar").GetComponent<UnityEngine.UI.Image>();
             var bottomRail = defenderHud.transform.Find("BottomBar").GetComponent<UnityEngine.UI.Image>();
-            Assert.That(topRail.color.a, Is.LessThanOrEqualTo(0.70f));
-            Assert.That(bottomRail.color.a, Is.LessThanOrEqualTo(0.70f));
-            Assert.That(topRail.sprite, Is.Null, "The premium HUD uses a light translucent rail, not a stretched panel.");
+            Assert.That(topRail.enabled, Is.False);
+            Assert.That(bottomRail.enabled, Is.False);
+            Assert.That(topRail.sprite, Is.Null, "The status controls must leave the terrain visible between cards.");
             Assert.That(bottomRail.sprite, Is.Null, "The command deck should float over the battlefield.");
             Assert.That(defenderHud.transform.Find("TopBar/SafeContent/GoldChrome"), Is.Not.Null);
             Assert.That(defenderHud.transform.Find("TopBar/SafeContent/LivesChrome"), Is.Not.Null);
@@ -462,9 +462,9 @@ namespace DefenderChronicles.Tests
             Assert.That(phaseHint, Is.Not.Null);
             Assert.That(phaseHint.offsetMin.y, Is.GreaterThanOrEqualTo(34f),
                 "The phase hint must occupy its own upper row instead of overlapping the phase label.");
-            Assert.That(defenderHud.transform.Find("BottomBar/SafeContent/BuildDeck"), Is.Not.Null);
-            Assert.That(defenderHud.transform.Find("BottomBar/SafeContent/HeroDeck"), Is.Not.Null);
-            Assert.That(defenderHud.transform.Find("BottomBar/SafeContent/CommandDeck"), Is.Not.Null);
+            Assert.That(defenderHud.transform.Find("BottomBar/SafeContent/BuildDeck").GetComponent<UnityEngine.UI.Image>().enabled, Is.False);
+            Assert.That(defenderHud.transform.Find("BottomBar/SafeContent/HeroDeck").GetComponent<UnityEngine.UI.Image>().enabled, Is.False);
+            Assert.That(defenderHud.transform.Find("BottomBar/SafeContent/CommandDeck").GetComponent<UnityEngine.UI.Image>().enabled, Is.False);
             Assert.That(defenderHud.transform.Find("MessageChrome"), Is.Not.Null);
             Assert.That(Camera.main.GetComponent<AdaptiveBattlefieldCamera>(), Is.Not.Null);
             Assert.That(session.Hero.GetComponent<StylizedActorView>(), Is.Not.Null);
@@ -549,7 +549,7 @@ namespace DefenderChronicles.Tests
                 AssertVisualOnlyDressing("Ground Low-Contrast Valley Fields");
                 AssertVisualOnlyDressing("Enemy Gate Warm Read Pool");
                 AssertVisualOnlyDressing("Defender Keep Cool Read Pool");
-                Assert.That(GameObject.Find("Moon Disc"), Is.Not.Null);
+                AssertVisualOnlyDressing("Continuous Battlefield Ground");
                 yield return null;
             }
 

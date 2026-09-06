@@ -472,14 +472,13 @@ namespace DefenderChronicles.Core
                 environment.transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
                 foreach (Renderer renderer in environment.GetComponentsInChildren<Renderer>(true))
                 {
-                    bool deepBackdrop = renderer.name.StartsWith("DeepBackdrop", StringComparison.OrdinalIgnoreCase);
+                    bool platformBase = renderer.name.StartsWith("DeepBackdrop", StringComparison.OrdinalIgnoreCase) ||
+                                        renderer.name.StartsWith("ValleyGround", StringComparison.OrdinalIgnoreCase);
                     bool rigidBoundary = renderer.name.StartsWith("NorthRidge", StringComparison.OrdinalIgnoreCase) ||
                                          renderer.name.StartsWith("SouthRidge", StringComparison.OrdinalIgnoreCase);
-                    if (renderer.name.StartsWith("Road", StringComparison.OrdinalIgnoreCase) || rigidBoundary ||
-                        (!deepBackdrop && renderer.sharedMaterial == presentationCatalog.navyMaterial))
+                    if (renderer.name.StartsWith("Road", StringComparison.OrdinalIgnoreCase) || rigidBoundary || platformBase ||
+                        renderer.sharedMaterial == presentationCatalog.navyMaterial)
                         renderer.enabled = false;
-                    else if (deepBackdrop)
-                        renderer.enabled = true;
                 }
             }
             DefenderBattlefieldDressing.Install(world, presentationCatalog, gameCamera, path);
