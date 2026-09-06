@@ -1,5 +1,7 @@
 # iOS Simulator testi — 6 Eylül 2026
 
+Güncel üç askerlik kışla kontrolü (`4215702`), ayakta duran modeller, yol yerleşimi ve yakın dövüş kanıtları `BARRACKS_TEST_TR.md` içindedir. Aşağıdaki sonuçlar önceki `2376c8d` genel arayüz koşusuna aittir.
+
 **Sonuç:** iPhone 13 / iOS 26.5 simülatöründe kurulum, açılış, savaş kontrolleri ve dalga kaydından dönüş geçti. Kaynak `2376c8d`; sürüm `ct-20260906-01`, uygulama `0.4.0`. Unity CLI ile izole kopyadan dışa aktarıldı, Xcode ile arm64 simülatör uygulaması derlendi. Ortak Unity oturumu kullanılmadı.
 
 ## Bulunan ve giderilen hatalar

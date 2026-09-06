@@ -1,0 +1,37 @@
+{
+  "status": "passed",
+  "source_commit": "42157026af9694158b6e5e5313bb7606c9686491",
+  "device": "iPhone 13 Simulator",
+  "runtime": "iOS 26.5",
+  "bundle": "com.emreaydin.defenderchronicles.closedtest",
+  "installed_framework_matches_build": true,
+  "framework_sha256": "d7f840d3e76cbc7b6cb86f8916e5898f3972a27f2a192ae749937ca65a92a963",
+  "level": 2,
+  "initial_gold": 230,
+  "gold_after_barracks": 130,
+  "soldiers": 3,
+  "formation": "Three separate road positions beyond the building",
+  "posture": "Upright with the imported FBX axis correction preserved",
+  "combat_observation": "Soldiers approached the incoming raiders; enemy health bars fell and gold rose to 168 while lives remained 20 in the observed first-wave frame.",
+  "automation": {
+    "flag": "DC_PAUSE_CAPTURE=1",
+    "extra_gold": 0,
+    "campaign_save": "Independent scene; guest/account campaign saves are not modified"
+  },
+  "evidence": [
+    "barracks-simulator-deployed.png",
+    "barracks-simulator-combat.png",
+    "barracks-simulator-fighting.png",
+    "barracks-simulator.stdout.log",
+    "barracks-simulator.stderr.log",
+    "barracks-simulator-ready.png"
+  ],
+  "physical_performance": "not_measured",
+  "runtime_errors": [],
+  "completed_wave_log": [
+    "[WAVE_BALANCE] level=2 wave=1 seconds=49,63 gold=278 lives=20 peak=24",
+    "[WAVE_BALANCE] level=2 wave=2 seconds=55,28 gold=433 lives=8 peak=24"
+  ],
+  "scope": "Deployment, model posture and road melee smoke test; interrupted after two waves. Not a full-level balance or physical performance acceptance.",
+  "left_running_state": "Level 2 preparing, one barracks, three deployed soldiers, 130 gold, 20 lives; launch wave from the UI."
+}

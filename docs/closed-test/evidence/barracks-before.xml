@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Failed(Child)" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-09-06 12:47:35Z" end-time="2026-09-06 12:47:35Z" duration="0.5253931">
+  <test-suite type="TestSuite" id="1043" name="Defender Chronicles Test" fullname="Defender Chronicles Test" runstate="Runnable" testcasecount="29" result="Failed" site="Child" start-time="2026-09-06 12:47:35Z" end-time="2026-09-06 12:47:35Z" duration="0.525393" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1037" name="DefenderChronicles.PlayModeTests.dll" fullname="/Users/emreaydin/DefenderChronicles-first-region/Library/ScriptAssemblies/DefenderChronicles.PlayModeTests.dll" runstate="Runnable" testcasecount="29" result="Failed" site="Child" start-time="2026-09-06 12:47:35Z" end-time="2026-09-06 12:47:35Z" duration="0.520588" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="3706" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1038" name="DefenderChronicles" fullname="DefenderChronicles" runstate="Runnable" testcasecount="29" result="Failed" site="Child" start-time="2026-09-06 12:47:35Z" end-time="2026-09-06 12:47:35Z" duration="0.519685" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1039" name="Tests" fullname="DefenderChronicles.Tests" runstate="Runnable" testcasecount="29" result="Failed" site="Child" start-time="2026-09-06 12:47:35Z" end-time="2026-09-06 12:47:35Z" duration="0.519235" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestFixture" id="1001" name="BarracksSquadTests" fullname="DefenderChronicles.Tests.BarracksSquadTests" classname="DefenderChronicles.Tests.BarracksSquadTests" runstate="Runnable" testcasecount="1" result="Failed" site="Child" start-time="2026-09-06 12:47:35Z" end-time="2026-09-06 12:47:35Z" duration="0.518003" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1002" name="ThreeSoldiersLeaveTheBarracksAndReachSeparateRoadPositions" fullname="DefenderChronicles.Tests.BarracksSquadTests.ThreeSoldiersLeaveTheBarracksAndReachSeparateRoadPositions" methodname="ThreeSoldiersLeaveTheBarracksAndReachSeparateRoadPositions" classname="DefenderChronicles.Tests.BarracksSquadTests" runstate="Runnable" seed="1422399523" result="Failed" start-time="2026-09-06 12:47:35Z" end-time="2026-09-06 12:47:35Z" duration="0.512080" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  Expected: 3
+  But was:  2
+]]></message>
+                <stack-trace><![CDATA[at DefenderChronicles.Tests.BarracksSquadTests+<ThreeSoldiersLeaveTheBarracksAndReachSeparateRoadPositions>d__1.MoveNext () [0x0002f] in /Users/emreaydin/DefenderChronicles-first-region/Assets/Tests/PlayMode/BarracksSquadTests.cs:30
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[Saving results to: /Users/emreaydin/Library/Application Support/Emre Aydin/Defender Chronicles Test/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

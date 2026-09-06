@@ -3,5 +3,5 @@ RapidFire,102.000,120.000,actual_damage
 Sharpshooter,102.000,183.000,actual_damage
 Blast,118.000,142.000,actual_damage
 Frost,0.000,0.250,slow_fraction
-ShieldGuard,1.867,3.733,guard_survival_seconds
-AssaultGuard,156.000,320.000,actual_damage
+ShieldGuard,2.300,4.217,guard_survival_seconds
+AssaultGuard,208.000,320.000,actual_damage

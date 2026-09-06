@@ -4,7 +4,11 @@ Sürüm: **ct-20260906-01**, uygulama: **0.4.0**. Tarih: 6 Eylül 2026.
 
 Kod, otomatik savaş testleri, ayrı bulut ortamı ve Android paketi hazır. iOS cihaz kodu derlemesi geçti; imzalı kurulum, fiziksel telefon performansı ve gerçek oyuncu kabulü henüz tamamlanmadı. Bu rapor kapalı testin bütün kabul koşullarının geçtiği anlamına gelmez.
 
-## iOS Simulator doğrulaması — 2376c8d
+## Üç askerlik kışla
+
+Kışla, Kalkan Birliği ve Hücum Birliği üç asker çıkarıyor. Askerler binadan yürüyerek yola yerleşiyor, düşmana yaklaşıp karşılıklı yakın dövüşe giriyor ve çatışmadan sonra kendi noktalarına dönüyor. Eksik sıraya yeni asker gönderiliyor; konum ve yürüyüş durumu dalga kaydında korunuyor. Eski iki askerlik kayıtlar okunuyor. Bekleyen düşmanın birikmiş saldırıları art arda boşaltması ve model yüksekliğinin yakın dövüş menzilini bozması düzeltildi. Son tam oynanış koşusu **36/36**, kışla ağırlıklı boss kurulumu **20 canla zafer**. Aşağıdaki 17 kurulum ve 97 dalga ölçümü bu değişiklikle yenilendi. Ayrıntı: `BARRACKS_TEST_TR.md`. Son model düzeltmesi (`4215702`) içe aktarım yönünü koruyarak askerlerin yatık görünmesini giderir; ardından 103/103 EditMode ve 21/21 birlik/arayüz kontrolü geçti. Güncel paket iPhone 13 simülatöründe üç asker ve yakın dövüş için kontrol edildi; üç platform çıktısı yenilendi.
+
+## Önceki iOS Simulator doğrulaması — 2376c8d
 
 iPhone 13 / iOS 26.5 simülatöründe kurulum ve çalışma doğrulandı. Oyuncu derlemesinde açılışı bozan erken olay kaydı başlatması, bilgi kartındaki taşma ve görünmeyen başlık, kesilen öğretim metinleri ve duraklamada dalga sayacı düzeltildi. Sekiz noktada kur/yükselt/sat/yeniden kur testi, 13/13 sahne testi ve ek test altını kullanan sekiz dalgalı boss koşusu geçti. Hesapsız giriş, ekrandan kule kurma, boş yetenek kullanımı, iki yatay yön, arka planda duraklama ve 80 altın/20 can/iki okçuyla dalga başına kayıt dönüşü gözlendi. Ayrıntılar ve sınırlar: `SIMULATOR_TEST_TR.md`. Üç platform paketi aynı son kaynakla yenilendi; simülatör sonucu fiziksel performans kanıtı değildir.
 
@@ -36,13 +40,13 @@ Savaş alanının çevresindeki lacivert platform, koyu kenar ve gökyüzü şer
 
 ## Tamamlanan doğrulama
 
-- EditMode: **102/102**; yerel kurtarma, hesap sahipliği, eski ilerleme, combat ve veri kuralları.
-- Tam PlayMode koşusu: **27/27**; ilk 10 bölümün 17 gerçek kaynak senaryosu, üç kule ağırlıklı boss stratejisi, savaş/kayıt/arayüz kontrolleri. Son sunum ve öğretim değişiklikleri ayrıca **24/24** geçen `playmode-ui-final.xml` dosyasında doğrulandı. Bu ek koşu önceki testlerin bir kısmını tekrarlar; sayılar bağımsız test sayısı olarak toplanmamalı.
+- Güncel EditMode: **103/103** (`barracks-editmode.xml`); yerel kurtarma, hesap sahipliği, eski ilerleme, savaş/veri kuralları ve ayakta duran asker modeli.
+- Güncel tam PlayMode koşusu: **36/36** (`barracks-playmode.xml`); üç askerlik kışla, ilk 10 bölümün 17 gerçek kaynak senaryosu, üç kule ağırlıklı boss stratejisi, savaş/kayıt/arayüz kontrolleri. Önceki 27/27 ve 24/24 raporları tarihsel kanıttır; test sayıları birbirine eklenmemeli.
 - İlk öğretimin gerçek kaynak testi: iki okçu, Kalkan Darbesi, üçüncü okçu ve yükseltme ile zafer; sonuç ekranı olmadan tek bekleyen zafer talebi, yeniden açılışta temiz dalga kaydı.
 - Cloud Code .NET: **12/12**.
 - Gerçek UGS SDK denemesi: geçerli zafer, sunucuda yıldız türetme, sıfır can ve yanlış sahip reddi, yinelenen talepte sıfır ek ödül. Kanıt: `evidence/cloud-integration-proof.txt` ve `cloud-integration.json`.
 - 30/60 FPS × 1/2/4/8 hız simülasyonlarında ilk bölümün sonucu aynı: zafer, 20 can, 542 altın, 140,81 saniye. Bu, fiziksel cihaz FPS ölçümü değildir.
-- Altı dalın kontrollü karşılaştırmasında beklenen avantaj ölçüldü: Rapid Fire 102→120 hasar, Sharpshooter 102→183, Blast 118→142, Assault 156→320; Shield askerin ayakta kalma süresini 1,87→3,73 saniyeye çıkardı; Frost boss hareketine %25 yavaşlatma uyguladı. Bu rol deneyleri kontrollü kaynak kullanır; kampanya koşularındaki altın bütçesi gerçek oyun bütçesidir.
+- Altı dalın kontrollü karşılaştırmasında beklenen avantaj ölçüldü: Rapid Fire 102→120 hasar, Sharpshooter 102→183, Blast 118→142, Assault 208→320; Shield askerin ayakta kalma süresini 2,30→4,22 saniyeye çıkardı; Frost boss hareketine %25 yavaşlatma uyguladı. Bu rol deneyleri kontrollü kaynak kullanır; kampanya koşularındaki altın bütçesi gerçek oyun bütçesidir.
 
 ### 1× savaş süresi ve alternatif kurulumlar
 
@@ -52,14 +56,14 @@ Duraklama ve oyuncunun hazırlıkta beklemesi hariç. İki sonuç bulunan bölü
 |---:|---:|---:|
 | 1 | 136,84 | 120–180 |
 | 2 | 137,69 | 120–180 |
-| 3 | 139,86 | 120–180 |
-| 4 | 307,69 / 309,67 | 240–360 |
-| 5 | 309,69 / 305,77 | 240–360 |
-| 6 | 314,08 / 305,29 | 240–360 |
-| 7 | 318,93 / 316,13 | 240–360 |
-| 8 | 307,75 / 323,12 | 240–360 |
-| 9 | 322,88 / 321,67 | 240–360 |
-| 10 | 411,69 / 394,63 | 360–480 |
+| 3 | 142,69 | 120–180 |
+| 4 | 310,68 / 309,67 | 240–360 |
+| 5 | 310,40 / 305,77 | 240–360 |
+| 6 | 309,17 / 305,35 | 240–360 |
+| 7 | 309,55 / 316,25 | 240–360 |
+| 8 | 309,42 / 323,12 | 240–360 |
+| 9 | 326,88 / 321,65 | 240–360 |
+| 10 | 408,03 / 423,86 | 360–480 |
 
 Otomatik satın alma stratejisinde bölüm 6–9 dalları geç safhada, boss bölümünde orta ve geç safhada alınıyor. Bu strateji önce temel kuleleri ve ikinci seviyeleri tamamlıyor. İnsanların dal seçimini ne zaman yaptığı ve altı dalın bölüm içindeki tercih değeri oyuncu testinde ayrıca ölçülecek; kontrollü hasar karşılaştırması oyuncu tercihi kanıtı değildir.
 

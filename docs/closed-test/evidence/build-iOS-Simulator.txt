@@ -1,6 +1,6 @@
 build=ct-20260906-01
 result=Succeeded
-bytes=2002904092
-seconds=50.283949
+bytes=2003216294
+seconds=49.128034
 errors=0
 output=Builds/ClosedTest-iOS-Simulator

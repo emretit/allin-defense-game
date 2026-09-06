@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Failed(Child)" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-09-06 13:48:30Z" end-time="2026-09-06 13:48:30Z" duration="0.2010432">
+  <test-suite type="TestSuite" id="1000" name="Defender Chronicles Test" fullname="Defender Chronicles Test" runstate="Runnable" testcasecount="103" result="Failed" site="Child" start-time="2026-09-06 13:48:30Z" end-time="2026-09-06 13:48:30Z" duration="0.201043" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1113" name="DefenderChronicles.EditModeTests.dll" fullname="/Users/emreaydin/DefenderChronicles-first-region/Library/ScriptAssemblies/DefenderChronicles.EditModeTests.dll" runstate="Runnable" testcasecount="102" result="Failed" site="Child" start-time="2026-09-06 13:48:30Z" end-time="2026-09-06 13:48:30Z" duration="0.197900" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="8783" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1114" name="DefenderChronicles" fullname="DefenderChronicles" runstate="Runnable" testcasecount="102" result="Failed" site="Child" start-time="2026-09-06 13:48:30Z" end-time="2026-09-06 13:48:30Z" duration="0.197590" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1115" name="Tests" fullname="DefenderChronicles.Tests" runstate="Runnable" testcasecount="102" result="Failed" site="Child" start-time="2026-09-06 13:48:30Z" end-time="2026-09-06 13:48:30Z" duration="0.197238" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestFixture" id="1007" name="BarracksPresentationTests" fullname="DefenderChronicles.Tests.BarracksPresentationTests" classname="DefenderChronicles.Tests.BarracksPresentationTests" runstate="Runnable" testcasecount="1" result="Failed" site="Child" start-time="2026-09-06 13:48:30Z" end-time="2026-09-06 13:48:30Z" duration="0.195688" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1008" name="GuardStaysUprightWhenIdleMovingAndAttacking" fullname="DefenderChronicles.Tests.BarracksPresentationTests.GuardStaysUprightWhenIdleMovingAndAttacking" methodname="GuardStaysUprightWhenIdleMovingAndAttacking" classname="DefenderChronicles.Tests.BarracksPresentationTests" runstate="Runnable" seed="1794874931" result="Failed" start-time="2026-09-06 13:48:30Z" end-time="2026-09-06 13:48:30Z" duration="0.190589" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  Guard must stand above the road regardless of facing or animation.
+  Expected: greater than 0.449999988f
+  But was:  0.0283139758f
+]]></message>
+                <stack-trace><![CDATA[at DefenderChronicles.Tests.BarracksPresentationTests.GuardStaysUprightWhenIdleMovingAndAttacking () [0x001ff] in /Users/emreaydin/DefenderChronicles-first-region/Assets/Tests/EditMode/BarracksPresentationTests.cs:35
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[[GUARD_POSE] imported_rotation=(270.02, 0.00, 0.00) initial_head=(0.00, 0.00, 0.75) boots=(0.08, -0.03, 0.05),(-0.08, -0.03, 0.05)
+[GUARD_POSE] state=Idle facing=0 head_y=0.000 feet_y=-0.028
+Saving results to: /Users/emreaydin/Library/Application Support/Emre Aydin/Defender Chronicles Test/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
