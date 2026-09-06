@@ -11,7 +11,8 @@
     "Unity.Services.Authentication.PlayerAccounts",
     "Unity.Services.CloudCode",
     "Unity.Services.CloudSave",
-    "Unity.Services.Core"
+    "Unity.Services.Core",
+    "Unity.Services.Core.Environments"
   ],
   "autoReferenced": true
 }

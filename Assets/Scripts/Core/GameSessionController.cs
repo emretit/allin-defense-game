@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DefenderChronicles.Data;
+using DefenderChronicles.Combat;
 using DefenderChronicles.Presentation;
 using DefenderChronicles.UI;
 using UnityEngine;
@@ -36,13 +37,13 @@ namespace DefenderChronicles.Core
     public interface ICombatTarget : IDamageable { }
 
     [DefaultExecutionOrder(-400)]
-    public sealed class GameSessionController : MonoBehaviour
+    public sealed partial class GameSessionController : MonoBehaviour
     {
         private const int StartingGold = 200;
         private const int StartingLives = 20;
         private const string SelectableLayerName = "Selectable";
         private const float IntermissionSeconds = 8f;
-        public const float BaselineGameplayPace = 2f;
+        public const float BaselineGameplayPace = 1f;
         private static readonly float[] SpeedSteps = { 1f, 2f, 4f, 8f };
         private static readonly string[] SpeedLabels = { "1x", "2x", "4x", "8x" };
         private static readonly Vector3[] OutpostSlotPositions =
@@ -298,9 +299,9 @@ namespace DefenderChronicles.Core
             outposts.RemoveAll(item => item == null);
             friendlyUnits.RemoveAll(item => item == null);
 
+            AdvanceBattle(Time.deltaTime);
             if (Phase == GamePhase.Intermission)
             {
-                intermissionRemaining = Mathf.Max(0f, intermissionRemaining - Time.unscaledDeltaTime);
                 if (nextWaveButtonLabel != null)
                     nextWaveButtonLabel.text = intermissionRemaining > 0f
                         ? GameLocalization.Text($"DALGAYI ERKEN ÇAĞIR  {Mathf.CeilToInt(intermissionRemaining)}",
@@ -699,21 +700,8 @@ namespace DefenderChronicles.Core
                 yield break;
             }
 
-            foreach (var group in wave.groups)
-            {
-                if (group == null || group.count <= 0) continue;
-                if (group.startDelay > 0f)
-                    yield return new WaitForSeconds(GameplayDelay(group.startDelay));
-
-                for (int i = 0; i < group.count; i++)
-                {
-                    SpawnEnemy(group.enemy);
-                    yield return new WaitForSeconds(GameplayDelay(group.interval));
-                }
-            }
-
-            spawning = false;
-            TryCompleteWave();
+            ScheduleWave(wave);
+            yield break;
         }
 
         private void SpawnEnemy(EnemyArchetype archetype)
@@ -765,6 +753,7 @@ namespace DefenderChronicles.Core
 
         internal void EnemyReachedKeep(GreyboxEnemy enemy, int damage)
         {
+            leakedLives[(int)enemy.Archetype] += Mathf.Max(1, damage);
             LoseLives(Mathf.Max(1, damage));
             EnemyRemoved(enemy, false);
         }
@@ -2139,15 +2128,14 @@ namespace DefenderChronicles.Core
             return best;
         }
 
-        internal void DamageEnemies(Vector3 position, float radius, int damage, float slowFactor = 1f, float slowDuration = 0f)
+        internal void DamageEnemies(Vector3 position, float radius, int damage, float slowFactor = 1f, float slowDuration = 0f, DamageType damageType = DamageType.Magic)
         {
-            _ = slowFactor;
-            _ = slowDuration;
             float sqr = radius * radius;
             foreach (var enemy in enemies.ToArray())
             {
                 if (enemy == null || !enemy.IsAlive || (enemy.Position - position).sqrMagnitude > sqr) continue;
-                enemy.TakeDamage(damage);
+                enemy.TakeDamage(damage, damageType);
+                if (slowDuration > 0f) enemy.ApplySlow(slowFactor, slowDuration);
             }
         }
 
@@ -2261,7 +2249,7 @@ namespace DefenderChronicles.Core
             float attackMultiplier = Mathf.Lerp(1f, 1.85f, progress);
             return new EnemyStats(
                 Mathf.RoundToInt(baseStats.maxHealth * healthMultiplier),
-                baseStats.speed * speedMultiplier,
+                baseStats.speed * speedMultiplier * BattleRules.LegacyPace,
                 Mathf.RoundToInt(baseStats.reward * Mathf.Lerp(1f, 1.4f, progress)),
                 Mathf.Max(1, Mathf.RoundToInt(baseStats.baseDamage * Mathf.Lerp(1f, 1.6f, progress))),
                 Mathf.Max(1, Mathf.RoundToInt(baseStats.attackDamage * attackMultiplier)),
@@ -2281,9 +2269,9 @@ namespace DefenderChronicles.Core
 
         internal static OutpostStats GetOutpostStats(OutpostKind kind) => kind switch
         {
-            OutpostKind.Archer => new OutpostStats(75, 55, 22, 4.8f, 1.25f),
+            OutpostKind.Archer => new OutpostStats(75, 55, 22, 4.8f, 2.5f),
             OutpostKind.Barracks => new OutpostStats(100, 70, 14, 1.4f, 1f),
-            OutpostKind.Mage => new OutpostStats(125, 85, 38, 4.2f, 0.65f),
+            OutpostKind.Mage => new OutpostStats(125, 85, 38, 4.2f, 1.3f),
             _ => new OutpostStats(75, 55, 20, 4f, 1f)
         };
 

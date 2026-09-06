@@ -71,6 +71,50 @@ public sealed class CampaignRulesEngineTests
         Assert.That(state.UnlockedLevel, Is.EqualTo(2));
     }
 
+    [Test]
+    public void ZeroLivesCannotClaimVictory()
+    {
+        var claim = Claim(1, 3, "zero"); claim.RemainingLives = 0;
+        var result = CampaignRulesEngine.ApplyBatch(new CampaignServerState(), new[] { claim }, rules);
+        Assert.That(result.Decisions.Single().Reason, Is.EqualTo("invalid_lives"));
+        Assert.That(result.State.Valor, Is.Zero);
+    }
+
+    [Test]
+    public void StarsAreDerivedFromLivesInsteadOfClientAssertion()
+    {
+        var claim = Claim(1, 3, "false-stars"); claim.RemainingLives = 1;
+        var result = CampaignRulesEngine.ApplyBatch(new CampaignServerState(), new[] { claim }, rules);
+        Assert.That(result.State.Levels.Single().Stars, Is.EqualTo(1));
+        Assert.That(result.Decisions.Single().AwardedValor, Is.EqualTo(rules.Levels[0].ValorReward + 5));
+    }
+
+    [Test]
+    public void IsolatedLevelFiftyCannotUnlockCampaignDuringMigration()
+    {
+        var state = CampaignRulesEngine.MigrateLegacy("{\"levels\":[{\"level\":50,\"stars\":3,\"bestLives\":12}]}", rules);
+        Assert.That(state.UnlockedLevel, Is.EqualTo(1));
+        Assert.That(state.Valor, Is.Zero);
+        Assert.That(state.MigrationIncomplete, Is.True);
+    }
+
+    [Test]
+    public void MigrationKeepsOnlyContiguousValidPrefix()
+    {
+        var state = CampaignRulesEngine.MigrateLegacy("{\"levels\":[{\"level\":1,\"stars\":3,\"bestLives\":20},{\"level\":3,\"stars\":3,\"bestLives\":20}]}", rules);
+        Assert.That(state.UnlockedLevel, Is.EqualTo(2));
+        Assert.That(state.Levels.Select(x => x.Level), Is.EqualTo(new[] { 1 }));
+        Assert.That(state.MigrationIncomplete, Is.True);
+    }
+
+    [Test]
+    public void NullClaimIsRejectedWithoutAbortingValidBatch()
+    {
+        var result = CampaignRulesEngine.ApplyBatch(new CampaignServerState(), new[] { Claim(1, 3, "valid"), null! }, rules);
+        Assert.That(result.Decisions.Last().Reason, Is.EqualTo("invalid_claim_id"));
+        Assert.That(result.State.UnlockedLevel, Is.EqualTo(2));
+    }
+
     CampaignCompletionClaim Claim(int level, int stars, string id, long sequence = 1) => new()
     {
         ClaimId = id,

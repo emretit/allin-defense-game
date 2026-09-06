@@ -11,13 +11,15 @@ namespace DefenderChronicles.Core
         Syncing,
         Current,
         RequiresAccount,
-        Failed
+        Failed,
+        RequiresReview
     }
 
     [Serializable]
     public sealed class CampaignCompletionClaim
     {
         public string claimId;
+        public string ownerPlayerId;
         public long sequence;
         public string levelId;
         public int level;
@@ -32,6 +34,7 @@ namespace DefenderChronicles.Core
     {
         public int schemaVersion = CampaignProgressStore.CurrentVersion;
         public long revision;
+        public bool migrationIncomplete;
         public int unlockedLevel = 1;
         public int valor;
         public int heroXp;

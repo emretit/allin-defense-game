@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using DefenderChronicles.Data;
+using DefenderChronicles.Combat;
 using UnityEngine;
 
 namespace DefenderChronicles.Core
@@ -27,6 +28,13 @@ namespace DefenderChronicles.Core
     }
 
     [Serializable]
+    public sealed class RejectedCompletion
+    {
+        public CampaignCompletionClaim claim;
+        public string reason;
+    }
+
+    [Serializable]
     public sealed class CampaignSaveData
     {
         public int version = CampaignProgressStore.CurrentVersion;
@@ -40,6 +48,9 @@ namespace DefenderChronicles.Core
         public List<CampaignLevelProgress> levels = new();
         public long serverRevision;
         public long nextClaimSequence = 1;
+        public bool migrationNeedsReview;
+        public List<RejectedCompletion> rejectedClaims = new();
+        public List<string> guestImports = new();
         public List<CampaignCompletionClaim> pendingClaims = new();
 
         public int TotalStars => levels?.Sum(item => Mathf.Clamp(item.stars, 0, 3)) ?? 0;
@@ -59,30 +70,113 @@ namespace DefenderChronicles.Core
 
     public sealed class CampaignProgressStore
     {
-        public const int CurrentVersion = 3;
+        public const int CurrentVersion = 4;
         public const string FileName = "campaign-save.json";
 
+        [Serializable] private sealed class ActiveProfile { public string key; }
+        private readonly string rootPath;
         public CampaignSaveData Data { get; private set; }
-        public string SavePath { get; }
+        public string SavePath { get; private set; }
+        public string ProfileKey { get; private set; }
+        public bool RecoveredFromBackup { get; private set; }
         public CampaignSyncStatus SyncStatus { get; private set; } = CampaignSyncStatus.LocalOnly;
         public int PendingClaimCount => Data.pendingClaims?.Count ?? 0;
         public event Action Changed;
         public event Action<CampaignSyncStatus> SyncStatusChanged;
+        public event Action ProfileChanged;
 
         public CampaignProgressStore(string savePath = null)
         {
-            SavePath = string.IsNullOrWhiteSpace(savePath)
-                ? Path.Combine(Application.persistentDataPath, FileName)
-                : savePath;
-            Data = Load();
+            rootPath = string.IsNullOrWhiteSpace(savePath)
+                ? Path.Combine(Application.persistentDataPath, "closed-test", FileName) : savePath;
+            if (savePath == null && !File.Exists(rootPath) && !File.Exists(rootPath + ".active"))
+            {
+                string legacy = Path.Combine(Application.persistentDataPath, FileName);
+                if (File.Exists(legacy))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(rootPath));
+                    File.Copy(legacy, rootPath, false); // Import a copy; never mutate the original profile.
+                }
+            }
+            if (AtomicSaveFile.TryRead(rootPath + ".active", ValidPointer, out string pointer, out _))
+                ProfileKey = JsonUtility.FromJson<ActiveProfile>(pointer).key;
+            if (ProfileKey != null)
+            {
+                SavePath = ProfilePath(ProfileKey);
+                Data = LoadAt(SavePath);
+            }
+            else
+            {
+                Data = LoadAt(rootPath);
+                ProfileKey = Data.authProvider == PlayerAuthProvider.PlayerAccount && !string.IsNullOrEmpty(Data.playerId)
+                    ? AtomicSaveFile.Hash(Data.playerId) : "guest";
+                SavePath = ProfilePath(ProfileKey);
+            }
+            if (string.IsNullOrEmpty(Data.playerId))
+            {
+                Data.playerId = "local-guest";
+                Data.authProvider = PlayerAuthProvider.Guest;
+            }
+        }
+
+        private string ProfilePath(string key) => Path.Combine(rootPath + ".profiles", key + ".json");
+        private static bool ValidPointer(string json)
+        {
+            try
+            {
+                string key = JsonUtility.FromJson<ActiveProfile>(json)?.key;
+                return key == "guest" || (key != null && key.Length == 64 && key.All(Uri.IsHexDigit));
+            }
+            catch (ArgumentException) { return false; }
         }
 
         public void SignIn(PlayerAuthProvider provider, string playerId, string displayName)
         {
-            Data.authProvider = provider;
-            Data.playerId = string.IsNullOrWhiteSpace(playerId) ? Guid.NewGuid().ToString("N") : playerId;
-            Data.displayName = string.IsNullOrWhiteSpace(displayName) ? "Muhafız" : displayName;
+            string id = string.IsNullOrWhiteSpace(playerId) ? "local-guest" : playerId;
+            string nextKey = provider == PlayerAuthProvider.Guest ? "guest" : AtomicSaveFile.Hash(id);
             Save();
+            if (nextKey != ProfileKey)
+            {
+                ProfileKey = nextKey;
+                SavePath = ProfilePath(nextKey);
+                Data = LoadAt(SavePath);
+            }
+            string oldOwner = Data.playerId;
+            Data.authProvider = provider;
+            Data.playerId = id;
+            Data.displayName = string.IsNullOrWhiteSpace(displayName) ? "Muhafız" : displayName;
+            // Guest authentication attaches the existing device guest. Registered profiles never inherit it.
+            if (provider == PlayerAuthProvider.Guest)
+                foreach (var claim in Data.pendingClaims) claim.ownerPlayerId = id;
+            Save();
+            SetSyncStatus(Data.migrationNeedsReview ? CampaignSyncStatus.RequiresReview : CampaignSyncStatus.LocalOnly);
+            ProfileChanged?.Invoke();
+        }
+
+        public bool CanImportGuest => ProfileKey != "guest" && File.Exists(ProfilePath("guest")) &&
+                                      !Data.guestImports.Contains("guest");
+
+        public bool ImportGuestProgress()
+        {
+            if (!CanImportGuest) return false;
+            CampaignSaveData guest = LoadAt(ProfilePath("guest"));
+            // Deliberate user action: create fresh account-owned claims, never move the guest's queue.
+            foreach (var result in guest.levels.OrderBy(x => x.level))
+            {
+                if (result.bestLives <= 0 || result.stars <= 0) continue;
+                if (result.level > Data.unlockedLevel) { Data.migrationNeedsReview = true; break; }
+                CompleteLevel(result.level, result.stars, result.bestLives);
+            }
+            Data.guestImports.Add("guest");
+            Save();
+            return true;
+        }
+
+        public int NextUnfinishedLevel(int available = 10)
+        {
+            for (int level = 1; level <= Mathf.Min(available, Data.unlockedLevel); level++)
+                if (ProgressFor(level)?.stars is not > 0) return level;
+            return Mathf.Min(available, Data.unlockedLevel);
         }
 
         public void SelectLevel(int level)
@@ -95,18 +189,22 @@ namespace DefenderChronicles.Core
         {
             int clampedLevel = Mathf.Clamp(level, 1, CampaignCatalog.LevelCount);
             CampaignLevelDefinition definition = CampaignCatalog.Level(clampedLevel);
+            if (remainingLives <= 0 || remainingLives > definition.startingLives)
+                throw new ArgumentOutOfRangeException(nameof(remainingLives), "Victory requires valid remaining lives.");
             var claim = new CampaignCompletionClaim
             {
                 claimId = Guid.NewGuid().ToString("N"),
+                ownerPlayerId = Data.playerId,
                 sequence = Data.nextClaimSequence++,
                 levelId = definition.id,
                 level = clampedLevel,
-                stars = Mathf.Clamp(stars, 1, 3),
+                stars = BattleRules.StarsForLives(remainingLives, definition.startingLives),
                 remainingLives = Mathf.Clamp(remainingLives, 0, definition.startingLives),
                 createdAtUtc = DateTime.UtcNow.ToString("O")
             };
             Data.pendingClaims.Add(claim);
             CampaignCompletionReward reward = ApplyCompletion(Data, claim);
+            Data.lastSelectedLevel = NextUnfinishedLevel();
             Save();
             SetSyncStatus(CampaignSyncStatus.Pending);
             return reward;
@@ -123,41 +221,46 @@ namespace DefenderChronicles.Core
         public void ApplyServerSync(CampaignSyncResult result)
         {
             if (result?.state == null) throw new ArgumentNullException(nameof(result));
-            if (!string.Equals(result.rulesVersion, CampaignRulesVersion.Current, StringComparison.Ordinal))
-                throw new InvalidOperationException($"Campaign rules mismatch: {result.rulesVersion}.");
-
-            var processed = new HashSet<string>(
-                result.decisions?.Where(item => item != null && !string.IsNullOrWhiteSpace(item.claimId))
-                    .Select(item => item.claimId) ?? Enumerable.Empty<string>(),
-                StringComparer.Ordinal);
-            List<CampaignCompletionClaim> remaining = Data.pendingClaims
-                .Where(item => item != null && !processed.Contains(item.claimId))
-                .OrderBy(item => item.sequence)
-                .ToList();
-
-            string playerId = Data.playerId;
-            string displayName = Data.displayName;
-            PlayerAuthProvider authProvider = Data.authProvider;
-            int lastSelectedLevel = Data.lastSelectedLevel;
-            long nextSequence = Data.nextClaimSequence;
-
-            Data = new CampaignSaveData
+            if (result.rulesVersion != CampaignRulesVersion.Current)
             {
-                playerId = playerId,
-                displayName = displayName,
-                authProvider = authProvider,
-                unlockedLevel = result.state.unlockedLevel,
-                lastSelectedLevel = lastSelectedLevel,
-                valor = result.state.valor,
-                heroXp = result.state.heroXp,
-                levels = result.state.levels ?? new List<CampaignLevelProgress>(),
-                serverRevision = result.state.revision,
-                nextClaimSequence = nextSequence,
-                pendingClaims = remaining
-            };
-            foreach (CampaignCompletionClaim pending in remaining) ApplyCompletion(Data, pending);
+                SetSyncStatus(CampaignSyncStatus.RequiresReview);
+                throw new InvalidOperationException("Campaign rules require an update; pending progress is retained.");
+            }
+            if (result.state.revision < Data.serverRevision) return;
+            var processed = new HashSet<string>();
+            foreach (var decision in result.decisions ?? new List<CampaignClaimDecision>())
+            {
+                if (decision == null || string.IsNullOrEmpty(decision.claimId)) continue;
+                var claim = Data.pendingClaims.FirstOrDefault(x => x.claimId == decision.claimId);
+                if (claim == null) continue;
+                processed.Add(claim.claimId);
+                if (!decision.accepted)
+                    Data.rejectedClaims.Add(new RejectedCompletion { claim = claim, reason = decision.reason });
+            }
+            Data.pendingClaims.RemoveAll(x => processed.Contains(x.claimId));
+            var confirmed = result.state.levels ?? new List<CampaignLevelProgress>();
+            bool legacyAhead = (Data.migrationNeedsReview || result.state.migrationIncomplete) &&
+                Data.levels.Any(local => local.stars > (confirmed.FirstOrDefault(x => x.level == local.level)?.stars ?? 0) &&
+                    !Data.pendingClaims.Any(x => x.level == local.level));
+            Data.serverRevision = result.state.revision;
+            if (legacyAhead)
+            {
+                // Keep incompatible legacy progress playable locally; never overwrite it with an empty cloud state.
+                Data.migrationNeedsReview = true;
+                Save();
+                SetSyncStatus(CampaignSyncStatus.RequiresReview);
+                return;
+            }
+            Data.migrationNeedsReview = false;
+            Data.levels = confirmed.Select(x => new CampaignLevelProgress
+                { level = x.level, stars = x.stars, bestLives = x.bestLives }).ToList();
+            Data.unlockedLevel = result.state.unlockedLevel;
+            Data.valor = result.state.valor;
+            Data.heroXp = result.state.heroXp;
+            foreach (var pending in Data.pendingClaims) ApplyCompletion(Data, pending);
             Save();
-            SetSyncStatus(remaining.Count == 0 ? CampaignSyncStatus.Current : CampaignSyncStatus.Pending);
+            SetSyncStatus(Data.rejectedClaims.Count > 0 ? CampaignSyncStatus.RequiresReview :
+                Data.pendingClaims.Count > 0 ? CampaignSyncStatus.Pending : CampaignSyncStatus.Current);
         }
 
         public CampaignLevelProgress ProgressFor(int level) =>
@@ -193,27 +296,37 @@ namespace DefenderChronicles.Core
         public void Save()
         {
             Normalize(Data);
-            string directory = Path.GetDirectoryName(SavePath);
-            if (!string.IsNullOrEmpty(directory)) Directory.CreateDirectory(directory);
-            string temporaryPath = SavePath + ".tmp";
-            File.WriteAllText(temporaryPath, JsonUtility.ToJson(Data, true));
-            if (File.Exists(SavePath)) File.Delete(SavePath);
-            File.Move(temporaryPath, SavePath);
+            AtomicSaveFile.Write(SavePath, JsonUtility.ToJson(Data));
+            AtomicSaveFile.Write(rootPath + ".active", JsonUtility.ToJson(new ActiveProfile { key = ProfileKey }));
             Changed?.Invoke();
         }
 
-        private CampaignSaveData Load()
+        private CampaignSaveData LoadAt(string path)
         {
-            if (!File.Exists(SavePath)) return Normalize(new CampaignSaveData());
-            try
+            bool Valid(string json)
             {
-                return Normalize(JsonUtility.FromJson<CampaignSaveData>(File.ReadAllText(SavePath)));
+                try
+                {
+                    if (!json.Contains("\"version\"") || !json.Contains("\"unlockedLevel\"")) return false;
+                    var candidate = JsonUtility.FromJson<CampaignSaveData>(json);
+                    return candidate != null && candidate.version > 0 && candidate.version <= CurrentVersion;
+                }
+                catch (ArgumentException) { return false; }
             }
-            catch (Exception exception)
+            if (!AtomicSaveFile.TryRead(path, Valid, out string payload, out bool recovered))
             {
-                Debug.LogWarning($"Campaign save could not be read; a clean local save was created. {exception.Message}");
+                if (File.Exists(path) || File.Exists(path + ".bak") || File.Exists(path + ".tmp"))
+                    throw new IOException("No valid campaign save can be recovered; existing files were preserved.");
                 return Normalize(new CampaignSaveData());
             }
+            RecoveredFromBackup |= recovered;
+            var data = JsonUtility.FromJson<CampaignSaveData>(payload);
+            if (data.version < CurrentVersion)
+            {
+                if (!File.Exists(path + ".legacy-v3")) AtomicSaveFile.Write(path + ".legacy-v3", payload);
+                data.migrationNeedsReview = data.levels != null && data.levels.Any(x => x != null && x.stars > 0);
+            }
+            return Normalize(data);
         }
 
         public static CampaignSaveData Normalize(CampaignSaveData data)
@@ -239,6 +352,8 @@ namespace DefenderChronicles.Core
                 })
                 .OrderBy(item => item.level)
                 .ToList();
+            data.rejectedClaims ??= new List<RejectedCompletion>();
+            data.guestImports ??= new List<string>();
             data.pendingClaims ??= new List<CampaignCompletionClaim>();
             data.pendingClaims = data.pendingClaims
                 .Where(item => item != null && !string.IsNullOrWhiteSpace(item.claimId) &&
@@ -250,10 +365,11 @@ namespace DefenderChronicles.Core
             foreach (CampaignCompletionClaim claim in data.pendingClaims)
             {
                 CampaignLevelDefinition definition = CampaignCatalog.Level(claim.level);
-                claim.levelId = definition.id;
+                if (string.IsNullOrWhiteSpace(claim.levelId)) claim.levelId = definition.id;
                 claim.stars = Mathf.Clamp(claim.stars, 1, 3);
                 claim.remainingLives = Mathf.Clamp(claim.remainingLives, 0, definition.startingLives);
-                claim.rulesVersion = CampaignRulesVersion.Current;
+                if (string.IsNullOrWhiteSpace(claim.rulesVersion)) claim.rulesVersion = "campaign-rules-v1";
+                if (string.IsNullOrEmpty(claim.ownerPlayerId)) claim.ownerPlayerId = data.playerId;
             }
             long lastSequence = data.pendingClaims.Count == 0 ? 0 : data.pendingClaims.Max(item => item.sequence);
             data.nextClaimSequence = Math.Max(Math.Max(1, data.nextClaimSequence), lastSequence + 1);

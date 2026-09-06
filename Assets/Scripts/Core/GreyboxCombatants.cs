@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using DefenderChronicles.Data;
+using DefenderChronicles.Combat;
 using DefenderChronicles.Presentation;
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,6 +31,13 @@ namespace DefenderChronicles.Core
         private float siegeTimer;
         private float regenerationTimer;
         private float stunRemaining;
+        private readonly SlowEffect slow = new();
+        private float siegeWindup;
+        private GreyboxOutpost siegeTarget;
+        public float StunRemaining => stunRemaining;
+        public float SlowFactor => slow.Factor;
+        public int Health => health;
+        public bool IsWindingUp => siegeTarget != null && siegeWindup > 0f;
         private bool removed;
         private int bossPhase = 1;
 
@@ -53,22 +61,22 @@ namespace DefenderChronicles.Core
             State = EnemyCombatState.Moving;
         }
 
-        private void Update()
+        internal void Tick(float delta)
         {
             if (!IsAlive || session == null || path == null || path.Count < 2) return;
 
-            float delta = session.GameplayDeltaTime;
+            slow.Tick(delta);
+            if (stunRemaining > 0f)
+            {
+                stunRemaining = Mathf.Max(0f, stunRemaining - delta);
+                State = EnemyCombatState.Blocked;
+                return;
+            }
             attackTimer -= delta;
             supportTimer -= delta;
             siegeTimer -= delta;
             regenerationTimer -= delta;
-            stunRemaining = Mathf.Max(0f, stunRemaining - delta);
-            RunSpecialBehaviour();
-            if (stunRemaining > 0f)
-            {
-                State = EnemyCombatState.Blocked;
-                return;
-            }
+            RunSpecialBehaviour(delta);
 
             IDamageable blocker = session.FindNearestBlocker(transform.position, AttackRange());
             if (blocker != null && blocker.IsAlive)
@@ -77,7 +85,7 @@ namespace DefenderChronicles.Core
                 if (attackTimer <= 0f)
                 {
                     blocker.TakeDamage(stats.attackDamage);
-                    attackTimer = archetype == EnemyArchetype.Boss ? 0.75f : 1.05f;
+                    attackTimer += BattleRules.LegacySeconds(archetype == EnemyArchetype.Boss ? .75f : 1.05f);
                 }
                 return;
             }
@@ -86,14 +94,14 @@ namespace DefenderChronicles.Core
             MoveAlongRoute(delta);
         }
 
-        private void RunSpecialBehaviour()
+        private void RunSpecialBehaviour(float delta)
         {
             if (archetype == EnemyArchetype.Regenerator && regenerationTimer <= 0f)
             {
                 Heal(Mathf.Max(5, stats.maxHealth / 25));
                 session.EmitPresentation(PresentationCue.HealPulse, transform.position, gameObject,
                     GameSessionController.ActorKind(archetype));
-                regenerationTimer = 1.25f;
+                regenerationTimer += .625f;
             }
 
             if (archetype == EnemyArchetype.Support && supportTimer <= 0f)
@@ -104,29 +112,43 @@ namespace DefenderChronicles.Core
                     session.EmitPresentation(PresentationCue.HealPulse, healTargetPosition, gameObject,
                         GameSessionController.ActorKind(archetype));
                 }
-                supportTimer = 2.4f;
+                supportTimer += 1.2f;
             }
 
-            if ((archetype == EnemyArchetype.Siege || archetype == EnemyArchetype.Boss) && siegeTimer <= 0f)
+            if (siegeTarget != null)
             {
-                GreyboxOutpost outpost = session.FindNearestOutpost(transform.position,
-                    archetype == EnemyArchetype.Boss ? 6.5f : 4.5f);
-                if (outpost != null)
+                siegeWindup -= delta;
+                if (siegeWindup <= 0f)
                 {
-                    outpost.DisableTemporarily(archetype == EnemyArchetype.Boss ? 5f : 3f);
-                    session.EmitPresentation(archetype == EnemyArchetype.Boss ? PresentationCue.BossAttack : PresentationCue.OutpostDisrupted,
-                        outpost.Position, gameObject, GameSessionController.ActorKind(archetype));
+                    if (siegeTarget.IsAlive)
+                    {
+                        siegeTarget.DisableTemporarily(archetype == EnemyArchetype.Boss ? 2.5f : 1.5f);
+                        session.EmitPresentation(PresentationCue.OutpostDisrupted, siegeTarget.Position, gameObject,
+                            GameSessionController.ActorKind(archetype));
+                    }
+                    siegeTarget = null;
+                    siegeTimer = archetype == EnemyArchetype.Boss ? 4f : 3f;
                 }
-                siegeTimer = archetype == EnemyArchetype.Boss ? 8f : 6f;
+            }
+            else if ((archetype == EnemyArchetype.Siege || archetype == EnemyArchetype.Boss) && siegeTimer <= 0f)
+            {
+                siegeTarget = session.FindNearestOutpost(transform.position,
+                    archetype == EnemyArchetype.Boss ? 6.5f : 4.5f);
+                if (siegeTarget != null)
+                {
+                    siegeWindup = 1.2f;
+                    session.EmitPresentation(PresentationCue.BossAttack, siegeTarget.Position, gameObject,
+                        GameSessionController.ActorKind(archetype));
+                }
             }
 
             if (archetype != EnemyArchetype.Boss) return;
             float fraction = health / (float)Mathf.Max(1, stats.maxHealth);
             int nextPhase = fraction <= 0.33f ? 3 : fraction <= 0.66f ? 2 : 1;
             if (nextPhase == bossPhase) return;
+            if (bossPhase < 2 && nextPhase >= 2) session.SpawnBossReinforcements();
             bossPhase = nextPhase;
             GetComponent<BossPhaseVisual>()?.SetPhase(bossPhase);
-            session.DamageEnemies(transform.position, 3.5f, 0);
             session.EmitPresentation(PresentationCue.BossPhase, transform.position, gameObject,
                 PresentationActorKind.Boss, value: bossPhase);
         }
@@ -144,7 +166,7 @@ namespace DefenderChronicles.Core
             target.y = current.y;
             float phaseMultiplier = archetype == EnemyArchetype.Boss ? 1f + (bossPhase - 1) * 0.22f : 1f;
             transform.position = Vector3.MoveTowards(current, target,
-                stats.speed * phaseMultiplier * delta);
+                stats.speed * phaseMultiplier * slow.Factor * delta);
 
             Vector3 direction = target - current;
             direction.y = 0f;
@@ -170,10 +192,13 @@ namespace DefenderChronicles.Core
             Destroy(gameObject);
         }
 
-        public void TakeDamage(int amount)
+        public void TakeDamage(int amount) => TakeDamage(amount, DamageType.Physical);
+
+        public void TakeDamage(int amount, DamageType type)
         {
             if (!IsAlive || amount <= 0) return;
-            health = CombatMath.ApplyDamage(health, amount);
+            int resolved = BattleRules.ResolveDamage(amount, type, archetype == EnemyArchetype.Vanguard ? .5f : 0f);
+            health = CombatMath.ApplyDamage(health, resolved);
             UpdateHealthBar();
             session?.EmitPresentation(PresentationCue.EnemyHit, transform.position, gameObject,
                 GameSessionController.ActorKind(archetype));
@@ -193,13 +218,16 @@ namespace DefenderChronicles.Core
 
         public void ApplySlow(float factor, float duration)
         {
-            _ = factor;
-            _ = duration;
+            slow.Apply(archetype == EnemyArchetype.Boss ? Mathf.Max(.75f, factor) : factor, duration);
         }
 
         public void Stun(float duration)
         {
-            if (IsAlive) stunRemaining = Mathf.Max(stunRemaining, duration);
+            if (!IsAlive || duration <= 0f) return;
+            stunRemaining = Mathf.Max(stunRemaining, duration);
+            siegeTarget = null;
+            siegeWindup = 0f;
+            siegeTimer = archetype == EnemyArchetype.Boss ? 4f : 3f;
         }
 
         private void CreateHealthBar()
@@ -305,10 +333,9 @@ namespace DefenderChronicles.Core
             if (Kind == OutpostKind.Barracks) SpawnSoldiers();
         }
 
-        private void Update()
+        internal void Tick(float delta)
         {
             if (!IsAlive || session == null) return;
-            float delta = session.GameplayDeltaTime;
             attackTimer -= delta;
             if (disabledRemaining > 0f)
             {
@@ -323,7 +350,7 @@ namespace DefenderChronicles.Core
                 if (soldiers.Count < 2 && attackTimer <= 0f)
                 {
                     SpawnSoldier(soldiers.Count);
-                    attackTimer = 4.5f;
+                    attackTimer = 2.25f;
                 }
                 return;
             }
@@ -453,7 +480,7 @@ namespace DefenderChronicles.Core
         private const int LevelTwoHealth = 175;
         private const int LevelOneDamage = 16;
         private const int LevelTwoDamage = 26;
-        private const float AttackInterval = 0.75f;
+        private const float AttackInterval = 0.375f;
 
         private GameSessionController session;
         private GreyboxOutpost owner;
@@ -482,10 +509,9 @@ namespace DefenderChronicles.Core
             damage = level >= 2 ? LevelTwoDamage : LevelOneDamage;
         }
 
-        private void Update()
+        internal void Tick(float delta)
         {
             if (!IsAlive || session == null) return;
-            float delta = session.GameplayDeltaTime;
             attackTimer -= delta;
             GreyboxEnemy target = session.FindFirstEnemy(transform.position, 1.45f);
             if (target != null)
@@ -520,8 +546,8 @@ namespace DefenderChronicles.Core
     public sealed class GreyboxHero : MonoBehaviour, ICombatTarget
     {
         private const int MaxHealth = 240;
-        private const float RespawnSeconds = 10f;
-        private const float AbilityCooldown = 12f;
+        private const float RespawnSeconds = 5f;
+        private const float AbilityCooldown = 6f;
         private GameSessionController session;
         private Vector3 guardianPosition;
         private Renderer bodyRenderer;
@@ -546,11 +572,8 @@ namespace DefenderChronicles.Core
             bodyCollider = GetComponent<Collider>();
         }
 
-        private void Update()
+        internal void Tick(float delta)
         {
-            float delta = session != null
-                ? session.GameplayDeltaTime
-                : Time.deltaTime * GameSessionController.BaselineGameplayPace;
             AbilityRemaining = CombatMath.TickCooldown(AbilityRemaining, delta);
             if (downed)
             {
@@ -568,7 +591,7 @@ namespace DefenderChronicles.Core
                     enemy.TakeDamage(20);
                     session.EmitPresentation(PresentationCue.HeroAttacked, enemy.Position, gameObject,
                         PresentationActorKind.Knight);
-                    attackTimer = 0.75f;
+                    attackTimer += .375f;
                 }
                 return;
             }
@@ -580,12 +603,15 @@ namespace DefenderChronicles.Core
         public bool TryUseShieldBash()
         {
             if (!IsAlive || AbilityRemaining > 0f || session == null) return false;
+            int targets = session.CountEnemies(transform.position, 3.2f);
+            if (targets == 0) return false;
+            session.RecordAbility(targets);
             session.DamageEnemies(transform.position, 3.2f, 90);
             foreach (var enemy in session.Enemies)
             {
                 if (enemy != null && enemy.IsAlive &&
                     (enemy.Position - transform.position).sqrMagnitude <= 3.2f * 3.2f)
-                    enemy.Stun(2f);
+                    enemy.Stun(1f);
             }
             AbilityRemaining = AbilityCooldown;
             session.EmitPresentation(PresentationCue.HeroAbility, transform.position, gameObject,

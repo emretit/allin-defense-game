@@ -42,7 +42,7 @@ namespace DefenderChronicles.Core
                 var appFlow = appFlowObject.AddComponent<AppFlowController>();
                 appFlow.Initialize(presentationCatalog, session);
                 session.ConfigureMainMenuAction(appFlow.ReturnToMainMenu);
-                var services = appFlowObject.AddComponent<UnityGameServicesController>();
+                var services = CampaignApplication.GetOrCreate().Services;
                 services.Configure(appFlow, appFlow.Progress);
                 if (Environment.GetEnvironmentVariable("DC_UGS_GUEST_ACCEPTANCE") == "1")
                     appFlow.BeginAuthentication(PlayerAuthProvider.Guest);

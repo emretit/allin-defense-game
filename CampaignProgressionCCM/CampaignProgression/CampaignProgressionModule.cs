@@ -65,7 +65,7 @@ public sealed class CampaignProgressionModule
         {
             (CampaignServerState? loadedState, string? writeLock) = await LoadStateAsync(context);
             CampaignServerState state = loadedState ?? new CampaignServerState();
-            CampaignSyncResult result = CampaignRulesEngine.ApplyBatch(state, claims, Rules.Value);
+            CampaignSyncResult result = CampaignRulesEngine.ApplyBatch(state, claims, Rules.Value, context.PlayerId);
             await SaveStateAsync(context, result.State, writeLock);
             logger.LogInformation(
                 "Campaign batch processed. player={PlayerId} claims={ClaimCount} accepted={Accepted} revision={Revision}",
@@ -119,18 +119,17 @@ public sealed class CampaignProgressionModule
 public static class CampaignRulesEngine
 {
     public static CampaignSyncResult ApplyBatch(CampaignServerState state,
-        IEnumerable<CampaignCompletionClaim> claims, CampaignRulesDocument rules)
+        IEnumerable<CampaignCompletionClaim> claims, CampaignRulesDocument rules, string? expectedOwner = null)
     {
         Normalize(state, rules);
         var decisions = new List<CampaignClaimDecision>();
         var seenInBatch = new HashSet<string>(StringComparer.Ordinal);
-        foreach (CampaignCompletionClaim claim in claims.OrderBy(item => item.Sequence))
+        foreach (CampaignCompletionClaim claim in claims.OrderBy(item => item?.Sequence ?? long.MaxValue))
         {
-            CampaignClaimDecision decision = ApplyClaim(state, claim, rules, seenInBatch);
+            CampaignClaimDecision decision = ApplyClaim(state, claim, rules, seenInBatch, expectedOwner);
             decisions.Add(decision);
         }
         state.Revision++;
-        state.ProcessedClaimIds = state.ProcessedClaimIds.TakeLast(128).ToList();
         return new CampaignSyncResult { State = state, Decisions = decisions, RulesVersion = rules.RulesVersion };
     }
 
@@ -150,8 +149,9 @@ public static class CampaignRulesEngine
         }
         if (legacy?.Levels == null) return state;
 
+        int expectedLevel = 1;
         foreach (LegacyLevelProgress incoming in legacy.Levels
-                     .Where(item => item.Level >= 1 && item.Level <= rules.Levels.Count)
+                     .Where(item => item != null && item.Level >= 1 && item.Level <= rules.Levels.Count)
                      .GroupBy(item => item.Level)
                      .Select(group => new LegacyLevelProgress
                      {
@@ -162,13 +162,19 @@ public static class CampaignRulesEngine
                      .OrderBy(item => item.Level))
         {
             CampaignRuleLevel rule = rules.Levels[incoming.Level - 1];
-            int stars = Math.Clamp(incoming.Stars, 0, 3);
-            if (stars == 0) continue;
+            if (incoming.Level != expectedLevel || incoming.Stars <= 0 || incoming.BestLives <= 0)
+            {
+                state.MigrationIncomplete = true;
+                break;
+            }
+            int lives = Math.Clamp(incoming.BestLives, 1, rule.StartingLives);
+            int stars = StarsForLives(lives, rule.StartingLives);
+            expectedLevel++;
             state.Levels.Add(new CampaignLevelProgress
             {
                 Level = incoming.Level,
                 Stars = stars,
-                BestLives = Math.Clamp(incoming.BestLives, 0, rule.StartingLives)
+                BestLives = lives
             });
             state.Valor += rule.ValorReward + stars * 5;
             state.HeroXp += rule.HeroXpReward;
@@ -180,11 +186,13 @@ public static class CampaignRulesEngine
     }
 
     static CampaignClaimDecision ApplyClaim(CampaignServerState state, CampaignCompletionClaim claim,
-        CampaignRulesDocument rules, HashSet<string> seenInBatch)
+        CampaignRulesDocument rules, HashSet<string> seenInBatch, string? expectedOwner)
     {
         var decision = new CampaignClaimDecision { ClaimId = claim?.ClaimId ?? string.Empty };
         if (claim == null || string.IsNullOrWhiteSpace(claim.ClaimId))
             return Reject(decision, "invalid_claim_id");
+        if (expectedOwner != null && claim.OwnerPlayerId != expectedOwner)
+            return Reject(decision, "owner_mismatch");
         if (!seenInBatch.Add(claim.ClaimId) || state.ProcessedClaimIds.Contains(claim.ClaimId))
             return Accept(decision, "duplicate", 0, 0);
         if (!string.Equals(claim.RulesVersion, rules.RulesVersion, StringComparison.Ordinal))
@@ -195,9 +203,7 @@ public static class CampaignRulesEngine
         CampaignRuleLevel rule = rules.Levels[claim.Level - 1];
         if (!string.Equals(claim.LevelId, rule.Id, StringComparison.Ordinal))
             return Reject(decision, "level_id_mismatch");
-        if (claim.Stars is < 1 or > 3)
-            return Reject(decision, "invalid_stars");
-        if (claim.RemainingLives < 0 || claim.RemainingLives > rule.StartingLives)
+        if (claim.RemainingLives <= 0 || claim.RemainingLives > rule.StartingLives)
             return Reject(decision, "invalid_lives");
         if (claim.Level > state.UnlockedLevel)
             return Reject(decision, "level_locked");
@@ -206,10 +212,11 @@ public static class CampaignRulesEngine
                                          ?? new CampaignLevelProgress { Level = claim.Level };
         if (!state.Levels.Contains(progress)) state.Levels.Add(progress);
         int previousStars = progress.Stars;
-        int improvedStars = Math.Max(0, claim.Stars - previousStars);
+        int stars = StarsForLives(claim.RemainingLives, rule.StartingLives);
+        int improvedStars = Math.Max(0, stars - previousStars);
         int valor = improvedStars * 5 + (previousStars == 0 ? rule.ValorReward : 0);
         int heroXp = previousStars == 0 ? rule.HeroXpReward : 0;
-        progress.Stars = Math.Max(previousStars, claim.Stars);
+        progress.Stars = Math.Max(previousStars, stars);
         progress.BestLives = Math.Max(progress.BestLives, claim.RemainingLives);
         state.UnlockedLevel = Math.Max(state.UnlockedLevel, Math.Min(rules.Levels.Count, claim.Level + 1));
         state.Valor += valor;
@@ -218,9 +225,13 @@ public static class CampaignRulesEngine
         return Accept(decision, "accepted", valor, heroXp);
     }
 
+    public static int StarsForLives(int lives, int startingLives) =>
+        lives <= 0 || startingLives <= 0 ? 0 :
+        lives * 4 >= startingLives * 3 ? 3 : lives * 5 >= startingLives * 2 ? 2 : 1;
+
     static void Normalize(CampaignServerState state, CampaignRulesDocument rules)
     {
-        state.SchemaVersion = 3;
+        state.SchemaVersion = 4;
         state.Revision = Math.Max(0, state.Revision);
         state.UnlockedLevel = Math.Clamp(state.UnlockedLevel, 1, rules.Levels.Count);
         state.Valor = Math.Max(0, state.Valor);
@@ -264,6 +275,7 @@ public sealed class CampaignRuleLevel
 public sealed class CampaignCompletionClaim
 {
     [JsonProperty("claimId")] public string ClaimId { get; set; } = string.Empty;
+    [JsonProperty("ownerPlayerId")] public string OwnerPlayerId { get; set; } = string.Empty;
     [JsonProperty("sequence")] public long Sequence { get; set; }
     [JsonProperty("levelId")] public string LevelId { get; set; } = string.Empty;
     [JsonProperty("level")] public int Level { get; set; }
@@ -275,7 +287,8 @@ public sealed class CampaignCompletionClaim
 
 public sealed class CampaignServerState
 {
-    [JsonProperty("schemaVersion")] public int SchemaVersion { get; set; } = 3;
+    [JsonProperty("schemaVersion")] public int SchemaVersion { get; set; } = 4;
+    [JsonProperty("migrationIncomplete")] public bool MigrationIncomplete { get; set; }
     [JsonProperty("revision")] public long Revision { get; set; }
     [JsonProperty("unlockedLevel")] public int UnlockedLevel { get; set; } = 1;
     [JsonProperty("valor")] public int Valor { get; set; }

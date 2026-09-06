@@ -90,7 +90,7 @@ namespace DefenderChronicles.UI
                 ? presentationCatalog
                 : throw new ArgumentNullException(nameof(presentationCatalog));
             session = owner != null ? owner : throw new ArgumentNullException(nameof(owner));
-            progress = new CampaignProgressStore(savePath);
+            progress = savePath == null ? CampaignApplication.GetOrCreate().Progress : new CampaignProgressStore(savePath);
             theme = catalog.frontendTheme != null
                 ? catalog.frontendTheme
                 : FrontendPresentationTheme.CreateRuntimeFallback();

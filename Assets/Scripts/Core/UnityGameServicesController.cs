@@ -7,6 +7,7 @@ using Unity.Services.Authentication;
 using Unity.Services.Authentication.PlayerAccounts;
 using Unity.Services.CloudCode;
 using Unity.Services.Core;
+using Unity.Services.Core.Environments;
 using UnityEngine;
 
 namespace DefenderChronicles.Core
@@ -20,21 +21,71 @@ namespace DefenderChronicles.Core
         private bool initialized;
         private bool syncing;
         private bool playerAccountsSubscribed;
+        private Task initialization;
+        private bool syncRequested;
+        private float nextAttempt;
+        private int failures;
+        public const string TestEnvironment = "closed-test";
 
         public void Configure(AppFlowController appFlow, CampaignProgressStore progressStore)
         {
+            if (flow != null) flow.AuthenticationRequested -= HandleAuthenticationRequested;
+            if (progress != null) progress.Changed -= HandleProgressChanged;
             flow = appFlow;
             progress = progressStore;
             flow.AuthenticationRequested += HandleAuthenticationRequested;
             progress.Changed += HandleProgressChanged;
+            RestoreSession();
         }
+
+        private async void RestoreSession()
+        {
+            if (string.IsNullOrWhiteSpace(Application.cloudProjectId)) return;
+            try
+            {
+                await EnsureInitializedAsync();
+                if (!AuthenticationService.Instance.IsSignedIn)
+                {
+                    if (!AuthenticationService.Instance.SessionTokenExists &&
+                        progress.Data.authProvider == PlayerAuthProvider.PlayerAccount)
+                    { progress.FailSync(true); return; }
+                    await AuthenticationService.Instance.SignInAnonymouslyAsync();
+                }
+                if (progress.Data.authProvider == PlayerAuthProvider.Guest)
+                    progress.SignIn(PlayerAuthProvider.Guest, AuthenticationService.Instance.PlayerId, progress.Data.displayName);
+                RequestSync();
+            }
+            catch (Exception error)
+            {
+                progress.FailSync();
+                ScheduleRetry();
+                Debug.LogWarning("Cloud session restore deferred: " + error.Message);
+            }
+        }
+
+        public void RequestSync() { syncRequested = true; nextAttempt = 0f; }
+        private void Update()
+        {
+            if (!syncRequested || syncing || Time.realtimeSinceStartup < nextAttempt) return;
+            syncRequested = false;
+            if (!initialized) RestoreSession();
+            else _ = SynchronizeCloudAsync();
+        }
+        private void ScheduleRetry()
+        {
+            failures = Math.Min(failures + 1, 6);
+            nextAttempt = Time.realtimeSinceStartup + Math.Min(60f, (float)Math.Pow(2, failures));
+            syncRequested = true;
+        }
+        private void OnApplicationFocus(bool focused) { if (focused) RequestSync(); }
+        private void OnApplicationPause(bool paused) { if (!paused) RequestSync(); }
 
         private async void HandleAuthenticationRequested(PlayerAuthProvider provider)
         {
             if ((int)provider is 2 or 3)
                 provider = PlayerAuthProvider.PlayerAccount;
             requestedProvider = provider;
-            flow.SetLoginStatus(provider == PlayerAuthProvider.Guest
+            flow?.SetLoginStatus(provider == PlayerAuthProvider.Guest
                 ? "Misafir hesabı hazırlanıyor..."
                 : "Güvenli hesap penceresi hazırlanıyor...");
 
@@ -96,23 +147,9 @@ namespace DefenderChronicles.Core
 
         private async Task SignInWithPlayerAccountAsync()
         {
-            if (AuthenticationService.Instance.IsSignedIn && progress.Data.authProvider == PlayerAuthProvider.Guest)
-            {
-                try
-                {
-                    await AuthenticationService.Instance.LinkWithUnityAsync(PlayerAccountService.Instance.AccessToken);
-                }
-                catch (AuthenticationException exception)
-                    when (exception.ErrorCode == AuthenticationErrorCodes.AccountAlreadyLinked)
-                {
-                    AuthenticationService.Instance.SignOut(true);
-                    await AuthenticationService.Instance.SignInWithUnityAsync(PlayerAccountService.Instance.AccessToken);
-                }
-            }
-            else if (!AuthenticationService.Instance.IsSignedIn)
-            {
-                await AuthenticationService.Instance.SignInWithUnityAsync(PlayerAccountService.Instance.AccessToken);
-            }
+            // Account sign-in changes identity only. Guest progression needs the separate explicit import action.
+            if (AuthenticationService.Instance.IsSignedIn) AuthenticationService.Instance.SignOut();
+            await AuthenticationService.Instance.SignInWithUnityAsync(PlayerAccountService.Instance.AccessToken);
             await CompleteAuthenticationAsync(PlayerAuthProvider.PlayerAccount);
         }
 
@@ -132,7 +169,7 @@ namespace DefenderChronicles.Core
             }
 
             bool synchronized = await SynchronizeCloudAsync();
-            flow.SetLoginStatus(synchronized
+            flow?.SetLoginStatus(synchronized
                 ? "İlerleme güvenli bulut kaydıyla eşitlendi."
                 : "Çevrimdışı ilerleme korunuyor; bağlantı gelince eşitlenecek.");
             Debug.Log($"[DC_UGS_AUTH_PASS] provider={provider} cloud_sync={synchronized.ToString().ToLowerInvariant()}");
@@ -141,31 +178,39 @@ namespace DefenderChronicles.Core
         private async Task EnsureInitializedAsync()
         {
             if (initialized) return;
-            await UnityServices.InitializeAsync();
-            initialized = true;
+            initialization ??= UnityServices.InitializeAsync(new InitializationOptions().SetEnvironmentName(TestEnvironment));
+            try { await initialization; initialized = true; }
+            catch { initialization = null; throw; }
         }
 
         private async Task<bool> SynchronizeCloudAsync()
         {
-            if (!AuthenticationService.Instance.IsSignedIn) return false;
+            if (!initialized || !AuthenticationService.Instance.IsSignedIn) { ScheduleRetry(); return false; }
+            if (progress.Data.playerId != AuthenticationService.Instance.PlayerId)
+            { progress.FailSync(true); return false; }
             if (syncing) return false;
             syncing = true;
             progress.BeginSync();
+            string owner = progress.Data.playerId;
             try
             {
                 CampaignSyncResult result = await GetStateAsync(progress.Data);
+                if (progress.Data.playerId != owner) return false;
                 progress.ApplyServerSync(result);
                 while (progress.PendingClaimCount > 0)
                 {
                     IReadOnlyList<CampaignCompletionClaim> pending = progress.PendingClaims();
                     result = await SubmitPendingAsync(pending);
+                    if (progress.Data.playerId != owner) return false;
                     progress.ApplyServerSync(result);
                 }
-                return true;
+                failures = 0;
+                return progress.SyncStatus == CampaignSyncStatus.Current;
             }
             catch (Exception exception)
             {
                 progress.FailSync();
+                ScheduleRetry();
                 Debug.LogWarning($"Campaign sync is pending: {exception.Message}");
                 return false;
             }
@@ -175,10 +220,9 @@ namespace DefenderChronicles.Core
             }
         }
 
-        private async void HandleProgressChanged()
+        private void HandleProgressChanged()
         {
-            if (syncing || !initialized || !AuthenticationService.Instance.IsSignedIn) return;
-            await SynchronizeCloudAsync();
+            if (!syncing) RequestSync();
         }
 
         public Task<CampaignSyncResult> GetStateAsync(CampaignSaveData legacySnapshot = null)
@@ -223,7 +267,7 @@ namespace DefenderChronicles.Core
                 Debug.Log("[DC_UGS_GUEST_FALLBACK_PASS] screen=MainMenu provider=Guest");
                 return;
             }
-            flow.SetLoginStatus("Çevrimiçi hesap henüz yapılandırılmadı. Misafir olarak devam edebilirsin.");
+            flow?.SetLoginStatus("Çevrimiçi hesap henüz yapılandırılmadı. Misafir olarak devam edebilirsin.");
         }
 
         private void CompleteUnlinkedProjectSignIn(PlayerAuthProvider provider)
@@ -234,7 +278,7 @@ namespace DefenderChronicles.Core
                 Debug.Log("[DC_UGS_GUEST_FALLBACK_PASS] screen=MainMenu provider=Guest reason=project-unlinked");
                 return;
             }
-            flow.SetLoginStatus("Çevrimiçi hesap bağlantısı hazırlanıyor. Şimdilik misafir olarak devam edebilirsin.");
+            flow?.SetLoginStatus("Çevrimiçi hesap bağlantısı hazırlanıyor. Şimdilik misafir olarak devam edebilirsin.");
         }
 
         private void OnDestroy()

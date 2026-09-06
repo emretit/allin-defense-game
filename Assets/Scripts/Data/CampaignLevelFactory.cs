@@ -65,7 +65,7 @@ namespace DefenderChronicles.Data
             if (campaign.region % 2 == 0)
                 MirrorPath(path);
             bool existingFinal = campaign.number == 10;
-            return new RuntimeCampaignLevel
+            var runtime = new RuntimeCampaignLevel
             {
                 campaign = campaign,
                 path = existingFinal ? ClonePath(RegionOnePaths[0]) : path,
@@ -73,6 +73,9 @@ namespace DefenderChronicles.Data
                 guardianPosition = existingFinal ? new Vector3(21.7f, 0.12f, 8.15f) : BuildGuardianPosition(path),
                 waves = existingFinal ? BuildExistingBossWaves() : BuildProgressiveWaves(campaign)
             };
+            foreach (var wave in runtime.waves)
+                foreach (var group in wave.groups) { group.startDelay *= .5f; group.interval *= .5f; }
+            return runtime;
         }
 
         private static WaveDefinition[] BuildProgressiveWaves(CampaignLevelDefinition level)
@@ -82,7 +85,7 @@ namespace DefenderChronicles.Data
             {
                 var groups = new List<SpawnGroupDefinition>();
                 int regionPressure = (level.region - 1) * 2;
-                int raiders = 4 + level.indexInRegion + regionPressure + waveIndex * 2;
+                int raiders = level.number == 1 ? new[] { 22, 28, 40 }[waveIndex] : 4 + level.indexInRegion + regionPressure + waveIndex * 2;
                 groups.Add(new SpawnGroupDefinition(EnemyArchetype.Raider, raiders, 0f,
                     Mathf.Max(0.42f, 0.92f - level.region * 0.045f - level.indexInRegion * 0.012f - waveIndex * 0.025f)));
 
