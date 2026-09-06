@@ -17,7 +17,7 @@ def digest(path):
 
 def collect_tests():
     results = {}
-    for name in ("editmode-final.xml", "playmode-final.xml", "playmode-ui-final.xml", "fullscreen-playmode.xml", "simulator-fix-playmode.xml"):
+    for name in ("editmode-final.xml", "playmode-final.xml", "playmode-ui-final.xml", "fullscreen-playmode.xml", "simulator-fix-playmode.xml", "barracks-editmode.xml", "barracks-playmode.xml"):
         path = EVIDENCE / name
         if not path.exists():
             results[name] = {"status": "pending"}
@@ -100,6 +100,8 @@ def main():
         "device": collect_device(),
         "simulator": json.loads((EVIDENCE / "simulator-acceptance.json").read_text())
             if (EVIDENCE / "simulator-acceptance.json").exists() else {"status": "not_run"},
+        "barracks_simulator": json.loads((EVIDENCE / "barracks-simulator.json").read_text())
+            if (EVIDENCE / "barracks-simulator.json").exists() else {"status": "not_run"},
         "human_playtest": {"status": "not_run", "planned_cohorts": ["5–8", "30–50"]},
     }
     path = ROOT / "docs/closed-test/BUILD_MANIFEST.json"

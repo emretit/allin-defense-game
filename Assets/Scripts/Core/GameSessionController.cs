@@ -2148,7 +2148,7 @@ namespace DefenderChronicles.Core
             }
             foreach (var unit in friendlyUnits)
             {
-                if (unit == null || !unit.IsAlive) continue;
+                if (unit == null || !unit.CanBlock) continue;
                 float d = (unit.Position - position).sqrMagnitude;
                 if (d > bestDistance) continue;
                 best = unit;

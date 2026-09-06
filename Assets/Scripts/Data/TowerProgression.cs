@@ -9,7 +9,7 @@ namespace DefenderChronicles.Data
 
     public struct TowerCombatStats
     {
-        public int damage, guardHealth;
+        public int damage, guardHealth, guardCount;
         public float range, attacksPerSecond, splashRadius, slowFactor, slowSeconds;
         public DamageType damageType;
         public bool priorityTargets;
@@ -17,6 +17,7 @@ namespace DefenderChronicles.Data
 
     public static class TowerProgression
     {
+        public const int BarracksSquadSize = 3;
         public static OutpostStats Base(OutpostKind kind) => kind switch
         {
             OutpostKind.Archer => new OutpostStats(75, 55, 22, 4.8f, 2.5f),
@@ -51,6 +52,7 @@ namespace DefenderChronicles.Data
             };
             if (kind == OutpostKind.Barracks)
             {
+                stats.guardCount = BarracksSquadSize;
                 stats.damage = level >= 2 ? 26 : 16;
                 stats.guardHealth = level >= 2 ? 175 : 110;
                 stats.range = 1.45f;
@@ -90,8 +92,8 @@ namespace DefenderChronicles.Data
         {
             OutpostSpecialization.RapidFire => GameLocalization.Text("Hafif hedeflere hızlı atış", "Rapid shots against light targets"),
             OutpostSpecialization.Sharpshooter => GameLocalization.Text("Uzun menzil • Önce şifacı ve kuşatma", "Long range • Support and siege priority"),
-            OutpostSpecialization.ShieldGuard => GameLocalization.Text("İki dayanıklı askerle yolu tut", "Two durable soldiers hold the route"),
-            OutpostSpecialization.AssaultGuard => GameLocalization.Text("İki askerde daha yüksek hasar", "Two soldiers deal more damage"),
+            OutpostSpecialization.ShieldGuard => GameLocalization.Text("Üç dayanıklı askerle yolu tut", "Three durable soldiers hold the route"),
+            OutpostSpecialization.AssaultGuard => GameLocalization.Text("Üç askerde daha yüksek hasar", "Three soldiers deal more damage"),
             OutpostSpecialization.Blast => GameLocalization.Text("Geniş alanda büyü hasarı", "Magic damage over a wider area"),
             OutpostSpecialization.Frost => GameLocalization.Text("Düşmanları 2 sn %50 yavaşlatır", "Slows enemies by 50% for 2 sec"),
             _ => string.Empty

@@ -30,6 +30,8 @@ namespace DefenderChronicles.Tests
                     session.TryBuildOutpost(0,kind);session.TryUpgradeOutpost(0);
                     if(useBranch)Assert.That(session.TrySpecializeOutpost(0,branch),Is.True);
                     var tower=session.Outposts[0];
+                    // Both squads reach their road formation before the controlled encounter starts.
+                    if(kind==OutpostKind.Barracks)for(int frame=0;frame<300;frame++)session.AdvanceBattle(1f/60);
                     typeof(GameSessionController).GetMethod("SpawnEnemy",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(session,new object[]{EnemyArchetype.Boss});
                     var enemy=session.Enemies[0];
                     var guards=Object.FindObjectsByType<GreyboxFriendlyUnit>(FindObjectsSortMode.None);

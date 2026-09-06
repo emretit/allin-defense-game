@@ -11,6 +11,9 @@ namespace DefenderChronicles.Core
         public int health;
         public float attack, ability, respawn;
         public bool downed;
+        public bool hasPosition, deployed;
+        public int formationIndex;
+        public Vector3 position;
     }
     [Serializable] public sealed class SavedOutpost
     {
@@ -82,6 +85,9 @@ namespace DefenderChronicles.Core
         private static bool ValidTimer(float value) => !float.IsNaN(value) && !float.IsInfinity(value) && value >= -1000 && value <= 100000;
         private static bool ValidActor(ActorCheckpoint actor,int maxHealth) => actor != null && actor.health >= 0 && actor.health <= maxHealth &&
             ValidTimer(actor.attack) && ValidTimer(actor.ability) && ValidTimer(actor.respawn);
+        private static bool ValidGuard(ActorCheckpoint guard) => ValidActor(guard,400) && guard.health > 0 &&
+            (!guard.hasPosition || (guard.formationIndex >= 0 && guard.formationIndex < TowerProgression.BarracksSquadSize &&
+             float.IsFinite(guard.position.x) && float.IsFinite(guard.position.y) && float.IsFinite(guard.position.z) && guard.position.sqrMagnitude < 1000000f));
         private bool ValidCheckpoint(BattleCheckpoint cp) => cp.owner == campaignStore.ProfileKey &&
             cp.level >= 1 && cp.level <= FirstRegionCampaign.LevelCount && cp.level <= campaignStore.Data.unlockedLevel &&
             cp.ruleVersion == FirstRegionCampaign.Version && cp.nextWave >= 0 && cp.nextWave < WaveCount &&
@@ -90,7 +96,8 @@ namespace DefenderChronicles.Core
             cp.outposts.Count <= SlotCount && cp.outposts.Select(o => o.slot).Distinct().Count() == cp.outposts.Count &&
             cp.outposts.All(o => o.slot >= 0 && o.slot < SlotCount && Enum.IsDefined(typeof(OutpostKind),o.kind) &&
                 CanBuild(o.kind) && ValidTimer(o.attack) && ValidTimer(o.disabled) &&
-                o.guards != null && o.guards.Count <= 2 && o.guards.All(g=>ValidActor(g,400) && g.health>0) &&
+                o.guards != null && o.guards.Count <= (o.kind == OutpostKind.Barracks ? TowerProgression.BarracksSquadSize : 0) && o.guards.All(ValidGuard) &&
+                o.guards.Select((g,index) => g.hasPosition ? g.formationIndex : index).Distinct().Count() == o.guards.Count &&
                 o.level >= 1 && o.level <= 3 && (o.level == 3 ? UnlockedCampaignLevel >= TowerProgression.UnlockLevel(o.kind) && TowerProgression.Matches(o.kind, o.specialization) : o.specialization == OutpostSpecialization.None));
         private void ClearCheckpoint()
         {

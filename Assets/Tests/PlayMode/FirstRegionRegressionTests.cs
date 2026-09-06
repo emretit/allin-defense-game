@@ -57,8 +57,10 @@ namespace DefenderChronicles.Tests
                     .Invoke(session, new object[] { 2000 }); // Geometry only.
                 for (int slot = 0; slot < session.SlotCount; slot++)
                     Assert.That(session.TryBuildOutpost(slot, OutpostKind.Barracks), Is.True);
+                for (int frame = 0; frame < 300; frame++) session.AdvanceBattle(1f / 60);
                 foreach (var guard in Object.FindObjectsByType<GreyboxFriendlyUnit>(FindObjectsSortMode.None))
                 {
+                    Assert.That(guard.IsDeployed, Is.True, $"Level {level}: guard did not leave the barracks");
                     float minimum = float.MaxValue;
                     for (int i = 0; i + 1 < session.Path.Count; i++)
                     {
@@ -66,7 +68,7 @@ namespace DefenderChronicles.Tests
                         float t = Mathf.Clamp01(Vector3.Dot(guard.Position - a, d) / d.sqrMagnitude);
                         minimum = Mathf.Min(minimum, Vector3.Distance(guard.Position, a + d * t));
                     }
-                    Assert.That(minimum, Is.LessThan(1.2f), $"Level {level}: guard cannot block route");
+                    Assert.That(minimum, Is.LessThan(.45f), $"Level {level}: guard cannot block route");
                 }
                 Object.Destroy(session.gameObject);
                 yield return null;

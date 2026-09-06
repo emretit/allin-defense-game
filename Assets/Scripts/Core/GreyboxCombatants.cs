@@ -75,7 +75,7 @@ namespace DefenderChronicles.Core
                 State = EnemyCombatState.Blocked;
                 return;
             }
-            attackTimer -= delta;
+            attackTimer = CombatMath.TickCooldown(attackTimer, delta);
             supportTimer -= delta;
             siegeTimer -= delta;
             regenerationTimer -= delta;
@@ -91,7 +91,7 @@ namespace DefenderChronicles.Core
                     blocker.TakeDamage(stats.attackDamage);
                     session.EmitPresentation(PresentationCue.OutpostAttacked, blocker.Position, gameObject,
                         GameSessionController.ActorKind(archetype), OutpostKind.Barracks);
-                    attackTimer += BattleRules.LegacySeconds(archetype == EnemyArchetype.Boss ? .75f : 1.05f);
+                    attackTimer = BattleRules.LegacySeconds(archetype == EnemyArchetype.Boss ? .75f : 1.05f);
                 }
                 return;
             }
@@ -302,6 +302,7 @@ namespace DefenderChronicles.Core
         public TowerCombatStats CombatStats { get; private set; }
         public bool CanSpecialize => IsAlive && level == 2 && Specialization == OutpostSpecialization.None;
         private readonly List<GreyboxFriendlyUnit> soldiers = new();
+        public IReadOnlyList<GreyboxFriendlyUnit> Soldiers => soldiers;
         private GameSessionController session;
         private OutpostStats baseStats;
         private Renderer bodyRenderer;
@@ -359,10 +360,15 @@ namespace DefenderChronicles.Core
 
             if (Kind == OutpostKind.Barracks)
             {
-                soldiers.RemoveAll(unit => unit == null);
-                if (soldiers.Count < 2 && attackTimer <= 0f)
+                soldiers.RemoveAll(unit => unit == null || !unit.IsAlive);
+                if (soldiers.Count < CombatStats.guardCount && attackTimer <= 0f)
                 {
-                    SpawnSoldier(soldiers.Count);
+                    for (int index = 0; index < CombatStats.guardCount; index++)
+                    {
+                        if (soldiers.Exists(unit => unit.FormationIndex == index)) continue;
+                        SpawnSoldier(index);
+                        break;
+                    }
                     attackTimer = 2.25f;
                 }
                 return;
@@ -396,10 +402,12 @@ namespace DefenderChronicles.Core
         internal void RestoreCheckpoint(SavedOutpost data)
         {
             attackTimer = data.attack; disabledRemaining = data.disabled;
-            for (int i = soldiers.Count - 1; i >= 0; i--)
+            foreach (var soldier in soldiers) if (soldier != null) soldier.Dismiss();
+            soldiers.Clear();
+            for (int i = 0; i < data.guards.Count; i++)
             {
-                if (i >= data.guards.Count) { soldiers[i].TakeDamage(int.MaxValue); soldiers.RemoveAt(i); }
-                else soldiers[i].RestoreCheckpoint(data.guards[i]);
+                var saved = data.guards[i];
+                SpawnSoldier(saved.hasPosition ? saved.formationIndex : i)?.RestoreCheckpoint(saved);
             }
         }
 
@@ -451,57 +459,47 @@ namespace DefenderChronicles.Core
             sold = true;
             if (Slot != null) Slot.SetOccupant(null);
             foreach (var soldier in soldiers)
-                if (soldier != null) Destroy(soldier.gameObject);
+                if (soldier != null) soldier.Dismiss();
             soldiers.Clear();
             Destroy(gameObject);
         }
 
         private void SpawnSoldiers()
         {
-            SpawnSoldier(0);
-            SpawnSoldier(1);
+            for (int i = 0; i < CombatStats.guardCount; i++) SpawnSoldier(i);
         }
 
-        private void SpawnSoldier(int index)
+        private GreyboxFriendlyUnit SpawnSoldier(int index)
         {
-            if (!IsAlive || session == null || soldiers.Count >= 2) return;
+            if (!IsAlive || session == null || soldiers.Count >= CombatStats.guardCount) return null;
             Vector3 rally = FindBarracksRallyPoint(index);
-            GameObject go = session.CreateFriendlyVisual($"Barracks Guard {index + 1}", rally);
+            Vector3 direction = rally - Position;
+            direction.y = 0;
+            direction = direction.sqrMagnitude > .001f ? direction.normalized : Vector3.forward;
+            Vector3 exit = Position + direction * .7f + Vector3.Cross(Vector3.up, direction) * ((index - 1) * .3f);
+            GameObject go = session.CreateFriendlyVisual($"Barracks Guard {index + 1}", exit);
             if (go == null)
-                go = GameSessionController.CreatePrimitive($"Barracks Guard {index + 1}", PrimitiveType.Capsule,
-                    rally + Vector3.up * 0.55f, new Vector3(0.42f, 0.55f, 0.42f),
-                    new Color(0.72f, 0.76f, 0.82f), transform.parent, true);
+            {
+                go = new GameObject($"Barracks Guard {index + 1}");
+                go.transform.SetParent(transform.parent, true);
+                go.transform.position = exit;
+                GameSessionController.CreatePrimitive("Guard body", PrimitiveType.Capsule,
+                    exit + Vector3.up * .55f, new Vector3(0.42f, 0.55f, 0.42f),
+                    new Color(0.72f, 0.76f, 0.82f), go.transform, true);
+            }
             var soldier = go.AddComponent<GreyboxFriendlyUnit>();
-            soldier.Configure(session, this, rally, level);
+            soldier.Configure(session, this, rally, level, index);
             soldiers.Add(soldier);
             session.RegisterFriendly(soldier);
+            return soldier;
         }
 
         private Vector3 FindBarracksRallyPoint(int index)
         {
             IReadOnlyList<Vector3> route = session.Path;
-            Vector3 closest = transform.position;
-            Vector3 routeDirection = Vector3.forward;
-            float closestDistance = float.MaxValue;
-
-            for (int segmentIndex = 0; segmentIndex < route.Count - 1; segmentIndex++)
-            {
-                Vector3 from = route[segmentIndex];
-                Vector3 segment = route[segmentIndex + 1] - from;
-                float lengthSquared = segment.sqrMagnitude;
-                if (lengthSquared <= 0.0001f) continue;
-
-                float projection = Mathf.Clamp01(Vector3.Dot(transform.position - from, segment) / lengthSquared);
-                Vector3 candidate = from + segment * projection;
-                float distance = (candidate - transform.position).sqrMagnitude;
-                if (distance >= closestDistance) continue;
-
-                closestDistance = distance;
-                closest = candidate;
-                routeDirection = segment.normalized;
-            }
-
-            closest += routeDirection * (index % 2 == 0 ? -0.45f : 0.45f);
+            float progress = CombatMath.ClosestRouteDistance(route, Position);
+            // Sample along the actual road so short segments and corners never throw a guard off it.
+            Vector3 closest = CombatMath.PointOnRoute(route, progress + (index - 1) * .8f, out _);
             closest.y = transform.position.y;
             return closest;
         }
@@ -512,7 +510,7 @@ namespace DefenderChronicles.Core
         private string RoleName() => Specialization != OutpostSpecialization.None ? TowerProgression.Description(Specialization) : Kind switch
         {
             OutpostKind.Archer => GameLocalization.Text("Hızlı tek hedef", "Fast single target"),
-            OutpostKind.Barracks => GameLocalization.Text("İki engelleyici birlik", "Two blocking guards"),
+            OutpostKind.Barracks => GameLocalization.Text("Üç asker · Yakın dövüş", "Three melee soldiers"),
             OutpostKind.Mage => GameLocalization.Text("Alan hasarı", "Area damage"),
             _ => GameLocalization.Text("Savunma", "Defence")
         };
@@ -520,11 +518,9 @@ namespace DefenderChronicles.Core
 
     public sealed class GreyboxFriendlyUnit : MonoBehaviour, ICombatTarget
     {
-        private const int LevelOneHealth = 110;
-        private const int LevelTwoHealth = 175;
-        private const int LevelOneDamage = 16;
-        private const int LevelTwoDamage = 26;
-        private const float AttackInterval = 0.375f;
+        private const float MoveSpeed = 2.8f;
+        private const float MeleeRange = .85f;
+        private const float PatrolRange = 2.6f;
 
         private GameSessionController session;
         private GreyboxOutpost owner;
@@ -534,15 +530,24 @@ namespace DefenderChronicles.Core
         private int damage;
         private float attackTimer;
         private bool dead;
+        private float rallyProgress, routeProgress;
+        private GreyboxEnemy target;
 
         public bool IsAlive => !dead && health > 0 && owner != null && owner.IsAlive;
         public Vector3 Position => transform.position;
+        public int Health => health;
+        public int FormationIndex { get; private set; }
+        public Vector3 RallyPoint => rally;
+        public bool IsDeployed { get; private set; }
+        public bool CanBlock => IsAlive && IsDeployed;
 
-        public void Configure(GameSessionController gameSession, GreyboxOutpost source, Vector3 rallyPoint, int level)
+        public void Configure(GameSessionController gameSession, GreyboxOutpost source, Vector3 rallyPoint, int level, int formationIndex = 0)
         {
             session = gameSession;
             owner = source;
             rally = rallyPoint;
+            FormationIndex = formationIndex;
+            rallyProgress = CombatMath.ClosestRouteDistance(session.Path, rally);
             SetUpgradeLevel(level);
         }
 
@@ -553,28 +558,98 @@ namespace DefenderChronicles.Core
             damage = owner.CombatStats.damage;
         }
 
-        internal ActorCheckpoint CaptureCheckpoint() => new ActorCheckpoint { health = health, attack = attackTimer };
-        internal void RestoreCheckpoint(ActorCheckpoint data) { health = data.health; attackTimer = data.attack; }
+        internal ActorCheckpoint CaptureCheckpoint() => new ActorCheckpoint
+        {
+            health = health, attack = attackTimer, hasPosition = true, position = Position,
+            deployed = IsDeployed, formationIndex = FormationIndex
+        };
+        internal void RestoreCheckpoint(ActorCheckpoint data)
+        {
+            health = data.health; attackTimer = Mathf.Max(0, data.attack);
+            transform.position = data.hasPosition ? data.position : rally;
+            IsDeployed = !data.hasPosition || data.deployed;
+            routeProgress = CombatMath.ClosestRouteDistance(session.Path, Position);
+        }
         internal void Tick(float delta)
         {
             if (!IsAlive || session == null) return;
-            attackTimer -= delta;
-            GreyboxEnemy target = session.FindFirstEnemy(transform.position, 1.45f);
+            attackTimer = CombatMath.TickCooldown(attackTimer, delta);
+            if (!IsDeployed)
+            {
+                MoveTo(rally, delta);
+                if ((Position - rally).sqrMagnitude < .001f)
+                {
+                    IsDeployed = true;
+                    routeProgress = rallyProgress;
+                }
+                return;
+            }
+            if (target == null || !target.IsAlive || Mathf.Abs(CombatMath.ClosestRouteDistance(session.Path, target.Position) - rallyProgress) > PatrolRange + .5f)
+                target = FindTarget();
+
+            float destination = rallyProgress;
+            float lane = 0f;
             if (target != null)
             {
-                if (attackTimer <= 0f)
+                float enemyProgress = CombatMath.ClosestRouteDistance(session.Path, target.Position);
+                destination = enemyProgress + (rallyProgress < enemyProgress ? -.55f : .55f);
+                lane = (FormationIndex - 1) * .32f;
+            }
+            routeProgress = Mathf.MoveTowards(routeProgress, destination, MoveSpeed * delta);
+            Vector3 roadPosition = CombatMath.PointOnRoute(session.Path, routeProgress, out var direction);
+            roadPosition += Vector3.Cross(Vector3.up, direction) * lane;
+            roadPosition.y = Position.y;
+            MoveTo(roadPosition, delta);
+
+            Vector3 toTarget = target != null ? target.Position - Position : Vector3.zero;
+            toTarget.y = 0; // Combat takes place on the road; a model's pivot height is only presentation.
+            if (target != null && toTarget.sqrMagnitude <= MeleeRange * MeleeRange)
+            {
+                Face(target.Position - Position);
+                if (attackTimer <= 0)
                 {
                     target.TakeDamage(damage);
                     session.EmitPresentation(PresentationCue.OutpostAttacked, target.Position, gameObject,
                         PresentationActorKind.Guard, owner.Kind);
-                    attackTimer += 1f / owner.CombatStats.attacksPerSecond;
+                    attackTimer = 1f / owner.CombatStats.attacksPerSecond;
                 }
-                return;
             }
+        }
 
-            Vector3 targetPosition = rally;
-            targetPosition.y = transform.position.y;
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, 2.8f * delta);
+        private GreyboxEnemy FindTarget()
+        {
+            GreyboxEnemy best = null;
+            float bestScore = float.MaxValue;
+            foreach (var enemy in session.Enemies)
+            {
+                if (enemy == null || !enemy.IsAlive || (enemy.Position - rally).sqrMagnitude > PatrolRange * PatrolRange) continue;
+                if (Mathf.Abs(CombatMath.ClosestRouteDistance(session.Path, enemy.Position) - rallyProgress) > PatrolRange) continue;
+                float score = (enemy.Position - Position).sqrMagnitude;
+                foreach (var guard in owner.Soldiers)
+                    if (guard != null && guard != this && guard.IsAlive && guard.target == enemy) { score += 100; break; }
+                if (score >= bestScore) continue;
+                bestScore = score; best = enemy;
+            }
+            return best;
+        }
+
+        private void MoveTo(Vector3 point, float delta)
+        {
+            point.y = Position.y;
+            Face(point - Position);
+            transform.position = Vector3.MoveTowards(Position, point, MoveSpeed * delta);
+        }
+
+        private void Face(Vector3 direction)
+        {
+            direction.y = 0;
+            if (direction.sqrMagnitude > .0001f) transform.rotation = Quaternion.LookRotation(direction);
+        }
+
+        internal void Dismiss()
+        {
+            dead = true;
+            Destroy(gameObject);
         }
 
         public void TakeDamage(int amount)
