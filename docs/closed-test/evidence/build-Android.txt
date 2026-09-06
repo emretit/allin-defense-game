@@ -1,6 +1,6 @@
 build=ct-20260906-01
 result=Succeeded
-bytes=1427817562
-seconds=86.249407
+bytes=1486026345
+seconds=92.313895
 errors=0
 output=Builds/ClosedTest-Android/DefenderChronicles-ct-20260906-01.apk

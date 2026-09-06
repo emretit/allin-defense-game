@@ -1,0 +1,238 @@
+2026-09-06 15:40:49.212 DefenderChroniclesTest[92467:10407066] Built from '6000.4/staging' branch, Version '6000.4.1f1 (8535861f39e1)', Build type 'Development', Scripting Backend 'il2cpp'
+2026-09-06 15:40:49.212 DefenderChroniclesTest[92467:10407066] MemoryManager: Using 'Dynamic Heap' Allocator.
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=262144"
+    "memorysetup-temp-allocator-size-gfx=262144"
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=4194304"
+    "memorysetup-bucket-allocator-block-count=1"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=4194304"
+    "memorysetup-profiler-bucket-allocator-block-count=1"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=4194304"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+-> applicationDidFinishLaunching()
+-> sceneWillEnterForeground()
+Starting managed debugger on port 56000
+CodeReloadManager initialized
+Found 1 interfaces on host : 0) 192.168.0.21
+Player connection [4378254848]  Target information:
+
+Player connection [4378254848]  * "[IP] 192.168.0.21 [Port] 55000 [Flags] 2 [Guid] 4018117710 [EditorId] 2507877792 [Version] 1048832 [Id] iPhonePlayer(8,Emre-MacBook-Pro.local):56000 [Debug] 1 [PackageName] iPhonePlayer [ProjectName] Defender Chronicles Test"
+
+Player connection [4378254848] Started UDP target info broadcast (1) on [225.0.0.222:54997].
+
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+-> applicationWillEnterForeground()
+-> sceneDidBecomeActive()
+-> applicationDidBecomeActive()
+[Subsystems] Discovering subsystems at path /Users/emreaydin/Library/Developer/CoreSimulator/Devices/D06104AF-BAE2-470C-8191-5913709ECACB/data/Containers/Bundle/Application/3F3F7F49-64E1-42AC-9979-C5E918D0D0E5/DefenderChroniclesTest.app/Data/UnitySubsystems
+GfxDevice: creating device client; kGfxThreadingModeThreaded
+Initializing Metal device caps: Apple iOS simulator GPU
+Apple GPU Family: 2
+MSL Version: 3.0
+Has Float MSAA: 0
+Has Float Filtering: 0
+ReadWrite Texture Tier: 0
+Initialize engine version: 6000.4.1f1 (8535861f39e1)
+objc[92467]: Class UIAccessibilityLoaderWebShared is implemented in both /Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebCore.axbundle/WebCore (0x11df04310) and /Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebKit.axbundle/WebKit (0x119900398). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+WARNING: RGBA Compressed ASTC6X6 UNorm format is not supported, decompressing texture
+WARNING: RGBA Compressed ASTC6X6 UNorm format is not supported, decompressing texture
+WARNING: RGBA Compressed ASTC8X8 UNorm format is not supported, decompressing texture
+WARNING: RGBA Compressed ASTC6X6 UNorm format is not supported, decompressing texture
+WARNING: RGBA Compressed ASTC4X4 UNorm format is not supported, decompressing texture
+WARNING: RGBA Compressed ASTC6X6 UNorm format is not supported, decompressing texture
+WARNING: RGBA Compressed ASTC6X6 UNorm format is not supported, decompressing texture
+WARNING: RGBA Compressed ASTC6X6 UNorm format is not supported, decompressing texture
+WARNING: RGBA Compressed ASTC6X6 UNorm format is not supported, decompressing texture
+WARNING: RGBA Compressed ASTC6X6 UNorm format is not supported, decompressing texture
+WARNING: RGBA Compressed ASTC4X4 UNorm format is not supported, decompressing texture
+UnloadTime: 0.264000 ms
+[DC_MOBILE_RUNTIME] quality=Medium targetFps=60 safeArea=(x:141.00, y:60.00, width:2250.00, height:1110.00)
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.MobileRuntimeSettings:Apply() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/MobileRuntimeSettings.cs:29)
+DefenderChronicles.Core.MobileRuntimeSettings:ApplyBeforeSceneLoad() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/MobileRuntimeSettings.cs:14)
+
+[DC_FRONTEND_MODE] show=False args=
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.GameBootstrap:ShouldShowFrontend() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameBootstrap.cs:89)
+DefenderChronicles.Core.GameBootstrap:Awake() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameBootstrap.cs:22)
+
+[DC_ORIENTATION] requested=LandscapeBattle screen=2532x1170
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.MobileOrientationController:Request(MobileOrientationMode) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/MobileOrientationController.cs:58)
+DefenderChronicles.Core.GameBootstrap:Awake() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameBootstrap.cs:24)
+
+[DC_AMBIENT_CONFIG] quality=Medium enabled=True wind=0,055 detail=0,080 interval=7-12
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Presentation.DefenderAmbientAudioController:Initialize(AudioMixerGroup) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Presentation/DefenderAmbientAudioController.cs:55)
+DefenderChronicles.Presentation.DefenderAudioController:Initialize(DefenderPresentationCatalog) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Presentation/DefenderAudioController.cs:56)
+DefenderChronicles.Presentation.DefenderPresentationDirector:Initialize(GameSessionController, DefenderPresentationCatalog) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Presentation/DefenderPresentationDirector.cs:23)
+DefenderChronicles.Core.GameSessionController:Initialize() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameSessionController.cs:242)
+DefenderChronicles.Core.GameBootstrap:Awake() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameBootstrap.cs:64)
+
+[DC_DEVICE_STARTUP] preparing_seconds=0.29
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Awake() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:48)
+UnityEngine.GameObject:Internal_AddComponentWithType(Type)
+UnityEngine.GameObject:AddComponent(Type) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/GameObject.bindings.cs:246)
+UnityEngine.GameObject:AddComponent() (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/GameObject.bindings.cs:251)
+DefenderChronicles.Core.GameSessionController:Initialize() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameSessionController.cs:253)
+DefenderChronicles.Core.GameBootstrap:Awake() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameBootstrap.cs:64)
+
+[DC_SLOT_REGRESSION] Slot regression smoke started.
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.<RunAutomatedSlotRegressionSmoke>d__275:MoveNext() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameSessionController.cs:1533)
+UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/Coroutines.cs:17)
+UnityEngine.MonoBehaviour:StartCoroutineManaged2(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/MonoBehaviour.bindings.cs:114)
+DefenderChronicles.Core.GameSessionController:Initialize() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameSessionController.cs:293)
+DefenderChronicles.Core.GameBootstrap:Awake() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameBootstrap.cs:64)
+
+CADisplayLink created
+[DC_SLOT_REGRESSION_PASS] slot=1 primary=Archer upgradedLevel=2 reuse=Archer slotCount=8
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.<RunAutomatedSlotRegressionSmoke>d__275:MoveNext() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameSessionController.cs:1605)
+UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/Coroutines.cs:17)
+
+Shadowmap RenderTexture requested without a depth buffer. Changing to a 16 bit depth buffer. To resolve this warning, please specify the desired number of depth bits when creating the render texture.
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:LogWarning(Object)
+UnityEngine.RenderTexture:WarnAboutFallbackTo16BitsDepth(RenderTextureFormat) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Graphics/Texture.cs:463)
+UnityEngine.RenderTexture:ValidateRenderTextureDesc(RenderTextureDescriptor&) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Graphics/Texture.cs:405)
+UnityEngine.RenderTexture:.ctor(RenderTextureDescriptor) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Graphics/Texture.cs:242)
+UnityEngine.Rendering.RTHandleSystem:CreateRenderTexture(Int32, Int32, GraphicsFormat, Int32, FilterMode, TextureWrapMode, TextureWrapMode, TextureWrapMode, TextureDimension, Boolean, Boolean, Boolean, Boolean, Int32, Single, MSAASamples, Boolean, Boolean, Boolean, RenderTextureMemoryless, VRTextureUsage, Boolean, String) (at ./Library/PackageCache/com.unity.render-pipelines.core@e6c93b445dd3/Runtime/Textures/RTHandleSystem.cs:896)
+UnityEngine.Rendering.RTHandleSystem:Alloc(Int32, Int32, GraphicsFormat, TextureWrapMode, TextureWrapMode, TextureWrapMode, Int32, FilterMode, TextureDimension, Boolean, Boolean, Boolean, Boolean, Int32, Single, MSAASamples, Boolean, Boolean, Boolean, RenderTextureMemoryless, VRTextureUsage, String) (at ./Library/PackageCache/com.unity.render-pipelines.core@e6c93b445dd3/Runtime/Textures/RTHandleSystem.cs:774)
+UnityEngine.Rendering.RTHandleSystem:Alloc(Int32, Int32, GraphicsFormat, Int32, FilterMode, TextureWrapMode, TextureDimension, Boolean, Boolean, Boolean, Boolean, Int32, Single, MSAASamples, Boolean, Boolean, Boolean, RenderTextureMemoryless, VRTextureUsage, String) (at ./Library/PackageCache/com.unity.render-pipelines.core@e6c93b445dd3/Runtime/Textures/RTHandleSystem.cs:638)
+UnityEngine.Rendering.RTHandles:Alloc(Int32, Int32, GraphicsFormat, Int32, FilterMode, TextureWrapMode, TextureDimension, Boolean, Boolean, Boolean, Boolean, Int32, Single, MSAASamples, Boolean, Boolean, Boolean, RenderTextureMemoryless, VRTextureUsage, String) (at ./Library/PackageCache/com.unity.render-pipelines.core@e6c93b445dd3/Runtime/Textures/RTHandles.cs:169)
+UnityEngine.Rendering.RenderGraphModule.RenderGraphDefaultResources:InitDefaultResourcesIfNeeded() (at ./Library/PackageCache/com.unity.render-pipelines.core@e6c93b445dd3/Runtime/RenderGraph/RenderGraphDefaultResources.cs:52)
+UnityEngine.Rendering.RenderGraphModule.RenderGraphDefaultResources:.ctor() (at ./Library/PackageCache/com.unity.render-pipelines.core@e6c93b445dd3/Runtime/RenderGraph/RenderGraphDefaultResources.cs:39)
+UnityEngine.Rendering.RenderGraphModule.RenderGraph:.ctor(String) (at ./Library/PackageCache/com.unity.render-pipelines.core@e6c93b445dd3/Runtime/RenderGraph/RenderGraph.cs:514)
+UnityEngine.Rendering.Universal.UniversalRenderPipeline:.ctor(UniversalRenderPipelineAsset) (at ./Library/PackageCache/com.unity.render-pipelines.universal@580a03820d50/Runtime/UniversalRenderPipeline.cs:275)
+UnityEngine.Rendering.Universal.UniversalRenderPipelineAsset:CreatePipeline() (at ./Library/PackageCache/com.unity.render-pipelines.universal@580a03820d50/Runtime/Data/UniversalRenderPipelineAsset.cs:809)
+UnityEngine.Rendering.RenderPipelineAsset:InternalCreatePipeline() (at /Users/bokken/build/output/unity/unity/Runtime/Export/RenderPipeline/RenderPipelineAsset.cs:15)
+UnityEngine.Rendering.RenderPipelineManager:TryPrepareRenderPipeline(RenderPipelineAsset) (at /Users/bokken/build/output/unity/unity/Runtime/Export/RenderPipeline/RenderPipelineManager.cs:172)
+UnityEngine.Rendering.RenderPipelineManager:DoRenderLoop_Internal(RenderPipelineAsset, IntPtr, Object) (at /Users/bokken/build/output/unity/unity/Runtime/Export/RenderPipeline/RenderPipelineManager.cs:146)
+
+[DC_SLOT_REGRESSION_PASS] slot=2 primary=Barracks upgradedLevel=2 reuse=Archer slotCount=8
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.<RunAutomatedSlotRegressionSmoke>d__275:MoveNext() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameSessionController.cs:1605)
+UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/Coroutines.cs:17)
+
+[DC_SLOT_REGRESSION_PASS] slot=3 primary=Mage upgradedLevel=2 reuse=Archer slotCount=8
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.<RunAutomatedSlotRegressionSmoke>d__275:MoveNext() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameSessionController.cs:1605)
+UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/Coroutines.cs:17)
+
+[DC_SLOT_REGRESSION_PASS] slot=4 primary=Archer upgradedLevel=2 reuse=Archer slotCount=8
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.<RunAutomatedSlotRegressionSmoke>d__275:MoveNext() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameSessionController.cs:1605)
+UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/Coroutines.cs:17)
+
+[DC_SLOT_REGRESSION_PASS] slot=5 primary=Mage upgradedLevel=2 reuse=Archer slotCount=8
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.<RunAutomatedSlotRegressionSmoke>d__275:MoveNext() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameSessionController.cs:1605)
+UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/Coroutines.cs:17)
+
+[DC_SLOT_REGRESSION_PASS] slot=6 primary=Barracks upgradedLevel=2 reuse=Archer slotCount=8
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.<RunAutomatedSlotRegressionSmoke>d__275:MoveNext() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameSessionController.cs:1605)
+UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/Coroutines.cs:17)
+
+[DC_SLOT_REGRESSION_PASS] slot=7 primary=Archer upgradedLevel=2 reuse=Archer slotCount=8
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.<RunAutomatedSlotRegressionSmoke>d__275:MoveNext() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameSessionController.cs:1605)
+UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/Coroutines.cs:17)
+
+[DC_SLOT_REGRESSION_PASS] slot=8 primary=Mage upgradedLevel=2 reuse=Archer slotCount=8
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.<RunAutomatedSlotRegressionSmoke>d__275:MoveNext() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameSessionController.cs:1605)
+UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/Coroutines.cs:17)
+
+[DC_SLOT_REGRESSION_COMPLETE] all_slots_passed=true
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.<RunAutomatedSlotRegressionSmoke>d__275:MoveNext() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameSessionController.cs:1609)
+UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/Coroutines.cs:17)
+
+[Physics::Module] Cleanup current backend.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input Polling Thread exited.
+Input System module state changed to: Shutdown.
+CodeReloadManager destroyed
+PlayerConnection::Cleanup##utp:{"type":"MemoryLeaks","version":2,"phase":"Immediate","time":1788698452521,"processId":92467,"allocatedMemory":137550828,"memoryLabels":[{"Default":5604},{"NewDelete":4818608},{"Thread":448},{"Manager":9621},{"Shader":8},{"Animation":832},{"Audio":752},{"FontEngine":131357368},{"Serialization":520},{"JobScheduler":32768},{"ScriptingNativeRuntime":1288704},{"Renderer":18012},{"File":48},{"String":165},{"PoolAlloc":144},{"VR":1904},{"NativeArray":15002},{"Subsystems":96},{"Baselib":16},{"Gui":360}]}
+com.emreaydin.defenderchronicles.closedtest: 92467

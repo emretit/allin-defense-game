@@ -1,8 +1,8 @@
 {
   "build": "ct-20260906-01",
   "branch": "codex/first-region-closed-test",
-  "commit": "96ce8c9eafca68573fdbf7ae4c992a166ad3ab0e",
-  "source_fingerprint_sha256": "6d296b0071f82c9fa1dc6fd752d08d7808c558a3337432211ab007b340f86891",
+  "commit": "2376c8d3d6334350f4599520979f3e6dc4084f4b",
+  "source_fingerprint_sha256": "622bc96d8ba38fa8063ce2f8b83973400a72584f4d188ce4cd9b2c4a5bbd0233",
   "source_files": {
     "Assets/.meta": "d66a9d336e445478036b00afb1e5efbe640dad52bafb3d3af67e68abb9a5c966",
     "Assets/AddressableAssetsData.meta": "b955eed3b6e90d651afe78854fa737aa8be0aaca62dc530c183c06223f98c2ad",
@@ -501,7 +501,7 @@
     "Assets/Editor.meta": "d4ea72ae5653ba0fe28403f6893f1ba86b078220460420180270df21ffed9d39",
     "Assets/Editor/AndroidBuildSettings.cs": "88543432ef3bb9cbf1d5348ead0326c9a3170987de9631e402044adda2bb43c6",
     "Assets/Editor/AndroidBuildSettings.cs.meta": "64289e7b6fc53a75db553fd7385e075b95bd0e7768b69f36327c183883e0309a",
-    "Assets/Editor/ClosedTestBuilds.cs": "e75d14405822b5bfbf67d11a7785014bbd41ce4b9686d4d66500bfb1fa1cd40d",
+    "Assets/Editor/ClosedTestBuilds.cs": "c7a69ebdcf28213ad3ce005b067b6af148313fae19b19c5394c1e6b8de50db67",
     "Assets/Editor/ClosedTestBuilds.cs.meta": "c31095c089565e98a6d1d1d1d3cf278f909f9e6b406474da48d117fbab5232e8",
     "Assets/Editor/ClosedTestServices.meta": "f02bb4ca022d9e2eac3b6213707c74439bf6a01a2a1798d0131b5cd5e5667f0c",
     "Assets/Editor/ClosedTestServices/ClosedTestCloudProbe.cs": "1465b7ca2e8583cd1f9ced83a6e96f0414e20c2d1fc1075875478d1e3b460567",
@@ -618,7 +618,7 @@
     "Assets/Scripts/Core.meta": "6eebe6d2fb681333bc26425b1a468704bfa286170f0db49eb148037b5711e649",
     "Assets/Scripts/Core/AtomicSaveFile.cs": "da65b230324d628569fb80884948344612a61ea4cc69086eece16cb2779fb261",
     "Assets/Scripts/Core/AtomicSaveFile.cs.meta": "afe9be06ed79c10f7b65bbe525056374cde2cb7f4785987871b1479df423707a",
-    "Assets/Scripts/Core/BattleTelemetry.cs": "2e8d44f4e3a51b0ca7c8f5d452eead219000164e95482c1ad59f2f79f3c878de",
+    "Assets/Scripts/Core/BattleTelemetry.cs": "cc88ab817e34bf4ca073e99d60f74d6843da2d27cb274af9ea064edae3376579",
     "Assets/Scripts/Core/BattleTelemetry.cs.meta": "aada7f80b2493d70cffd2f2716fdc7c8a16456a83fd322d79844978f972f4dc0",
     "Assets/Scripts/Core/CampaignApplication.cs": "21e81ccc5f7a1f5296eff7d270fab182cc1b5aafe235bc95181de80d41420ba9",
     "Assets/Scripts/Core/CampaignApplication.cs.meta": "fecdf0981d7d02151d9137450c10e55947312f90887896ecea5e0961e02e54bf",
@@ -642,7 +642,7 @@
     "Assets/Scripts/Core/GameSessionController.Checkpoints.cs.meta": "91de18df9fdad9d65e4b9f4508266397a20fa95966a0e2eb13eb3cc04dfbd582",
     "Assets/Scripts/Core/GameSessionController.Tutorial.cs": "aa8db710038ef8c454da20d0c668b53c30ea6f39e055e2472d18985677586f20",
     "Assets/Scripts/Core/GameSessionController.Tutorial.cs.meta": "d3297b1cbfa6cc90729fc0ee3430e5391e22fb05742ef21db7b32dc3e0d37919",
-    "Assets/Scripts/Core/GameSessionController.cs": "fc763cf9701f566db9f5af746b4f3c4c60962ff397032dcef2092b76c6f51780",
+    "Assets/Scripts/Core/GameSessionController.cs": "be01c246a6d0c1744d96efc3a017dd8f3c5d5f11da94decea3925354828c555f",
     "Assets/Scripts/Core/GameSessionController.cs.meta": "cc957fe14e95458f604d905d553d3bdedb367457107332ccfe27dcb69b699ee8",
     "Assets/Scripts/Core/GreyboxCombatants.cs": "5158d3863c5073c3d73c3589041f53ea0271af87f4b987e495d0201251f73e47",
     "Assets/Scripts/Core/GreyboxCombatants.cs.meta": "7f6adc25f8707d542aa4c46f5587d7673947f711edd6f8f63cdcf756608d3bc1",
@@ -727,9 +727,9 @@
     "Assets/Scripts/Presentation/DefenderAudioController.cs.meta": "07e726feeec13c19b978e9ade922a7aa2a49f6d8a0e3bc2a54862c87a33c5968",
     "Assets/Scripts/Presentation/DefenderBattlefieldDressing.cs": "d7f3174d749f8d4f7cfe64dfb7fcf9fa6083e9d1076a928508645ba65ee26b2b",
     "Assets/Scripts/Presentation/DefenderBattlefieldDressing.cs.meta": "ea1c7ab3334de53bae288b0f4e06854251f3ebb1f6fe4b061e8904174e08ddb8",
-    "Assets/Scripts/Presentation/DefenderHudController.Specializations.cs": "7a66984ccc131f711a0bcd0da3029b173882de16aabf235044ee4b7108c32a3f",
+    "Assets/Scripts/Presentation/DefenderHudController.Specializations.cs": "9ee6656e25fb7fa8cbd0bd1181fb0da75d9b999be05ad6db160ea3ca104f715b",
     "Assets/Scripts/Presentation/DefenderHudController.Specializations.cs.meta": "b4067649550197fd04fe2397e87dd9d8f3be10885f3dcacbe6f62bddff7cdd18",
-    "Assets/Scripts/Presentation/DefenderHudController.cs": "7327ea8d3c9ba82a08ac4a38cc81b4c0e95d2c7b4791b83da3f29b92ec872b40",
+    "Assets/Scripts/Presentation/DefenderHudController.cs": "7b3d00a6565179237ae35fe0da6503082b953ad485d8b674f3309f60107267a8",
     "Assets/Scripts/Presentation/DefenderHudController.cs.meta": "d69a9fc3146e924fb66b6856daf6a473ec98cdc430543a72a1dca42e86ad1517",
     "Assets/Scripts/Presentation/DefenderHudResponsiveLayout.cs": "7aed819681b95c85dc8048e67cab871b64ac28cb463060d065ea41a35af82e6b",
     "Assets/Scripts/Presentation/DefenderHudResponsiveLayout.cs.meta": "080d386a1cf584a3b1cd6ca8f07134b696584c7a21916a66a408ec82342168ad",
@@ -1134,6 +1134,17 @@
       "result": "Passed",
       "sha256": "75864aeee2e02b663a7b0dd2987494ab9a89b63fa030c59be78321974d395832"
     },
+    "simulator-fix-playmode.xml": {
+      "total": "13",
+      "passed": "13",
+      "failed": "0",
+      "skipped": "0",
+      "start-time": "2026-09-06 12:30:56Z",
+      "end-time": "2026-09-06 12:31:01Z",
+      "duration": "5.419817",
+      "result": "Passed",
+      "sha256": "9169ff1ccbdde0919e9dbdb1f18e186af3e116fe91607740edab145be9b47fd5"
+    },
     "cloud-final.trx": {
       "total": "12",
       "executed": "12",
@@ -1158,21 +1169,89 @@
   "cloud_probe": "passed",
   "packages": {
     "Builds/ClosedTest-Android/DefenderChronicles-ct-20260906-01.apk": {
-      "bytes": 98525615,
-      "sha256": "acb5589ec3c88ae618b72ff25f54b02a94d51b8b80ffb15d8712257cc49ace85",
+      "bytes": 156730883,
+      "sha256": "aa596744ed057415ffaf908b5e31abf3e851a8a263b981857ac7057d41935b15",
       "kind": "development_apk"
     },
     "Builds/ClosedTest-Xcode/Build/Products/Debug-iphoneos/DefenderChroniclesTest.app": {
-      "bytes": 443529935,
+      "bytes": 443530415,
       "files": 55,
-      "tree_sha256": "a5ca44a22e1b9958119dc81395656cc818ebf8cab322d275991452a2e84fc170",
+      "tree_sha256": "83329d29e924c41af8068f4966f1855449bfacf3c1ccb9096296c4b51b505441",
       "hash_method": "SHA-256 of sorted JSON mapping every bundle-relative file path to its SHA-256; includes UnityFramework and data.",
       "signature_status": "unsigned_cannot_install_on_device"
+    },
+    "Builds/ClosedTest-Simulator-Xcode/Build/Products/Debug-iphonesimulator/DefenderChroniclesTest.app": {
+      "bytes": 446140677,
+      "files": 49,
+      "tree_sha256": "bffd73afc188d6c39ca918522188be1c8d4e9d3b03ccf00a872f5eb471b93fe0",
+      "hash_method": "SHA-256 of sorted JSON mapping every bundle-relative file path to its SHA-256; includes UnityFramework and data.",
+      "signature_status": "simulator_only"
     }
   },
   "device": {
     "status": "pending",
     "reason": "No physical 30-minute log"
+  },
+  "simulator": {
+    "status": "passed_functional_scope",
+    "build": "ct-20260906-01",
+    "source_commit": "2376c8d3d6334350f4599520979f3e6dc4084f4b",
+    "device_type": "iPhone 13",
+    "runtime": "iOS 26.5",
+    "architecture": "arm64",
+    "physical_device": false,
+    "ui_language_tested": [
+      "tr"
+    ],
+    "ui_actions": [
+      "guest_first_launch",
+      "select_site",
+      "buy_two_archers",
+      "empty_shield_bash_no_cooldown",
+      "start_wave",
+      "background_pause",
+      "resume",
+      "both_landscape_orientations",
+      "restore_wave_checkpoint"
+    ],
+    "checkpoint_restore": {
+      "gold": 80,
+      "lives": 20,
+      "next_wave_index": 0,
+      "outposts": [
+        {
+          "slot": 0,
+          "kind": "Archer",
+          "level": 1
+        },
+        {
+          "slot": 1,
+          "kind": "Archer",
+          "level": 1
+        }
+      ],
+      "mid_wave_gold_not_carried": true
+    },
+    "slot_smoke": {
+      "passed": 8,
+      "total": 8,
+      "extra_test_gold": 2200
+    },
+    "boss_smoke": {
+      "result": "Victory",
+      "waves": 8,
+      "lives": 13,
+      "extra_test_gold": 2200,
+      "normal_resource_balance_proof": false
+    },
+    "playmode": {
+      "passed": 13,
+      "total": 13
+    },
+    "physical_performance": "not_measured",
+    "thirty_minute_soak": "not_run",
+    "human_playtest": "not_run",
+    "report": "docs/closed-test/SIMULATOR_TEST_TR.md"
   },
   "human_playtest": {
     "status": "not_run",

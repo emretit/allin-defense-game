@@ -4,6 +4,10 @@ Sürüm: **ct-20260906-01**, uygulama: **0.4.0**. Tarih: 6 Eylül 2026.
 
 Kod, otomatik savaş testleri, ayrı bulut ortamı ve Android paketi hazır. iOS cihaz kodu derlemesi geçti; imzalı kurulum, fiziksel telefon performansı ve gerçek oyuncu kabulü henüz tamamlanmadı. Bu rapor kapalı testin bütün kabul koşullarının geçtiği anlamına gelmez.
 
+## iOS Simulator doğrulaması — 2376c8d
+
+iPhone 13 / iOS 26.5 simülatöründe kurulum ve çalışma doğrulandı. Oyuncu derlemesinde açılışı bozan erken olay kaydı başlatması, bilgi kartındaki taşma ve görünmeyen başlık, kesilen öğretim metinleri ve duraklamada dalga sayacı düzeltildi. Sekiz noktada kur/yükselt/sat/yeniden kur testi, 13/13 sahne testi ve ek test altını kullanan sekiz dalgalı boss koşusu geçti. Hesapsız giriş, ekrandan kule kurma, boş yetenek kullanımı, iki yatay yön, arka planda duraklama ve 80 altın/20 can/iki okçuyla dalga başına kayıt dönüşü gözlendi. Ayrıntılar ve sınırlar: `SIMULATOR_TEST_TR.md`. Üç platform paketi aynı son kaynakla yenilendi; simülatör sonucu fiziksel performans kanıtı değildir.
+
 ## Son görsel düzeltme — 96ce8c9
 
 Savaş alanının çevresindeki lacivert platform, koyu kenar ve gökyüzü şeridi kaldırıldı. Arazi ekranın dört kenarına ve düğmelerin arkasına kadar uzanıyor. Tam genişlikte alt/üst HUD ve düğme grubu zeminleri çizilmiyor; tekil düğme yüzeyleri ve safe-area kontrolleri korunuyor. Kamera açısı, yol ve kule konumları değişmedi. 13/13 arayüz/oynanış kontrolü geçti; 16:9, iPhone 13 oranı ve 4:3 için zemin kapsaması Editor'de kontrol edildi. Kanıtlar: `evidence/fullscreen-playmode.xml`, `fullscreen-framing.json`, `battlefield-fullscreen-iphone13.png`. Fiziksel cihaz ölçümü değildir.
@@ -64,13 +68,13 @@ Otomatik satın alma stratejisinde bölüm 6–9 dalları geç safhada, boss bö
 - **Android:** Unity IL2CPP ARM64 geliştirme APK derlemesi başarılı, sıfır hata. `Builds/ClosedTest-Android/DefenderChronicles-ct-20260906-01.apk`. Güncel APK dosyasının boyutu ve SHA-256 değeri manifestte; imzası doğrulandı. Android cihaz çalıştırması ölçülmedi.
 - **iOS:** Unity Xcode projesi dışa aktarımı ve Xcode cihaz kodu derlemesi başarılı. `Builds/ClosedTest-iOS/Unity-iPhone.xcodeproj`; imzasız `.app`, `Builds/ClosedTest-Xcode/Build/Products/Debug-iphoneos/DefenderChroniclesTest.app` içinde.
 - Her iki test uygulaması ayrı `com.emreaydin.defenderchronicles.closedtest` kimliğini kullanır. Mevcut telefondaki uygulamanın üzerine yazmaz.
-- Xcode imzalı derleme, geliştirme ekibi için hesap oturumu ve bu uygulamaya uygun profil bulunmadığından tamamlanamadı. İmzasız iOS uygulaması telefona kurulabilir teslim sayılmaz. Adımlar: `INSTALL_TR.md`.
+- Kullanıcı Xcode hesabı ve imza profilinin mevcut olduğunu belirtti. Bu turda simülatör kurulumu tamamlandı; ayrı kapalı test kimliğinin fiziksel cihaz imzası yeniden denenmedi. İmzasız iOS uygulaması telefona kurulabilir teslim sayılmaz. Adımlar: `INSTALL_TR.md`.
 
 Editor'de incelenen uzmanlaşma ekranı: `evidence/specialization-ui-tr.png`. Bu görüntü cihaz ölçümü değildir.
 
 ## Açık kabul koşulları
 
-1. Xcode Apple Developer hesabı/profili tamamlanınca kilidi açık iPhone 13'e kurulum ve 30 dakika koşu: çökme/düşük bellek yok; dört savaş safhasının her birinde medyan ≥55 FPS, p95 ≤18 ms; sürekli ciddi termal durum yok; ısınma sonrası eşdeğer döngülerde bellek büyümesi ≤%10. Bunlar henüz ölçülmedi.
+1. Mevcut Xcode hesabı/profiliyle kilidi açık iPhone 13'e imzalı kurulum ve 30 dakika koşu: çökme/düşük bellek yok; dört savaş safhasının her birinde medyan ≥55 FPS, p95 ≤18 ms; sürekli ciddi termal durum yok; ısınma sonrası eşdeğer döngülerde bellek büyümesi ≤%10. Bunlar henüz ölçülmedi.
 2. Küçük/büyük fiziksel ekranlar, iki yatay yön, TR/EN ve gerçek 44×44 point dokunma alanı kontrolü. Editor ekran yakalaması fiziksel dokunma ve safe-area kabulünün yerine geçmez.
 3. Önce 5–8 yeni oyuncunun ilk üç bölümü yardımsız oynaması, ardından 30–50 kişilik ilk bölge testi. Protokol ve boş gözlem tablosu hazır; katılımcı bulgusu üretilmedi.
 4. Fiziksel ölçümde en pahalı sistemler belirlendikten sonra gerekiyorsa düşman/sağlık göstergesi havuzu, ölüm efektleri ve materyal maliyetlerine müdahale.

@@ -12,14 +12,26 @@ adb install -r Builds/ClosedTest-Android/DefenderChronicles-ct-20260906-01.apk
 
 ## iPhone
 
-Unity dışa aktarımı ve imzasız Xcode derlemesi geçti. İmzalı derleme henüz hazır değil: bu Mac'te Xcode, geliştirme ekibi için hesap oturumu ve uygulama profili bulamadı.
+Unity dışa aktarımı ve imzasız Xcode derlemesi geçti. Kullanıcı Xcode hesabının ve imza profilinin mevcut olduğunu belirtti; bu turda tercih edilen iOS Simulator kurulumu tamamlandı. Fiziksel kurulum için ayrı kapalı test uygulamasının imzası henüz doğrulanmadı.
 
-1. Xcode → Settings → Accounts bölümünde Apple Developer hesabına giriş yapın.
+1. Xcode'da mevcut Apple Developer hesabınızı ve geliştirme ekibinizi seçin.
 2. `Builds/ClosedTest-iOS/Unity-iPhone.xcodeproj` projesini açın. Unity-iPhone hedefinde Signing & Capabilities altında kendi geliştirme ekibinizi seçin; Automatic Signing açık olsun.
 3. iPhone 13'ü bağlayın, kilidini açın ve Xcode'da hedef cihaz olarak seçin. Gerekiyorsa cihazdaki geliştirici modu ve bilgisayara güven adımlarını tamamlayın.
 4. Run ile kurun. Mevcut uygulamadan ayrı test simgesi açılır.
 
 İmzalı paket oluşmadan `.app` dosyasının kopyalanması iPhone kurulumu sağlamaz. Şifre veya hesap anahtarı bu projeye yazılmamalı.
+
+## iOS Simulator
+
+**Defender Closed Test — iPhone 13**, iOS 26.5 simülatöründe kuruldu ve çalıştırıldı. İmza gerekmez. Uygulama: `Builds/ClosedTest-Simulator-Xcode/Build/Products/Debug-iphonesimulator/DefenderChroniclesTest.app`. Sonuçlar: `SIMULATOR_TEST_TR.md`.
+
+Unity CLI dışa aktarımı:
+
+```sh
+unity build /Users/emreaydin/DefenderChronicles-first-region --target iOS --execute-method DefenderChronicles.Editor.ClosedTestBuilds.IosSimulator --allow-dirty-build --timeout 1200
+```
+
+Ardından `Builds/ClosedTest-iOS-Simulator/Unity-iPhone.xcodeproj` içinde hedef olarak bu simülatörü seçip çalıştırabilirsiniz. Telefon için `ClosedTestBuilds.Ios` kullanılmalıdır; simülatör paketi fiziksel telefona kurulmaz.
 
 ## Yeniden derleme ve test
 

@@ -1,0 +1,114 @@
+{
+  "rows": 70,
+  "all_automated": true,
+  "levels": [
+    5,
+    10
+  ],
+  "boss_waves": [
+    {
+      "build": "ct-20260906-01",
+      "run": "b5a13993b8544159b1c379217986d2a9",
+      "eventId": "wave_result",
+      "detail": "level_10_wave_01",
+      "automated": true,
+      "level": 10,
+      "wave": 1,
+      "gold": 1407,
+      "lives": 20,
+      "value": 0,
+      "battleSeconds": 39.266239166259766
+    },
+    {
+      "build": "ct-20260906-01",
+      "run": "b5a13993b8544159b1c379217986d2a9",
+      "eventId": "wave_result",
+      "detail": "level_10_wave_02",
+      "automated": true,
+      "level": 10,
+      "wave": 2,
+      "gold": 1632,
+      "lives": 20,
+      "value": 0,
+      "battleSeconds": 80.58606719970703
+    },
+    {
+      "build": "ct-20260906-01",
+      "run": "b5a13993b8544159b1c379217986d2a9",
+      "eventId": "wave_result",
+      "detail": "level_10_wave_03",
+      "automated": true,
+      "level": 10,
+      "wave": 3,
+      "gold": 1911,
+      "lives": 20,
+      "value": 0,
+      "battleSeconds": 124.24539184570312
+    },
+    {
+      "build": "ct-20260906-01",
+      "run": "b5a13993b8544159b1c379217986d2a9",
+      "eventId": "wave_result",
+      "detail": "level_10_wave_04",
+      "automated": true,
+      "level": 10,
+      "wave": 4,
+      "gold": 2228,
+      "lives": 20,
+      "value": 0,
+      "battleSeconds": 171.9021453857422
+    },
+    {
+      "build": "ct-20260906-01",
+      "run": "b5a13993b8544159b1c379217986d2a9",
+      "eventId": "wave_result",
+      "detail": "level_10_wave_05",
+      "automated": true,
+      "level": 10,
+      "wave": 5,
+      "gold": 2577,
+      "lives": 20,
+      "value": 0,
+      "battleSeconds": 223.47288513183594
+    },
+    {
+      "build": "ct-20260906-01",
+      "run": "b5a13993b8544159b1c379217986d2a9",
+      "eventId": "wave_result",
+      "detail": "level_10_wave_06",
+      "automated": true,
+      "level": 10,
+      "wave": 6,
+      "gold": 2952,
+      "lives": 20,
+      "value": 0,
+      "battleSeconds": 279.77581787109375
+    },
+    {
+      "build": "ct-20260906-01",
+      "run": "b5a13993b8544159b1c379217986d2a9",
+      "eventId": "wave_result",
+      "detail": "level_10_wave_07",
+      "automated": true,
+      "level": 10,
+      "wave": 7,
+      "gold": 3371,
+      "lives": 20,
+      "value": 0,
+      "battleSeconds": 341.02752685546875
+    },
+    {
+      "build": "ct-20260906-01",
+      "run": "b5a13993b8544159b1c379217986d2a9",
+      "eventId": "wave_result",
+      "detail": "level_10_wave_08",
+      "automated": true,
+      "level": 10,
+      "wave": 8,
+      "gold": 3821,
+      "lives": 13,
+      "value": 0,
+      "battleSeconds": 405.9283447265625
+    }
+  ]
+}

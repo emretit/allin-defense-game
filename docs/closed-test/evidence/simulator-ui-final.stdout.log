@@ -1,0 +1,642 @@
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=262144"
+    "memorysetup-temp-allocator-size-gfx=262144"
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=4194304"
+    "memorysetup-bucket-allocator-block-count=1"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=4194304"
+    "memorysetup-profiler-bucket-allocator-block-count=1"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=4194304"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+-> applicationDidFinishLaunching()
+-> sceneWillEnterForeground()
+Starting managed debugger on port 56000
+CodeReloadManager initialized
+Found 1 interfaces on host : 0) 192.168.0.21
+Player connection [4370718208]  Target information:
+
+Player connection [4370718208]  * "[IP] 192.168.0.21 [Port] 55000 [Flags] 2 [Guid] 2958438368 [EditorId] 2507877792 [Version] 1048832 [Id] iPhonePlayer(8,Emre-MacBook-Pro.local):56000 [Debug] 1 [PackageName] iPhonePlayer [ProjectName] Defender Chronicles Test"
+
+Player connection [4370718208] Started UDP target info broadcast (1) on [225.0.0.222:54997].
+
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+-> applicationWillEnterForeground()
+-> sceneDidBecomeActive()
+-> applicationDidBecomeActive()
+[Subsystems] Discovering subsystems at path /Users/emreaydin/Library/Developer/CoreSimulator/Devices/D06104AF-BAE2-470C-8191-5913709ECACB/data/Containers/Bundle/Application/3F3F7F49-64E1-42AC-9979-C5E918D0D0E5/DefenderChroniclesTest.app/Data/UnitySubsystems
+GfxDevice: creating device client; kGfxThreadingModeThreaded
+Initializing Metal device caps: Apple iOS simulator GPU
+Apple GPU Family: 2
+MSL Version: 3.0
+Has Float MSAA: 0
+Has Float Filtering: 0
+ReadWrite Texture Tier: 0
+Initialize engine version: 6000.4.1f1 (8535861f39e1)
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+WARNING: RGBA Compressed ASTC6X6 UNorm format is not supported, decompressing texture
+WARNING: RGBA Compressed ASTC6X6 UNorm format is not supported, decompressing texture
+WARNING: RGBA Compressed ASTC8X8 UNorm format is not supported, decompressing texture
+WARNING: RGBA Compressed ASTC6X6 UNorm format is not supported, decompressing texture
+WARNING: RGBA Compressed ASTC4X4 UNorm format is not supported, decompressing texture
+WARNING: RGBA Compressed ASTC6X6 UNorm format is not supported, decompressing texture
+WARNING: RGBA Compressed ASTC6X6 UNorm format is not supported, decompressing texture
+WARNING: RGBA Compressed ASTC6X6 UNorm format is not supported, decompressing texture
+WARNING: RGBA Compressed ASTC6X6 UNorm format is not supported, decompressing texture
+WARNING: RGBA Compressed ASTC6X6 UNorm format is not supported, decompressing texture
+WARNING: RGBA Compressed ASTC4X4 UNorm format is not supported, decompressing texture
+UnloadTime: 0.953209 ms
+[DC_MOBILE_RUNTIME] quality=Medium targetFps=60 safeArea=(x:141.00, y:60.00, width:2250.00, height:1110.00)
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.MobileRuntimeSettings:Apply() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/MobileRuntimeSettings.cs:29)
+DefenderChronicles.Core.MobileRuntimeSettings:ApplyBeforeSceneLoad() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/MobileRuntimeSettings.cs:14)
+
+[DC_FRONTEND_MODE] show=True args=
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.GameBootstrap:ShouldShowFrontend() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameBootstrap.cs:89)
+DefenderChronicles.Core.GameBootstrap:Awake() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameBootstrap.cs:22)
+
+[DC_ORIENTATION] requested=PortraitFrontend screen=2532x1170
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.MobileOrientationController:Request(MobileOrientationMode) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/MobileOrientationController.cs:58)
+DefenderChronicles.Core.GameBootstrap:Awake() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameBootstrap.cs:24)
+
+[DC_ORIENTATION] requested=PortraitFrontend screen=2532x1170
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.MobileOrientationController:Request(MobileOrientationMode) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/MobileOrientationController.cs:58)
+DefenderChronicles.UI.AppFlowController:Initialize(DefenderPresentationCatalog, GameSessionController, Boolean, String) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/UI/AppFlowController.cs:109)
+DefenderChronicles.Core.GameBootstrap:Awake() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameBootstrap.cs:44)
+
+CADisplayLink created
+Shadowmap RenderTexture requested without a depth buffer. Changing to a 16 bit depth buffer. To resolve this warning, please specify the desired number of depth bits when creating the render texture.
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:LogWarning(Object)
+UnityEngine.RenderTexture:WarnAboutFallbackTo16BitsDepth(RenderTextureFormat) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Graphics/Texture.cs:463)
+UnityEngine.RenderTexture:ValidateRenderTextureDesc(RenderTextureDescriptor&) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Graphics/Texture.cs:405)
+UnityEngine.RenderTexture:.ctor(RenderTextureDescriptor) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Graphics/Texture.cs:242)
+UnityEngine.Rendering.RTHandleSystem:CreateRenderTexture(Int32, Int32, GraphicsFormat, Int32, FilterMode, TextureWrapMode, TextureWrapMode, TextureWrapMode, TextureDimension, Boolean, Boolean, Boolean, Boolean, Int32, Single, MSAASamples, Boolean, Boolean, Boolean, RenderTextureMemoryless, VRTextureUsage, Boolean, String) (at ./Library/PackageCache/com.unity.render-pipelines.core@e6c93b445dd3/Runtime/Textures/RTHandleSystem.cs:896)
+UnityEngine.Rendering.RTHandleSystem:Alloc(Int32, Int32, GraphicsFormat, TextureWrapMode, TextureWrapMode, TextureWrapMode, Int32, FilterMode, TextureDimension, Boolean, Boolean, Boolean, Boolean, Int32, Single, MSAASamples, Boolean, Boolean, Boolean, RenderTextureMemoryless, VRTextureUsage, String) (at ./Library/PackageCache/com.unity.render-pipelines.core@e6c93b445dd3/Runtime/Textures/RTHandleSystem.cs:774)
+UnityEngine.Rendering.RTHandleSystem:Alloc(Int32, Int32, GraphicsFormat, Int32, FilterMode, TextureWrapMode, TextureDimension, Boolean, Boolean, Boolean, Boolean, Int32, Single, MSAASamples, Boolean, Boolean, Boolean, RenderTextureMemoryless, VRTextureUsage, String) (at ./Library/PackageCache/com.unity.render-pipelines.core@e6c93b445dd3/Runtime/Textures/RTHandleSystem.cs:638)
+UnityEngine.Rendering.RTHandles:Alloc(Int32, Int32, GraphicsFormat, Int32, FilterMode, TextureWrapMode, TextureDimension, Boolean, Boolean, Boolean, Boolean, Int32, Single, MSAASamples, Boolean, Boolean, Boolean, RenderTextureMemoryless, VRTextureUsage, String) (at ./Library/PackageCache/com.unity.render-pipelines.core@e6c93b445dd3/Runtime/Textures/RTHandles.cs:169)
+UnityEngine.Rendering.RenderGraphModule.RenderGraphDefaultResources:InitDefaultResourcesIfNeeded() (at ./Library/PackageCache/com.unity.render-pipelines.core@e6c93b445dd3/Runtime/RenderGraph/RenderGraphDefaultResources.cs:52)
+UnityEngine.Rendering.RenderGraphModule.RenderGraphDefaultResources:.ctor() (at ./Library/PackageCache/com.unity.render-pipelines.core@e6c93b445dd3/Runtime/RenderGraph/RenderGraphDefaultResources.cs:39)
+UnityEngine.Rendering.RenderGraphModule.RenderGraph:.ctor(String) (at ./Library/PackageCache/com.unity.render-pipelines.core@e6c93b445dd3/Runtime/RenderGraph/RenderGraph.cs:514)
+UnityEngine.Rendering.Universal.UniversalRenderPipeline:.ctor(UniversalRenderPipelineAsset) (at ./Library/PackageCache/com.unity.render-pipelines.universal@580a03820d50/Runtime/UniversalRenderPipeline.cs:275)
+UnityEngine.Rendering.Universal.UniversalRenderPipelineAsset:CreatePipeline() (at ./Library/PackageCache/com.unity.render-pipelines.universal@580a03820d50/Runtime/Data/UniversalRenderPipelineAsset.cs:809)
+UnityEngine.Rendering.RenderPipelineAsset:InternalCreatePipeline() (at /Users/bokken/build/output/unity/unity/Runtime/Export/RenderPipeline/RenderPipelineAsset.cs:15)
+UnityEngine.Rendering.RenderPipelineManager:TryPrepareRenderPipeline(RenderPipelineAsset) (at /Users/bokken/build/output/unity/unity/Runtime/Export/RenderPipeline/RenderPipelineManager.cs:172)
+UnityEngine.Rendering.RenderPipelineManager:DoRenderLoop_Internal(RenderPipelineAsset, IntPtr, Object) (at /Users/bokken/build/output/unity/unity/Runtime/Export/RenderPipeline/RenderPipelineManager.cs:146)
+
+[DC_ORIENTATION] requested=LandscapeBattle screen=1170x2532
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.MobileOrientationController:Request(MobileOrientationMode) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/MobileOrientationController.cs:58)
+DefenderChronicles.UI.<EnterBattleAfterLandscape>d__97:MoveNext() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/UI/AppFlowController.cs:1021)
+UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/Coroutines.cs:17)
+UnityEngine.MonoBehaviour:StartCoroutineManaged2(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/MonoBehaviour.bindings.cs:114)
+DefenderChronicles.UI.AppFlowController:LaunchCampaignLevel(Int32) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/UI/AppFlowController.cs:190)
+DefenderChronicles.UI.AppFlowController:StartSelectedLevel() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/UI/AppFlowController.cs:742)
+DefenderChronicles.UI.<>c__DisplayClass125_0:<CreateButton>b__0() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/UI/AppFlowController.cs:1662)
+UnityEngine.Events.InvokableCall:Invoke() (at /Users/bokken/build/output/unity/unity/Runtime/Export/UnityEvent/UnityEvent.cs:178)
+UnityEngine.Events.UnityEvent:Invoke() (at /Users/bokken/build/output/unity/unity/artifacts/generated/UnityEvent/UnityEvent_0.cs:57)
+UnityEngine.UI.Button:Press() (at ./Library/PackageCache/com.unity.ugui@d8a2716f3013/Runtime/UGUI/UI/Core/Button.cs:71)
+UnityEngine.UI.Button:OnPointerClick(PointerEventData) (at ./Library/PackageCache/com.unity.ugui@d8a2716f3013/Runtime/UGUI/UI/Core/Button.cs:115)
+UnityEngine.EventSystems.ExecuteEvents:Execute(IPointerClickHandler, BaseEventData) (at ./Library/PackageCache/com.unity.ugui@d8a2716f3013/Runtime/UGUI/EventSystem/ExecuteEvents.cs:57)
+UnityEngine.EventSystems.ExecuteEvents:Execute(GameObject, BaseEventData, EventFunction`1) (at ./Library/PackageCache/com.unity.ugui@d8a2716f3013/Runtime/UGUI/EventSystem/ExecuteEvents.cs:272)
+UnityEngine.InputSystem.UI.InputSystemUIInputModule:ProcessPointerButton(ButtonState&, PointerEventData) (at ./Library/PackageCache/com.unity.inputsystem@21a28c3a6c83/InputSystem/Plugins/UI/InputSystemUIInputModule.cs:731)
+UnityEngine.InputSystem.UI.InputSystemUIInputModule:ProcessPointer(PointerModel&) (at ./Library/PackageCache/com.unity.inputsystem@21a28c3a6c83/InputSystem/Plugins/UI/InputSystemUIInputModule.cs:490)
+UnityEngine.InputSystem.UI.InputSystemUIInputModule:Process() (at ./Library/PackageCache/com.unity.inputsystem@21a28c3a6c83/InputSystem/Plugins/UI/InputSystemUIInputModule.cs:2404)
+UnityEngine.EventSystems.EventSystem:Update() (at ./Library/PackageCache/com.unity.ugui@d8a2716f3013/Runtime/UGUI/EventSystem/EventSystem.cs:515)
+
+[DC_AMBIENT_CONFIG] quality=Medium enabled=True wind=0,055 detail=0,080 interval=7-12
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Presentation.DefenderAmbientAudioController:Initialize(AudioMixerGroup) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Presentation/DefenderAmbientAudioController.cs:55)
+DefenderChronicles.Presentation.DefenderAudioController:Initialize(DefenderPresentationCatalog) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Presentation/DefenderAudioController.cs:56)
+DefenderChronicles.Presentation.DefenderPresentationDirector:Initialize(GameSessionController, DefenderPresentationCatalog) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Presentation/DefenderPresentationDirector.cs:23)
+DefenderChronicles.Core.GameSessionController:Initialize() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameSessionController.cs:242)
+DefenderChronicles.UI.<EnterBattleAfterLandscape>d__97:MoveNext() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/UI/AppFlowController.cs:1027)
+UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/Coroutines.cs:17)
+
+[DC_DEVICE_STARTUP] preparing_seconds=31.05
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Awake() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:48)
+UnityEngine.GameObject:Internal_AddComponentWithType(Type)
+UnityEngine.GameObject:AddComponent(Type) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/GameObject.bindings.cs:246)
+UnityEngine.GameObject:AddComponent() (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/GameObject.bindings.cs:251)
+DefenderChronicles.Core.GameSessionController:Initialize() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameSessionController.cs:253)
+DefenderChronicles.UI.<EnterBattleAfterLandscape>d__97:MoveNext() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/UI/AppFlowController.cs:1027)
+UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/Coroutines.cs:17)
+
+[DC_AMBIENT_DETAIL] count=1 clip=DC_Original_LeafRustle review_gain=1,00 state_gain=1,00
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Presentation.<PlayDetails>d__25:MoveNext() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Presentation/DefenderAmbientAudioController.cs:133)
+UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/Coroutines.cs:17)
+
+[DC_PROFILE_COST] build=ct-20260906-01 stage=preparation simulation_ms=0,016 hud_ms=0,490 enemies=0 samples=601
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:150)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_MEMORY_SAMPLE] level=1 wave=0 battle_seconds=0.0 current_mb=226.7 serious_thermal_seconds=0.0
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:151)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_DEVICE_METRICS] stage=preparation median_fps=60.0 p95_frame_ms=16.7 peak_memory_mb=226.7 memory_growth_pct=0.0 max_under_30_seconds=0.00 thermal=nominal low_memory_warning=False
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:152)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_AMBIENT_DETAIL] count=2 clip=DC_Original_LeafRustle review_gain=1,00 state_gain=1,00
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Presentation.<PlayDetails>d__25:MoveNext() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Presentation/DefenderAmbientAudioController.cs:133)
+UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/Coroutines.cs:17)
+
+[DC_PROFILE_COST] build=ct-20260906-01 stage=preparation simulation_ms=0,018 hud_ms=0,457 enemies=0 samples=1200
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:150)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_MEMORY_SAMPLE] level=1 wave=0 battle_seconds=0.0 current_mb=226.7 serious_thermal_seconds=0.0
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:151)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_DEVICE_METRICS] stage=preparation median_fps=60.0 p95_frame_ms=16.8 peak_memory_mb=226.7 memory_growth_pct=0.0 max_under_30_seconds=0.00 thermal=nominal low_memory_warning=False
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:152)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_AMBIENT_DETAIL] count=3 clip=DC_Original_CrystalChime review_gain=1,00 state_gain=1,00
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Presentation.<PlayDetails>d__25:MoveNext() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Presentation/DefenderAmbientAudioController.cs:133)
+UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/Coroutines.cs:17)
+
+[DC_PROFILE_COST] build=ct-20260906-01 stage=preparation simulation_ms=0,014 hud_ms=0,403 enemies=0 samples=1800
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:150)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_MEMORY_SAMPLE] level=1 wave=0 battle_seconds=0.0 current_mb=226.7 serious_thermal_seconds=0.0
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:151)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_DEVICE_METRICS] stage=preparation median_fps=60.0 p95_frame_ms=17.2 peak_memory_mb=226.7 memory_growth_pct=0.0 max_under_30_seconds=0.00 thermal=nominal low_memory_warning=False
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:152)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_AMBIENT_DETAIL] count=4 clip=DC_Original_LeafRustle review_gain=1,00 state_gain=1,00
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Presentation.<PlayDetails>d__25:MoveNext() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Presentation/DefenderAmbientAudioController.cs:133)
+UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/Coroutines.cs:17)
+
+[DC_PROFILE_COST] build=ct-20260906-01 stage=preparation simulation_ms=0,024 hud_ms=0,706 enemies=0 samples=2400
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:150)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_MEMORY_SAMPLE] level=1 wave=0 battle_seconds=0.0 current_mb=226.7 serious_thermal_seconds=0.0
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:151)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_DEVICE_METRICS] stage=preparation median_fps=60.0 p95_frame_ms=17.2 peak_memory_mb=226.7 memory_growth_pct=0.0 max_under_30_seconds=0.00 thermal=nominal low_memory_warning=False
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:152)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_AMBIENT_DETAIL] count=5 clip=DC_Original_LeafRustle review_gain=1,00 state_gain=1,00
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Presentation.<PlayDetails>d__25:MoveNext() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Presentation/DefenderAmbientAudioController.cs:133)
+UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/Coroutines.cs:17)
+
+[DC_PROFILE_COST] build=ct-20260906-01 stage=preparation simulation_ms=0,024 hud_ms=0,709 enemies=0 samples=2995
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:150)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_MEMORY_SAMPLE] level=1 wave=0 battle_seconds=0.0 current_mb=226.7 serious_thermal_seconds=0.0
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:151)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_DEVICE_METRICS] stage=preparation median_fps=60.0 p95_frame_ms=17.2 peak_memory_mb=226.7 memory_growth_pct=0.0 max_under_30_seconds=0.10 thermal=nominal low_memory_warning=False
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:152)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_AMBIENT_DETAIL] count=6 clip=DC_Original_CrystalChime review_gain=1,00 state_gain=1,00
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Presentation.<PlayDetails>d__25:MoveNext() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Presentation/DefenderAmbientAudioController.cs:133)
+UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/Coroutines.cs:17)
+
+[DC_PROFILE_COST] build=ct-20260906-01 stage=preparation simulation_ms=0,033 hud_ms=0,738 enemies=0 samples=3595
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:150)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_MEMORY_SAMPLE] level=1 wave=0 battle_seconds=0.0 current_mb=226.7 serious_thermal_seconds=0.0
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:151)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_DEVICE_METRICS] stage=preparation median_fps=60.0 p95_frame_ms=17.2 peak_memory_mb=226.7 memory_growth_pct=0.0 max_under_30_seconds=0.10 thermal=nominal low_memory_warning=False
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:152)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_AMBIENT_DETAIL] count=7 clip=DC_Original_LeafRustle review_gain=1,00 state_gain=1,00
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Presentation.<PlayDetails>d__25:MoveNext() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Presentation/DefenderAmbientAudioController.cs:133)
+UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/Coroutines.cs:17)
+
+[DC_PROFILE_COST] build=ct-20260906-01 stage=normal simulation_ms=0,062 hud_ms=0,326 enemies=6 samples=482
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:150)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_MEMORY_SAMPLE] level=1 wave=0 battle_seconds=8.2 current_mb=227.7 serious_thermal_seconds=0.0
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:151)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_DEVICE_METRICS] stage=normal median_fps=60.0 p95_frame_ms=17.3 peak_memory_mb=227.8 memory_growth_pct=0.0 max_under_30_seconds=0.15 thermal=nominal low_memory_warning=False
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:152)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_AMBIENT_DETAIL] count=8 clip=DC_Original_LeafRustle review_gain=1,00 state_gain=0,68
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Presentation.<PlayDetails>d__25:MoveNext() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Presentation/DefenderAmbientAudioController.cs:133)
+UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/Coroutines.cs:17)
+
+-> sceneWillResignActive()
+-> applicationWillResignActive()
+-> sceneDidEnterBackground()
+-> applicationDidEnterBackground()
+-> sceneWillEnterForeground()
+-> applicationWillEnterForeground()
+-> sceneDidBecomeActive()
+-> applicationDidBecomeActive()
+Found 1 interfaces on host Emre-MacBook-Pro.local: 0) 192.168.0.21
+Player connection [4370718208]  Target information:
+
+Player connection [4370718208]  * "[IP] 192.168.0.21 [Port] 55000 [Flags] 2 [Guid] 2958438368 [EditorId] 2507877792 [Version] 1048832 [Id] iPhonePlayer(8,Emre-MacBook-Pro.local):56000 [Debug] 1 [PackageName] iPhonePlayer [ProjectName] Defender Chronicles Test"
+
+Player connection [4370718208] Started UDP target info broadcast (1) on [225.0.0.222:54997].
+
+Player connection [4370718208] Started UDP target info broadcast (1) on [225.0.0.222:54997].
+
+[DC_PROFILE_COST] build=ct-20260906-01 stage=normal simulation_ms=0,005 hud_ms=0,466 enemies=12 samples=775
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:150)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_MEMORY_SAMPLE] level=1 wave=0 battle_seconds=13.1 current_mb=228.2 serious_thermal_seconds=0.0
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:151)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_DEVICE_METRICS] stage=normal median_fps=60.0 p95_frame_ms=17.3 peak_memory_mb=228.2 memory_growth_pct=0.0 max_under_30_seconds=0.15 thermal=nominal low_memory_warning=False
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:152)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_PROFILE_COST] build=ct-20260906-01 stage=normal simulation_ms=3,613 hud_ms=4,127 enemies=12 samples=776
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:150)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_MEMORY_SAMPLE] level=1 wave=0 battle_seconds=13.2 current_mb=228.2 serious_thermal_seconds=0.0
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:151)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_DEVICE_METRICS] stage=normal median_fps=60.0 p95_frame_ms=17.3 peak_memory_mb=228.2 memory_growth_pct=0.0 max_under_30_seconds=0.15 thermal=nominal low_memory_warning=False
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:152)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_PROFILE_COST] build=ct-20260906-01 stage=normal simulation_ms=6,784 hud_ms=4,127 enemies=13 samples=777
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:150)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_MEMORY_SAMPLE] level=1 wave=0 battle_seconds=13.2 current_mb=228.2 serious_thermal_seconds=0.0
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:151)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_DEVICE_METRICS] stage=normal median_fps=60.0 p95_frame_ms=17.3 peak_memory_mb=228.2 memory_growth_pct=0.0 max_under_30_seconds=0.15 thermal=nominal low_memory_warning=False
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:152)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_PROFILE_COST] build=ct-20260906-01 stage=normal simulation_ms=0,084 hud_ms=4,127 enemies=13 samples=778
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:150)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_MEMORY_SAMPLE] level=1 wave=0 battle_seconds=13.2 current_mb=228.2 serious_thermal_seconds=0.0
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:151)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_DEVICE_METRICS] stage=normal median_fps=60.0 p95_frame_ms=17.3 peak_memory_mb=228.2 memory_growth_pct=0.0 max_under_30_seconds=0.15 thermal=nominal low_memory_warning=False
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:152)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_PROFILE_COST] build=ct-20260906-01 stage=normal simulation_ms=0,092 hud_ms=4,127 enemies=13 samples=779
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:150)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_MEMORY_SAMPLE] level=1 wave=0 battle_seconds=13.2 current_mb=228.2 serious_thermal_seconds=0.0
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:151)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_DEVICE_METRICS] stage=normal median_fps=60.0 p95_frame_ms=17.3 peak_memory_mb=228.2 memory_growth_pct=0.0 max_under_30_seconds=0.15 thermal=nominal low_memory_warning=False
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:152)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_PROFILE_COST] build=ct-20260906-01 stage=normal simulation_ms=0,084 hud_ms=4,127 enemies=13 samples=780
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:150)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_MEMORY_SAMPLE] level=1 wave=0 battle_seconds=13.3 current_mb=228.2 serious_thermal_seconds=0.0
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:151)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_DEVICE_METRICS] stage=normal median_fps=60.0 p95_frame_ms=17.3 peak_memory_mb=228.2 memory_growth_pct=0.0 max_under_30_seconds=0.15 thermal=nominal low_memory_warning=False
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:152)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_PROFILE_COST] build=ct-20260906-01 stage=normal simulation_ms=0,084 hud_ms=4,127 enemies=13 samples=781
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:150)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_MEMORY_SAMPLE] level=1 wave=0 battle_seconds=13.3 current_mb=228.2 serious_thermal_seconds=0.0
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:151)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_DEVICE_METRICS] stage=normal median_fps=60.0 p95_frame_ms=17.3 peak_memory_mb=228.2 memory_growth_pct=0.0 max_under_30_seconds=0.15 thermal=nominal low_memory_warning=False
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:152)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_PROFILE_COST] build=ct-20260906-01 stage=normal simulation_ms=0,088 hud_ms=0,342 enemies=13 samples=782
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:150)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_MEMORY_SAMPLE] level=1 wave=0 battle_seconds=13.3 current_mb=228.2 serious_thermal_seconds=0.0
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:151)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_DEVICE_METRICS] stage=normal median_fps=60.0 p95_frame_ms=17.3 peak_memory_mb=228.2 memory_growth_pct=0.0 max_under_30_seconds=0.15 thermal=nominal low_memory_warning=False
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:152)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_PROFILE_COST] build=ct-20260906-01 stage=normal simulation_ms=0,090 hud_ms=0,342 enemies=13 samples=783
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:150)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_MEMORY_SAMPLE] level=1 wave=0 battle_seconds=13.3 current_mb=228.2 serious_thermal_seconds=0.0
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:151)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+
+[DC_DEVICE_METRICS] stage=normal median_fps=60.0 p95_frame_ms=17.3 peak_memory_mb=228.2 memory_growth_pct=0.0 max_under_30_seconds=0.15 thermal=nominal low_memory_warning=False
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:152)
+DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)

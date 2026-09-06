@@ -1,0 +1,61 @@
+{
+  "status": "passed_functional_scope",
+  "build": "ct-20260906-01",
+  "source_commit": "2376c8d3d6334350f4599520979f3e6dc4084f4b",
+  "device_type": "iPhone 13",
+  "runtime": "iOS 26.5",
+  "architecture": "arm64",
+  "physical_device": false,
+  "ui_language_tested": [
+    "tr"
+  ],
+  "ui_actions": [
+    "guest_first_launch",
+    "select_site",
+    "buy_two_archers",
+    "empty_shield_bash_no_cooldown",
+    "start_wave",
+    "background_pause",
+    "resume",
+    "both_landscape_orientations",
+    "restore_wave_checkpoint"
+  ],
+  "checkpoint_restore": {
+    "gold": 80,
+    "lives": 20,
+    "next_wave_index": 0,
+    "outposts": [
+      {
+        "slot": 0,
+        "kind": "Archer",
+        "level": 1
+      },
+      {
+        "slot": 1,
+        "kind": "Archer",
+        "level": 1
+      }
+    ],
+    "mid_wave_gold_not_carried": true
+  },
+  "slot_smoke": {
+    "passed": 8,
+    "total": 8,
+    "extra_test_gold": 2200
+  },
+  "boss_smoke": {
+    "result": "Victory",
+    "waves": 8,
+    "lives": 13,
+    "extra_test_gold": 2200,
+    "normal_resource_balance_proof": false
+  },
+  "playmode": {
+    "passed": 13,
+    "total": 13
+  },
+  "physical_performance": "not_measured",
+  "thirty_minute_soak": "not_run",
+  "human_playtest": "not_run",
+  "report": "docs/closed-test/SIMULATOR_TEST_TR.md"
+}
