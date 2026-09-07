@@ -659,12 +659,12 @@ namespace DefenderChronicles.Core
             SetRect(barracks.GetComponent<RectTransform>(), new Vector2(222f, 34f), new Vector2(190f, 62f), Vector2.zero, Vector2.zero);
             var mage = CreateButton("Mage", bottomBar.transform, "BÜYÜ  125", new Vector2(190f, 62f), () => TryBuildSelected(OutpostKind.Mage));
             SetRect(mage.GetComponent<RectTransform>(), new Vector2(426f, 34f), new Vector2(190f, 62f), Vector2.zero, Vector2.zero);
-            heroAbilityButton = CreateButton("Special", bottomBar.transform, "SARSICI DARBE", new Vector2(238f, 62f), UseHeroAbility);
+            heroAbilityButton = CreateButton("Special", bottomBar.transform, "", new Vector2(238f, 62f), UseHeroAbility);
             SetRect(heroAbilityButton.GetComponent<RectTransform>(), new Vector2(638f, 34f), new Vector2(238f, 62f), Vector2.zero, Vector2.zero);
             var cancel = CreateButton("Cancel", bottomBar.transform, "İPTAL", new Vector2(150f, 62f), CancelSelection);
             SetRect(cancel.GetComponent<RectTransform>(), new Vector2(894f, 34f), new Vector2(150f, 62f), Vector2.zero, Vector2.zero);
 
-            heroText = CreateText("Hero Status", bottomBar.transform, "ŞÖVALYE", 21, TextAnchor.MiddleLeft);
+            heroText = CreateText("Hero Status", bottomBar.transform, "", 21, TextAnchor.MiddleLeft);
             SetRect(heroText.rectTransform, new Vector2(638f, 4f), new Vector2(300f, 28f), Vector2.zero, Vector2.zero);
 
             nextWaveButton = CreateButton("Next Wave", bottomBar.transform, "İLK DALGAYI BAŞLAT", new Vector2(310f, 62f), StartNextWave);
@@ -1034,7 +1034,7 @@ namespace DefenderChronicles.Core
         {
             if (hero == null || !hero.IsAlive)
             {
-                ShowMessage("Şövalye henüz savaşa dönemedi.", 2f);
+                ShowMessage(GameLocalization.Text($"{HeroDisplayName} henüz savaşa dönemedi.", $"{HeroDisplayName} is still recovering."), 2f);
                 return;
             }
             if (!hero.TryUseShieldBash())
@@ -2055,12 +2055,15 @@ namespace DefenderChronicles.Core
             {
                 heroText.text = hero.IsAlive
                     ? GameLocalization.Text(
-                        $"ŞÖVALYE  {Mathf.CeilToInt(hero.HealthFraction * 100f)}%  •  YETENEK {(hero.AbilityRemaining <= 0f ? "HAZIR" : Mathf.CeilToInt(hero.AbilityRemaining) + " sn")}",
-                        $"KNIGHT  {Mathf.CeilToInt(hero.HealthFraction * 100f)}%  •  ABILITY {(hero.AbilityRemaining <= 0f ? "READY" : Mathf.CeilToInt(hero.AbilityRemaining) + " sec")}")
-                    : GameLocalization.Text($"ŞÖVALYE DÖNÜYOR  {Mathf.CeilToInt(hero.RespawnRemaining)} sn",
-                        $"KNIGHT RETURNS IN  {Mathf.CeilToInt(hero.RespawnRemaining)} sec");
+                        $"{HeroDisplayName}  {Mathf.CeilToInt(hero.HealthFraction * 100f)}%  •  YETENEK {(hero.AbilityRemaining <= 0f ? "HAZIR" : Mathf.CeilToInt(hero.AbilityRemaining) + " sn")}",
+                        $"{HeroDisplayName}  {Mathf.CeilToInt(hero.HealthFraction * 100f)}%  •  ABILITY {(hero.AbilityRemaining <= 0f ? "READY" : Mathf.CeilToInt(hero.AbilityRemaining) + " sec")}")
+                    : GameLocalization.Text($"{HeroDisplayName} dönüyor  {Mathf.CeilToInt(hero.RespawnRemaining)} sn",
+                        $"{HeroDisplayName} returns in  {Mathf.CeilToInt(hero.RespawnRemaining)} sec");
                 if (heroAbilityButton != null)
+                {
+                    heroAbilityButton.GetComponentInChildren<Text>().text = HeroDisplayName;
                     heroAbilityButton.interactable = hero.IsAlive && hero.AbilityRemaining <= 0f && Phase != GamePhase.Paused;
+                }
             }
             if (Phase == GamePhase.Preparing && nextWaveButtonLabel != null)
                 nextWaveButtonLabel.text = GameLocalization.Text("İLK DALGAYI BAŞLAT", "START FIRST WAVE");

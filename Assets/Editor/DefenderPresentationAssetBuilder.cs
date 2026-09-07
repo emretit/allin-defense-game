@@ -1017,8 +1017,8 @@ namespace DefenderChronicles.Editor
                 [UiTextKey.Mage] = "BÜYÜ", [UiTextKey.ShieldBash] = "SARSICI DARBE", [UiTextKey.Cancel] = "İPTAL",
                 [UiTextKey.FirstWave] = "İLK DALGAYI BAŞLAT", [UiTextKey.EarlyWave] = "DALGAYI ERKEN ÇAĞIR",
                 [UiTextKey.NextWave] = "SONRAKİ DALGA", [UiTextKey.Upgrade] = "YÜKSELT", [UiTextKey.Sell] = "SAT",
-                [UiTextKey.Knight] = "ŞÖVALYE", [UiTextKey.AbilityReady] = "YETENEK HAZIR",
-                [UiTextKey.KnightReturning] = "ŞÖVALYE DÖNÜYOR", [UiTextKey.Victory] = "ZAFER\nGREENWATCH KORUNDU",
+                [UiTextKey.Knight] = "Savaşçı", [UiTextKey.AbilityReady] = "YETENEK HAZIR",
+                [UiTextKey.KnightReturning] = "Savaşçı dönüyor", [UiTextKey.Victory] = "ZAFER\nGREENWATCH KORUNDU",
                 [UiTextKey.Defeat] = "YENİLGİ\nGREENWATCH DÜŞTÜ", [UiTextKey.VictoryPhase] = "ZAFER",
                 [UiTextKey.DefeatPhase] = "YENİLGİ", [UiTextKey.Restart] = "YENİDEN DENE",
                 [UiTextKey.SlotInstruction] = "KARAKOL PLATFORMU", [UiTextKey.BuildInstruction] = "Aşağıdan bir karakol seç."
@@ -1309,9 +1309,9 @@ namespace DefenderChronicles.Editor
             Button(bottom.transform, "Archer", "[A]  OKÇU\n75", panel, body, new Vector2(18, 36), new Vector2(188, 70), Vector2.zero, Vector2.zero);
             Button(bottom.transform, "Barracks", "[K]  KIŞLA\n100", panel, body, new Vector2(218, 36), new Vector2(188, 70), Vector2.zero, Vector2.zero);
             Button(bottom.transform, "Mage", "[B]  BÜYÜ\n125", panel, body, new Vector2(418, 36), new Vector2(188, 70), Vector2.zero, Vector2.zero);
-            Button(bottom.transform, "Ability", "SARSICI DARBE", panel, body, new Vector2(620, 36), new Vector2(246, 70), Vector2.zero, Vector2.zero);
+            Button(bottom.transform, "Ability", "Savaşçı", panel, body, new Vector2(620, 36), new Vector2(246, 70), Vector2.zero, Vector2.zero);
             Button(bottom.transform, "Cancel", "İPTAL", panel, body, new Vector2(880, 36), new Vector2(150, 70), Vector2.zero, Vector2.zero);
-            Text(bottom.transform, "Hero", "ŞÖVALYE", body, 20, TextAlignmentOptions.MidlineLeft,
+            Text(bottom.transform, "Hero", "Savaşçı", body, 20, TextAlignmentOptions.MidlineLeft,
                 new Vector2(620, 4), new Vector2(390, 30), Vector2.zero, Vector2.zero, Hex("A8DFFF"));
             Button(bottom.transform, "NextWave", "İLK DALGAYI BAŞLAT", panel, title, new Vector2(-340, 36), new Vector2(320, 70),
                 new Vector2(1, 0), new Vector2(1, 0), Hex("174D78"));

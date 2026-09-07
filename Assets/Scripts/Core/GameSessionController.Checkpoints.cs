@@ -35,6 +35,7 @@ namespace DefenderChronicles.Core
     public sealed partial class GameSessionController
     {
         private CampaignProgressStore campaignStore;
+        public string HeroDisplayName => campaignStore?.HeroName ?? HeroIdentity.DefaultName;
         private bool restoringCheckpoint;
         public bool CheckpointRestored { get; private set; }
         public CampaignCompletionReward CompletionReward { get; private set; }

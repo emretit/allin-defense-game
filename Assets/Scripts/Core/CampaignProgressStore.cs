@@ -40,6 +40,7 @@ namespace DefenderChronicles.Core
         public int version = CampaignProgressStore.CurrentVersion;
         public string playerId;
         public string displayName;
+        public string heroName;
         public PlayerAuthProvider authProvider;
         public int unlockedLevel = 1;
         public int lastSelectedLevel = 1;
@@ -85,6 +86,7 @@ namespace DefenderChronicles.Core
         public bool RecoveredFromBackup { get; private set; }
         public CampaignSyncStatus SyncStatus { get; private set; } = CampaignSyncStatus.LocalOnly;
         public int PendingClaimCount => Data.pendingClaims?.Count ?? 0;
+        public string HeroName => HeroIdentity.DisplayName(Data.heroName);
         public event Action Changed;
         public event Action<CampaignSyncStatus> SyncStatusChanged;
         public event Action ProfileChanged;
@@ -124,6 +126,14 @@ namespace DefenderChronicles.Core
         }
 
         private string ProfilePath(string key) => Path.Combine(rootPath + ".profiles", key + ".json");
+
+        public bool TrySetHeroName(string value)
+        {
+            if (!HeroIdentity.TryNormalize(value, out string name)) return false;
+            Data.heroName = name;
+            Save();
+            return !HasWriteError;
+        }
         private static bool ValidPointer(string json)
         {
             try
@@ -361,6 +371,7 @@ namespace DefenderChronicles.Core
             // JsonUtility materializes null serializable classes as empty objects on some players.
             if (data.checkpoint != null && string.IsNullOrEmpty(data.checkpoint.owner)) data.checkpoint = null;
             data.version = CurrentVersion;
+            data.heroName = HeroIdentity.TryNormalize(data.heroName, out string heroName) ? heroName : string.Empty;
             if ((int)data.authProvider is 2 or 3)
                 data.authProvider = PlayerAuthProvider.PlayerAccount;
             data.unlockedLevel = Mathf.Clamp(data.unlockedLevel, 1, CampaignCatalog.LevelCount);

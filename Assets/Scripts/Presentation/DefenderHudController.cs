@@ -300,12 +300,13 @@ namespace DefenderChronicles.Presentation
             if (hero != null)
             {
                 heroText.text = hero.IsAlive
-                    ? $"{copy.Get(UiTextKey.Knight)}  {Mathf.CeilToInt(hero.HealthFraction * 100f)}%  ·  " +
+                    ? $"{session.HeroDisplayName}  {Mathf.CeilToInt(hero.HealthFraction * 100f)}%  ·  " +
                       (hero.AbilityRemaining <= 0f ? copy.Get(UiTextKey.AbilityReady) : $"{Mathf.CeilToInt(hero.AbilityRemaining)} s")
-                    : $"{copy.Get(UiTextKey.KnightReturning)}  {Mathf.CeilToInt(hero.RespawnRemaining)} s";
+                    : GameLocalization.Text($"{session.HeroDisplayName} dönüyor", $"{session.HeroDisplayName} returns") +
+                      $"  {Mathf.CeilToInt(hero.RespawnRemaining)} s";
                 bool abilityReady = hero.IsAlive && hero.AbilityRemaining <= 0f && session.Phase != GamePhase.Paused;
                 abilityButton.interactable = abilityReady;
-                SetAbilityLabel(abilityButton, hero, abilityReady, session.Phase == GamePhase.Paused);
+                SetAbilityLabel(abilityButton, hero, session.HeroDisplayName, abilityReady, session.Phase == GamePhase.Paused);
                 ApplyAbilityVisualState(hero, session.Phase, abilityReady);
                 SetButtonStripe(abilityButton, abilityReady ? ReadyAccent : DisabledAccent, !abilityReady);
             }
@@ -437,7 +438,7 @@ namespace DefenderChronicles.Presentation
             SetBuildButtonState(archerButton, BuildButtonSpec(copy.Get(UiTextKey.Archer), ArcherCost, true, GoldAccent));
             SetBuildButtonState(barracksButton, BuildButtonSpec(copy.Get(UiTextKey.Barracks), BarracksCost, true, WaveAccent));
             SetBuildButtonState(mageButton, BuildButtonSpec(copy.Get(UiTextKey.Mage), MageCost, true, new Color(0.74f, 0.47f, 1f, 1f)));
-            SetButtonLabel(abilityButton, $"{copy.Get(UiTextKey.ShieldBash)}\n{copy.Get(UiTextKey.AbilityReady)}");
+            SetButtonLabel(abilityButton, $"{HeroIdentity.DefaultName}\n{copy.Get(UiTextKey.AbilityReady)}");
             SetButtonLabel(cancelButton, copy.Get(UiTextKey.Cancel));
             SetButtonLabel(upgradeButton, copy.Get(UiTextKey.Upgrade));
             SetButtonLabel(sellButton, copy.Get(UiTextKey.Sell));
@@ -538,6 +539,11 @@ namespace DefenderChronicles.Presentation
             StyleButton(barracksButton, WaveAccent);
             StyleButton(mageButton, new Color(0.74f, 0.47f, 1f, 1f));
             StyleButton(abilityButton, ReadyAccent);
+            TMP_Text heroButtonLabel = abilityButton.GetComponentInChildren<TMP_Text>(true);
+            heroButtonLabel.fontSizeMin = 16f;
+            heroButtonLabel.enableWordWrapping = false;
+            heroButtonLabel.richText = false;
+            heroText.richText = false;
             StyleButton(cancelButton, KeepAccent);
             StyleButton(nextWaveButton, GoldAccent);
             StylePrimaryButton(nextWaveButton);
@@ -756,12 +762,11 @@ namespace DefenderChronicles.Presentation
             }
         }
 
-        private void SetAbilityLabel(Button button, GreyboxHero hero, bool ready, bool paused)
+        private void SetAbilityLabel(Button button, GreyboxHero hero, string heroName, bool ready, bool paused)
         {
             if (hero == null) return;
-            string title = copy.Get(UiTextKey.ShieldBash);
             string state = ready ? GameLocalization.Text("HAZIR", "READY") : !hero.IsAlive ? GameLocalization.Text("DÖNÜYOR", "RETURNING") : paused ? GameLocalization.Text("DURAKLADI", "PAUSED") : $"{Mathf.CeilToInt(hero.AbilityRemaining)} s";
-            SetButtonLabel(button, $"{title}\n{state}");
+            SetButtonLabel(button, $"{heroName}\n{state}");
         }
 
         public static SelectedPanelPresentationSpec SelectedOutpostPanelSpec(OutpostKind kind, int level,

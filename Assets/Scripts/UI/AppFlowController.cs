@@ -106,6 +106,7 @@ namespace DefenderChronicles.UI
             battlePaused = pauseBattle;
             session.PhaseChanged += HandleSessionPhaseChanged;
             progress.SyncStatusChanged += OnSaveStatusChanged;
+            progress.ProfileChanged += CloseHeroName;
             MobileOrientationController.Request(HasPendingLevel
                 ? MobileOrientationMode.LandscapeBattle
                 : MobileOrientationMode.PortraitFrontend);
@@ -122,6 +123,7 @@ namespace DefenderChronicles.UI
             BuildBriefingScreen();
             BuildResultScreen();
             BuildSettingsModal();
+            BuildHeroNameModal();
             BuildGuestImportAction();
             BuildOrientationCurtain();
             ApplyPortraitLayout();
@@ -943,7 +945,7 @@ namespace DefenderChronicles.UI
 
             GameObject card = CreatePanel("Settings Chronicle", settingsModal.transform, theme.panel);
             AddCardAccent(card.transform, theme.commandGold);
-            SetRect(card.GetComponent<RectTransform>(), Vector2.zero, new Vector2(820f, 860f), Center(), Center());
+            SetRect(card.GetComponent<RectTransform>(), Vector2.zero, new Vector2(820f, 1060f), Center(), Center());
             TextMeshProUGUI title = CreateText("Settings Title", card.transform, "AYARLAR", 46, catalog.titleFont,
                 FontStyles.Bold, TextAlignmentOptions.Center, theme.textPrimary);
             SetRect(title.rectTransform, new Vector2(0f, 342f), new Vector2(620f, 64f), Center(), Center());
@@ -979,16 +981,19 @@ namespace DefenderChronicles.UI
             CreateToggleRow(card.transform, "AZALTILMIŞ HAREKET", new Vector2(0f, -186f), FrontendPreferences.ReducedMotion,
                 value => FrontendPreferences.ReducedMotion = value);
 
+            Button heroName = CreateButton("Settings Hero", card.transform, "KAHRAMANIM", new Vector2(500f, 68f),
+                theme.defenderBlue, OpenHeroName);
+            SetRect(heroName.GetComponent<RectTransform>(), new Vector2(0f, -272f), new Vector2(500f, 68f), Center(), Center());
             Button account = CreateButton("Settings Account", card.transform, "HESAP YÖNETİMİ", new Vector2(500f, 64f),
                 theme.defenderBlue, () =>
                 {
                     CloseSettings();
                     ShowScreen(AppScreen.Login);
                 });
-            SetRect(account.GetComponent<RectTransform>(), new Vector2(0f, -284f), new Vector2(500f, 64f), Center(), Center());
+            SetRect(account.GetComponent<RectTransform>(), new Vector2(0f, -354f), new Vector2(500f, 64f), Center(), Center());
             Button close = CreateButton("Close Settings", card.transform, "TAMAM", new Vector2(300f, 68f),
                 theme.commandGold, CloseSettings);
-            SetRect(close.GetComponent<RectTransform>(), new Vector2(0f, 56f), new Vector2(300f, 68f), BottomCenter(), BottomCenter());
+            SetRect(close.GetComponent<RectTransform>(), new Vector2(0f, 34f), new Vector2(300f, 68f), BottomCenter(), BottomCenter());
             settingsModal.SetActive(false);
         }
 
@@ -1204,7 +1209,7 @@ namespace DefenderChronicles.UI
 
             RectTransform settingsCard = settingsModal.transform.Find("Settings Chronicle") as RectTransform;
             if (settingsCard != null)
-                SetRect(settingsCard, Vector2.zero, new Vector2(900f, 900f), Center(), Center());
+                SetRect(settingsCard, Vector2.zero, new Vector2(900f, 1060f), Center(), Center());
         }
 
         public static Vector2 PortraitCampaignPathPosition(int levelIndexInRegion)
@@ -1565,6 +1570,7 @@ namespace DefenderChronicles.UI
 
         private void ShowScreen(AppScreen screen)
         {
+            CloseHeroName();
             previousScreen = CurrentScreen;
             CurrentScreen = screen;
             foreach (KeyValuePair<AppScreen, GameObject> item in screens)
@@ -1881,6 +1887,7 @@ namespace DefenderChronicles.UI
             GameLocalization.LanguageChanged -= HandleLanguageChanged;
             if (session != null) session.PhaseChanged -= HandleSessionPhaseChanged;
             if (progress != null) progress.SyncStatusChanged -= OnSaveStatusChanged;
+            if (progress != null) progress.ProfileChanged -= CloseHeroName;
             if (battlePaused) Time.timeScale = 1f;
         }
     }
