@@ -184,8 +184,11 @@ namespace DefenderChronicles.Tests
             var import = frontend.GetComponentsInChildren<Button>(true).Single(b => b.name == "Import Guest Progress");
             Call(frontend, "CloseSettings");
             yield return new WaitForSecondsRealtime(.25f);
-            ExecuteEvents.Execute(import.gameObject, new PointerEventData(EventSystem.current), ExecuteEvents.pointerDownHandler);
+            import.gameObject.SetActive(true);
+            Assert.That(import.gameObject.activeInHierarchy, Is.True);
+            Assert.That(ExecuteEvents.Execute(import.gameObject, new PointerEventData(EventSystem.current), ExecuteEvents.pointerDownHandler), Is.True);
             yield return new WaitForSecondsRealtime(.12f);
+            Assert.That(import.transform.localScale.y, Is.LessThan(.99f), "Press feedback must actually shrink the visual");
             AssertHitRects(new[] { import });
         }
 
