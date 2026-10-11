@@ -419,6 +419,7 @@ namespace DefenderChronicles.Core
             HandleWorldPointer();
             if (Time.unscaledTime >= nextHudRefresh)
             {
+                RefreshLegacySaleLabel();
                 long uiStart = System.Diagnostics.Stopwatch.GetTimestamp(); Profiler.BeginSample("DC.BattleHud");
                 RefreshUi(); Profiler.EndSample();
                 LastHudMilliseconds = (System.Diagnostics.Stopwatch.GetTimestamp() - uiStart) * 1000d / System.Diagnostics.Stopwatch.Frequency;
@@ -878,7 +879,7 @@ namespace DefenderChronicles.Core
             Stretch(selectedText.rectTransform, new Vector2(16f, 92f), new Vector2(-16f, -14f));
             upgradeButton = CreateButton("Upgrade", selectedPanel.transform, "YÜKSELT", new Vector2(130f, 58f), UpgradeSelected);
             SetRect(upgradeButton.GetComponent<RectTransform>(), new Vector2(14f, 18f), new Vector2(130f, 58f), Vector2.zero, Vector2.zero);
-            sellButton = CreateButton("Sell", selectedPanel.transform, "SAT", new Vector2(130f, 58f), SellSelected);
+            sellButton = CreateButton("Sell", selectedPanel.transform, "SAT", new Vector2(130f, 58f), SellFromLegacyUi);
             SetRect(sellButton.GetComponent<RectTransform>(), new Vector2(168f, 18f), new Vector2(130f, 58f), Vector2.zero, Vector2.zero);
             selectedPanel.SetActive(false);
 
@@ -1041,6 +1042,7 @@ namespace DefenderChronicles.Core
 
         private void SetPhase(GamePhase next)
         {
+            CancelLegacySaleConfirmation();
             if (next == GamePhase.Victory && campaignStore != null)
                 CompletionReward = campaignStore.CompleteLevel(CampaignLevelNumber, BattleRules.StarsForLives(Lives,StartingLivesForLevel), Lives);
             else if (next is GamePhase.Victory or GamePhase.Defeat) ClearCheckpoint();
@@ -2284,6 +2286,7 @@ namespace DefenderChronicles.Core
                 sellButton.interactable = false;
             }
             selectedPanel.SetActive(selectedSlot != null || selectedOutpost != null);
+            RefreshLegacySaleLabel();
             RefreshSelectionPreview();
         }
 

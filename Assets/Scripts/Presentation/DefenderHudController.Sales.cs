@@ -13,6 +13,15 @@ namespace DefenderChronicles.Presentation
         private float saleConfirmationUntil;
         private GamePhase saleConfirmationPhase;
         private Action sellAction;
+        private GameSessionController saleSession;
+
+        private void OnEnable()
+        {
+            saleSession = GameSessionController.Instance;
+            if (saleSession != null) saleSession.PhaseChanged += CancelSaleOnPhaseChange;
+        }
+
+        private void CancelSaleOnPhaseChange(GamePhase phase) => CancelSaleConfirmation();
 
         private void SellFromUi()
         {
@@ -56,6 +65,8 @@ namespace DefenderChronicles.Presentation
 
         private void OnDisable()
         {
+            if (saleSession != null) saleSession.PhaseChanged -= CancelSaleOnPhaseChange;
+            saleSession = null;
             CloseSpecializationChoices();
             CancelSaleConfirmation();
         }
