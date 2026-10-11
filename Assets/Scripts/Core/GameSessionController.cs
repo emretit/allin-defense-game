@@ -2831,6 +2831,7 @@ namespace DefenderChronicles.Core
             var text = CreateText("Label", go.transform, label, 24, TextAnchor.MiddleCenter);
             Stretch(text.rectTransform, new Vector2(8f, 4f), new Vector2(-8f, -4f));
             go.GetComponent<RectTransform>().sizeDelta = size;
+            MobileTouchTarget.Attach(button);
             return button;
         }
 

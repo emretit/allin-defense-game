@@ -1212,6 +1212,7 @@ namespace DefenderChronicles.UI
             text.enableAutoSizing = true;
             text.fontSizeMin = 24f;
             text.fontSizeMax = 34f;
+            MobileTouchTarget.Attach(button);
             return button;
         }
 

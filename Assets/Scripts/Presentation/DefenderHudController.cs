@@ -272,6 +272,7 @@ namespace DefenderChronicles.Presentation
             responsiveLayout.Initialize();
             abilityButton.gameObject.AddComponent<AbilityRangePreview>();
             ConfigureContextualBuildChoices();
+            foreach (var button in GetComponentsInChildren<Button>(true)) MobileTouchTarget.Attach(button);
             selectedPanel.SetActive(false);
             resultPanel.SetActive(false);
         }
