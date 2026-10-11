@@ -15,11 +15,22 @@ namespace DefenderChronicles.UI
             restingScale = transform.localScale;
         }
 
-        public void OnPointerDown(PointerEventData eventData) => AnimateTo(restingScale * 0.975f);
+        public void OnPointerDown(PointerEventData eventData)
+        {
+            if (TryGetComponent<UnityEngine.UI.Selectable>(out var button) && !button.IsInteractable()) return;
+            AnimateTo(restingScale * 0.975f);
+        }
         public void OnPointerUp(PointerEventData eventData) => AnimateTo(restingScale);
         public void OnPointerExit(PointerEventData eventData) => AnimateTo(restingScale);
         public void OnSelect(BaseEventData eventData) => AnimateTo(restingScale * 1.025f);
         public void OnDeselect(BaseEventData eventData) => AnimateTo(restingScale);
+
+        private void OnDisable()
+        {
+            if (animationRoutine != null) StopCoroutine(animationRoutine);
+            animationRoutine = null;
+            transform.localScale = restingScale;
+        }
 
         private void AnimateTo(Vector3 target)
         {

@@ -67,7 +67,8 @@ namespace DefenderChronicles.Core
 
         private static bool ShouldShowFrontend()
         {
-            if (Application.isEditor) return false;
+            if (Application.isEditor && !AppFlowController.HasPendingLevel &&
+                Environment.GetEnvironmentVariable("DC_FRONTEND_EDITOR") != "1") return false;
             string[] args = Environment.GetCommandLineArgs();
             bool commandLineAutomation = args.Any(item =>
                 string.Equals(item, "-dc-smoke", StringComparison.OrdinalIgnoreCase));

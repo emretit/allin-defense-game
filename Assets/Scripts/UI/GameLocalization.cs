@@ -76,7 +76,17 @@ namespace DefenderChronicles.UI
             ["KİLİTLİ"] = "LOCKED",
             ["Bağlı hesap"] = "Linked account",
             ["Misafir Muhafız"] = "Guest Defender",
-            ["Greenwatch Muhafızı"] = "Greenwatch Defender"
+            ["Greenwatch Muhafızı"] = "Greenwatch Defender",
+            ["Hızlı yağmacılar"] = "Fast raiders",
+            ["Zırhlı öncüler"] = "Armored vanguards",
+            ["Yenilenen muhafızlar"] = "Regenerating guards",
+            ["Şifacı destek birliği"] = "Healer support unit",
+            ["Kuşatma birliği"] = "Siege unit",
+            ["Bölge lordu ve seçkin muhafızları"] = "Regional boss and elite guards",
+            ["Yağmacılar + zırhlı öncü"] = "Raiders + armored vanguard",
+            ["İki koldan karma baskı"] = "Mixed assault from two routes",
+            ["Şifacı desteği"] = "Healer support",
+            ["Kızıl Muhafız - üç safhalı boss"] = "Crimson Guard - three-phase boss"
         };
 
         public static event Action LanguageChanged;

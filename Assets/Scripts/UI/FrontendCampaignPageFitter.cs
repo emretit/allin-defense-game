@@ -33,7 +33,7 @@ namespace DefenderChronicles.UI
         private void ApplyWidth()
         {
             if (page == null || viewport == null || layoutElement == null) return;
-            float width = Mathf.Max(minimumWidth, viewport.rect.width);
+            float width = Mathf.Max(1f, viewport.rect.width);
             if (Mathf.Abs(width - lastWidth) < 0.5f) return;
             lastWidth = width;
             layoutElement.preferredWidth = width;

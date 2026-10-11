@@ -1,0 +1,10 @@
+{
+    "scenario": "level1-idle-1x",
+    "phase": "Victory",
+    "lives": 4,
+    "gold": 355,
+    "towers": 0,
+    "wave": 3,
+    "elapsedSeconds": 54.011444091796878,
+    "disruptedWhileStunned": false
+}

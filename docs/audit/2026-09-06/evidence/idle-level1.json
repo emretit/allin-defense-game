@@ -1,0 +1,30 @@
+{
+  "success": true,
+  "command": "command eval",
+  "data": {
+    "command": "eval",
+    "parameters": {
+      "code": "var s=DefenderChronicles.Core.GameSessionController.Instance; if(s==null)return \"Session unavailable\"; return new {s.CampaignLevelNumber,phase=s.Phase.ToString(),s.CurrentWaveIndex,s.Lives,s.Gold,towers=s.Outposts.Count,enemies=s.Enemies.Count,elapsed=UnityEngine.Time.realtimeSinceStartup-UnityEditor.SessionState.GetFloat(\"DCAuditStart\",0)};"
+    },
+    "result": {
+      "output": null,
+      "diagnostics": [],
+      "success": true,
+      "command": "eval",
+      "result": "Session unavailable",
+      "executionTimeMs": 469,
+      "message": null,
+      "error": null,
+      "errorDetails": null,
+      "executedAt": "2026-09-06T07:05:58.002642Z"
+    },
+    "target": {
+      "host": "127.0.0.1",
+      "port": 7800,
+      "projectPath": "/Users/emreaydin/DefenderChronicles"
+    },
+    "success": true
+  },
+  "errors": [],
+  "warnings": []
+}

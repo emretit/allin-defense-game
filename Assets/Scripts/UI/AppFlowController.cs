@@ -27,16 +27,21 @@ namespace DefenderChronicles.UI
         Result
     }
 
-    public sealed class AppFlowController : MonoBehaviour
+    public sealed partial class AppFlowController : MonoBehaviour
     {
         private readonly Dictionary<AppScreen, GameObject> screens = new();
+        private readonly List<Button> regionTabs = new();
         private readonly List<Button> levelButtons = new();
+        private readonly List<int> levelNumbers = new();
+        private readonly List<Action> regionBuilders = new();
+        private readonly HashSet<int> builtRegions = new();
         private readonly List<TextMeshProUGUI> levelStars = new();
         private DefenderPresentationCatalog catalog;
         private GameSessionController session;
         private CampaignProgressStore progress;
         private FrontendPresentationTheme theme;
         private AudioSource frontendUiSource;
+        private AudioListener frontendListener;
         private Canvas canvas;
         private CanvasScaler canvasScaler;
         private RawImage backdrop;
@@ -45,6 +50,7 @@ namespace DefenderChronicles.UI
         private ScrollRect campaignScroll;
         private TextMeshProUGUI profileLabel;
         private TextMeshProUGUI continueDetails;
+        private Button continueButton;
         private TextMeshProUGUI loginStatus;
         private TextMeshProUGUI selectedLevelTitle;
         private TextMeshProUGUI selectedLevelDetails;
@@ -52,11 +58,9 @@ namespace DefenderChronicles.UI
         private TextMeshProUGUI resultTitle;
         private TextMeshProUGUI resultStars;
         private TextMeshProUGUI resultReward;
-        private TextMeshProUGUI briefingTitle;
-        private TextMeshProUGUI briefingRegion;
-        private TextMeshProUGUI briefingObjective;
         private TextMeshProUGUI briefingEnemies;
         private TextMeshProUGUI briefingReward;
+        private FrontendTacticalMapPreview tacticalMapPreview;
         private Button nextLevelButton;
         private Button retryButton;
         private Button turkishLanguageButton;
@@ -64,13 +68,26 @@ namespace DefenderChronicles.UI
         private GameObject settingsModal;
         private GameObject orientationCurtain;
         private TextMeshProUGUI orientationCurtainLabel;
-        private Coroutine transitionRoutine;
+        private FrontendNavigation navigation;
+        private FrontendPerformanceProbe performance;
+        private FrontendNavigationState navigationState = new();
+        private static FrontendNavigationState pendingNavigation;
+        private readonly HashSet<AppScreen> builtScreens = new();
+        private readonly List<ScrollRect> regionScrolls = new();
+        private Coroutine campaignRegionBuild;
+        private bool launchingBattle;
+        private bool progressDirty = true;
+        private Button orientationRetry;
+        private bool orientationReady;
+        private Action retryOrientation;
+        private Coroutine starsRoutine;
+        private bool hasShownScreen;
         private Coroutine orientationRoutine;
-        private AppScreen previousScreen;
         private int selectedLevel = 1;
         private bool battlePaused;
         private static int pendingLevel;
 
+        public bool IsLaunchingBattle => launchingBattle;
         public AppScreen CurrentScreen { get; private set; }
         public CampaignProgressStore Progress => progress;
         public static bool HasPendingLevel => pendingLevel > 0;
@@ -90,13 +107,25 @@ namespace DefenderChronicles.UI
                 ? presentationCatalog
                 : throw new ArgumentNullException(nameof(presentationCatalog));
             session = owner != null ? owner : throw new ArgumentNullException(nameof(owner));
+            if ((AcceptanceRequested || (Application.isEditor && Environment.GetEnvironmentVariable("DC_FRONTEND_EDITOR") == "1")) && string.IsNullOrEmpty(savePath)) savePath = Path.Combine(Application.temporaryCachePath, "frontend-acceptance-save.json");
             progress = new CampaignProgressStore(savePath);
+            progress.Changed += HandleProgressChanged;
+            if (pendingNavigation != null) { navigationState = pendingNavigation; pendingNavigation = null; }
+            selectedLevel = Mathf.Clamp(navigationState.HasMapPosition ? navigationState.SelectedLevel : progress.Data.lastSelectedLevel, 1, progress.Data.unlockedLevel);
+            if (!navigationState.HasMapPosition)
+            {
+                navigationState.SelectedLevel = selectedLevel;
+                navigationState.Region = (selectedLevel - 1) / CampaignCatalog.LevelsPerRegion;
+            }
+            navigation = gameObject.AddComponent<FrontendNavigation>();
+            performance = gameObject.AddComponent<FrontendPerformanceProbe>();
             theme = catalog.frontendTheme != null
                 ? catalog.frontendTheme
                 : FrontendPresentationTheme.CreateRuntimeFallback();
             if (!string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("DC_FRONTEND_EVIDENCE_PATH")) ||
                 !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("DC_FRONTEND_EVIDENCE_SUITE")))
                 Application.runInBackground = true;
+            if (FindAnyObjectByType<AudioListener>() == null) frontendListener = gameObject.AddComponent<AudioListener>();
             frontendUiSource = gameObject.AddComponent<AudioSource>();
             frontendUiSource.playOnAwake = false;
             frontendUiSource.spatialBlend = 0f;
@@ -112,21 +141,12 @@ namespace DefenderChronicles.UI
 
             EnsureEventSystem();
             BuildCanvas();
-            BuildBootScreen();
-            BuildWelcomeScreen();
-            BuildLoginScreen();
-            BuildMainMenuScreen();
-            BuildCampaignScreen();
-            BuildBriefingScreen();
-            BuildResultScreen();
-            BuildSettingsModal();
             BuildOrientationCurtain();
-            ApplyPortraitLayout();
             ApplyStoredAudioPreferences();
 
             if (battlePaused) Time.timeScale = 0f;
+            if (HasPendingLevel) { StartFrontendAcceptance(); return; }
             ShowScreen(AppScreen.Boot);
-            if (HasPendingLevel) return;
             if (string.Equals(Environment.GetEnvironmentVariable("DC_FRONTEND_CAPTURE"), "boot",
                     StringComparison.OrdinalIgnoreCase))
             {
@@ -144,12 +164,16 @@ namespace DefenderChronicles.UI
                 throw new ArgumentOutOfRangeException(nameof(provider));
             progress.SignIn(provider, playerId, displayName);
             RefreshProfile();
-            ShowScreen(AppScreen.MainMenu);
+            if (CurrentScreen is AppScreen.Login or AppScreen.Welcome)
+                ShowScreen(CurrentScreen == AppScreen.Login && navigationState.AccountReturn != AppScreen.Welcome
+                    ? navigationState.AccountReturn : AppScreen.MainMenu);
         }
 
         public void CompleteGuestFallback()
         {
-            CompleteLocalGuestSignIn();
+            // A late network failure must not pull an active battle back into menus.
+            if (CurrentScreen is AppScreen.Boot or AppScreen.Welcome or AppScreen.Login)
+                CompleteLocalGuestSignIn();
         }
 
         public void SetLoginStatus(string status)
@@ -175,15 +199,14 @@ namespace DefenderChronicles.UI
 
         public void LaunchCampaignLevel(int level)
         {
+            if (launchingBattle || orientationRoutine != null) return;
+            launchingBattle = true;
+            SaveMapPosition();
+            performance.Begin("battle-entry");
             selectedLevel = Mathf.Clamp(level, 1, CampaignCatalog.LevelCount);
             progress.SelectLevel(selectedLevel);
-            if (session.IsInitialized)
-            {
-                ReloadCampaignLevel(selectedLevel);
-                return;
-            }
-
-            if (orientationRoutine != null) StopCoroutine(orientationRoutine);
+            if (session.IsInitialized) { ReloadCampaignLevel(selectedLevel); return; }
+            FrontendLoadingOverlay.Show(catalog.bodyFont);
             orientationRoutine = StartCoroutine(EnterBattleAfterLandscape(selectedLevel));
         }
 
@@ -207,7 +230,7 @@ namespace DefenderChronicles.UI
             canvasScaler.referenceResolution = HasPendingLevel
                 ? new Vector2(1920f, 1080f)
                 : new Vector2(1080f, 1920f);
-            canvasScaler.matchWidthOrHeight = 0.5f;
+            canvasScaler.matchWidthOrHeight = 0f;
 
             GameObject background = new("Backdrop", typeof(RectTransform), typeof(CanvasRenderer), typeof(RawImage));
             background.transform.SetParent(canvasObject.transform, false);
@@ -244,15 +267,19 @@ namespace DefenderChronicles.UI
             if (theme.warTableBackdrop != null)
                 warTableRenderer.Initialize(theme.warTableBackdrop, backdrop, theme.warTableShader);
 
-            GameObject safeRoot = new("Safe Area", typeof(RectTransform), typeof(SafeAreaFitter));
+            GameObject safeRoot = new("Safe Area", typeof(RectTransform));
             safeRoot.transform.SetParent(canvasObject.transform, false);
             Stretch(safeRoot.GetComponent<RectTransform>());
+            // Awake applies the insets immediately, so attach after layout setup.
+            safeRoot.AddComponent<SafeAreaFitter>();
 
             foreach (AppScreen screen in Enum.GetValues(typeof(AppScreen)))
             {
                 GameObject root = new(screen.ToString(), typeof(RectTransform));
                 root.transform.SetParent(safeRoot.transform, false);
                 Stretch(root.GetComponent<RectTransform>());
+                root.AddComponent<CanvasGroup>();
+                root.SetActive(false);
                 screens.Add(screen, root);
             }
         }
@@ -292,262 +319,10 @@ namespace DefenderChronicles.UI
                 if (crest != null) crest.localScale = Vector3.one;
                 yield return new WaitForSecondsRealtime(0.16f);
             }
+            if (target == AppScreen.Welcome && !string.IsNullOrWhiteSpace(progress.Data.playerId)) target = AppScreen.MainMenu;
             ShowScreen(target);
             ApplyDevelopmentCaptureScreen();
-        }
-
-        private void BuildWelcomeScreen()
-        {
-            Transform root = screens[AppScreen.Welcome].transform;
-            GameObject card = CreatePanel("Welcome Chronicle", root, new Color(theme.panel.r, theme.panel.g, theme.panel.b, 0.84f));
-            AddCardAccent(card.transform, theme.commandGold);
-            SetAnchors(card.GetComponent<RectTransform>(), new Vector2(0.045f, 0.10f), new Vector2(0.445f, 0.90f),
-                Vector2.zero, Vector2.zero);
-
-            GameObject brandLogo = CreateBrandImage("Welcome Brand Logo", card.transform, theme.brandLogo);
-            SetRect(brandLogo.GetComponent<RectTransform>(), new Vector2(0f, 300f), new Vector2(430f, 430f),
-                Center(), Center());
-
-            TextMeshProUGUI eyebrow = CreateText("Eyebrow", card.transform, "GREENWATCH  •  SINIR SEFERİ", 19, catalog.bodyFont,
-                FontStyles.Bold, TextAlignmentOptions.Center, theme.moonEdge);
-            eyebrow.characterSpacing = 3f;
-            SetRect(eyebrow.rectTransform, new Vector2(0f, 58f), new Vector2(680f, 38f), Center(), Center());
-
-            TextMeshProUGUI subtitle = CreateText("Subtitle", card.transform,
-                "Greenwatch Kalesi kuşatma altında.\nSavunma hattını kur. Şafağa kadar dayan.", 24,
-                catalog.bodyFont, FontStyles.Normal, TextAlignmentOptions.Center, theme.textMuted);
-            subtitle.lineSpacing = 8f;
-            SetRect(subtitle.rectTransform, new Vector2(0f, -32f), new Vector2(650f, 86f), Center(), Center());
-
-            Button start = CreateButton("Start", card.transform, "KRALLIĞA GİR  ›", new Vector2(460f, 92f),
-                theme.commandGold, SignInAsGuest);
-            SetRect(start.GetComponent<RectTransform>(), new Vector2(0f, -156f), new Vector2(460f, 92f), Center(), Center());
-
-            Button account = CreateButton("Link Account", card.transform, "HESABINI BAĞLA", new Vector2(460f, 64f),
-                theme.defenderBlue, () => ShowScreen(AppScreen.Login));
-            SetRect(account.GetComponent<RectTransform>(), new Vector2(0f, -254f), new Vector2(460f, 64f), Center(), Center());
-
-            TextMeshProUGUI footnote = CreateText("Guest Note", card.transform,
-                "Misafir ilerlemen bu cihazda saklanır; hesabını daha sonra bağlayabilirsin.", 16,
-                catalog.bodyFont, FontStyles.Normal, TextAlignmentOptions.Center, theme.textMuted);
-            SetRect(footnote.rectTransform, new Vector2(0f, -334f), new Vector2(650f, 48f), Center(), Center());
-        }
-
-        private void BuildLoginScreen()
-        {
-            Transform root = screens[AppScreen.Login].transform;
-            GameObject scrim = CreateImage("Account Scrim", root, new Color(0f, 0f, 0f, 0.44f));
-            Stretch(scrim.GetComponent<RectTransform>());
-            GameObject card = CreatePanel("Account Chronicle", root, theme.panel);
-            AddCardAccent(card.transform, theme.defenderBlue);
-            SetRect(card.GetComponent<RectTransform>(), Vector2.zero, new Vector2(760f, 760f), Center(), Center());
-
-            Button close = CreateButton("Back", card.transform, "×", new Vector2(64f, 64f), theme.night,
-                ReturnFromAccount);
-            SetRect(close.GetComponent<RectTransform>(), new Vector2(-28f, -28f), new Vector2(64f, 64f), TopRight(), TopRight());
-
-            TextMeshProUGUI heading = CreateText("Heading", card.transform, "İLERLEMENİ KORU", 46,
-                catalog.titleFont, FontStyles.Bold, TextAlignmentOptions.Center, theme.textPrimary);
-            SetRect(heading.rectTransform, new Vector2(0f, 235f), new Vector2(560f, 70f), Center(), Center());
-            TextMeshProUGUI explanation = CreateText("Account Explanation", card.transform,
-                "Misafir olarak hemen oynayabilir veya ilerlemeni cihazlar arasında taşımak için hesabını bağlayabilirsin.",
-                22, catalog.bodyFont, FontStyles.Normal, TextAlignmentOptions.Center, theme.textMuted);
-            SetRect(explanation.rectTransform, new Vector2(0f, 170f), new Vector2(610f, 92f), Center(), Center());
-
-            Button guest = CreateButton("Guest Sign In", card.transform, "MİSAFİR OLARAK BAŞLA",
-                new Vector2(520f, 76f), theme.commandGold, SignInAsGuest);
-            SetRect(guest.GetComponent<RectTransform>(), new Vector2(0f, 64f), new Vector2(520f, 76f), Center(), Center());
-
-            Button account = CreateButton("Player Account Sign In", card.transform, "HESABINI BAĞLA",
-                new Vector2(520f, 76f), theme.defenderBlue,
-                () => RequestExternalSignIn(PlayerAuthProvider.PlayerAccount));
-            SetRect(account.GetComponent<RectTransform>(), new Vector2(0f, -42f), new Vector2(520f, 76f), Center(), Center());
-
-            loginStatus = CreateText("Login Status", card.transform, "", 19, catalog.bodyFont, FontStyles.Normal,
-                TextAlignmentOptions.Center, theme.commandGold);
-            SetRect(loginStatus.rectTransform, new Vector2(0f, -154f), new Vector2(620f, 62f), Center(), Center());
-
-            Button privacy = CreateButton("Privacy Policy", card.transform, "GİZLİLİK POLİTİKASI",
-                new Vector2(250f, 50f), theme.night, () => OpenLegalUrl(theme.privacyPolicyUrl, "Gizlilik Politikası"));
-            SetRect(privacy.GetComponent<RectTransform>(), new Vector2(-140f, -244f), new Vector2(250f, 50f), Center(), Center());
-            Button terms = CreateButton("Terms Of Service", card.transform, "KULLANIM KOŞULLARI",
-                new Vector2(250f, 50f), theme.night, () => OpenLegalUrl(theme.termsOfServiceUrl, "Kullanım Koşulları"));
-            SetRect(terms.GetComponent<RectTransform>(), new Vector2(140f, -244f), new Vector2(250f, 50f), Center(), Center());
-        }
-
-        private void BuildMainMenuScreen()
-        {
-            Transform root = screens[AppScreen.MainMenu].transform;
-            GameObject brandLogo = CreateBrandImage("Brand Logo", root, theme.brandLogo);
-            SetRect(brandLogo.GetComponent<RectTransform>(), new Vector2(76f, -36f), new Vector2(260f, 260f),
-                TopLeft(), TopLeft());
-
-            GameObject profileCard = CreatePanel("Profile Crest", root, new Color(theme.panel.r, theme.panel.g, theme.panel.b, 0.88f));
-            SetRect(profileCard.GetComponent<RectTransform>(), new Vector2(-210f, -74f), new Vector2(600f, 96f), TopRight(), TopRight());
-            GameObject profileMark = CreateBrandImage("Profile Brand Mark", profileCard.transform, theme.brandMark);
-            SetRect(profileMark.GetComponent<RectTransform>(), new Vector2(50f, -17f), new Vector2(62f, 62f),
-                TopLeft(), TopLeft());
-            profileLabel = CreateText("Profile", profileCard.transform, "", 20, catalog.bodyFont, FontStyles.Normal,
-                TextAlignmentOptions.Left, theme.textMuted);
-            SetRect(profileLabel.rectTransform, new Vector2(112f, -12f), new Vector2(450f, 66f), TopLeft(), TopLeft());
-
-            Button settings = CreateButton("Settings", root, "AYAR", new Vector2(92f, 68f), theme.night, OpenSettings);
-            SetRect(settings.GetComponent<RectTransform>(), new Vector2(-100f, -86f), new Vector2(92f, 68f), TopRight(), TopRight());
-
-            GameObject continueCard = CreatePanel("Continue Chronicle", root, new Color(theme.panel.r, theme.panel.g, theme.panel.b, 0.92f));
-            AddCardAccent(continueCard.transform, theme.commandGold);
-            AddCardWatermark(continueCard.transform, theme.commandGold);
-            SetAnchors(continueCard.GetComponent<RectTransform>(), new Vector2(0.055f, 0.16f), new Vector2(0.58f, 0.78f),
-                Vector2.zero, Vector2.zero);
-            TextMeshProUGUI callout = CreateText("Callout", continueCard.transform, "SAVUNMA HATTI\nSENİ BEKLİYOR", 58,
-                catalog.titleFont, FontStyles.Bold, TextAlignmentOptions.Left, theme.textPrimary);
-            callout.enableAutoSizing = true;
-            callout.fontSizeMin = 38f;
-            callout.fontSizeMax = 58f;
-            SetRect(callout.rectTransform, new Vector2(54f, -60f), new Vector2(760f, 150f), TopLeft(), TopLeft());
-
-            CampaignLevelDefinition last = CampaignCatalog.Level(Mathf.Clamp(progress.Data.lastSelectedLevel, 1, progress.Data.unlockedLevel));
-            continueDetails = CreateText("Continue Details", continueCard.transform,
-                $"BÖLGE {last.region}  ·  {last.displayName.ToUpperInvariant()}\n{last.waveCount} dalga  ·  ~{last.targetMinutes:0.#} dk  ·  {last.startingGold} başlangıç altını",
-                23, catalog.bodyFont, FontStyles.Normal, TextAlignmentOptions.Left, theme.textMuted);
-            SetRect(continueDetails.rectTransform, new Vector2(58f, -238f), new Vector2(760f, 88f), TopLeft(), TopLeft());
-
-            Button continueButton = CreateButton("Continue", continueCard.transform, "DEVAM ET  ›", new Vector2(420f, 88f),
-                theme.commandGold, ContinueCampaign);
-            SetRect(continueButton.GetComponent<RectTransform>(), new Vector2(58f, 60f), new Vector2(420f, 88f), BottomLeft(), BottomLeft());
-
-            GameObject actions = CreatePanel("Menu Actions", root, new Color(theme.panel.r, theme.panel.g, theme.panel.b, 0.90f));
-            AddCardAccent(actions.transform, theme.defenderBlue);
-            SetAnchors(actions.GetComponent<RectTransform>(), new Vector2(0.63f, 0.20f), new Vector2(0.945f, 0.70f),
-                Vector2.zero, Vector2.zero);
-            Button campaign = CreateButton("Campaign", actions.transform, "KRALLIK HARİTASI", new Vector2(470f, 84f),
-                theme.defenderBlue, OpenCampaign);
-            SetRect(campaign.GetComponent<RectTransform>(), new Vector2(0f, 106f), new Vector2(470f, 84f), Center(), Center());
-            Button switchAccount = CreateButton("Switch Account", actions.transform, "HESABI BAĞLA / DEĞİŞTİR",
-                new Vector2(470f, 70f), theme.night, () => ShowScreen(AppScreen.Login));
-            SetRect(switchAccount.GetComponent<RectTransform>(), new Vector2(0f, 0f), new Vector2(470f, 70f), Center(), Center());
-            TextMeshProUGUI menuHint = CreateText("Menu Hint", actions.transform,
-                "Greenwatch Bölgesi\n10 savunma noktası  ·  1 bölgesel lord", 19, catalog.bodyFont,
-                FontStyles.Normal, TextAlignmentOptions.Center, theme.textMuted);
-            SetRect(menuHint.rectTransform, new Vector2(0f, -112f), new Vector2(470f, 72f), Center(), Center());
-        }
-
-        private void BuildCampaignScreen()
-        {
-            Transform root = screens[AppScreen.Campaign].transform;
-            CreateHeader(root, "KRALLIK SAVAŞ MASASI", "", () => ShowScreen(AppScreen.MainMenu));
-
-            GameObject tabs = new("Region Tabs", typeof(RectTransform), typeof(HorizontalLayoutGroup));
-            tabs.transform.SetParent(root, false);
-            SetAnchors(tabs.GetComponent<RectTransform>(), new Vector2(0f, 1f), new Vector2(1f, 1f),
-                new Vector2(170f, -238f), new Vector2(-170f, -174f));
-            var tabLayout = tabs.GetComponent<HorizontalLayoutGroup>();
-            tabLayout.spacing = 12f;
-            tabLayout.childControlWidth = true;
-            tabLayout.childForceExpandWidth = true;
-            tabLayout.childControlHeight = true;
-
-            for (int index = 0; index < CampaignCatalog.RegionCount; index++)
-            {
-                int targetIndex = index;
-                CampaignRegionDefinition region = CampaignCatalog.Regions[index];
-                CreateButton($"Region Tab {index + 1}", tabs.transform, $"{index + 1}  {region.displayName.ToUpperInvariant()}",
-                    new Vector2(260f, 60f), new Color(region.primaryColor.r, region.primaryColor.g, region.primaryColor.b, 1f),
-                    () => FocusRegion(targetIndex));
-            }
-
-            GameObject scrollObject = new("Campaign Scroll", typeof(RectTransform), typeof(ScrollRect));
-            scrollObject.transform.SetParent(root, false);
-            SetAnchors(scrollObject.GetComponent<RectTransform>(), new Vector2(0f, 0f), new Vector2(1f, 1f),
-                new Vector2(70f, 160f), new Vector2(-70f, -285f));
-            campaignScroll = scrollObject.GetComponent<ScrollRect>();
-            campaignScroll.horizontal = true;
-            campaignScroll.vertical = false;
-            campaignScroll.movementType = ScrollRect.MovementType.Clamped;
-            campaignScroll.inertia = true;
-            campaignScroll.decelerationRate = 0.08f;
-
-            GameObject viewport = CreateImage("Viewport", scrollObject.transform, new Color(0f, 0f, 0f, 0.06f));
-            Stretch(viewport.GetComponent<RectTransform>());
-            viewport.AddComponent<Mask>().showMaskGraphic = false;
-
-            GameObject content = new("Content", typeof(RectTransform), typeof(HorizontalLayoutGroup), typeof(ContentSizeFitter));
-            content.transform.SetParent(viewport.transform, false);
-            RectTransform contentRect = content.GetComponent<RectTransform>();
-            contentRect.anchorMin = new Vector2(0f, 0f);
-            contentRect.anchorMax = new Vector2(0f, 1f);
-            contentRect.pivot = new Vector2(0f, 0.5f);
-            contentRect.offsetMin = Vector2.zero;
-            contentRect.offsetMax = Vector2.zero;
-            var contentLayout = content.GetComponent<HorizontalLayoutGroup>();
-            contentLayout.spacing = 0f;
-            contentLayout.childControlWidth = true;
-            contentLayout.childControlHeight = true;
-            contentLayout.childForceExpandWidth = false;
-            contentLayout.childForceExpandHeight = true;
-            content.GetComponent<ContentSizeFitter>().horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
-            campaignScroll.viewport = viewport.GetComponent<RectTransform>();
-            campaignScroll.content = contentRect;
-
-            for (int index = 0; index < CampaignCatalog.RegionCount; index++)
-                BuildRegion(content.transform, CampaignCatalog.Regions[index]);
-
-            GameObject selectionBar = CreatePanel("Selection Bar", root, theme.panel);
-            AddCardAccent(selectionBar.transform, theme.commandGold);
-            SetAnchors(selectionBar.GetComponent<RectTransform>(), new Vector2(0f, 0f), new Vector2(1f, 0f),
-                new Vector2(70f, 46f), new Vector2(-70f, 145f));
-            selectedLevelTitle = CreateText("Selected Level", selectionBar.transform, "", 30, catalog.titleFont,
-                FontStyles.Bold, TextAlignmentOptions.Left, Color.white);
-            SetRect(selectedLevelTitle.rectTransform, new Vector2(28f, 15f), new Vector2(440f, 58f), BottomLeft(), BottomLeft());
-            selectedLevelDetails = CreateText("Selected Details", selectionBar.transform, "", 22, catalog.bodyFont,
-                FontStyles.Normal, TextAlignmentOptions.Left, new Color(0.68f, 0.78f, 0.84f));
-            SetRect(selectedLevelDetails.rectTransform, new Vector2(470f, 15f), new Vector2(360f, 58f), BottomLeft(), BottomLeft());
-            playSelectedButton = CreateButton("Play Selected", selectionBar.transform, "BRİFİNGİ AÇ  ›", new Vector2(340f, 66f),
-                theme.commandGold, OpenBriefing);
-            SetRect(playSelectedButton.GetComponent<RectTransform>(), new Vector2(-348f, 16f), new Vector2(320f, 66f), BottomRight(), BottomRight());
-        }
-
-        private void BuildBriefingScreen()
-        {
-            Transform root = screens[AppScreen.Briefing].transform;
-            CreateHeader(root, "SAVAŞ BRİFİNGİ", "Greenwatch ön hattı", () => ShowScreen(AppScreen.Campaign));
-
-            GameObject leftCard = CreatePanel("Briefing Chronicle", root, new Color(theme.panel.r, theme.panel.g, theme.panel.b, 0.95f));
-            AddCardAccent(leftCard.transform, theme.moonEdge);
-            SetAnchors(leftCard.GetComponent<RectTransform>(), new Vector2(0.08f, 0.14f), new Vector2(0.59f, 0.77f),
-                Vector2.zero, Vector2.zero);
-            briefingRegion = CreateText("Briefing Region", leftCard.transform, "", 20, catalog.bodyFont,
-                FontStyles.Bold, TextAlignmentOptions.Left, theme.moonEdge);
-            SetRect(briefingRegion.rectTransform, new Vector2(54f, -54f), new Vector2(760f, 38f), TopLeft(), TopLeft());
-            briefingTitle = CreateText("Briefing Title", leftCard.transform, "", 54, catalog.titleFont,
-                FontStyles.Bold, TextAlignmentOptions.Left, theme.textPrimary);
-            briefingTitle.enableAutoSizing = true;
-            briefingTitle.fontSizeMin = 38f;
-            briefingTitle.fontSizeMax = 54f;
-            SetRect(briefingTitle.rectTransform, new Vector2(54f, -105f), new Vector2(800f, 92f), TopLeft(), TopLeft());
-            briefingObjective = CreateText("Briefing Objective", leftCard.transform, "", 24, catalog.bodyFont,
-                FontStyles.Normal, TextAlignmentOptions.Left, theme.textMuted);
-            briefingObjective.lineSpacing = 7f;
-            SetRect(briefingObjective.rectTransform, new Vector2(56f, -225f), new Vector2(790f, 156f), TopLeft(), TopLeft());
-            TextMeshProUGUI order = CreateText("Commander Order", leftCard.transform,
-                "KOMUTAN EMRİ\nDüşman yolunu oku, savunma noktalarını kur ve kaleyi ayakta tut.", 21,
-                catalog.bodyFont, FontStyles.Bold, TextAlignmentOptions.Left, theme.commandGold);
-            SetRect(order.rectTransform, new Vector2(56f, 62f), new Vector2(780f, 82f), BottomLeft(), BottomLeft());
-
-            GameObject rightCard = CreatePanel("Briefing Intel", root, new Color(theme.panelRaised.r, theme.panelRaised.g,
-                theme.panelRaised.b, 0.96f));
-            AddCardAccent(rightCard.transform, theme.commandGold);
-            SetAnchors(rightCard.GetComponent<RectTransform>(), new Vector2(0.63f, 0.20f), new Vector2(0.92f, 0.75f),
-                Vector2.zero, Vector2.zero);
-            briefingEnemies = CreateText("Enemy Intel", rightCard.transform, "", 22, catalog.bodyFont,
-                FontStyles.Bold, TextAlignmentOptions.Left, theme.textPrimary);
-            SetRect(briefingEnemies.rectTransform, new Vector2(42f, -58f), new Vector2(450f, 150f), TopLeft(), TopLeft());
-            briefingReward = CreateText("Briefing Reward", rightCard.transform, "", 22, catalog.bodyFont,
-                FontStyles.Bold, TextAlignmentOptions.Left, theme.commandGold);
-            SetRect(briefingReward.rectTransform, new Vector2(42f, -232f), new Vector2(450f, 120f), TopLeft(), TopLeft());
-            Button start = CreateButton("Start Defence", rightCard.transform, "SAVUNMAYI BAŞLAT", new Vector2(430f, 86f),
-                theme.commandGold, StartSelectedLevel);
-            SetRect(start.GetComponent<RectTransform>(), new Vector2(0f, 62f), new Vector2(430f, 86f), BottomCenter(), BottomCenter());
+            StartFrontendAcceptance();
         }
 
         private void BuildResultScreen()
@@ -578,83 +353,17 @@ namespace DefenderChronicles.UI
                 TextAlignmentOptions.Center, theme.moonEdge);
             SetRect(resultReward.rectTransform, new Vector2(0f, -42f), new Vector2(850f, 52f), Center(), Center());
 
-            retryButton = CreateButton("Retry Level", card.transform, "YENİDEN DENE", new Vector2(310f, 74f),
+            retryButton = CreateButton("Retry Level", card.transform, "YENİDEN DENE", new Vector2(310f, 140f),
                 theme.defenderBlue, () => ReloadCampaignLevel(session.CampaignLevelNumber));
-            SetRect(retryButton.GetComponent<RectTransform>(), new Vector2(-350f, -180f), new Vector2(310f, 74f), Center(), Center());
+            SetRect(retryButton.GetComponent<RectTransform>(), new Vector2(-350f, -180f), new Vector2(310f, 140f), Center(), Center());
 
-            nextLevelButton = CreateButton("Next Level", card.transform, "SONRAKİ BÖLÜM  ›", new Vector2(340f, 82f),
+            nextLevelButton = CreateButton("Next Level", card.transform, "SONRAKİ BÖLÜM  ›", new Vector2(340f, 140f),
                 theme.commandGold, () => ReloadCampaignLevel(session.CampaignLevelNumber + 1));
-            SetRect(nextLevelButton.GetComponent<RectTransform>(), new Vector2(0f, -180f), new Vector2(340f, 82f), Center(), Center());
+            SetRect(nextLevelButton.GetComponent<RectTransform>(), new Vector2(0f, -180f), new Vector2(340f, 140f), Center(), Center());
 
-            Button map = CreateButton("Return To Map", card.transform, "HARİTAYA DÖN", new Vector2(310f, 74f),
+            Button map = CreateButton("Return To Map", card.transform, "HARİTAYA DÖN", new Vector2(310f, 140f),
                 theme.night, OpenCampaign);
-            SetRect(map.GetComponent<RectTransform>(), new Vector2(350f, -180f), new Vector2(310f, 74f), Center(), Center());
-        }
-
-        private void BuildRegion(Transform parent, CampaignRegionDefinition region)
-        {
-            GameObject root = CreateImage($"Region {region.number}", parent,
-                region.number == 1
-                    ? new Color(theme.night.r, theme.night.g, theme.night.b, 0.10f)
-                    : new Color(region.primaryColor.r, region.primaryColor.g, region.primaryColor.b, 0.70f));
-            root.AddComponent<LayoutElement>().preferredWidth = 2200f;
-            RectTransform rect = root.GetComponent<RectTransform>();
-            rect.sizeDelta = new Vector2(2200f, 0f);
-            root.AddComponent<FrontendCampaignPageFitter>().Configure(campaignScroll.viewport, 984f);
-
-            TextMeshProUGUI name = CreateText("Region Name", root.transform,
-                $"BÖLGE {region.number}  ·  {region.displayName.ToUpperInvariant()}", 30, catalog.titleFont,
-                FontStyles.Bold, TextAlignmentOptions.Left, region.number == 1 ? theme.commandGold : region.accentColor);
-            SetRect(name.rectTransform, new Vector2(55f, -54f), new Vector2(900f, 48f), TopLeft(), TopLeft());
-
-            Vector2[] positions =
-            {
-                new(130f, 135f), new(280f, 300f), new(445f, 170f), new(600f, 340f), new(755f, 205f),
-                new(910f, 360f), new(1060f, 210f), new(1205f, 345f), new(1350f, 185f), new(1500f, 330f)
-            };
-
-            for (int index = 0; index < positions.Length - 1; index++)
-                CreateRouteSegment(root.transform, positions[index], positions[index + 1], region.accentColor);
-
-            foreach (CampaignLevelDefinition level in region.levels)
-            {
-                bool unlocked = level.number <= progress.Data.unlockedLevel;
-                Color buttonColor = unlocked
-                    ? new Color(region.accentColor.r, region.accentColor.g, region.accentColor.b, 1f)
-                    : new Color(0.15f, 0.18f, 0.21f, 1f);
-                Vector2 size = level.isBoss ? new Vector2(106f, 106f) : new Vector2(82f, 82f);
-                Button button = CreateButton($"Level {level.number}", root.transform,
-                    unlocked ? level.number.ToString() : "×", size, buttonColor, () => SelectLevel(level.number));
-                Vector2 position = positions[level.indexInRegion - 1];
-                SetRect(button.GetComponent<RectTransform>(), position - size * 0.5f, size, BottomLeft(), BottomLeft());
-                button.interactable = unlocked;
-                CreateLevelSelectionRing(button.transform);
-                levelButtons.Add(button);
-
-                CampaignLevelProgress levelProgress = progress.ProgressFor(level.number);
-                string starText = levelProgress == null || levelProgress.stars <= 0
-                    ? (level.isBoss ? "LORD" : level.displayName.ToUpperInvariant())
-                    : $"{levelProgress.stars}/3";
-                TextMeshProUGUI stars = CreateText("Progress", root.transform, starText, level.isBoss ? 19 : 17,
-                    catalog.bodyFont, FontStyles.Bold, TextAlignmentOptions.Center,
-                    unlocked ? Color.white : new Color(0.48f, 0.52f, 0.55f));
-                SetRect(stars.rectTransform, new Vector2(position.x - 85f, position.y - 76f), new Vector2(170f, 34f),
-                    BottomLeft(), BottomLeft());
-                levelStars.Add(stars);
-            }
-        }
-
-        private void CreateRouteSegment(Transform parent, Vector2 from, Vector2 to, Color color)
-        {
-            Vector2 delta = to - from;
-            GameObject segment = CreateImage("Route", parent, new Color(color.r, color.g, color.b, 0.38f));
-            RectTransform rect = segment.GetComponent<RectTransform>();
-            rect.anchorMin = BottomLeft();
-            rect.anchorMax = BottomLeft();
-            rect.pivot = new Vector2(0f, 0.5f);
-            rect.anchoredPosition = from;
-            rect.sizeDelta = new Vector2(delta.magnitude, 8f);
-            rect.localRotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(delta.y, delta.x) * Mathf.Rad2Deg);
+            SetRect(map.GetComponent<RectTransform>(), new Vector2(350f, -180f), new Vector2(310f, 140f), Center(), Center());
         }
 
         private void SignInAsGuest()
@@ -674,13 +383,15 @@ namespace DefenderChronicles.UI
                 : progress.Data.playerId;
             progress.SignIn(PlayerAuthProvider.Guest, id, GameLocalization.Text("Misafir Muhafız", "Guest Defender"));
             RefreshProfile();
-            ShowScreen(AppScreen.MainMenu);
+            ShowScreen(CurrentScreen == AppScreen.Login && navigationState.AccountReturn != AppScreen.Welcome
+                ? navigationState.AccountReturn : AppScreen.MainMenu);
         }
 
         private void RequestExternalSignIn(PlayerAuthProvider provider)
         {
-            loginStatus.text = GameLocalization.Text("Güvenli hesap penceresi açılıyor...",
-                "Opening the secure account window...");
+            ShowScreen(AppScreen.Login);
+            SetLoginStatus(GameLocalization.Text("Güvenli hesap penceresi açılıyor...",
+                "Opening the secure account window..."));
             if (AuthenticationRequested == null)
             {
                 loginStatus.text = GameLocalization.Text(
@@ -693,43 +404,96 @@ namespace DefenderChronicles.UI
 
         private void ContinueCampaign()
         {
-            selectedLevel = Mathf.Clamp(progress.Data.lastSelectedLevel, 1, progress.Data.unlockedLevel);
-            OpenBriefing();
+            if (IsFirstDefence())
+            {
+                OpenCampaign();
+                return;
+            }
+            LaunchCampaignLevel(Mathf.Clamp(progress.Data.lastSelectedLevel, 1, progress.Data.unlockedLevel));
+        }
+
+        private bool IsFirstDefence()
+        {
+            return progress != null && ShouldOpenCampaignBeforeFirstBattle(progress.Data.TotalStars,
+                progress.Data.unlockedLevel, navigationState.HasMapPosition);
+        }
+
+        public static bool ShouldOpenCampaignBeforeFirstBattle(int totalStars, int unlockedLevel,
+            bool hasVisitedCampaignMap)
+        {
+            return totalStars == 0 && unlockedLevel <= 1 && !hasVisitedCampaignMap;
         }
 
         private void OpenCampaign()
         {
+            if (launchingBattle || orientationRoutine != null) return;
+            bool hadMapPosition = navigationState.HasMapPosition;
             bool returningFromBattle = CurrentScreen is AppScreen.Battle or AppScreen.Result ||
                                        MobileOrientationController.CurrentMode == MobileOrientationMode.LandscapeBattle;
-            if (returningFromBattle)
-                ShowFrontendAfterPortrait(AppScreen.Campaign);
-            else
-                ShowScreen(AppScreen.Campaign);
-            SelectLevel(progress.Data.lastSelectedLevel);
-            FocusRegion((selectedLevel - 1) / CampaignCatalog.LevelsPerRegion);
+            if (returningFromBattle) ShowFrontendAfterPortrait(AppScreen.Campaign);
+            else ShowScreen(AppScreen.Campaign);
+            SelectLevel(hadMapPosition ? navigationState.SelectedLevel : progress.Data.lastSelectedLevel);
+            if (!hadMapPosition && navigationState.Region != 0) FocusRegion(navigationState.Region);
+            navigationState.HasMapPosition = true;
+            navigationState.SelectedLevel = selectedLevel;
             PlayFrontendCue(theme.mapOpen, PresentationCue.UiClick);
         }
 
         private void SelectLevel(int level)
         {
+            int old = selectedLevel;
             selectedLevel = Mathf.Clamp(level, 1, progress.Data.unlockedLevel);
-            CampaignLevelDefinition definition = CampaignCatalog.Level(selectedLevel);
+            navigationState.SelectedLevel = selectedLevel;
+            if (progress.Data.lastSelectedLevel != selectedLevel) progress.SelectLevel(selectedLevel);
+            if (selectedLevelTitle == null) return;
+            UpdateSelectedDetails();
+            if (old != selectedLevel || progressDirty) RefreshSelectedLevelVisuals();
+        }
+
+        private void UpdateSelectedDetails()
+        {
+            var definition = CampaignCatalog.Level(selectedLevel);
+            var map = CampaignLevelFactory.Map(definition.mapId);
+            if (tacticalMapPreview != null)
+            {
+                BiomeDefinition biome = CampaignLevelFactory.Biome(map.biomeIndex);
+                tacticalMapPreview.Configure(map, biome.accentColor, catalog.bodyFont);
+            }
+            string routeLabel = GameLocalization.IsEnglish
+                ? $"{map.entranceCount} entrance{(map.entranceCount == 1 ? "" : "s")}"
+                : $"{map.entranceCount} giriş";
             selectedLevelTitle.text = $"{definition.number}. {definition.displayName}";
             selectedLevelDetails.text = GameLocalization.IsEnglish
-                ? $"{definition.waveCount} waves · ~{definition.targetMinutes:0.#} min · {definition.startingGold} gold\n" +
-                  $"Reward: {definition.valorReward} Valor · {definition.heroXpReward} XP"
-                : $"{definition.waveCount} dalga · ~{definition.targetMinutes:0.#} dk · {definition.startingGold} altın\n" +
-                  $"Ödül: {definition.valorReward} Valor · {definition.heroXpReward} XP";
+                ? $"{definition.waveCount} waves · ~{definition.targetMinutes:0.#} min · {definition.startingGold} gold · {routeLabel}"
+                : $"{definition.waveCount} dalga · ~{definition.targetMinutes:0.#} dk · {definition.startingGold} altın · {routeLabel}";
+            briefingEnemies.text = GameLocalization.Text("DÜŞMANLAR", "ENEMIES") + "\n" + EnemyPreviewForLevel(definition.number);
+            briefingReward.text = GameLocalization.Text("ÖDÜL", "REWARD") + $"\n{definition.valorReward} Valor · {definition.heroXpReward} XP";
             playSelectedButton.interactable = selectedLevel <= progress.Data.unlockedLevel;
-            RefreshSelectedLevelVisuals();
-            PlayFrontendCue(theme.levelSelect, PresentationCue.UiClick);
+        }
+
+        private void HandleProgressChanged()
+        {
+            progressDirty = true;
+            if (CurrentScreen == AppScreen.MainMenu) RefreshProfile();
+            if (CurrentScreen == AppScreen.Campaign)
+            {
+                RefreshLevelButtons();
+                SelectLevel(selectedLevel);
+            }
+        }
+
+        private void SaveMapPosition()
+        {
+            if (campaignScroll == null || CurrentScreen != AppScreen.Campaign) return;
+            navigationState.HasMapPosition = true;
+            navigationState.SelectedLevel = selectedLevel;
+            navigationState.Horizontal = campaignScroll.horizontalNormalizedPosition;
+            for (int i = 0; i < regionScrolls.Count; i++) navigationState.Vertical[i] = regionScrolls[i].verticalNormalizedPosition;
         }
 
         private void OpenBriefing()
         {
-            selectedLevel = Mathf.Clamp(selectedLevel, 1, progress.Data.unlockedLevel);
-            RefreshBriefing();
-            ShowScreen(AppScreen.Briefing);
+            OpenCampaign(); // Compatibility for old callers and evidence commands.
         }
 
         private void StartSelectedLevel()
@@ -740,26 +504,7 @@ namespace DefenderChronicles.UI
 
         private void RefreshBriefing()
         {
-            CampaignLevelDefinition definition = CampaignCatalog.Level(selectedLevel);
-            briefingRegion.text = GameLocalization.IsEnglish
-                ? $"REGION {definition.region}  ·  GREENWATCH FRONT LINE"
-                : $"BÖLGE {definition.region}  ·  GREENWATCH ÖN HATTI";
-            briefingTitle.text = $"{definition.number}. {definition.displayName.ToUpperInvariant()}";
-            briefingObjective.text = GameLocalization.IsEnglish
-                ? $"Defend the fortress approach for {definition.waveCount} waves.\n" +
-                  $"Estimated time: ~{definition.targetMinutes:0.#} minutes\n" +
-                  $"Starting resources: {definition.startingGold} gold"
-                : $"Kalenin giriş yolunu {definition.waveCount} dalga boyunca savun.\n" +
-                  $"Tahmini süre: ~{definition.targetMinutes:0.#} dakika\n" +
-                  $"Başlangıç kaynağı: {definition.startingGold} altın";
-            briefingEnemies.text = GameLocalization.IsEnglish
-                ? $"ENEMY INTELLIGENCE\n{EnemyPreviewForLevel(definition.number)}\n\n" +
-                  $"THREAT LEVEL\n{ThreatLabel(definition.number)}"
-                : $"DÜŞMAN İSTİHBARATI\n{EnemyPreviewForLevel(definition.number)}\n\n" +
-                  $"TEHDİT SEVİYESİ\n{ThreatLabel(definition.number)}";
-            briefingReward.text = GameLocalization.IsEnglish
-                ? $"BATTLE REWARD\n+ {definition.valorReward} Valor\n+ {definition.heroXpReward} Hero XP"
-                : $"SAVAŞ ÖDÜLÜ\n+ {definition.valorReward} Valor\n+ {definition.heroXpReward} Kahraman XP";
+            if (selectedLevelDetails != null) UpdateSelectedDetails();
         }
 
         private void RefreshSelectedLevelVisuals()
@@ -767,7 +512,7 @@ namespace DefenderChronicles.UI
             for (int index = 0; index < levelButtons.Count; index++)
             {
                 Button button = levelButtons[index];
-                int level = index + 1;
+                int level = levelNumbers[index];
                 bool unlocked = level <= progress.Data.unlockedLevel;
                 bool selected = level == selectedLevel;
                 CampaignLevelProgress levelProgress = progress.ProgressFor(level);
@@ -832,12 +577,23 @@ namespace DefenderChronicles.UI
             _ => "LORD ASSAULT"
         };
 
+        private void UpdateRegionTabs()
+        {
+            for (int i = 0; i < regionTabs.Count; i++)
+                SetButtonEmphasis(regionTabs[i], i == navigationState.Region ? theme.commandGold : theme.defenderBlue);
+        }
+
         private void FocusRegion(int regionIndex)
         {
             if (campaignScroll == null) return;
+            Canvas.ForceUpdateCanvases();
+            campaignScroll.StopMovement();
+            navigationState.Region = Mathf.Clamp(regionIndex, 0, CampaignCatalog.RegionCount - 1);
+            UpdateRegionTabs();
             campaignScroll.horizontalNormalizedPosition = CampaignCatalog.RegionCount <= 1
                 ? 0f
                 : Mathf.Clamp01(regionIndex / (CampaignCatalog.RegionCount - 1f));
+            QueueRegionBuild(navigationState.Region);
         }
 
         private void RefreshProfile()
@@ -868,6 +624,14 @@ namespace DefenderChronicles.UI
                     : $"BÖLGE {last.region}  ·  {last.displayName.ToUpperInvariant()}  ·  {stars}\n" +
                       $"{last.waveCount} dalga  ·  ~{last.targetMinutes:0.#} dk  ·  {last.startingGold} başlangıç altını";
             }
+            if (continueButton != null)
+            {
+                TextMeshProUGUI label = continueButton.GetComponentInChildren<TextMeshProUGUI>(true);
+                if (label != null)
+                    label.text = IsFirstDefence()
+                        ? GameLocalization.Text("İLK SAVUNMANA HAZIRLAN  ›", "PREPARE YOUR FIRST DEFENCE  ›")
+                        : GameLocalization.Text("DEVAM ET  ›", "CONTINUE  ›");
+            }
         }
 
         private void HandleSessionPhaseChanged(GamePhase phase)
@@ -889,6 +653,7 @@ namespace DefenderChronicles.UI
 
         private void ShowResult(bool victory, int stars, CampaignCompletionReward reward)
         {
+            EnsureScreen(AppScreen.Result);
             MobileOrientationController.Request(MobileOrientationMode.LandscapeBattle);
             SetCanvasOrientation(MobileOrientationMode.LandscapeBattle);
             RefreshLevelButtons();
@@ -916,7 +681,8 @@ namespace DefenderChronicles.UI
             canvas.gameObject.SetActive(true);
             battlePaused = true;
             ShowScreen(AppScreen.Result);
-            if (victory) StartCoroutine(AnimateStars(stars));
+            if (starsRoutine != null) StopCoroutine(starsRoutine);
+            if (victory) starsRoutine = StartCoroutine(AnimateStars(stars));
             TriggerHaptic();
         }
 
@@ -924,7 +690,7 @@ namespace DefenderChronicles.UI
         {
             for (int index = 0; index < levelButtons.Count; index++)
             {
-                int level = index + 1;
+                int level = levelNumbers[index];
                 bool unlocked = level <= progress.Data.unlockedLevel;
                 Button button = levelButtons[index];
                 button.interactable = unlocked;
@@ -934,73 +700,9 @@ namespace DefenderChronicles.UI
                 if (levelProgress != null && levelProgress.stars > 0)
                     levelStars[index].text = $"{levelProgress.stars}/3";
             }
+            RefreshSelectedLevelVisuals();
+            progressDirty = false;
             RefreshProfile();
-        }
-
-        private void BuildSettingsModal()
-        {
-            settingsModal = new GameObject("Settings Modal", typeof(RectTransform));
-            settingsModal.transform.SetParent(canvas.transform, false);
-            Stretch(settingsModal.GetComponent<RectTransform>());
-
-            GameObject scrim = CreateImage("Settings Scrim", settingsModal.transform, new Color(0f, 0f, 0f, 0.72f));
-            Stretch(scrim.GetComponent<RectTransform>());
-            Image scrimImage = scrim.GetComponent<Image>();
-            scrimImage.raycastTarget = true;
-            Button scrimButton = scrim.AddComponent<Button>();
-            scrimButton.targetGraphic = scrimImage;
-            scrimButton.transition = Selectable.Transition.None;
-            scrimButton.onClick.AddListener(CloseSettings);
-
-            GameObject card = CreatePanel("Settings Chronicle", settingsModal.transform, theme.panel);
-            AddCardAccent(card.transform, theme.commandGold);
-            SetRect(card.GetComponent<RectTransform>(), Vector2.zero, new Vector2(820f, 860f), Center(), Center());
-            TextMeshProUGUI title = CreateText("Settings Title", card.transform, "AYARLAR", 46, catalog.titleFont,
-                FontStyles.Bold, TextAlignmentOptions.Center, theme.textPrimary);
-            SetRect(title.rectTransform, new Vector2(0f, 342f), new Vector2(620f, 64f), Center(), Center());
-
-            TextMeshProUGUI languageLabel = CreateText("Language Label", card.transform,
-                "DİL", 21, catalog.bodyFont, FontStyles.Bold,
-                TextAlignmentOptions.Left, theme.textPrimary);
-            SetRect(languageLabel.rectTransform, new Vector2(-250f, 272f), new Vector2(220f, 44f), Center(), Center());
-            turkishLanguageButton = CreateButton("Turkish Language", card.transform, "TÜRKÇE", new Vector2(190f, 54f),
-                FrontendPreferences.Language == GameLanguage.Turkish ? theme.commandGold : theme.night,
-                () => FrontendPreferences.Language = GameLanguage.Turkish);
-            SetRect(turkishLanguageButton.GetComponent<RectTransform>(), new Vector2(40f, 266f), new Vector2(190f, 54f), Center(), Center());
-            englishLanguageButton = CreateButton("English Language", card.transform, "ENGLISH", new Vector2(190f, 54f),
-                FrontendPreferences.Language == GameLanguage.English ? theme.commandGold : theme.night,
-                () => FrontendPreferences.Language = GameLanguage.English);
-            SetRect(englishLanguageButton.GetComponent<RectTransform>(), new Vector2(246f, 266f), new Vector2(190f, 54f), Center(), Center());
-
-            CreateSliderRow(card.transform, "MÜZİK", new Vector2(0f, 172f), FrontendPreferences.MusicVolume, value =>
-            {
-                FrontendPreferences.MusicVolume = value;
-                AudioManager.Instance?.SetMusicVolume(value);
-            });
-            CreateSliderRow(card.transform, "EFEKTLER", new Vector2(0f, 78f), FrontendPreferences.SfxVolume, value =>
-            {
-                FrontendPreferences.SfxVolume = value;
-                AudioManager.Instance?.SetSFXVolume(value);
-                if (frontendUiSource != null) frontendUiSource.volume = value;
-            });
-            CreateToggleRow(card.transform, "TİTREŞİM", new Vector2(0f, -18f), FrontendPreferences.Haptics,
-                value => FrontendPreferences.Haptics = value);
-            CreateToggleRow(card.transform, "KAMERA SARSINTISI", new Vector2(0f, -102f), FrontendPreferences.CameraShake,
-                value => FrontendPreferences.CameraShake = value);
-            CreateToggleRow(card.transform, "AZALTILMIŞ HAREKET", new Vector2(0f, -186f), FrontendPreferences.ReducedMotion,
-                value => FrontendPreferences.ReducedMotion = value);
-
-            Button account = CreateButton("Settings Account", card.transform, "HESAP YÖNETİMİ", new Vector2(500f, 64f),
-                theme.defenderBlue, () =>
-                {
-                    CloseSettings();
-                    ShowScreen(AppScreen.Login);
-                });
-            SetRect(account.GetComponent<RectTransform>(), new Vector2(0f, -284f), new Vector2(500f, 64f), Center(), Center());
-            Button close = CreateButton("Close Settings", card.transform, "TAMAM", new Vector2(300f, 68f),
-                theme.commandGold, CloseSettings);
-            SetRect(close.GetComponent<RectTransform>(), new Vector2(0f, 56f), new Vector2(300f, 68f), BottomCenter(), BottomCenter());
-            settingsModal.SetActive(false);
         }
 
         private void BuildOrientationCurtain()
@@ -1019,56 +721,108 @@ namespace DefenderChronicles.UI
             orientationCurtainLabel.lineSpacing = 8f;
             SetRect(orientationCurtainLabel.rectTransform, new Vector2(0f, -80f), new Vector2(720f, 100f),
                 Center(), Center());
+            orientationCurtain.GetComponent<Image>().raycastTarget = true;
+            orientationRetry = CreateButton("Retry Orientation", orientationCurtain.transform, "YENİDEN DENE",
+                new Vector2(580, 140), theme.commandGold, () => retryOrientation?.Invoke());
+            SetRect((RectTransform)orientationRetry.transform, new Vector2(0, -260), new Vector2(580, 140), Center(), Center());
+            orientationRetry.gameObject.SetActive(false);
             orientationCurtain.transform.SetAsLastSibling();
             orientationCurtain.SetActive(false);
         }
 
         private IEnumerator EnterBattleAfterLandscape(int level)
         {
+            // Give the persistent loading surface one frame to reach the display before
+            // iOS performs the more expensive orientation and battle setup work.
+            yield return null;
             SetCanvasOrientation(MobileOrientationMode.LandscapeBattle);
             canvas.gameObject.SetActive(true);
-            ShowScreen(AppScreen.Battle);
             ShowOrientationCurtain(MobileOrientationMode.LandscapeBattle);
+            retryOrientation = () => { launchingBattle = false; LaunchCampaignLevel(level); };
             MobileOrientationController.Request(MobileOrientationMode.LandscapeBattle);
-            if (MobileOrientationController.UsesRuntimeRotation)
-                yield return WaitForOrientation(MobileOrientationMode.LandscapeBattle);
-
+            yield return WaitForOrientation(MobileOrientationMode.LandscapeBattle);
+            if (!orientationReady)
+            {
+                FrontendLoadingOverlay.Hide();
+                orientationRoutine = null;
+                yield break;
+            }
             session.SetCampaignLevel(level);
-            session.Initialize();
+            if (frontendListener != null) frontendListener.enabled = false;
+            var setup = session.InitializeIncrementally();
+            while (true)
+            {
+                bool next = false;
+                string failure = null;
+                try { next = setup.MoveNext(); }
+                catch (Exception exception) { failure = exception.ToString(); }
+                if (failure != null)
+                {
+                    Debug.LogWarning("Battle preparation failed: " + failure);
+                    FrontendLoadingOverlay.Hide();
+                    orientationCurtainLabel.text = GameLocalization.Text("Savaş hazırlanamadı. Yeniden deneyebilirsin.", "Battle preparation failed. Please try again.");
+                    retryOrientation = () => ReloadCampaignLevel(level);
+                    orientationRetry.gameObject.SetActive(true);
+                    orientationRoutine = null;
+                    yield break;
+                }
+                if (!next) break;
+                yield return setup.Current;
+            }
+            ShowScreen(AppScreen.Battle);
             warTableRenderer?.SetVisible(false);
             HideOrientationCurtain();
+            FrontendLoadingOverlay.Hide();
             canvas.gameObject.SetActive(false);
             battlePaused = false;
             Time.timeScale = session.CurrentGameSpeed;
+            launchingBattle = false;
             orientationRoutine = null;
+            performance.Complete();
         }
 
         private void ShowFrontendAfterPortrait(AppScreen screen)
         {
-            SetCanvasOrientation(MobileOrientationMode.PortraitFrontend);
+            if (orientationRoutine != null || launchingBattle) return;
+            performance.Begin("battle-" + screen);
             canvas.gameObject.SetActive(true);
-            ShowScreen(screen);
             ShowOrientationCurtain(MobileOrientationMode.PortraitFrontend);
-            if (orientationRoutine != null) StopCoroutine(orientationRoutine);
-            orientationRoutine = StartCoroutine(RevealFrontendAfterPortrait());
+            retryOrientation = () => ShowFrontendAfterPortrait(screen);
+            orientationRoutine = StartCoroutine(RevealFrontendAfterPortrait(screen));
         }
 
-        private IEnumerator RevealFrontendAfterPortrait()
+        private IEnumerator RevealFrontendAfterPortrait(AppScreen screen)
         {
             MobileOrientationController.Request(MobileOrientationMode.PortraitFrontend);
-            if (MobileOrientationController.UsesRuntimeRotation)
-                yield return WaitForOrientation(MobileOrientationMode.PortraitFrontend);
+            yield return WaitForOrientation(MobileOrientationMode.PortraitFrontend);
+            if (!orientationReady) { orientationRoutine = null; yield break; }
+            session.SuspendForFrontend();
+            if (frontendListener == null) frontendListener = gameObject.AddComponent<AudioListener>();
+            frontendListener.enabled = true;
+            Time.timeScale = 0f;
+            SetCanvasOrientation(MobileOrientationMode.PortraitFrontend);
+            ShowScreen(screen);
+            if (screen == AppScreen.Campaign) SelectLevel(navigationState.SelectedLevel);
             HideOrientationCurtain();
             orientationRoutine = null;
+            performance.Complete();
         }
 
-        private static IEnumerator WaitForOrientation(MobileOrientationMode mode)
+        private IEnumerator WaitForOrientation(MobileOrientationMode mode)
         {
-            int stableFrames = 0;
-            while (stableFrames < 2)
+            orientationReady = !MobileOrientationController.UsesRuntimeRotation;
+            if (orientationReady) yield break;
+            var wait = new FrontendOrientationWait(Time.realtimeSinceStartupAsDouble);
+            while (!wait.Tick(Time.realtimeSinceStartupAsDouble, MobileOrientationController.IsSettled(mode),
+                       new Vector2Int(Screen.width, Screen.height), Screen.safeArea)) yield return null;
+            orientationReady = wait.Ready;
+            if (!orientationReady)
             {
-                stableFrames = MobileOrientationController.IsSettled(mode) ? stableFrames + 1 : 0;
-                yield return null;
+                FrontendLoadingOverlay.Hide();
+                orientationCurtainLabel.text = GameLocalization.Text(
+                    "Ekran yönü değiştirilemedi.\nCihazı çevirip yeniden deneyebilirsin.",
+                    "The screen could not rotate.\nTurn your device and try again.");
+                orientationRetry.gameObject.SetActive(true);
             }
         }
 
@@ -1080,6 +834,7 @@ namespace DefenderChronicles.UI
                     "PREPARING THE BATTLEFIELD\nROTATING TO LANDSCAPE")
                 : GameLocalization.Text("KRALLIK HARİTASI HAZIRLANIYOR\nCİHAZ PORTREYE ALINIYOR",
                     "PREPARING THE REALM MAP\nROTATING TO PORTRAIT");
+            orientationRetry.gameObject.SetActive(false);
             orientationCurtain.SetActive(true);
             orientationCurtain.transform.SetAsLastSibling();
         }
@@ -1095,125 +850,6 @@ namespace DefenderChronicles.UI
             canvasScaler.referenceResolution = mode == MobileOrientationMode.LandscapeBattle
                 ? new Vector2(1920f, 1080f)
                 : new Vector2(1080f, 1920f);
-        }
-
-        private void ApplyPortraitLayout()
-        {
-            RectTransform welcomeCard = RequireScreenRect(AppScreen.Welcome, "Welcome Chronicle");
-            SetAnchors(welcomeCard, new Vector2(0.06f, 0.08f), new Vector2(0.94f, 0.92f),
-                Vector2.zero, Vector2.zero);
-
-            RectTransform accountCard = RequireScreenRect(AppScreen.Login, "Account Chronicle");
-            SetRect(accountCard, Vector2.zero, new Vector2(900f, 900f), Center(), Center());
-
-            Transform main = screens[AppScreen.MainMenu].transform;
-            RectTransform brand = RequireRect(main, "Brand Logo");
-            SetRect(brand, new Vector2(0f, -115f), new Vector2(300f, 300f), TopCenter(), TopCenter());
-            SetRect(RequireRect(main, "Profile Crest"), new Vector2(0f, -425f), new Vector2(760f, 96f),
-                TopCenter(), TopCenter());
-            SetRect(RequireRect(main, "Settings"), new Vector2(-58f, -146f), new Vector2(92f, 68f),
-                TopRight(), TopRight());
-            RectTransform continueChronicle = RequireRect(main, "Continue Chronicle");
-            SetAnchors(continueChronicle, new Vector2(0.07f, 0.43f),
-                new Vector2(0.93f, 0.735f), Vector2.zero, Vector2.zero);
-            SetRect(RequireRect(continueChronicle, "Callout"), new Vector2(50f, -48f),
-                new Vector2(820f, 140f), TopLeft(), TopLeft());
-            SetRect(RequireRect(continueChronicle, "Continue Details"), new Vector2(50f, -205f),
-                new Vector2(820f, 100f), TopLeft(), TopLeft());
-            SetRect(RequireRect(continueChronicle, "Continue"), new Vector2(0f, 46f),
-                new Vector2(720f, 88f), BottomCenter(), BottomCenter());
-
-            RectTransform menuActions = RequireRect(main, "Menu Actions");
-            SetAnchors(menuActions, new Vector2(0.07f, 0.11f),
-                new Vector2(0.93f, 0.38f), Vector2.zero, Vector2.zero);
-            SetRect(RequireRect(menuActions, "Campaign"), new Vector2(0f, 104f),
-                new Vector2(700f, 84f), Center(), Center());
-            SetRect(RequireRect(menuActions, "Switch Account"), new Vector2(0f, -6f),
-                new Vector2(700f, 70f), Center(), Center());
-            SetRect(RequireRect(menuActions, "Menu Hint"), new Vector2(0f, -120f),
-                new Vector2(700f, 72f), Center(), Center());
-
-            Transform campaign = screens[AppScreen.Campaign].transform;
-            SetAnchors(RequireRect(campaign, "Region Tabs"), new Vector2(0f, 1f), new Vector2(1f, 1f),
-                new Vector2(70f, -278f), new Vector2(-70f, -204f));
-            Transform tabs = campaign.Find("Region Tabs");
-            for (int index = 0; index < CampaignCatalog.RegionCount; index++)
-            {
-                Transform tab = tabs?.Find($"Region Tab {index + 1}");
-                TextMeshProUGUI label = tab != null ? tab.GetComponentInChildren<TextMeshProUGUI>(true) : null;
-                if (label != null)
-                {
-                    label.text = (index + 1).ToString();
-                    label.fontSizeMin = 18f;
-                    label.fontSizeMax = 24f;
-                }
-            }
-
-            SetAnchors(RequireRect(campaign, "Campaign Scroll"), Vector2.zero, Vector2.one,
-                new Vector2(48f, 350f), new Vector2(-48f, -300f));
-            Transform content = campaign.Find("Campaign Scroll/Viewport/Content");
-            if (content != null)
-            {
-                for (int regionIndex = 0; regionIndex < content.childCount; regionIndex++)
-                {
-                    Transform region = content.GetChild(regionIndex);
-                    float pageWidth = Mathf.Max(984f, campaignScroll.viewport.rect.width);
-                    if (region.TryGetComponent(out LayoutElement regionLayout)) regionLayout.preferredWidth = pageWidth;
-                    if (region is RectTransform regionRect) regionRect.sizeDelta = new Vector2(pageWidth, 0f);
-                    ApplyPortraitRegionPath(region, regionIndex);
-                }
-            }
-
-            RectTransform selectionBar = RequireRect(campaign, "Selection Bar");
-            SetAnchors(selectionBar, new Vector2(0f, 0f), new Vector2(1f, 0f),
-                new Vector2(48f, 38f), new Vector2(-48f, 320f));
-            SetRect(RequireRect(selectionBar, "Selected Level"), new Vector2(28f, -24f), new Vector2(900f, 48f),
-                TopLeft(), TopLeft());
-            SetRect(RequireRect(selectionBar, "Selected Details"), new Vector2(28f, -82f), new Vector2(900f, 76f),
-                TopLeft(), TopLeft());
-            SetRect(RequireRect(selectionBar, "Play Selected"), new Vector2(0f, 22f), new Vector2(620f, 76f),
-                BottomCenter(), BottomCenter());
-
-            Transform briefing = screens[AppScreen.Briefing].transform;
-            SetRect(RequireRect(briefing, "Back"), new Vector2(70f, -116f), new Vector2(72f, 64f),
-                TopLeft(), TopLeft());
-            RectTransform briefingHeading = RequireRect(briefing, "Heading");
-            SetRect(briefingHeading, new Vector2(168f, -108f), new Vector2(820f, 68f), TopLeft(), TopLeft());
-            if (briefingHeading.TryGetComponent(out TextMeshProUGUI briefingHeadingLabel))
-            {
-                briefingHeadingLabel.enableAutoSizing = true;
-                briefingHeadingLabel.fontSizeMin = 38f;
-                briefingHeadingLabel.fontSizeMax = 48f;
-            }
-            RectTransform briefingSubheading = RequireRect(briefing, "Subheading");
-            SetRect(briefingSubheading, new Vector2(170f, -178f), new Vector2(720f, 44f), TopLeft(), TopLeft());
-            if (briefingSubheading.TryGetComponent(out TextMeshProUGUI briefingSubheadingLabel))
-                briefingSubheadingLabel.alignment = TextAlignmentOptions.Left;
-
-            RectTransform briefingChronicle = RequireRect(briefing, "Briefing Chronicle");
-            SetAnchors(briefingChronicle, new Vector2(0.06f, 0.50f),
-                new Vector2(0.94f, 0.78f), Vector2.zero, Vector2.zero);
-            SetRect(RequireRect(briefingChronicle, "Briefing Region"), new Vector2(48f, -44f),
-                new Vector2(820f, 38f), TopLeft(), TopLeft());
-            SetRect(RequireRect(briefingChronicle, "Briefing Title"), new Vector2(48f, -96f),
-                new Vector2(820f, 90f), TopLeft(), TopLeft());
-            SetRect(RequireRect(briefingChronicle, "Briefing Objective"), new Vector2(50f, -208f),
-                new Vector2(820f, 142f), TopLeft(), TopLeft());
-            SetRect(RequireRect(briefingChronicle, "Commander Order"), new Vector2(50f, 48f),
-                new Vector2(820f, 86f), BottomLeft(), BottomLeft());
-
-            RectTransform intel = RequireRect(briefing, "Briefing Intel");
-            SetAnchors(intel, new Vector2(0.06f, 0.16f), new Vector2(0.94f, 0.46f), Vector2.zero, Vector2.zero);
-            SetRect(RequireRect(intel, "Enemy Intel"), new Vector2(48f, -44f), new Vector2(800f, 150f),
-                TopLeft(), TopLeft());
-            SetRect(RequireRect(intel, "Briefing Reward"), new Vector2(48f, -214f), new Vector2(800f, 120f),
-                TopLeft(), TopLeft());
-            SetRect(RequireRect(intel, "Start Defence"), new Vector2(0f, 44f), new Vector2(720f, 88f),
-                BottomCenter(), BottomCenter());
-
-            RectTransform settingsCard = settingsModal.transform.Find("Settings Chronicle") as RectTransform;
-            if (settingsCard != null)
-                SetRect(settingsCard, Vector2.zero, new Vector2(900f, 900f), Center(), Center());
         }
 
         public static Vector2 PortraitCampaignPathPosition(int levelIndexInRegion)
@@ -1236,138 +872,27 @@ namespace DefenderChronicles.UI
             return positions[levelIndexInRegion];
         }
 
-        private static void ApplyPortraitRegionPath(Transform region, int regionIndex)
-        {
-            var routeSegments = new List<RectTransform>();
-            var progressLabels = new List<RectTransform>();
-            for (int childIndex = 0; childIndex < region.childCount; childIndex++)
-            {
-                Transform child = region.GetChild(childIndex);
-                if (child is not RectTransform childRect) continue;
-                if (child.name == "Route") routeSegments.Add(childRect);
-                else if (child.name == "Progress") progressLabels.Add(childRect);
-            }
-
-            for (int pathIndex = 0; pathIndex < CampaignCatalog.LevelsPerRegion - 1; pathIndex++)
-            {
-                Vector2 from = PortraitCampaignPathPosition(pathIndex);
-                Vector2 to = PortraitCampaignPathPosition(pathIndex + 1);
-                Vector2 fromLocal = new(from.x, -from.y);
-                Vector2 toLocal = new(to.x, -to.y);
-                Vector2 delta = toLocal - fromLocal;
-                RectTransform route = routeSegments[pathIndex];
-                route.anchorMin = route.anchorMax = TopLeft();
-                route.pivot = new Vector2(0f, 0.5f);
-                route.anchoredPosition = fromLocal;
-                route.sizeDelta = new Vector2(delta.magnitude, 8f);
-                route.localRotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(delta.y, delta.x) * Mathf.Rad2Deg);
-            }
-
-            for (int localIndex = 0; localIndex < CampaignCatalog.LevelsPerRegion; localIndex++)
-            {
-                int levelNumber = regionIndex * CampaignCatalog.LevelsPerRegion + localIndex + 1;
-                RectTransform level = region.Find($"Level {levelNumber}") as RectTransform;
-                if (level == null || localIndex >= progressLabels.Count)
-                    throw new InvalidOperationException($"Portrait campaign path is missing level {levelNumber}.");
-
-                Vector2 position = PortraitCampaignPathPosition(localIndex);
-                level.anchorMin = level.anchorMax = TopLeft();
-                level.pivot = new Vector2(0.5f, 0.5f);
-                level.anchoredPosition = new Vector2(position.x, -position.y);
-
-                RectTransform progress = progressLabels[localIndex];
-                progress.anchorMin = progress.anchorMax = TopLeft();
-                progress.pivot = new Vector2(0.5f, 1f);
-                progress.anchoredPosition = new Vector2(position.x, -(position.y + 58f));
-                progress.sizeDelta = new Vector2(180f, 36f);
-            }
-        }
-
-        private RectTransform RequireScreenRect(AppScreen screen, string path)
-        {
-            return RequireRect(screens[screen].transform, path);
-        }
-
-        private static RectTransform RequireRect(Transform parent, string path)
-        {
-            Transform child = parent.Find(path);
-            if (child is RectTransform rect) return rect;
-            throw new InvalidOperationException($"Portrait frontend layout is missing RectTransform at {parent.name}/{path}.");
-        }
-
-        private void CreateSliderRow(Transform parent, string label, Vector2 position, float value, Action<float> changed)
-        {
-            GameObject row = CreatePanel($"{label} Row", parent, new Color(theme.panelRaised.r, theme.panelRaised.g,
-                theme.panelRaised.b, 0.82f));
-            SetRect(row.GetComponent<RectTransform>(), position, new Vector2(620f, 72f), Center(), Center());
-            TextMeshProUGUI text = CreateText("Label", row.transform, label, 20, catalog.bodyFont, FontStyles.Bold,
-                TextAlignmentOptions.Left, theme.textPrimary);
-            SetRect(text.rectTransform, new Vector2(24f, 18f), new Vector2(180f, 36f), BottomLeft(), BottomLeft());
-
-            GameObject sliderObject = new("Slider", typeof(RectTransform), typeof(Slider));
-            sliderObject.transform.SetParent(row.transform, false);
-            SetRect(sliderObject.GetComponent<RectTransform>(), new Vector2(205f, 18f), new Vector2(380f, 36f),
-                BottomLeft(), BottomLeft());
-            Slider slider = sliderObject.GetComponent<Slider>();
-            GameObject track = CreateImage("Track", sliderObject.transform, theme.nightDeep);
-            Stretch(track.GetComponent<RectTransform>(), new Vector2(0f, 12f), new Vector2(0f, -12f));
-            GameObject fillArea = new("Fill Area", typeof(RectTransform));
-            fillArea.transform.SetParent(sliderObject.transform, false);
-            Stretch(fillArea.GetComponent<RectTransform>(), new Vector2(5f, 12f), new Vector2(-5f, -12f));
-            GameObject fill = CreateImage("Fill", fillArea.transform, theme.commandGold);
-            Stretch(fill.GetComponent<RectTransform>());
-            GameObject handleArea = new("Handle Area", typeof(RectTransform));
-            handleArea.transform.SetParent(sliderObject.transform, false);
-            Stretch(handleArea.GetComponent<RectTransform>(), new Vector2(8f, 0f), new Vector2(-8f, 0f));
-            GameObject handle = CreateImage("Handle", handleArea.transform, theme.moonEdge);
-            RectTransform handleRect = handle.GetComponent<RectTransform>();
-            handleRect.sizeDelta = new Vector2(28f, 36f);
-            Image handleImage = handle.GetComponent<Image>();
-            handleImage.raycastTarget = true;
-            slider.fillRect = fill.GetComponent<RectTransform>();
-            slider.handleRect = handleRect;
-            slider.targetGraphic = handleImage;
-            slider.direction = Slider.Direction.LeftToRight;
-            slider.minValue = 0f;
-            slider.maxValue = 1f;
-            slider.SetValueWithoutNotify(value);
-            slider.onValueChanged.AddListener(valueChanged => changed?.Invoke(valueChanged));
-        }
-
-        private void CreateToggleRow(Transform parent, string label, Vector2 position, bool value, Action<bool> changed)
-        {
-            GameObject row = CreatePanel($"{label} Row", parent, new Color(theme.panelRaised.r, theme.panelRaised.g,
-                theme.panelRaised.b, 0.82f));
-            SetRect(row.GetComponent<RectTransform>(), position, new Vector2(620f, 66f), Center(), Center());
-            TextMeshProUGUI text = CreateText("Label", row.transform, label, 20, catalog.bodyFont, FontStyles.Bold,
-                TextAlignmentOptions.Left, theme.textPrimary);
-            SetRect(text.rectTransform, new Vector2(24f, 15f), new Vector2(470f, 36f), BottomLeft(), BottomLeft());
-
-            GameObject toggleObject = CreateImage("Toggle", row.transform, theme.nightDeep);
-            SetRect(toggleObject.GetComponent<RectTransform>(), new Vector2(-76f, -9f), new Vector2(52f, 48f),
-                TopRight(), TopRight());
-            Image background = toggleObject.GetComponent<Image>();
-            background.raycastTarget = true;
-            Toggle toggle = toggleObject.AddComponent<Toggle>();
-            GameObject markObject = CreateImage("Checkmark", toggleObject.transform, theme.commandGold);
-            RectTransform mark = markObject.GetComponent<RectTransform>();
-            Stretch(mark, new Vector2(8f, 8f), new Vector2(-8f, -8f));
-            toggle.targetGraphic = background;
-            toggle.graphic = markObject.GetComponent<Image>();
-            toggle.SetIsOnWithoutNotify(value);
-            toggle.onValueChanged.AddListener(valueChanged => changed?.Invoke(valueChanged));
-        }
-
         private void OpenSettings()
         {
-            if (settingsModal == null) return;
+            if (launchingBattle || orientationRoutine != null || (settingsModal != null && settingsModal.activeSelf)) return;
+            performance.Begin("menu-settings");
+            if (settingsModal == null) BuildSettingsModal();
+            navigation.Cancel();
             settingsModal.SetActive(true);
             settingsModal.transform.SetAsLastSibling();
+            screens[CurrentScreen].GetComponent<CanvasGroup>().interactable = false;
+            screens[CurrentScreen].GetComponent<CanvasGroup>().alpha = 0;
+            performance.Complete();
         }
 
         private void CloseSettings()
         {
             if (settingsModal != null) settingsModal.SetActive(false);
+            if (screens.TryGetValue(CurrentScreen, out var screen))
+            {
+                screen.GetComponent<CanvasGroup>().interactable = true;
+                screen.GetComponent<CanvasGroup>().alpha = 1;
+            }
         }
 
         private void ApplyStoredAudioPreferences()
@@ -1377,10 +902,7 @@ namespace DefenderChronicles.UI
             if (frontendUiSource != null) frontendUiSource.volume = FrontendPreferences.SfxVolume;
         }
 
-        private void ReturnFromAccount()
-        {
-            ShowScreen(previousScreen == AppScreen.MainMenu ? AppScreen.MainMenu : AppScreen.Welcome);
-        }
+        private void ReturnFromAccount() => ShowScreen(navigationState.AccountReturn);
 
         private void OpenLegalUrl(string url, string label)
         {
@@ -1392,12 +914,23 @@ namespace DefenderChronicles.UI
             Application.OpenURL(url);
         }
 
-        private static void ReloadCampaignLevel(int level)
+        private void ReloadCampaignLevel(int level)
         {
+            if (FrontendLoadingOverlay.Active) return;
+            launchingBattle = true;
+            SaveMapPosition();
+            pendingNavigation = navigationState;
             pendingLevel = Mathf.Clamp(level, 1, CampaignCatalog.LevelCount);
-            MobileOrientationController.Request(MobileOrientationMode.LandscapeBattle);
-            Time.timeScale = 1f;
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            FrontendLoadingOverlay.Show(catalog.bodyFont);
+            FrontendLoadingOverlay.Reload(SceneManager.GetActiveScene().buildIndex, error =>
+            {
+                pendingLevel = 0; pendingNavigation = null; launchingBattle = false;
+                Debug.LogWarning("Battle reload failed: " + error);
+                ShowOrientationCurtain(MobileOrientationMode.LandscapeBattle);
+                orientationCurtainLabel.text = GameLocalization.Text("Bölüm yüklenemedi. Yeniden deneyebilirsin.", "The level could not load. Please try again.");
+                retryOrientation = () => ReloadCampaignLevel(level);
+                orientationRetry.gameObject.SetActive(true);
+            }, () => MobileOrientationController.Request(MobileOrientationMode.LandscapeBattle));
         }
 
         private void ApplyDevelopmentCaptureScreen()
@@ -1436,7 +969,7 @@ namespace DefenderChronicles.UI
             else if (captureScreen == "briefing")
             {
                 CompleteLocalGuestSignIn();
-                ContinueCampaign();
+                OpenBriefing();
             }
             else if (captureScreen == "battle1")
             {
@@ -1559,7 +1092,7 @@ namespace DefenderChronicles.UI
                     break;
                 case "briefing":
                     CompleteLocalGuestSignIn();
-                    ContinueCampaign();
+                    OpenBriefing();
                     break;
                 case "victory":
                     CompleteLocalGuestSignIn();
@@ -1574,19 +1107,55 @@ namespace DefenderChronicles.UI
 
         private void ShowScreen(AppScreen screen)
         {
-            previousScreen = CurrentScreen;
+            if (screen == AppScreen.Briefing) screen = AppScreen.Campaign;
+            if (hasShownScreen && CurrentScreen == screen) return;
+            if (screen != AppScreen.Campaign && campaignRegionBuild != null)
+            {
+                StopCoroutine(campaignRegionBuild);
+                campaignRegionBuild = null;
+            }
+            SaveMapPosition();
+            if (screen == AppScreen.Login) navigationState.AccountReturn =
+                CurrentScreen == AppScreen.Welcome ? AppScreen.Welcome : CurrentScreen;
+            if (screen != AppScreen.Result && starsRoutine != null) { StopCoroutine(starsRoutine); starsRoutine = null; }
+            bool measure = !launchingBattle && orientationRoutine == null;
+            if (measure) performance.Begin(CurrentScreen + "-" + screen);
+            EnsureScreen(screen);
             CurrentScreen = screen;
-            foreach (KeyValuePair<AppScreen, GameObject> item in screens)
-                item.Value.SetActive(item.Key == screen);
+            hasShownScreen = true;
+            CloseSettings();
             if (screen == AppScreen.MainMenu) RefreshProfile();
+            if (screen == AppScreen.Campaign)
+            {
+                if (progressDirty) RefreshLevelButtons();
+                SelectLevel(selectedLevel);
+                QueueRegionBuild(navigationState.Region);
+                if (navigationState.HasMapPosition)
+                {
+                    Canvas.ForceUpdateCanvases();
+                    campaignScroll.horizontalNormalizedPosition = navigationState.Horizontal;
+                    for (int i = 0; i < regionScrolls.Count; i++) regionScrolls[i].verticalNormalizedPosition = navigationState.Vertical[i];
+                }
+            }
             if (loginStatus != null && screen != AppScreen.Login) loginStatus.text = string.Empty;
             ApplyScreenBackdrop(screen);
+            navigation.Show(screens[screen], screen is not (AppScreen.Battle or AppScreen.Result),
+                measure ? performance.Complete : null);
+        }
 
-            if (screens.TryGetValue(screen, out GameObject root) && root.activeSelf)
+        private void EnsureScreen(AppScreen screen)
+        {
+            if (builtScreens.Contains(screen)) return;
+            switch (screen)
             {
-                if (transitionRoutine != null) StopCoroutine(transitionRoutine);
-                transitionRoutine = StartCoroutine(AnimateScreenIn(root));
+                case AppScreen.Boot: BuildBootScreen(); break;
+                case AppScreen.Welcome: BuildWelcomeScreen(); break;
+                case AppScreen.Login: BuildLoginScreen(); break;
+                case AppScreen.MainMenu: BuildMainMenuScreen(); break;
+                case AppScreen.Campaign: BuildCampaignScreen(); break;
+                case AppScreen.Result: BuildResultScreen(); break;
             }
+            builtScreens.Add(screen);
         }
 
         private void ApplyScreenBackdrop(AppScreen screen)
@@ -1604,43 +1173,13 @@ namespace DefenderChronicles.UI
             }
         }
 
-        private IEnumerator AnimateScreenIn(GameObject root)
-        {
-            CanvasGroup group = root.GetComponent<CanvasGroup>();
-            if (group == null) group = root.AddComponent<CanvasGroup>();
-            RectTransform rect = root.GetComponent<RectTransform>();
-            bool reducedMotion = FrontendPreferences.ReducedMotion;
-            float fadeDuration = reducedMotion ? theme.reducedMotionDuration : theme.fadeDuration;
-            float slideDuration = reducedMotion ? theme.reducedMotionDuration : theme.slideDuration;
-            float duration = Mathf.Max(fadeDuration, slideDuration);
-            Vector2 resting = Vector2.zero;
-            Vector2 start = reducedMotion ? resting : new Vector2(32f, 0f);
-            group.alpha = 0f;
-            rect.anchoredPosition = start;
-            float elapsed = 0f;
-            while (elapsed < duration)
-            {
-                elapsed += Time.unscaledDeltaTime;
-                float fadeT = Mathf.Clamp01(fadeDuration <= 0f ? 1f : elapsed / fadeDuration);
-                float slideT = Mathf.Clamp01(slideDuration <= 0f ? 1f : elapsed / slideDuration);
-                fadeT = 1f - Mathf.Pow(1f - fadeT, 3f);
-                slideT = 1f - Mathf.Pow(1f - slideT, 3f);
-                group.alpha = fadeT;
-                rect.anchoredPosition = Vector2.LerpUnclamped(start, resting, slideT);
-                yield return null;
-            }
-            group.alpha = 1f;
-            rect.anchoredPosition = resting;
-            transitionRoutine = null;
-        }
-
         private void CreateHeader(Transform root, string title, string subtitle, Action back)
         {
-            Button backButton = CreateButton("Back", root, "‹", new Vector2(72f, 64f), theme.night, back);
-            SetRect(backButton.GetComponent<RectTransform>(), new Vector2(80f, -112f), new Vector2(72f, 64f), TopLeft(), TopLeft());
+            Button backButton = CreateButton("Back", root, "‹", new Vector2(140f, 140f), theme.night, back);
+            SetRect(backButton.GetComponent<RectTransform>(), new Vector2(44f, -12f), new Vector2(140f, 140f), TopLeft(), TopLeft());
             TextMeshProUGUI heading = CreateText("Heading", root, title, 48, catalog.titleFont, FontStyles.Bold,
                 TextAlignmentOptions.Left, theme.textPrimary);
-            SetRect(heading.rectTransform, new Vector2(178f, -112f), new Vector2(720f, 65f), TopLeft(), TopLeft());
+            SetRect(heading.rectTransform, new Vector2(210f, -44f), new Vector2(780f, 78f), TopLeft(), TopLeft());
             TextMeshProUGUI subheading = CreateText("Subheading", root, subtitle, 23, catalog.bodyFont, FontStyles.Normal,
                 TextAlignmentOptions.Right, theme.textMuted);
             SetRect(subheading.rectTransform, new Vector2(-90f, -166f), new Vector2(520f, 46f), TopRight(), TopRight());
@@ -1679,8 +1218,8 @@ namespace DefenderChronicles.UI
                 TextAlignmentOptions.Center, RelativeLuminance(color) > 0.56f ? theme.nightDeep : theme.textPrimary);
             Stretch(text.rectTransform, new Vector2(12f, 8f), new Vector2(-12f, -8f));
             text.enableAutoSizing = true;
-            text.fontSizeMin = 15f;
-            text.fontSizeMax = 23f;
+            text.fontSizeMin = 24f;
+            text.fontSizeMax = 34f;
             return button;
         }
 
@@ -1830,16 +1369,11 @@ namespace DefenderChronicles.UI
 
         private void HandleLanguageChanged()
         {
-            SetButtonEmphasis(turkishLanguageButton,
-                FrontendPreferences.Language == GameLanguage.Turkish ? theme.commandGold : theme.night);
-            SetButtonEmphasis(englishLanguageButton,
-                FrontendPreferences.Language == GameLanguage.English ? theme.commandGold : theme.night);
+            SetButtonEmphasis(turkishLanguageButton, FrontendPreferences.Language == GameLanguage.Turkish ? theme.commandGold : theme.night);
+            SetButtonEmphasis(englishLanguageButton, FrontendPreferences.Language == GameLanguage.English ? theme.commandGold : theme.night);
+            progressDirty = true;
             RefreshProfile();
-            RefreshSelectedLevelVisuals();
-            RefreshBriefing();
-            RefreshLevelButtons();
-            ShowOrientationCurtain(OrientationForScreen(CurrentScreen));
-            HideOrientationCurtain();
+            if (builtScreens.Contains(AppScreen.Campaign)) { RefreshLevelButtons(); UpdateSelectedDetails(); }
         }
 
         private static void EnsureEventSystem()
@@ -1888,6 +1422,7 @@ namespace DefenderChronicles.UI
         private void OnDestroy()
         {
             GameLocalization.LanguageChanged -= HandleLanguageChanged;
+            if (progress != null) progress.Changed -= HandleProgressChanged;
             if (session != null) session.PhaseChanged -= HandleSessionPhaseChanged;
             if (battlePaused) Time.timeScale = 1f;
         }

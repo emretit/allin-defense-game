@@ -5,6 +5,7 @@ using System.Linq;
 using DefenderChronicles.Data;
 using DefenderChronicles.Presentation;
 using DefenderChronicles.UI;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -24,6 +25,15 @@ namespace DefenderChronicles.Core
         Paused,
         Victory,
         Defeat
+    }
+
+    public enum FirstBattleGuidanceStep
+    {
+        None,
+        SelectSlot,
+        ChooseTower,
+        StartWave,
+        Complete
     }
 
     public interface IDamageable
@@ -59,6 +69,9 @@ namespace DefenderChronicles.Core
         public int Gold { get; private set; } = StartingGold;
         public int Lives { get; private set; } = StartingLives;
         public IReadOnlyList<Vector3> Path => path;
+        public IReadOnlyList<Vector3[]> Routes => routePaths;
+        public int EntranceCount => routePaths.Count;
+        public int ActiveBiomeIndex => activeLevelDefinition != null ? activeLevelDefinition.region - 1 : 0;
         public IReadOnlyList<GreyboxEnemy> Enemies => enemies;
         public IReadOnlyList<GreyboxOutpost> Outposts => outposts;
         public GreyboxHero Hero => hero;
@@ -68,8 +81,12 @@ namespace DefenderChronicles.Core
         public float CurrentGameSpeed => currentGameSpeed;
         public float GameplayDeltaTime => Time.deltaTime * BaselineGameplayPace;
         public int CampaignLevelNumber { get; private set; } = 10;
+        public FirstBattleGuidanceStep GuidanceStep { get; private set; }
         public int StartingLivesForLevel { get; private set; } = StartingLives;
         public bool IsInitialized => initialized;
+        public OutpostKind? PendingBuildKind => pendingBuildKind;
+        public bool SelectionPreviewVisible => selectionRangePreview != null && selectionRangePreview.activeSelf;
+        public bool RallyPreviewVisible => selectionRallyPreview != null && selectionRallyPreview.activeSelf;
 
         public void SetCampaignLevel(int levelNumber)
         {
@@ -105,6 +122,7 @@ namespace DefenderChronicles.Core
         public bool HasProductionPresentation => presentationCatalog != null;
 
         private readonly List<Vector3> path = new();
+        private readonly List<Vector3[]> routePaths = new();
         private readonly List<GreyboxEnemy> enemies = new();
         private readonly List<GreyboxOutpost> outposts = new();
         private readonly List<GreyboxFriendlyUnit> friendlyUnits = new();
@@ -118,7 +136,9 @@ namespace DefenderChronicles.Core
         private int plannedThisWave;
         private int removedThisWave;
         private bool spawning;
+        private int activeSpawnGroups;
         private bool initialized;
+        private bool initializing;
         private bool automatedSmoke;
         private bool automatedDefeatSmoke;
         private bool automatedSlotRegressionSmoke;
@@ -134,10 +154,20 @@ namespace DefenderChronicles.Core
         private float intermissionRemaining;
         private GamePhase phaseBeforePause;
 
+        private GameObject hudRoot;
         private Camera gameCamera;
         private GreyboxHero hero;
         private GreyboxOutpostSlot selectedSlot;
         private GreyboxOutpost selectedOutpost;
+        private OutpostKind? pendingBuildKind;
+        private GameObject selectionRangePreview;
+        private LineRenderer selectionRangeLine;
+        private GameObject selectionRallyPreview;
+        private LineRenderer selectionRallyLine;
+        private int lastPreviewSlot = -2;
+        private OutpostKind? lastPreviewKind;
+        private float lastPreviewRange = -1f;
+        private GameObject entranceIndicators;
 
         private Font uiFont;
         private Text goldText;
@@ -208,86 +238,140 @@ namespace DefenderChronicles.Core
             returnToMainMenu = action;
         }
 
+        public void SuspendForFrontend()
+        {
+            if (!initialized) return;
+            if (gameCamera != null) gameCamera.gameObject.SetActive(false);
+            if (hudRoot != null) hudRoot.SetActive(false);
+            gameObject.SetActive(false);
+        }
+
         public void Initialize()
         {
-            if (initialized) return;
+            // Existing editor/automation callers retain synchronous semantics.
+            var setup = InitializeIncrementally();
+            while (setup.MoveNext()) { }
+        }
+
+        public IEnumerator InitializeIncrementally()
+        {
+            if (initialized) yield break;
+            if (initializing)
+            {
+                while (initializing) yield return null;
+                yield break;
+            }
             if (presentationCatalog == null && !Application.isEditor)
                 throw new InvalidOperationException("Primitive presentation is restricted to automated editor tests.");
-            initialized = true;
-            speedStepIndex = 0;
-            currentGameSpeed = SpeedSteps[speedStepIndex];
-            Time.timeScale = currentGameSpeed;
-            BuildDefinitions();
-            ConfigureCameraAndLight();
-            BuildWorld();
-            BuildInterface();
-            BuildHero();
-            if (presentationCatalog != null)
+            initializing = true;
+            try
             {
-                var presentationObject = new GameObject("Presentation Director");
-                presentationObject.transform.SetParent(transform, false);
-                presentationDirector = presentationObject.AddComponent<DefenderPresentationDirector>();
-                presentationDirector.Initialize(this, presentationCatalog);
-            }
-            ValidateContent();
-            SetPhase(GamePhase.Preparing);
-            bool explicitAcceptanceProbe = Environment.GetEnvironmentVariable("DC_PERFORMANCE_ACCEPTANCE") == "1" ||
-                                           Environment.GetEnvironmentVariable("DC_SOAK_ACCEPTANCE") == "1" ||
-                                           Environment.GetEnvironmentVariable("DC_AUDIO_ACCEPTANCE") == "1";
-            if (explicitAcceptanceProbe) Application.runInBackground = true;
-            if (!Application.isEditor &&
-                ((Debug.isDebugBuild && Application.platform == RuntimePlatform.IPhonePlayer) || explicitAcceptanceProbe))
-                gameObject.AddComponent<DeviceAcceptanceProbe>();
-            if (CampaignLevelNumber == 1)
-                ShowMessage("Bir karakol platformuna dokun ve savunmanı kur.", 6f);
-            RefreshUi();
-            RefreshThreatPreviewForPhase();
+                speedStepIndex = 0;
+                currentGameSpeed = SpeedSteps[speedStepIndex];
+                Time.timeScale = 0;
+                yield return null;
+                BuildDefinitions();
+                ConfigureCameraAndLight();
+                yield return null;
+                if (presentationCatalog != null)
+                {
+                    var worldSetup = BuildStylizedWorldIncrementally();
+                    while (worldSetup.MoveNext()) yield return worldSetup.Current;
+                }
+                else BuildWorld();
+                yield return null;
+                BuildInterface();
+                yield return null;
+                BuildHero();
+                yield return null;
+                if (presentationCatalog != null)
+                {
+                    var presentationObject = new GameObject("Presentation Director");
+                    presentationObject.transform.SetParent(transform, false);
+                    presentationDirector = presentationObject.AddComponent<DefenderPresentationDirector>();
+                    presentationDirector.Initialize(this, presentationCatalog);
+                }
+                yield return null;
+                initialized = true;
+                initializing = false;
+                Time.timeScale = currentGameSpeed;
+                ValidateContent();
+                SetPhase(GamePhase.Preparing);
+                bool explicitAcceptanceProbe = Environment.GetEnvironmentVariable("DC_PERFORMANCE_ACCEPTANCE") == "1" ||
+                                               Environment.GetEnvironmentVariable("DC_SOAK_ACCEPTANCE") == "1" ||
+                                               Environment.GetEnvironmentVariable("DC_AUDIO_ACCEPTANCE") == "1";
+                if (explicitAcceptanceProbe) Application.runInBackground = true;
+                if (!Application.isEditor &&
+                    ((Debug.isDebugBuild && Application.platform == RuntimePlatform.IPhonePlayer) || explicitAcceptanceProbe))
+                    gameObject.AddComponent<DeviceAcceptanceProbe>();
+                if (CampaignLevelNumber == 1)
+                {
+                    GuidanceStep = FirstBattleGuidanceStep.SelectSlot;
+                    ShowMessage(GameLocalization.Text("1/3  Mavi bir karakol yuvasına dokun.",
+                        "1/3  Tap a blue outpost slot."), 8f);
+                }
+                else if (CampaignLevelNumber == 14)
+                {
+                    ShowMessage(GameLocalization.Text(
+                        "Yeni tehdit: 1 ve 2 numaralı iki giriş aynı kaleye ilerliyor.",
+                        "New threat: entrances 1 and 2 advance toward the same keep."), 8f);
+                }
+                else if (CampaignLevelNumber == 43)
+                {
+                    ShowMessage(GameLocalization.Text(
+                        "Yeni tehdit: üç girişi birlikte savun. Oklar aktif saldırı hatlarını gösterir.",
+                        "New threat: defend all three entrances. Arrows mark the active attack routes."), 8f);
+                }
+                RefreshUi();
+                RefreshThreatPreviewForPhase();
 
-            automatedSmoke = !Application.isEditor &&
-                             (Environment.GetCommandLineArgs().Contains("-dc-smoke") ||
-                              Environment.GetEnvironmentVariable("DC_SMOKE") == "1");
-            automatedDefeatSmoke = !Application.isEditor &&
-                                   Environment.GetEnvironmentVariable("DC_SMOKE_DEFEAT") == "1";
-            automatedSlotRegressionSmoke = !Application.isEditor &&
-                                           Environment.GetEnvironmentVariable("DC_SLOT_REGRESSION") == "1";
-            automatedAbilityCapture = !Application.isEditor &&
-                                      Environment.GetEnvironmentVariable("DC_ABILITY_CAPTURE") == "1";
-            automatedPauseCapture = !Application.isEditor &&
-                                    Environment.GetEnvironmentVariable("DC_PAUSE_CAPTURE") == "1";
-            automatedActorCapture = !Application.isEditor &&
-                                    Environment.GetEnvironmentVariable("DC_ACTOR_CAPTURE") == "1";
-            automatedPerformanceAcceptance = !Application.isEditor &&
-                                             Environment.GetEnvironmentVariable("DC_PERFORMANCE_ACCEPTANCE") == "1";
-            automatedSoakAcceptance = !Application.isEditor &&
-                                      Environment.GetEnvironmentVariable("DC_SOAK_ACCEPTANCE") == "1";
-            automatedAudioVisualAcceptance = !Application.isEditor &&
-                                              Environment.GetEnvironmentVariable("DC_AUDIO_ACCEPTANCE") == "1";
-            automatedVisualAcceptance = !Application.isEditor &&
-                                        Environment.GetEnvironmentVariable("DC_VIS812_CAPTURE") == "1";
-            automatedVisualAcceptanceDefeat = !Application.isEditor &&
-                                              Environment.GetEnvironmentVariable("DC_VIS812_CAPTURE_DEFEAT") == "1";
-            if (automatedVisualAcceptance)
-                StartCoroutine(RunAutomatedVis812VisualAcceptance());
-            else if (automatedVisualAcceptanceDefeat)
-                StartCoroutine(RunAutomatedVis812DefeatAcceptance());
-            else if (automatedAudioVisualAcceptance)
-                StartCoroutine(RunAutomatedAudioVisualAcceptance());
-            else if (automatedPerformanceAcceptance)
-                StartCoroutine(RunAutomatedPerformanceAcceptance());
-            else if (automatedSoakAcceptance)
-                StartCoroutine(RunAutomatedSoakAcceptance());
-            else if (automatedSlotRegressionSmoke)
-                StartCoroutine(RunAutomatedSlotRegressionSmoke());
-            else if (automatedSmoke)
-                StartCoroutine(RunAutomatedSmoke());
-            else if (automatedDefeatSmoke)
-                StartCoroutine(RunAutomatedDefeatAndRestartSmoke());
-            else if (automatedAbilityCapture)
-                StartCoroutine(RunAutomatedAbilityCapture());
-            else if (automatedPauseCapture)
-                StartCoroutine(RunAutomatedPauseCapture());
-            else if (automatedActorCapture)
-                StartCoroutine(RunAutomatedActorCapture());
+                automatedSmoke = !Application.isEditor &&
+                                 (Environment.GetCommandLineArgs().Contains("-dc-smoke") ||
+                                  Environment.GetEnvironmentVariable("DC_SMOKE") == "1");
+                automatedDefeatSmoke = !Application.isEditor &&
+                                       Environment.GetEnvironmentVariable("DC_SMOKE_DEFEAT") == "1";
+                automatedSlotRegressionSmoke = !Application.isEditor &&
+                                               Environment.GetEnvironmentVariable("DC_SLOT_REGRESSION") == "1";
+                automatedAbilityCapture = !Application.isEditor &&
+                                          Environment.GetEnvironmentVariable("DC_ABILITY_CAPTURE") == "1";
+                automatedPauseCapture = !Application.isEditor &&
+                                        Environment.GetEnvironmentVariable("DC_PAUSE_CAPTURE") == "1";
+                automatedActorCapture = !Application.isEditor &&
+                                        Environment.GetEnvironmentVariable("DC_ACTOR_CAPTURE") == "1";
+                automatedPerformanceAcceptance = !Application.isEditor &&
+                                                 Environment.GetEnvironmentVariable("DC_PERFORMANCE_ACCEPTANCE") == "1";
+                automatedSoakAcceptance = !Application.isEditor &&
+                                          Environment.GetEnvironmentVariable("DC_SOAK_ACCEPTANCE") == "1";
+                automatedAudioVisualAcceptance = !Application.isEditor &&
+                                                  Environment.GetEnvironmentVariable("DC_AUDIO_ACCEPTANCE") == "1";
+                automatedVisualAcceptance = !Application.isEditor &&
+                                            Environment.GetEnvironmentVariable("DC_VIS812_CAPTURE") == "1";
+                automatedVisualAcceptanceDefeat = !Application.isEditor &&
+                                                  Environment.GetEnvironmentVariable("DC_VIS812_CAPTURE_DEFEAT") == "1";
+                if (automatedVisualAcceptance)
+                    StartCoroutine(RunAutomatedVis812VisualAcceptance());
+                else if (automatedVisualAcceptanceDefeat)
+                    StartCoroutine(RunAutomatedVis812DefeatAcceptance());
+                else if (automatedAudioVisualAcceptance)
+                    StartCoroutine(RunAutomatedAudioVisualAcceptance());
+                else if (automatedPerformanceAcceptance)
+                    StartCoroutine(RunAutomatedPerformanceAcceptance());
+                else if (automatedSoakAcceptance)
+                    StartCoroutine(RunAutomatedSoakAcceptance());
+                else if (automatedSlotRegressionSmoke)
+                    StartCoroutine(RunAutomatedSlotRegressionSmoke());
+                else if (automatedSmoke)
+                    StartCoroutine(RunAutomatedSmoke());
+                else if (automatedDefeatSmoke)
+                    StartCoroutine(RunAutomatedDefeatAndRestartSmoke());
+                else if (automatedAbilityCapture)
+                    StartCoroutine(RunAutomatedAbilityCapture());
+                else if (automatedPauseCapture)
+                    StartCoroutine(RunAutomatedPauseCapture());
+                else if (automatedActorCapture)
+                    StartCoroutine(RunAutomatedActorCapture());
+            }
+            finally { initializing = false; }
         }
 
         private void Update()
@@ -321,13 +405,16 @@ namespace DefenderChronicles.Core
         private void RefreshThreatPreviewForPhase()
         {
             if (waves == null || waves.Length == 0) return;
+            string currentPreview = currentWaveIndex < waves.Length
+                ? GameLocalization.Translate(waves[currentWaveIndex].preview)
+                : string.Empty;
             string preview = Phase switch
             {
                 GamePhase.Preparing when currentWaveIndex < waves.Length =>
-                    GameLocalization.Text($"Sıradaki: {waves[currentWaveIndex].preview}", $"Next: {waves[currentWaveIndex].preview}"),
+                    GameLocalization.Text($"Sıradaki: {currentPreview}", $"Next: {currentPreview}"),
                 GamePhase.Intermission when currentWaveIndex < waves.Length =>
-                    GameLocalization.Text($"Sıradaki: {waves[currentWaveIndex].preview}", $"Next: {waves[currentWaveIndex].preview}"),
-                GamePhase.Wave when currentWaveIndex < waves.Length => waves[currentWaveIndex].preview,
+                    GameLocalization.Text($"Sıradaki: {currentPreview}", $"Next: {currentPreview}"),
+                GamePhase.Wave when currentWaveIndex < waves.Length => currentPreview,
                 _ => previewText != null ? previewText.text : string.Empty
             };
 
@@ -341,6 +428,10 @@ namespace DefenderChronicles.Core
             activeLevelDefinition = level.campaign;
             path.Clear();
             path.AddRange(level.path);
+            routePaths.Clear();
+            if (level.routes != null)
+                routePaths.AddRange(level.routes);
+            if (routePaths.Count == 0) routePaths.Add(level.path);
             waves = level.waves;
             activeOutpostSlotPositions = level.outpostSlots;
             activeGuardianPosition = level.guardianPosition;
@@ -355,6 +446,7 @@ namespace DefenderChronicles.Core
             if (gameCamera == null)
             {
                 var cameraObject = new GameObject("Main Camera");
+                cameraObject.transform.SetParent(transform, false);
                 cameraObject.tag = "MainCamera";
                 gameCamera = cameraObject.AddComponent<Camera>();
                 cameraObject.AddComponent<AudioListener>();
@@ -382,7 +474,7 @@ namespace DefenderChronicles.Core
 
             if (presentationCatalog != null)
             {
-                DefenderSceneLook.Apply(gameCamera);
+                DefenderSceneLook.Apply(gameCamera, ActiveBiomeIndex);
                 var responsiveCamera = gameCamera.GetComponent<AdaptiveBattlefieldCamera>();
                 if (responsiveCamera == null)
                     responsiveCamera = gameCamera.gameObject.AddComponent<AdaptiveBattlefieldCamera>();
@@ -399,6 +491,7 @@ namespace DefenderChronicles.Core
             }
 
             var world = new GameObject("Greybox World").transform;
+            world.SetParent(transform, false);
             CreatePrimitive("Deep Blue Backdrop", PrimitiveType.Cube, new Vector3(11f, -0.72f, 5.5f),
                 new Vector3(33f, 0.24f, 19f), new Color(0.06f, 0.16f, 0.24f), world, false);
             CreatePrimitive("Valley Ground", PrimitiveType.Cube, new Vector3(11f, -0.35f, 5.5f),
@@ -408,13 +501,19 @@ namespace DefenderChronicles.Core
             CreatePrimitive("South Ridge", PrimitiveType.Cube, new Vector3(11f, 0.02f, -1.78f),
                 new Vector3(28f, 0.62f, 0.75f), new Color(0.23f, 0.31f, 0.27f), world, false);
 
-            for (int i = 0; i < path.Count - 1; i++)
-                CreateRoadSegment(path[i], path[i + 1], world);
+            for (int routeIndex = 0; routeIndex < routePaths.Count; routeIndex++)
+            {
+                IReadOnlyList<Vector3> route = routePaths[routeIndex];
+                int segmentCount = routeIndex == 0 ? route.Count - 1 : route.Count - 2;
+                for (int i = 0; i < segmentCount; i++)
+                    CreateRoadSegment(route[i], route[i + 1], world);
+            }
 
             BuildEnemyGate(world);
             BuildDefenderKeep(world);
 
             CreateGreyboxOutpostSlots(world);
+            CreateEntranceIndicators(world);
 
             // Low-detail original scenery made only from Unity primitives.
             for (int i = 0; i < 24; i++)
@@ -439,6 +538,12 @@ namespace DefenderChronicles.Core
 
         private void BuildStylizedWorld()
         {
+            var setup = BuildStylizedWorldIncrementally();
+            while (setup.MoveNext()) { }
+        }
+
+        private IEnumerator BuildStylizedWorldIncrementally()
+        {
             var world = new GameObject("Greenwatch Valley").transform;
             world.SetParent(transform, false);
             GameObject environment = StylizedPresentationFactory.SpawnModel(presentationCatalog.environmentPrefab, world,
@@ -460,9 +565,102 @@ namespace DefenderChronicles.Core
                         renderer.enabled = true;
                 }
             }
-            DefenderBattlefieldDressing.Install(world, presentationCatalog, gameCamera, path);
+            yield return null;
+            BuildBiomeDressing(world);
+            yield return null;
+            DefenderBattlefieldDressing.Install(world, presentationCatalog, gameCamera, path, ActiveBiomeIndex);
+            yield return null;
+
+            CreateRouteOverlays(world);
 
             CreateStylizedOutpostSlots(world);
+            CreateEntranceIndicators(world);
+        }
+
+        private void CreateEntranceIndicators(Transform world)
+        {
+            entranceIndicators = new GameObject("Active Entrance Indicators");
+            entranceIndicators.transform.SetParent(world, false);
+            Color accent = new(1f, 0.30f, 0.18f, 1f);
+            for (int routeIndex = 0; routeIndex < routePaths.Count; routeIndex++)
+            {
+                IReadOnlyList<Vector3> route = routePaths[routeIndex];
+                if (route == null || route.Count < 2) continue;
+                Vector3 direction = route[1] - route[0];
+                direction.y = 0f;
+                Vector3 position = route[0] + Vector3.up * 0.42f;
+                GameObject arrow = CreatePrimitive($"Entrance Arrow {routeIndex + 1}", PrimitiveType.Cube,
+                    position, new Vector3(0.48f, 0.12f, 1.05f), accent, entranceIndicators.transform, false);
+                arrow.transform.rotation = Quaternion.LookRotation(direction.normalized, Vector3.up) *
+                                           Quaternion.Euler(0f, 45f, 0f);
+
+                if (presentationCatalog?.bodyFont != null)
+                {
+                    var labelObject = new GameObject($"Entrance Number {routeIndex + 1}", typeof(RectTransform),
+                        typeof(MeshRenderer), typeof(TextMeshPro));
+                    labelObject.transform.SetParent(entranceIndicators.transform, false);
+                    labelObject.transform.position = route[0] + Vector3.up * 1.55f;
+                    labelObject.transform.localScale = Vector3.one * 0.22f;
+                    TextMeshPro label = labelObject.GetComponent<TextMeshPro>();
+                    label.font = presentationCatalog.bodyFont;
+                    label.text = (routeIndex + 1).ToString();
+                    label.fontSize = 8f;
+                    label.fontStyle = FontStyles.Bold;
+                    label.alignment = TextAlignmentOptions.Center;
+                    label.color = Color.white;
+                    label.rectTransform.sizeDelta = new Vector2(4f, 2f);
+                    labelObject.AddComponent<WorldSpaceBillboard>();
+                }
+                else
+                {
+                    for (int pip = 0; pip <= routeIndex; pip++)
+                        CreatePrimitive($"Entrance {routeIndex + 1} Pip {pip + 1}", PrimitiveType.Sphere,
+                            route[0] + new Vector3((pip - routeIndex * 0.5f) * 0.34f, 1.15f, 0f),
+                            Vector3.one * 0.18f, Color.white, entranceIndicators.transform, false);
+                }
+            }
+        }
+
+        private void CreateRouteOverlays(Transform world)
+        {
+            if (routePaths.Count <= 1) return;
+            for (int routeIndex = 1; routeIndex < routePaths.Count; routeIndex++)
+            {
+                IReadOnlyList<Vector3> route = routePaths[routeIndex];
+                for (int i = 0; i < route.Count - 2; i++)
+                    CreateRoadSegment(route[i], route[i + 1], world);
+                Vector3 entry = route[0] + Vector3.up * 0.12f;
+                GameObject marker = CreatePrimitive($"Enemy Entrance {routeIndex + 1}", PrimitiveType.Cylinder,
+                    entry, new Vector3(0.72f, 0.08f, 0.72f),
+                    CampaignLevelFactory.Biome(ActiveBiomeIndex).accentColor, world, false);
+                marker.transform.SetParent(world, true);
+            }
+        }
+
+        private void BuildBiomeDressing(Transform world)
+        {
+            BiomeDefinition palette = CampaignLevelFactory.Biome(ActiveBiomeIndex);
+            string[] names = { "Grove", "Basalt", "Frost", "Tide", "Bastion" };
+            PrimitiveType propType = ActiveBiomeIndex switch
+            {
+                1 => PrimitiveType.Cube,
+                2 => PrimitiveType.Cylinder,
+                3 => PrimitiveType.Cylinder,
+                4 => PrimitiveType.Cube,
+                _ => PrimitiveType.Sphere
+            };
+            for (int i = 0; i < 8; i++)
+            {
+                float x = 1.0f + i * 2.85f;
+                float z = i % 2 == 0 ? 11.55f : 0.15f;
+                float height = ActiveBiomeIndex == 2 ? 0.9f + (i % 3) * 0.25f : 0.45f + (i % 2) * 0.18f;
+                Vector3 scale = propType == PrimitiveType.Cube
+                    ? new Vector3(0.42f + (i % 3) * 0.15f, height, 0.42f)
+                    : new Vector3(0.48f, height, 0.48f);
+                Color color = Color.Lerp(palette.groundColor, palette.accentColor, 0.28f + (i % 3) * 0.08f);
+                CreatePrimitive($"{names[ActiveBiomeIndex]} Landmark {i + 1}", propType,
+                    new Vector3(x, height * 0.5f, z), scale, color, world, false);
+            }
         }
 
         private void CreateGreyboxOutpostSlots(Transform world)
@@ -571,6 +769,8 @@ namespace DefenderChronicles.Core
             uiFont = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
 
             var canvasObject = new GameObject("Game HUD");
+            hudRoot = canvasObject;
+            canvasObject.transform.SetParent(transform, false);
             var canvas = canvasObject.AddComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
             var scaler = canvasObject.AddComponent<CanvasScaler>();
@@ -679,6 +879,9 @@ namespace DefenderChronicles.Core
         {
             if (Phase != GamePhase.Preparing && Phase != GamePhase.Intermission) return;
             if (currentWaveIndex >= waves.Length || spawning) return;
+            if (GuidanceStep == FirstBattleGuidanceStep.StartWave)
+                GuidanceStep = FirstBattleGuidanceStep.Complete;
+            if (entranceIndicators != null) entranceIndicators.SetActive(false);
             StartCoroutine(SpawnWave(waves[currentWaveIndex]));
         }
 
@@ -699,26 +902,57 @@ namespace DefenderChronicles.Core
                 yield break;
             }
 
-            foreach (var group in wave.groups)
+            if (CampaignLevelNumber == 10)
             {
-                if (group == null || group.count <= 0) continue;
-                if (group.startDelay > 0f)
-                    yield return new WaitForSeconds(GameplayDelay(group.startDelay));
-
-                for (int i = 0; i < group.count; i++)
+                // Level 10 remains the balance reference: its authored group order and
+                // cadence are intentionally preserved while newer maps use concurrency.
+                foreach (var group in wave.groups)
                 {
-                    SpawnEnemy(group.enemy);
-                    yield return new WaitForSeconds(GameplayDelay(group.interval));
+                    if (group == null || group.count <= 0) continue;
+                    if (group.startDelay > 0f)
+                        yield return new WaitForSeconds(GameplayDelay(group.startDelay));
+                    for (int i = 0; i < group.count; i++)
+                    {
+                        SpawnEnemy(group.enemy, group.routeId);
+                        yield return new WaitForSeconds(GameplayDelay(group.interval));
+                    }
                 }
+            }
+            else
+            {
+                activeSpawnGroups = 0;
+                foreach (var group in wave.groups)
+                {
+                    if (group == null || group.count <= 0) continue;
+                    activeSpawnGroups++;
+                    StartCoroutine(SpawnGroup(group));
+                }
+                while (activeSpawnGroups > 0) yield return null;
             }
 
             spawning = false;
             TryCompleteWave();
         }
 
-        private void SpawnEnemy(EnemyArchetype archetype)
+        private IEnumerator SpawnGroup(SpawnGroupDefinition group)
         {
-            if (path.Count < 2)
+            if (group.startDelay > 0f)
+                yield return new WaitForSeconds(GameplayDelay(group.startDelay));
+            for (int i = 0; i < group.count; i++)
+            {
+                SpawnEnemy(group.enemy, group.routeId);
+                yield return new WaitForSeconds(GameplayDelay(group.interval));
+            }
+            activeSpawnGroups = Mathf.Max(0, activeSpawnGroups - 1);
+        }
+
+        private void SpawnEnemy(EnemyArchetype archetype) => SpawnEnemy(archetype, 0);
+
+        private void SpawnEnemy(EnemyArchetype archetype, int routeId)
+        {
+            int safeRoute = Mathf.Clamp(routeId, 0, routePaths.Count - 1);
+            IReadOnlyList<Vector3> spawnPath = routePaths.Count > safeRoute ? routePaths[safeRoute] : path;
+            if (spawnPath == null || spawnPath.Count < 2)
             {
                 Debug.LogError("Cannot spawn enemy: level path is invalid.");
                 removedThisWave++;
@@ -731,7 +965,7 @@ namespace DefenderChronicles.Core
             if (presentationCatalog != null)
             {
                 PresentationActorKind actorKind = ActorKind(archetype);
-                go = StylizedPresentationFactory.CreateRoot(archetype.ToString(), path[0],
+                go = StylizedPresentationFactory.CreateRoot(archetype.ToString(), spawnPath[0],
                     new Vector3(size, Mathf.Max(1.4f, size * 1.7f), size), presentationCatalog.ActorPrefab(actorKind),
                     presentationCatalog, PresentationCollider.Capsule, presentationCatalog.ActorScale(actorKind),
                     presentationCatalog.ActorAnimator(actorKind), actorKind);
@@ -740,11 +974,11 @@ namespace DefenderChronicles.Core
             else
             {
                 var type = archetype == EnemyArchetype.Boss ? PrimitiveType.Capsule : PrimitiveType.Sphere;
-                go = CreatePrimitive(archetype.ToString(), type, path[0] + Vector3.up * (size * 0.6f),
+                go = CreatePrimitive(archetype.ToString(), type, spawnPath[0] + Vector3.up * (size * 0.6f),
                     new Vector3(size, size, size), stats.color, transform, true);
             }
             var enemy = go.AddComponent<GreyboxEnemy>();
-            enemy.Configure(this, archetype, stats, path);
+            enemy.Configure(this, archetype, stats, spawnPath);
             enemies.Add(enemy);
             EmitPresentation(PresentationCue.UnitSpawned, go.transform.position, go, ActorKind(archetype));
         }
@@ -802,9 +1036,11 @@ namespace DefenderChronicles.Core
             SetPhase(GamePhase.Intermission);
             RefreshThreatPreviewForPhase();
             if (currentWaveIndex == 1)
-                ShowMessage("Kale muhafızı son savunma hattını otomatik korur.", 5f);
+                ShowMessage(GameLocalization.Text("Kale muhafızı son savunma hattını otomatik korur.",
+                    "The keep guard protects the final defence line automatically."), 5f);
             else if (currentWaveIndex == 2)
-                ShowMessage("Kalkan Darbesi kalabalıkları kısa süre durdurur.", 5f);
+                ShowMessage(GameLocalization.Text("Kalkan Darbesi kalabalıkları kısa süre durdurur.",
+                    "Shield Bash briefly stops groups of enemies."), 5f);
         }
 
         private void SetPhase(GamePhase next)
@@ -822,14 +1058,14 @@ namespace DefenderChronicles.Core
             {
                 Time.timeScale = currentGameSpeed;
                 SetPhase(phaseBeforePause);
-                if (pauseButtonLabel != null) pauseButtonLabel.text = "DURAKLAT";
+                if (pauseButtonLabel != null) pauseButtonLabel.text = GameLocalization.Text("DURAKLAT", "PAUSE");
             }
             else
             {
                 phaseBeforePause = Phase;
                 SetPhase(GamePhase.Paused);
                 Time.timeScale = 0f;
-                if (pauseButtonLabel != null) pauseButtonLabel.text = "DEVAM";
+                if (pauseButtonLabel != null) pauseButtonLabel.text = GameLocalization.Text("DEVAM", "RESUME");
             }
         }
 
@@ -861,7 +1097,8 @@ namespace DefenderChronicles.Core
         {
             if (selectedSlot == null)
             {
-                ShowMessage("Önce mavi bir karakol platformu seç.", 2.5f);
+                ShowMessage(GameLocalization.Text("Önce mavi bir karakol yuvası seç.",
+                    "Select a blue outpost slot first."), 2.5f);
                 EmitPresentation(PresentationCue.UiError, Vector3.zero);
                 return;
             }
@@ -871,14 +1108,36 @@ namespace DefenderChronicles.Core
                 return;
             }
 
-            if (!TryBuildOutpost(selectedSlot.Index, kind))
+            OutpostStats previewStats = GetOutpostStats(kind);
+            if (Gold < previewStats.cost)
             {
-                ShowMessage("Yeterli altın yok.", 2f);
+                ShowMessage(GameLocalization.Text("Yeterli altın yok.", "Not enough gold."), 2f);
                 EmitPresentation(PresentationCue.UiError, Vector3.zero);
                 return;
             }
 
-            ShowMessage($"{OutpostDisplayName(kind)} kuruldu.", 2f);
+            if (pendingBuildKind != kind)
+            {
+                pendingBuildKind = kind;
+                RefreshSelectionPreview(true);
+                ShowMessage(GameLocalization.Text(
+                    $"{OutpostDisplayName(kind)} önizlemesi. Kurmak için tekrar dokun.",
+                    $"Previewing {OutpostDisplayName(kind)}. Tap again to build."), 4f);
+                RefreshUi();
+                return;
+            }
+
+            pendingBuildKind = null;
+
+            if (!TryBuildOutpost(selectedSlot.Index, kind))
+            {
+                ShowMessage(GameLocalization.Text("Yeterli altın yok.", "Not enough gold."), 2f);
+                EmitPresentation(PresentationCue.UiError, Vector3.zero);
+                return;
+            }
+
+            ShowMessage(GameLocalization.Text($"{OutpostDisplayName(kind)} kuruldu.",
+                $"{OutpostDisplayName(kind)} built."), 2f);
         }
 
         public bool TryBuildOutpost(int slotIndex, OutpostKind kind)
@@ -919,6 +1178,12 @@ namespace DefenderChronicles.Core
             targetSlot.SetOccupant(outpost);
             outposts.Add(outpost);
             SelectOutpost(outpost);
+            if (GuidanceStep == FirstBattleGuidanceStep.ChooseTower)
+            {
+                GuidanceStep = FirstBattleGuidanceStep.StartWave;
+                ShowMessage(GameLocalization.Text("3/3  Hazır olduğunda İlk Dalgayı Başlat.",
+                    "3/3  Start the first wave when you are ready."), 8f);
+            }
             EmitPresentation(PresentationCue.OutpostBuilt, go.transform.position, go, outpost: kind);
             return true;
         }
@@ -960,8 +1225,8 @@ namespace DefenderChronicles.Core
             if (!TryUpgradeOutpost(selectedOutpost.Slot.Index))
             {
                 ShowMessage(selectedOutpost.CanUpgrade
-                    ? "Yükseltme için yeterli altın yok."
-                    : "Bu karakol en yüksek gri kutu seviyesinde.", 2f);
+                    ? GameLocalization.Text("Yükseltme için yeterli altın yok.", "Not enough gold to upgrade.")
+                    : GameLocalization.Text("Bu karakol en yüksek seviyede.", "This outpost is at max level."), 2f);
                 return;
             }
             RefreshSelectedPanel();
@@ -1006,11 +1271,13 @@ namespace DefenderChronicles.Core
         {
             if (hero == null || !hero.IsAlive)
             {
-                ShowMessage("Şövalye henüz savaşa dönemedi.", 2f);
+                ShowMessage(GameLocalization.Text("Şövalye henüz savaşa dönemedi.",
+                    "The knight has not returned to battle yet."), 2f);
                 return;
             }
             if (!hero.TryUseShieldBash())
-                ShowMessage($"Yetenek {Mathf.CeilToInt(hero.AbilityRemaining)} sn sonra hazır.", 2f);
+                ShowMessage(GameLocalization.Text($"Yetenek {Mathf.CeilToInt(hero.AbilityRemaining)} sn sonra hazır.",
+                    $"Ability ready in {Mathf.CeilToInt(hero.AbilityRemaining)} sec."), 2f);
         }
 
         private void CancelSelection()
@@ -1018,6 +1285,8 @@ namespace DefenderChronicles.Core
             if (selectedSlot != null) selectedSlot.SetSelected(false);
             selectedSlot = null;
             selectedOutpost = null;
+            pendingBuildKind = null;
+            RefreshSelectionPreview(true);
             RefreshSelectedPanel();
         }
 
@@ -1913,7 +2182,11 @@ namespace DefenderChronicles.Core
             Ray ray = gameCamera.ScreenPointToRay(screen);
             int selectableMask = LayerMask.GetMask(SelectableLayerName);
             if (selectableMask == 0 || !Physics.Raycast(ray, out RaycastHit hit, 100f,
-                    selectableMask, QueryTriggerInteraction.Ignore)) return;
+                    selectableMask, QueryTriggerInteraction.Ignore))
+            {
+                CancelSelection();
+                return;
+            }
 
             var slot = hit.collider.GetComponentInParent<GreyboxOutpostSlot>();
             if (slot != null)
@@ -1928,20 +2201,28 @@ namespace DefenderChronicles.Core
                 SelectOutpost(outpost);
                 return;
             }
-
+            CancelSelection();
         }
 
         private void SelectSlot(GreyboxOutpostSlot slot)
         {
+            if (selectedSlot != slot) pendingBuildKind = null;
             if (selectedSlot != null) selectedSlot.SetSelected(false);
             selectedSlot = slot;
             selectedSlot.SetSelected(true);
             selectedOutpost = slot.Occupant;
+            if (GuidanceStep == FirstBattleGuidanceStep.SelectSlot && slot.Occupant == null)
+            {
+                GuidanceStep = FirstBattleGuidanceStep.ChooseTower;
+                ShowMessage(GameLocalization.Text("2/3  Okçu, Kışla veya Büyü savunmasından birini kur.",
+                    "2/3  Build an Archer, Barracks, or Mage defence."), 8f);
+            }
             RefreshSelectedPanel();
         }
 
         private void SelectOutpost(GreyboxOutpost outpost)
         {
+            pendingBuildKind = null;
             selectedOutpost = outpost;
             SelectSlot(outpost.Slot);
             selectedOutpost = outpost;
@@ -1965,6 +2246,10 @@ namespace DefenderChronicles.Core
                     artHud.SetSelected(null, selectedSlot, true);
                 else
                     artHud.SetSelected(null, null, false);
+                if (selectedSlot != null)
+                    artHud.SetSelectionAnchor(gameCamera, selectedSlot.transform.position,
+                        selectedOutpost == null && selectedSlot.Occupant == null);
+                RefreshSelectionPreview();
                 return;
             }
             if (selectedText == null) return;
@@ -1989,6 +2274,119 @@ namespace DefenderChronicles.Core
                 sellButton.interactable = false;
             }
             selectedPanel.SetActive(selectedSlot != null || selectedOutpost != null);
+            RefreshSelectionPreview();
+        }
+
+        private void RefreshSelectionPreview(bool force = false)
+        {
+            OutpostKind? kind = selectedOutpost != null ? selectedOutpost.Kind : pendingBuildKind;
+            if (selectedSlot == null || kind == null)
+            {
+                if (selectionRangePreview != null) selectionRangePreview.SetActive(false);
+                if (selectionRallyPreview != null) selectionRallyPreview.SetActive(false);
+                lastPreviewSlot = -2;
+                lastPreviewKind = null;
+                lastPreviewRange = -1f;
+                return;
+            }
+
+            float range = selectedOutpost != null ? selectedOutpost.RangeValue : GetOutpostStats(kind.Value).range;
+            if (!force && lastPreviewSlot == selectedSlot.Index && lastPreviewKind == kind &&
+                Mathf.Abs(lastPreviewRange - range) < 0.001f) return;
+
+            EnsureSelectionPreviewObjects();
+            lastPreviewSlot = selectedSlot.Index;
+            lastPreviewKind = kind;
+            lastPreviewRange = range;
+            Color accent = kind switch
+            {
+                OutpostKind.Archer => new Color(1f, 0.77f, 0.28f, 0.92f),
+                OutpostKind.Barracks => new Color(0.48f, 0.82f, 1f, 0.92f),
+                _ => new Color(0.74f, 0.47f, 1f, 0.92f)
+            };
+
+            bool barracks = kind == OutpostKind.Barracks;
+            selectionRangePreview.SetActive(!barracks);
+            selectionRallyPreview.SetActive(barracks);
+            if (barracks)
+            {
+                Vector3 rally = BarracksRallyPoint(selectedSlot.transform.position, 0f);
+                selectionRallyPreview.transform.position = rally + Vector3.up * 0.22f;
+                Renderer rallyRenderer = selectionRallyPreview.GetComponentInChildren<Renderer>();
+                if (rallyRenderer != null) rallyRenderer.material.color = accent;
+                selectionRallyLine.startColor = selectionRallyLine.endColor = accent;
+                selectionRallyLine.SetPosition(0, selectedSlot.transform.position + Vector3.up * 0.28f);
+                selectionRallyLine.SetPosition(1, rally + Vector3.up * 0.28f);
+                return;
+            }
+
+            selectionRangeLine.startColor = selectionRangeLine.endColor = accent;
+            Vector3 center = selectedSlot.transform.position + Vector3.up * 0.24f;
+            const int points = 65;
+            selectionRangeLine.positionCount = points;
+            for (int point = 0; point < points; point++)
+            {
+                float angle = point * Mathf.PI * 2f / (points - 1);
+                selectionRangeLine.SetPosition(point,
+                    center + new Vector3(Mathf.Cos(angle) * range, 0f, Mathf.Sin(angle) * range));
+            }
+        }
+
+        private void EnsureSelectionPreviewObjects()
+        {
+            if (selectionRangePreview != null) return;
+            selectionRangePreview = new GameObject("Tower Range Preview");
+            selectionRangePreview.transform.SetParent(transform, false);
+            selectionRangeLine = ConfigurePreviewLine(selectionRangePreview, 0.10f);
+
+            selectionRallyPreview = CreatePrimitive("Barracks Rally Preview", PrimitiveType.Cylinder,
+                Vector3.zero, new Vector3(0.58f, 0.06f, 0.58f), Color.white, transform, false);
+            selectionRallyLine = ConfigurePreviewLine(selectionRallyPreview, 0.08f);
+            selectionRallyLine.positionCount = 2;
+            selectionRangePreview.SetActive(false);
+            selectionRallyPreview.SetActive(false);
+        }
+
+        private static LineRenderer ConfigurePreviewLine(GameObject owner, float width)
+        {
+            LineRenderer line = owner.AddComponent<LineRenderer>();
+            Shader shader = Shader.Find("Universal Render Pipeline/Unlit") ?? Shader.Find("Sprites/Default");
+            line.material = new Material(shader);
+            line.useWorldSpace = true;
+            line.loop = false;
+            line.startWidth = line.endWidth = width;
+            line.numCornerVertices = 2;
+            line.numCapVertices = 2;
+            line.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            line.receiveShadows = false;
+            return line;
+        }
+
+        internal Vector3 BarracksRallyPoint(Vector3 position, float routeOffset)
+        {
+            Vector3 closest = position;
+            Vector3 direction = Vector3.forward;
+            float closestDistance = float.MaxValue;
+            foreach (IReadOnlyList<Vector3> route in routePaths)
+            {
+                for (int segmentIndex = 0; segmentIndex < route.Count - 1; segmentIndex++)
+                {
+                    Vector3 from = route[segmentIndex];
+                    Vector3 segment = route[segmentIndex + 1] - from;
+                    float lengthSquared = segment.sqrMagnitude;
+                    if (lengthSquared <= 0.0001f) continue;
+                    float projection = Mathf.Clamp01(Vector3.Dot(position - from, segment) / lengthSquared);
+                    Vector3 candidate = from + segment * projection;
+                    float distance = (candidate - position).sqrMagnitude;
+                    if (distance >= closestDistance) continue;
+                    closestDistance = distance;
+                    closest = candidate;
+                    direction = segment.normalized;
+                }
+            }
+            closest += direction * routeOffset;
+            closest.y = position.y;
+            return closest;
         }
 
         private void RefreshUi()
@@ -1998,6 +2396,7 @@ namespace DefenderChronicles.Core
                 artHud.Refresh(this);
                 bool canBuildOnSelection = Phase != GamePhase.Paused && selectedSlot != null && selectedSlot.Occupant == null;
                 artHud.SetBuildAvailability(canBuildOnSelection, Gold);
+                artHud.SetBuildPreview(pendingBuildKind);
                 if (Phase == GamePhase.Preparing)
                     artHud.SetNextWaveLabel(presentationCatalog.uiCopy.Get(UiTextKey.FirstWave));
                 RefreshSelectedPanel();
@@ -2092,14 +2491,23 @@ namespace DefenderChronicles.Core
         internal GreyboxEnemy FindFirstEnemy(Vector3 position, float range)
         {
             GreyboxEnemy best = null;
+            float remaining = float.MaxValue;
             float progress = float.MinValue;
             float sqrRange = range * range;
             foreach (var enemy in enemies)
             {
                 if (enemy == null || !enemy.IsAlive || (enemy.Position - position).sqrMagnitude > sqrRange) continue;
-                if (enemy.RouteProgress <= progress) continue;
+                if (CampaignLevelNumber == 10)
+                {
+                    if (enemy.RouteProgress <= progress) continue;
+                    progress = enemy.RouteProgress;
+                }
+                else
+                {
+                    if (enemy.RemainingRouteDistance >= remaining) continue;
+                    remaining = enemy.RemainingRouteDistance;
+                }
                 best = enemy;
-                progress = enemy.RouteProgress;
             }
             return best;
         }
@@ -2214,14 +2622,27 @@ namespace DefenderChronicles.Core
         }
 
         public float ComputeRouteProgress(Vector3 position, int targetIndex)
+            => ComputeRouteProgress(path, position, targetIndex);
+
+        public float ComputeRouteProgress(IReadOnlyList<Vector3> route, Vector3 position, int targetIndex)
         {
-            if (path.Count < 2) return 0f;
-            int index = Mathf.Clamp(targetIndex - 1, 0, path.Count - 2);
+            if (route == null || route.Count < 2) return 0f;
+            int index = Mathf.Clamp(targetIndex - 1, 0, route.Count - 2);
             float completed = 0f;
-            for (int i = 0; i < index; i++) completed += Vector3.Distance(path[i], path[i + 1]);
-            Vector3 from = path[index];
-            Vector3 to = path[index + 1];
-            return completed + CombatMath.RouteProgress(from, to, position);
+            float total = 0f;
+            for (int i = 0; i < route.Count - 1; i++) total += Vector3.Distance(route[i], route[i + 1]);
+            for (int i = 0; i < index; i++) completed += Vector3.Distance(route[i], route[i + 1]);
+            Vector3 from = route[index];
+            Vector3 to = route[index + 1];
+            return total <= 0.001f ? 0f : (completed + CombatMath.RouteProgress(from, to, position)) / total;
+        }
+
+        public float ComputeRemainingRouteDistance(IReadOnlyList<Vector3> route, Vector3 position, int targetIndex)
+        {
+            if (route == null || route.Count < 2) return float.MaxValue;
+            float total = 0f;
+            for (int i = 0; i < route.Count - 1; i++) total += Vector3.Distance(route[i], route[i + 1]);
+            return Mathf.Max(0f, total * (1f - ComputeRouteProgress(route, position, targetIndex)));
         }
 
         private void ValidateContent()
@@ -2289,9 +2710,9 @@ namespace DefenderChronicles.Core
 
         internal static string OutpostDisplayName(OutpostKind kind) => kind switch
         {
-            OutpostKind.Archer => "OKÇU KARAKOLU",
-            OutpostKind.Barracks => "MUHAFIZ KIŞLASI",
-            OutpostKind.Mage => "BÜYÜ OCAĞI",
+            OutpostKind.Archer => GameLocalization.Text("OKÇU KARAKOLU", "ARCHER OUTPOST"),
+            OutpostKind.Barracks => GameLocalization.Text("MUHAFIZ KIŞLASI", "GUARD BARRACKS"),
+            OutpostKind.Mage => GameLocalization.Text("BÜYÜ OCAĞI", "MAGE TOWER"),
             _ => kind.ToString().ToUpperInvariant()
         };
 

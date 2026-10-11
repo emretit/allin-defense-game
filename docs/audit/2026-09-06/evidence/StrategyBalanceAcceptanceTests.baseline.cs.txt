@@ -1,0 +1,196 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using DefenderChronicles.Core;
+using NUnit.Framework;
+using UnityEngine;
+using UnityEngine.TestTools;
+using Data = DefenderChronicles.Data;
+
+namespace DefenderChronicles.Tests
+{
+    public sealed class StrategyBalanceAcceptanceTests
+    {
+        private const float AcceptanceGameSpeed = 12f;
+        private const float StrategyTimeoutSeconds = 60f;
+
+        [UnityTest]
+        [Timeout(90000)]
+        public IEnumerator ArcherHeavyStrategyCanClearTheVerticalSlice()
+        {
+            yield return RunStrategy("Archer-heavy", Data.OutpostKind.Archer, ArcherHeavyPlan());
+        }
+
+        [UnityTest]
+        [Timeout(90000)]
+        public IEnumerator BarracksHeavyStrategyCanClearTheVerticalSlice()
+        {
+            yield return RunStrategy("Barracks-heavy", Data.OutpostKind.Barracks, BarracksHeavyPlan());
+        }
+
+        [UnityTest]
+        [Timeout(90000)]
+        public IEnumerator MageHeavyStrategyCanClearTheVerticalSlice()
+        {
+            yield return RunStrategy("Mage-heavy", Data.OutpostKind.Mage, MageHeavyPlan());
+        }
+
+        [UnityTearDown]
+        public IEnumerator TearDownSession()
+        {
+            Time.timeScale = 1f;
+            foreach (GameSessionController session in
+                     Object.FindObjectsByType<GameSessionController>(FindObjectsSortMode.None))
+            {
+                if (session != null) Object.Destroy(session.gameObject);
+            }
+
+            yield return null;
+        }
+
+        private static IEnumerator RunStrategy(string strategyName, Data.OutpostKind primaryKind,
+            IReadOnlyList<StrategyAction> plan)
+        {
+            var sessionObject = new GameObject($"{strategyName} Balance Session");
+            var session = sessionObject.AddComponent<GameSessionController>();
+            session.SetCampaignLevel(10);
+            session.Initialize();
+            yield return null;
+
+            int actionIndex = 0;
+            ExecuteAffordableActions(session, plan, ref actionIndex);
+            Time.timeScale = AcceptanceGameSpeed;
+            session.StartNextWave();
+
+            float deadline = Time.realtimeSinceStartup + StrategyTimeoutSeconds;
+            while (session.Phase != GamePhase.Victory &&
+                   session.Phase != GamePhase.Defeat &&
+                   Time.realtimeSinceStartup < deadline)
+            {
+                ExecuteAffordableActions(session, plan, ref actionIndex);
+                if (session.Phase == GamePhase.Intermission) session.StartNextWave();
+                if (session.Hero != null && session.Hero.IsAlive && session.Hero.AbilityRemaining <= 0f)
+                    session.Hero.TryUseShieldBash();
+                yield return null;
+            }
+
+            Time.timeScale = 1f;
+            int primaryCount = session.Outposts.Count(outpost =>
+                outpost != null && outpost.IsAlive && outpost.Kind == primaryKind);
+            int liveOutpostCount = session.Outposts.Count(outpost => outpost != null && outpost.IsAlive);
+            GamePhase finalPhase = session.Phase;
+            int remainingLives = session.Lives;
+            int completedActions = actionIndex;
+
+            Debug.Log($"[DC_BALANCE_ACCEPTANCE] strategy={strategyName} phase={finalPhase} " +
+                      $"lives={remainingLives} outposts={liveOutpostCount} primary={primaryCount} " +
+                      $"actions={completedActions}/{plan.Count}");
+
+            Object.Destroy(sessionObject);
+            yield return null;
+
+            Assert.That(finalPhase, Is.EqualTo(GamePhase.Victory),
+                $"{strategyName} must clear level 10 within {StrategyTimeoutSeconds:0} real seconds.");
+            Assert.That(remainingLives, Is.GreaterThan(0),
+                $"{strategyName} must finish with the keep still standing.");
+            Assert.That(primaryCount, Is.GreaterThanOrEqualTo(5),
+                $"{strategyName} must remain genuinely weighted toward {primaryKind}.");
+            Assert.That(liveOutpostCount, Is.EqualTo(8),
+                $"{strategyName} should reach a complete eight-slot defense during the run.");
+        }
+
+        private static void ExecuteAffordableActions(GameSessionController session,
+            IReadOnlyList<StrategyAction> plan, ref int actionIndex)
+        {
+            while (actionIndex < plan.Count)
+            {
+                StrategyAction action = plan[actionIndex];
+                bool completed = action.upgrade
+                    ? session.TryUpgradeOutpost(action.slotIndex)
+                    : session.TryBuildOutpost(action.slotIndex, action.kind);
+                if (!completed) return;
+                actionIndex++;
+            }
+        }
+
+        private static StrategyAction[] ArcherHeavyPlan() => new[]
+        {
+            Build(0, Data.OutpostKind.Archer),
+            Build(2, Data.OutpostKind.Archer),
+            Upgrade(0),
+            Build(4, Data.OutpostKind.Archer),
+            Upgrade(2),
+            Build(6, Data.OutpostKind.Archer),
+            Build(7, Data.OutpostKind.Archer),
+            Upgrade(4),
+            Upgrade(6),
+            Upgrade(7),
+            Build(1, Data.OutpostKind.Barracks),
+            Build(3, Data.OutpostKind.Barracks),
+            Build(5, Data.OutpostKind.Mage),
+            Upgrade(1),
+            Upgrade(3),
+            Upgrade(5)
+        };
+
+        private static StrategyAction[] BarracksHeavyPlan() => new[]
+        {
+            Build(1, Data.OutpostKind.Barracks),
+            Build(3, Data.OutpostKind.Barracks),
+            Upgrade(1),
+            Build(5, Data.OutpostKind.Barracks),
+            Upgrade(3),
+            Build(7, Data.OutpostKind.Barracks),
+            Build(6, Data.OutpostKind.Barracks),
+            Upgrade(5),
+            Upgrade(7),
+            Upgrade(6),
+            Build(0, Data.OutpostKind.Archer),
+            Build(2, Data.OutpostKind.Mage),
+            Build(4, Data.OutpostKind.Archer),
+            Upgrade(0),
+            Upgrade(2),
+            Upgrade(4)
+        };
+
+        private static StrategyAction[] MageHeavyPlan() => new[]
+        {
+            Build(2, Data.OutpostKind.Mage),
+            Build(0, Data.OutpostKind.Archer),
+            Upgrade(2),
+            Build(4, Data.OutpostKind.Mage),
+            Build(6, Data.OutpostKind.Mage),
+            Upgrade(4),
+            Build(7, Data.OutpostKind.Mage),
+            Upgrade(6),
+            Build(5, Data.OutpostKind.Mage),
+            Upgrade(7),
+            Upgrade(5),
+            Build(1, Data.OutpostKind.Barracks),
+            Build(3, Data.OutpostKind.Archer),
+            Upgrade(0),
+            Upgrade(1),
+            Upgrade(3)
+        };
+
+        private static StrategyAction Build(int slotIndex, Data.OutpostKind kind) =>
+            new(slotIndex, kind, false);
+
+        private static StrategyAction Upgrade(int slotIndex) =>
+            new(slotIndex, default, true);
+
+        private readonly struct StrategyAction
+        {
+            public readonly int slotIndex;
+            public readonly Data.OutpostKind kind;
+            public readonly bool upgrade;
+
+            public StrategyAction(int slotIndex, Data.OutpostKind kind, bool upgrade)
+            {
+                this.slotIndex = slotIndex;
+                this.kind = kind;
+                this.upgrade = upgrade;
+            }
+        }
+    }
+}

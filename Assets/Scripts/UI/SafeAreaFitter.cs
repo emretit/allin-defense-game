@@ -8,6 +8,8 @@ namespace DefenderChronicles.UI
         private RectTransform rectTransform;
         private Rect lastSafeArea;
         private Vector2Int lastScreenSize;
+        private Vector2 lastAnchorMin;
+        private Vector2 lastAnchorMax;
 
         private void Awake()
         {
@@ -19,7 +21,11 @@ namespace DefenderChronicles.UI
         {
             if (lastSafeArea == Screen.safeArea &&
                 lastScreenSize.x == Screen.width &&
-                lastScreenSize.y == Screen.height)
+                lastScreenSize.y == Screen.height &&
+                rectTransform.anchorMin == lastAnchorMin &&
+                rectTransform.anchorMax == lastAnchorMax &&
+                rectTransform.offsetMin == Vector2.zero &&
+                rectTransform.offsetMax == Vector2.zero)
                 return;
 
             ApplySafeArea();
@@ -42,6 +48,8 @@ namespace DefenderChronicles.UI
             rectTransform.anchorMax = anchorMax;
             rectTransform.offsetMin = Vector2.zero;
             rectTransform.offsetMax = Vector2.zero;
+            lastAnchorMin = anchorMin;
+            lastAnchorMax = anchorMax;
         }
     }
 }

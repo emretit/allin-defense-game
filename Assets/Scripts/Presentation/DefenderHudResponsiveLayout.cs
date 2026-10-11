@@ -61,6 +61,9 @@ namespace DefenderChronicles.Presentation
         private Rect previousSafeArea;
         private Vector2Int previousScreenSize;
         private bool initialized;
+        private bool contextualSelectionActive;
+        private bool contextualSelectionIsEmptySlot;
+        private Vector2 contextualTarget;
 
         public void Initialize()
         {
@@ -132,10 +135,73 @@ namespace DefenderChronicles.Presentation
             SetTopCenteredBanner(message, new Vector2(metrics.SafeCenterX, metrics.SafeMaxY),
                 metrics.MessageY - 4f, new Vector2(metrics.MessageWidth - 40f, 38f));
 
-            selectedPanel.anchorMin = selectedPanel.anchorMax = new Vector2(metrics.SafeMaxX, metrics.SafeMinY);
-            selectedPanel.pivot = new Vector2(1f, 0f);
-            selectedPanel.anchoredPosition = new Vector2(-18f, BottomContentHeight + 18f);
-            selectedPanel.sizeDelta = new Vector2(Mathf.Min(360f, metrics.SafeWidth * 0.30f), 340f);
+            if (contextualSelectionActive)
+            {
+                ApplyContextualSelection(metrics);
+            }
+            else
+            {
+                selectedPanel.anchorMin = selectedPanel.anchorMax = new Vector2(metrics.SafeMaxX, metrics.SafeMinY);
+                selectedPanel.pivot = new Vector2(1f, 0f);
+                selectedPanel.anchoredPosition = new Vector2(-18f, BottomContentHeight + 18f);
+                selectedPanel.sizeDelta = new Vector2(Mathf.Min(360f, metrics.SafeWidth * 0.30f), 340f);
+            }
+        }
+
+        public void SetContextualSelectionFromScreenPoint(Vector2 screenPoint, bool emptySlot)
+        {
+            if (!initialized || root == null) return;
+            if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(root, screenPoint, null, out Vector2 localPoint))
+                return;
+
+            contextualSelectionActive = true;
+            bool presentationChanged = contextualSelectionIsEmptySlot != emptySlot;
+            bool targetMoved = (contextualTarget - localPoint).sqrMagnitude > 0.25f;
+            contextualSelectionIsEmptySlot = emptySlot;
+            contextualTarget = localPoint;
+            if (!presentationChanged && !targetMoved && selectedPanel.gameObject.activeSelf) return;
+            Apply(false);
+        }
+
+        public void ClearContextualSelection()
+        {
+            contextualSelectionActive = false;
+        }
+
+        public void RefreshLayout()
+        {
+            if (initialized) Apply(false);
+        }
+
+        private void ApplyContextualSelection(LayoutMetrics metrics)
+        {
+            Vector2 panelSize = contextualSelectionIsEmptySlot
+                ? new Vector2(Mathf.Min(620f, metrics.SafeWidth - 36f), 210f)
+                : new Vector2(Mathf.Min(380f, metrics.SafeWidth - 36f), 340f);
+            float verticalGap = 42f;
+            Vector2 desired = contextualTarget + Vector2.up * (panelSize.y * 0.5f + verticalGap);
+
+            float rootSafeTop = root.rect.yMin + metrics.SafeMaxY * root.rect.height - TopContentHeight - 12f;
+            if (desired.y + panelSize.y * 0.5f > rootSafeTop)
+                desired.y = contextualTarget.y - panelSize.y * 0.5f - verticalGap;
+
+            selectedPanel.anchorMin = selectedPanel.anchorMax = new Vector2(0.5f, 0.5f);
+            selectedPanel.pivot = new Vector2(0.5f, 0.5f);
+            selectedPanel.sizeDelta = panelSize;
+            selectedPanel.anchoredPosition = ClampContextPanelPosition(desired, panelSize, root.rect.size, metrics);
+        }
+
+        public static Vector2 ClampContextPanelPosition(Vector2 desired, Vector2 panelSize, Vector2 rootSize,
+            LayoutMetrics metrics)
+        {
+            float rootMinX = -rootSize.x * 0.5f;
+            float rootMinY = -rootSize.y * 0.5f;
+            float minX = rootMinX + metrics.SafeMinX * rootSize.x + panelSize.x * 0.5f + 12f;
+            float maxX = rootMinX + metrics.SafeMaxX * rootSize.x - panelSize.x * 0.5f - 12f;
+            float minY = rootMinY + metrics.SafeMinY * rootSize.y + BottomContentHeight + panelSize.y * 0.5f + 12f;
+            float maxY = rootMinY + metrics.SafeMaxY * rootSize.y - TopContentHeight - panelSize.y * 0.5f - 12f;
+            return new Vector2(Mathf.Clamp(desired.x, minX, Mathf.Max(minX, maxX)),
+                Mathf.Clamp(desired.y, minY, Mathf.Max(minY, maxY)));
         }
 
         public static LayoutMetrics CalculateLayoutMetrics(Vector2 rootSize, Rect safeArea, Vector2Int screenSize)
@@ -183,23 +249,30 @@ namespace DefenderChronicles.Presentation
 
         private void LayoutBottomContent()
         {
-            SetButtonRange(RequireRect(bottomContent, "Archer"), 0.055f, 0.175f);
-            SetButtonRange(RequireRect(bottomContent, "Barracks"), 0.18f, 0.30f);
-            SetButtonRange(RequireRect(bottomContent, "Mage"), 0.305f, 0.425f);
-            SetButtonRange(RequireRect(bottomContent, "Ability"), 0.44f, 0.575f);
-            SetButtonRange(RequireRect(bottomContent, "Cancel"), 0.585f, 0.665f);
+            RectTransform archer = FindOptionalRect(bottomContent, "Archer");
+            RectTransform barracks = FindOptionalRect(bottomContent, "Barracks");
+            RectTransform mage = FindOptionalRect(bottomContent, "Mage");
+            bool contextualBuildMenu = archer == null && barracks == null && mage == null;
+            if (archer != null) SetButtonRange(archer, 0.055f, 0.175f);
+            if (barracks != null) SetButtonRange(barracks, 0.18f, 0.30f);
+            if (mage != null) SetButtonRange(mage, 0.305f, 0.425f);
+            SetButtonRange(RequireRect(bottomContent, "Ability"), contextualBuildMenu ? 0.055f : 0.44f,
+                contextualBuildMenu ? 0.205f : 0.575f);
+            SetButtonRange(RequireRect(bottomContent, "Cancel"), contextualBuildMenu ? 0.215f : 0.585f,
+                contextualBuildMenu ? 0.305f : 0.665f);
             SetButtonRange(RequireRect(bottomContent, "NextWave"), 0.73f, 0.965f);
 
             RectTransform buildDeck = FindOptionalRect(bottomContent, "BuildDeck");
             if (buildDeck != null) SetRange(buildDeck, 0.045f, 0.435f, 3f, 3f);
             RectTransform heroDeck = FindOptionalRect(bottomContent, "HeroDeck");
-            if (heroDeck != null) SetRange(heroDeck, 0.435f, 0.68f, 3f, 3f);
+            if (heroDeck != null) SetRange(heroDeck, contextualBuildMenu ? 0.045f : 0.435f,
+                contextualBuildMenu ? 0.32f : 0.68f, 3f, 3f);
             RectTransform commandDeck = FindOptionalRect(bottomContent, "CommandDeck");
             if (commandDeck != null) SetRange(commandDeck, 0.70f, 0.975f, 3f, 3f);
 
             RectTransform hero = RequireRect(bottomContent, "Hero");
-            hero.anchorMin = new Vector2(0.44f, 0f);
-            hero.anchorMax = new Vector2(0.675f, 0f);
+            hero.anchorMin = new Vector2(contextualBuildMenu ? 0.055f : 0.44f, 0f);
+            hero.anchorMax = new Vector2(contextualBuildMenu ? 0.315f : 0.675f, 0f);
             hero.pivot = Vector2.zero;
             hero.offsetMin = new Vector2(8f, 3f);
             hero.offsetMax = new Vector2(-8f, 27f);

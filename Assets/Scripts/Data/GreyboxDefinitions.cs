@@ -27,6 +27,7 @@ namespace DefenderChronicles.Data
         [Min(1)] public int count = 1;
         [Min(0f)] public float startDelay;
         [Min(0.1f)] public float interval = 0.8f;
+        public int routeId;
 
         public SpawnGroupDefinition() { }
 
@@ -36,6 +37,13 @@ namespace DefenderChronicles.Data
             this.count = Mathf.Max(1, count);
             this.startDelay = Mathf.Max(0f, startDelay);
             this.interval = Mathf.Max(0.1f, interval);
+            routeId = 0;
+        }
+
+        public SpawnGroupDefinition(EnemyArchetype enemy, int count, float startDelay, float interval, int routeId)
+            : this(enemy, count, startDelay, interval)
+        {
+            this.routeId = Mathf.Max(0, routeId);
         }
     }
 

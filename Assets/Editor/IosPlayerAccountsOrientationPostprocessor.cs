@@ -46,16 +46,29 @@ namespace DefenderChronicles.Editor
 
         private static void ReplacePlayerAccountsSafariView(string outputPath)
         {
-            string safariViewPath = Path.Combine(outputPath, "Libraries/com.unity.services.authentication/Player Accounts/Runtime/Plugins/IOS/SafariView.mm");
+            const string relativeRoot = "Libraries/com.unity.services.authentication/Player Accounts/Runtime/Plugins/IOS/SafariView";
+            // Current SDKs use ASWebAuthenticationSession with a native OAuth callback.
+            // Keep that source intact; replacing it with the legacy browser drops its callback API.
+            if (File.Exists(Path.Combine(outputPath, relativeRoot + ".m"))) return;
+            string safariViewPath = Path.Combine(outputPath, relativeRoot + ".mm");
             if (!File.Exists(safariViewPath))
-                throw new BuildFailedException($"Player Accounts SafariView.mm was not generated: {safariViewPath}");
+                throw new BuildFailedException($"Player Accounts SafariView source was not generated: {safariViewPath}");
 
             File.WriteAllText(safariViewPath, SafariViewSource);
+            string projectPath = PBXProject.GetPBXProjectPath(outputPath);
+            var project = new PBXProject();
+            project.ReadFromFile(projectPath);
+            project.AddFrameworkToProject(project.GetUnityFrameworkTargetGuid(), "SafariServices.framework", false);
+            project.WriteToFile(projectPath);
         }
 
         private const string SafariViewSource = @"#import <SafariServices/SafariServices.h>
 
+#ifdef __cplusplus
+extern ""C"" UIViewController* UnityGetGLViewController();
+#else
 extern UIViewController* UnityGetGLViewController();
+#endif
 extern NSInteger _forceInterfaceOrientationMask;
 
 static void DCRestoreUnityOrientation(UIViewController *unityViewController)
@@ -99,8 +112,9 @@ static void DCRestoreUnityOrientation(UIViewController *unityViewController)
 }
 @end
 
-extern ""C""
-{
+#ifdef __cplusplus
+extern ""C"" {
+#endif
     void launchUnityPlayerAccountUrl(const char *url)
     {
         UIViewController *uvc = UnityGetGLViewController();
@@ -118,7 +132,9 @@ extern ""C""
             DCRestoreUnityOrientation(uvc);
         }];
     }
+#ifdef __cplusplus
 }
+#endif
 ";
     }
 }

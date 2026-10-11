@@ -20,6 +20,9 @@ namespace DefenderChronicles.Data
         public int valorReward;
         public int heroXpReward;
         public bool isBoss;
+        public string mapId;
+        // Kept as a compatibility shim for older editor acceptance tests; runtime uses mapId.
+        [Obsolete("Use mapId and CampaignLevelFactory.Map instead.")]
         public int pathPreset;
     }
 
@@ -120,6 +123,7 @@ namespace DefenderChronicles.Data
                         valorReward = 12 + regionIndex * 4 + localIndex * 2 + (localIndex == 9 ? 25 : 0),
                         heroXpReward = 60 + number * 8 + (localIndex == 9 ? 100 : 0),
                         isBoss = localIndex == 9,
+                        mapId = $"map-{number:00}",
                         pathPreset = (regionIndex + localIndex) % 5
                     });
                 }

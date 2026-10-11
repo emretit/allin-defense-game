@@ -1,0 +1,3849 @@
+[
+  {
+    "level": 1,
+    "waves": 3,
+    "enemies": 21,
+    "hp": 1575,
+    "startGold": 230,
+    "maxTotalGold": 515,
+    "spawnOnlySecondsAt1x": 8.7,
+    "advertisedMinutes": 4,
+    "pathLength": 42.0,
+    "noNormalBlockSlots": [
+      3,
+      6,
+      8
+    ],
+    "noNormalGuardAttackSlots": [
+      3
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          1.5671949463930772,
+          0.3899999999999999
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          1.1597413504743206,
+          2.00561673307742
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          2.155226206225231,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          0.35341284640063625,
+          0.35341284640063625
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          0.2343065684129234,
+          1.3881270431777626
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          1.3583077707206126,
+          1.3583077707206126
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          2.354782367863323,
+          1.1597413504743206
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          1.3583077707206122,
+          1.3583077707206122
+        ]
+      }
+    ]
+  },
+  {
+    "level": 2,
+    "waves": 3,
+    "enemies": 26,
+    "hp": 2348,
+    "startGold": 230,
+    "maxTotalGold": 595,
+    "spawnOnlySecondsAt1x": 11.8,
+    "advertisedMinutes": 4,
+    "pathLength": 46.5,
+    "noNormalBlockSlots": [
+      3,
+      4,
+      7
+    ],
+    "noNormalGuardAttackSlots": [
+      3,
+      7
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          0.9914131328563285,
+          0.9914131328563285
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          0.1526968604250924,
+          0.1526968604250924
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          2.155226206225231,
+          2.1729722139155396
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          1.408931691976584,
+          1.3583077707206126
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          1.3341745958019726,
+          0.19571512992959914
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          0.7914847654130814,
+          0.7914847654130814
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          2.1053503271427294,
+          2.1053503271427294
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          2.354782367863325,
+          1.1597413504743188
+        ]
+      }
+    ]
+  },
+  {
+    "level": 3,
+    "waves": 4,
+    "enemies": 45,
+    "hp": 4430,
+    "startGold": 225,
+    "maxTotalGold": 861,
+    "spawnOnlySecondsAt1x": 19.6,
+    "advertisedMinutes": 4,
+    "pathLength": 49.5,
+    "noNormalBlockSlots": [
+      1,
+      5,
+      7
+    ],
+    "noNormalGuardAttackSlots": [
+      1,
+      5
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          2.155226206225231,
+          2.2218460792773205
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          2.3547823678633235,
+          1.1597413504743201
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          0.6073853794618373,
+          0.6073853794618373
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          0.15453026386116095,
+          0.15453026386116095
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          2.155226206225231,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          2.354782367863323,
+          1.1597413504743206
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          2.155226206225231,
+          1.2235149323960417
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          1.1597413504743188,
+          1.5472865863833614
+        ]
+      }
+    ]
+  },
+  {
+    "level": 4,
+    "waves": 4,
+    "enemies": 53,
+    "hp": 6778,
+    "startGold": 225,
+    "maxTotalGold": 1070,
+    "spawnOnlySecondsAt1x": 25.1,
+    "advertisedMinutes": 4.5,
+    "pathLength": 46.0,
+    "noNormalBlockSlots": [
+      3
+    ],
+    "noNormalGuardAttackSlots": [
+      3
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          2.0854016399725017,
+          0.8926925562588722
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          1.1597413504743206,
+          2.354782367863323
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          2.1053503271427294,
+          2.1053503271427294
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          0.6212379274070444,
+          0.6212379274070444
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          0.9095961761088499,
+          2.1025003980004002
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          0.17566871121767358,
+          0.17566871121767358
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          1.8916705024385194,
+          0.9265089798787676
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          0.9124143795447316,
+          2.105350327142731
+        ]
+      }
+    ]
+  },
+  {
+    "level": 5,
+    "waves": 5,
+    "enemies": 77,
+    "hp": 9533,
+    "startGold": 225,
+    "maxTotalGold": 1405,
+    "spawnOnlySecondsAt1x": 34.7,
+    "advertisedMinutes": 4.5,
+    "pathLength": 49.0,
+    "noNormalBlockSlots": [
+      2
+    ],
+    "noNormalGuardAttackSlots": [],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          1.1597413504743201,
+          2.354782367863323
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          1.3583077707206126,
+          1.3583077707206126
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          2.354782367863323,
+          1.1597413504743206
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          0.2830194339616983,
+          1.3583077707206122
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          1.1597413504743206,
+          2.354782367863323
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          2.354782367863323,
+          1.1597413504743206
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          0.8139410298049861,
+          0.42720018726587855
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          0.15132732734374188,
+          0.15132732734374188
+        ]
+      }
+    ]
+  },
+  {
+    "level": 6,
+    "waves": 5,
+    "enemies": 89,
+    "hp": 11946,
+    "startGold": 220,
+    "maxTotalGold": 1657,
+    "spawnOnlySecondsAt1x": 43.9,
+    "advertisedMinutes": 4.5,
+    "pathLength": 42.0,
+    "noNormalBlockSlots": [
+      3,
+      6,
+      8
+    ],
+    "noNormalGuardAttackSlots": [
+      3
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          1.5671949463930772,
+          0.3899999999999999
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          1.1597413504743206,
+          2.00561673307742
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          2.155226206225231,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          0.35341284640063625,
+          0.35341284640063625
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          0.2343065684129234,
+          1.3881270431777626
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          1.3583077707206126,
+          1.3583077707206126
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          2.354782367863323,
+          1.1597413504743206
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          1.3583077707206122,
+          1.3583077707206122
+        ]
+      }
+    ]
+  },
+  {
+    "level": 7,
+    "waves": 6,
+    "enemies": 116,
+    "hp": 14968,
+    "startGold": 220,
+    "maxTotalGold": 2007,
+    "spawnOnlySecondsAt1x": 52.9,
+    "advertisedMinutes": 4.5,
+    "pathLength": 46.5,
+    "noNormalBlockSlots": [
+      3,
+      4,
+      7
+    ],
+    "noNormalGuardAttackSlots": [
+      3,
+      7
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          0.9914131328563285,
+          0.9914131328563285
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          0.1526968604250924,
+          0.1526968604250924
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          2.155226206225231,
+          2.1729722139155396
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          1.408931691976584,
+          1.3583077707206126
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          1.3341745958019726,
+          0.19571512992959914
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          0.7914847654130814,
+          0.7914847654130814
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          2.1053503271427294,
+          2.1053503271427294
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          2.354782367863325,
+          1.1597413504743188
+        ]
+      }
+    ]
+  },
+  {
+    "level": 8,
+    "waves": 6,
+    "enemies": 126,
+    "hp": 18488,
+    "startGold": 220,
+    "maxTotalGold": 2381,
+    "spawnOnlySecondsAt1x": 59.5,
+    "advertisedMinutes": 5,
+    "pathLength": 49.5,
+    "noNormalBlockSlots": [
+      1,
+      5,
+      7
+    ],
+    "noNormalGuardAttackSlots": [
+      1,
+      5
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          2.155226206225231,
+          2.2218460792773205
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          2.3547823678633235,
+          1.1597413504743201
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          0.6073853794618373,
+          0.6073853794618373
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          0.15453026386116095,
+          0.15453026386116095
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          2.155226206225231,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          2.354782367863323,
+          1.1597413504743206
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          2.155226206225231,
+          1.2235149323960417
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          1.1597413504743188,
+          1.5472865863833614
+        ]
+      }
+    ]
+  },
+  {
+    "level": 9,
+    "waves": 7,
+    "enemies": 166,
+    "hp": 24668,
+    "startGold": 220,
+    "maxTotalGold": 3009,
+    "spawnOnlySecondsAt1x": 74.5,
+    "advertisedMinutes": 5,
+    "pathLength": 46.0,
+    "noNormalBlockSlots": [
+      3
+    ],
+    "noNormalGuardAttackSlots": [
+      3
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          2.0854016399725017,
+          0.8926925562588722
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          1.1597413504743206,
+          2.354782367863323
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          2.1053503271427294,
+          2.1053503271427294
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          0.6212379274070444,
+          0.6212379274070444
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          0.9095961761088499,
+          2.1025003980004002
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          0.17566871121767358,
+          0.17566871121767358
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          1.8916705024385194,
+          0.9265089798787676
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          0.9124143795447316,
+          2.105350327142731
+        ]
+      }
+    ]
+  },
+  {
+    "level": 10,
+    "waves": 7,
+    "enemies": 119,
+    "hp": 28668,
+    "startGold": 200,
+    "maxTotalGold": 3156,
+    "spawnOnlySecondsAt1x": 59.5,
+    "advertisedMinutes": 5,
+    "pathLength": 42.0,
+    "noNormalBlockSlots": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "noNormalGuardAttackSlots": [
+      1,
+      3,
+      4,
+      5,
+      8
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          1.6070158679988198,
+          1.6070158679988198
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          2.6043233286210836,
+          1.4080127840328722
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          1.6070158679988193,
+          1.6070158679988193
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          2.903876719146321,
+          2.903876719146321
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          1.9059118552545917,
+          1.9059118552545917
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          2.604323328621083,
+          1.4080127840328727
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          1.408012784032871,
+          1.806239186818844
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          2.604323328621083,
+          2.604323328621083
+        ]
+      }
+    ]
+  },
+  {
+    "level": 11,
+    "waves": 4,
+    "enemies": 52,
+    "hp": 9173,
+    "startGold": 215,
+    "maxTotalGold": 1252,
+    "spawnOnlySecondsAt1x": 29.3,
+    "advertisedMinutes": 5,
+    "pathLength": 46.5,
+    "noNormalBlockSlots": [
+      5
+    ],
+    "noNormalGuardAttackSlots": [
+      5
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          1.1597413504743206,
+          2.354782367863323
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          2.3547823678633235,
+          1.1597413504743201
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          0.9349679365887363,
+          0.31513210317103574
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          0.4032226589069612,
+          0.8392299521918887
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          2.155226206225231,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          2.354782367863323,
+          1.1597413504743206
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          1.735066063554931,
+          0.5494417575139319
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          0.23430902672325707,
+          0.23430902672325707
+        ]
+      }
+    ]
+  },
+  {
+    "level": 12,
+    "waves": 4,
+    "enemies": 56,
+    "hp": 9841,
+    "startGold": 215,
+    "maxTotalGold": 1307,
+    "spawnOnlySecondsAt1x": 30.6,
+    "advertisedMinutes": 5.5,
+    "pathLength": 49.5,
+    "noNormalBlockSlots": [
+      7
+    ],
+    "noNormalGuardAttackSlots": [
+      7
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          0.6768308503607088,
+          0.5604462507680822
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          0.2615692829748933,
+          0.2615692829748933
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          1.1788561401562112,
+          2.364255019913038
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          2.354782367863323,
+          1.1597413504743206
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          1.6696084585120208,
+          0.48655557209314715
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          1.1597413504743188,
+          1.7948469267945941
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          2.155226206225231,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          2.354782367863325,
+          1.1597413504743188
+        ]
+      }
+    ]
+  },
+  {
+    "level": 13,
+    "waves": 5,
+    "enemies": 83,
+    "hp": 14244,
+    "startGold": 210,
+    "maxTotalGold": 1753,
+    "spawnOnlySecondsAt1x": 41.7,
+    "advertisedMinutes": 5.5,
+    "pathLength": 46.0,
+    "noNormalBlockSlots": [
+      1,
+      3,
+      5,
+      7
+    ],
+    "noNormalGuardAttackSlots": [
+      1,
+      5,
+      7
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          2.155226206225231,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          2.3547823678633235,
+          1.1597413504743201
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          1.4165359185948743,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          1.1597413504743206,
+          2.354782367863323
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          2.155226206225231,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          1.1597413504743188,
+          1.6568041525780877
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          2.1053503271427294,
+          2.1053503271427294
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          1.6587344351644138,
+          1.1597413504743188
+        ]
+      }
+    ]
+  },
+  {
+    "level": 14,
+    "waves": 5,
+    "enemies": 90,
+    "hp": 16380,
+    "startGold": 210,
+    "maxTotalGold": 1903,
+    "spawnOnlySecondsAt1x": 44.7,
+    "advertisedMinutes": 5.5,
+    "pathLength": 49.0,
+    "noNormalBlockSlots": [
+      2,
+      4,
+      7
+    ],
+    "noNormalGuardAttackSlots": [
+      7
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          1.7863086850822094,
+          1.1597413504743201
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          1.3583077707206122,
+          1.3583077707206122
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          1.1597413504743206,
+          2.354782367863323
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          1.3583077707206126,
+          1.3583077707206126
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          1.0705604522865688,
+          1.0705604522865688
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          0.40853708963971624,
+          0.40853708963971624
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          2.155226206225231,
+          2.192031021678298
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          2.354782367863325,
+          1.1597413504743188
+        ]
+      }
+    ]
+  },
+  {
+    "level": 15,
+    "waves": 6,
+    "enemies": 120,
+    "hp": 21414,
+    "startGold": 210,
+    "maxTotalGold": 2435,
+    "spawnOnlySecondsAt1x": 56.9,
+    "advertisedMinutes": 5.5,
+    "pathLength": 42.0,
+    "noNormalBlockSlots": [
+      1,
+      3,
+      5,
+      8
+    ],
+    "noNormalGuardAttackSlots": [
+      1,
+      3,
+      5
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          2.1053503271427294,
+          2.1053503271427294
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          2.3547823678633235,
+          1.1597413504743201
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          1.5671949463930777,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          1.1597413504743206,
+          2.354782367863323
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          2.155226206225231,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          1.2688950736780447,
+          0.16155416430538116
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          1.1597413504743188,
+          2.0056155862982177
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          1.3583077707206126,
+          1.3583077707206126
+        ]
+      }
+    ]
+  },
+  {
+    "level": 16,
+    "waves": 6,
+    "enemies": 129,
+    "hp": 23694,
+    "startGold": 205,
+    "maxTotalGold": 2595,
+    "spawnOnlySecondsAt1x": 60.2,
+    "advertisedMinutes": 6,
+    "pathLength": 46.5,
+    "noNormalBlockSlots": [
+      5
+    ],
+    "noNormalGuardAttackSlots": [
+      5
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          1.1597413504743206,
+          2.354782367863323
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          2.3547823678633235,
+          1.1597413504743201
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          0.9349679365887363,
+          0.31513210317103574
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          0.4032226589069612,
+          0.8392299521918887
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          2.155226206225231,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          2.354782367863323,
+          1.1597413504743206
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          1.735066063554931,
+          0.5494417575139319
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          0.23430902672325707,
+          0.23430902672325707
+        ]
+      }
+    ]
+  },
+  {
+    "level": 17,
+    "waves": 7,
+    "enemies": 166,
+    "hp": 30045,
+    "startGold": 205,
+    "maxTotalGold": 3180,
+    "spawnOnlySecondsAt1x": 73.1,
+    "advertisedMinutes": 6,
+    "pathLength": 49.5,
+    "noNormalBlockSlots": [
+      7
+    ],
+    "noNormalGuardAttackSlots": [
+      7
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          0.6768308503607088,
+          0.5604462507680822
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          0.2615692829748933,
+          0.2615692829748933
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          1.1788561401562112,
+          2.364255019913038
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          2.354782367863323,
+          1.1597413504743206
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          1.6696084585120208,
+          0.48655557209314715
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          1.1597413504743188,
+          1.7948469267945941
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          2.155226206225231,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          2.354782367863325,
+          1.1597413504743188
+        ]
+      }
+    ]
+  },
+  {
+    "level": 18,
+    "waves": 7,
+    "enemies": 175,
+    "hp": 32806,
+    "startGold": 205,
+    "maxTotalGold": 3359,
+    "spawnOnlySecondsAt1x": 76.1,
+    "advertisedMinutes": 6,
+    "pathLength": 46.0,
+    "noNormalBlockSlots": [
+      1,
+      3,
+      5,
+      7
+    ],
+    "noNormalGuardAttackSlots": [
+      1,
+      5,
+      7
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          2.155226206225231,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          2.3547823678633235,
+          1.1597413504743201
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          1.4165359185948743,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          1.1597413504743206,
+          2.354782367863323
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          2.155226206225231,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          1.1597413504743188,
+          1.6568041525780877
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          2.1053503271427294,
+          2.1053503271427294
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          1.6587344351644138,
+          1.1597413504743188
+        ]
+      }
+    ]
+  },
+  {
+    "level": 19,
+    "waves": 8,
+    "enemies": 216,
+    "hp": 39834,
+    "startGold": 200,
+    "maxTotalGold": 3988,
+    "spawnOnlySecondsAt1x": 88.5,
+    "advertisedMinutes": 6,
+    "pathLength": 49.0,
+    "noNormalBlockSlots": [
+      2,
+      4,
+      7
+    ],
+    "noNormalGuardAttackSlots": [
+      7
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          1.7863086850822094,
+          1.1597413504743201
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          1.3583077707206122,
+          1.3583077707206122
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          1.1597413504743206,
+          2.354782367863323
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          1.3583077707206126,
+          1.3583077707206126
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          1.0705604522865688,
+          1.0705604522865688
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          0.40853708963971624,
+          0.40853708963971624
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          2.155226206225231,
+          2.192031021678298
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          2.354782367863325,
+          1.1597413504743188
+        ]
+      }
+    ]
+  },
+  {
+    "level": 20,
+    "waves": 9,
+    "enemies": 267,
+    "hp": 54161,
+    "startGold": 200,
+    "maxTotalGold": 5327,
+    "spawnOnlySecondsAt1x": 107.9,
+    "advertisedMinutes": 6.5,
+    "pathLength": 42.0,
+    "noNormalBlockSlots": [
+      1,
+      3,
+      5,
+      8
+    ],
+    "noNormalGuardAttackSlots": [
+      1,
+      3,
+      5
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          2.1053503271427294,
+          2.1053503271427294
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          2.3547823678633235,
+          1.1597413504743201
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          1.5671949463930777,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          1.1597413504743206,
+          2.354782367863323
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          2.155226206225231,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          1.2688950736780447,
+          0.16155416430538116
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          1.1597413504743188,
+          2.0056155862982177
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          1.3583077707206126,
+          1.3583077707206126
+        ]
+      }
+    ]
+  },
+  {
+    "level": 21,
+    "waves": 5,
+    "enemies": 86,
+    "hp": 18709,
+    "startGold": 200,
+    "maxTotalGold": 2060,
+    "spawnOnlySecondsAt1x": 44.5,
+    "advertisedMinutes": 6.5,
+    "pathLength": 49.5,
+    "noNormalBlockSlots": [
+      1,
+      5,
+      7
+    ],
+    "noNormalGuardAttackSlots": [
+      1,
+      5
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          2.155226206225231,
+          2.2218460792773205
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          2.3547823678633235,
+          1.1597413504743201
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          0.6073853794618373,
+          0.6073853794618373
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          0.15453026386116095,
+          0.15453026386116095
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          2.155226206225231,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          2.354782367863323,
+          1.1597413504743206
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          2.155226206225231,
+          1.2235149323960417
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          1.1597413504743188,
+          1.5472865863833614
+        ]
+      }
+    ]
+  },
+  {
+    "level": 22,
+    "waves": 5,
+    "enemies": 91,
+    "hp": 19770,
+    "startGold": 200,
+    "maxTotalGold": 2134,
+    "spawnOnlySecondsAt1x": 45.9,
+    "advertisedMinutes": 6.5,
+    "pathLength": 46.0,
+    "noNormalBlockSlots": [
+      3
+    ],
+    "noNormalGuardAttackSlots": [
+      3
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          2.0854016399725017,
+          0.8926925562588722
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          1.1597413504743206,
+          2.354782367863323
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          2.1053503271427294,
+          2.1053503271427294
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          0.6212379274070444,
+          0.6212379274070444
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          0.9095961761088499,
+          2.1025003980004002
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          0.17566871121767358,
+          0.17566871121767358
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          1.8916705024385194,
+          0.9265089798787676
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          0.9124143795447316,
+          2.105350327142731
+        ]
+      }
+    ]
+  },
+  {
+    "level": 23,
+    "waves": 6,
+    "enemies": 121,
+    "hp": 25180,
+    "startGold": 195,
+    "maxTotalGold": 2646,
+    "spawnOnlySecondsAt1x": 56.2,
+    "advertisedMinutes": 6.5,
+    "pathLength": 49.0,
+    "noNormalBlockSlots": [
+      2
+    ],
+    "noNormalGuardAttackSlots": [],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          1.1597413504743201,
+          2.354782367863323
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          1.3583077707206126,
+          1.3583077707206126
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          2.354782367863323,
+          1.1597413504743206
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          0.2830194339616983,
+          1.3583077707206122
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          1.1597413504743206,
+          2.354782367863323
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          2.354782367863323,
+          1.1597413504743206
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          0.8139410298049861,
+          0.42720018726587855
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          0.15132732734374188,
+          0.15132732734374188
+        ]
+      }
+    ]
+  },
+  {
+    "level": 24,
+    "waves": 6,
+    "enemies": 129,
+    "hp": 28036,
+    "startGold": 195,
+    "maxTotalGold": 2824,
+    "spawnOnlySecondsAt1x": 59.2,
+    "advertisedMinutes": 7,
+    "pathLength": 42.0,
+    "noNormalBlockSlots": [
+      3,
+      6,
+      8
+    ],
+    "noNormalGuardAttackSlots": [
+      3
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          1.5671949463930772,
+          0.3899999999999999
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          1.1597413504743206,
+          2.00561673307742
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          2.155226206225231,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          0.35341284640063625,
+          0.35341284640063625
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          0.2343065684129234,
+          1.3881270431777626
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          1.3583077707206126,
+          1.3583077707206126
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          2.354782367863323,
+          1.1597413504743206
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          1.3583077707206122,
+          1.3583077707206122
+        ]
+      }
+    ]
+  },
+  {
+    "level": 25,
+    "waves": 7,
+    "enemies": 169,
+    "hp": 37091,
+    "startGold": 195,
+    "maxTotalGold": 3602,
+    "spawnOnlySecondsAt1x": 75.1,
+    "advertisedMinutes": 7,
+    "pathLength": 46.5,
+    "noNormalBlockSlots": [
+      3,
+      4,
+      7
+    ],
+    "noNormalGuardAttackSlots": [
+      3,
+      7
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          0.9914131328563285,
+          0.9914131328563285
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          0.1526968604250924,
+          0.1526968604250924
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          2.155226206225231,
+          2.1729722139155396
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          1.408931691976584,
+          1.3583077707206126
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          1.3341745958019726,
+          0.19571512992959914
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          0.7914847654130814,
+          0.7914847654130814
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          2.1053503271427294,
+          2.1053503271427294
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          2.354782367863325,
+          1.1597413504743188
+        ]
+      }
+    ]
+  },
+  {
+    "level": 26,
+    "waves": 7,
+    "enemies": 180,
+    "hp": 40519,
+    "startGold": 190,
+    "maxTotalGold": 3805,
+    "spawnOnlySecondsAt1x": 79.0,
+    "advertisedMinutes": 7,
+    "pathLength": 49.5,
+    "noNormalBlockSlots": [
+      1,
+      5,
+      7
+    ],
+    "noNormalGuardAttackSlots": [
+      1,
+      5
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          2.155226206225231,
+          2.2218460792773205
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          2.3547823678633235,
+          1.1597413504743201
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          0.6073853794618373,
+          0.6073853794618373
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          0.15453026386116095,
+          0.15453026386116095
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          2.155226206225231,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          2.354782367863323,
+          1.1597413504743206
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          2.155226206225231,
+          1.2235149323960417
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          1.1597413504743188,
+          1.5472865863833614
+        ]
+      }
+    ]
+  },
+  {
+    "level": 27,
+    "waves": 8,
+    "enemies": 217,
+    "hp": 46913,
+    "startGold": 190,
+    "maxTotalGold": 4413,
+    "spawnOnlySecondsAt1x": 88.5,
+    "advertisedMinutes": 7,
+    "pathLength": 46.0,
+    "noNormalBlockSlots": [
+      3
+    ],
+    "noNormalGuardAttackSlots": [
+      3
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          2.0854016399725017,
+          0.8926925562588722
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          1.1597413504743206,
+          2.354782367863323
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          2.1053503271427294,
+          2.1053503271427294
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          0.6212379274070444,
+          0.6212379274070444
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          0.9095961761088499,
+          2.1025003980004002
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          0.17566871121767358,
+          0.17566871121767358
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          1.8916705024385194,
+          0.9265089798787676
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          0.9124143795447316,
+          2.105350327142731
+        ]
+      }
+    ]
+  },
+  {
+    "level": 28,
+    "waves": 8,
+    "enemies": 227,
+    "hp": 50451,
+    "startGold": 190,
+    "maxTotalGold": 4623,
+    "spawnOnlySecondsAt1x": 91.4,
+    "advertisedMinutes": 7.5,
+    "pathLength": 49.0,
+    "noNormalBlockSlots": [
+      2
+    ],
+    "noNormalGuardAttackSlots": [],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          1.1597413504743201,
+          2.354782367863323
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          1.3583077707206126,
+          1.3583077707206126
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          2.354782367863323,
+          1.1597413504743206
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          0.2830194339616983,
+          1.3583077707206122
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          1.1597413504743206,
+          2.354782367863323
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          2.354782367863323,
+          1.1597413504743206
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          0.8139410298049861,
+          0.42720018726587855
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          0.15132732734374188,
+          0.15132732734374188
+        ]
+      }
+    ]
+  },
+  {
+    "level": 29,
+    "waves": 9,
+    "enemies": 280,
+    "hp": 62934,
+    "startGold": 185,
+    "maxTotalGold": 5577,
+    "spawnOnlySecondsAt1x": 108.1,
+    "advertisedMinutes": 7.5,
+    "pathLength": 42.0,
+    "noNormalBlockSlots": [
+      3,
+      6,
+      8
+    ],
+    "noNormalGuardAttackSlots": [
+      3
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          1.5671949463930772,
+          0.3899999999999999
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          1.1597413504743206,
+          2.00561673307742
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          2.155226206225231,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          0.35341284640063625,
+          0.35341284640063625
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          0.2343065684129234,
+          1.3881270431777626
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          1.3583077707206126,
+          1.3583077707206126
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          2.354782367863323,
+          1.1597413504743206
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          1.3583077707206122,
+          1.3583077707206122
+        ]
+      }
+    ]
+  },
+  {
+    "level": 30,
+    "waves": 10,
+    "enemies": 331,
+    "hp": 78764,
+    "startGold": 185,
+    "maxTotalGold": 6726,
+    "spawnOnlySecondsAt1x": 123.7,
+    "advertisedMinutes": 7.5,
+    "pathLength": 46.5,
+    "noNormalBlockSlots": [
+      3,
+      4,
+      7
+    ],
+    "noNormalGuardAttackSlots": [
+      3,
+      7
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          0.9914131328563285,
+          0.9914131328563285
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          0.1526968604250924,
+          0.1526968604250924
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          2.155226206225231,
+          2.1729722139155396
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          1.408931691976584,
+          1.3583077707206126
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          1.3341745958019726,
+          0.19571512992959914
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          0.7914847654130814,
+          0.7914847654130814
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          2.1053503271427294,
+          2.1053503271427294
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          2.354782367863325,
+          1.1597413504743188
+        ]
+      }
+    ]
+  },
+  {
+    "level": 31,
+    "waves": 6,
+    "enemies": 123,
+    "hp": 30863,
+    "startGold": 185,
+    "maxTotalGold": 2863,
+    "spawnOnlySecondsAt1x": 56.7,
+    "advertisedMinutes": 7.5,
+    "pathLength": 46.0,
+    "noNormalBlockSlots": [
+      1,
+      3,
+      5,
+      7
+    ],
+    "noNormalGuardAttackSlots": [
+      1,
+      5,
+      7
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          2.155226206225231,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          2.3547823678633235,
+          1.1597413504743201
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          1.4165359185948743,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          1.1597413504743206,
+          2.354782367863323
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          2.155226206225231,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          1.1597413504743188,
+          1.6568041525780877
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          2.1053503271427294,
+          2.1053503271427294
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          1.6587344351644138,
+          1.1597413504743188
+        ]
+      }
+    ]
+  },
+  {
+    "level": 32,
+    "waves": 6,
+    "enemies": 129,
+    "hp": 32369,
+    "startGold": 185,
+    "maxTotalGold": 3076,
+    "spawnOnlySecondsAt1x": 58.1,
+    "advertisedMinutes": 8,
+    "pathLength": 49.0,
+    "noNormalBlockSlots": [
+      2,
+      4,
+      7
+    ],
+    "noNormalGuardAttackSlots": [
+      7
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          1.7863086850822094,
+          1.1597413504743201
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          1.3583077707206122,
+          1.3583077707206122
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          1.1597413504743206,
+          2.354782367863323
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          1.3583077707206126,
+          1.3583077707206126
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          1.0705604522865688,
+          1.0705604522865688
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          0.40853708963971624,
+          0.40853708963971624
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          2.155226206225231,
+          2.192031021678298
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          2.354782367863325,
+          1.1597413504743188
+        ]
+      }
+    ]
+  },
+  {
+    "level": 33,
+    "waves": 7,
+    "enemies": 170,
+    "hp": 42591,
+    "startGold": 180,
+    "maxTotalGold": 3880,
+    "spawnOnlySecondsAt1x": 72.7,
+    "advertisedMinutes": 8,
+    "pathLength": 42.0,
+    "noNormalBlockSlots": [
+      1,
+      3,
+      5,
+      8
+    ],
+    "noNormalGuardAttackSlots": [
+      1,
+      3,
+      5
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          2.1053503271427294,
+          2.1053503271427294
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          2.3547823678633235,
+          1.1597413504743201
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          1.5671949463930777,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          1.1597413504743206,
+          2.354782367863323
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          2.155226206225231,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          1.2688950736780447,
+          0.16155416430538116
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          1.1597413504743188,
+          2.0056155862982177
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          1.3583077707206126,
+          1.3583077707206126
+        ]
+      }
+    ]
+  },
+  {
+    "level": 34,
+    "waves": 7,
+    "enemies": 179,
+    "hp": 46277,
+    "startGold": 180,
+    "maxTotalGold": 4083,
+    "spawnOnlySecondsAt1x": 75.6,
+    "advertisedMinutes": 8,
+    "pathLength": 46.5,
+    "noNormalBlockSlots": [
+      5
+    ],
+    "noNormalGuardAttackSlots": [
+      5
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          1.1597413504743206,
+          2.354782367863323
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          2.3547823678633235,
+          1.1597413504743201
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          0.9349679365887363,
+          0.31513210317103574
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          0.4032226589069612,
+          0.8392299521918887
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          2.155226206225231,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          2.354782367863323,
+          1.1597413504743206
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          1.735066063554931,
+          0.5494417575139319
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          0.23430902672325707,
+          0.23430902672325707
+        ]
+      }
+    ]
+  },
+  {
+    "level": 35,
+    "waves": 8,
+    "enemies": 219,
+    "hp": 55439,
+    "startGold": 180,
+    "maxTotalGold": 4870,
+    "spawnOnlySecondsAt1x": 88.2,
+    "advertisedMinutes": 8,
+    "pathLength": 49.5,
+    "noNormalBlockSlots": [
+      7
+    ],
+    "noNormalGuardAttackSlots": [
+      7
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          0.6768308503607088,
+          0.5604462507680822
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          0.2615692829748933,
+          0.2615692829748933
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          1.1788561401562112,
+          2.364255019913038
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          2.354782367863323,
+          1.1597413504743206
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          1.6696084585120208,
+          0.48655557209314715
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          1.1597413504743188,
+          1.7948469267945941
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          2.155226206225231,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          2.354782367863325,
+          1.1597413504743188
+        ]
+      }
+    ]
+  },
+  {
+    "level": 36,
+    "waves": 8,
+    "enemies": 231,
+    "hp": 59767,
+    "startGold": 175,
+    "maxTotalGold": 5106,
+    "spawnOnlySecondsAt1x": 91.9,
+    "advertisedMinutes": 8.5,
+    "pathLength": 46.0,
+    "noNormalBlockSlots": [
+      1,
+      3,
+      5,
+      7
+    ],
+    "noNormalGuardAttackSlots": [
+      1,
+      5,
+      7
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          2.155226206225231,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          2.3547823678633235,
+          1.1597413504743201
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          1.4165359185948743,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          1.1597413504743206,
+          2.354782367863323
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          2.155226206225231,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          1.1597413504743188,
+          1.6568041525780877
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          2.1053503271427294,
+          2.1053503271427294
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          1.6587344351644138,
+          1.1597413504743188
+        ]
+      }
+    ]
+  },
+  {
+    "level": 37,
+    "waves": 9,
+    "enemies": 280,
+    "hp": 71843,
+    "startGold": 175,
+    "maxTotalGold": 6011,
+    "spawnOnlySecondsAt1x": 105.8,
+    "advertisedMinutes": 8.5,
+    "pathLength": 49.0,
+    "noNormalBlockSlots": [
+      2,
+      4,
+      7
+    ],
+    "noNormalGuardAttackSlots": [
+      7
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          1.7863086850822094,
+          1.1597413504743201
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          1.3583077707206122,
+          1.3583077707206122
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          1.1597413504743206,
+          2.354782367863323
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          1.3583077707206126,
+          1.3583077707206126
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          1.0705604522865688,
+          1.0705604522865688
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          0.40853708963971624,
+          0.40853708963971624
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          2.155226206225231,
+          2.192031021678298
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          2.354782367863325,
+          1.1597413504743188
+        ]
+      }
+    ]
+  },
+  {
+    "level": 38,
+    "waves": 9,
+    "enemies": 291,
+    "hp": 76268,
+    "startGold": 175,
+    "maxTotalGold": 6285,
+    "spawnOnlySecondsAt1x": 108.4,
+    "advertisedMinutes": 8.5,
+    "pathLength": 42.0,
+    "noNormalBlockSlots": [
+      1,
+      3,
+      5,
+      8
+    ],
+    "noNormalGuardAttackSlots": [
+      1,
+      3,
+      5
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          2.1053503271427294,
+          2.1053503271427294
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          2.3547823678633235,
+          1.1597413504743201
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          1.5671949463930777,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          1.1597413504743206,
+          2.354782367863323
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          2.155226206225231,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          1.2688950736780447,
+          0.16155416430538116
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          1.1597413504743188,
+          2.0056155862982177
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          1.3583077707206126,
+          1.3583077707206126
+        ]
+      }
+    ]
+  },
+  {
+    "level": 39,
+    "waves": 10,
+    "enemies": 344,
+    "hp": 89258,
+    "startGold": 170,
+    "maxTotalGold": 7250,
+    "spawnOnlySecondsAt1x": 121.4,
+    "advertisedMinutes": 8.5,
+    "pathLength": 46.5,
+    "noNormalBlockSlots": [
+      5
+    ],
+    "noNormalGuardAttackSlots": [
+      5
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          1.1597413504743206,
+          2.354782367863323
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          2.3547823678633235,
+          1.1597413504743201
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          0.9349679365887363,
+          0.31513210317103574
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          0.4032226589069612,
+          0.8392299521918887
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          2.155226206225231,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          2.354782367863323,
+          1.1597413504743206
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          1.735066063554931,
+          0.5494417575139319
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          0.23430902672325707,
+          0.23430902672325707
+        ]
+      }
+    ]
+  },
+  {
+    "level": 40,
+    "waves": 11,
+    "enemies": 408,
+    "hp": 113061,
+    "startGold": 170,
+    "maxTotalGold": 8810,
+    "spawnOnlySecondsAt1x": 142.5,
+    "advertisedMinutes": 9,
+    "pathLength": 49.5,
+    "noNormalBlockSlots": [
+      7
+    ],
+    "noNormalGuardAttackSlots": [
+      7
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          0.6768308503607088,
+          0.5604462507680822
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          0.2615692829748933,
+          0.2615692829748933
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          1.1788561401562112,
+          2.364255019913038
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          2.354782367863323,
+          1.1597413504743206
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          1.6696084585120208,
+          0.48655557209314715
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          1.1597413504743188,
+          1.7948469267945941
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          2.155226206225231,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          2.354782367863325,
+          1.1597413504743188
+        ]
+      }
+    ]
+  },
+  {
+    "level": 41,
+    "waves": 7,
+    "enemies": 173,
+    "hp": 50570,
+    "startGold": 170,
+    "maxTotalGold": 4188,
+    "spawnOnlySecondsAt1x": 74.7,
+    "advertisedMinutes": 9,
+    "pathLength": 49.0,
+    "noNormalBlockSlots": [
+      2
+    ],
+    "noNormalGuardAttackSlots": [],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          1.1597413504743201,
+          2.354782367863323
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          1.3583077707206126,
+          1.3583077707206126
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          2.354782367863323,
+          1.1597413504743206
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          0.2830194339616983,
+          1.3583077707206122
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          1.1597413504743206,
+          2.354782367863323
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          2.354782367863323,
+          1.1597413504743206
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          0.8139410298049861,
+          0.42720018726587855
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          0.15132732734374188,
+          0.15132732734374188
+        ]
+      }
+    ]
+  },
+  {
+    "level": 42,
+    "waves": 7,
+    "enemies": 180,
+    "hp": 52629,
+    "startGold": 165,
+    "maxTotalGold": 4294,
+    "spawnOnlySecondsAt1x": 76.0,
+    "advertisedMinutes": 9,
+    "pathLength": 42.0,
+    "noNormalBlockSlots": [
+      3,
+      6,
+      8
+    ],
+    "noNormalGuardAttackSlots": [
+      3
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          1.5671949463930772,
+          0.3899999999999999
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          1.1597413504743206,
+          2.00561673307742
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          2.155226206225231,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          0.35341284640063625,
+          0.35341284640063625
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          0.2343065684129234,
+          1.3881270431777626
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          1.3583077707206126,
+          1.3583077707206126
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          2.354782367863323,
+          1.1597413504743206
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          1.3583077707206122,
+          1.3583077707206122
+        ]
+      }
+    ]
+  },
+  {
+    "level": 43,
+    "waves": 8,
+    "enemies": 221,
+    "hp": 62747,
+    "startGold": 165,
+    "maxTotalGold": 5093,
+    "spawnOnlySecondsAt1x": 87.2,
+    "advertisedMinutes": 9,
+    "pathLength": 46.5,
+    "noNormalBlockSlots": [
+      3,
+      4,
+      7
+    ],
+    "noNormalGuardAttackSlots": [
+      3,
+      7
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          0.9914131328563285,
+          0.9914131328563285
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          0.1526968604250924,
+          0.1526968604250924
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          2.155226206225231,
+          2.1729722139155396
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          1.408931691976584,
+          1.3583077707206126
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          1.3341745958019726,
+          0.19571512992959914
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          0.7914847654130814,
+          0.7914847654130814
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          2.1053503271427294,
+          2.1053503271427294
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          2.354782367863325,
+          1.1597413504743188
+        ]
+      }
+    ]
+  },
+  {
+    "level": 44,
+    "waves": 8,
+    "enemies": 231,
+    "hp": 67303,
+    "startGold": 165,
+    "maxTotalGold": 5505,
+    "spawnOnlySecondsAt1x": 90.0,
+    "advertisedMinutes": 9.5,
+    "pathLength": 49.5,
+    "noNormalBlockSlots": [
+      1,
+      5,
+      7
+    ],
+    "noNormalGuardAttackSlots": [
+      1,
+      5
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          2.155226206225231,
+          2.2218460792773205
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          2.3547823678633235,
+          1.1597413504743201
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          0.6073853794618373,
+          0.6073853794618373
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          0.15453026386116095,
+          0.15453026386116095
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          2.155226206225231,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          2.354782367863323,
+          1.1597413504743206
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          2.155226206225231,
+          1.2235149323960417
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          1.1597413504743188,
+          1.5472865863833614
+        ]
+      }
+    ]
+  },
+  {
+    "level": 45,
+    "waves": 9,
+    "enemies": 283,
+    "hp": 82995,
+    "startGold": 165,
+    "maxTotalGold": 6651,
+    "spawnOnlySecondsAt1x": 106.8,
+    "advertisedMinutes": 9.5,
+    "pathLength": 46.0,
+    "noNormalBlockSlots": [
+      3
+    ],
+    "noNormalGuardAttackSlots": [
+      3
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          2.0854016399725017,
+          0.8926925562588722
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          1.1597413504743206,
+          2.354782367863323
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          2.1053503271427294,
+          2.1053503271427294
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          0.6212379274070444,
+          0.6212379274070444
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          0.9095961761088499,
+          2.1025003980004002
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          0.17566871121767358,
+          0.17566871121767358
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          1.8916705024385194,
+          0.9265089798787676
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          0.9124143795447316,
+          2.105350327142731
+        ]
+      }
+    ]
+  },
+  {
+    "level": 46,
+    "waves": 9,
+    "enemies": 297,
+    "hp": 88903,
+    "startGold": 160,
+    "maxTotalGold": 6940,
+    "spawnOnlySecondsAt1x": 110.8,
+    "advertisedMinutes": 9.5,
+    "pathLength": 49.0,
+    "noNormalBlockSlots": [
+      2
+    ],
+    "noNormalGuardAttackSlots": [],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          1.1597413504743201,
+          2.354782367863323
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          1.3583077707206126,
+          1.3583077707206126
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          2.354782367863323,
+          1.1597413504743206
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          0.2830194339616983,
+          1.3583077707206122
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          1.1597413504743206,
+          2.354782367863323
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          2.354782367863323,
+          1.1597413504743206
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          0.8139410298049861,
+          0.42720018726587855
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          0.15132732734374188,
+          0.15132732734374188
+        ]
+      }
+    ]
+  },
+  {
+    "level": 47,
+    "waves": 10,
+    "enemies": 345,
+    "hp": 100357,
+    "startGold": 160,
+    "maxTotalGold": 7823,
+    "spawnOnlySecondsAt1x": 120.9,
+    "advertisedMinutes": 9.5,
+    "pathLength": 42.0,
+    "noNormalBlockSlots": [
+      3,
+      6,
+      8
+    ],
+    "noNormalGuardAttackSlots": [
+      3
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          1.5671949463930772,
+          0.3899999999999999
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          1.1597413504743206,
+          2.00561673307742
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          2.155226206225231,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          0.35341284640063625,
+          0.35341284640063625
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          0.2343065684129234,
+          1.3881270431777626
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          1.3583077707206126,
+          1.3583077707206126
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          2.354782367863323,
+          1.1597413504743206
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          1.3583077707206122,
+          1.3583077707206122
+        ]
+      }
+    ]
+  },
+  {
+    "level": 48,
+    "waves": 10,
+    "enemies": 357,
+    "hp": 105721,
+    "startGold": 160,
+    "maxTotalGold": 8105,
+    "spawnOnlySecondsAt1x": 123.6,
+    "advertisedMinutes": 10,
+    "pathLength": 46.5,
+    "noNormalBlockSlots": [
+      3,
+      4,
+      7
+    ],
+    "noNormalGuardAttackSlots": [
+      3,
+      7
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          0.9914131328563285,
+          0.9914131328563285
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          0.1526968604250924,
+          0.1526968604250924
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          2.155226206225231,
+          2.1729722139155396
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          1.408931691976584,
+          1.3583077707206126
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          1.3341745958019726,
+          0.19571512992959914
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          0.7914847654130814,
+          0.7914847654130814
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          2.1053503271427294,
+          2.1053503271427294
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          2.354782367863325,
+          1.1597413504743188
+        ]
+      }
+    ]
+  },
+  {
+    "level": 49,
+    "waves": 11,
+    "enemies": 424,
+    "hp": 127231,
+    "startGold": 155,
+    "maxTotalGold": 9545,
+    "spawnOnlySecondsAt1x": 143.5,
+    "advertisedMinutes": 10,
+    "pathLength": 49.5,
+    "noNormalBlockSlots": [
+      1,
+      5,
+      7
+    ],
+    "noNormalGuardAttackSlots": [
+      1,
+      5
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          2.155226206225231,
+          2.2218460792773205
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          2.3547823678633235,
+          1.1597413504743201
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          0.6073853794618373,
+          0.6073853794618373
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          0.15453026386116095,
+          0.15453026386116095
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          2.155226206225231,
+          2.155226206225231
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          2.354782367863323,
+          1.1597413504743206
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          2.155226206225231,
+          1.2235149323960417
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          1.1597413504743188,
+          1.5472865863833614
+        ]
+      }
+    ]
+  },
+  {
+    "level": 50,
+    "waves": 12,
+    "enemies": 485,
+    "hp": 150705,
+    "startGold": 155,
+    "maxTotalGold": 11041,
+    "spawnOnlySecondsAt1x": 160.6,
+    "advertisedMinutes": 10,
+    "pathLength": 46.0,
+    "noNormalBlockSlots": [
+      3
+    ],
+    "noNormalGuardAttackSlots": [
+      3
+    ],
+    "guardDistances": [
+      {
+        "slot": 1,
+        "guardDistances": [
+          2.0854016399725017,
+          0.8926925562588722
+        ]
+      },
+      {
+        "slot": 2,
+        "guardDistances": [
+          1.1597413504743206,
+          2.354782367863323
+        ]
+      },
+      {
+        "slot": 3,
+        "guardDistances": [
+          2.1053503271427294,
+          2.1053503271427294
+        ]
+      },
+      {
+        "slot": 4,
+        "guardDistances": [
+          0.6212379274070444,
+          0.6212379274070444
+        ]
+      },
+      {
+        "slot": 5,
+        "guardDistances": [
+          0.9095961761088499,
+          2.1025003980004002
+        ]
+      },
+      {
+        "slot": 6,
+        "guardDistances": [
+          0.17566871121767358,
+          0.17566871121767358
+        ]
+      },
+      {
+        "slot": 7,
+        "guardDistances": [
+          1.8916705024385194,
+          0.9265089798787676
+        ]
+      },
+      {
+        "slot": 8,
+        "guardDistances": [
+          0.9124143795447316,
+          2.105350327142731
+        ]
+      }
+    ]
+  }
+]

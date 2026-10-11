@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using DefenderChronicles.Data;
 using DefenderChronicles.Presentation;
+using DefenderChronicles.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -36,7 +37,8 @@ namespace DefenderChronicles.Core
         public EnemyCombatState State { get; private set; } = EnemyCombatState.Spawn;
         public int Reward => stats.reward;
         public EnemyArchetype Archetype => archetype;
-        public float RouteProgress => session == null ? 0f : session.ComputeRouteProgress(transform.position, targetWaypoint);
+        public float RouteProgress => session == null ? 0f : session.ComputeRouteProgress(path, transform.position, targetWaypoint);
+        public float RemainingRouteDistance => session == null ? float.MaxValue : session.ComputeRemainingRouteDistance(path, transform.position, targetWaypoint);
         public bool IsAlive => !removed && health > 0;
         public Vector3 Position => transform.position;
 
@@ -286,11 +288,15 @@ namespace DefenderChronicles.Core
         public string RoleLabel => RoleName();
         public bool IsDisrupted => disabledRemaining > 0f;
         public float DisabledRemaining => disabledRemaining;
-        public string Description =>
-            $"{GameSessionController.OutpostDisplayName(Kind)}  •  SV {level}\n\n" +
-            $"Rol: {RoleName()}\nHasar: {CurrentDamage()}\nHız: {CurrentRate():0.0}/sn\n" +
-            $"Menzil: {CurrentRange():0.0}\nYükseltme: {(CanUpgrade ? UpgradeCost.ToString() : "TAMAM")}\n" +
-            $"Satış: {SellValue}" + (disabledRemaining > 0f ? "\n\nGEÇİCİ OLARAK BOZULDU" : string.Empty);
+        public string Description => GameLocalization.IsEnglish
+            ? $"{GameSessionController.OutpostDisplayName(Kind)}  •  LV {level}\n\n" +
+              $"Role: {RoleName()}\nDamage: {CurrentDamage()}\nRate: {CurrentRate():0.0}/sec\n" +
+              $"Range: {CurrentRange():0.0}\nUpgrade: {(CanUpgrade ? UpgradeCost.ToString() : "MAX")}\n" +
+              $"Sell: {SellValue}" + (disabledRemaining > 0f ? "\n\nTEMPORARILY DISRUPTED" : string.Empty)
+            : $"{GameSessionController.OutpostDisplayName(Kind)}  •  SV {level}\n\n" +
+              $"Rol: {RoleName()}\nHasar: {CurrentDamage()}\nHız: {CurrentRate():0.0}/sn\n" +
+              $"Menzil: {CurrentRange():0.0}\nYükseltme: {(CanUpgrade ? UpgradeCost.ToString() : "TAMAM")}\n" +
+              $"Satış: {SellValue}" + (disabledRemaining > 0f ? "\n\nGEÇİCİ OLARAK BOZULDU" : string.Empty);
 
         public void Configure(GameSessionController owner, GreyboxOutpostSlot slot, OutpostKind kind,
             OutpostStats stats)
@@ -408,31 +414,7 @@ namespace DefenderChronicles.Core
 
         private Vector3 FindBarracksRallyPoint(int index)
         {
-            IReadOnlyList<Vector3> route = session.Path;
-            Vector3 closest = transform.position;
-            Vector3 routeDirection = Vector3.forward;
-            float closestDistance = float.MaxValue;
-
-            for (int segmentIndex = 0; segmentIndex < route.Count - 1; segmentIndex++)
-            {
-                Vector3 from = route[segmentIndex];
-                Vector3 segment = route[segmentIndex + 1] - from;
-                float lengthSquared = segment.sqrMagnitude;
-                if (lengthSquared <= 0.0001f) continue;
-
-                float projection = Mathf.Clamp01(Vector3.Dot(transform.position - from, segment) / lengthSquared);
-                Vector3 candidate = from + segment * projection;
-                float distance = (candidate - transform.position).sqrMagnitude;
-                if (distance >= closestDistance) continue;
-
-                closestDistance = distance;
-                closest = candidate;
-                routeDirection = segment.normalized;
-            }
-
-            closest += routeDirection * (index % 2 == 0 ? -0.45f : 0.45f);
-            closest.y = transform.position.y;
-            return closest;
+            return session.BarracksRallyPoint(transform.position, index % 2 == 0 ? -0.45f : 0.45f);
         }
 
         private int CurrentDamage() => Mathf.RoundToInt(baseStats.damage * (level == 2 ? 1.55f : 1f));
@@ -440,10 +422,10 @@ namespace DefenderChronicles.Core
         private float CurrentRate() => baseStats.attacksPerSecond * (level == 2 ? 1.20f : 1f);
         private string RoleName() => Kind switch
         {
-            OutpostKind.Archer => "Hızlı tek hedef",
-            OutpostKind.Barracks => "İki engelleyici birlik",
-            OutpostKind.Mage => "Alan hasarı",
-            _ => "Savunma"
+            OutpostKind.Archer => GameLocalization.Text("Hızlı tek hedef", "Fast single target"),
+            OutpostKind.Barracks => GameLocalization.Text("İki engelleyici birlik", "Two blocking guards"),
+            OutpostKind.Mage => GameLocalization.Text("Alan hasarı", "Area damage"),
+            _ => GameLocalization.Text("Savunma", "Defence")
         };
     }
 
