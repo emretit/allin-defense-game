@@ -168,13 +168,14 @@ namespace DefenderChronicles.Presentation
             {
                 AudioSource source = pair.Key;
                 ActiveVoice voice = pair.Value;
-                if (source.clip == entry.clip) clipPlaying++;
+                bool playing = source.isPlaying;
+                if (playing && source.clip == entry.clip) clipPlaying++;
                 if (globalVoice == null || ComesBefore(voice, globalVoice))
                 {
                     globalVictim = source;
                     globalVoice = voice;
                 }
-                if (voice.group != spec.concurrencyGroup) continue;
+                if (!playing || voice.group != spec.concurrencyGroup) continue;
                 groupPlaying++;
                 if (groupVoice == null || ComesBefore(voice, groupVoice))
                 {

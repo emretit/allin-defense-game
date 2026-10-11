@@ -74,6 +74,61 @@ namespace DefenderChronicles.Tests
             Assert.That(sources[1].clip, Is.SameAs(catalog.audioCues[3].clip), "Lower priority wins even when inserted later");
         }
 
+        [UnityTest]
+        public IEnumerator AudioGlobalStealingAndClipLimitsPreserveOrderWithoutAllocating()
+        {
+            var catalog = Own(ScriptableObject.CreateInstance<DefenderPresentationCatalog>());
+            catalog.audioCues = new AudioCueEntry[13];
+            for (int i = 0; i < catalog.audioCues.Length; i++)
+                catalog.audioCues[i] = new AudioCueEntry { cue = (PresentationCue)i, concurrency = 1,
+                    clip = Own(AudioClip.Create("Global cue " + i, 44100 * 10, 1, 44100, false)) };
+            var controller = Own(new GameObject("Perf global audio")).AddComponent<DefenderAudioController>();
+            controller.Initialize(catalog);
+            yield return null;
+            var play = Method<Action<PresentationCue, PresentationAudioCueSpec>>(controller, "PlayNow");
+            var sources = Field<List<AudioSource>>(controller, "sfxSources");
+            for (int i = 0; i < 10; i++)
+                play((PresentationCue)i, new PresentationAudioCueSpec("Group " + i, 4,
+                    i < 8 ? PresentationAudioPriority.Normal : PresentationAudioPriority.Ambient));
+            var voices = Field<IDictionary>(controller, "activeVoices");
+            foreach (AudioSource source in sources)
+                voices[source].GetType().GetField("startedAt").SetValue(voices[source], 0f);
+            var incoming = new PresentationAudioCueSpec("Incoming", 4, PresentationAudioPriority.Normal);
+            Assert.That((TestDelegate)(() => play((PresentationCue)10, incoming)),
+                UnityEngine.TestTools.Constraints.ConstraintExtensions.AllocatingGCMemory(Is.Not));
+            Assert.That(sources[8].clip, Is.SameAs(catalog.audioCues[10].clip));
+            Assert.That(sources[9].clip, Is.SameAs(catalog.audioCues[9].clip));
+            play((PresentationCue)10, incoming); // Clip concurrency wins before any other selection.
+            Assert.That(controller.ActiveVoiceCount, Is.EqualTo(10));
+            Assert.That(sources[9].clip, Is.SameAs(catalog.audioCues[9].clip));
+            play((PresentationCue)11, incoming);
+            Assert.That(sources[9].clip, Is.SameAs(catalog.audioCues[11].clip));
+            foreach (AudioSource source in sources)
+                voices[source].GetType().GetField("priority").SetValue(voices[source], PresentationAudioPriority.Critical);
+            Assert.That((TestDelegate)(() => play((PresentationCue)12, incoming)),
+                UnityEngine.TestTools.Constraints.ConstraintExtensions.AllocatingGCMemory(Is.Not));
+            foreach (AudioSource source in sources)
+                Assert.That(source.clip, Is.Not.SameAs(catalog.audioCues[12].clip));
+        }
+
+        [UnityTest]
+        public IEnumerator AudioSelectionIgnoresFinishedVoicesForClipAndGroupLimits()
+        {
+            var catalog = Own(ScriptableObject.CreateInstance<DefenderPresentationCatalog>());
+            var clip = Own(AudioClip.Create("Finished cue", 44100 * 10, 1, 44100, false));
+            catalog.audioCues = new[] { new AudioCueEntry { cue = PresentationCue.EnemyHit, clip = clip, concurrency = 1 } };
+            var controller = Own(new GameObject("Perf finished audio")).AddComponent<DefenderAudioController>();
+            controller.Initialize(catalog);
+            yield return null;
+            var play = Method<Action<PresentationCue, PresentationAudioCueSpec>>(controller, "PlayNow");
+            var select = Method<Func<AudioCueEntry, PresentationAudioCueSpec, AudioSource>>(controller, "SelectVoice");
+            var sources = Field<List<AudioSource>>(controller, "sfxSources");
+            var spec = new PresentationAudioCueSpec("Finished", 1, PresentationAudioPriority.Normal);
+            play(PresentationCue.EnemyHit, spec);
+            sources[0].Stop(); // A voice can finish between the cleanup and selection queries.
+            Assert.That(select(catalog.audioCues[0], spec), Is.SameAs(sources[0]));
+        }
+
         private GameSessionController BareSession() =>
             Own(new GameObject("Perf session")).AddComponent<GameSessionController>();
 
