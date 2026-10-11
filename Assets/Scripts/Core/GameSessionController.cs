@@ -1240,6 +1240,7 @@ namespace DefenderChronicles.Core
             outpost.Upgrade();
             telemetry.Record(this,"upgrade",outpost.Kind.ToString(),outpost.UpgradeCost);
             ReplaceOutpostVisual(outpost);
+            if (selectedOutpost == outpost) RefreshSelectedPanel();
             EmitPresentation(PresentationCue.OutpostUpgraded, outpost.Position, outpost.gameObject, outpost: outpost.Kind);
             return true;
         }
@@ -2214,7 +2215,6 @@ namespace DefenderChronicles.Core
             selectedSlot.SetSelected(true);
             selectedOutpost = slot.Occupant;
             if (selectionRange == null) selectionRange = CombatRangeVisual.Create(transform,"Selected tower range",new Color(.35f,.8f,1));
-            selectionRange.Show(slot.transform.position, selectedOutpost != null ? selectedOutpost.RangeValue : TowerProgression.Stats(OutpostKind.Archer,1).range,true);
             if (GuidanceStep == FirstBattleGuidanceStep.SelectSlot && slot.Occupant == null)
             {
                 GuidanceStep = FirstBattleGuidanceStep.ChooseTower;
@@ -2242,6 +2242,8 @@ namespace DefenderChronicles.Core
 
         private void RefreshSelectedPanel()
         {
+            if (selectionRange != null && selectedSlot != null)
+                selectionRange.Show(selectedSlot.transform.position, selectedOutpost != null ? selectedOutpost.RangeValue : TowerProgression.Stats(OutpostKind.Archer,1).range,true);
             if (artHud != null)
             {
                 if (selectedOutpost != null)

@@ -108,6 +108,61 @@ namespace DefenderChronicles.Tests
             Assert.That(store.PendingClaimCount, Is.Zero);
         }
 
+        [Test]
+        public void SelectedArcherRangeUpdatesImmediatelyAfterUpgrade()
+        {
+            BuildArcher();
+            float previous = session.Outposts[0].RangeValue;
+            AssertSelectionRadius(session.Outposts[0]);
+            Assert.That(session.TryUpgradeOutpost(0), Is.True);
+            Assert.That(session.Outposts[0].RangeValue, Is.GreaterThan(previous));
+            AssertSelectionRadius(session.Outposts[0]);
+        }
+
+        [Test]
+        public void SelectedArcherRangeUpdatesImmediatelyAfterSpecialization()
+        {
+            BuildArcher();
+            Assert.That(session.TryUpgradeOutpost(0), Is.True);
+            Invoke("SelectOutpost", session.Outposts[0]);
+            float previous = session.Outposts[0].RangeValue;
+            Assert.That(session.TrySpecializeOutpost(0, OutpostSpecialization.Sharpshooter), Is.True);
+            Assert.That(session.Outposts[0].RangeValue, Is.GreaterThan(previous));
+            AssertSelectionRadius(session.Outposts[0]);
+        }
+
+        [Test]
+        public void UpgradingAnotherArcherPreservesTheSelectedRange()
+        {
+            BuildArcher();
+            Assert.That(session.TryBuildOutpost(1, OutpostKind.Archer), Is.True);
+            GreyboxOutpost selected = session.Outposts[1];
+            Assert.That(session.TryUpgradeOutpost(0), Is.True);
+            AssertSelectionRadius(selected);
+            Assert.That(typeof(GameSessionController).GetField("selectedOutpost", PrivateInstance).GetValue(session),
+                Is.SameAs(selected));
+        }
+
+        private void BuildArcher()
+        {
+            Invoke("EarnGold", 1000);
+            Assert.That(session.TryBuildOutpost(0, OutpostKind.Archer), Is.True);
+            Invoke("SelectOutpost", session.Outposts[0]);
+        }
+
+        private void AssertSelectionRadius(GreyboxOutpost outpost)
+        {
+            var visual = (CombatRangeVisual)typeof(GameSessionController).GetField("selectionRange", PrivateInstance).GetValue(session);
+            var ring = visual.GetComponent<LineRenderer>();
+            Assert.That(ring.enabled, Is.True);
+            for (int i = 0; i < ring.positionCount; i++)
+            {
+                Vector3 offset = ring.GetPosition(i) - outpost.Slot.transform.position;
+                offset.y = 0f;
+                Assert.That(offset.magnitude, Is.EqualTo(outpost.RangeValue).Within(.001f), $"Ring point {i}");
+            }
+        }
+
         private void PrepareWave(int index, EnemyArchetype archetype)
         {
             typeof(GameSessionController).GetField("currentWaveIndex", PrivateInstance).SetValue(session, index);
