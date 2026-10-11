@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using DefenderChronicles.UI;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -43,6 +44,17 @@ namespace DefenderChronicles.Presentation
         public bool IsEnabled => config.enabled;
         public int PlayedDetailCount { get; private set; }
 
+        private void OnEnable()
+        {
+            FrontendPreferences.AudioVolumesChanged += ApplyVolumes;
+            ApplyVolumes();
+        }
+
+        private void OnDisable()
+        {
+            FrontendPreferences.AudioVolumesChanged -= ApplyVolumes;
+        }
+
         public void Initialize(AudioMixerGroup mixer)
         {
             string qualityName = QualitySettings.names.Length > 0
@@ -63,9 +75,9 @@ namespace DefenderChronicles.Presentation
             leafClip = CreateLeafClip();
             crystalClip = CreateCrystalClip();
             windSource.clip = windClip;
+            ApplyVolumes();
             windSource.Play();
             detailRoutine = StartCoroutine(PlayDetails());
-            ApplyVolumes();
         }
 
         public void SetReviewGain(float gain)
@@ -137,7 +149,7 @@ namespace DefenderChronicles.Presentation
 
         private void ApplyVolumes()
         {
-            float audible = paused ? 0f : reviewGain * stateGain;
+            float audible = paused ? 0f : reviewGain * stateGain * FrontendPreferences.SfxVolume;
             if (windSource != null) windSource.volume = config.windVolume * audible;
             if (detailSource != null) detailSource.volume = config.detailVolume * audible;
         }

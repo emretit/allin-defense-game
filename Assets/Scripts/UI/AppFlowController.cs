@@ -30,6 +30,7 @@ namespace DefenderChronicles.UI
 
     public sealed partial class AppFlowController : MonoBehaviour
     {
+        private const float FrontendUiNominalVolume = 0.80f;
         private readonly Dictionary<AppScreen, GameObject> screens = new();
         private readonly List<Button> regionTabs = new();
         private readonly List<Button> levelButtons = new();
@@ -131,7 +132,7 @@ namespace DefenderChronicles.UI
             frontendUiSource.playOnAwake = false;
             frontendUiSource.spatialBlend = 0f;
             frontendUiSource.outputAudioMixerGroup = catalog.uiMixer;
-            frontendUiSource.volume = FrontendPreferences.SfxVolume;
+            ApplyStoredAudioPreferences();
             battlePaused = pauseBattle;
             session.PhaseChanged += HandleSessionPhaseChanged;
             progress.SyncStatusChanged += OnSaveStatusChanged;
@@ -889,9 +890,7 @@ namespace DefenderChronicles.UI
 
         private void ApplyStoredAudioPreferences()
         {
-            AudioManager.Instance?.SetMusicVolume(FrontendPreferences.MusicVolume);
-            AudioManager.Instance?.SetSFXVolume(FrontendPreferences.SfxVolume);
-            if (frontendUiSource != null) frontendUiSource.volume = FrontendPreferences.SfxVolume;
+            if (frontendUiSource != null) frontendUiSource.volume = FrontendUiNominalVolume * FrontendPreferences.SfxVolume;
         }
 
         private void ReturnFromAccount() => ShowScreen(navigationState.AccountReturn);

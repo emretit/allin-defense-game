@@ -1590,7 +1590,7 @@
             {
               "enemy": 5,
               "count": 1,
-              "startDelay": 28,
+              "startDelay": 36,
               "interval": 1
             }
           ]

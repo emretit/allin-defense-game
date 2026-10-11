@@ -20,7 +20,7 @@ namespace DefenderChronicles.Data
         public const int BarracksSquadSize = 3;
         public static OutpostStats Base(OutpostKind kind) => kind switch
         {
-            OutpostKind.Archer => new OutpostStats(75, 55, 22, 4.8f, 2.5f),
+            OutpostKind.Archer => new OutpostStats(75, 55, 24, 4.8f, 2.5f),
             OutpostKind.Barracks => new OutpostStats(100, 70, 16, 1.45f, 1f / .375f),
             OutpostKind.Mage => new OutpostStats(125, 85, 38, 4.2f, 1.3f),
             _ => throw new System.ArgumentOutOfRangeException(nameof(kind))
@@ -43,9 +43,9 @@ namespace DefenderChronicles.Data
             var data = Base(kind);
             var stats = new TowerCombatStats
             {
-                damage = Mathf.RoundToInt(data.damage * (level >= 2 ? 1.55f : 1f)),
+                damage = Mathf.RoundToInt(data.damage * (level >= 2 ? (kind == OutpostKind.Archer ? 1.75f : 1.55f) : 1f)),
                 range = data.range * (level >= 2 ? 1.12f : 1f),
-                attacksPerSecond = data.attacksPerSecond * (level >= 2 ? 1.2f : 1f),
+                attacksPerSecond = data.attacksPerSecond * (level >= 2 ? (kind == OutpostKind.Archer ? 1.44f : 1.2f) : 1f),
                 splashRadius = kind == OutpostKind.Mage ? 1.65f : 0f,
                 damageType = kind == OutpostKind.Mage ? DamageType.Magic : DamageType.Physical,
                 slowFactor = 1f
@@ -53,8 +53,8 @@ namespace DefenderChronicles.Data
             if (kind == OutpostKind.Barracks)
             {
                 stats.guardCount = BarracksSquadSize;
-                stats.damage = level >= 2 ? 26 : 16;
-                stats.guardHealth = level >= 2 ? 175 : 110;
+                stats.damage = level >= 2 ? 32 : 16;
+                stats.guardHealth = level >= 2 ? 210 : 110;
                 stats.range = .85f;
                 stats.attacksPerSecond = 1f / .375f;
             }
