@@ -113,6 +113,33 @@ namespace DefenderChronicles.Tests
             Assert.That(session.Enemies[0], Is.SameAs(outside));
         }
 
+        [Test]
+        public void OutpostDisruptionUsesPropertyBlockWithoutMaterialInstances()
+        {
+            var session = BareSession();
+            var material = Own(new Material(Shader.Find("Universal Render Pipeline/Lit")) { name = "Perf material" });
+            material.color = new Color(.7f, .4f, .2f);
+            for (int cycle = 0; cycle < 3; cycle++)
+            {
+                var go = Own(GameObject.CreatePrimitive(PrimitiveType.Cube));
+                var renderer = go.GetComponent<Renderer>();
+                renderer.sharedMaterial = material;
+                var outpost = go.AddComponent<GreyboxOutpost>();
+                outpost.Configure(session, null, OutpostKind.Archer, new OutpostStats(1, 1, 1, 1f, 1f));
+                outpost.DisableTemporarily(.5f);
+                Assert.That(renderer.sharedMaterial, Is.SameAs(material));
+                var block = new MaterialPropertyBlock();
+                renderer.GetPropertyBlock(block);
+                Assert.That(block.GetColor("_BaseColor"), Is.EqualTo(new Color(.25f, .25f, .25f)));
+                Method<Action<float>>(outpost, "Tick")(.5f);
+                renderer.GetPropertyBlock(block);
+                Assert.That(block.GetColor("_BaseColor"), Is.EqualTo(material.color));
+                Assert.That(renderer.sharedMaterial, Is.SameAs(material));
+                outpost.Sell();
+            }
+            Assert.That(material.color, Is.EqualTo(new Color(.7f, .4f, .2f)));
+        }
+
         [UnityTearDown]
         public IEnumerator Cleanup()
         {

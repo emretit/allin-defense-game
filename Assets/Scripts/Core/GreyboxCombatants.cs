@@ -311,6 +311,10 @@ namespace DefenderChronicles.Core
         private OutpostStats baseStats;
         private Renderer bodyRenderer;
         private Color activeColor;
+        private MaterialPropertyBlock colorBlock;
+        private static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
+        private static readonly int ColorId = Shader.PropertyToID("_Color");
+        private int colorPropertyId;
         private float attackTimer;
         private float disabledRemaining;
         private int level = 1;
@@ -351,7 +355,7 @@ namespace DefenderChronicles.Core
             CombatStats = TowerProgression.Stats(kind, 1);
             invested = stats.cost;
             bodyRenderer = GetComponentInChildren<Renderer>();
-            activeColor = bodyRenderer != null ? bodyRenderer.material.color : Color.white;
+            CacheActiveColor();
             if (Kind == OutpostKind.Barracks) SpawnSoldiers();
         }
 
@@ -362,7 +366,7 @@ namespace DefenderChronicles.Core
             if (disabledRemaining > 0f)
             {
                 disabledRemaining = Mathf.Max(0f, disabledRemaining - delta);
-                if (disabledRemaining <= 0f && bodyRenderer != null) bodyRenderer.material.color = activeColor;
+                if (disabledRemaining <= 0f) SetBodyColor(activeColor);
                 return;
             }
 
@@ -444,14 +448,31 @@ namespace DefenderChronicles.Core
         internal void RefreshPresentationRenderer()
         {
             bodyRenderer = GetComponentInChildren<Renderer>();
-            activeColor = bodyRenderer != null ? bodyRenderer.material.color : Color.white;
+            CacheActiveColor();
+        }
+
+        private void CacheActiveColor()
+        {
+            if (colorBlock == null) colorBlock = new MaterialPropertyBlock();
+            Material material = bodyRenderer != null ? bodyRenderer.sharedMaterial : null;
+            colorPropertyId = material != null && material.HasProperty(BaseColorId) ? BaseColorId : ColorId;
+            activeColor = material != null && material.HasProperty(colorPropertyId)
+                ? material.GetColor(colorPropertyId) : Color.white;
+        }
+
+        private void SetBodyColor(Color color)
+        {
+            if (bodyRenderer == null) return;
+            bodyRenderer.GetPropertyBlock(colorBlock);
+            colorBlock.SetColor(colorPropertyId, color);
+            bodyRenderer.SetPropertyBlock(colorBlock);
         }
 
         public void DisableTemporarily(float duration)
         {
             if (!IsAlive) return;
             disabledRemaining = Mathf.Max(disabledRemaining, duration);
-            if (bodyRenderer != null) bodyRenderer.material.color = new Color(0.25f, 0.25f, 0.25f);
+            SetBodyColor(new Color(0.25f, 0.25f, 0.25f));
             session?.EmitPresentation(PresentationCue.OutpostDisrupted, transform.position, gameObject, outpost: Kind);
         }
 
