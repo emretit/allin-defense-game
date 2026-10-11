@@ -64,6 +64,27 @@ namespace DefenderChronicles.Tests
         }
 
         [UnityTest]
+        public IEnumerator ArcherWaitingEightSecondsUsesNormalAttackRate()
+        {
+            Create();
+            Assert.That(session.TryBuildOutpost(0, OutpostKind.Archer), Is.True);
+            var tower = session.Outposts[0];
+            Advance(8f);
+            var enemy = Spawn(EnemyArchetype.Raider);
+            enemy.transform.position = tower.Position + Vector3.forward;
+            enemy.Stun(2f);
+            int attacks = 0;
+            session.PresentationSignaled += signal =>
+            {
+                if (signal.cue == PresentationCue.OutpostAttacked && signal.source == tower.gameObject) attacks++;
+            };
+            Advance(1f);
+            Debug.Log($"[AUDIT_ARCHER_IDLE] wait_seconds=8 encounter_seconds=1 attacks={attacks} rate={tower.AttackRateValue:F3}");
+            Assert.That(attacks, Is.InRange(1, Mathf.CeilToInt(tower.AttackRateValue)));
+            yield return null;
+        }
+
+        [UnityTest]
         public IEnumerator BossHealingCannotRepeatPhaseTwoReinforcements()
         {
             Create();
