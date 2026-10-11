@@ -254,7 +254,8 @@ namespace DefenderChronicles.Presentation
             Bind(pauseMainMenuButton, mainMenu, uiClick);
             Bind(speedButton, speed, uiClick);
             Bind(upgradeButton, upgrade, uiClick);
-            Bind(sellButton, sell, uiClick);
+            sellAction = sell;
+            Bind(sellButton, SellFromUi, uiClick);
             Bind(restartButton, restart, uiClick);
             AddTextIcon(goldText, catalog.goldIcon);
             AddTextIcon(livesText, catalog.keepIcon);
@@ -278,6 +279,7 @@ namespace DefenderChronicles.Presentation
         public void Refresh(GameSessionController session)
         {
             if (session == null || goldText == null) return;
+            if (session.Phase != saleConfirmationPhase) CancelSaleConfirmation();
             SetBuildAvailability(session.CanBuildOnSelection, session.Gold);
             TopBarPresentationSpec topBar = TopBarSpec(copy.Get(UiTextKey.Gold), copy.Get(UiTextKey.Keep),
                 copy.Get(UiTextKey.Wave), session.Gold, session.Lives, session.CurrentWaveIndex,
@@ -362,6 +364,8 @@ namespace DefenderChronicles.Presentation
 
         public void SetSelected(GreyboxOutpost outpost, GreyboxOutpostSlot slot, bool visible)
         {
+            if (!visible || displayedOutpost != outpost) CancelSaleConfirmation();
+            displayedOutpost = visible ? outpost : null;
             cancelButton.interactable = visible;
             bool emptySlot = slot != null && slot.Occupant == null;
             if (contextualBuildChoices != null) contextualBuildChoices.gameObject.SetActive(visible && emptySlot);
@@ -383,6 +387,7 @@ namespace DefenderChronicles.Presentation
             {
                 ApplySelectedEmptyView();
             }
+            ApplySaleConfirmationLabel();
             selectedPanel.SetActive(visible);
             if (!visible) responsiveLayout?.ClearContextualSelection();
         }
