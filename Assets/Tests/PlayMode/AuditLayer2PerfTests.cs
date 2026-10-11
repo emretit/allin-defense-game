@@ -140,6 +140,26 @@ namespace DefenderChronicles.Tests
             Assert.That(material.color, Is.EqualTo(new Color(.7f, .4f, .2f)));
         }
 
+        [Test]
+        public void IntermissionLabelUpdatesOnlyWhenDisplayedSecondChanges()
+        {
+            var session = BareSession();
+            var label = Own(new GameObject("Perf label", typeof(RectTransform))).AddComponent<UnityEngine.UI.Text>();
+            typeof(GameSessionController).GetField("nextWaveButtonLabel", Private).SetValue(session, label);
+            var remaining = typeof(GameSessionController).GetField("intermissionRemaining", Private);
+            var update = Method<Action>(session, "RefreshIntermissionLabel");
+            remaining.SetValue(session, 7.9f);
+            update();
+            string text = label.text;
+            remaining.SetValue(session, 7.1f);
+            Assert.That((TestDelegate)(() => update()),
+                UnityEngine.TestTools.Constraints.ConstraintExtensions.AllocatingGCMemory(Is.Not));
+            Assert.That(label.text, Is.SameAs(text));
+            remaining.SetValue(session, 7f);
+            update();
+            Assert.That(label.text, Does.EndWith("7"));
+        }
+
         [UnityTearDown]
         public IEnumerator Cleanup()
         {

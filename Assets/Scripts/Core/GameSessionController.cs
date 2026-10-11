@@ -161,6 +161,7 @@ namespace DefenderChronicles.Core
         private bool automatedVisualAcceptanceDefeat;
         private static bool defeatRestartRequested;
         private float intermissionRemaining;
+        private int displayedIntermissionSecond = int.MinValue;
         private GamePhase phaseBeforePause;
 
         private GameObject hudRoot;
@@ -234,6 +235,8 @@ namespace DefenderChronicles.Core
 
         private void HandleLanguageChanged()
         {
+            displayedIntermissionSecond = int.MinValue;
+            if (Phase == GamePhase.Intermission) RefreshIntermissionLabel();
             if (waves != null)
                 waves = CampaignLevelNumber <= 10 ? FirstRegionCampaign.CreateWaves(CampaignLevelNumber)
                     : CampaignLevelFactory.Create(CampaignLevelNumber).waves;
@@ -405,15 +408,7 @@ namespace DefenderChronicles.Core
             LastSimulationMilliseconds = (System.Diagnostics.Stopwatch.GetTimestamp() - simulationStart) * 1000d / System.Diagnostics.Stopwatch.Frequency;
             if (Phase == GamePhase.Intermission)
             {
-                if (nextWaveButtonLabel != null)
-                    nextWaveButtonLabel.text = intermissionRemaining > 0f
-                        ? GameLocalization.Text($"DALGAYI ERKEN ÇAĞIR  {Mathf.CeilToInt(intermissionRemaining)}",
-                            $"CALL WAVE EARLY  {Mathf.CeilToInt(intermissionRemaining)}")
-                        : GameLocalization.Text("SONRAKİ DALGA", "NEXT WAVE");
-                if (artHud != null)
-                    artHud.SetNextWaveLabel(intermissionRemaining > 0f
-                        ? $"{presentationCatalog.uiCopy.Get(UiTextKey.EarlyWave)}  {Mathf.CeilToInt(intermissionRemaining)}"
-                        : presentationCatalog.uiCopy.Get(UiTextKey.NextWave));
+                RefreshIntermissionLabel();
                 if (intermissionRemaining <= 0f)
                     StartNextWave();
             }
@@ -428,6 +423,21 @@ namespace DefenderChronicles.Core
                 nextHudRefresh = Time.unscaledTime + .1f;
                 RefreshFirstBattleGuide();
             }
+        }
+
+        private void RefreshIntermissionLabel()
+        {
+            int second = Mathf.CeilToInt(intermissionRemaining);
+            if (second == displayedIntermissionSecond) return;
+            displayedIntermissionSecond = second;
+            if (nextWaveButtonLabel != null)
+                nextWaveButtonLabel.text = intermissionRemaining > 0f
+                    ? GameLocalization.Text($"DALGAYI ERKEN ÇAĞIR  {second}", $"CALL WAVE EARLY  {second}")
+                    : GameLocalization.Text("SONRAKİ DALGA", "NEXT WAVE");
+            if (artHud != null)
+                artHud.SetNextWaveLabel(intermissionRemaining > 0f
+                    ? $"{presentationCatalog.uiCopy.Get(UiTextKey.EarlyWave)}  {second}"
+                    : presentationCatalog.uiCopy.Get(UiTextKey.NextWave));
         }
 
         private void RefreshThreatPreviewForPhase()
@@ -1050,6 +1060,7 @@ namespace DefenderChronicles.Core
             if (next == GamePhase.Victory && campaignStore != null)
                 CompletionReward = campaignStore.CompleteLevel(CampaignLevelNumber, BattleRules.StarsForLives(Lives,StartingLivesForLevel), Lives);
             else if (next is GamePhase.Victory or GamePhase.Defeat) ClearCheckpoint();
+            displayedIntermissionSecond = int.MinValue;
             Phase = next;
             PhaseChanged?.Invoke(next);
             if (nextWaveButton != null)
