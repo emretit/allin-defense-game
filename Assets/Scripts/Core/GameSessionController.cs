@@ -984,10 +984,10 @@ namespace DefenderChronicles.Core
         internal void EnemyReachedKeep(GreyboxEnemy enemy, int damage)
         {
             bool bossBreached = enemy.Archetype == EnemyArchetype.Boss;
-            if (bossBreached) damage = Lives;
+            if (bossBreached) damage = Lives - BattleRules.LivesAfterBossBreach(Lives, StartingLivesForLevel, damage);
             telemetry.Record(this,"leak",enemy.Archetype.ToString(),damage);
             ShowMessage(bossBreached
-                ? GameLocalization.Text("Bölge Lordu kaleyi ele geçirdi.", "The Region Lord breached the keep.")
+                ? GameLocalization.Text("Bölge Lordu kaleyi aştı — kale ağır hasar aldı.", "The Region Lord breached the keep — heavy damage.")
                 : GameLocalization.Text("Kaleye sızma: ","Keep breached: ") + FirstRegionCampaign.EnemyName(enemy.Archetype),2);
             EmitPresentation(PresentationCue.UiError,path[^1],value:damage);
             leakedLives[(int)enemy.Archetype] += Mathf.Max(1, damage);

@@ -13,6 +13,9 @@ namespace DefenderChronicles.Combat
         public static int StarsForLives(int lives, int startingLives) =>
             lives <= 0 || startingLives <= 0 ? 0 :
             lives * 4 >= startingLives * 3 ? 3 : lives * 5 >= startingLives * 2 ? 2 : 1;
+        public static int LivesAfterBossBreach(int lives, int startingLives, int bossDamage) =>
+            lives <= 0 || startingLives <= 0 ? 0 :
+            Mathf.Min(Mathf.Max(0, lives - Mathf.Max(1, bossDamage)), (int)((startingLives * 2L - 1) / 5));
         public static int ResolveDamage(int amount, DamageType type, float physicalResistance) =>
             DamageResolver.Resolve(new DamageRequest(amount,
                 resistance: type == DamageType.Physical ? physicalResistance : 0f)).FinalDamage;
