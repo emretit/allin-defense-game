@@ -43,7 +43,7 @@ namespace DefenderChronicles.Data
             var data = Base(kind);
             var stats = new TowerCombatStats
             {
-                damage = Mathf.RoundToInt(data.damage * (level >= 2 ? (kind == OutpostKind.Archer ? 1.9f : 1.55f) : 1f)),
+                damage = Mathf.RoundToInt(data.damage * (level >= 2 ? (kind == OutpostKind.Archer ? 1.75f : 1.55f) : 1f)),
                 range = data.range * (level >= 2 ? 1.12f : 1f),
                 attacksPerSecond = data.attacksPerSecond * (level >= 2 ? (kind == OutpostKind.Archer ? 1.44f : 1.2f) : 1f),
                 splashRadius = kind == OutpostKind.Mage ? 1.65f : 0f,

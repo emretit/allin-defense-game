@@ -29,6 +29,46 @@ namespace DefenderChronicles.Tests
         [UnityTest]
         public IEnumerator PrimitiveMageHeavyStillKillsBoss() => RunStrategy("Primitive Mage-heavy", MageHeavyPlan(), false);
 
+        [UnityTest]
+        [Timeout(150000)]
+        public IEnumerator RealTimeArcherHeavyKillsBossWithMoreThanOneStarLives()
+        {
+            var session = new GameObject("Audit real-time Archer-heavy").AddComponent<GameSessionController>();
+            session.SetCampaignLevel(10);
+            session.Initialize();
+            yield return null;
+            int actionIndex = 0;
+            var plan = ArcherHeavyPlan();
+            ExecuteAffordableActions(session, plan, ref actionIndex);
+            session.LivesChanged += lives => Debug.Log($"[AUDIT_REAL_LEAK] wave={session.CurrentWaveIndex} lives={lives} seconds={session.BattleElapsedSeconds:F2} worstLeak={session.MostDamagingLeak}");
+            session.PhaseChanged += phase =>
+            {
+                if (phase == GamePhase.Intermission)
+                    Debug.Log($"[AUDIT_REAL_WAVE] wave={session.CurrentWaveIndex} lives={session.Lives} seconds={session.BattleElapsedSeconds:F2}");
+            };
+            Time.timeScale = 4f;
+            session.StartNextWave();
+            float deadline = Time.realtimeSinceStartup + 120f;
+            GreyboxEnemy boss = null;
+            while (session.Phase != GamePhase.Victory && session.Phase != GamePhase.Defeat && Time.realtimeSinceStartup < deadline)
+            {
+                foreach (var enemy in session.Enemies)
+                    if (enemy != null && enemy.Archetype == Data.EnemyArchetype.Boss) boss = enemy;
+                ExecuteAffordableActions(session, plan, ref actionIndex);
+                if (session.Phase == GamePhase.Intermission) session.StartNextWave();
+                if (session.Hero != null && session.Hero.IsAlive && session.Hero.AbilityRemaining <= 0f)
+                    session.Hero.TryUseShieldBash();
+                yield return null;
+            }
+            Time.timeScale = 1f;
+            // Health is a managed field, so retain the boss's final value after its deferred Unity destroy.
+            bool bossKilled = !ReferenceEquals(boss, null) && boss.Health == 0;
+            Debug.Log($"[AUDIT_REAL_BALANCE] strategy=Archer-heavy phase={session.Phase} wave={session.CurrentWaveIndex}/{session.WaveCount} lives={session.Lives} seconds={session.BattleElapsedSeconds:F2} bossKilled={bossKilled} bossHealth={(ReferenceEquals(boss, null) ? -1 : boss.Health)} abilityUses={session.AbilityUses} actions={actionIndex}/{plan.Length}");
+            Assert.That(session.Phase, Is.EqualTo(GamePhase.Victory));
+            Assert.That(session.Lives, Is.GreaterThan(7));
+            Assert.That(bossKilled, Is.True);
+        }
+
         private static IEnumerator RunStrategy(string name, IReadOnlyList<StrategyAction> plan, bool production = true)
         {
             Time.timeScale = 0f;
@@ -49,11 +89,11 @@ namespace DefenderChronicles.Tests
             {
                 ExecuteAffordableActions(session, plan, ref actionIndex);
                 if (session.Phase == GamePhase.Intermission) session.StartNextWave();
-                if (session.Hero != null && session.Hero.IsAlive && session.Hero.AbilityRemaining <= 0f)
-                    session.Hero.TryUseShieldBash();
                 GreyboxEnemy boss = null;
                 foreach (var enemy in session.Enemies)
                     if (enemy != null && enemy.Archetype == Data.EnemyArchetype.Boss) boss = enemy;
+                if (session.Hero != null && session.Hero.IsAlive && session.Hero.AbilityRemaining <= 0f)
+                    session.Hero.TryUseShieldBash();
                 session.AdvanceBattle(1f / 30f);
                 if (boss != null && !boss.IsAlive)
                 {
