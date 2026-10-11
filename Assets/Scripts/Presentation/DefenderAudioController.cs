@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DefenderChronicles.UI;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -38,6 +39,17 @@ namespace DefenderChronicles.Presentation
         public PresentationAudioReviewLevel ReviewLevel => reviewLevel;
         public DefenderAmbientAudioController Ambient => ambientController;
         public int ActiveVoiceCount => activeVoices.Count(pair => pair.Key != null && pair.Key.isPlaying);
+
+        private void OnEnable()
+        {
+            FrontendPreferences.AudioVolumesChanged += ApplyAudioVolumes;
+            ApplyAudioVolumes();
+        }
+
+        private void OnDisable()
+        {
+            FrontendPreferences.AudioVolumesChanged -= ApplyAudioVolumes;
+        }
 
         public void Initialize(DefenderPresentationCatalog value)
         {
@@ -79,10 +91,15 @@ namespace DefenderChronicles.Presentation
         {
             reviewLevel = level;
             reviewGain = PresentationAudioPolicy.ReviewGain(level);
-            ambientController?.SetReviewGain(reviewGain);
+            if (ambientController != null) ambientController.SetReviewGain(reviewGain);
+            ApplyAudioVolumes();
+        }
+
+        private void ApplyAudioVolumes()
+        {
             foreach ((AudioSource source, ActiveVoice voice) in activeVoices)
             {
-                if (source != null) source.volume = voice.baseVolume * reviewGain;
+                if (source != null) source.volume = voice.baseVolume * reviewGain * FrontendPreferences.SfxVolume;
             }
             ApplyMusicVolume(musicA);
             ApplyMusicVolume(musicB);
@@ -96,7 +113,7 @@ namespace DefenderChronicles.Presentation
 
         private void PlayNow(PresentationCue cue, PresentationAudioCueSpec spec)
         {
-            AudioCueEntry entry = catalog?.Audio(cue);
+            AudioCueEntry entry = catalog != null ? catalog.Audio(cue) : null;
             if (entry?.clip == null) return;
             RemoveFinishedVoices();
 
@@ -117,7 +134,7 @@ namespace DefenderChronicles.Presentation
                 target = victim.Key;
             }
 
-            target ??= sfxSources.FirstOrDefault(source => !source.isPlaying);
+            if (target == null) target = sfxSources.FirstOrDefault(source => !source.isPlaying);
             if (target == null)
             {
                 KeyValuePair<AudioSource, ActiveVoice> victim = activeVoices
@@ -130,7 +147,7 @@ namespace DefenderChronicles.Presentation
 
             target.Stop();
             target.clip = entry.clip;
-            target.volume = entry.volume * reviewGain;
+            target.volume = entry.volume * reviewGain * FrontendPreferences.SfxVolume;
             target.pitch = 1f + UnityEngine.Random.Range(-entry.pitchVariation, entry.pitchVariation);
             target.priority = PresentationAudioPolicy.UnityPriority(spec.priority);
             target.outputAudioMixerGroup = cue is PresentationCue.UiClick or PresentationCue.UiError
@@ -159,7 +176,7 @@ namespace DefenderChronicles.Presentation
             MusicEntry entry = catalog.Music(state);
             if (entry?.clip == null) return;
             currentState = state;
-            ambientController?.SetMusicState(state);
+            if (ambientController != null) ambientController.SetMusicState(state);
             if (musicRoutine != null) StopCoroutine(musicRoutine);
             float duration = immediate ? 0f : PresentationAudioPolicy.MusicTransitionSeconds(state);
             musicRoutine = StartCoroutine(Crossfade(entry, duration));
@@ -167,12 +184,12 @@ namespace DefenderChronicles.Presentation
 
         public void SetPaused(bool paused)
         {
-            AudioMixerSnapshot snapshot = paused ? catalog?.pauseSnapshot : catalog?.normalSnapshot;
-            snapshot?.TransitionTo(0.18f);
+            AudioMixerSnapshot snapshot = catalog != null ? (paused ? catalog.pauseSnapshot : catalog.normalSnapshot) : null;
+            if (snapshot != null) snapshot.TransitionTo(0.18f);
             foreach (AudioSource source in sfxSources) source.mute = paused;
             if (musicA != null) musicA.mute = paused;
             if (musicB != null) musicB.mute = paused;
-            ambientController?.SetPaused(paused);
+            if (ambientController != null) ambientController.SetPaused(paused);
         }
 
         private AudioSource CreateMusicSource(string sourceName)
@@ -253,7 +270,7 @@ namespace DefenderChronicles.Presentation
         private void ApplyMusicVolume(AudioSource source)
         {
             if (source == null) return;
-            source.volume = NominalMusicVolume(source) * reviewGain * musicDuckMultiplier;
+            source.volume = NominalMusicVolume(source) * reviewGain * musicDuckMultiplier * FrontendPreferences.MusicVolume;
         }
     }
 }
