@@ -347,7 +347,7 @@ namespace DefenderChronicles.UI
             CreateSliderRow(body.transform, "EFEKTLER", new Vector2(0, -346), FrontendPreferences.SfxVolume, value =>
             {
                 FrontendPreferences.SfxVolume = value;
-                if (frontendUiSource != null) frontendUiSource.volume = FrontendPreferences.SfxVolume;
+                ApplyStoredAudioPreferences();
             });
             CreateToggleRow(body.transform, "TİTREŞİM", new Vector2(0, -512), FrontendPreferences.Haptics, value => FrontendPreferences.Haptics = value);
             CreateToggleRow(body.transform, "KAMERA SARSINTISI", new Vector2(0, -678), FrontendPreferences.CameraShake, value => FrontendPreferences.CameraShake = value);

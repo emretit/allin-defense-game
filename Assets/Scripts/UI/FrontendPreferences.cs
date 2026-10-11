@@ -16,13 +16,13 @@ namespace DefenderChronicles.UI
 
         public static float MusicVolume
         {
-            get => PlayerPrefs.GetFloat(MusicKey, 0.40f);
+            get => PlayerPrefs.GetFloat(MusicKey, 1f);
             set => SetFloat(MusicKey, value);
         }
 
         public static float SfxVolume
         {
-            get => PlayerPrefs.GetFloat(SfxKey, 0.80f);
+            get => PlayerPrefs.GetFloat(SfxKey, 1f);
             set => SetFloat(SfxKey, value);
         }
 
@@ -60,7 +60,7 @@ namespace DefenderChronicles.UI
 
         private static void SetFloat(string key, float value)
         {
-            float previous = key == MusicKey ? MusicVolume : SfxVolume;
+            float previous = PlayerPrefs.GetFloat(key, 1f);
             float volume = Mathf.Clamp01(value);
             PlayerPrefs.SetFloat(key, volume);
             PlayerPrefs.Save();

@@ -1,11 +1,14 @@
 using System.Collections;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using DefenderChronicles.Core;
 using DefenderChronicles.Presentation;
 using DefenderChronicles.UI;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
+using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
 namespace DefenderChronicles.Tests
@@ -24,6 +27,9 @@ namespace DefenderChronicles.Tests
         private float savedMusic;
         private float savedSfx;
         private int quality;
+        private AppFlowController frontend;
+        private GameSessionController frontendSession;
+        private string frontendSavePath;
 
         [UnitySetUp]
         public IEnumerator SetUp()
@@ -58,6 +64,9 @@ namespace DefenderChronicles.Tests
         [TearDown]
         public void TearDown()
         {
+            if (frontend != null) Object.DestroyImmediate(frontend.gameObject);
+            if (frontendSession != null) Object.DestroyImmediate(frontendSession.gameObject);
+            if (frontendSavePath != null && File.Exists(frontendSavePath)) File.Delete(frontendSavePath);
             if (host != null) Object.DestroyImmediate(host);
             Object.DestroyImmediate(catalog);
             Object.DestroyImmediate(musicClip);
@@ -84,8 +93,63 @@ namespace DefenderChronicles.Tests
 
         private AudioSource CueSource => host.GetComponents<AudioSource>().Single(source => source.clip == cueClip);
 
+        [UnityTest]
+        public IEnumerator MissingPreferencesPreserveNominalBattleVolumes()
+        {
+            Object.DestroyImmediate(host);
+            host = null;
+            PlayerPrefs.DeleteKey(MusicKey);
+            PlayerPrefs.DeleteKey(SfxKey);
+            Initialize();
+            yield return null; // Recreated AudioSources need their first audio update before playing a cue.
+
+            Assert.That(FrontendPreferences.MusicVolume, Is.EqualTo(1f));
+            Assert.That(FrontendPreferences.SfxVolume, Is.EqualTo(1f));
+            Assert.That(MusicSources.Sum(source => source.volume), Is.EqualTo(0.6f).Within(0.00001f));
+            controller.Play(PresentationCue.EnemyHit);
+            Assert.That(CueSource.volume, Is.EqualTo(0.7f).Within(0.00001f));
+            AudioSource[] ambient = host.GetComponentsInChildren<AudioSource>();
+            Assert.That(ambient.Single(source => source.name == "Ambient Wind").volume,
+                Is.EqualTo(0.055f).Within(0.00001f));
+            Assert.That(ambient.Single(source => source.name == "Ambient Detail").volume,
+                Is.EqualTo(0.08f).Within(0.00001f));
+        }
+
+        [Test]
+        public void FrontendDefaultAndEffectsSliderPreserveNominalUiVolume()
+        {
+            PlayerPrefs.DeleteKey(MusicKey);
+            PlayerPrefs.DeleteKey(SfxKey);
+            frontendSavePath = Path.Combine(Path.GetTempPath(), $"dc-audio-{System.Guid.NewGuid():N}.json");
+            frontendSession = new GameObject("Audit Frontend Session").AddComponent<GameSessionController>();
+            frontend = new GameObject("Audit Frontend Audio").AddComponent<AppFlowController>();
+            frontend.Initialize(Resources.Load<DefenderPresentationCatalog>("Presentation/DefenderPresentationCatalog"),
+                frontendSession, false, frontendSavePath);
+            AudioSource uiSource = frontend.GetComponent<AudioSource>();
+            Assert.That(uiSource.volume, Is.EqualTo(0.80f).Within(0.00001f));
+
+            typeof(AppFlowController).GetMethod("ShowScreen", BindingFlags.Instance | BindingFlags.NonPublic)
+                .Invoke(frontend, new object[] { AppScreen.MainMenu });
+            typeof(AppFlowController).GetMethod("OpenSettings", BindingFlags.Instance | BindingFlags.NonPublic)
+                .Invoke(frontend, null);
+            Slider effects = frontend.GetComponentsInChildren<Slider>(true)
+                .Single(slider => slider.transform.parent.name == "EFEKTLER Row");
+            Assert.That(effects.value, Is.EqualTo(1f));
+            foreach (float preference in new[] { 0.5f, 0f, 1f })
+            {
+                effects.value = preference;
+                Assert.That(FrontendPreferences.SfxVolume, Is.EqualTo(preference));
+                Assert.That(uiSource.volume, Is.EqualTo(0.80f * preference).Within(0.00001f));
+                uiSource.volume = 0.123f;
+                typeof(AppFlowController).GetMethod("ApplyStoredAudioPreferences", BindingFlags.Instance | BindingFlags.NonPublic)
+                    .Invoke(frontend, null);
+                Assert.That(uiSource.volume, Is.EqualTo(0.80f * preference).Within(0.00001f));
+            }
+        }
+
         [TestCase(0f)]
         [TestCase(0.35f)]
+        [TestCase(0.4f)]
         [TestCase(1f)]
         public void StoredMusicPreferenceAppliesWhenBattleStarts(float preference)
         {
