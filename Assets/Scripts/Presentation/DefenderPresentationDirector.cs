@@ -9,6 +9,7 @@ namespace DefenderChronicles.Presentation
         private DefenderPresentationCatalog catalog;
         private DefenderAudioController audioController;
         private DefenderVfxPool vfxPool;
+        private DefenderDefeatEchoPool defeatEchoPool;
         private DefenderPresentationFeedbackController feedbackController;
 
         public DefenderAudioController Audio => audioController;
@@ -23,6 +24,8 @@ namespace DefenderChronicles.Presentation
             audioController.Initialize(catalog);
             vfxPool = gameObject.AddComponent<DefenderVfxPool>();
             vfxPool.Initialize(catalog);
+            defeatEchoPool = gameObject.AddComponent<DefenderDefeatEchoPool>();
+            defeatEchoPool.Initialize(catalog);
             feedbackController = gameObject.AddComponent<DefenderPresentationFeedbackController>();
             feedbackController.Initialize(Camera.main);
             session.PresentationSignaled += OnPresentationSignal;
@@ -72,11 +75,12 @@ namespace DefenderChronicles.Presentation
             }
 
             if (signal.cue is PresentationCue.EnemyDefeated or PresentationCue.UnitDefeated)
-            {
-                GameObject prefab = catalog.ActorPrefab(signal.actor);
-                StylizedActorView.PlayDefeatEcho(prefab, catalog, signal.position, catalog.ActorScale(signal.actor),
-                    catalog.ActorAnimator(signal.actor));
-            }
+                defeatEchoPool.Play(signal.actor, signal.position);
+        }
+
+        internal void PrewarmDefeatEcho(PresentationActorKind kind, int count)
+        {
+            defeatEchoPool.Prewarm(kind, count);
         }
 
         public static string AnimationTriggerFor(PresentationSignal signal) => signal.cue switch

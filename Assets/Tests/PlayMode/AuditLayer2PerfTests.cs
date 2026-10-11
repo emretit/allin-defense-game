@@ -129,6 +129,13 @@ namespace DefenderChronicles.Tests
             Assert.That(select(catalog.audioCues[0], spec), Is.SameAs(sources[0]));
         }
 
+        private static Renderer VisibleRenderer(GameObject actor)
+        {
+            foreach (var renderer in actor.GetComponentsInChildren<Renderer>(true))
+                if (renderer.enabled && renderer.sharedMaterial != null) return renderer;
+            return null;
+        }
+
         private GameSessionController BareSession() =>
             Own(new GameObject("Perf session")).AddComponent<GameSessionController>();
 
@@ -166,6 +173,29 @@ namespace DefenderChronicles.Tests
             Assert.That(second.IsAlive, Is.False);
             Assert.That(session.Enemies.Count, Is.EqualTo(1), "Removing the first victim must not skip the next");
             Assert.That(session.Enemies[0], Is.SameAs(outside));
+        }
+
+        [Test]
+        public void NestedAreaDamageKeepsIndependentSnapshotsAndExcludesLaterSpawns()
+        {
+            var session = BareSession();
+            session.ConfigurePresentation(Resources.Load<DefenderPresentationCatalog>("Presentation/DefenderPresentationCatalog"));
+            var first = Enemy(session, Vector3.zero, 1);
+            var second = Enemy(session, Vector3.right, 50);
+            GreyboxEnemy added = null;
+            var damage = Method<DamageArea>(session, "DamageEnemies");
+            session.PresentationSignaled += signal =>
+            {
+                if (signal.cue != PresentationCue.EnemyDefeated || signal.source != first.gameObject) return;
+                added = Enemy(session, Vector3.right, 100);
+                damage(Vector3.zero, 2f, 2, 1f, 0f, DefenderChronicles.Combat.DamageType.Magic);
+            };
+            damage(Vector3.zero, 2f, 10, 1f, 0f, DefenderChronicles.Combat.DamageType.Magic);
+            Assert.That(first.IsAlive, Is.False);
+            Assert.That(second.Health, Is.EqualTo(38), "Nested and outer hits must each apply once");
+            Assert.That(added.Health, Is.EqualTo(98), "Only the nested snapshot includes the later spawn");
+            Assert.That(session.Enemies.Count, Is.EqualTo(2));
+            Assert.That(Field<int>(session, "damageSnapshotDepth"), Is.Zero);
         }
 
         [Test]
@@ -232,6 +262,178 @@ namespace DefenderChronicles.Tests
             yield return null;
             Assert.That(diamond == null, Is.True);
             Assert.That(ring == null, Is.True);
+        }
+
+        private GameSessionController ProductionSession(Vector3 position = default)
+        {
+            var session = BareSession();
+            session.transform.position = position;
+            session.ConfigurePresentation(Resources.Load<DefenderPresentationCatalog>("Presentation/DefenderPresentationCatalog"));
+            session.SetCampaignLevel(14);
+            session.Initialize();
+            Method<Action<GamePhase>>(session, "SetPhase")(GamePhase.Paused);
+            return session;
+        }
+
+        [UnityTest]
+        public IEnumerator EveryEnemyArchetypeReusesItsInstanceAndResetsAllState()
+        {
+            var session = ProductionSession();
+            Assert.That(session.TryBuildOutpost(0, OutpostKind.Barracks), Is.False, "Paused build remains disallowed");
+            Method<Action<GamePhase>>(session, "SetPhase")(GamePhase.Preparing);
+            Assert.That(session.TryBuildOutpost(0, OutpostKind.Barracks), Is.True);
+            Method<Action<GamePhase>>(session, "SetPhase")(GamePhase.Paused);
+            var guard = session.Outposts[0].Soldiers[0];
+            var spawn = (Action<EnemyArchetype, int>)typeof(GameSessionController)
+                .GetMethod("SpawnEnemy", Private, null, new[] { typeof(EnemyArchetype), typeof(int) }, null)
+                .CreateDelegate(typeof(Action<EnemyArchetype, int>), session);
+            for (int kind = 0; kind < 6; kind++)
+            {
+                spawn((EnemyArchetype)kind, 0);
+                var enemy = session.Enemies[0];
+                int fullHealth = enemy.Health;
+                int childCount = enemy.GetComponentsInChildren<Transform>(true).Length;
+                var renderer = VisibleRenderer(enemy.gameObject);
+                Material shared = renderer.sharedMaterial;
+                var canvas = enemy.GetComponentInChildren<Canvas>();
+                var fill = Field<Transform>(enemy, "healthFill");
+                var animator = enemy.GetComponentInChildren<Animator>();
+                enemy.TakeDamage(1);
+                enemy.ApplySlow(.5f, 20f);
+                enemy.Stun(20f);
+                foreach (string field in new[] { "attackTimer", "supportTimer", "siegeTimer", "regenerationTimer", "siegeWindup" })
+                    typeof(GreyboxEnemy).GetField(field, Private).SetValue(enemy, 13f);
+                typeof(GreyboxEnemy).GetField("targetWaypoint", Private).SetValue(enemy, 99);
+                typeof(GreyboxEnemy).GetField("bossPhase", Private).SetValue(enemy, 3);
+                typeof(GreyboxEnemy).GetField("siegeTarget", Private).SetValue(enemy, session.Outposts[0]);
+                var phase = enemy.GetComponent<BossPhaseVisual>();
+                if (phase != null) phase.SetPhase(3);
+                var block = new MaterialPropertyBlock();
+                block.SetColor("_BaseColor", Color.cyan);
+                renderer.SetPropertyBlock(block);
+                renderer.SetPropertyBlock(block, 0);
+                canvas.enabled = false;
+                fill.gameObject.GetComponent<UnityEngine.UI.Image>().color = Color.cyan;
+                animator.SetTrigger(PresentationActorAnimationContract.DefeatState);
+                animator.speed = 0f;
+                animator.enabled = false;
+                enemy.TakeDamage(int.MaxValue, DefenderChronicles.Combat.DamageType.Magic);
+                Assert.That(enemy.IsAlive, Is.False);
+                yield return null;
+                yield return null;
+                Assert.That(enemy != null, Is.True, "Retired actor must remain owned by the session pool");
+                typeof(GreyboxFriendlyUnit).GetField("target", Private).SetValue(guard, enemy);
+                spawn((EnemyArchetype)kind, 1);
+                Assert.That(session.Enemies[0], Is.SameAs(enemy));
+                Assert.That(enemy.Health, Is.EqualTo(fullHealth));
+                Assert.That(enemy.IsAlive, Is.True);
+                Assert.That(enemy.State, Is.EqualTo(EnemyCombatState.Moving));
+                Assert.That(enemy.StunRemaining, Is.Zero);
+                Assert.That(enemy.SlowFactor, Is.EqualTo(1f));
+                Assert.That(Field<DefenderChronicles.Combat.SlowEffect>(enemy, "slow").Remaining, Is.Zero);
+                Assert.That(Field<int>(enemy, "targetWaypoint"), Is.EqualTo(1));
+                Assert.That(Field<int>(enemy, "bossPhase"), Is.EqualTo(1));
+                foreach (string field in new[] { "attackTimer", "supportTimer", "siegeTimer", "regenerationTimer", "siegeWindup" })
+                    Assert.That(Field<float>(enemy, field), Is.Zero, field);
+                Assert.That(Field<GreyboxOutpost>(enemy, "siegeTarget") == null, Is.True);
+                Assert.That(Field<GreyboxEnemy>(guard, "target") == null, Is.True);
+                Assert.That(Field<IReadOnlyList<Vector3>>(enemy, "path"), Is.SameAs(session.Routes[1]));
+                Assert.That(enemy.Position, Is.EqualTo(session.Routes[1][0]));
+                Assert.That(enemy.GetComponentsInChildren<Transform>(true).Length, Is.EqualTo(childCount));
+                Assert.That(canvas.enabled, Is.True);
+                Assert.That(fill.localScale, Is.EqualTo(Vector3.one));
+                Assert.That(fill.localPosition, Is.EqualTo(Vector3.zero));
+                Assert.That(fill.GetComponent<UnityEngine.UI.Image>().color, Is.Not.EqualTo(Color.cyan));
+                Assert.That(renderer.sharedMaterial, Is.SameAs(shared));
+                renderer.GetPropertyBlock(block);
+                Assert.That(block.GetColor("_BaseColor"), Is.Not.EqualTo(Color.cyan));
+                renderer.GetPropertyBlock(block, 0);
+                Assert.That(block.GetColor("_BaseColor"), Is.Not.EqualTo(Color.cyan));
+                Assert.That(animator.enabled, Is.True);
+                Assert.That(animator.speed, Is.EqualTo(1f));
+                Assert.That(animator.GetCurrentAnimatorStateInfo(0).IsName(PresentationActorAnimationContract.IdleState), Is.True);
+                if (phase != null) Assert.That(phase.CurrentPhase, Is.EqualTo(1));
+                enemy.TakeDamage(int.MaxValue, DefenderChronicles.Combat.DamageType.Magic);
+                yield return null;
+                yield return null;
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator DefeatEchoPoolReusesAndResetsVisualsWithoutAllocating()
+        {
+            var session = ProductionSession(new Vector3(5f, 0f, 2f));
+            var director = session.GetComponentInChildren<DefenderPresentationDirector>();
+            var pool = Field<Component>(director, "defeatEchoPool");
+            var play = (Action<PresentationActorKind, Vector3>)pool.GetType().GetMethod("Play")
+                .CreateDelegate(typeof(Action<PresentationActorKind, Vector3>), pool);
+            play(PresentationActorKind.Raider, Vector3.right);
+            DefeatEcho first = null;
+            foreach (var echo in pool.GetComponentsInChildren<DefeatEcho>(true))
+                if (echo.gameObject.activeSelf) { first = echo; break; }
+            Assert.That(first, Is.Not.Null);
+            int count = pool.GetComponentsInChildren<DefeatEcho>(true).Length;
+            yield return new WaitForSeconds(.7f);
+            Assert.That(first.gameObject.activeSelf, Is.False);
+            var renderer = VisibleRenderer(first.gameObject);
+            var block = new MaterialPropertyBlock();
+            block.SetColor("_BaseColor", Color.cyan);
+            renderer.SetPropertyBlock(block);
+            first.GetComponent<Animator>().speed = 0f;
+            Assert.That((TestDelegate)(() => play(PresentationActorKind.Raider, Vector3.forward)),
+                UnityEngine.TestTools.Constraints.ConstraintExtensions.AllocatingGCMemory(Is.Not));
+            Assert.That(first.gameObject.activeSelf, Is.True);
+            Assert.That(first.transform.position, Is.EqualTo(Vector3.forward));
+            Assert.That(Field<float>(first, "elapsed"), Is.Zero);
+            Assert.That(first.GetComponent<Animator>().speed, Is.EqualTo(1f));
+            renderer.GetPropertyBlock(block);
+            Assert.That(block.GetColor("_BaseColor"), Is.Not.EqualTo(Color.cyan));
+            Assert.That(pool.GetComponentsInChildren<DefeatEcho>(true).Length, Is.EqualTo(count));
+            yield return null;
+            Assert.That(first.transform.parent.position, Is.EqualTo(Vector3.forward), "Anchor retains death placement while the defeat animation moves its root");
+            Object.Destroy(session.gameObject);
+            yield return null;
+            Assert.That(first == null, Is.True, "Session teardown owns inactive echoes too");
+        }
+
+        [UnityTest]
+        public IEnumerator Chapter10ControlledEditorAllocationSample()
+        {
+            var session = BareSession();
+            session.ConfigurePresentation(Resources.Load<DefenderPresentationCatalog>("Presentation/DefenderPresentationCatalog"));
+            session.SetCampaignLevel(10);
+            session.Initialize();
+            Method<Action<int>>(session, "EarnGold")(10000);
+            for (int slot = 0; slot < session.SlotCount; slot++)
+                Assert.That(session.TryBuildOutpost(slot, slot % 3 == 0 ? OutpostKind.Barracks : OutpostKind.Archer), Is.True);
+            session.enabled = false;
+            var lateUpdate = typeof(GameSessionController).GetMethod("LateUpdate", Private);
+            Action recycle = lateUpdate != null ? (Action)lateUpdate.CreateDelegate(typeof(Action), session) : null;
+            session.StartNextWave();
+            for (int warm = 0; warm < 30; warm++)
+            {
+                session.AdvanceBattle(.1f);
+                if (recycle != null) recycle();
+                yield return null;
+            }
+            const int frames = 300;
+            var samples = new long[frames];
+            using (var recorder = Unity.Profiling.ProfilerRecorder.StartNew(Unity.Profiling.ProfilerCategory.Memory,
+                "GC Allocated In Frame", 1))
+            {
+                Assert.That(recorder.Valid, Is.True);
+                for (int frame = 0; frame < frames; frame++)
+                {
+                    session.AdvanceBattle(.1f);
+                    if (recycle != null) recycle();
+                    yield return null;
+                    samples[frame] = recorder.LastValue;
+                }
+            }
+            long total = 0;
+            foreach (long sample in samples) total += sample;
+            Array.Sort(samples);
+            Debug.Log($"[K2_EDITOR_GC] level=10 frames={frames} simulatedStep=0.1 meanBytes={total / (double)frames:F1} p95Bytes={samples[(int)Math.Ceiling(frames * .95) - 1]} battleSeconds={session.BattleElapsedSeconds:F2} peakEnemies={session.PeakEnemyCount}");
         }
 
         [Test]

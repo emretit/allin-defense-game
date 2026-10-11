@@ -309,6 +309,7 @@ namespace DefenderChronicles.Core
                     presentationDirector = presentationObject.AddComponent<DefenderPresentationDirector>();
                     presentationDirector.Initialize(this, presentationCatalog);
                 }
+                if (waves.Length > 0) PrewarmEnemies(waves[0]);
                 yield return null;
                 initialized = true;
                 initializing = false;
@@ -925,6 +926,7 @@ namespace DefenderChronicles.Core
 
         private IEnumerator SpawnWave(WaveDefinition wave)
         {
+            PrewarmEnemies(wave);
             SetPhase(GamePhase.Wave);
             spawning = true;
             plannedThisWave = wave.groups?.Sum(group => Mathf.Max(0, group.count)) ?? 0;
@@ -958,6 +960,16 @@ namespace DefenderChronicles.Core
             }
 
             EnemyStats stats = GetScaledStats(archetype);
+            GreyboxEnemy enemy = RentEnemy(archetype, stats, spawnPath);
+            enemies.Add(enemy);
+            foreach (var snapshot in damageSnapshots)
+                if (snapshot.Capacity < enemies.Count) snapshot.Capacity = enemies.Capacity;
+            PeakEnemyCount = Mathf.Max(PeakEnemyCount, enemies.Count);
+            EmitPresentation(PresentationCue.UnitSpawned, enemy.Position, enemy.gameObject, ActorKind(archetype));
+        }
+
+        private GreyboxEnemy CreateEnemy(EnemyArchetype archetype, EnemyStats stats, IReadOnlyList<Vector3> spawnPath)
+        {
             float size = archetype == EnemyArchetype.Boss ? 1.7f : archetype == EnemyArchetype.Siege ? 1.25f : 0.85f;
             GameObject go;
             if (presentationCatalog != null)
@@ -977,11 +989,7 @@ namespace DefenderChronicles.Core
             }
             var enemy = go.AddComponent<GreyboxEnemy>();
             enemy.Configure(this, archetype, stats, spawnPath);
-            enemies.Add(enemy);
-            foreach (var snapshot in damageSnapshots)
-                if (snapshot.Capacity < enemies.Count) snapshot.Capacity = enemies.Capacity;
-            PeakEnemyCount = Mathf.Max(PeakEnemyCount, enemies.Count);
-            EmitPresentation(PresentationCue.UnitSpawned, go.transform.position, go, ActorKind(archetype));
+            return enemy;
         }
 
         internal void EnemyRemoved(GreyboxEnemy enemy, bool defeated)

@@ -25,6 +25,11 @@ namespace DefenderChronicles.Combat
     {
         public float Factor { get; private set; } = 1f;
         public float Remaining { get; private set; }
+        public void Reset()
+        {
+            Factor = 1f;
+            Remaining = 0f;
+        }
         public void Apply(float factor, float duration)
         {
             if (duration <= 0f) return;

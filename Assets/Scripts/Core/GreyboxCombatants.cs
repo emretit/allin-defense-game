@@ -24,6 +24,7 @@ namespace DefenderChronicles.Core
         private EnemyStats stats;
         private IReadOnlyList<Vector3> path;
         private Renderer bodyRenderer;
+        private PooledActorVisualState visualState;
         private Transform healthFill;
         private int targetWaypoint = 1;
         private int health;
@@ -58,11 +59,27 @@ namespace DefenderChronicles.Core
             archetype = type;
             stats = definition;
             path = route;
+            targetWaypoint = 1;
             health = Mathf.Max(1, stats.maxHealth);
+            attackTimer = supportTimer = siegeTimer = regenerationTimer = 0f;
+            stunRemaining = siegeWindup = 0f;
+            slow.Reset();
+            siegeTarget = null;
+            removed = false;
+            bossPhase = 1;
+            if (healthFill == null) CreateHealthBar();
+            if (siegeWarning == null && type is EnemyArchetype.Siege or EnemyArchetype.Boss)
+                siegeWarning = CombatRangeVisual.Create(transform, "Siege warning", new Color(1,.15f,.05f));
+            if (visualState == null) visualState = new PooledActorVisualState(gameObject);
+            else visualState.Reset();
             bodyRenderer = GetComponentInChildren<Renderer>();
-            CreateHealthBar();
+            UpdateHealthBar();
+            if (siegeWarning != null) siegeWarning.Show(Position, 1f, false);
+            var phaseVisual = GetComponent<BossPhaseVisual>();
+            if (phaseVisual != null) phaseVisual.SetPhase(1);
+            var view = GetComponent<StylizedActorView>();
+            if (view != null) view.ResetForReuse();
             State = EnemyCombatState.Moving;
-            if (type is EnemyArchetype.Siege or EnemyArchetype.Boss) siegeWarning = CombatRangeVisual.Create(transform, "Siege warning", new Color(1,.15f,.05f));
         }
 
         internal void Tick(float delta)
@@ -199,7 +216,7 @@ namespace DefenderChronicles.Core
             removed = true;
             State = EnemyCombatState.Dead;
             session.EnemyReachedKeep(this, stats.baseDamage);
-            Destroy(gameObject);
+            session.ReturnEnemy(this);
         }
 
         public void TakeDamage(int amount) => TakeDamage(amount, DamageType.Physical);
@@ -216,7 +233,7 @@ namespace DefenderChronicles.Core
             removed = true;
             State = EnemyCombatState.Dead;
             session.EnemyRemoved(this, true);
-            Destroy(gameObject);
+            session.ReturnEnemy(this);
         }
 
         public void Heal(int amount)
@@ -649,6 +666,11 @@ namespace DefenderChronicles.Core
                     attackTimer = 1f / owner.CombatStats.attacksPerSecond;
                 }
             }
+        }
+
+        internal void ForgetTarget(GreyboxEnemy enemy)
+        {
+            if (target == enemy) target = null;
         }
 
         private GreyboxEnemy FindTarget()

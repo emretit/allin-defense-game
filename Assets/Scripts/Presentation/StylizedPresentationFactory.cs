@@ -344,6 +344,21 @@ namespace DefenderChronicles.Presentation
             previousPosition = transform.position;
         }
 
+        public void ResetForReuse()
+        {
+            previousPosition = transform.position;
+            enabled = true;
+            if (animator == null) return;
+            animator.enabled = true;
+            animator.speed = 1f;
+            animator.Rebind();
+            foreach (string trigger in PresentationActorAnimationContract.TriggerParameters)
+                animator.ResetTrigger(trigger);
+            animator.SetBool(PresentationActorAnimationContract.MovingParameter, false);
+            animator.Play(PresentationActorAnimationContract.IdleState, 0, 0f);
+            animator.Update(0f);
+        }
+
         public void Attack() => Trigger(PresentationActorAnimationContract.AttackState);
         public void Hit() => Trigger(PresentationActorAnimationContract.HitState);
         public void Disabled() => Trigger(PresentationActorAnimationContract.HitState);
@@ -369,9 +384,16 @@ namespace DefenderChronicles.Presentation
             float scale = 1f, RuntimeAnimatorController actorAnimatorOverride = null)
         {
             if (prefab == null) return;
+            DefeatEcho echo = CreateDefeatEcho(prefab, catalog, null, scale, actorAnimatorOverride, position);
+            echo.Begin();
+        }
+
+        internal static DefeatEcho CreateDefeatEcho(GameObject prefab, DefenderPresentationCatalog catalog,
+            Transform parent, float scale, RuntimeAnimatorController actorAnimatorOverride, Vector3? position = null)
+        {
             var echo = new GameObject("Defeat Echo");
-            echo.name = "Defeat Echo";
-            echo.transform.position = position;
+            echo.transform.SetParent(parent, false);
+            if (position.HasValue) echo.transform.position = position.Value;
             var visual = Object.Instantiate(prefab, echo.transform);
             visual.transform.localPosition = Vector3.zero;
             visual.transform.localRotation = Quaternion.identity;
@@ -379,23 +401,48 @@ namespace DefenderChronicles.Presentation
             StylizedPresentationFactory.ApplyPalette(visual, catalog, true);
             var animator = echo.AddComponent<Animator>();
             animator.runtimeAnimatorController = actorAnimatorOverride != null ? actorAnimatorOverride : catalog.actorAnimator;
-            animator.Play(PresentationActorAnimationContract.DefeatState, 0, 0f);
             var host = echo.AddComponent<DefeatEcho>();
-            host.Begin();
+            host.Configure(animator);
+            return host;
         }
     }
 
     public sealed class DefeatEcho : MonoBehaviour
     {
         private float elapsed;
+        private bool pooled;
+        private Animator animator;
+        private PooledActorVisualState visualState;
 
-        public void Begin() => elapsed = 0f;
+        internal void Configure(Animator value)
+        {
+            animator = value;
+            visualState = new PooledActorVisualState(gameObject);
+        }
+
+        public void Begin(bool reusable = false)
+        {
+            elapsed = 0f;
+            pooled = reusable;
+            gameObject.SetActive(true);
+            if (visualState != null) visualState.Reset();
+            if (animator == null) return;
+            animator.enabled = true;
+            animator.speed = 1f;
+            animator.Rebind();
+            foreach (string trigger in PresentationActorAnimationContract.TriggerParameters)
+                animator.ResetTrigger(trigger);
+            animator.Play(PresentationActorAnimationContract.DefeatState, 0, 0f);
+            animator.Update(0f);
+        }
 
         private void Update()
         {
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / 0.58f);
-            if (t >= 1f) Destroy(gameObject);
+            if (t < 1f) return;
+            if (pooled) gameObject.SetActive(false);
+            else Destroy(gameObject);
         }
     }
 }
