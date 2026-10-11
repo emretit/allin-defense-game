@@ -184,10 +184,10 @@ namespace DefenderChronicles.Tests
                 outpost.DisableTemporarily(.5f);
                 Assert.That(renderer.sharedMaterial, Is.SameAs(material));
                 var block = new MaterialPropertyBlock();
-                renderer.GetPropertyBlock(block);
+                renderer.GetPropertyBlock(block, 0);
                 Assert.That(block.GetColor("_BaseColor"), Is.EqualTo(new Color(.25f, .25f, .25f)));
                 Method<Action<float>>(outpost, "Tick")(.5f);
-                renderer.GetPropertyBlock(block);
+                renderer.GetPropertyBlock(block, 0);
                 Assert.That(block.GetColor("_BaseColor"), Is.EqualTo(material.color));
                 Assert.That(renderer.sharedMaterial, Is.SameAs(material));
                 outpost.Sell();
@@ -232,6 +232,39 @@ namespace DefenderChronicles.Tests
             yield return null;
             Assert.That(diamond == null, Is.True);
             Assert.That(ring == null, Is.True);
+        }
+
+        [Test]
+        public void OutpostTintAffectsOnlyThePrimaryMaterialAndPreservesOtherOverrides()
+        {
+            var session = BareSession();
+            var primary = Own(new Material(Shader.Find("Universal Render Pipeline/Lit")));
+            var secondary = Own(new Material(primary));
+            primary.color = Color.red;
+            secondary.color = Color.blue;
+            var go = Own(GameObject.CreatePrimitive(PrimitiveType.Cube));
+            var renderer = go.GetComponent<Renderer>();
+            renderer.sharedMaterials = new[] { primary, secondary };
+            var block = new MaterialPropertyBlock();
+            block.SetFloat("_Smoothness", .3f);
+            renderer.SetPropertyBlock(block);
+            var outpost = go.AddComponent<GreyboxOutpost>();
+            outpost.Configure(session, null, OutpostKind.Archer, new OutpostStats(1, 1, 1, 1f, 1f));
+            outpost.DisableTemporarily(.5f);
+            renderer.GetPropertyBlock(block, 0);
+            Assert.That(block.GetColor("_BaseColor"), Is.EqualTo(new Color(.25f, .25f, .25f)));
+            Assert.That(block.GetFloat("_Smoothness"), Is.EqualTo(.3f));
+            renderer.GetPropertyBlock(block, 1);
+            Assert.That(block.HasColor("_BaseColor"), Is.False);
+            renderer.GetPropertyBlock(block);
+            Assert.That(block.HasColor("_BaseColor"), Is.False, "Global block must not tint secondary slots");
+            Assert.That(block.GetFloat("_Smoothness"), Is.EqualTo(.3f));
+            Method<Action<float>>(outpost, "Tick")(.5f);
+            renderer.GetPropertyBlock(block, 0);
+            Assert.That(block.GetColor("_BaseColor"), Is.EqualTo(Color.red));
+            Assert.That(renderer.sharedMaterials[0], Is.SameAs(primary));
+            Assert.That(renderer.sharedMaterials[1], Is.SameAs(secondary));
+            Assert.That(secondary.color, Is.EqualTo(Color.blue));
         }
 
         [UnityTearDown]

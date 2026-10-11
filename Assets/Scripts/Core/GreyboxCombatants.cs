@@ -463,9 +463,10 @@ namespace DefenderChronicles.Core
         private void SetBodyColor(Color color)
         {
             if (bodyRenderer == null) return;
-            bodyRenderer.GetPropertyBlock(colorBlock);
+            bodyRenderer.GetPropertyBlock(colorBlock, 0);
+            if (colorBlock.isEmpty) bodyRenderer.GetPropertyBlock(colorBlock);
             colorBlock.SetColor(colorPropertyId, color);
-            bodyRenderer.SetPropertyBlock(colorBlock);
+            bodyRenderer.SetPropertyBlock(colorBlock, 0);
         }
 
         public void DisableTemporarily(float duration)
