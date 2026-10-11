@@ -1,7 +1,7 @@
 # Defender Chronicles — Combat System
 
-Durum: Faz 3 kismi uygulama ve tasarim notu
-Son guncelleme: 2026-08-15
+Durum: Canli savas kurallari ve eski Faz 3 prototip/tasarim notlari
+Son guncelleme: 2026-10-11
 
 ## Ortak Savas Varligi Sozlesmesi
 
@@ -16,6 +16,8 @@ Tum savas varliklari ayni kavramlari paylasacak:
 - Durum etkileri
 - Olum/yeniden dogma/temizlenme akisi
 
+Canli savas `GreyboxEnemy`, `GreyboxOutpost`, `GreyboxFriendlyUnit` ve `GreyboxHero` ile `GameSessionController.AdvanceBattle` uzerinden ilerler (`Assets/Scripts/Core/GreyboxCombatants.cs`, `Assets/Scripts/Core/GameSessionController.Battle.cs`). Asagidaki `EnemyBase`/birlik/mermi siniflari eski prototip temelidir; canli aktorlerin yerine calismaz.
+
 Ilk teknik temel:
 
 - `DamageResolver` eklendi.
@@ -28,11 +30,12 @@ Ilk teknik temel:
 
 Hedef davranis:
 
-- Barracks karakolundan dogar.
+- Barracks karakolundan uc asker dogar (`Assets/Scripts/Data/TowerProgression.cs`, `BarracksSquadSize`).
 - Kendi karakolunun yerel savunma noktasina gider.
 - Menziline giren dusmani tutar.
 - Dusmanla temas halinde saldirir.
-- Olurse belirli sure sonra karakoldan yeniden dogar.
+- Olurse karakol eksik formasyon yuvasini yeniden doldurur; uretimler arasi sayac 2.25 sn'dir.
+- Bozulan kislada askerler hareket ve saldiri yapmaz; canli ve konuslanmis askerler yolu bloklamaya devam eder, henuz konuslanmayanlar bloklamaz. Bozulma bitince normal davranis surer (`Assets/Scripts/Core/GreyboxCombatants.cs`, `GreyboxOutpost.Tick`, `GreyboxFriendlyUnit.Tick` / `CanBlock`).
 
 Ilk rol:
 
@@ -71,7 +74,7 @@ Tamamlanan kod temeli:
 
 ## Hedefleme Stratejileri
 
-Tamamlanan kod degisikligi:
+Eski prototipte tanimli stratejiler:
 
 - `First`: Rota ilerlemesi en yuksek dusman.
 - `Last`: Rota ilerlemesi en dusuk dusman.
@@ -79,9 +82,11 @@ Tamamlanan kod degisikligi:
 - `Weakest`: En dusuk mevcut can.
 - `Closest`: Kuleye en yakin dusman.
 
+Canli karakollar en ilerideki hedefi secer; Sharpshooter once Support, sonra Siege, sonra rota ilerlemesini kullanir (`Assets/Scripts/Core/GreyboxCombatants.cs`, `Assets/Scripts/Core/GameSessionController.cs`, `Assets/Scripts/Core/GameSessionController.Battle.cs`).
+
 Sonraki hedef:
 
-- Etiket bazli oncelik: ucan, boss, destek, kusatma.
+- Diger etiket bazli oncelikler: ucan, boss.
 - Hedef tercihleri UI'da secilebilir hale getirilecek.
 
 ## Hasar Cozumleme Sirasi
@@ -100,7 +105,7 @@ Merkezi sira:
 Ilk uygulama:
 
 - `DamageResolver.Resolve(...)` bu sirayi uygular.
-- Su an dusmanlar zirh/direnc/kalkan tasimadigi icin sonuc mevcut davranisla uyumlu kalir.
+- Canli Vanguard %50 fiziksel direnc tasir; buyu hasarina bu direnc uygulanmaz. Diger canli arketiplerin bu yolda direnci sifirdir (`Assets/Scripts/Core/GreyboxCombatants.cs`, `Assets/Scripts/Combat/BattleRules.cs`).
 
 ## Durum Etkileri
 
@@ -110,7 +115,9 @@ Ilk teknik temel:
 - `StatusEffectStackingPolicy` eklendi.
 - Mevcut `EnemyBase.ApplySlow(...)` prototip davranisi korunur.
 
-Desteklenecek etkiler:
+Canli savasta slow ve stun uygulanir; Frost 2 sn %50 slow verir, Knight Kalkan Darbesi 1 sn stun uygular (`Assets/Scripts/Data/TowerProgression.cs`, `Assets/Scripts/Core/GreyboxCombatants.cs`).
+
+Prototip/tasarim etki listesi:
 
 - Slow
 - Stun
@@ -126,7 +133,9 @@ Yigilma politikalari:
 
 ## Mermi Sistemi
 
-Mevcut durum:
+Canli Archer/Mage hasari saldiri aninda uygulanir; mermi gorunumu sunum/VFX katmanindadir (`Assets/Scripts/Core/GreyboxCombatants.cs`, `GreyboxOutpost.Tick`).
+
+Eski prototip durumu:
 
 - Hedef yoksa veya hedef olduysa mermi temizleniyor.
 - Hareketli hedef takip ediliyor.
@@ -144,8 +153,8 @@ Ilk kural:
 
 - Dusmanlar birbirini fiziksel olarak itmeyecek.
 - Ayni karakoldaki dost birlikler yerel savunma noktasinda kucuk formasyon ofseti kullanacak.
-- Yol tamamen kapanmayacak; buyuk dusman ve boss gecisi oyun kilidi yaratmayacak.
-- Ucan dusmanlar temas engelinden etkilenmeyecek.
+- Canli sistemde yakin canli Knight veya konuslanmis asker bulununca dusman saldirmak icin durur; boss da durabilir. Eszamanli tutma kotasi veya boss hareket tabani yoktur (`Assets/Scripts/Core/GameSessionController.cs`, `FindNearestBlocker`; `Assets/Scripts/Core/GreyboxCombatants.cs`, `GreyboxEnemy.Tick`).
+- Ucan dusmanin temas engelini yok saymasi gelecek tasarimdir; canli ucan arketip yoktur.
 
 ## Olum ve Yeniden Dogma
 
@@ -153,7 +162,9 @@ Kurallar:
 
 - Dusman olumu altin ve dalga ilerlemesini tetikler.
 - Kaleye ulasan dusman can azaltir ve dalga takibinden cikar.
-- Kahraman olumu yenilgi degil, gecici bayilma yaratir.
+- Kahraman olumu yenilgi degil, 5 sn gecici bayilma yaratir; tam canla ayni muhafiz konumuna doner. Normal saldiri 20 hasar / 0.35 sn; cooldown sifira clamp edilir, bosta saldiri birikmez (`Assets/Scripts/Core/GreyboxCombatants.cs`, `Assets/Scripts/Core/CombatMath.cs`).
+- Boss sizmasi normal hasardan kalan cani tek yildiz tavanina dusurur (20→7); tek basina otomatik yenilgi yaratmaz. Can kalirsa tum dalgalar bitince en fazla bir yildizla zafer, can biterse yenilgi olur (`Assets/Scripts/Combat/BattleRules.cs`, `Assets/Scripts/Core/GameSessionController.cs`).
+- Victory/Defeat olustugu adimda kalan dusman, karakol, asker ve Knight tick'leri durur; zaman birikimi sifirlanir, terminal sonrasinda olum odulu kazanilmaz (`Assets/Scripts/Core/GameSessionController.Battle.cs`).
 - Dost birlik olumu karakol bazli yeniden dogma sirasina girer.
 
 ## Savas Okunabilirligi
@@ -169,11 +180,13 @@ Mobil ekranda korunacak isaretler:
 
 ## Oyun Hizi
 
-Tamamlanan kod degisikligi:
+Canli uygulama:
 
-- `GameManager.SetGameSpeed(...)` eklendi.
-- Desteklenen hizlar 1x ve 2x.
+- `GameSessionController` hiz secimini ve savas saatini yonetir; eski `GameManager.SetGameSpeed(...)` prototip API'sidir.
+- Desteklenen hizlar 1x, 2x, 4x ve 8x.
 - Pause durumundan donunce secili hiz korunur.
+
+Kaynak: `Assets/Scripts/Core/GameSessionController.cs` (`SpeedSteps`, `OnPausePressed`, `ToggleGameSpeed`), `Assets/Scripts/Core/GameSessionController.Battle.cs`. Sureler 1x oyun zamani saniyesidir (`Assets/Scripts/Combat/BattleRules.cs`).
 
 ## Geri Bildirim Butcesi
 
@@ -182,5 +195,6 @@ Ilk hedefler:
 - Hafif vurus VFX'i kisa ve dusuk yogunlukta kalir.
 - Kritik vurus daha belirgin olur.
 - Boss saldirisi kamera ve sesle vurgulanir.
-- Kamera sarsintisi ayarlardan azaltilabilir.
+- Kamera sarsintisi ayarlardan kapatilabilir.
+- Muzik tercihi savas muziginin iki crossfade kanalina, SFX tercihi calan efekt/UI seslerine ve ambiyansa aninda uygulanir. Kayitsiz tercih varsayilani 1'dir; nominal ses seviyeleri korunur (`Assets/Scripts/UI/FrontendPreferences.cs`, `Assets/Scripts/Presentation/DefenderAudioController.cs`, `Assets/Scripts/Presentation/DefenderAmbientAudioController.cs`).
 - Hasar sayilari havuzlanmadan yogun savasta artirilmaz.

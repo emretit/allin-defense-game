@@ -1,13 +1,13 @@
 # Defender Chronicles — Map, Route and Outpost System
 
 Durum: Faz 2 ilk uygulama ve tasarim notu
-Son guncelleme: 2026-08-15
+Son guncelleme: 2026-10-11
 
 ## Koordinat Standardi
 
-Ilk dikey dilim 2D sahne duzleminde oynanir ve izometrik/3B sunuma gecene kadar X/Y dunya koordinatlari korunur.
+Canli dikey dilim sabit izometrik 3B sunumla XZ zemin duzleminde oynanir; Y yuksekliktir (`Assets/Scripts/Data/CampaignLevelFactory.cs`, `Assets/Scripts/Core/GameSessionController.cs`).
 
-Standartlar:
+Ilk tasarim hedefleri (asagidaki boyut/secim yaricapi canli runtime siniri degildir):
 
 - 1 Unity unit = 1 tasarim hucresi.
 - Yol genisligi hedefi = 1.0-1.5 unit.
@@ -17,9 +17,9 @@ Standartlar:
 
 ## Yol Agi Modeli
 
-Mevcut waypoint sistemi korunur, ama yol artik yalnizca gorsel cizgi degil, rota ilerlemesi hesaplayan bir modeldir.
+Canli rota `RuntimeCampaignLevel` / `MapDefinition` noktalari ve `CombatMath` mesafe hesabiyla ilerler (`Assets/Scripts/Data/CampaignLevelFactory.cs`, `Assets/Scripts/Core/CombatMath.cs`, `Assets/Scripts/Core/GreyboxCombatants.cs`).
 
-Ilk uygulama:
+Eski prototip uygulamasi:
 
 - `PathManager` rota noktalarini tutar.
 - Her segmentin uzunlugu hesaplanir.
@@ -36,7 +36,7 @@ Gelecek genisleme:
 
 ## Rota Ilerlemesi
 
-Tamamlanan kod degisikligi:
+Eski prototip kod degisikligi (canli `GreyboxEnemy.RouteProgress`, `CombatMath.RouteProgress` kullanir):
 
 - `PathManager.GetRouteProgress(...)` eklendi.
 - `EnemyBase.RouteProgress` eklendi.
@@ -46,11 +46,11 @@ Bu, virajli yollarda kulenin yanlis dusmani "ilk" veya "son" sanmasini engeller.
 
 ## Sabit Karakol Noktalari
 
-Tamamlanan kod degisikligi:
+Canli uygulama (`Assets/Scripts/Data/CampaignLevelFactory.cs`, `Assets/Scripts/Core/GameSessionController.cs`, `Assets/Scripts/Core/GreyboxCombatants.cs`):
 
-- `OutpostSlotManager` eklendi.
-- Ilk harita icin 8 stratejik slot tanimlandi.
-- `TowerPlacer` once karakol slotu arar; slot sistemi varsa serbest grid yerine slot kullanir.
+- `GreyboxOutpostSlot` ve `GameSessionController` sabit slotlari yonetir; `OutpostSlotManager` / `TowerPlacer` eski prototiptir.
+- Ilk bolge haritalarinda 8 stratejik slot vardir.
+- Kurulum secili bos slota yapilir; serbest grid kurulumu yoktur.
 - Karakol satilinca slot tekrar bosalir.
 
 Ilk slot rolleri:
@@ -61,42 +61,46 @@ Ilk slot rolleri:
 
 ## Karakol Yerlestirme Akisi
 
-Ilk akisin hedefi:
+Canli akis (`Assets/Scripts/Core/GameSessionController.cs`, `SelectSlot` / `TryBuildOutpost`):
 
 1. Oyuncu bos slota dokunur.
 2. Secili slot vurgulanir ve karakol tipleri acilir.
 3. Oyuncu karakol tipini secer.
 4. Altin yeterliyse karakol secili slota kurulur.
-5. Slot doluysa veya uzaksa kurulum yapilmaz.
+5. Slot doluysa, tip kilitliyse veya altin yetersizse kurulum yapilmaz.
 6. Iptal ile secim temizlenir.
 
-Gelecek UI iyilestirmesi:
+Mevcut UI:
 
-- Slot secildiginde karakol secenekleri panelde acilacak.
-- Kurmadan once maliyet ve rol gorunecek.
+- Slot secildiginde karakol secenekleri panelde acilir.
+- Kurmadan once maliyet ve rol gorunur (`Assets/Scripts/Presentation/DefenderHudController.cs`).
 - Mobilde iki dokunusu gecmeyen hizli kurulum korunacak.
 
 ## Karakol Yukseltme Agaci
 
-Ilk tasarim:
+Canli kural:
 
-- Her temel karakol 1. seviyeden 2. seviyeye duz guclenir.
-- 2. seviyeden sonra iki uzmanlik secenegi acilir.
+- Her temel karakol Sv1 → Sv2 duz guclenir; Sv3 iki uzmanliktan birinin secimidir, toplam alti dal vardir.
+- Dal acilma esikleri acilmis kampanya bolumune baglidir: Archer 6, Mage 7, Barracks 8.
 - Uzmanlik secimi geri alinmaz; satis ve yeniden kurma alternatif karar olur.
+- Uzmanlasma modali savasi pause eder; kapaninca modalin aldigi pause geri acilir ve secili hiz korunur, onceden pause olan oturum pause kalir (`Assets/Scripts/Core/GameSessionController.Modals.cs`, `Assets/Scripts/Presentation/DefenderHudController.Specializations.cs`).
+- Barracks -> ShieldGuard veya AssaultGuard (uc asker)
+- Archer -> RapidFire veya Sharpshooter
+- Mage -> Blast veya Frost
+- Yukseltilen/uzmanlasan secili karakolun menzil halkasi hemen guncellenir.
 
-Ornek:
-
-- Barracks -> Shield Guard veya Spear Line
-- Archer Post -> Longbow Nest veya Marking Post
-- Arcane Post -> Frost Circle veya Flame Circle
+Kaynak: `Assets/Scripts/Data/TowerProgression.cs`, `Assets/Scripts/Core/GreyboxCombatants.cs`, `Assets/Scripts/Core/GameSessionController.Battle.cs`, `Assets/Scripts/Core/GameSessionController.cs` (`TryUpgradeOutpost`, `RefreshSelectedPanel`).
 
 ## Satis ve Geri Odeme Kurali
 
-Ilk kural:
+Canli kural:
 
-- Satis iadesi temel maliyetin %60'i.
-- Dalga sirasinda satis simdilik serbest kalabilir, ama boss ve denge testinden sonra kisitlanacak.
-- Uzmanlik maliyetlerinin iadesi ayrica hesaplanacak.
+- Satis iadesi toplam yatirimin (kurulum + Sv2 + varsa uzmanlik) asagi yuvarlanmis %60'idir.
+- Hazirlik, mola ve savasta satis serbesttir; pause/zafer/yenilgide savunma degistirilemez.
+- Uzmanlik maliyeti toplam yatirima dahildir.
+- UI satisi iki dokunusla onaylanir: ilk SAT 3 sn gercek zaman boyunca iade tutarli ONAYLA gosterir, ikinci dokunus satar; zaman asimi/secim/panel/faz degisimi onayi iptal eder. Programatik satis API'si dogrudan calisir (`Assets/Scripts/Presentation/DefenderHudController.Sales.cs`, `Assets/Scripts/Core/GameSessionController.Sales.cs`).
+
+Kaynak: `Assets/Scripts/Core/CombatMath.cs` (`Refund`), `Assets/Scripts/Core/GreyboxCombatants.cs` (`invested`, `SellValue`), `Assets/Scripts/Core/GameSessionController.Battle.cs` (`CanChangeDefence`).
 
 Ekonomi suistimalini azaltmak icin gelecek kural:
 
@@ -109,9 +113,10 @@ Ilk boss tasarimi icin kural:
 
 - Karakollar kalici yok olmaz.
 - Boss veya kusatma dusmani karakolu gecici susturabilir.
-- Susturma suresi 4-8 saniye araliginda tutulur.
+- Canli kusatma bozmasi 1.5 sn, boss bozmasi 2.5 sn'dir; 4 sn boss'un saldiri sonrasi sayacidir, bozma suresi degildir (`Assets/Scripts/Core/GreyboxCombatants.cs`).
+- Bozulan kislada uretim ve mevcut askerlerin hareket/saldirisi durur; konuslanmis canli askerler yolu tutmaya devam eder (`GreyboxOutpost.Tick`, `GreyboxFriendlyUnit.Tick` / `CanBlock`).
 - Susturulan karakol gorsel ve UI ile acikca belirtilir.
-- Oyuncu kahraman yetenegi veya destek karakoluyla susturmayi kisaltabilir.
+- Kahraman veya destek karakoluyla bozma suresini kisaltma gelecek tasarimdir; canli uygulamada yoktur.
 
 ## Kale Muhafizi Konumu
 
@@ -126,17 +131,21 @@ Bu karar fiziksel iPhone, denge ve dis oyuncu kabul kapilari kapanana kadar yeni
 
 ## Yol Engelleme Kurallari
 
-Ilk kural seti:
+Canli kural seti:
 
-- Kucuk dusman: En fazla 2 dost birlik tarafindan tutulabilir.
-- Buyuk dusman: En fazla 3 dost birlik tarafindan tutulabilir, ama yolu tamamen kapatmaz.
-- Boss: Tamamen durdurulmaz; yalnizca yavaslatilir veya saldiri animasyonuna sokulur.
-- Ucan dusman: Yol engellemeden etkilenmez.
-- Birlikler ayni noktaya yigilinca hafif formasyon dagilimi kullanir.
+- Dusman menzilindeki en yakin canli Knight veya konuslanmis askerle temas edince durup saldirir.
+- Kucuk/buyuk dusman icin eszamanli tutma kotasi yoktur; bir asker birden fazla dusmani tutabilir.
+- Boss da engelleyiciye saldirirken tamamen durur; zorunlu hareket alt siniri yoktur.
+- Ucan dusmanin engeli yok saymasi gelecekteki tasarimdir; canli ucan arketip yoktur.
+- Birlikler rota boyunca ayri formasyon noktalarina konuslanir.
+
+Kaynak: `Assets/Scripts/Core/GameSessionController.cs` (`FindNearestBlocker`), `Assets/Scripts/Core/GreyboxCombatants.cs` (`GreyboxEnemy.Tick`, `CanBlock`, `FindBarracksRallyPoint`).
 
 ## Etkilesim Katmanlari
 
-Dokunma onceligi:
+Canli dokunma `HandleWorldPointer` ile once UI, sonra Selectable katmanindaki slot/karakol raycast'ini isler; bos alanda secim temizlenir. Dusman veya dost birlik secimi ve ayri yetenek hedefleme modu yoktur (`Assets/Scripts/Core/GameSessionController.cs`).
+
+Gelecek genisleme icin hedef dokunma onceligi:
 
 1. UI
 2. Secili hedefleme/aktif yetenek onizlemesi

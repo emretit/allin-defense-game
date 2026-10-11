@@ -1,7 +1,7 @@
 # Defender Chronicles — Economy, Upgrades and Progression
 
 Durum: Faz 6 veri ve tasarim notu
-Son guncelleme: 2026-08-15
+Son guncelleme: 2026-10-11
 
 ## Savas Ekonomisi
 
@@ -11,14 +11,15 @@ Altin kullanimi:
 
 - Karakol kurma
 - Karakol yukseltme
-- Gerekirse erken diriltme veya acil destek
+- Erken diriltme veya acil destek yalniz gelecek tasarim; canli satin alma akisinda yok
 
 Altin kaynaklari:
 
 - Dusman odulu
 - Dalga tamamlama bonusu
-- Erken dalga cagirma bonusu
-- Bazi yan hedef odulleri
+- Erken dalga cagirma bonusu ve yan hedef odulleri gelecek tasarim; su an verilmez
+
+Canli kaynak: `Assets/Scripts/Core/GameSessionController.cs` (`EnemyRemoved`, `CompleteWave`, `StartNextWave`).
 
 Kural:
 
@@ -33,10 +34,12 @@ Ilk denge hedefi:
 - Orta dalgada uzmanlasma karari baslamali.
 - Son dalga/boss oncesi oyuncu en az bir guclu savunma hatti kurabilmeli.
 
-Baslangic degerleri mevcut prototipte korunur:
+Canli ilk bolge degerleri:
 
-- Baslangic altini: 200
-- Baslangic cani: 20
+- Baslangic altini bolume bagli: Bolum 1 = 230, Bolum 10 = 400. `GameSessionController` icindeki 200 yalniz fallback degeridir; kampanya verisi bunu ezer.
+- Baslangic cani katalogdan gelir: Bolum 1 ve 10 = 20; diger bolumlerde `CampaignCatalog` can egrisi kullanilir.
+
+Kaynak: `Assets/Resources/FirstRegionCampaign.json`, `Assets/Scripts/Data/CampaignCatalog.cs`, `Assets/Scripts/Core/GameSessionController.cs`.
 
 ## Karakol Uzmanlik Dengesi
 
@@ -45,16 +48,18 @@ Kural:
 - Uzmanliklar "daha iyi" degil, "farkli cozum" olacak.
 - Her uzmanligin guclu dusman rolu ve zayif kaldigi durum bulunacak.
 
-Ornek:
+Canli Sv3 dallari: Archer → RapidFire / Sharpshooter, Barracks → ShieldGuard / AssaultGuard, Mage → Blast / Frost. Her kule Sv1 → Sv2 sonrasinda iki daldan birini secer; acilma bolumleri Archer 6, Mage 7, Barracks 8, ek maliyetler sirasiyla 160 / 220 / 180 altindir (`Assets/Scripts/Data/TowerProgression.cs`, `Assets/Scripts/Core/GameSessionController.Battle.cs`).
 
-- Shield Guard: Boss ve tank baskisina iyi, suru dalgasina zayif.
-- Spear Line: Hizli dusmanlara iyi, ucanlara etkisiz.
-- Longbow Nest: Ucan ve destek dusmanlara iyi, yakin baskida zayif.
-- Frost Circle: Kalabalik kontrol eder, tek hedef hasari dusuk.
+Canli denge (`Assets/Scripts/Data/TowerProgression.cs`):
+
+- Archer Sv1 hasar 24, hiz 2.5/sn; Sv2 hasar ×1.75 / hiz ×1.44 ile 42 hasar, 3.6/sn.
+- Diger kulelerde genel Sv2 hasar ×1.55 / hiz ×1.2; Barracks askerleri bu genel hesabi ezer: Sv1 16 hasar / 110 HP, Sv2 32 hasar / 210 HP ve Sv1/Sv2'de 1/0.375 saldiri/sn.
+- Kislada her seviyede uc asker vardir; uzmanlasma bunlarin statlarini degistirir.
+- Satis, temel kurulum + Sv2 + varsa dal maliyeti toplam yatiriminin asagi yuvarlanmis %60'ini iade eder (`Assets/Scripts/Core/GreyboxCombatants.cs`, `Assets/Scripts/Core/CombatMath.cs`).
 
 ## Savas Ici Guc Secimleri
 
-Ilk kural:
+Gelecek tasarim (canli rastgele guc secimi yok):
 
 - Belirli dalgalardan sonra oyuncuya 3 secenek sunulur.
 - Secenekler mevcut karakol ve kahraman yuklemesine gore anlamli olur.
@@ -68,7 +73,9 @@ Ornekler:
 
 ## Bolum Sonu Odul Akisi
 
-Siralama:
+Canli akis zafer/yenilgi, cana gore yildiz, Valor/XP odulu ve tekrar/sonraki bolum/haritaya donustur (`Assets/Scripts/UI/AppFlowController.cs`, `Assets/Scripts/Core/CampaignProgressStore.cs`). Ekipman/acilan icerik maddeleri gelecek tasarimdir.
+
+Hedef siralama:
 
 1. Zafer/yenilgi sonucu
 2. Yildiz ve yan hedefler
@@ -86,7 +93,9 @@ Tamamlanan veri ekleri:
 
 Ilk meta kaynak: Valor.
 
-Valor kullanimi:
+Canli profilde Valor ve heroXP birikir; Valor harcama veya ekipman uretimi yok (`Assets/Scripts/Core/CampaignProgressStore.cs`). Ilk zafer bolum Valor odulu + kazanilan yildiz basina 5 Valor verir; tekrar zaferde yalniz iyilesen yildiz basina 5 Valor, XP ise yalniz ilk zaferde verilir.
+
+Gelecek Valor kullanimi:
 
 - Kahraman ekipman uretimi
 - Kalici ama sinirli gelisim
@@ -148,7 +157,9 @@ Kural:
 
 ## Yildiz ve Gorev Sistemi
 
-Ilk yildiz hedefleri:
+Canli yildiz hesabi kalan can oranina baglidir: ≥%75 uc, ≥%40 iki, pozitif can bir, sifir can sifir yildiz. Boss sizmasi normal hasardan sonra cani tek yildiz tavanina dusurur (20→7); can kalir ve tum dalgalar tamamlanirsa zafer, can biterse yenilgi olur. Kaynak: `Assets/Scripts/Combat/BattleRules.cs`, `Assets/Scripts/Core/GameSessionController.cs`.
+
+Gelecek yildiz/yan gorev hedefleri:
 
 - Bolumu tamamla.
 - Belirli sayidan fazla can kaybetme.

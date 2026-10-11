@@ -8,20 +8,24 @@ Bu proje Age of Arena veya FutbolQuiz’den kod, model, ses, font, ikon ya da UI
 
 - XZ zemin üzerinde yatay hizalanmış, sabit izometrik 3B harita
 - Görünür rota, düşman kapısı, kale ve 8 sabit karakol platformu
-- 200 başlangıç altını ve 20 kale canı
+- Bölüme göre başlangıç altını: Bölüm 1’de 230, Bölüm 10’da 400; Bölüm 1 ve 10’da 20 kale canı (diğer bölümlerde katalog değeri)
 - Okçu (75), Kışla (100) ve Büyü (125) karakolları
-- Tek seviye yükseltme ve toplam yatırımın %60’ı satış iadesi
-- Kışladan çıkan, düşmanı durduran ve yeniden doğan iki birlik
-- Kale yanında sabit duran; saldırı, bayılma, 10 saniyede dönüş ve Kalkan Darbesi olan Knight
+- Sv1 → Sv2 yükseltme, Sv3’te altı daldan kuleye uygun uzmanlaşma ve toplam yatırımın %60’ı satış iadesi
+- Kışladan çıkan, düşmanı durduran ve yeniden doğan üç birlik
+- Kale yanında sabit duran; saldırı, bayılma, 5 saniyede dönüş ve Kalkan Darbesi olan Knight
 - Hızlı, tank, rejenerasyon, destek, kuşatma ve üç safhalı boss düşmanları
-- 6 normal dalga + 1 boss dalgası
+- Bölüm 1’de 3 dalga; Bölüm 10’da 7 normal dalga + 1 boss dalgası (boss başlangıcı son dalganın 36. saniyesinde)
 - Hazırlık, savaş, 8 saniyelik mola, pause, zafer, yenilgi ve restart durumları
 - Safe-area içinde yatay mobil HUD
 - Gece mavisi/turuncu stilize çevre, aktör ve karakol seti
-- Anında değişen Türkçe/İngilizce TextMeshPro arayüz, havuzlu VFX ve duruma bağlı müzik sistemi
-- 5 bölge ve 50 bölümden oluşan çevrimdışı oynanabilir kampanya
+- Anında değişen Türkçe/İngilizce TextMeshPro arayüz, havuzlu VFX ve duruma bağlı müzik sistemi; müzik/SFX tercihleri savaş müziği, çalan efektler ve ambiyansa anında uygulanır
+- Menü, kampanya haritası, brifing, ayarlar ve yerel kayıt/checkpoint akışı; normal ön yüzde ilk 10 bölüm oynanabilir, katalogda 5 bölge / 50 bölüm var
 - Misafir oyun, tek Unity Player Account bağlantısı ve çevrimdışı hak talebi kuyruğu
 - Cloud Code tarafından doğrulanan bölüm sonucu, ödül ve ilerleme modeli
+
+Kaynaklar: `Assets/Scripts/Data/TowerProgression.cs`, `Assets/Scripts/Data/CampaignCatalog.cs`, `Assets/Resources/FirstRegionCampaign.json`, `Assets/Scripts/UI/AppFlowController.ClosedTest.cs`, `Assets/Scripts/Core/GameSessionController.Checkpoints.cs` ve `Assets/Scripts/Core/GreyboxCombatants.cs`.
+
+Knight normal saldırısı 20 hasar / 0.35 sn; boşta beklemek saldırı biriktirmez. Boss fazları %66/%33 eşiklerinde sıralı ilerler, iyileşmeyle geri dönmez; %66 takviyesi tek sefer altı Raider’dır. Bozulan kışlanın askerleri hareket/saldırıyı durdurur, konuşlanmış olanlar yolu tutar. Zafer/yenilgiye geçilince aynı simülasyon adımındaki kalan aktörler durur. Boss sızması normal hasar ve tek yıldız can tavanı uygular (20→7); can kalırsa tüm dalgalar tamamlandığında en fazla bir yıldızla zafer, can biterse yenilgi olur. Kaynak: `Assets/Scripts/Core/GreyboxCombatants.cs`, `Assets/Scripts/Core/CombatMath.cs`, `Assets/Scripts/Core/GameSessionController.Battle.cs`, `Assets/Scripts/Combat/BattleRules.cs`, `Assets/Scripts/Core/GameSessionController.cs`. Ses kaynağı: `Assets/Scripts/UI/FrontendPreferences.cs`, `Assets/Scripts/Presentation/DefenderAudioController.cs`, `Assets/Scripts/Presentation/DefenderAmbientAudioController.cs`.
 
 ## Teknik temel
 
