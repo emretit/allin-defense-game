@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace DefenderChronicles.UI
@@ -10,6 +11,8 @@ namespace DefenderChronicles.UI
         private const string HapticsKey = Prefix + "Haptics";
         private const string CameraShakeKey = Prefix + "CameraShake";
         private const string ReducedMotionKey = Prefix + "ReducedMotion";
+
+        public static event Action AudioVolumesChanged;
 
         public static float MusicVolume
         {
@@ -57,8 +60,11 @@ namespace DefenderChronicles.UI
 
         private static void SetFloat(string key, float value)
         {
-            PlayerPrefs.SetFloat(key, Mathf.Clamp01(value));
+            float previous = key == MusicKey ? MusicVolume : SfxVolume;
+            float volume = Mathf.Clamp01(value);
+            PlayerPrefs.SetFloat(key, volume);
             PlayerPrefs.Save();
+            if (previous != volume) AudioVolumesChanged?.Invoke();
         }
     }
 }

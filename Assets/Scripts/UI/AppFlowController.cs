@@ -889,8 +889,6 @@ namespace DefenderChronicles.UI
 
         private void ApplyStoredAudioPreferences()
         {
-            AudioManager.Instance?.SetMusicVolume(FrontendPreferences.MusicVolume);
-            AudioManager.Instance?.SetSFXVolume(FrontendPreferences.SfxVolume);
             if (frontendUiSource != null) frontendUiSource.volume = FrontendPreferences.SfxVolume;
         }
 

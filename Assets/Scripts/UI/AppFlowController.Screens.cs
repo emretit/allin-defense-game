@@ -342,12 +342,12 @@ namespace DefenderChronicles.UI
             SetAnchors((RectTransform)englishLanguageButton.transform, new Vector2(.5f, 1), Vector2.one, new Vector2(10, -146), new Vector2(-4, -6));
             CreateSliderRow(body.transform, "MÜZİK", new Vector2(0, -180), FrontendPreferences.MusicVolume, value =>
             {
-                FrontendPreferences.MusicVolume = value; Utils.AudioManager.Instance?.SetMusicVolume(value);
+                FrontendPreferences.MusicVolume = value;
             });
             CreateSliderRow(body.transform, "EFEKTLER", new Vector2(0, -346), FrontendPreferences.SfxVolume, value =>
             {
-                FrontendPreferences.SfxVolume = value; Utils.AudioManager.Instance?.SetSFXVolume(value);
-                frontendUiSource.volume = value;
+                FrontendPreferences.SfxVolume = value;
+                if (frontendUiSource != null) frontendUiSource.volume = FrontendPreferences.SfxVolume;
             });
             CreateToggleRow(body.transform, "TİTREŞİM", new Vector2(0, -512), FrontendPreferences.Haptics, value => FrontendPreferences.Haptics = value);
             CreateToggleRow(body.transform, "KAMERA SARSINTISI", new Vector2(0, -678), FrontendPreferences.CameraShake, value => FrontendPreferences.CameraShake = value);
