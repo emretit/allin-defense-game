@@ -586,6 +586,7 @@ namespace DefenderChronicles.Core
         {
             if (!IsAlive || session == null) return;
             attackTimer = CombatMath.TickCooldown(attackTimer, delta);
+            if (owner.IsDisrupted) return;
             if (!IsDeployed)
             {
                 MoveTo(rally, delta);
