@@ -32,7 +32,7 @@ namespace DefenderChronicles.Tests
                     var tower=session.Outposts[0];
                     // Both squads reach their road formation before the controlled encounter starts.
                     if(kind==OutpostKind.Barracks)for(int frame=0;frame<300;frame++)session.AdvanceBattle(1f/60);
-                    typeof(GameSessionController).GetMethod("SpawnEnemy",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(session,new object[]{EnemyArchetype.Boss});
+                    typeof(GameSessionController).GetMethod("SpawnEnemy", BindingFlags.Instance | BindingFlags.NonPublic, null, new[] { typeof(EnemyArchetype) }, null).Invoke(session,new object[]{EnemyArchetype.Boss});
                     var enemy=session.Enemies[0];
                     var guards=Object.FindObjectsByType<GreyboxFriendlyUnit>(FindObjectsSortMode.None);
                     enemy.transform.position=kind==OutpostKind.Barracks?guards[0].Position:tower.Position+Vector3.forward;

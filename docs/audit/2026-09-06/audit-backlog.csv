@@ -1,0 +1,29 @@
+﻿Kimlik,Öncelik,Durum,Alan,İş,Kabul ölçütü,Önerilen gün,Kanıt türü
+G01,P1,Açık,Oynanış,İlk bölümde eylemsiz zaferi kaldır ve öğretimi kur,Kulesiz koşu kazanamaz; öğretim adımlarıyla kazanılır; tek kule otomatik üç yıldız vermez,1–7,Deney
+G02,P1,Geometri düzeltildi; geniş doğrulama açık,Oynanış,Yeni kışla toplanma noktalarını köşe ve rota testleriyle koru,400 noktanın mesafe analizi + her rota ailesinde gerçek engelleme testi; üç strateji geçer,1–7,Önce/sonra analiz + 3/3 takip testi
+G03,P1,Açık,Oynanış,Stun sırasında özel saldırı politikasını uygula,Stun altındaki Siege kuleyi susturamaz; pasif etkiler ayrı tanımlıdır,1–7,Deney
+G04,P1,Açık,Oyun tasarımı,Dalga başına gelir ve harcama eğrisini yeniden tasarla,İlk 10 bölümde son anlamlı harcama ve kalan para ölçülür; iki makul kurulum kazanır,8–14,50 bölüm veri analizi
+G05,P1,Açık,Oynanış,Zırh ve yavaşlatma rollerini aktif savaşla eşleştir,Arayüzde anlatılan direnç ve kontrol etkileri süre/hasar testinde karşılık bulur,8–14,Kod
+G06,P1,Açık,Oyun tasarımı,İlk 10 bölümü öğrenme hedefiyle yeniden düzenle,Her bölümün yeni kararı ve sınadığı önceki rol açık; rota/dalga tekrarları bilinçli,8–14,Kod + tasarım değerlendirmesi
+G07,P2,Açık,Oynanış,Dalga gruplarını ortak zaman çizelgesine bağla,İlan edilen grup başlangıçları doğru zamanda gerçekleşir; önizleme gerçekle eşleşir,8–14,Kod
+G08,P2,Açık,Oynanış,Boss uyarı ve karşı hamlesini geliştir,Susturma önceden işaretlenir; oyuncunun engelleyebileceği eylem ve faz farkı vardır,8–14,Kod
+G09,P2,Açık,Oynanış,Savaş saatini ve saldırı temasını tutarlı yap,30/60 FPS ve 1×/2×/4×/8× sonuçları karşılaştırılır; hasar/ses/temas aynı zamanlamayı izler,8–21,Koddan risk
+S01,P1,Açık,Servis,Başlangıç ve sahne geçişinde eşitlemeyi geri yükle,"Soğuk açılış, tekrar, sonraki bölüm, bağlantı dönüşü ve odak dönüşü testleri geçer",1–7,Kod akışı
+S02,P1,Açık,Kayıt,Atomik kayıt ve yedekten kurtarma ekle,Yazmanın her aşamasındaki kesintide son geçerli kayıt geri gelir,1–7,Kod
+S03,P1,Açık,Cloud Code,Yıldızları sunucuda türet ve eski kayıt göçünü sınırla,0 can/3 yıldız reddedilir; istemci tek bölüm 50 kaydıyla bütün kampanyayı açamaz,1–7,Yerel deney
+S04,P1,Açık,Kayıt,Hesap alanları ve reddedilen talepler için açık politika uygula,A→misafir→B geçişinde ödüller karışmaz; reddedilen talebin nedeni korunur,1–14,Kod
+U01,P1,Ölçüm gerekli,Arayüz,Gerçek cihazda dokunma alanlarını doğrula ve büyüt,Sık eylemler 44×44 iOS point hedefini karşılar; küçük ekranda overlap yoktur,15–21,Hesap + birincil kılavuz
+U02,P2,Açık,Arayüz,İlk savaşa girişi ve ilk kurulum öğretimini sadeleştir,Yeni oyuncu yardım almadan ilk kuleyi kurar ve yeteneğin rolünü açıklayabilir,15–21,Akış değerlendirmesi
+U03,P2,Açık,Arayüz,Devam ve yenilgi ekranını eyleme dönük yap,Devam sıradaki amaçlanan bölümü açar; yenilgi dalga/tehdit ve bir öneri gösterir,15–21,Kod + tasarım
+U04,P2,Cihaz testi gerekli,Mobil,Kesinti ve yön değişiminden kurtarma davranışı ekle,"Kilit, arama, arka plan, kapanma ve yön hatasında ilerleme/ekran kurtarılır",15–30,Kodda eksik yol
+U05,P2,Açık,Yerelleştirme,TR/EN dinamik savaş metinlerini tamamla,Tüm savaş ve servis durumları iki dilde eksiksiz; uzun metin kesilmez,15–21,Kod
+V01,P2,Açık,Sanat,Tek bir referans savaş sahnesini tamamla,"Telefon boyutunda yol, dost/düşman ve üç kule rolü şekil ve tonla ayrışır",15–21,Görsel değerlendirme
+V02,P2,İnsan testi gerekli,Ses ve erişilebilirlik,Kritik uyarı önceliklerini ve çoklu duyusal karşılıkları doğrula,Yoğun dalgada sızma/kuşatma uyarıları seçilir; sessizde görsel karşılık vardır,15–30,Altyapı incelemesi
+P01,P1,Açık,Performans,Aşama ölçümünü düzelt ve uzun cihaz kabulü yap,Ayrı p95 pencereleri; 20–30 dk düşük hedef cihaz koşusu; termal sorun için ürün kararı,22–30,Tarihsel cihaz kanıtı + kod
+P02,P2,Profil gerekli,Performans,Düşman/UI/ölüm efekti maliyetlerini Profiler ile sırala,Optimizasyon önce/sonra CPU/GPU/GC ve bellek kanıtıyla seçilir,22–30,Koddan maliyet adayları
+T01,P2,Açık,Mimari,"Üretim, otomasyon ve eski sistem sınırlarını ayır",Tek stat kaynağı; aktif referans haritası; geliştirme otomasyonu ayrı assembly,Sürekli,Kod
+T02,P2,Açık,Kalite,Davranış testlerini ve aynı sürüm yayın kanıtını kur,İlgili test matrisi otomatik; kaynak/paket/cihaz sonucu aynı sürüme bağlı,1–30,Test kapsamı incelemesi
+M01,P2,Tasarım gerekli,İlerleme,Valor/XP ödüllerini küçük yatay seçimlere bağla,Ödülün açtığı seçim görünür; ana kampanya zorunlu öğütme olmadan tamamlanabilir,Çekirdek sonrası,Aktif kod
+A01,P2,Açık,Analitik,Oyuncu kararları ve kayıp nedenlerini ölç,"Test trafiği ayrılır; ilk kurulum, dalga, harcama, yetenek etkisi ve çıkış ölçülür",22–30,Kaynak taraması
+R01,P1,Karar gerekli,Ürün,Oyun adını yeniden değerlendir ve uygunluk araştırması yap,Mevcut aynı adlı seriyle karıştırılmayacak doğrulanmış yayın adı belirlenir,Tanıtım öncesi,Birincil kaynak
+R02,P1,Açık,Yayın,"Politika URL, hesap silme ve veri beyanlarını tamamla",Gerçek hesap akışına uygun uygulama/web silme ve çalışan politika bağlantıları,Yayın öncesi,Asset + mağaza kılavuzları

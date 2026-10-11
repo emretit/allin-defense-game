@@ -55,7 +55,7 @@ namespace DefenderChronicles.Tests
             Assert.That(guards.All(g => !g.CanBlock), Is.True, "Walking out of the building must not block the road remotely.");
             Advance(session, 5);
             var formation = guards.Select(g => g.Position).ToArray();
-            typeof(GameSessionController).GetMethod("SpawnEnemy", BindingFlags.Instance | BindingFlags.NonPublic)
+            typeof(GameSessionController).GetMethod("SpawnEnemy", BindingFlags.Instance | BindingFlags.NonPublic, null, new[] { typeof(EnemyArchetype) }, null)
                 .Invoke(session, new object[] { EnemyArchetype.Vanguard });
             var enemy = session.Enemies.Single();
             // Place a durable, physically armoured opponent on the same road segment as the squad.
@@ -80,7 +80,7 @@ namespace DefenderChronicles.Tests
         {
             var session = Create();
             Advance(session, 5);
-            typeof(GameSessionController).GetMethod("SpawnEnemy", BindingFlags.Instance | BindingFlags.NonPublic)
+            typeof(GameSessionController).GetMethod("SpawnEnemy", BindingFlags.Instance | BindingFlags.NonPublic, null, new[] { typeof(EnemyArchetype) }, null)
                 .Invoke(session, new object[] { EnemyArchetype.Vanguard });
             var enemy = session.Enemies.Single();
             // A stationary opponent isolates waiting time from encounter placement.
@@ -103,7 +103,7 @@ namespace DefenderChronicles.Tests
         {
             var session = Create();
             Advance(session, 5);
-            typeof(GameSessionController).GetMethod("SpawnEnemy", BindingFlags.Instance | BindingFlags.NonPublic)
+            typeof(GameSessionController).GetMethod("SpawnEnemy", BindingFlags.Instance | BindingFlags.NonPublic, null, new[] { typeof(EnemyArchetype) }, null)
                 .Invoke(session, new object[] { EnemyArchetype.Vanguard });
             var enemy = session.Enemies.Single();
             enemy.transform.position = session.Outposts[0].Soldiers[0].RallyPoint + Vector3.up * 1.02f;

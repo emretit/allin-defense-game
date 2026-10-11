@@ -69,7 +69,9 @@ namespace DefenderChronicles.Core
 
         private static bool ShouldShowFrontend()
         {
-            if (Application.isEditor || ClosedTestAutoplay.Enabled) return false;
+            if (ClosedTestAutoplay.Enabled) return false;
+            if (Application.isEditor && !AppFlowController.HasPendingLevel &&
+                Environment.GetEnvironmentVariable("DC_FRONTEND_EDITOR") != "1") return false;
             if (!Debug.isDebugBuild) return true;
             string[] args = Environment.GetCommandLineArgs();
             bool commandLineAutomation = args.Any(item =>

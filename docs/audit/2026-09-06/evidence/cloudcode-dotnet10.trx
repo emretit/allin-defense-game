@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="a20b6d24-d5b3-4706-9886-c46e0c9267d1" name="@Emre-MacBook-Pro 2026-09-06 09:57:52" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-06T09:57:52.7384680+03:00" queuing="2026-09-06T09:57:52.7384680+03:00" start="2026-09-06T09:57:52.3641690+03:00" finish="2026-09-06T09:57:52.7409490+03:00" />
+  <TestSettings name="default" id="28ace85c-08c9-4c76-a27a-445d736f08e8">
+    <Deployment runDeploymentRoot="_Emre-MacBook-Pro_2026-09-06_09_57_52" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="8befc8af-d5b2-4819-90cd-09f8a55a8f90" testId="4d122e8b-294a-126a-0ab8-bdc860c3093b" testName="DuplicateClaimCannotAwardTwice" computerName="Emre-MacBook-Pro" duration="00:00:00.0083950" startTime="2026-09-06T09:57:52.6689920+03:00" endTime="2026-09-06T09:57:52.6773650+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8befc8af-d5b2-4819-90cd-09f8a55a8f90" />
+    <UnitTestResult executionId="8db72b12-16ab-426a-ac27-f9121b90e8f2" testId="12ea23ae-2f68-9040-4f37-bd3d8ec96ae9" testName="LockedLevelAndInvalidLivesAreRejected" computerName="Emre-MacBook-Pro" duration="00:00:00.0018030" startTime="2026-09-06T09:57:52.6807660+03:00" endTime="2026-09-06T09:57:52.6825690+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8db72b12-16ab-426a-ac27-f9121b90e8f2" />
+    <UnitTestResult executionId="088bcefd-89e5-476e-af81-38daf6a5c6de" testId="f6d28a03-6ebd-43a5-d128-f4ae47157423" testName="OrderedOfflineBatchCanUnlockFollowingLevel" computerName="Emre-MacBook-Pro" duration="00:00:00.0014300" startTime="2026-09-06T09:57:52.6825860+03:00" endTime="2026-09-06T09:57:52.6840160+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="088bcefd-89e5-476e-af81-38daf6a5c6de" />
+    <UnitTestResult executionId="7ef32d52-a085-4ce1-88fe-1153aad6c0b2" testId="9001f476-bbe3-4d1f-082f-5615de963e07" testName="LegacyMigrationRecomputesCurrencyFromValidatedStars" computerName="Emre-MacBook-Pro" duration="00:00:00.0028869" startTime="2026-09-06T09:57:52.6778470+03:00" endTime="2026-09-06T09:57:52.6807340+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7ef32d52-a085-4ce1-88fe-1153aad6c0b2" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="LockedLevelAndInvalidLivesAreRejected" storage="/users/emreaydin/defenderchronicles/campaignprogressionccm/campaignprogression.tests/bin/debug/net9.0/campaignprogression.tests.dll" id="12ea23ae-2f68-9040-4f37-bd3d8ec96ae9">
+      <Execution id="8db72b12-16ab-426a-ac27-f9121b90e8f2" />
+      <TestMethod codeBase="/Users/emreaydin/DefenderChronicles/CampaignProgressionCCM/CampaignProgression.Tests/bin/Debug/net9.0/CampaignProgression.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="CampaignProgression.Tests.CampaignRulesEngineTests" name="LockedLevelAndInvalidLivesAreRejected" />
+    </UnitTest>
+    <UnitTest name="LegacyMigrationRecomputesCurrencyFromValidatedStars" storage="/users/emreaydin/defenderchronicles/campaignprogressionccm/campaignprogression.tests/bin/debug/net9.0/campaignprogression.tests.dll" id="9001f476-bbe3-4d1f-082f-5615de963e07">
+      <Execution id="7ef32d52-a085-4ce1-88fe-1153aad6c0b2" />
+      <TestMethod codeBase="/Users/emreaydin/DefenderChronicles/CampaignProgressionCCM/CampaignProgression.Tests/bin/Debug/net9.0/CampaignProgression.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="CampaignProgression.Tests.CampaignRulesEngineTests" name="LegacyMigrationRecomputesCurrencyFromValidatedStars" />
+    </UnitTest>
+    <UnitTest name="DuplicateClaimCannotAwardTwice" storage="/users/emreaydin/defenderchronicles/campaignprogressionccm/campaignprogression.tests/bin/debug/net9.0/campaignprogression.tests.dll" id="4d122e8b-294a-126a-0ab8-bdc860c3093b">
+      <Execution id="8befc8af-d5b2-4819-90cd-09f8a55a8f90" />
+      <TestMethod codeBase="/Users/emreaydin/DefenderChronicles/CampaignProgressionCCM/CampaignProgression.Tests/bin/Debug/net9.0/CampaignProgression.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="CampaignProgression.Tests.CampaignRulesEngineTests" name="DuplicateClaimCannotAwardTwice" />
+    </UnitTest>
+    <UnitTest name="OrderedOfflineBatchCanUnlockFollowingLevel" storage="/users/emreaydin/defenderchronicles/campaignprogressionccm/campaignprogression.tests/bin/debug/net9.0/campaignprogression.tests.dll" id="f6d28a03-6ebd-43a5-d128-f4ae47157423">
+      <Execution id="088bcefd-89e5-476e-af81-38daf6a5c6de" />
+      <TestMethod codeBase="/Users/emreaydin/DefenderChronicles/CampaignProgressionCCM/CampaignProgression.Tests/bin/Debug/net9.0/CampaignProgression.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="CampaignProgression.Tests.CampaignRulesEngineTests" name="OrderedOfflineBatchCanUnlockFollowingLevel" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="4d122e8b-294a-126a-0ab8-bdc860c3093b" executionId="8befc8af-d5b2-4819-90cd-09f8a55a8f90" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="12ea23ae-2f68-9040-4f37-bd3d8ec96ae9" executionId="8db72b12-16ab-426a-ac27-f9121b90e8f2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f6d28a03-6ebd-43a5-d128-f4ae47157423" executionId="088bcefd-89e5-476e-af81-38daf6a5c6de" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9001f476-bbe3-4d1f-082f-5615de963e07" executionId="7ef32d52-a085-4ce1-88fe-1153aad6c0b2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Bir Listede Olmayan Sonuçlar" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="Yüklenen Tüm Sonuçlar" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="4" executed="4" passed="4" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>NUnit Adapter 4.6.0.0: Test execution started
+Running all tests in /Users/emreaydin/DefenderChronicles/CampaignProgressionCCM/CampaignProgression.Tests/bin/Debug/net9.0/CampaignProgression.Tests.dll
+   NUnit3TestExecutor discovered 4 of 4 NUnit test cases using Current Discovery mode, Non-Explicit run
+NUnit Adapter 4.6.0.0: Test execution complete
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

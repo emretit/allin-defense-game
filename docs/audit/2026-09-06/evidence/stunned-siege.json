@@ -1,0 +1,10 @@
+{
+    "scenario": "Siege special during stun",
+    "phase": "Blocked",
+    "lives": 0,
+    "gold": 0,
+    "towers": 0,
+    "wave": 0,
+    "elapsedSeconds": 0.0,
+    "disruptedWhileStunned": true
+}

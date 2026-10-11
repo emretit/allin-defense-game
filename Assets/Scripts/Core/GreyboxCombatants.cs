@@ -46,7 +46,8 @@ namespace DefenderChronicles.Core
         public EnemyCombatState State { get; private set; } = EnemyCombatState.Spawn;
         public int Reward => stats.reward;
         public EnemyArchetype Archetype => archetype;
-        public float RouteProgress => session == null ? 0f : session.ComputeRouteProgress(transform.position, targetWaypoint);
+        public float RouteProgress => session == null ? 0f : session.ComputeRouteProgress(path, transform.position, targetWaypoint);
+        public float RemainingRouteDistance => session == null ? float.MaxValue : session.ComputeRemainingRouteDistance(path, transform.position, targetWaypoint);
         public bool IsAlive => !removed && health > 0;
         public Vector3 Position => transform.position;
 
@@ -327,11 +328,15 @@ namespace DefenderChronicles.Core
         public string RoleLabel => RoleName();
         public bool IsDisrupted => disabledRemaining > 0f;
         public float DisabledRemaining => disabledRemaining;
-        public string Description =>
-            $"{GameSessionController.OutpostDisplayName(Kind)}  •  SV {level}\n\n" +
-            $"Rol: {RoleName()}\nHasar: {CurrentDamage()}\nHız: {CurrentRate():0.0}/sn\n" +
-            $"Menzil: {CurrentRange():0.0}\nYükseltme: {(CanUpgrade ? UpgradeCost.ToString() : "TAMAM")}\n" +
-            $"Satış: {SellValue}" + (disabledRemaining > 0f ? "\n\nGEÇİCİ OLARAK BOZULDU" : string.Empty);
+        public string Description => GameLocalization.IsEnglish
+            ? $"{GameSessionController.OutpostDisplayName(Kind)}  •  LV {level}\n\n" +
+              $"Role: {RoleName()}\nDamage: {CurrentDamage()}\nRate: {CurrentRate():0.0}/sec\n" +
+              $"Range: {CurrentRange():0.0}\nUpgrade: {(CanUpgrade ? UpgradeCost.ToString() : "MAX")}\n" +
+              $"Sell: {SellValue}" + (disabledRemaining > 0f ? "\n\nTEMPORARILY DISRUPTED" : string.Empty)
+            : $"{GameSessionController.OutpostDisplayName(Kind)}  •  SV {level}\n\n" +
+              $"Rol: {RoleName()}\nHasar: {CurrentDamage()}\nHız: {CurrentRate():0.0}/sn\n" +
+              $"Menzil: {CurrentRange():0.0}\nYükseltme: {(CanUpgrade ? UpgradeCost.ToString() : "TAMAM")}\n" +
+              $"Satış: {SellValue}" + (disabledRemaining > 0f ? "\n\nGEÇİCİ OLARAK BOZULDU" : string.Empty);
 
         public void Configure(GameSessionController owner, GreyboxOutpostSlot slot, OutpostKind kind,
             OutpostStats stats)

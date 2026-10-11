@@ -8,6 +8,7 @@ namespace DefenderChronicles.UI
     {
         private RawImage image;
         private RectTransform rectTransform;
+        public bool Drift { get; set; }
         private Texture lastTexture;
         private Vector2 lastSize;
 
@@ -20,7 +21,7 @@ namespace DefenderChronicles.UI
 
         private void LateUpdate()
         {
-            if (image.texture == lastTexture && rectTransform.rect.size == lastSize) return;
+            if (!Drift && image.texture == lastTexture && rectTransform.rect.size == lastSize) return;
             ApplyCoverCrop();
         }
 
@@ -41,6 +42,15 @@ namespace DefenderChronicles.UI
             {
                 float visibleWidth = viewAspect / textureAspect;
                 image.uvRect = new Rect((1f - visibleWidth) * 0.5f, 0f, visibleWidth, 1f);
+            }
+            if (Drift && !FrontendPreferences.ReducedMotion)
+            {
+                Rect uv = image.uvRect;
+                float insetX = uv.width * .008f, insetY = uv.height * .008f;
+                uv.x += insetX * (1 + Mathf.Sin(Time.unscaledTime * .14f));
+                uv.y += insetY * (1 + Mathf.Cos(Time.unscaledTime * .11f));
+                uv.width -= insetX * 2; uv.height -= insetY * 2;
+                image.uvRect = uv;
             }
         }
     }

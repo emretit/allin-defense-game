@@ -356,6 +356,65 @@ namespace DefenderChronicles.Tests
         }
 
         [Test]
+        public void CampaignMapsUseStableIdsDistinctLayoutsAndProgressiveEntrances()
+        {
+            var signatures = new HashSet<string>();
+            for (int levelNumber = 1; levelNumber <= CampaignCatalog.LevelCount; levelNumber++)
+            {
+                RuntimeCampaignLevel runtime = CampaignLevelFactory.Create(levelNumber);
+                Assert.That(runtime.campaign.mapId, Is.EqualTo($"map-{levelNumber:00}"));
+                Assert.That(runtime.routes, Has.Length.EqualTo(runtime.entranceCount));
+                Assert.That(runtime.entranceCount, Is.EqualTo(levelNumber >= 43 ? 3 : levelNumber >= 14 ? 2 : 1));
+                Assert.That(runtime.routes.All(route => route != null && route.Length >= 2), Is.True);
+                Assert.That(runtime.routes.All(route => route[^1] == runtime.path[^1]), Is.True);
+                string signature = string.Join("|", runtime.path.Select(point =>
+                    $"{point.x:0.00},{point.z:0.00}"));
+                signatures.Add(signature);
+            }
+
+            Assert.That(signatures, Has.Count.EqualTo(CampaignCatalog.LevelCount));
+            RuntimeCampaignLevel reference = CampaignLevelFactory.Create(10);
+            Assert.That(reference.path[0], Is.EqualTo(new Vector3(-2f, 0f, 2f)));
+            Assert.That(reference.path[^1], Is.EqualTo(new Vector3(24f, 0f, 9f)));
+        }
+
+        [Test]
+        public void CampaignOutpostSlotsStayClearOfEveryRoute()
+        {
+            for (int levelNumber = 1; levelNumber <= CampaignCatalog.LevelCount; levelNumber++)
+            {
+                RuntimeCampaignLevel runtime = CampaignLevelFactory.Create(levelNumber);
+                for (int slotIndex = 0; slotIndex < runtime.outpostSlots.Length; slotIndex++)
+                {
+                    float clearance = runtime.routes
+                        .SelectMany(route => route.Zip(route.Skip(1), (from, to) => new { from, to }))
+                        .Min(segment => DistanceToSegment2D(runtime.outpostSlots[slotIndex], segment.from, segment.to));
+                    Assert.That(clearance, Is.GreaterThanOrEqualTo(1.55f),
+                        $"Level {levelNumber} slot {slotIndex + 1} overlaps a road (clearance {clearance:0.00}).");
+                }
+
+                for (int first = 0; first < runtime.outpostSlots.Length; first++)
+                for (int second = first + 1; second < runtime.outpostSlots.Length; second++)
+                    Assert.That(Vector3.Distance(runtime.outpostSlots[first], runtime.outpostSlots[second]),
+                        Is.GreaterThanOrEqualTo(1.2f),
+                        $"Level {levelNumber} slots {first + 1} and {second + 1} overlap.");
+            }
+        }
+
+        private static float DistanceToSegment2D(Vector3 point, Vector3 from, Vector3 to)
+        {
+            Vector3 segment = to - from;
+            segment.y = 0f;
+            Vector3 delta = point - from;
+            delta.y = 0f;
+            float denominator = segment.sqrMagnitude;
+            float t = denominator <= 0.001f ? 0f : Mathf.Clamp01(Vector3.Dot(delta, segment) / denominator);
+            Vector3 closest = from + segment * t;
+            closest.y = point.y;
+            return Vector3.Distance(point, closest);
+        }
+
+        [Test]
         public void SpawnGroupsRejectInvalidCountsAndIntervals()
         {
             var group = new SpawnGroupDefinition(EnemyArchetype.Raider, -4, -1f, 0f);
@@ -1387,7 +1446,7 @@ namespace DefenderChronicles.Tests
             DefenderHudController.SelectedPanelPresentationSpec slot =
                 DefenderHudController.SelectedSlotPanelSpec(2);
             Assert.That(slot.state, Is.EqualTo(DefenderHudController.SelectedPanelState.EmptySlot));
-            Assert.That(slot.title, Is.EqualTo("KARAKOL PLATFORMU"));
+            Assert.That(slot.title, Is.EqualTo("KARAKOL YUVASI"));
             Assert.That(slot.badge, Is.EqualTo("#3"));
             Assert.That(slot.upgradeInteractable, Is.False);
             Assert.That(slot.sellInteractable, Is.False);
@@ -1607,6 +1666,62 @@ namespace DefenderChronicles.Tests
             Assert.That(selectedMaxX, Is.LessThanOrEqualTo(metrics.SafeMaxX));
             Assert.That(selectedMinY, Is.GreaterThanOrEqualTo(metrics.SafeMinY));
             Assert.That(selectedMaxY, Is.LessThanOrEqualTo(metrics.SafeMaxY));
+        }
+
+        [Test]
+        public void ContextualTowerPanelClampsToBattleSafeArea()
+        {
+            Vector2 rootSize = new(1920f, 1080f);
+            var metrics = DefenderHudResponsiveLayout.CalculateLayoutMetrics(rootSize,
+                new Rect(80f, 40f, 1760f, 1000f), new Vector2Int(1920, 1080));
+            Vector2 panelSize = new(620f, 210f);
+
+            Vector2 topRight = DefenderHudResponsiveLayout.ClampContextPanelPosition(
+                new Vector2(5000f, 5000f), panelSize, rootSize, metrics);
+            Vector2 bottomLeft = DefenderHudResponsiveLayout.ClampContextPanelPosition(
+                new Vector2(-5000f, -5000f), panelSize, rootSize, metrics);
+
+            float safeLeft = -rootSize.x * 0.5f + metrics.SafeMinX * rootSize.x;
+            float safeRight = -rootSize.x * 0.5f + metrics.SafeMaxX * rootSize.x;
+            float safeBottom = -rootSize.y * 0.5f + metrics.SafeMinY * rootSize.y +
+                               DefenderHudResponsiveLayout.BottomContentHeight;
+            float safeTop = -rootSize.y * 0.5f + metrics.SafeMaxY * rootSize.y -
+                            DefenderHudResponsiveLayout.TopContentHeight;
+
+            Assert.That(topRight.x + panelSize.x * 0.5f, Is.LessThan(safeRight));
+            Assert.That(topRight.y + panelSize.y * 0.5f, Is.LessThan(safeTop));
+            Assert.That(bottomLeft.x - panelSize.x * 0.5f, Is.GreaterThan(safeLeft));
+            Assert.That(bottomLeft.y - panelSize.y * 0.5f, Is.GreaterThan(safeBottom));
+        }
+
+        [Test]
+        public void FirstDefenceVisitsCampaignMapBeforeBattle()
+        {
+            Assert.That(AppFlowController.ShouldOpenCampaignBeforeFirstBattle(0, 1, false), Is.True);
+            Assert.That(AppFlowController.ShouldOpenCampaignBeforeFirstBattle(0, 1, true), Is.False);
+            Assert.That(AppFlowController.ShouldOpenCampaignBeforeFirstBattle(1, 2, false), Is.False);
+        }
+
+        [Test]
+        public void TacticalPreviewRepresentsTwoAndThreeEntranceMaps()
+        {
+            var root = new GameObject("Tactical Preview Test", typeof(RectTransform));
+            RectTransform rect = root.GetComponent<RectTransform>();
+            rect.sizeDelta = new Vector2(640f, 260f);
+            var preview = root.AddComponent<FrontendTacticalMapPreview>();
+
+            MapDefinition twoEntrances = CampaignLevelFactory.Map(CampaignCatalog.Level(14).mapId);
+            preview.Configure(twoEntrances, Color.cyan, null);
+            Assert.That(preview.EntranceMarkerCount, Is.EqualTo(2));
+            Assert.That(preview.SlotMarkerCount, Is.EqualTo(8));
+
+            MapDefinition threeEntrances = CampaignLevelFactory.Map(CampaignCatalog.Level(43).mapId);
+            preview.Configure(threeEntrances, Color.cyan, null);
+            Assert.That(preview.EntranceMarkerCount, Is.EqualTo(3));
+            Assert.That(preview.SlotMarkerCount, Is.EqualTo(8));
+            Assert.That(preview.RouteSegmentCount, Is.GreaterThan(twoEntrances.PrimaryRoute.Length - 1));
+
+            Object.DestroyImmediate(root);
         }
 
         [Test]

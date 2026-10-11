@@ -199,6 +199,7 @@ namespace DefenderChronicles.Presentation
         private UnityEngine.UI.Button pauseResumeButton;
         private UnityEngine.UI.Button pauseMainMenuButton;
         private GameObject selectedPanel;
+        private RectTransform contextualBuildChoices;
         private GameObject resultPanel;
         private GameObject pauseOverlay;
         private Image abilityCooldownFillImage;
@@ -219,6 +220,7 @@ namespace DefenderChronicles.Presentation
         private GamePhase lastPhase = (GamePhase)(-1);
         private float phasePulseUntil;
         private bool pauseOverlayVisible;
+        private DefenderHudResponsiveLayout responsiveLayout;
 
         public void Initialize(DefenderPresentationCatalog catalog, Action<OutpostKind> build, Action ability, Action cancel,
             Action nextWave, Action pause, Action mainMenu, Action speed, Action upgrade, Action sell, Action restart,
@@ -263,11 +265,12 @@ namespace DefenderChronicles.Presentation
             AddButtonIcon(abilityButton, catalog.abilityIcon);
             ApplyStaticCopy();
             ApplyReadabilityStyle();
-            var responsiveLayout = GetComponent<DefenderHudResponsiveLayout>();
+            responsiveLayout = GetComponent<DefenderHudResponsiveLayout>();
             if (responsiveLayout == null)
                 responsiveLayout = gameObject.AddComponent<DefenderHudResponsiveLayout>();
             responsiveLayout.Initialize();
             abilityButton.gameObject.AddComponent<AbilityRangePreview>();
+            ConfigureContextualBuildChoices();
             selectedPanel.SetActive(false);
             resultPanel.SetActive(false);
         }
@@ -360,6 +363,12 @@ namespace DefenderChronicles.Presentation
         public void SetSelected(GreyboxOutpost outpost, GreyboxOutpostSlot slot, bool visible)
         {
             cancelButton.interactable = visible;
+            bool emptySlot = slot != null && slot.Occupant == null;
+            if (contextualBuildChoices != null) contextualBuildChoices.gameObject.SetActive(visible && emptySlot);
+            if (upgradeButton != null) upgradeButton.gameObject.SetActive(visible && !emptySlot);
+            if (sellButton != null) sellButton.gameObject.SetActive(visible && !emptySlot);
+            if (selectedText != null) selectedText.gameObject.SetActive(visible && !emptySlot);
+            if (selectedHintText != null) selectedHintText.gameObject.SetActive(visible && !emptySlot);
 
             if (outpost != null)
             {
@@ -375,6 +384,15 @@ namespace DefenderChronicles.Presentation
                 ApplySelectedEmptyView();
             }
             selectedPanel.SetActive(visible);
+            if (!visible) responsiveLayout?.ClearContextualSelection();
+        }
+
+        public void SetSelectionAnchor(Camera camera, Vector3 worldPosition, bool emptySlot)
+        {
+            if (camera == null || responsiveLayout == null) return;
+            Vector3 screenPoint = camera.WorldToScreenPoint(worldPosition + Vector3.up * 0.7f);
+            if (screenPoint.z <= 0f) return;
+            responsiveLayout.SetContextualSelectionFromScreenPoint(screenPoint, emptySlot);
         }
 
         public void ShowResult(bool victory)
@@ -431,6 +449,27 @@ namespace DefenderChronicles.Presentation
                         SetButtonLabel(pair.Item1, GameSessionController.OutpostDisplayName(pair.Item2) + "\n" +
                             GameLocalization.Text($"Bölüm {(pair.Item2 == OutpostKind.Barracks ? 2 : 3)}", $"Level {(pair.Item2 == OutpostKind.Barracks ? 2 : 3)}"));
                     }
+        }
+
+        public void SetBuildPreview(OutpostKind? kind)
+        {
+            if (kind == null) return;
+            Button selected = kind switch
+            {
+                OutpostKind.Archer => archerButton,
+                OutpostKind.Barracks => barracksButton,
+                _ => mageButton
+            };
+            int cost = kind switch
+            {
+                OutpostKind.Archer => ArcherCost,
+                OutpostKind.Barracks => BarracksCost,
+                _ => MageCost
+            };
+            Color accent = OutpostAccent(kind.Value);
+            SetButtonLabel(selected, GameLocalization.Text($"KUR\n{cost}", $"BUILD\n{cost}"));
+            SetButtonStripe(selected, accent);
+            if (selected.targetGraphic != null) selected.targetGraphic.color = ButtonPressedTint;
         }
 
         private void ApplyStaticCopy()
@@ -591,8 +630,53 @@ namespace DefenderChronicles.Presentation
             if (path.StartsWith("TopBar/", StringComparison.Ordinal))
                 return transform.Find(path.Replace("TopBar/", "TopBar/SafeContent/"));
             if (path.StartsWith("BottomBar/", StringComparison.Ordinal))
+            {
+                if (path == "BottomBar/Archer") return archerButton != null ? archerButton.transform : null;
+                if (path == "BottomBar/Barracks") return barracksButton != null ? barracksButton.transform : null;
+                if (path == "BottomBar/Mage") return mageButton != null ? mageButton.transform : null;
                 return transform.Find(path.Replace("BottomBar/", "BottomBar/SafeContent/"));
+            }
             return null;
+        }
+
+        private void ConfigureContextualBuildChoices()
+        {
+            RectTransform panelRect = selectedPanel != null ? selectedPanel.transform as RectTransform : null;
+            if (panelRect == null) return;
+
+            Transform existing = panelRect.Find("BuildChoices");
+            contextualBuildChoices = existing as RectTransform;
+            if (contextualBuildChoices == null)
+            {
+                contextualBuildChoices = new GameObject("BuildChoices", typeof(RectTransform)).GetComponent<RectTransform>();
+                contextualBuildChoices.SetParent(panelRect, false);
+            }
+            contextualBuildChoices.anchorMin = new Vector2(0f, 0f);
+            contextualBuildChoices.anchorMax = new Vector2(1f, 0f);
+            contextualBuildChoices.pivot = new Vector2(0.5f, 0f);
+            contextualBuildChoices.anchoredPosition = new Vector2(0f, 14f);
+            contextualBuildChoices.sizeDelta = new Vector2(-20f, 86f);
+
+            LayoutContextualBuildButton(archerButton, 0f, 1f / 3f);
+            LayoutContextualBuildButton(barracksButton, 1f / 3f, 2f / 3f);
+            LayoutContextualBuildButton(mageButton, 2f / 3f, 1f);
+
+            Transform buildDeck = transform.Find("BottomBar/SafeContent/BuildDeck");
+            if (buildDeck != null) buildDeck.gameObject.SetActive(false);
+            contextualBuildChoices.gameObject.SetActive(false);
+            responsiveLayout?.RefreshLayout();
+        }
+
+        private void LayoutContextualBuildButton(Button button, float minX, float maxX)
+        {
+            if (button == null || contextualBuildChoices == null) return;
+            RectTransform rect = button.transform as RectTransform;
+            rect.SetParent(contextualBuildChoices, false);
+            rect.anchorMin = new Vector2(minX, 0f);
+            rect.anchorMax = new Vector2(maxX, 1f);
+            rect.pivot = new Vector2(0.5f, 0.5f);
+            rect.offsetMin = new Vector2(5f, 0f);
+            rect.offsetMax = new Vector2(-5f, 0f);
         }
 
         private static void SetButtonLabel(Button button, string value)
@@ -736,7 +820,7 @@ namespace DefenderChronicles.Presentation
             return available
                 ? BuildButtonSpec(label, cost, true, cost, accent)
                 : new BuildButtonPresentationSpec(BuildButtonAvailabilityState.Unaffordable, false,
-                    "YETERSİZ", $"{label} {cost}", DisabledAccent, true);
+                    GameLocalization.Text("YETERSİZ", "NOT ENOUGH"), $"{label} {cost}", DisabledAccent, true);
         }
 
         private static void ApplyBuildButtonState(Button button, string label, int cost, bool selectedSlot,
@@ -777,39 +861,47 @@ namespace DefenderChronicles.Presentation
             SelectedPanelState state = isDisrupted
                 ? SelectedPanelState.Disrupted
                 : canUpgrade ? SelectedPanelState.UpgradeAvailable : SelectedPanelState.MaxLevel;
-            string rate = $"{attackRate:0.0}/sn";
-            string upgrade = canUpgrade ? $"{upgradeCost} altın" : "Maks";
+            string rate = GameLocalization.Text($"{attackRate:0.0}/sn", $"{attackRate:0.0}/sec");
+            string upgrade = canUpgrade
+                ? GameLocalization.Text($"{upgradeCost} altın", $"{upgradeCost} gold")
+                : GameLocalization.Text("Maks", "Max");
             string disruptedSuffix = isDisrupted
                 ? $"  •  BOZULDU {Mathf.CeilToInt(disabledRemaining)} s"
                 : string.Empty;
             string hint = isDisrupted
-                ? $"Geçici baskı altında • Satış {sellValue} altın"
+                ? GameLocalization.Text($"Geçici baskı altında • Satış {sellValue} altın",
+                    $"Temporarily disrupted • Sell for {sellValue} gold")
                 : canUpgrade
-                    ? $"Yükseltme {upgradeCost} altın • Satış {sellValue} altın"
-                    : $"Maks seviye • Satış {sellValue} altın";
+                    ? GameLocalization.Text($"Yükseltme {upgradeCost} altın • Satış {sellValue} altın",
+                        $"Upgrade for {upgradeCost} gold • Sell for {sellValue} gold")
+                    : GameLocalization.Text($"Maks seviye • Satış {sellValue} altın",
+                        $"Max level • Sell for {sellValue} gold");
             string stats =
-                $"{StatLabel("HASAR", damage.ToString())}\n" +
-                $"{StatLabel("MENZİL", $"{range:0.0}")}\n" +
-                $"{StatLabel("HIZ", rate)}\n\n" +
-                $"{StatLabel("YÜKSELTME", upgrade)}\n" +
-                $"{StatLabel("SATIŞ", sellValue.ToString())}";
+                $"{StatLabel(GameLocalization.Text("HASAR", "DAMAGE"), damage.ToString())}\n" +
+                $"{StatLabel(GameLocalization.Text("MENZİL", "RANGE"), $"{range:0.0}")}\n" +
+                $"{StatLabel(GameLocalization.Text("HIZ", "RATE"), rate)}\n\n" +
+                $"{StatLabel(GameLocalization.Text("YÜKSELTME", "UPGRADE"), upgrade)}\n" +
+                $"{StatLabel(GameLocalization.Text("SATIŞ", "SELL"), sellValue.ToString())}";
 
             return new SelectedPanelPresentationSpec(state, GameSessionController.OutpostDisplayName(kind),
-                $"SV {level}", roleLabel + disruptedSuffix, hint, stats,
-                canUpgrade ? $"YÜKSELT\n{upgradeCost}" : "MAKS\nSV",
-                $"SAT\n+{sellValue}", canUpgrade, true, isDisrupted || !canUpgrade, accent,
+                GameLocalization.Text($"SV {level}", $"LV {level}"), roleLabel + disruptedSuffix, hint, stats,
+                canUpgrade ? GameLocalization.Text($"YÜKSELT\n{upgradeCost}", $"UPGRADE\n{upgradeCost}")
+                    : GameLocalization.Text("MAKS\nSV", "MAX\nLV"),
+                GameLocalization.Text($"SAT\n+{sellValue}", $"SELL\n+{sellValue}"), canUpgrade, true,
+                isDisrupted || !canUpgrade, accent,
                 canUpgrade ? GoldAccent : ReadyAccent);
         }
 
         public static SelectedPanelPresentationSpec SelectedSlotPanelSpec(int slotIndex)
         {
-            string stats = GameLocalization.Text("Mavi halka: okçu menzili.\nAşağıdan bir kule seç.",
-                "Blue circle: archer range.\nChoose a tower below.");
+            string stats = string.Empty;
 
-            return new SelectedPanelPresentationSpec(SelectedPanelState.EmptySlot, GameLocalization.Text("KARAKOL PLATFORMU", "BUILD SITE"),
-                $"#{slotIndex + 1}", GameLocalization.Text("Kule kurmaya hazır", "Ready to build"),
-                GameLocalization.Text("Kule adı ve altın maliyeti aşağıda.", "Tower names and gold costs are below."), stats,
-                GameLocalization.Text("YÜKSELT\nKAPALI", "UPGRADE\nLOCKED"), GameLocalization.Text("SAT\nKAPALI", "SELL\nLOCKED"), false, false, true, WaveAccent, WaveAccent);
+            return new SelectedPanelPresentationSpec(SelectedPanelState.EmptySlot,
+                GameLocalization.Text("KARAKOL YUVASI", "OUTPOST SLOT"), $"#{slotIndex + 1}",
+                GameLocalization.Text("Savunma türünü seç", "Choose a defence type"),
+                GameLocalization.Text("Okçu, Kışla veya Büyü kur.", "Build Archer, Barracks, or Mage."), stats,
+                GameLocalization.Text("YÜKSELT\nKAPALI", "UPGRADE\nLOCKED"),
+                GameLocalization.Text("SAT\nKAPALI", "SELL\nLOCKED"), false, false, true, WaveAccent, WaveAccent);
         }
 
         private void ApplyAbilityVisualState(GreyboxHero hero, GamePhase phase, bool ready)
@@ -878,7 +970,7 @@ namespace DefenderChronicles.Presentation
 
             if (pauseOverlayBadgeText != null)
             {
-                pauseOverlayBadgeText.text = "DURUM";
+                pauseOverlayBadgeText.text = GameLocalization.Text("DURUM", "STATUS");
                 pauseOverlayBadgeText.color = GoldAccent;
             }
 
@@ -1370,7 +1462,7 @@ namespace DefenderChronicles.Presentation
                 new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0f, 18f), new Vector2(680f, 64f),
                 TextAlignmentOptions.Center);
 
-            pauseResumeButton = EnsureActionButton(pauseCard.rectTransform, "Resume", "DEVAM ET",
+            pauseResumeButton = EnsureActionButton(pauseCard.rectTransform, "Resume", GameLocalization.Text("DEVAM ET", "RESUME"),
                 new Vector2(-184f, -122f), new Vector2(328f, 80f));
             pauseMainMenuButton = EnsureActionButton(pauseCard.rectTransform, "MainMenu", GameLocalization.Text("ANA MENÜ", "MAIN MENU"),
                 new Vector2(184f, -122f), new Vector2(328f, 80f));
@@ -1518,7 +1610,9 @@ namespace DefenderChronicles.Presentation
             selectedIconImage.sprite = null;
             selectedTitleText.text = GameLocalization.Text("SEÇİM YOK", "NO SELECTION");
             selectedBadgeText.text = string.Empty;
-            selectedRoleText.text = GameLocalization.Text("Bir slot ya da karakol seçildiğinde detaylar burada görünür.", "Select a site or tower to see details.");
+            selectedRoleText.text = GameLocalization.Text(
+                "Bir yuva ya da karakol seçildiğinde ayrıntılar burada görünür.",
+                "Select a slot or outpost to see its details.");
             selectedRoleText.color = TextMuted;
             selectedHintText.text = string.Empty;
             selectedText.text = string.Empty;

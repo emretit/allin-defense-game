@@ -8,7 +8,10 @@ namespace DefenderChronicles.UI
 {
     public sealed partial class AppFlowController
     {
+        // The closed test exposes only the first region; storage still keeps the full campaign.
+        private const int VisibleRegionCount = 1;
         private Button importGuestButton;
+        private int MaxPlayableLevel => Mathf.Min(FirstRegionCampaign.LevelCount, progress.Data.unlockedLevel);
         private string SaveStatus() => progress.HasWriteError ? GameLocalization.Text("Yerel kayıt yazılamadı · Tekrar denenecek", "Local save failed · Retrying") : progress.Data.unreadableSavePreserved ? GameLocalization.Text("Eski kayıt okunamadı · Dosyaları kurtarma için korundu", "Old save unreadable · Files preserved for recovery") : progress.SyncStatus switch
         {
             CampaignSyncStatus.Current => GameLocalization.Text("Kaydedildi · Eşitlendi", "Saved · Synced"),
@@ -42,7 +45,7 @@ namespace DefenderChronicles.UI
                     SetRect(cancel.GetComponent<RectTransform>(), new Vector2(180,-135), new Vector2(340,130), Center(), Center());
                     modal.transform.SetAsLastSibling();
                 });
-            SetRect(importGuestButton.GetComponent<RectTransform>(), new Vector2(0,90), new Vector2(630,110), BottomCenter(), BottomCenter());
+            SetRect(importGuestButton.GetComponent<RectTransform>(), new Vector2(0,716), new Vector2(630,110), BottomCenter(), BottomCenter());
             importGuestButton.gameObject.SetActive(progress.CanImportGuest);
         }
         private static string LearningObjective(int level) => level switch

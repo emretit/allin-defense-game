@@ -36,7 +36,7 @@ namespace DefenderChronicles.Tests
         {
             var session = Create(10);
             Assert.That(session.TryBuildOutpost(0, OutpostKind.Archer), Is.True);
-            typeof(GameSessionController).GetMethod("SpawnEnemy", BindingFlags.Instance | BindingFlags.NonPublic)
+            typeof(GameSessionController).GetMethod("SpawnEnemy", BindingFlags.Instance | BindingFlags.NonPublic, null, new[] { typeof(EnemyArchetype) }, null)
                 .Invoke(session, new object[] { EnemyArchetype.Siege });
             GreyboxEnemy enemy = session.Enemies[0];
             enemy.transform.position = session.Outposts[0].Position + Vector3.right;

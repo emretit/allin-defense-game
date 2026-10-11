@@ -99,6 +99,15 @@ namespace DefenderChronicles.Core
             if ((int)provider is 2 or 3)
                 provider = PlayerAuthProvider.PlayerAccount;
             requestedProvider = provider;
+            bool wasGuest = progress.Data.authProvider == PlayerAuthProvider.Guest;
+            if (provider == PlayerAuthProvider.Guest)
+            {
+                // Local play is ready immediately; authentication and merging continue separately.
+                bool wasSyncing = syncing;
+                syncing = true;
+                try { flow?.CompleteGuestFallback(); }
+                finally { syncing = wasSyncing; }
+            }
             flow?.SetLoginStatus(provider == PlayerAuthProvider.Guest
                 ? "Misafir hesabı hazırlanıyor..."
                 : "Güvenli hesap penceresi hazırlanıyor...");
@@ -115,7 +124,7 @@ namespace DefenderChronicles.Core
                 if (provider == PlayerAuthProvider.Guest)
                 {
                     if (AuthenticationService.Instance.IsSignedIn &&
-                        progress.Data.authProvider != PlayerAuthProvider.Guest)
+                        !wasGuest)
                     {
                         AuthenticationService.Instance.SignOut(true);
                     }
@@ -277,7 +286,7 @@ namespace DefenderChronicles.Core
             Debug.LogWarning($"Unity Authentication is unavailable: {exception.Message}");
             if (provider == PlayerAuthProvider.Guest)
             {
-                flow.CompleteGuestFallback();
+                flow?.CompleteGuestFallback();
                 Debug.Log("[DC_UGS_GUEST_FALLBACK_PASS] screen=MainMenu provider=Guest");
                 return;
             }
@@ -288,7 +297,7 @@ namespace DefenderChronicles.Core
         {
             if (provider == PlayerAuthProvider.Guest)
             {
-                flow.CompleteGuestFallback();
+                flow?.CompleteGuestFallback();
                 Debug.Log("[DC_UGS_GUEST_FALLBACK_PASS] screen=MainMenu provider=Guest reason=project-unlinked");
                 return;
             }

@@ -1,0 +1,10 @@
+{
+    "scenario": "level1-one-archer-1x",
+    "phase": "Victory",
+    "lives": 16,
+    "gold": 400,
+    "towers": 1,
+    "wave": 3,
+    "elapsedSeconds": 56.482173919677737,
+    "disruptedWhileStunned": false
+}

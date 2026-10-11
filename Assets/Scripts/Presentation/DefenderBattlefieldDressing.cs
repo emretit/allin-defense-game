@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using DefenderChronicles.Data;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -19,9 +20,10 @@ namespace DefenderChronicles.Presentation
         private readonly List<Mesh> runtimeMeshes = new();
         private readonly List<Material> runtimeMaterials = new();
         private IReadOnlyList<Vector3> roadPath = DefaultRoadPath;
+        private int biomeIndex;
 
         public static DefenderBattlefieldDressing Install(Transform parent, DefenderPresentationCatalog catalog,
-            Camera camera, IReadOnlyList<Vector3> path = null)
+            Camera camera, IReadOnlyList<Vector3> path = null, int biomeIndex = 0)
         {
             if (parent == null || catalog == null) return null;
             Transform existing = parent.Find("Scenic Battlefield Dressing");
@@ -31,6 +33,7 @@ namespace DefenderChronicles.Presentation
             root.transform.SetParent(parent, false);
             DefenderBattlefieldDressing dressing = root.AddComponent<DefenderBattlefieldDressing>();
             if (path != null && path.Count > 1) dressing.roadPath = path;
+            dressing.biomeIndex = Mathf.Clamp(biomeIndex, 0, 4);
             dressing.Build(catalog, camera);
             return dressing;
         }
@@ -61,9 +64,10 @@ namespace DefenderChronicles.Presentation
 
         private void CreateGroundValueFields(Material grassSource, Material earthSource)
         {
-            Material coldGrass = CreateRuntimeMaterial("DC Cold Grass Value", new Color(0.026f, 0.165f, 0.145f), false, grassSource);
-            Material moonGrass = CreateRuntimeMaterial("DC Moon Grass Value", new Color(0.040f, 0.205f, 0.185f), false, grassSource);
-            Material warmScuff = CreateRuntimeMaterial("DC Gate Ground Scuff", new Color(0.125f, 0.115f, 0.078f), false, earthSource);
+            BiomeDefinition palette = CampaignLevelFactory.Biome(biomeIndex);
+            Material coldGrass = CreateRuntimeMaterial("DC Cold Grass Value", Color.Lerp(palette.groundColor, Color.black, 0.28f), false, grassSource);
+            Material moonGrass = CreateRuntimeMaterial("DC Moon Grass Value", Color.Lerp(palette.groundColor, palette.accentColor, 0.22f), false, grassSource);
+            Material warmScuff = CreateRuntimeMaterial("DC Gate Ground Scuff", Color.Lerp(palette.groundColor, new Color(0.08f, 0.05f, 0.03f), 0.48f), false, earthSource);
 
             var coldVertices = new List<Vector3>(96);
             var coldTriangles = new List<int>(180);
@@ -135,7 +139,9 @@ namespace DefenderChronicles.Presentation
 
         private void CreateRoadSurface()
         {
-            Material surface = CreateRuntimeMaterial("DC Organic Road Surface", new Color(0.455f, 0.355f, 0.245f), false);
+            BiomeDefinition palette = CampaignLevelFactory.Biome(biomeIndex);
+            Color roadTint = Color.Lerp(new Color(0.455f, 0.355f, 0.245f), palette.accentColor, biomeIndex == 0 ? 0.04f : 0.16f);
+            Material surface = CreateRuntimeMaterial("DC Organic Road Surface", roadTint, false);
             var vertices = new List<Vector3>(420);
             var triangles = new List<int>(720);
             int sample = 0;

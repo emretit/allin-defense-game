@@ -1,0 +1,16 @@
+{
+  "scope": "Local rules engine only; no service call",
+  "legacy": {
+    "UnlockedLevel": 50,
+    "Valor": 86,
+    "HeroXp": 560,
+    "levels": 1
+  },
+  "inconsistentClaim": {
+    "Accepted": true,
+    "Reason": "accepted",
+    "AwardedValor": 27,
+    "Stars": 3,
+    "BestLives": 0
+  }
+}

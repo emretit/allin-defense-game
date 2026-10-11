@@ -63,8 +63,9 @@ namespace DefenderChronicles.Core
             public readonly float time;
             public readonly EnemyArchetype archetype;
             public readonly int order;
-            public ScheduledSpawn(float time, EnemyArchetype archetype, int order)
-            { this.time = time; this.archetype = archetype; this.order = order; }
+            public readonly int routeId;
+            public ScheduledSpawn(float time, EnemyArchetype archetype, int order, int routeId)
+            { this.time = time; this.archetype = archetype; this.order = order; this.routeId = routeId; }
         }
 
         private void ScheduleWave(WaveDefinition wave)
@@ -78,7 +79,7 @@ namespace DefenderChronicles.Core
                 if (group == null) continue;
                 for (int i = 0; i < group.count; i++)
                     scheduledSpawns.Add(new ScheduledSpawn(group.startDelay + i * group.interval,
-                        group.enemy, order++));
+                        group.enemy, order++, group.routeId));
             }
             scheduledSpawns.Sort((a, b) => a.time == b.time ? a.order.CompareTo(b.order) : a.time.CompareTo(b.time));
         }
@@ -103,7 +104,10 @@ namespace DefenderChronicles.Core
                     BattleElapsedSeconds += delta;
                     waveElapsed += delta;
                     while (nextSpawn < scheduledSpawns.Count && scheduledSpawns[nextSpawn].time <= waveElapsed)
-                        SpawnEnemy(scheduledSpawns[nextSpawn++].archetype);
+                    {
+                        ScheduledSpawn spawn = scheduledSpawns[nextSpawn++];
+                        SpawnEnemy(spawn.archetype, spawn.routeId);
+                    }
                     if (nextSpawn >= scheduledSpawns.Count) spawning = false;
                 }
                 for (int i = enemies.Count - 1; i >= 0; i--)
@@ -139,7 +143,7 @@ namespace DefenderChronicles.Core
             for (int i = 0; i < 6; i++)
             {
                 scheduledSpawns.Add(new ScheduledSpawn(waveElapsed + .5f + i * .6f, EnemyArchetype.Raider,
-                    scheduledSpawns.Count));
+                    scheduledSpawns.Count, 0));
                 plannedThisWave++;
             }
             // Only pending entries may move: already spawned entries retain their indices.

@@ -14,6 +14,13 @@ namespace DefenderChronicles.Tests
 {
     public sealed class GreyboxSceneTests
     {
+        private static IEnumerator WaitForBattle(AppFlowController flow)
+        {
+            double deadline = Time.realtimeSinceStartupAsDouble + 15;
+            while (flow.IsLaunchingBattle && Time.realtimeSinceStartupAsDouble < deadline) yield return null;
+            Assert.That(flow.IsLaunchingBattle, Is.False, "Battle setup must finish");
+        }
+
         [UnityTest]
         public IEnumerator SelectableRaycastIgnoresCloserActorCollider()
         {
@@ -114,6 +121,28 @@ namespace DefenderChronicles.Tests
         }
 
         [UnityTest]
+        public IEnumerator MultiEntranceBattleShowsIndicatorsUntilFirstWaveStarts()
+        {
+            var gameObject = new GameObject("Entrance Indicator Session");
+            var session = gameObject.AddComponent<GameSessionController>();
+            session.SetCampaignLevel(14);
+            session.Initialize();
+            yield return null;
+
+            Transform indicators = session.transform.Find("Greybox World/Active Entrance Indicators");
+            Assert.That(indicators, Is.Not.Null);
+            Assert.That(indicators.gameObject.activeSelf, Is.True);
+            Assert.That(indicators.Find("Entrance Arrow 1"), Is.Not.Null);
+            Assert.That(indicators.Find("Entrance Arrow 2"), Is.Not.Null);
+
+            session.StartNextWave();
+            Assert.That(indicators.gameObject.activeSelf, Is.False);
+
+            Object.Destroy(gameObject);
+            yield return null;
+        }
+
+        [UnityTest]
         public IEnumerator AppFlowShowsTenLevelsWhileStorageKeepsFifty()
         {
             string savePath = Path.Combine(Path.GetTempPath(), $"dc-ui-{System.Guid.NewGuid():N}.json");
@@ -169,6 +198,11 @@ namespace DefenderChronicles.Tests
             InvokePrivate(flow, "OpenCampaign");
             yield return null;
             Assert.That(flow.CurrentScreen, Is.EqualTo(AppScreen.Campaign));
+            FrontendTacticalMapPreview tacticalPreview = flow.GetComponentInChildren<FrontendTacticalMapPreview>(true);
+            Assert.That(tacticalPreview, Is.Not.Null);
+            Assert.That(tacticalPreview.EntranceMarkerCount, Is.EqualTo(1));
+            Assert.That(tacticalPreview.SlotMarkerCount, Is.EqualTo(8));
+            Assert.That(tacticalPreview.RouteSegmentCount, Is.GreaterThan(0));
             int levelButtonCount = flow.GetComponentsInChildren<Button>(true)
                 .Count(button => button.name.StartsWith("Level "));
             Assert.That(levelButtonCount, Is.EqualTo(10));
@@ -187,19 +221,23 @@ namespace DefenderChronicles.Tests
                 .Single(item => item.name == "Campaign Scroll");
             LayoutElement firstRegionLayout = campaignScroll.content.Find("Region 1").GetComponent<LayoutElement>();
             Assert.That(firstRegionLayout.preferredWidth,
-                Is.EqualTo(Mathf.Max(984f, campaignScroll.viewport.rect.width)).Within(0.5f));
+                Is.EqualTo(campaignScroll.viewport.rect.width).Within(0.5f));
 
             InvokePrivate(flow, "OpenBriefing");
             yield return null;
-            Assert.That(flow.CurrentScreen, Is.EqualTo(AppScreen.Briefing));
-            Assert.That(GameObject.Find("Briefing Title"), Is.Not.Null);
+            Assert.That(flow.CurrentScreen, Is.EqualTo(AppScreen.Campaign));
+            Assert.That(GameObject.Find("Selected Level"), Is.Not.Null);
             Assert.That(GameObject.Find("Enemy Intel"), Is.Not.Null);
-            Assert.That(GameObject.Find("Start Defence"), Is.Not.Null);
+            Assert.That(GameObject.Find("Play Selected"), Is.Not.Null);
 
             InvokePrivate(flow, "StartSelectedLevel");
-            yield return null;
+            yield return WaitForBattle(flow);
             Assert.That(session.CampaignLevelNumber, Is.EqualTo(1));
             Assert.That(session.WaveCount, Is.EqualTo(3));
+            Assert.That(session.GuidanceStep, Is.EqualTo(FirstBattleGuidanceStep.SelectSlot));
+            Assert.That(session.SlotCount, Is.EqualTo(8));
+            Assert.That(session.TryBuildOutpost(0, Data.OutpostKind.Archer), Is.True);
+            Assert.That(session.GuidanceStep, Is.EqualTo(FirstBattleGuidanceStep.StartWave));
             Assert.That(MobileOrientationController.CurrentMode,
                 Is.EqualTo(MobileOrientationMode.LandscapeBattle));
             Assert.That(flow.GetComponentInChildren<CanvasScaler>(true).referenceResolution,
@@ -255,7 +293,8 @@ namespace DefenderChronicles.Tests
             {
                 ("boot", AppScreen.Boot),
                 ("welcome", AppScreen.Welcome),
-                ("main-menu", AppScreen.MainMenu)
+                ("main-menu", AppScreen.MainMenu),
+                ("campaign", AppScreen.Campaign)
             };
 
             foreach ((string ratioName, int width, int height) in ratios)
@@ -288,7 +327,7 @@ namespace DefenderChronicles.Tests
         }
 
         [UnityTest]
-        public IEnumerator ReturningPlayerSkipsWelcomeAndContinueOpensClampedBriefing()
+        public IEnumerator ReturningPlayerSkipsWelcomeAndContinueStartsClampedLevel()
         {
             string savePath = Path.Combine(Path.GetTempPath(), $"dc-returning-ui-{System.Guid.NewGuid():N}.json");
             var seededProgress = new CampaignProgressStore(savePath);
@@ -309,7 +348,11 @@ namespace DefenderChronicles.Tests
 
             InvokePrivate(flow, "ContinueCampaign");
             yield return null;
-            Assert.That(flow.CurrentScreen, Is.EqualTo(AppScreen.Briefing));
+            Assert.That(flow.CurrentScreen, Is.EqualTo(AppScreen.Campaign),
+                "A signed-in player with no completed defence should see the map before the first battle.");
+            InvokePrivate(flow, "StartSelectedLevel");
+            yield return WaitForBattle(flow);
+            Assert.That(flow.CurrentScreen, Is.EqualTo(AppScreen.Battle));
             Assert.That(flow.Progress.Data.lastSelectedLevel, Is.EqualTo(1));
             Assert.That(Resources.Load<Texture2D>("Presentation/Frontend/GreenwatchWelcome"), Is.Not.Null);
             Assert.That(Resources.Load<Texture2D>("Presentation/Frontend/GreenwatchWarTable"), Is.Not.Null);
@@ -342,7 +385,7 @@ namespace DefenderChronicles.Tests
             yield return new WaitForSecondsRealtime(0.90f);
             flow.CompleteGuestFallback();
             flow.LaunchCampaignLevel(1);
-            yield return null;
+            yield return WaitForBattle(flow);
             Assert.That(flow.CurrentScreen, Is.EqualTo(AppScreen.Battle));
             Assert.That(MobileOrientationController.CurrentMode,
                 Is.EqualTo(MobileOrientationMode.LandscapeBattle));
@@ -845,14 +888,34 @@ namespace DefenderChronicles.Tests
             Assert.That(hud.GetButtonInteractable("TopBar/Pause"), Is.True);
             Assert.That(hud.GetButtonInteractable("BottomBar/Cancel"), Is.True);
             Assert.That(hud.GetButtonInteractable("BottomBar/NextWave"), Is.True);
+            Transform contextualChoices = hud.transform.Find("SelectedPanel/BuildChoices");
+            Assert.That(contextualChoices, Is.Not.Null);
+            Assert.That(contextualChoices.gameObject.activeSelf, Is.True);
+            Assert.That(contextualChoices.Find("Archer"), Is.Not.Null);
+            Assert.That(contextualChoices.Find("Barracks"), Is.Not.Null);
+            Assert.That(contextualChoices.Find("Mage"), Is.Not.Null);
 
-            session.TryBuildOutpost(0, Data.OutpostKind.Archer);
+            int goldBeforePreview = session.Gold;
+            InvokePrivate(session, "TryBuildSelected", Data.OutpostKind.Archer);
+            Assert.That(session.Gold, Is.EqualTo(goldBeforePreview), "Previewing must not spend gold.");
+            Assert.That(session.PendingBuildKind, Is.EqualTo(Data.OutpostKind.Archer));
+            Assert.That(session.SelectionPreviewVisible, Is.True);
+            InvokePrivate(session, "TryBuildSelected", Data.OutpostKind.Archer);
+            Assert.That(session.Gold, Is.LessThan(goldBeforePreview));
+            Assert.That(session.PendingBuildKind, Is.Null);
             yield return null;
             hud.Refresh(session);
             yield return null;
 
             Assert.That(hud.GetButtonInteractable("SelectedPanel/Upgrade"), Is.True);
             Assert.That(hud.GetButtonInteractable("SelectedPanel/Sell"), Is.True);
+            Assert.That(contextualChoices.gameObject.activeSelf, Is.False);
+
+            SelectSlot(session, 1);
+            int goldBeforeBarracksPreview = session.Gold;
+            InvokePrivate(session, "TryBuildSelected", Data.OutpostKind.Barracks);
+            Assert.That(session.Gold, Is.EqualTo(goldBeforeBarracksPreview));
+            Assert.That(session.RallyPreviewVisible, Is.True);
 
             session.TryBuildOutpost(1, Data.OutpostKind.Archer);
             session.TryBuildOutpost(2, Data.OutpostKind.Archer);

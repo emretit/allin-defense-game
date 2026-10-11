@@ -59,6 +59,11 @@ namespace DefenderChronicles.Editor
                 throw new BuildFailedException($"Player Accounts SafariView.mm was not generated: {safariViewPath}");
 
             File.WriteAllText(safariViewPath, SafariViewSource);
+            string projectPath = PBXProject.GetPBXProjectPath(outputPath);
+            var project = new PBXProject();
+            project.ReadFromFile(projectPath);
+            project.AddFrameworkToProject(project.GetUnityFrameworkTargetGuid(), "SafariServices.framework", false);
+            project.WriteToFile(projectPath);
         }
 
         private const string SafariViewSource = @"#import <SafariServices/SafariServices.h>

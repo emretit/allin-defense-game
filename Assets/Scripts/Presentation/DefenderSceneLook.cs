@@ -1,4 +1,5 @@
 using System.Collections;
+using DefenderChronicles.Data;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -29,17 +30,18 @@ namespace DefenderChronicles.Presentation
             look.pulseRoutine = look.StartCoroutine(look.PulseLook(cue));
         }
 
-        public static void Apply(Camera camera)
+        public static void Apply(Camera camera, int biomeIndex = 0)
         {
             if (camera == null) return;
             DefenderSceneLook look = camera.GetComponent<DefenderSceneLook>();
             if (look == null) look = camera.gameObject.AddComponent<DefenderSceneLook>();
-            look.Configure(camera);
+            look.Configure(camera, biomeIndex);
         }
 
-        private void Configure(Camera camera)
+        private void Configure(Camera camera, int biomeIndex)
         {
             var quality = GetQualityTier();
+            BiomeDefinition palette = CampaignLevelFactory.Biome(biomeIndex);
 
             camera.allowHDR = true;
             // SMAA gives the fixed isometric scene clean edges without the iOS overlay/subpass
@@ -55,17 +57,17 @@ namespace DefenderChronicles.Presentation
             cameraData.stopNaN = true;
 
             RenderSettings.ambientMode = AmbientMode.Trilight;
-            RenderSettings.ambientSkyColor = new Color(0.21f, 0.30f, 0.44f);
-            RenderSettings.ambientEquatorColor = new Color(0.085f, 0.15f, 0.205f);
+            RenderSettings.ambientSkyColor = Color.Lerp(new Color(0.21f, 0.30f, 0.44f), palette.keyLightColor, 0.18f);
+            RenderSettings.ambientEquatorColor = Color.Lerp(new Color(0.085f, 0.15f, 0.205f), palette.groundColor, 0.28f);
             RenderSettings.ambientGroundColor = new Color(0.024f, 0.052f, 0.062f);
             RenderSettings.reflectionIntensity = 0.38f;
             RenderSettings.fog = true;
             RenderSettings.fogMode = FogMode.Linear;
-            RenderSettings.fogColor = new Color(0.026f, 0.068f, 0.105f);
+            RenderSettings.fogColor = palette.fogColor;
             RenderSettings.fogStartDistance = 25f;
             RenderSettings.fogEndDistance = 50f;
 
-            ConfigureSun(quality);
+            ConfigureSun(quality, palette.keyLightColor, biomeIndex);
             EnsureFillLight("Moon Fill", new Vector3(11f, 9f, 5.5f), new Color(0.22f, 0.43f, 0.82f), quality, 0.96f, 24f);
             EnsureFillLight("Gate Ember Fill", new Vector3(-1.2f, 3.4f, 2f), new Color(1f, 0.30f, 0.075f), quality, 1.82f, 7.2f);
             ConfigureVolume(quality);
@@ -92,7 +94,7 @@ namespace DefenderChronicles.Presentation
             return VisualQualityTier.Unknown;
         }
 
-        private static void ConfigureSun(VisualQualityTier qualityTier)
+        private static void ConfigureSun(VisualQualityTier qualityTier, Color keyColor, int biomeIndex)
         {
             Light sun = null;
             foreach (Light candidate in FindObjectsByType<Light>(FindObjectsSortMode.None))
@@ -109,8 +111,8 @@ namespace DefenderChronicles.Presentation
                 sun.type = LightType.Directional;
             }
 
-            sun.name = "Greenwatch Moon Key";
-            sun.color = new Color(0.66f, 0.78f, 0.96f);
+            sun.name = biomeIndex == 0 ? "Greenwatch Moon Key" : "Biome Key Light";
+            sun.color = keyColor;
             sun.intensity = 1.58f;
             sun.shadows = (qualityTier == VisualQualityTier.High || qualityTier == VisualQualityTier.Unknown) ? LightShadows.Soft : LightShadows.None;
             sun.shadowStrength = 0.74f;

@@ -1,0 +1,33 @@
+Unity Editor version:    6000.4.1f1 (8535861f39e1)
+Branch:                  6000.4/staging
+Build type:              Release
+Batch mode:              YES
+macOS version:           Version 26.6.2 (Build 25G83)
+Darwin version:          25.6.0
+Architecture:            arm64
+Running under Rosetta:   NO
+Available memory:        24576 MB
+Date:                    2026-09-06T06:54:55Z
+[Licensing::Module] Trying to connect to existing licensing client channel...
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-emreaydin" at "2026-09-06T06:54:55.185042Z"
+Launching external process: /Applications/Unity/Hub/Editor/6000.4.1f1/Unity.app/Contents/Helpers/PackageManager/Server/UnityPackageManager
+
+COMMAND LINE ARGUMENTS:
+/Applications/Unity/Hub/Editor/6000.4.1f1/Unity.app/Contents/MacOS/Unity
+-batchmode
+-runTests
+-projectPath
+/Users/emreaydin/DefenderChronicles
+-testResults
+/Users/emreaydin/DefenderChronicles/docs/audit/2026-09-06/evidence/editmode.xml
+-testPlatform
+EditMode
+-logFile
+/Users/emreaydin/DefenderChronicles/docs/audit/2026-09-06/evidence/editmode.log
+-hubSessionId
+af000b0d-a308-44b3-a15c-3f120526a174
+-accessToken
+nyI5c7fNTYKxY7ujMS9DMKvBAEkWIn-Uyco0XSSuzSo011f
+Successfully changed project path to: /Users/emreaydin/DefenderChronicles
+/Users/emreaydin/DefenderChronicles
+[Package Manager] Server process was shutdown

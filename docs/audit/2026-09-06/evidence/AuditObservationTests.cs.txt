@@ -1,0 +1,63 @@
+using System;
+using System.Collections;
+using System.IO;
+using System.Reflection;
+using DefenderChronicles.Core;
+using DefenderChronicles.Data;
+using DefenderChronicles.Presentation;
+using NUnit.Framework;
+using UnityEngine;
+using UnityEngine.TestTools;
+using Object = UnityEngine.Object;
+
+namespace DefenderChronicles.Tests
+{
+    public class AuditObservationTests
+    {
+        const string OutDir = "/Users/emreaydin/DefenderChronicles/docs/audit/2026-09-06/evidence/";
+        [Serializable] public class Observation { public string scenario; public string phase; public int lives; public int gold; public int towers; public int wave; public float elapsedSeconds; public bool disruptedWhileStunned; }
+        [UnityTest] public IEnumerator IdleFirstLevelProduction() { yield return ObserveFirstLevel(false); }
+        [UnityTest] public IEnumerator OneArcherFirstLevelProduction() { yield return ObserveFirstLevel(true); }
+        IEnumerator ObserveFirstLevel(bool build)
+        {
+            var go = new GameObject("Audit observation");
+            var s = go.AddComponent<GameSessionController>();
+            s.ConfigurePresentation(Resources.Load<DefenderPresentationCatalog>("Presentation/DefenderPresentationCatalog"));
+            s.SetCampaignLevel(1); s.Initialize();
+            yield return null;
+            if (build) Assert.That(s.TryBuildOutpost(0, OutpostKind.Archer), Is.True);
+            Time.timeScale=1f;
+            float start=Time.realtimeSinceStartup;
+            s.StartNextWave();
+            while(s.Phase != GamePhase.Victory && s.Phase != GamePhase.Defeat && Time.realtimeSinceStartup-start<150f) yield return null;
+            string name=build ? "level1-one-archer-1x" : "level1-idle-1x";
+            var row=new Observation {scenario=name,phase=s.Phase.ToString(),lives=s.Lives,gold=s.Gold,towers=s.Outposts.Count,wave=s.CurrentWaveIndex,elapsedSeconds=Time.realtimeSinceStartup-start};
+            File.WriteAllText(OutDir+name+".json",JsonUtility.ToJson(row,true));
+            ScreenCapture.CaptureScreenshot(OutDir+name+".png");
+            yield return null; yield return null;
+            Assert.That(s.Phase == GamePhase.Victory || s.Phase == GamePhase.Defeat,Is.True,"Observation must finish; outcome is recorded separately.");
+        }
+        [UnityTest] public IEnumerator ObserveStunnedSiege()
+        {
+            var go=new GameObject("Audit stun observation");
+            var s=go.AddComponent<GameSessionController>();
+            s.ConfigurePresentation(Resources.Load<DefenderPresentationCatalog>("Presentation/DefenderPresentationCatalog"));
+            s.SetCampaignLevel(10); s.Initialize();
+            Assert.That(s.TryBuildOutpost(0,OutpostKind.Archer),Is.True);
+            typeof(GameSessionController).GetMethod("SpawnEnemy",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(s,new object[]{EnemyArchetype.Siege});
+            var enemy=s.Enemies[0];
+            enemy.transform.position=s.Outposts[0].Position+Vector3.right;
+            enemy.Stun(20f);
+            Time.timeScale=1f;
+            yield return null; yield return null;
+            File.WriteAllText(OutDir+"stunned-siege.json",JsonUtility.ToJson(new Observation{scenario="Siege special during stun",phase=enemy.State.ToString(),disruptedWhileStunned=s.Outposts[0].IsDisrupted},true));
+        }
+        [UnityTearDown] public IEnumerator Cleanup()
+        {
+            Time.timeScale=1f;
+            foreach(var s in Object.FindObjectsByType<GameSessionController>(FindObjectsSortMode.None))Object.Destroy(s.gameObject);
+            foreach(var go in GameObject.FindGameObjectsWithTag("Untagged"))if(go.name=="Game HUD")Object.Destroy(go);
+            yield return null;
+        }
+    }
+}
