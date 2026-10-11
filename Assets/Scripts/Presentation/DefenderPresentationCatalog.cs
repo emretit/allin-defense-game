@@ -228,7 +228,9 @@ namespace DefenderChronicles.Presentation
 
         public AudioCueEntry Audio(PresentationCue cue)
         {
-            return audioCues.FirstOrDefault(entry => entry != null && entry.cue == cue);
+            foreach (AudioCueEntry entry in audioCues)
+                if (entry != null && entry.cue == cue) return entry;
+            return null;
         }
 
         public MusicEntry Music(MusicState state)

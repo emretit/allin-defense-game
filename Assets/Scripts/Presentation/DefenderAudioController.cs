@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using DefenderChronicles.UI;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -20,7 +19,9 @@ namespace DefenderChronicles.Presentation
         }
 
         private readonly List<AudioSource> sfxSources = new();
-        private readonly Dictionary<AudioSource, ActiveVoice> activeVoices = new();
+        private readonly Dictionary<AudioSource, ActiveVoice> activeVoices = new(10);
+        private readonly Dictionary<AudioSource, ActiveVoice> voiceRecords = new(10);
+        private readonly AudioSource[] finishedSources = new AudioSource[10];
         private DefenderPresentationCatalog catalog;
         private AudioSource musicA;
         private AudioSource musicB;
@@ -38,7 +39,16 @@ namespace DefenderChronicles.Presentation
         public MusicState CurrentState => currentState;
         public PresentationAudioReviewLevel ReviewLevel => reviewLevel;
         public DefenderAmbientAudioController Ambient => ambientController;
-        public int ActiveVoiceCount => activeVoices.Count(pair => pair.Key != null && pair.Key.isPlaying);
+        public int ActiveVoiceCount
+        {
+            get
+            {
+                int count = 0;
+                foreach (var pair in activeVoices)
+                    if (pair.Key != null && pair.Key.isPlaying) count++;
+                return count;
+            }
+        }
 
         private void OnEnable()
         {
@@ -61,6 +71,7 @@ namespace DefenderChronicles.Presentation
                 source.spatialBlend = 0f;
                 source.outputAudioMixerGroup = catalog.sfxMixer;
                 sfxSources.Add(source);
+                voiceRecords.Add(source, new ActiveVoice());
             }
             musicA = CreateMusicSource("Music A");
             musicB = CreateMusicSource("Music B");
@@ -117,33 +128,8 @@ namespace DefenderChronicles.Presentation
             if (entry?.clip == null) return;
             RemoveFinishedVoices();
 
-            int clipLimit = Mathf.Max(1, Mathf.Min(entry.concurrency, spec.maxConcurrent));
-            int clipPlaying = activeVoices.Count(pair => pair.Key.isPlaying && pair.Key.clip == entry.clip);
-            if (clipPlaying >= clipLimit) return;
-
-            AudioSource target = null;
-            List<KeyValuePair<AudioSource, ActiveVoice>> groupVoices = activeVoices
-                .Where(pair => pair.Key.isPlaying && pair.Value.group == spec.concurrencyGroup)
-                .OrderBy(pair => pair.Value.priority)
-                .ThenBy(pair => pair.Value.startedAt)
-                .ToList();
-            if (groupVoices.Count >= spec.maxConcurrent)
-            {
-                KeyValuePair<AudioSource, ActiveVoice> victim = groupVoices[0];
-                if (spec.priority <= victim.Value.priority) return;
-                target = victim.Key;
-            }
-
-            if (target == null) target = sfxSources.FirstOrDefault(source => !source.isPlaying);
-            if (target == null)
-            {
-                KeyValuePair<AudioSource, ActiveVoice> victim = activeVoices
-                    .OrderBy(pair => pair.Value.priority)
-                    .ThenBy(pair => pair.Value.startedAt)
-                    .First();
-                if (!PresentationAudioPolicy.CanReplace(victim.Value.priority, spec.priority)) return;
-                target = victim.Key;
-            }
+            AudioSource target = SelectVoice(entry, spec);
+            if (target == null) return;
 
             target.Stop();
             target.clip = entry.clip;
@@ -153,14 +139,13 @@ namespace DefenderChronicles.Presentation
             target.outputAudioMixerGroup = cue is PresentationCue.UiClick or PresentationCue.UiError
                 ? catalog.uiMixer
                 : catalog.sfxMixer;
-            activeVoices[target] = new ActiveVoice
-            {
-                cue = cue,
-                group = spec.concurrencyGroup,
-                priority = spec.priority,
-                baseVolume = entry.volume,
-                startedAt = Time.unscaledTime
-            };
+            ActiveVoice voice = voiceRecords[target];
+            voice.cue = cue;
+            voice.group = spec.concurrencyGroup;
+            voice.priority = spec.priority;
+            voice.baseVolume = entry.volume;
+            voice.startedAt = Time.unscaledTime;
+            activeVoices[target] = voice;
             target.Play();
 
             if (spec.musicDuck > 0f)
@@ -169,6 +154,47 @@ namespace DefenderChronicles.Presentation
                 duckRoutine = StartCoroutine(DuckMusic(spec.musicDuck, spec.duckSeconds));
             }
         }
+
+        private AudioSource SelectVoice(AudioCueEntry entry, PresentationAudioCueSpec spec)
+        {
+            int clipPlaying = 0;
+            int groupPlaying = 0;
+            AudioSource groupVictim = null;
+            AudioSource globalVictim = null;
+            ActiveVoice groupVoice = null;
+            ActiveVoice globalVoice = null;
+            // Strict comparisons retain the original stable LINQ ordering on equal keys.
+            foreach (var pair in activeVoices)
+            {
+                AudioSource source = pair.Key;
+                ActiveVoice voice = pair.Value;
+                if (source.clip == entry.clip) clipPlaying++;
+                if (globalVoice == null || ComesBefore(voice, globalVoice))
+                {
+                    globalVictim = source;
+                    globalVoice = voice;
+                }
+                if (voice.group != spec.concurrencyGroup) continue;
+                groupPlaying++;
+                if (groupVoice == null || ComesBefore(voice, groupVoice))
+                {
+                    groupVictim = source;
+                    groupVoice = voice;
+                }
+            }
+            int clipLimit = Mathf.Max(1, Mathf.Min(entry.concurrency, spec.maxConcurrent));
+            if (clipPlaying >= clipLimit) return null;
+            if (groupPlaying >= spec.maxConcurrent)
+                return spec.priority > groupVoice.priority ? groupVictim : null;
+            foreach (AudioSource source in sfxSources)
+                if (!source.isPlaying) return source;
+            return globalVoice != null && PresentationAudioPolicy.CanReplace(globalVoice.priority, spec.priority)
+                ? globalVictim : null;
+        }
+
+        private static bool ComesBefore(ActiveVoice voice, ActiveVoice other) =>
+            voice.priority < other.priority ||
+            (voice.priority == other.priority && voice.startedAt < other.startedAt);
 
         public void SetMusic(MusicState state, bool immediate = false)
         {
@@ -250,8 +276,14 @@ namespace DefenderChronicles.Presentation
 
         private void RemoveFinishedVoices()
         {
-            foreach (AudioSource source in activeVoices.Keys.Where(source => source == null || !source.isPlaying).ToArray())
-                activeVoices.Remove(source);
+            int count = 0;
+            foreach (var pair in activeVoices)
+                if (pair.Key == null || !pair.Key.isPlaying) finishedSources[count++] = pair.Key;
+            for (int i = 0; i < count; i++)
+            {
+                activeVoices.Remove(finishedSources[i]);
+                finishedSources[i] = null;
+            }
         }
 
         private float NominalMusicVolume(AudioSource source)
