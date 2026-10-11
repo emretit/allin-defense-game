@@ -111,10 +111,22 @@ namespace DefenderChronicles.Core
                     if (nextSpawn >= scheduledSpawns.Count) spawning = false;
                 }
                 for (int i = enemies.Count - 1; i >= 0; i--)
+                {
                     if (i < enemies.Count && enemies[i] != null) enemies[i].Tick(delta);
-                for (int i = 0; i < outposts.Count; i++) if (outposts[i] != null) outposts[i].Tick(delta);
-                for (int i = 0; i < friendlyUnits.Count; i++) if (friendlyUnits[i] != null) friendlyUnits[i].Tick(delta);
+                    if (Phase is GamePhase.Victory or GamePhase.Defeat) { stepAccumulator = 0; return; }
+                }
+                for (int i = 0; i < outposts.Count; i++)
+                {
+                    if (outposts[i] != null) outposts[i].Tick(delta);
+                    if (Phase is GamePhase.Victory or GamePhase.Defeat) { stepAccumulator = 0; return; }
+                }
+                for (int i = 0; i < friendlyUnits.Count; i++)
+                {
+                    if (friendlyUnits[i] != null) friendlyUnits[i].Tick(delta);
+                    if (Phase is GamePhase.Victory or GamePhase.Defeat) { stepAccumulator = 0; return; }
+                }
                 if (hero != null) hero.Tick(delta);
+                if (Phase is GamePhase.Victory or GamePhase.Defeat) { stepAccumulator = 0; return; }
                 TryCompleteWave();
             }
         }
