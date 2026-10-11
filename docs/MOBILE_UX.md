@@ -1,7 +1,7 @@
 # Defender Chronicles — Mobile UI and UX
 
 Durum: Faz 7 tasarim ve kismi uygulama notu
-Son guncelleme: 2026-08-15
+Son guncelleme: 2026-10-11
 
 ## Arayuz Tasarim Sistemi
 
@@ -50,6 +50,7 @@ Kural:
 
 - Kritik butonlar en az 48 dp dokunma alani tasir.
 - Ikon kucuk olabilir, ama gorunmez dokunma alani kucuk olamaz.
+- HUD ve frontend butonlari en az 112x112 canvas birimi gorunmez raycast dolgusu tasir; 1920x1080 / match 0.5 ve 0.39842 pt/birim orneginde bu en az 44 pt eder. Gorsel boyutlar korunur; cihaz uzerinde kabul ayrica yapilir.
 - Slot ve karakol secim yaricaplari mobil parmak hatasini tolere eder.
 
 ## Karakol Bilgi Paneli
@@ -65,6 +66,12 @@ Panelde gorunecek bilgiler:
 - Ozel etki
 - Yukseltme sonrasi fark
 - Satis degeri
+
+Tamamlanan akis:
+
+- SAT ilk dokunusta satis yapmaz; 3 saniye gercek zaman boyunca iade tutariyla ONAYLA +45 / CONFIRM +45 gosterir. Ikinci dokunus satar.
+- Zaman asimi, secim degisimi, panel kapanmasi ve faz degisimi onayi iptal eder. Programatik satis API'si dogrudan calisir.
+- Uzmanlasma modali mevcut pause mekanizmasiyla savas saatini, dusmanlari, kuleleri ve boss'u durdurur. Kapaninca onceki 1x/2x/4x/8x hiz geri gelir; onceden veya arka plana gecisle pause durumunda olan oturum pause'da kalir. Zafer/yenilgi modali kapatir.
 
 ## Kahraman Yetenek Akisi
 
@@ -145,6 +152,7 @@ Kural:
 - Tum kullanici metinleri koddan ayrilacak.
 - Dinamik sayilar ve cogullar desteklenecek.
 - Yayin hedefinde Ingilizce kaynak da hazirlanacak.
+- Bolum 11-50 tehdit metinleri de secili TR/EN dilde uretilir; dil degisimi aktif oturumun dalga onizlemesini savas saatini sifirlamadan yeniler.
 
 ## Safe Area ve Ekran Oranlari
 
