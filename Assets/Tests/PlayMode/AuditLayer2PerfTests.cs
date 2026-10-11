@@ -160,6 +160,25 @@ namespace DefenderChronicles.Tests
             Assert.That(label.text, Does.EndWith("7"));
         }
 
+        [UnityTest]
+        public IEnumerator VfxMeshesAreReusedOnInitializationAndDestroyedWithPool()
+        {
+            var catalog = Own(ScriptableObject.CreateInstance<DefenderPresentationCatalog>());
+            var host = Own(new GameObject("Perf VFX"));
+            var pool = host.AddComponent<DefenderVfxPool>();
+            pool.Initialize(catalog, 1);
+            var diamond = Field<Mesh>(pool, "diamondMesh");
+            var ring = Field<Mesh>(pool, "ringMesh");
+            pool.Initialize(catalog, 1);
+            Assert.That(Field<Mesh>(pool, "diamondMesh"), Is.SameAs(diamond));
+            Assert.That(Field<Mesh>(pool, "ringMesh"), Is.SameAs(ring));
+            Object.Destroy(host);
+            yield return null;
+            yield return null;
+            Assert.That(diamond == null, Is.True);
+            Assert.That(ring == null, Is.True);
+        }
+
         [UnityTearDown]
         public IEnumerator Cleanup()
         {

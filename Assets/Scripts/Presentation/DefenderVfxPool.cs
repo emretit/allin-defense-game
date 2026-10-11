@@ -131,9 +131,15 @@ namespace DefenderChronicles.Presentation
         {
             catalog = value;
             qualityConfig = config;
-            diamondMesh = BuildDiamond();
-            ringMesh = BuildRing(24);
+            if (diamondMesh == null) diamondMesh = BuildDiamond();
+            if (ringMesh == null) ringMesh = BuildRing(24);
             while (pool.Count < qualityConfig.prewarmPoolSize) CreateItem();
+        }
+
+        private void OnDestroy()
+        {
+            if (diamondMesh != null) Destroy(diamondMesh);
+            if (ringMesh != null) Destroy(ringMesh);
         }
 
         public void Play(PresentationSignal signal)
