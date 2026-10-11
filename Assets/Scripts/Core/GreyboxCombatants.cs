@@ -355,7 +355,7 @@ namespace DefenderChronicles.Core
         internal void Tick(float delta)
         {
             if (!IsAlive || session == null) return;
-            attackTimer -= delta;
+            attackTimer = CombatMath.TickCooldown(attackTimer, delta);
             if (disabledRemaining > 0f)
             {
                 disabledRemaining = Mathf.Max(0f, disabledRemaining - delta);
@@ -720,7 +720,7 @@ namespace DefenderChronicles.Core
                 return;
             }
 
-            attackTimer -= delta;
+            attackTimer = CombatMath.TickCooldown(attackTimer, delta);
             GreyboxEnemy enemy = session == null ? null : session.FindFirstEnemy(transform.position, 1.65f);
             if (enemy != null)
             {
@@ -729,7 +729,7 @@ namespace DefenderChronicles.Core
                     enemy.TakeDamage(20);
                     session.EmitPresentation(PresentationCue.HeroAttacked, enemy.Position, gameObject,
                         PresentationActorKind.Knight);
-                    attackTimer += .375f;
+                    attackTimer = .375f;
                 }
                 return;
             }
