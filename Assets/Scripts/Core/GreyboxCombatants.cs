@@ -733,7 +733,7 @@ namespace DefenderChronicles.Core
                     enemy.TakeDamage(20);
                     session.EmitPresentation(PresentationCue.HeroAttacked, enemy.Position, gameObject,
                         PresentationActorKind.Knight);
-                    attackTimer = .375f;
+                    attackTimer = .35f;
                 }
                 return;
             }
