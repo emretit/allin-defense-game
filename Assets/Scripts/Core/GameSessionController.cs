@@ -232,7 +232,9 @@ namespace DefenderChronicles.Core
 
         private void HandleLanguageChanged()
         {
-            if (CampaignLevelNumber <= 10 && waves != null) waves = FirstRegionCampaign.CreateWaves(CampaignLevelNumber);
+            if (waves != null)
+                waves = CampaignLevelNumber <= 10 ? FirstRegionCampaign.CreateWaves(CampaignLevelNumber)
+                    : CampaignLevelFactory.Create(CampaignLevelNumber).waves;
             RefreshThreatPreviewForPhase();
             RefreshUi();
         }
@@ -431,7 +433,7 @@ namespace DefenderChronicles.Core
             string currentPreview = currentWaveIndex < waves.Length
                 ? GameLocalization.Translate(waves[currentWaveIndex].preview)
                 : string.Empty;
-            string preview = Phase switch
+            string preview = UnpausedPhase switch
             {
                 GamePhase.Preparing when currentWaveIndex < waves.Length =>
                     GameLocalization.Text($"Sıradaki: {currentPreview}", $"Next: {currentPreview}"),

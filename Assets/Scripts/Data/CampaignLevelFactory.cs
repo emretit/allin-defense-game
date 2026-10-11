@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DefenderChronicles.UI;
 using UnityEngine;
 
 namespace DefenderChronicles.Data
@@ -395,12 +396,12 @@ namespace DefenderChronicles.Data
 
         private static string PreviewFor(EnemyArchetype archetype) => archetype switch
         {
-            EnemyArchetype.Vanguard => "Zırhlı öncüler",
-            EnemyArchetype.Regenerator => "Yenilenen muhafızlar",
-            EnemyArchetype.Support => "Şifacı destek birliği",
-            EnemyArchetype.Siege => "Kuşatma birliği",
-            EnemyArchetype.Boss => "Bölge lordu ve seçkin muhafızları",
-            _ => "Hızlı yağmacılar"
+            EnemyArchetype.Vanguard => GameLocalization.Text("Zırhlı öncüler", "Armored vanguards"),
+            EnemyArchetype.Regenerator => GameLocalization.Text("Yenilenen muhafızlar", "Regenerating guards"),
+            EnemyArchetype.Support => GameLocalization.Text("Şifacı destek birliği", "Healer support unit"),
+            EnemyArchetype.Siege => GameLocalization.Text("Kuşatma birliği", "Siege unit"),
+            EnemyArchetype.Boss => GameLocalization.Text("Bölge lordu ve seçkin muhafızları", "Regional boss and elite guards"),
+            _ => GameLocalization.Text("Hızlı yağmacılar", "Fast raiders")
         };
 
         private static Vector3[] ClonePath(Vector3[] source) => (Vector3[])source.Clone();
