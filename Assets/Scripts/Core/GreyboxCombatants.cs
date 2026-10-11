@@ -152,12 +152,15 @@ namespace DefenderChronicles.Core
             if (archetype != EnemyArchetype.Boss) return;
             float fraction = health / (float)Mathf.Max(1, stats.maxHealth);
             int nextPhase = fraction <= 0.33f ? 3 : fraction <= 0.66f ? 2 : 1;
-            if (nextPhase == bossPhase) return;
-            if (bossPhase < 2 && nextPhase >= 2) session.SpawnBossReinforcements();
-            bossPhase = nextPhase;
-            GetComponent<BossPhaseVisual>()?.SetPhase(bossPhase);
-            session.EmitPresentation(PresentationCue.BossPhase, transform.position, gameObject,
-                PresentationActorKind.Boss, value: bossPhase);
+            while (bossPhase < nextPhase)
+            {
+                bossPhase++;
+                if (bossPhase == 2) session.SpawnBossReinforcements();
+                var phaseVisual = GetComponent<BossPhaseVisual>();
+                if (phaseVisual != null) phaseVisual.SetPhase(bossPhase);
+                session.EmitPresentation(PresentationCue.BossPhase, transform.position, gameObject,
+                    PresentationActorKind.Boss, value: bossPhase);
+            }
         }
 
         private void MoveAlongRoute(float delta)
