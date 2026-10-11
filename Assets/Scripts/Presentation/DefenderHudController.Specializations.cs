@@ -10,6 +10,7 @@ namespace DefenderChronicles.Presentation
     public sealed partial class DefenderHudController
     {
         private GameObject specializationModal;
+        private GameSessionController specializationSession;
         private void ApplySpecializationSelection(GreyboxOutpost outpost)
         {
             var session = GameSessionController.Instance;
@@ -39,7 +40,12 @@ namespace DefenderChronicles.Presentation
 
         public void ShowSpecializationChoices(GreyboxOutpost outpost, GameSessionController session)
         {
-            if (specializationModal != null) Destroy(specializationModal);
+            if (outpost == null || session == null || !outpost.CanSpecialize) return;
+            CloseSpecializationChoices();
+            if (!session.BeginSpecializationModal()) return;
+            CancelSaleConfirmation();
+            specializationSession = session;
+            session.PhaseChanged += HandleSpecializationPhaseChanged;
             specializationModal = new GameObject("Specialization choices", typeof(RectTransform), typeof(Image));
             var parent = selectedPanel.transform.parent;
             specializationModal.transform.SetParent(parent, false);
@@ -63,7 +69,11 @@ namespace DefenderChronicles.Presentation
                     (session.Gold < cost ? GameLocalization.Text($"\n{cost-session.Gold} altın eksik", $"\nNeed {cost-session.Gold} more gold") : ""));
                 foreach (var label in button.GetComponentsInChildren<TMP_Text>()) { label.fontSize = 32; label.enableAutoSizing = true; label.fontSizeMin = 28; label.fontSizeMax = 34; }
                 button.interactable = session.UnlockedCampaignLevel >= TowerProgression.UnlockLevel(outpost.Kind) && session.Gold >= cost;
-                button.onClick.AddListener(() => { if (session.TrySpecializeOutpost(outpost.Slot.Index, branch)) Destroy(specializationModal); });
+                button.onClick.AddListener(() =>
+                {
+                    CloseSpecializationChoices();
+                    session.TrySpecializeOutpost(outpost.Slot.Index, branch);
+                });
             }
             var close = Instantiate(sellButton, specializationModal.transform);
             close.onClick = new Button.ButtonClickedEvent();
@@ -72,7 +82,29 @@ namespace DefenderChronicles.Presentation
             cr.anchoredPosition = new Vector2(0,-190); cr.sizeDelta = new Vector2(440,130);
             SetButtonLabel(close, GameLocalization.Text("GERİ • Dal değiştirmek için satıp yeniden kur", "BACK • Sell and rebuild to change branch"));
             close.interactable = true;
-            close.onClick.AddListener(() => Destroy(specializationModal));
+            close.onClick.AddListener(CloseSpecializationChoices);
+        }
+
+        private void HandleSpecializationPhaseChanged(GamePhase phase)
+        {
+            if (phase != GamePhase.Paused) CloseSpecializationChoices();
+        }
+
+        public void CloseSpecializationChoices()
+        {
+            if (specializationModal != null)
+            {
+                specializationModal.SetActive(false);
+                Destroy(specializationModal);
+                specializationModal = null;
+            }
+            var session = specializationSession;
+            specializationSession = null;
+            if (session != null)
+            {
+                session.PhaseChanged -= HandleSpecializationPhaseChanged;
+                session.EndSpecializationModal();
+            }
         }
     }
 }

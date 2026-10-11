@@ -56,6 +56,7 @@ namespace DefenderChronicles.Presentation
 
         private void OnDisable()
         {
+            CloseSpecializationChoices();
             CancelSaleConfirmation();
         }
     }

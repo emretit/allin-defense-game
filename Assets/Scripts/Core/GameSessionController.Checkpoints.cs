@@ -109,6 +109,8 @@ namespace DefenderChronicles.Core
         private void OnApplicationFocus(bool focused) { if (!focused && !Application.runInBackground) PauseForBackground(); }
         private void PauseForBackground()
         {
+            // Backgrounding takes ownership of a modal pause; closing it must not resume the app.
+            if (SpecializationModalOpen) specializationOwnsPause = false;
             if (initialized && Phase is GamePhase.Preparing or GamePhase.Wave or GamePhase.Intermission) OnPausePressed();
         }
     }

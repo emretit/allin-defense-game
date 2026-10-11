@@ -959,7 +959,8 @@ namespace DefenderChronicles.Presentation
         private void ApplyPauseOverlay(GamePhase phase)
         {
             if (pauseOverlay == null) return;
-            bool visible = phase == GamePhase.Paused;
+            var session = GameSessionController.Instance;
+            bool visible = phase == GamePhase.Paused && (session == null || !session.SpecializationModalOpen);
             if (!visible)
             {
                 if (pauseOverlayVisible) pauseOverlay.SetActive(false);

@@ -1050,6 +1050,7 @@ namespace DefenderChronicles.Core
 
         private void OnPausePressed()
         {
+            if (SpecializationModalOpen) return;
             if (Phase == GamePhase.Victory || Phase == GamePhase.Defeat) return;
             if (Phase == GamePhase.Paused)
             {
@@ -1077,6 +1078,7 @@ namespace DefenderChronicles.Core
 
         private void ToggleGameSpeed()
         {
+            if (SpecializationModalOpen) return;
             speedStepIndex = (speedStepIndex + 1) % SpeedSteps.Length;
             currentGameSpeed = SpeedForStep(speedStepIndex);
             if (Phase != GamePhase.Paused && Phase != GamePhase.Victory && Phase != GamePhase.Defeat)
