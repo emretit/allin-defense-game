@@ -126,6 +126,8 @@ namespace DefenderChronicles.Core
         private readonly List<Vector3> path = new();
         private readonly List<Vector3[]> routePaths = new();
         private readonly List<GreyboxEnemy> enemies = new();
+        private readonly List<List<GreyboxEnemy>> damageSnapshots = new() { new List<GreyboxEnemy>(64) };
+        private int damageSnapshotDepth;
         private readonly List<GreyboxOutpost> outposts = new();
         private readonly List<GreyboxFriendlyUnit> friendlyUnits = new();
         private readonly List<GreyboxOutpostSlot> slots = new();
@@ -966,6 +968,8 @@ namespace DefenderChronicles.Core
             var enemy = go.AddComponent<GreyboxEnemy>();
             enemy.Configure(this, archetype, stats, spawnPath);
             enemies.Add(enemy);
+            foreach (var snapshot in damageSnapshots)
+                if (snapshot.Capacity < enemies.Count) snapshot.Capacity = enemies.Capacity;
             PeakEnemyCount = Mathf.Max(PeakEnemyCount, enemies.Count);
             EmitPresentation(PresentationCue.UnitSpawned, go.transform.position, go, ActorKind(archetype));
         }
@@ -2567,11 +2571,23 @@ namespace DefenderChronicles.Core
         internal void DamageEnemies(Vector3 position, float radius, int damage, float slowFactor = 1f, float slowDuration = 0f, DamageType damageType = DamageType.Magic)
         {
             float sqr = radius * radius;
-            foreach (var enemy in enemies.ToArray())
+            if (damageSnapshotDepth == damageSnapshots.Count)
+                damageSnapshots.Add(new List<GreyboxEnemy>(Mathf.Max(64, enemies.Count)));
+            List<GreyboxEnemy> snapshot = damageSnapshots[damageSnapshotDepth++];
+            snapshot.AddRange(enemies);
+            try
             {
-                if (enemy == null || !enemy.IsAlive || (enemy.Position - position).sqrMagnitude > sqr) continue;
-                enemy.TakeDamage(damage, damageType);
-                if (slowDuration > 0f) enemy.ApplySlow(slowFactor, slowDuration);
+                foreach (var enemy in snapshot)
+                {
+                    if (enemy == null || !enemy.IsAlive || (enemy.Position - position).sqrMagnitude > sqr) continue;
+                    enemy.TakeDamage(damage, damageType);
+                    if (slowDuration > 0f) enemy.ApplySlow(slowFactor, slowDuration);
+                }
+            }
+            finally
+            {
+                snapshot.Clear();
+                damageSnapshotDepth--;
             }
         }
 

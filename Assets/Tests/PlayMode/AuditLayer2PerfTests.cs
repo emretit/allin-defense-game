@@ -74,6 +74,45 @@ namespace DefenderChronicles.Tests
             Assert.That(sources[1].clip, Is.SameAs(catalog.audioCues[3].clip), "Lower priority wins even when inserted later");
         }
 
+        private GameSessionController BareSession() =>
+            Own(new GameObject("Perf session")).AddComponent<GameSessionController>();
+
+        private GreyboxEnemy Enemy(GameSessionController session, Vector3 position, int health = 100)
+        {
+            var enemy = Own(new GameObject("Perf enemy")).AddComponent<GreyboxEnemy>();
+            enemy.transform.position = position;
+            enemy.Configure(session, EnemyArchetype.Raider, new EnemyStats(health, 1f, 0, 1, 1, Color.red),
+                new[] { Vector3.zero, Vector3.forward * 20 });
+            Field<List<GreyboxEnemy>>(session, "enemies").Add(enemy);
+            return enemy;
+        }
+
+        private delegate void DamageArea(Vector3 position, float radius, int damage, float slowFactor,
+            float slowDuration, DefenderChronicles.Combat.DamageType damageType);
+
+        [Test]
+        public void AreaDamageSnapshotDoesNotAllocateAndPreservesDeathsAndOrder()
+        {
+            var session = BareSession();
+            var first = Enemy(session, Vector3.zero);
+            var second = Enemy(session, Vector3.right);
+            var outside = Enemy(session, Vector3.right * 5);
+            var damage = Method<DamageArea>(session, "DamageEnemies");
+            void Hit() => damage(Vector3.zero, 2f, 1, .5f, 3f, DefenderChronicles.Combat.DamageType.Magic);
+            Hit();
+            Assert.That((TestDelegate)Hit,
+                UnityEngine.TestTools.Constraints.ConstraintExtensions.AllocatingGCMemory(Is.Not));
+            Assert.That(first.Health, Is.EqualTo(98));
+            Assert.That(second.Health, Is.EqualTo(98));
+            Assert.That(outside.Health, Is.EqualTo(100));
+            Assert.That(second.SlowFactor, Is.EqualTo(.5f));
+            damage(Vector3.zero, 2f, 100, 1f, 0f, DefenderChronicles.Combat.DamageType.Magic);
+            Assert.That(first.IsAlive, Is.False);
+            Assert.That(second.IsAlive, Is.False);
+            Assert.That(session.Enemies.Count, Is.EqualTo(1), "Removing the first victim must not skip the next");
+            Assert.That(session.Enemies[0], Is.SameAs(outside));
+        }
+
         [UnityTearDown]
         public IEnumerator Cleanup()
         {
