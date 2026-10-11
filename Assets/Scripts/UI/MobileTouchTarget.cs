@@ -41,8 +41,13 @@ namespace DefenderChronicles.UI
                 hitArea.anchorMin = hitArea.anchorMax = hitArea.pivot = new Vector2(.5f, .5f);
                 hitArea.anchoredPosition = Vector2.zero;
             }
+            Vector2 scale = Vector2.one;
+            for (Transform parent = visual; parent != null && parent.GetComponent<Canvas>() == null; parent = parent.parent)
+                scale = Vector2.Scale(scale, new Vector2(Mathf.Abs(parent.localScale.x), Mathf.Abs(parent.localScale.y)));
             Vector2 size = visual.rect.size;
-            hitArea.sizeDelta = new Vector2(Mathf.Max(MinimumCanvasSize, size.x), Mathf.Max(MinimumCanvasSize, size.y));
+            // Press feedback and pause-card entrance animation must not shrink the hit target.
+            hitArea.sizeDelta = new Vector2(Mathf.Max(MinimumCanvasSize / Mathf.Max(.001f, scale.x), size.x),
+                Mathf.Max(MinimumCanvasSize / Mathf.Max(.001f, scale.y), size.y));
         }
     }
 }

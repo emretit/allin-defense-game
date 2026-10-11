@@ -181,6 +181,12 @@ namespace DefenderChronicles.Tests
             Call(frontend, "CompleteLocalGuestSignIn"); Call(frontend, "OpenSettings");
             Canvas.ForceUpdateCanvases(); yield return null;
             AssertHitRects(frontend.GetComponentsInChildren<Button>(true));
+            var import = frontend.GetComponentsInChildren<Button>(true).Single(b => b.name == "Import Guest Progress");
+            Call(frontend, "CloseSettings");
+            yield return new WaitForSecondsRealtime(.25f);
+            ExecuteEvents.Execute(import.gameObject, new PointerEventData(EventSystem.current), ExecuteEvents.pointerDownHandler);
+            yield return new WaitForSecondsRealtime(.12f);
+            AssertHitRects(new[] { import });
         }
 
         private static void AssertHitRects(Button[] buttons)
@@ -192,6 +198,10 @@ namespace DefenderChronicles.Tests
                 // Transparent raycast padding is a child so the original visuals retain their layout.
                 var hit = button.transform.Find("Touch Target") as RectTransform;
                 var size = hit != null ? hit.rect.size : root.rect.size;
+                var canvas = button.GetComponentInParent<Canvas>();
+                if (canvas != null) size = Vector2.Scale(size, new Vector2(
+                    Mathf.Abs(root.lossyScale.x / canvas.transform.lossyScale.x),
+                    Mathf.Abs(root.lossyScale.y / canvas.transform.lossyScale.y)));
                 if (size.x <= 0 || size.y <= 0) continue; // A lazy inactive screen has not been laid out yet.
                 Debug.Log($"[UX_HIT_RECT] {button.name} visual={root.rect.size} hit={size}");
                 Assert.That(size.x * pointsPerUnit, Is.GreaterThanOrEqualTo(44), button.name + " width");
