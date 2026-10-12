@@ -12,12 +12,12 @@ namespace AllinDefense.UI
         private const int VisibleRegionCount = 1;
         private Button importGuestButton;
         private int MaxPlayableLevel => Mathf.Min(FirstRegionCampaign.LevelCount, progress.Data.unlockedLevel);
-        private string SaveStatus() => progress.HasWriteError ? GameLocalization.Text("Yerel kayıt yazılamadı · Tekrar denenecek", "Local save failed · Retrying") : progress.Data.unreadableSavePreserved ? GameLocalization.Text("Eski kayıt okunamadı · Dosyaları kurtarma için korundu", "Old save unreadable · Files preserved for recovery") : progress.SyncStatus switch
+        private string SaveStatus() => progress.HasWriteError ? FrontendCopy.SaveRetry.Value : progress.Data.unreadableSavePreserved ? FrontendCopy.SaveRecovery.Value : progress.SyncStatus switch
         {
-            CampaignSyncStatus.Current => GameLocalization.Text("Kaydedildi · Eşitlendi", "Saved · Synced"),
-            CampaignSyncStatus.RequiresReview => GameLocalization.Text("Aktarım sorunu · Yerel kayıt korundu", "Transfer issue · Local save retained"),
-            CampaignSyncStatus.Syncing => GameLocalization.Text("Kaydedildi · Eşitleniyor", "Saved · Syncing"),
-            _ => GameLocalization.Text("Kaydedildi · Eşitleme bekliyor", "Saved · Sync pending")
+            CampaignSyncStatus.RequiresReview => FrontendCopy.TransferReview.Value,
+            CampaignSyncStatus.Pending when progress.Data.authProvider == PlayerAuthProvider.PlayerAccount => FrontendCopy.WaitingForConnection.Value,
+            CampaignSyncStatus.Failed => FrontendCopy.WaitingForConnection.Value,
+            _ => ""
         };
         private void OnSaveStatusChanged(CampaignSyncStatus status)
         {
@@ -50,16 +50,16 @@ namespace AllinDefense.UI
         }
         private static string LearningObjective(int level) => level switch
         {
-            1 => GameLocalization.Text("Okçu kur · Yükselt · Sarsıcı Darbe ile kaleyi koru", "Build an archer · Upgrade · Protect the keep with Stunning Strike"),
-            2 => GameLocalization.Text("Kışlayla düşmanı okçunun menzilinde tut", "Use barracks to hold enemies within archer range"),
-            3 => GameLocalization.Text("Büyücüyle kalabalığı temizle", "Clear crowds with a mage"),
-            4 => GameLocalization.Text("Öncü: %50 fiziksel zırh · Büyüye direnç yok", "Vanguard: 50% physical armour · No magic resistance"),
-            5 => GameLocalization.Text("Üç kule rolünü birlikte kullan", "Combine all three tower roles"),
-            6 => GameLocalization.Text("Yeni: Hızlı Atış / Keskin Nişancı · Yenilenmeyi aş", "New: Rapid Fire / Sharpshooter · Overcome regeneration"),
-            7 => GameLocalization.Text("Yeni: Patlama / Buz · Önce şifacıyı durdur", "New: Blast / Frost · Stop the healer first"),
-            8 => GameLocalization.Text("Yeni: Kalkan / Hücum Birliği · Kuşatmayı durdur", "New: Shield / Assault Guard · Interrupt siege attacks"),
-            9 => GameLocalization.Text("Tek rotada karma baskıya hazırlan", "Prepare for mixed pressure on one route"),
-            _ => GameLocalization.Text("Lord: %66 / %33 fazları · Kırmızı uyarıyı Sarsıcı Darbe ile kes", "Lord: 66% / 33% phases · Interrupt the red warning with Stunning Strike")
+            1 => FrontendCopy.ObjectiveArcher.Value,
+            2 => FrontendCopy.ObjectiveBarracks.Value,
+            3 => FrontendCopy.ObjectiveMage.Value,
+            4 => FrontendCopy.ObjectiveArmour.Value,
+            5 => FrontendCopy.ObjectiveTowerRoles.Value,
+            6 => FrontendCopy.ObjectiveRegeneration.Value,
+            7 => FrontendCopy.ObjectiveHealer.Value,
+            8 => FrontendCopy.ObjectiveSiege.Value,
+            9 => FrontendCopy.ObjectiveMixedPressure.Value,
+            _ => FrontendCopy.ObjectiveLord.Value
         };
         private static string DefenceAdvice(EnemyArchetype enemy) => enemy switch
         {

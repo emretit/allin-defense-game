@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -127,6 +128,8 @@ namespace AllinDefense.UI
                 return PlayerPrefs.GetInt(LanguageKey, fallback) == 0 ? GameLanguage.Turkish : GameLanguage.English;
             }
         }
+
+        public static string Uppercase(string text) => text.ToUpper(CultureInfo.GetCultureInfo(IsEnglish ? "en-US" : "tr-TR"));
 
         public static bool IsEnglish => CurrentLanguage == GameLanguage.English;
 

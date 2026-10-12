@@ -218,6 +218,52 @@ namespace AllinDefense.Tests
         }
 
         [UnityTest]
+        public IEnumerator MapHeadingAndSettingsSelectionFollowLanguage()
+        {
+            var original = FrontendPreferences.Language;
+            try
+            {
+                Call(flow, "OpenCampaign");
+                yield return null;
+                yield return null;
+                foreach (var language in new[] { GameLanguage.Turkish, GameLanguage.English })
+                {
+                    FrontendPreferences.Language = language;
+                    var heading = flow.GetComponentsInChildren<TMPro.TMP_Text>(true).Single(t => t.name == "Region Name");
+                    Assert.That(heading.text, Is.EqualTo(language == GameLanguage.Turkish ? "1 · YEŞİL NÖBET" : "1 · GREENWATCH"));
+                    Call(flow, "OpenSettings");
+                    var buttons = flow.GetComponentsInChildren<UnityEngine.UI.Button>();
+                    var selected = buttons.Single(b => b.name == (language == GameLanguage.Turkish ? "Turkish Language" : "English Language"));
+                    var other = buttons.Single(b => b.name == (language == GameLanguage.Turkish ? "English Language" : "Turkish Language"));
+                    Assert.That(selected.GetComponent<UnityEngine.UI.Image>().color, Is.Not.EqualTo(other.GetComponent<UnityEngine.UI.Image>().color));
+                    Call(flow, "CloseSettings");
+                }
+            }
+            finally { FrontendPreferences.Language = original; }
+        }
+
+        [UnityTest]
+        public IEnumerator BossSignalUsesCampaignWaveData()
+        {
+            foreach (int level in new[] { 1, 10 })
+            {
+                var waves = AllinDefense.Data.CampaignLevelFactory.Create(level).waves;
+                session.SetCampaignLevel(level);
+                typeof(GameSessionController).GetField("waves", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(session, waves);
+                typeof(GameSessionController).GetField("currentWaveIndex", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(session, waves.Length - 1);
+                bool expectedBoss = level == 10;
+                Assert.That(session.NextWaveHasBoss, Is.EqualTo(expectedBoss));
+                foreach (var phase in new[] { GamePhase.Intermission, GamePhase.Wave })
+                {
+                    var spec = DefenderHudController.TopBarSpec("GOLD", "KEEP", "WAVE", 100, 20,
+                        waves.Length - 1, waves.Length, phase, session.NextWaveHasBoss);
+                    Assert.That(spec.bossSignal, Is.EqualTo(expectedBoss));
+                }
+            }
+            yield return null;
+        }
+
+        [UnityTest]
         public IEnumerator SettingsHandlesFitTheirRowsAndLastLevelHasNoNextAction()
         {
             Call(flow, "OpenSettings");
@@ -227,6 +273,7 @@ namespace AllinDefense.Tests
             {
                 Assert.That(slider.handleRect.rect.height, Is.LessThanOrEqualTo(((RectTransform)slider.transform).rect.height));
                 Assert.That(slider.handleRect.rect.height, Is.GreaterThan(40));
+                Assert.That(slider.fillRect, Is.Not.Null);
                 float originalValue = slider.value;
                 slider.value = .75f;
                 Assert.That(slider.normalizedValue, Is.EqualTo(.75f).Within(.001));
@@ -236,8 +283,10 @@ namespace AllinDefense.Tests
             session.SetCampaignLevel(50);
             Call(flow, "ShowResult", true, 3, new CampaignCompletionReward(0, 0));
             yield return null;
-            var next = flow.GetComponentsInChildren<UnityEngine.UI.Button>().Single(b => b.name == "Next Level");
-            Assert.That(next.interactable, Is.False);
+            var next = flow.GetComponentsInChildren<UnityEngine.UI.Button>(true).Single(b => b.name == "Next Level");
+            Assert.That(next.gameObject.activeSelf, Is.False);
+            Call(flow, "ShowResult", false, 0, new CampaignCompletionReward(0, 0));
+            Assert.That(next.gameObject.activeSelf, Is.False);
             Assert.That(flow.GetComponentsInChildren<UnityEngine.UI.Button>().Single(b => b.name == "Retry Level").interactable, Is.True);
         }
     }

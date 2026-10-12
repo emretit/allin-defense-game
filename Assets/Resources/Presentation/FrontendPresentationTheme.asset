@@ -34,6 +34,7 @@ MonoBehaviour:
   warTableShader: {fileID: 4800000, guid: 650dd9526735d5b46b79224bc6e94025, type: 3}
   panelSprite: {fileID: 21300000, guid: a4399d56b6e44443eb15a46596281f93, type: 3}
   buttonSprite: {fileID: 21300000, guid: 137f0411915e447e9aa161139ddaaf83, type: 3}
+  designSystem: {fileID: 11400000, guid: 9f9f36900cce2450b83bab04f7347303, type: 2}
   menuAmbience: {fileID: 8300000, guid: e4190316a2dbe460b90298d32398a156, type: 3}
   mapOpen: {fileID: 8300000, guid: c945def296b4f4c76ac5eaaf825d31df, type: 3}
   levelSelect: {fileID: 8300000, guid: c945def296b4f4c76ac5eaaf825d31df, type: 3}

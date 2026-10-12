@@ -1517,6 +1517,20 @@ namespace AllinDefense.Tests
         }
 
         [Test]
+        public void PlayerTextUppercaseUsesActiveLanguageCulture()
+        {
+            var original = GameLocalization.CurrentLanguage;
+            try
+            {
+                GameLocalization.SetLanguage(GameLanguage.Turkish);
+                Assert.That(GameLocalization.Uppercase("Yeşil"), Is.EqualTo("YEŞİL"));
+                GameLocalization.SetLanguage(GameLanguage.English);
+                Assert.That(GameLocalization.Uppercase("First"), Is.EqualTo("FIRST"));
+            }
+            finally { GameLocalization.SetLanguage(original); }
+        }
+
+        [Test]
         public void TopBarSpecSeparatesStableWarningBossAndTerminalSignals()
         {
             DefenderHudController.TopBarPresentationSpec stable =
@@ -1536,11 +1550,14 @@ namespace AllinDefense.Tests
             Assert.That(warning.livesWarning, Is.True);
 
             DefenderHudController.TopBarPresentationSpec boss =
-                DefenderHudController.TopBarSpec("ALTIN", "KALE", "DALGA", 120, 12, 6, 7, GamePhase.Intermission);
+                DefenderHudController.TopBarSpec("ALTIN", "KALE", "DALGA", 120, 12, 6, 7, GamePhase.Intermission, true);
             Assert.That(boss.state, Is.EqualTo(DefenderHudController.TopBarSignalState.Boss));
             Assert.That(boss.waveText, Does.Contain("BOSS"));
             Assert.That(boss.waveText, Does.Contain("6/7"));
             Assert.That(boss.bossSignal, Is.True);
+            var normalLastWave = DefenderHudController.TopBarSpec("ALTIN", "KALE", "DALGA", 120, 12, 6, 7, GamePhase.Intermission, false);
+            Assert.That(normalLastWave.bossSignal, Is.False);
+            Assert.That(normalLastWave.waveText, Does.Not.Contain("BOSS"));
 
             DefenderHudController.TopBarPresentationSpec terminal =
                 DefenderHudController.TopBarSpec("ALTIN", "KALE", "DALGA", 300, 0, 7, 7, GamePhase.Victory);

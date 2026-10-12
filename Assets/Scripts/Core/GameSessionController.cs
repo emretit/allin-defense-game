@@ -256,6 +256,11 @@ namespace AllinDefense.Core
             returnToMainMenu = action;
         }
 
+        public void SetBattleHudVisible(bool visible)
+        {
+            if (hudRoot != null) hudRoot.SetActive(visible);
+        }
+
         public void SuspendForFrontend()
         {
             if (!initialized) return;
@@ -2771,7 +2776,7 @@ namespace AllinDefense.Core
             OutpostKind.Archer => GameLocalization.Text("OKÇU KARAKOLU", "ARCHER OUTPOST"),
             OutpostKind.Barracks => GameLocalization.Text("MUHAFIZ KIŞLASI", "GUARD BARRACKS"),
             OutpostKind.Mage => GameLocalization.Text("BÜYÜ OCAĞI", "MAGE OUTPOST"),
-            _ => kind.ToString().ToUpperInvariant()
+            _ => GameLocalization.Uppercase(kind.ToString())
         };
 
         internal static GameObject CreatePrimitive(string objectName, PrimitiveType primitive, Vector3 position,

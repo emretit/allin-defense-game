@@ -252,6 +252,7 @@ namespace AllinDefense.UI
             Stretch(shade.GetComponent<RectTransform>());
 
             GameObject topShade = CreateImage("Top Shade", canvasObject.transform, UiTokens.TopShade);
+            if (theme.designSystem != null) topShade.GetComponent<Image>().sprite = theme.designSystem.verticalGradient;
             SetAnchors(topShade.GetComponent<RectTransform>(), new Vector2(0f, 0.82f), Vector2.one, Vector2.zero, Vector2.zero);
             GameObject bottomShade = CreateImage("Bottom Shade", canvasObject.transform, UiTokens.BottomShade);
             SetAnchors(bottomShade.GetComponent<RectTransform>(), Vector2.zero, new Vector2(1f, 0.16f), Vector2.zero, Vector2.zero);
@@ -355,20 +356,20 @@ namespace AllinDefense.UI
             SetRect(resultStars.rectTransform, new Vector2(0f, 40f), new Vector2(760f, 78f), Center(), Center());
 
             resultReward = CreateText("Result Reward", card.transform, "", 25, catalog.bodyFont, FontStyles.Bold,
-                TextAlignmentOptions.Center, theme.moonEdge);
-            SetRect(resultReward.rectTransform, new Vector2(0f, -42f), new Vector2(850f, 52f), Center(), Center());
+                TextAlignmentOptions.Top, theme.moonEdge);
+            SetRect(resultReward.rectTransform, new Vector2(0f, -52f), new Vector2(980f, 100f), Center(), Center());
 
             retryButton = CreateButton("Retry Level", card.transform, FrontendCopy.TryAgain, new Vector2(310f, 140f),
                 theme.defenderBlue, () => ReloadCampaignLevel(session.CampaignLevelNumber));
-            SetRect(retryButton.GetComponent<RectTransform>(), new Vector2(-350f, -180f), new Vector2(310f, 140f), Center(), Center());
+            SetRect(retryButton.GetComponent<RectTransform>(), new Vector2(-350f, -196f), new Vector2(310f, 140f), Center(), Center());
 
             nextLevelButton = CreateButton("Next Level", card.transform, FrontendCopy.NextLevel, new Vector2(340f, 140f),
                 theme.commandGold, () => ReloadCampaignLevel(session.CampaignLevelNumber + 1));
-            SetRect(nextLevelButton.GetComponent<RectTransform>(), new Vector2(0f, -180f), new Vector2(340f, 140f), Center(), Center());
+            SetRect(nextLevelButton.GetComponent<RectTransform>(), new Vector2(0f, -196f), new Vector2(340f, 140f), Center(), Center());
 
             Button map = CreateButton("Return To Map", card.transform, FrontendCopy.ReturnToMap, new Vector2(310f, 140f),
                 theme.night, OpenCampaign);
-            SetRect(map.GetComponent<RectTransform>(), new Vector2(350f, -180f), new Vector2(310f, 140f), Center(), Center());
+            SetRect(map.GetComponent<RectTransform>(), new Vector2(350f, -196f), new Vector2(310f, 140f), Center(), Center());
         }
 
         private void SignInAsGuest()
@@ -538,7 +539,7 @@ namespace AllinDefense.UI
                     label.text = !unlocked
                         ? "×"
                         : selected
-                            ? $"> {level} <"
+                            ? level.ToString()
                             : definition.isBoss ? $"BOSS {level}" : level.ToString();
                 }
                 if (progressLabel != null)
@@ -601,7 +602,7 @@ namespace AllinDefense.UI
                 : progress.Data.displayName;
             int visibleStars = progress.Data.levels.Where(x => x.level <= 10).Sum(x => x.stars);
             profileLabel.text = $"{displayName}  ·  {provider}\n" +
-                GameLocalization.Text($"{visibleStars}/30 yıldız", $"{visibleStars}/30 stars") + "  ·  " + SaveStatus();
+                GameLocalization.Text($"{visibleStars}/30 yıldız", $"{visibleStars}/30 stars") + (string.IsNullOrEmpty(SaveStatus()) ? "" : "  ·  " + SaveStatus());
             if (continueDetails != null)
             {
                 int target = progress.NextUnfinishedLevel();
@@ -611,9 +612,9 @@ namespace AllinDefense.UI
                     ? GameLocalization.Text("0/3 YILDIZ", "0/3 STARS")
                     : GameLocalization.Text($"{result.stars}/3 YILDIZ", $"{result.stars}/3 STARS");
                 continueDetails.text = GameLocalization.IsEnglish
-                    ? $"REGION {last.region}  ·  {last.localizedName.ToUpperInvariant()}  ·  {stars}\n" +
+                    ? $"REGION {last.region}  ·  {GameLocalization.Uppercase(last.localizedName)}  ·  {stars}\n" +
                       $"{last.waveCount} waves  ·  ~{last.targetMinutes:0.#} min  ·  {last.startingGold} starting gold"
-                    : $"BÖLGE {last.region}  ·  {last.localizedName.ToUpperInvariant()}  ·  {stars}\n" +
+                    : $"BÖLGE {last.region}  ·  {GameLocalization.Uppercase(last.localizedName)}  ·  {stars}\n" +
                       $"{last.waveCount} dalga  ·  ~{last.targetMinutes:0.#} dk  ·  {last.startingGold} başlangıç altını";
             }
             if (continueButton != null)
@@ -654,20 +655,26 @@ namespace AllinDefense.UI
                 : session.CampaignLevelNumber;
             resultTitle.text = victory
                 ? GameLocalization.Text(
-                    $"ZAFER\n{CampaignCatalog.Level(session.CampaignLevelNumber).localizedName.ToUpperInvariant()} TAMAMLANDI",
-                    $"VICTORY\n{CampaignCatalog.Level(session.CampaignLevelNumber).localizedName.ToUpperInvariant()} COMPLETE")
+                    $"ZAFER\n{GameLocalization.Uppercase(CampaignCatalog.Level(session.CampaignLevelNumber).localizedName)} TAMAMLANDI",
+                    $"VICTORY\n{GameLocalization.Uppercase(CampaignCatalog.Level(session.CampaignLevelNumber).localizedName)} COMPLETE")
                 : GameLocalization.Text("SAVUNMA HATTI DÜŞTÜ", "THE DEFENCE LINE HAS FALLEN");
             resultTitle.color = victory ? theme.textPrimary : theme.enemyRed;
             resultStars.text = victory
                 ? GameLocalization.Text($"{stars} / 3 YILDIZ", $"{stars} / 3 STARS")
                 : GameLocalization.Text("0 / 3 YILDIZ", "0 / 3 STARS");
-            resultReward.text = victory ? SaveStatus() + "\n" +
+            resultReward.text = victory ? (string.IsNullOrEmpty(SaveStatus()) ? "" : SaveStatus() + "\n") +
                 (session.CampaignLevelNumber == 1 && progress.Data.authProvider == PlayerAuthProvider.Guest
                     ? GameLocalization.Text("İlerlemeni korumak için menüden hesabını bağlayabilirsin.", "You can link an account from the menu to protect your progress.")
                     : LearningObjective(Mathf.Min(10, selectedLevel)))
                 : GameLocalization.Text($"Dalga {session.CurrentWaveIndex + 1} · ", $"Wave {session.CurrentWaveIndex + 1} · ") +
                     FirstRegionCampaign.EnemyName(session.MostDamagingLeak) + "\n" + DefenceAdvice(session.MostDamagingLeak);
-            nextLevelButton.interactable = victory && session.CampaignLevelNumber < FirstRegionCampaign.LevelCount;
+            bool hasNextLevel = victory && session.CampaignLevelNumber < FirstRegionCampaign.LevelCount;
+            nextLevelButton.gameObject.SetActive(hasNextLevel);
+            nextLevelButton.interactable = hasNextLevel;
+            SetRect(retryButton.GetComponent<RectTransform>(), new Vector2(hasNextLevel ? -350f : -180f, -196f), new Vector2(310f, 140f), Center(), Center());
+            Transform map = nextLevelButton.transform.parent.Find("Return To Map");
+            SetRect((RectTransform)map, new Vector2(hasNextLevel ? 350f : 180f, -196f), new Vector2(310f, 140f), Center(), Center());
+            session.SetBattleHudVisible(false);
             SetButtonEmphasis(nextLevelButton, victory ? theme.commandGold : theme.night);
             SetButtonEmphasis(retryButton, victory ? theme.defenderBlue : theme.commandGold);
             canvas.gameObject.SetActive(true);
@@ -870,6 +877,7 @@ namespace AllinDefense.UI
             if (launchingBattle || orientationRoutine != null || (settingsModal != null && settingsModal.activeSelf)) return;
             performance.Begin("menu-settings");
             if (settingsModal == null) BuildSettingsModal();
+            RefreshLanguageButtons();
             navigation.Cancel();
             settingsModal.SetActive(true);
             settingsModal.transform.SetAsLastSibling();
@@ -1360,13 +1368,27 @@ namespace AllinDefense.UI
             return text;
         }
 
-        private void HandleLanguageChanged()
+        private void RefreshLanguageButtons()
         {
             SetButtonEmphasis(turkishLanguageButton, FrontendPreferences.Language == GameLanguage.Turkish ? theme.commandGold : theme.night);
             SetButtonEmphasis(englishLanguageButton, FrontendPreferences.Language == GameLanguage.English ? theme.commandGold : theme.night);
+        }
+
+        private void HandleLanguageChanged()
+        {
+            RefreshLanguageButtons();
             progressDirty = true;
             RefreshProfile();
-            if (builtScreens.Contains(AppScreen.Campaign)) { RefreshLevelButtons(); UpdateSelectedDetails(); }
+            if (builtScreens.Contains(AppScreen.Campaign))
+            {
+                for (int i = 0; i < regionScrolls.Count; i++)
+                {
+                    Transform heading = regionScrolls[i].content.Find("Region Name");
+                    if (heading != null) heading.GetComponent<TextMeshProUGUI>().text = $"{CampaignCatalog.Regions[i].number} · {GameLocalization.Uppercase(CampaignCatalog.Regions[i].localizedName)}";
+                }
+                RefreshLevelButtons();
+                UpdateSelectedDetails();
+            }
         }
 
         private static void EnsureEventSystem()

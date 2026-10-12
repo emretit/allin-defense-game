@@ -34,6 +34,7 @@ namespace AllinDefense.Presentation
         public Shader warTableShader;
         public Sprite panelSprite;
         public Sprite buttonSprite;
+        public UiDesignSystemAssets designSystem;
 
         [Header("Optional Frontend Audio")]
         public AudioClip menuAmbience;

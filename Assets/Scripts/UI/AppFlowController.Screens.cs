@@ -70,6 +70,7 @@ namespace AllinDefense.UI
                 regionTabs.Add(CreateButton($"Region Tab {i + 1}", tabs.transform, (i + 1).ToString(),
                     new Vector2(160, 134), theme.defenderBlue, () => FocusRegion(region)));
             }
+            tabs.SetActive(VisibleRegionCount > 1);
             var scroll = new GameObject("Campaign Scroll", typeof(RectTransform), typeof(FrontendCampaignPager));
             scroll.transform.SetParent(root, false);
             campaignScroll = scroll.GetComponent<ScrollRect>();
@@ -107,7 +108,7 @@ namespace AllinDefense.UI
             briefingEnemies = CreateText("Enemy Intel", panel.transform, "", 32, catalog.bodyFont,
                 FontStyles.Normal, TextAlignmentOptions.Left, theme.textPrimary);
             briefingReward = CreateText("Briefing Reward", panel.transform, "", 32, catalog.bodyFont,
-                FontStyles.Normal, TextAlignmentOptions.Left, theme.commandGold);
+                FontStyles.Normal, TextAlignmentOptions.TopLeft, theme.commandGold);
             var preview = CreatePanel("Tactical Preview", panel.transform, UiTokens.TacticalSurface);
             preview.GetComponent<Image>().raycastTarget = false;
             tacticalMapPreview = preview.AddComponent<FrontendTacticalMapPreview>();
@@ -116,6 +117,8 @@ namespace AllinDefense.UI
             root.gameObject.AddComponent<FrontendResponsiveLayout>().Configure(size => LayoutCampaign(size, (RectTransform)scroll.transform, (RectTransform)panel.transform));
             selectedLevelTitle.enableAutoSizing = true;
             selectedLevelTitle.fontSizeMin = 28; selectedLevelTitle.fontSizeMax = 38;
+            briefingReward.enableAutoSizing = true;
+            briefingReward.fontSizeMin = 26; briefingReward.fontSizeMax = 32;
             briefingEnemies.enableAutoSizing = true;
             briefingEnemies.fontSizeMin = 26; briefingEnemies.fontSizeMax = 32;
             RefreshLevelButtons();
@@ -134,16 +137,16 @@ namespace AllinDefense.UI
                 SetAnchors(panel, Vector2.zero, new Vector2(1, 0), new Vector2(Edge, 26), new Vector2(-Edge, 630));
             SetAnchors(selectedLevelTitle.rectTransform, new Vector2(0, 1), Vector2.one, new Vector2(28, -110), new Vector2(-28, -22));
             SetAnchors(selectedLevelDetails.rectTransform, new Vector2(0, 1), Vector2.one,
-                new Vector2(28, columns ? -238 : -178), new Vector2(-28, -114));
+                new Vector2(28, -178), new Vector2(-28, -114));
             RectTransform preview = tacticalMapPreview.transform as RectTransform;
             if (columns)
-                SetAnchors(preview, new Vector2(0, 1), Vector2.one, new Vector2(24, -510), new Vector2(-24, -252));
+                SetAnchors(preview, new Vector2(0, 1), Vector2.one, new Vector2(24, -350), new Vector2(-24, -190));
             else
                 SetAnchors(preview, new Vector2(0, 0), new Vector2(.55f, 1), new Vector2(28, 178), new Vector2(-14, -190));
             SetAnchors(briefingEnemies.rectTransform, new Vector2(columns ? 0 : .57f, 1), Vector2.one,
-                new Vector2(28, columns ? -620 : -330), new Vector2(-28, columns ? -526 : -198));
+                new Vector2(28, columns ? -434 : -298), new Vector2(-28, columns ? -362 : -190));
             SetAnchors(briefingReward.rectTransform, new Vector2(columns ? 0 : .57f, 1), Vector2.one,
-                new Vector2(28, columns ? -734 : -454), new Vector2(-28, columns ? -634 : -342));
+                new Vector2(28, columns ? -558 : -422), new Vector2(-28, columns ? -446 : -310));
             SetAnchors((RectTransform)playSelectedButton.transform, Vector2.zero, new Vector2(1, 0),
                 new Vector2(24, 24), new Vector2(-24, 164));
         }
@@ -197,7 +200,7 @@ namespace AllinDefense.UI
         {
             var route = routeRect.gameObject;
             var heading = CreateText("Region Name", route.transform,
-                $"{region.number} · {region.localizedName.ToUpperInvariant()}", 32, catalog.titleFont,
+                $"{region.number} · {GameLocalization.Uppercase(region.localizedName)}", 32, catalog.titleFont,
                 FontStyles.Bold, TextAlignmentOptions.Left, theme.commandGold);
             SetAnchors(heading.rectTransform, new Vector2(0, 1), Vector2.one, new Vector2(24, -98), new Vector2(-24, -16));
             var buttons = new RectTransform[region.levels.Count];
@@ -374,9 +377,15 @@ namespace AllinDefense.UI
             var slider = sliderObject.AddComponent<Slider>();
             var track = CreateImage("Track", sliderObject.transform, theme.nightDeep);
             SetAnchors((RectTransform)track.transform, new Vector2(0, .42f), new Vector2(1, .58f), Vector2.zero, Vector2.zero);
+            var fillArea = new GameObject("Fill Area", typeof(RectTransform));
+            fillArea.transform.SetParent(sliderObject.transform, false);
+            SetAnchors((RectTransform)fillArea.transform, new Vector2(0, .42f), new Vector2(1, .58f), new Vector2(30, 0), new Vector2(-30, 0));
+            var fill = CreateImage("Fill", fillArea.transform, theme.commandGold);
+            Stretch((RectTransform)fill.transform);
+            slider.fillRect = (RectTransform)fill.transform;
             var handleArea = new GameObject("Handle Area", typeof(RectTransform));
             handleArea.transform.SetParent(sliderObject.transform, false);
-            SetAnchors((RectTransform)handleArea.transform, new Vector2(0, .22f), new Vector2(1, .78f), Vector2.zero, Vector2.zero);
+            SetAnchors((RectTransform)handleArea.transform, new Vector2(0, .22f), new Vector2(1, .78f), new Vector2(30, 0), new Vector2(-30, 0));
             var handle = CreateImage("Handle", handleArea.transform, theme.commandGold);
             handle.GetComponent<Image>().sprite = theme.buttonSprite;
             handle.GetComponent<Image>().type = Image.Type.Sliced;

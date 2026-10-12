@@ -62,6 +62,20 @@ namespace AllinDefense.UI
         public static readonly LocalizedCopy CameraShake = new("KAMERA SARSINTISI", "CAMERA SHAKE");
         public static readonly LocalizedCopy ReducedMotion = new("AZALTILMIŞ HAREKET", "REDUCED MOTION");
         public static readonly LocalizedCopy AccountManagement = new("HESAP YÖNETİMİ", "ACCOUNT MANAGEMENT");
+        public static readonly LocalizedCopy ObjectiveArcher = new("Okçu kur ve kaleyi koru.", "Build an archer and protect the keep.");
+        public static readonly LocalizedCopy ObjectiveBarracks = new("Kışlayla düşmanı menzilde tut.", "Hold enemies in range with barracks.");
+        public static readonly LocalizedCopy ObjectiveMage = new("Büyücüyle kalabalığı temizle.", "Clear crowds with a mage.");
+        public static readonly LocalizedCopy ObjectiveArmour = new("Zırhlı öncüye karşı büyü kullan.", "Use magic against the armoured vanguard.");
+        public static readonly LocalizedCopy ObjectiveTowerRoles = new("Üç kule rolünü birlikte kullan.", "Combine all three tower roles.");
+        public static readonly LocalizedCopy ObjectiveRegeneration = new("Yenilenen hedefe ateşi yoğunlaştır.", "Focus fire on regenerating enemies.");
+        public static readonly LocalizedCopy ObjectiveHealer = new("Önce şifacıyı durdur.", "Stop the healer first.");
+        public static readonly LocalizedCopy ObjectiveSiege = new("Kuşatma saldırısını darbeyle kes.", "Interrupt siege attacks with your strike.");
+        public static readonly LocalizedCopy ObjectiveMixedPressure = new("Karma düşman baskısına hazırlan.", "Prepare for mixed enemy pressure.");
+        public static readonly LocalizedCopy ObjectiveLord = new("Lordun kırmızı uyarısını darbeyle kes.", "Interrupt the lord's red warning.");
+        public static readonly LocalizedCopy SaveRetry = new("Kayıt tekrar denenecek", "Save will retry");
+        public static readonly LocalizedCopy SaveRecovery = new("Kayıt kurtarılmayı bekliyor", "Save needs recovery");
+        public static readonly LocalizedCopy TransferReview = new("Aktarım kontrolü gerekiyor", "Transfer needs review");
+        public static readonly LocalizedCopy WaitingForConnection = new("Bağlantı bekleniyor", "Waiting for connection");
         public static readonly LocalizedCopy Done = new("TAMAM", "DONE");
     }
 }

@@ -284,7 +284,7 @@ namespace AllinDefense.Presentation
             SetBuildAvailability(session.CanBuildOnSelection, session.Gold);
             TopBarPresentationSpec topBar = TopBarSpec(copy.Get(UiTextKey.Gold), copy.Get(UiTextKey.Keep),
                 copy.Get(UiTextKey.Wave), session.Gold, session.Lives, session.CurrentWaveIndex,
-                session.WaveCount, session.UnpausedPhase);
+                session.WaveCount, session.UnpausedPhase, session.NextWaveHasBoss);
             goldText.text = topBar.goldText;
             goldText.color = topBar.goldColor;
             livesText.text = topBar.livesText;
@@ -700,12 +700,12 @@ namespace AllinDefense.Presentation
         }
 
         public static TopBarPresentationSpec TopBarSpec(string goldLabel, string keepLabel, string waveLabel,
-            int gold, int lives, int currentWaveIndex, int waveCount, GamePhase phase)
+            int gold, int lives, int currentWaveIndex, int waveCount, GamePhase phase, bool waveHasBoss = false)
         {
             int safeWaveCount = Mathf.Max(0, waveCount);
             int displayedWave = Mathf.Min(currentWaveIndex + (phase == GamePhase.Wave ? 1 : 0), safeWaveCount);
             bool livesWarning = lives <= 5;
-            bool bossSignal = safeWaveCount > 0 && currentWaveIndex >= safeWaveCount - 1 &&
+            bool bossSignal = waveHasBoss &&
                               phase is GamePhase.Preparing or GamePhase.Intermission or GamePhase.Wave;
             TopBarSignalState state = phase is GamePhase.Victory or GamePhase.Defeat
                 ? TopBarSignalState.Terminal
@@ -730,9 +730,9 @@ namespace AllinDefense.Presentation
             }
 
             float pulse = Mathf.Clamp01((phasePulseUntil - Time.unscaledTime) / 0.42f);
-            bool bossUpcoming = session.CurrentWaveIndex >= session.WaveCount - 1 &&
+            bool bossUpcoming = session.NextWaveHasBoss &&
                                 session.Phase is GamePhase.Preparing or GamePhase.Intermission;
-            bool bossActive = session.CurrentWaveIndex >= session.WaveCount - 1 && session.Phase == GamePhase.Wave;
+            bool bossActive = session.NextWaveHasBoss && session.Phase == GamePhase.Wave;
             PhaseBadgePresentationSpec spec = PhaseBadgeSpec(session.Phase, bossUpcoming, bossActive, pulse);
 
             phaseText.text = $"<b>{spec.label}</b>";
@@ -979,7 +979,7 @@ namespace AllinDefense.Presentation
             }
 
             if (pauseOverlayTitleText != null)
-                pauseOverlayTitleText.text = copy.Get(UiTextKey.Paused).ToUpperInvariant();
+                pauseOverlayTitleText.text = GameLocalization.Uppercase(copy.Get(UiTextKey.Paused));
 
             if (pauseOverlayHintText != null)
                 pauseOverlayHintText.text = GameLocalization.Text("Savaşa devam edebilir veya mevcut kuşatmadan ayrılıp ana menüye dönebilirsin.", "Resume the battle or return to the main menu.");

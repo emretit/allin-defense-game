@@ -18,6 +18,14 @@ namespace AllinDefense.Editor
     {
         public const string Root = "Assets/Art/GeneratedPresentation";
         public const string SpriteRoot = Root + "/UiPrimitives";
+        public static void ConnectFrontendTheme()
+        {
+            var theme = AssetDatabase.LoadAssetAtPath<AllinDefense.Presentation.FrontendPresentationTheme>("Assets/Resources/Presentation/FrontendPresentationTheme.asset");
+            theme.designSystem = AssetDatabase.LoadAssetAtPath<UiDesignSystemAssets>(SetPath);
+            EditorUtility.SetDirty(theme);
+            AssetDatabase.SaveAssets();
+        }
+
         public const string SetPath = Root + "/UiDesignSystemAssets.asset";
         public const string AtlasPath = "Assets/Art/UI/AllinDefenseUI.spriteatlas";
         private const int Size = 128;

@@ -142,6 +142,7 @@ namespace AllinDefense.UI
                 ? Path.Combine("FrontendExperience", name + ".png") : Path.Combine(AcceptanceRoot, name + ".png"));
             foreach (var text in GetComponentsInChildren<TMPro.TMP_Text>())
             {
+                if (text.GetComponentsInParent<CanvasGroup>().Any(group => group.alpha <= 0f)) continue;
                 text.ForceMeshUpdate();
                 if (text.isTextOverflowing) acceptanceReport.errors.Add(name + " overflow: " + text.name + ": " + text.text);
             }
