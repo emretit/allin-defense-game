@@ -88,7 +88,7 @@ namespace AllinDefense.Tests
             Call(flow, "OpenCampaign");
             yield return null;
             yield return null; // The first region is intentionally built after the map shell paints.
-            var map = flow.GetComponentsInChildren<UnityEngine.UI.ScrollRect>(true).Single(r => r.name == "Campaign Scroll");
+            var map = UiQuery.FindById<UnityEngine.UI.ScrollRect>(flow, "Campaign Scroll");
             int count = flow.GetComponentsInChildren<Transform>(true).Length;
             for (int i = 0; i < 8; i++)
             {
@@ -99,7 +99,7 @@ namespace AllinDefense.Tests
             yield return new WaitForSecondsRealtime(.25f);
             Assert.That(flow.CurrentScreen, Is.EqualTo(AppScreen.Campaign));
             Assert.That(flow.GetComponentsInChildren<Transform>(true).Length, Is.EqualTo(count));
-            Assert.That(map, Is.SameAs(flow.GetComponentsInChildren<UnityEngine.UI.ScrollRect>().Single(r => r.name == "Campaign Scroll")));
+            Assert.That(map, Is.SameAs(UiQuery.FindById<UnityEngine.UI.ScrollRect>(flow, "Campaign Scroll")));
             foreach (var group in flow.GetComponentsInChildren<CanvasGroup>())
             {
                 Assert.That(group.alpha, Is.EqualTo(1));
@@ -114,7 +114,7 @@ namespace AllinDefense.Tests
         {
             Call(flow, "OpenCampaign");
             yield return new WaitForSecondsRealtime(.25f);
-            var map = flow.GetComponentsInChildren<UnityEngine.UI.ScrollRect>().Single(r => r.name == "Campaign Scroll");
+            var map = UiQuery.FindById<UnityEngine.UI.ScrollRect>(flow, "Campaign Scroll");
             // The closed test shows a single region page, so there is no horizontal offset to restore.
             bool multiplePages = map.content.rect.width > map.viewport.rect.width + 1f;
             if (multiplePages) map.horizontalNormalizedPosition = .5f;
@@ -122,7 +122,7 @@ namespace AllinDefense.Tests
             var route = flow.GetComponentsInChildren<FrontendRegionScrollRect>().First();
             route.verticalNormalizedPosition = .3f;
             Call(flow, "OpenSettings");
-            var account = flow.GetComponentsInChildren<UnityEngine.UI.Button>().Single(b => b.name == "Settings Account");
+            var account = UiQuery.FindById<UnityEngine.UI.Button>(flow, "Settings Account");
             account.onClick.Invoke();
             Call(flow, "ReturnFromAccount");
             yield return new WaitForSecondsRealtime(.25f);
@@ -229,12 +229,12 @@ namespace AllinDefense.Tests
                 foreach (var language in new[] { GameLanguage.Turkish, GameLanguage.English })
                 {
                     FrontendPreferences.Language = language;
-                    var heading = flow.GetComponentsInChildren<TMPro.TMP_Text>(true).Single(t => t.name == "Region Name");
+                    var heading = UiQuery.FindById<TMPro.TMP_Text>(flow, "Region Name");
                     Assert.That(heading.text, Is.EqualTo(language == GameLanguage.Turkish ? "1 · YEŞİL NÖBET" : "1 · GREENWATCH"));
                     Call(flow, "OpenSettings");
                     var buttons = flow.GetComponentsInChildren<UnityEngine.UI.Button>();
-                    var selected = buttons.Single(b => b.name == (language == GameLanguage.Turkish ? "Turkish Language" : "English Language"));
-                    var other = buttons.Single(b => b.name == (language == GameLanguage.Turkish ? "English Language" : "Turkish Language"));
+                    var selected = UiQuery.FindById<UnityEngine.UI.Button>(flow, language == GameLanguage.Turkish ? "Turkish Language" : "English Language");
+                    var other = UiQuery.FindById<UnityEngine.UI.Button>(flow, language == GameLanguage.Turkish ? "English Language" : "Turkish Language");
                     Assert.That(selected.GetComponent<UnityEngine.UI.Image>().color, Is.Not.EqualTo(other.GetComponent<UnityEngine.UI.Image>().color));
                     Call(flow, "CloseSettings");
                 }
@@ -283,11 +283,11 @@ namespace AllinDefense.Tests
             session.SetCampaignLevel(50);
             Call(flow, "ShowResult", true, 3, new CampaignCompletionReward(0, 0));
             yield return null;
-            var next = flow.GetComponentsInChildren<UnityEngine.UI.Button>(true).Single(b => b.name == "Next Level");
+            var next = UiQuery.FindById<UnityEngine.UI.Button>(flow, "Next Level");
             Assert.That(next.gameObject.activeSelf, Is.False);
             Call(flow, "ShowResult", false, 0, new CampaignCompletionReward(0, 0));
             Assert.That(next.gameObject.activeSelf, Is.False);
-            Assert.That(flow.GetComponentsInChildren<UnityEngine.UI.Button>().Single(b => b.name == "Retry Level").interactable, Is.True);
+            Assert.That(UiQuery.FindById<UnityEngine.UI.Button>(flow, "Retry Level").interactable, Is.True);
         }
     }
 }

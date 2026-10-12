@@ -30,6 +30,7 @@ namespace AllinDefense.Core
 
         public void Configure(AppFlowController appFlow, CampaignProgressStore progressStore)
         {
+            if (AppFlowController.AcceptanceRequested) return;
             if (flow != null) flow.AuthenticationRequested -= HandleAuthenticationRequested;
             if (progress != null) progress.Changed -= HandleProgressChanged;
             flow = appFlow;

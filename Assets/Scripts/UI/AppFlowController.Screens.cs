@@ -44,7 +44,7 @@ namespace AllinDefense.UI
             continueDetails = CreateText("Continue Details", card.transform, "", 34, catalog.bodyFont,
                 FontStyles.Normal, TextAlignmentOptions.Left, theme.textMuted);
             SetAnchors(continueDetails.rectTransform, new Vector2(0, 1), Vector2.one, new Vector2(32, -282), new Vector2(-32, -164));
-            continueButton = CreateButton("Continue", card.transform, GameLocalization.Text("DEVAM ET  ›", "CONTINUE  ›"),
+            continueButton = CreateButton("Continue", card.transform, FrontendCopy.Continue.Value,
                 new Vector2(800, TouchHeight), theme.commandGold, ContinueCampaign);
             SetAnchors((RectTransform)continueButton.transform, Vector2.zero, new Vector2(1, 0), new Vector2(28, 26), new Vector2(-28, 166));
             var map = CreateButton("Campaign", root, FrontendCopy.RealmMap, new Vector2(800, TouchHeight), theme.defenderBlue, OpenCampaign);
@@ -170,6 +170,7 @@ namespace AllinDefense.UI
             routeRect.pivot = new Vector2(.5f, 1); routeRect.sizeDelta = new Vector2(0, 1720);
             vertical.viewport = (RectTransform)viewport.transform; vertical.content = routeRect;
             regionScrolls.Add(vertical);
+            UiId.AssignHierarchy(page.transform);
             regionBuilders.Add(() => BuildRegionContents(page, routeRect, region));
         }
 
@@ -261,7 +262,7 @@ namespace AllinDefense.UI
                 FrontendCopy.WelcomeDescription, 32,
                 catalog.bodyFont, FontStyles.Normal, TextAlignmentOptions.Center, theme.textPrimary);
             SetAnchors(subtitle.rectTransform, new Vector2(0, 1), Vector2.one, new Vector2(28, -238), new Vector2(-28, -98));
-            var start = CreateButton("Start", card.transform, GameLocalization.Text("OYUNA BAŞLA  ›", "PLAY NOW  ›"), new Vector2(700, 140),
+            var start = CreateButton("Start", card.transform, FrontendCopy.PlayNow.Value, new Vector2(700, 140),
                 theme.commandGold, () => LaunchCampaignLevel(1));
             SetAnchors((RectTransform)start.transform, Vector2.zero, new Vector2(1, 0), new Vector2(28, 286), new Vector2(-28, 426));
             var account = CreateButton("Link Account", card.transform, FrontendCopy.LinkAccount, new Vector2(700, 140), theme.defenderBlue,
@@ -362,6 +363,7 @@ namespace AllinDefense.UI
             SetAnchors((RectTransform)account.transform, new Vector2(0, 1), Vector2.one, new Vector2(4, -1340), new Vector2(-4, -1200));
             var done = CreateButton("Close Settings", card.transform, FrontendCopy.Done, new Vector2(700, 140), theme.commandGold, CloseSettings);
             SetAnchors((RectTransform)done.transform, Vector2.zero, new Vector2(1, 0), new Vector2(28, 26), new Vector2(-28, 166));
+            UiId.AssignHierarchy(settingsModal.transform);
             settingsModal.SetActive(false);
         }
 

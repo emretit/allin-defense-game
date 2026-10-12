@@ -46,7 +46,7 @@ namespace AllinDefense.UI
             instance.label.font = font; instance.label.fontSize = UiTokens.TypeSubheading;
             instance.label.alignment = TextAlignmentOptions.Center;
             instance.label.color = UiTokens.Gold;
-            SetStatus(GameLocalization.Text("Savaş alanı hazırlanıyor…", "Preparing the battlefield…"));
+            SetStatus(FrontendCopy.PreparingTheBattlefield.Value);
         }
 
         public static void SetStatus(string text) { if (instance != null) instance.label.text = text; }

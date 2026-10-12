@@ -28,17 +28,16 @@ namespace AllinDefense.UI
         {
             var root = screens[AppScreen.MainMenu].transform;
             importGuestButton = CreateButton("Import Guest Progress", root,
-                GameLocalization.Text("MİSAFİR İLERLEMESİNİ AKTAR", "IMPORT GUEST PROGRESS"), new Vector2(630, 110),
+                FrontendCopy.ImportGuestProgress.Value, new Vector2(630, 110),
                 theme.defenderBlue, () =>
                 {
                     var modal = CreatePanel("Confirm Guest Import", canvas.transform, theme.panel);
                     SetRect(modal.GetComponent<RectTransform>(), Vector2.zero, new Vector2(860, 500), Center(), Center());
                     var label = CreateText("Explanation", modal.transform,
-                        GameLocalization.Text("Bu cihazın misafir bölüm başarıları açık hesaba aktarılacak. Misafir kaydı saklanır; hesap değiştirmek otomatik aktarım yapmaz.",
-                            "This device's guest level results will be imported into the current account. The guest save stays on this device; switching accounts never imports automatically."),
+                        FrontendCopy.GuestImportExplanation.Value,
                         28, catalog.bodyFont, TMPro.FontStyles.Normal, TMPro.TextAlignmentOptions.Center, theme.textPrimary);
                     SetRect(label.rectTransform, new Vector2(0,65), new Vector2(760,200), Center(), Center());
-                    var accept = CreateButton("Confirm Import", modal.transform, GameLocalization.Text("AKTAR", "IMPORT"), new Vector2(340,130), theme.commandGold,
+                    var accept = CreateButton("Confirm Import", modal.transform, FrontendCopy.Import.Value, new Vector2(340,130), theme.commandGold,
                         () => { progress.ImportGuestProgress(); RefreshProfile(); importGuestButton.gameObject.SetActive(progress.CanImportGuest); Destroy(modal); });
                     SetRect(accept.GetComponent<RectTransform>(), new Vector2(-180,-135), new Vector2(340,130), Center(), Center());
                     var cancel = CreateButton("Cancel Import", modal.transform, FrontendCopy.Cancel, new Vector2(340,130), theme.night, () => Destroy(modal));
@@ -63,11 +62,11 @@ namespace AllinDefense.UI
         };
         private static string DefenceAdvice(EnemyArchetype enemy) => enemy switch
         {
-            EnemyArchetype.Vanguard => GameLocalization.Text("Zırhlı hedefe büyücü yerleştir.", "Place a mage against armoured targets."),
-            EnemyArchetype.Support => GameLocalization.Text("Keskin Nişancı şifacıları önce hedefler.", "Sharpshooters target healers first."),
-            EnemyArchetype.Siege or EnemyArchetype.Boss => GameLocalization.Text("Kırmızı uyarı sırasında menzildeyse Sarsıcı Darbe kullan.", "Use Stunning Strike during the red warning when the attacker is in range."),
-            EnemyArchetype.Regenerator => GameLocalization.Text("Aynı hedefe iki kuleyle yoğunlaş.", "Focus two towers on the same target."),
-            _ => GameLocalization.Text("Bir sonraki yol kıvrımına okçu ekle veya yükselt.", "Add or upgrade an archer at the next bend.")
+            EnemyArchetype.Vanguard => FrontendCopy.PlaceAMageAgainstArmouredTargets.Value,
+            EnemyArchetype.Support => FrontendCopy.SharpshootersTargetHealersFirst.Value,
+            EnemyArchetype.Siege or EnemyArchetype.Boss => FrontendCopy.UseStunningStrikeDuringTheRedWarning.Value,
+            EnemyArchetype.Regenerator => FrontendCopy.FocusTwoTowersOnTheSameTarget.Value,
+            _ => FrontendCopy.AddOrUpgradeAnArcherAtThe.Value
         };
     }
 }

@@ -273,6 +273,8 @@ namespace AllinDefense.Presentation
             abilityButton.gameObject.AddComponent<AbilityRangePreview>();
             ConfigureContextualBuildChoices();
             foreach (var button in GetComponentsInChildren<Button>(true)) MobileTouchTarget.Attach(button);
+            UiId.AssignHierarchy(transform);
+            UiId.Assign(transform.parent, transform.parent.name);
             selectedPanel.SetActive(false);
             resultPanel.SetActive(false);
         }
@@ -308,7 +310,7 @@ namespace AllinDefense.Presentation
                 heroText.text = hero.IsAlive
                     ? $"{session.HeroDisplayName}  {Mathf.CeilToInt(hero.HealthFraction * 100f)}%  ·  " +
                       (hero.AbilityRemaining <= 0f ? copy.Get(UiTextKey.AbilityReady) : $"{Mathf.CeilToInt(hero.AbilityRemaining)} s")
-                    : GameLocalization.Text($"{session.HeroDisplayName} dönüyor", $"{session.HeroDisplayName} returns") +
+                    : FrontendCopy.Returns.Format(session.HeroDisplayName) +
                       $"  {Mathf.CeilToInt(hero.RespawnRemaining)} s";
                 bool abilityReady = hero.IsAlive && hero.AbilityRemaining <= 0f && session.Phase != GamePhase.Paused;
                 abilityButton.interactable = abilityReady;
@@ -333,8 +335,8 @@ namespace AllinDefense.Presentation
                 previewTitleText.text = string.IsNullOrWhiteSpace(body)
                     ? string.Empty
                     : boss
-                        ? (upcoming ? GameLocalization.Text("YAKLAŞAN BOSS", "BOSS APPROACHING") : GameLocalization.Text("BOSS BASKISI", "BOSS PRESSURE"))
-                        : (upcoming ? GameLocalization.Text("SIRADAKİ TEHDİT", "NEXT WAVE") : GameLocalization.Text("AKTİF BASKI", "CURRENT WAVE"));
+                        ? (upcoming ? FrontendCopy.BossApproaching.Value : FrontendCopy.BossPressure.Value)
+                        : (upcoming ? FrontendCopy.NextWave.Value : FrontendCopy.CurrentWave.Value);
             }
 
             if (previewText != null)
@@ -407,15 +409,15 @@ namespace AllinDefense.Presentation
             resultTitle.color = victory ? UiTokens.Gold : UiTokens.Danger;
             if (resultBadgeText != null)
             {
-                resultBadgeText.text = victory ? GameLocalization.Text("SONUÇ", "RESULT") : GameLocalization.Text("KRİTİK", "CRITICAL");
+                resultBadgeText.text = victory ? FrontendCopy.Result.Value : FrontendCopy.Critical.Value;
                 resultBadgeText.color = victory ? GoldAccent : KeepAccent;
             }
 
             if (resultHintText != null)
             {
                 resultHintText.text = victory
-                    ? GameLocalization.Text("Greenwatch savunması geceyi atlattı. Bir sonraki kuşatmaya hazırlan.", "Greenwatch held through the night. Prepare for the next siege.")
-                    : GameLocalization.Text("Kale düştü. Savunma düzenini güçlendir ve kuşatmayı yeniden başlat.", "The keep fell. Adjust your defence and try again.");
+                    ? FrontendCopy.HudVictoryHint.Value
+                    : FrontendCopy.HudDefeatHint.Value;
                 resultHintText.color = victory ? TextMuted : UiTokens.DefeatText;
             }
 
@@ -427,7 +429,7 @@ namespace AllinDefense.Presentation
 
             CanvasGroup group = resultPanel.GetComponent<CanvasGroup>();
             if (group == null) group = resultPanel.AddComponent<CanvasGroup>();
-            StartCoroutine(AnimateOverlay(group, resultCardImage != null ? resultCardImage.rectTransform : null));
+            if (isActiveAndEnabled) StartCoroutine(AnimateOverlay(group, resultCardImage != null ? resultCardImage.rectTransform : null));
         }
 
         public void SetBuildInteractable(bool archer, bool barracks, bool mage)
@@ -452,7 +454,7 @@ namespace AllinDefense.Presentation
                     {
                         pair.Item1.interactable = false;
                         SetButtonLabel(pair.Item1, GameSessionController.OutpostDisplayName(pair.Item2) + "\n" +
-                            GameLocalization.Text($"Bölüm {(pair.Item2 == OutpostKind.Barracks ? 2 : 3)}", $"Level {(pair.Item2 == OutpostKind.Barracks ? 2 : 3)}"));
+                            FrontendCopy.Level.Format((pair.Item2 == OutpostKind.Barracks ? 2 : 3)));
                     }
         }
 
@@ -472,7 +474,7 @@ namespace AllinDefense.Presentation
                 _ => MageCost
             };
             Color accent = OutpostAccent(kind.Value);
-            SetButtonLabel(selected, GameLocalization.Text($"KUR\n{cost}", $"BUILD\n{cost}"));
+            SetButtonLabel(selected, FrontendCopy.Build.Format(cost));
             SetButtonStripe(selected, accent);
             if (selected.targetGraphic != null) selected.targetGraphic.color = ButtonPressedTint;
         }
@@ -755,16 +757,16 @@ namespace AllinDefense.Presentation
         public static PhaseBadgePresentationSpec PhaseBadgeSpec(GamePhase phase, bool bossUpcoming,
             bool bossActive, float transitionPulse)
         {
-            string hint = GameLocalization.Text("DURUM", "STATUS");
+            string hint = FrontendCopy.Status.Value;
             string label = phase switch
             {
-                GamePhase.Preparing => GameLocalization.Text("DALGA ÖNCESİ", "PREPARING"),
-                GamePhase.Wave => GameLocalization.Text("SAVUNMA HATTI", "DEFENDING"),
-                GamePhase.Intermission => GameLocalization.Text("KISA MOLA", "INTERMISSION"),
-                GamePhase.Paused => GameLocalization.Text("DURAKLATILDI", "PAUSED"),
-                GamePhase.Victory => GameLocalization.Text("ZAFER", "VICTORY"),
-                GamePhase.Defeat => GameLocalization.Text("YENİLGİ", "DEFEAT"),
-                _ => GameLocalization.Text("YÜKLENİYOR", "LOADING")
+                GamePhase.Preparing => FrontendCopy.Preparing.Value,
+                GamePhase.Wave => FrontendCopy.Defending.Value,
+                GamePhase.Intermission => FrontendCopy.Intermission.Value,
+                GamePhase.Paused => FrontendCopy.Paused.Value,
+                GamePhase.Victory => FrontendCopy.Victory.Value,
+                GamePhase.Defeat => FrontendCopy.Defeat.Value,
+                _ => FrontendCopy.Loading.Value
             };
 
             Color accent = PhaseColor(phase);
@@ -774,16 +776,16 @@ namespace AllinDefense.Presentation
 
             if (bossUpcoming)
             {
-                hint = GameLocalization.Text("KRİTİK", "CRITICAL");
-                label = GameLocalization.Text("BOSS YAKLAŞIYOR", "BOSS APPROACHING");
+                hint = FrontendCopy.Critical.Value;
+                label = FrontendCopy.PhaseBossApproaching.Value;
                 accent = KeepAccent;
                 stripeHeight = Mathf.Lerp(7f, 11f, clampedPulse);
                 pulseAlpha = Mathf.Max(pulseAlpha, 0.22f);
             }
             else if (bossActive)
             {
-                hint = GameLocalization.Text("KRİTİK", "CRITICAL");
-                label = GameLocalization.Text("BOSS BASKISI", "BOSS PRESSURE");
+                hint = FrontendCopy.Critical.Value;
+                label = FrontendCopy.BossPressure.Value;
                 accent = KeepAccent;
                 stripeHeight = Mathf.Lerp(8f, 12f, clampedPulse);
                 pulseAlpha = Mathf.Max(pulseAlpha, 0.30f);
@@ -808,14 +810,14 @@ namespace AllinDefense.Presentation
         {
             if (!selectedSlot)
                 return new BuildButtonPresentationSpec(BuildButtonAvailabilityState.NoSlot, false,
-                    label, GameLocalization.Text($"{cost} · Yer seç", $"{cost} · Select site"), TextMuted, false);
+                    label, FrontendCopy.SelectSite.Format(cost), TextMuted, false);
 
             if (gold >= cost)
                 return new BuildButtonPresentationSpec(BuildButtonAvailabilityState.Affordable, true,
                     label, cost.ToString(), accent, false);
 
             return new BuildButtonPresentationSpec(BuildButtonAvailabilityState.Unaffordable, false,
-                label, GameLocalization.Text($"{cost} altın · {cost-gold} eksik", $"{cost} gold · Need {cost-gold}"), DisabledAccent, true);
+                label, FrontendCopy.GoldNeed.Format(cost, cost-gold), DisabledAccent, true);
         }
 
         private static BuildButtonPresentationSpec BuildButtonSpec(string label, int cost, bool available, Color accent)
@@ -823,7 +825,7 @@ namespace AllinDefense.Presentation
             return available
                 ? BuildButtonSpec(label, cost, true, cost, accent)
                 : new BuildButtonPresentationSpec(BuildButtonAvailabilityState.Unaffordable, false,
-                    GameLocalization.Text("YETERSİZ", "NOT ENOUGH"), $"{label} {cost}", DisabledAccent, true);
+                    FrontendCopy.NotEnough.Value, $"{label} {cost}", DisabledAccent, true);
         }
 
         private static void ApplyBuildButtonState(Button button, string label, int cost, bool selectedSlot,
@@ -852,7 +854,7 @@ namespace AllinDefense.Presentation
         private void SetAbilityLabel(Button button, GreyboxHero hero, string heroName, bool ready, bool paused)
         {
             if (hero == null) return;
-            string state = ready ? GameLocalization.Text("HAZIR", "READY") : !hero.IsAlive ? GameLocalization.Text("DÖNÜYOR", "RETURNING") : paused ? GameLocalization.Text("DURAKLADI", "PAUSED") : $"{Mathf.CeilToInt(hero.AbilityRemaining)} s";
+            string state = ready ? FrontendCopy.Ready.Value : !hero.IsAlive ? FrontendCopy.Returning.Value : paused ? FrontendCopy.AbilityPaused.Value : $"{Mathf.CeilToInt(hero.AbilityRemaining)} s";
             SetButtonLabel(button, $"{heroName}\n{state}");
         }
 
@@ -864,33 +866,30 @@ namespace AllinDefense.Presentation
             SelectedPanelState state = isDisrupted
                 ? SelectedPanelState.Disrupted
                 : canUpgrade ? SelectedPanelState.UpgradeAvailable : SelectedPanelState.MaxLevel;
-            string rate = GameLocalization.Text($"{attackRate:0.0}/sn", $"{attackRate:0.0}/sec");
+            string rate = FrontendCopy.AttackRate.Format(attackRate);
             string upgrade = canUpgrade
-                ? GameLocalization.Text($"{upgradeCost} altın", $"{upgradeCost} gold")
-                : GameLocalization.Text("Maks", "Max");
+                ? FrontendCopy.GoldCost.Format(upgradeCost)
+                : FrontendCopy.MaxLevelLabel.Value;
             string disruptedSuffix = isDisrupted
                 ? $"  •  BOZULDU {Mathf.CeilToInt(disabledRemaining)} s"
                 : string.Empty;
             string hint = isDisrupted
-                ? GameLocalization.Text($"Geçici baskı altında • Satış {sellValue} altın",
-                    $"Temporarily disrupted • Sell for {sellValue} gold")
+                ? FrontendCopy.TemporarilyDisruptedSellForGold.Format(sellValue)
                 : canUpgrade
-                    ? GameLocalization.Text($"Yükseltme {upgradeCost} altın • Satış {sellValue} altın",
-                        $"Upgrade for {upgradeCost} gold • Sell for {sellValue} gold")
-                    : GameLocalization.Text($"Maks seviye • Satış {sellValue} altın",
-                        $"Max level • Sell for {sellValue} gold");
+                    ? FrontendCopy.UpgradeForGoldSellForGold.Format(upgradeCost, sellValue)
+                    : FrontendCopy.MaxLevelSellForGold.Format(sellValue);
             string stats =
-                $"{StatLabel(GameLocalization.Text("HASAR", "DAMAGE"), damage.ToString())}\n" +
-                $"{StatLabel(GameLocalization.Text("MENZİL", "RANGE"), $"{range:0.0}")}\n" +
-                $"{StatLabel(GameLocalization.Text("HIZ", "RATE"), rate)}\n\n" +
-                $"{StatLabel(GameLocalization.Text("YÜKSELTME", "UPGRADE"), upgrade)}\n" +
-                $"{StatLabel(GameLocalization.Text("SATIŞ", "SELL"), sellValue.ToString())}";
+                $"{StatLabel(FrontendCopy.Damage.Value, damage.ToString())}\n" +
+                $"{StatLabel(FrontendCopy.Range.Value, $"{range:0.0}")}\n" +
+                $"{StatLabel(FrontendCopy.Rate.Value, rate)}\n\n" +
+                $"{StatLabel(FrontendCopy.UpgradeStat.Value, upgrade)}\n" +
+                $"{StatLabel(FrontendCopy.SellStat.Value, sellValue.ToString())}";
 
             return new SelectedPanelPresentationSpec(state, GameSessionController.OutpostDisplayName(kind),
-                GameLocalization.Text($"SV {level}", $"LV {level}"), roleLabel + disruptedSuffix, hint, stats,
-                canUpgrade ? GameLocalization.Text($"YÜKSELT\n{upgradeCost}", $"UPGRADE\n{upgradeCost}")
-                    : GameLocalization.Text("MAKS\nSV", "MAX\nLV"),
-                GameLocalization.Text($"SAT\n+{sellValue}", $"SELL\n+{sellValue}"), canUpgrade, true,
+                FrontendCopy.TowerLevel.Format(level), roleLabel + disruptedSuffix, hint, stats,
+                canUpgrade ? FrontendCopy.Upgrade.Format(upgradeCost)
+                    : FrontendCopy.MaxLv.Value,
+                FrontendCopy.Sell.Format(sellValue), canUpgrade, true,
                 isDisrupted || !canUpgrade, accent,
                 canUpgrade ? GoldAccent : ReadyAccent);
         }
@@ -900,11 +899,11 @@ namespace AllinDefense.Presentation
             string stats = string.Empty;
 
             return new SelectedPanelPresentationSpec(SelectedPanelState.EmptySlot,
-                GameLocalization.Text("KARAKOL YUVASI", "OUTPOST SLOT"), $"#{slotIndex + 1}",
-                GameLocalization.Text("Savunma türünü seç", "Choose a defence type"),
-                GameLocalization.Text("Okçu, Kışla veya Büyü kur.", "Build Archer, Barracks, or Mage."), stats,
-                GameLocalization.Text("YÜKSELT\nKAPALI", "UPGRADE\nLOCKED"),
-                GameLocalization.Text("SAT\nKAPALI", "SELL\nLOCKED"), false, false, true, WaveAccent, WaveAccent);
+                FrontendCopy.OutpostSlot.Value, $"#{slotIndex + 1}",
+                FrontendCopy.ChooseADefenceType.Value,
+                FrontendCopy.BuildArcherBarracksOrMage.Value, stats,
+                FrontendCopy.UpgradeLocked.Value,
+                FrontendCopy.SellLocked.Value, false, false, true, WaveAccent, WaveAccent);
         }
 
         private void ApplyAbilityVisualState(GreyboxHero hero, GamePhase phase, bool ready)
@@ -974,7 +973,7 @@ namespace AllinDefense.Presentation
 
             if (pauseOverlayBadgeText != null)
             {
-                pauseOverlayBadgeText.text = GameLocalization.Text("DURUM", "STATUS");
+                pauseOverlayBadgeText.text = FrontendCopy.Status.Value;
                 pauseOverlayBadgeText.color = GoldAccent;
             }
 
@@ -982,7 +981,7 @@ namespace AllinDefense.Presentation
                 pauseOverlayTitleText.text = GameLocalization.Uppercase(copy.Get(UiTextKey.Paused));
 
             if (pauseOverlayHintText != null)
-                pauseOverlayHintText.text = GameLocalization.Text("Savaşa devam edebilir veya mevcut kuşatmadan ayrılıp ana menüye dönebilirsin.", "Resume the battle or return to the main menu.");
+                pauseOverlayHintText.text = FrontendCopy.PauseHint.Value;
         }
 
         private void StylePanel(string path, Color color, bool rail)
@@ -1466,9 +1465,9 @@ namespace AllinDefense.Presentation
                 new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0f, 18f), new Vector2(680f, 64f),
                 TextAlignmentOptions.Center);
 
-            pauseResumeButton = EnsureActionButton(pauseCard.rectTransform, "Resume", GameLocalization.Text("DEVAM ET", "RESUME"),
+            pauseResumeButton = EnsureActionButton(pauseCard.rectTransform, "Resume", FrontendCopy.Resume.Value,
                 new Vector2(-184f, -122f), new Vector2(328f, 80f));
-            pauseMainMenuButton = EnsureActionButton(pauseCard.rectTransform, "MainMenu", GameLocalization.Text("ANA MENÜ", "MAIN MENU"),
+            pauseMainMenuButton = EnsureActionButton(pauseCard.rectTransform, "MainMenu", FrontendCopy.MainMenu.Value,
                 new Vector2(184f, -122f), new Vector2(328f, 80f));
 
             pauseOverlay.transform.SetAsLastSibling();
@@ -1612,11 +1611,9 @@ namespace AllinDefense.Presentation
             ApplySelectedActionState(SelectedSlotPanelSpec(-1));
             selectedHeaderImage.color = UiTokens.SelectedIdleHeader;
             selectedIconImage.sprite = null;
-            selectedTitleText.text = GameLocalization.Text("SEÇİM YOK", "NO SELECTION");
+            selectedTitleText.text = FrontendCopy.NoSelection.Value;
             selectedBadgeText.text = string.Empty;
-            selectedRoleText.text = GameLocalization.Text(
-                "Bir yuva ya da karakol seçildiğinde ayrıntılar burada görünür.",
-                "Select a slot or outpost to see its details.");
+            selectedRoleText.text = FrontendCopy.SelectionHint.Value;
             selectedRoleText.color = TextMuted;
             selectedHintText.text = string.Empty;
             selectedText.text = string.Empty;

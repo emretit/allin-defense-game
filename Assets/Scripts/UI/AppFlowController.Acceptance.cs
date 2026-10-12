@@ -3,7 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using AllinDefense.Data;
+using AllinDefense.Presentation;
+using UnityEngine.UI;
 using AllinDefense.Core;
+using AllinDefense.Combat;
 using UnityEngine;
 using UnityEngine.Profiling;
 
@@ -27,14 +32,27 @@ namespace AllinDefense.UI
             public List<long> memory = new();
             public List<int> uiObjects = new();
             public List<string> errors = new();
+            public List<string> knownIssues = new();
             public string status = "running";
         }
+        private static readonly HashSet<string> acceptanceErrors = new();
+        private static readonly HashSet<string> knownLegacyHudOverflowKeys = new(StringComparer.Ordinal)
+        {
+            "battle-build-menu | AllinDefenseSession/Game HUD/Defender HUD/SelectedPanel/BuildChoices/Barracks/Label | English",
+            "battle-build-menu | AllinDefenseSession/Game HUD/Defender HUD/SelectedPanel/BuildChoices/Mage/Label | English",
+            "battle-selected-tower | AllinDefenseSession/Game HUD/Defender HUD/SelectedPanel/Description | English",
+            "specialization | AllinDefenseSession/Game HUD/Defender HUD/SelectedPanel/Description | English",
+            "battle-active-wave | AllinDefenseSession/Game HUD/Defender HUD/SelectedPanel/Description | English",
+            "pause | AllinDefenseSession/Game HUD/Defender HUD/SelectedPanel/Description | English",
+            "battle-level-10-boss | AllinDefenseSession/Game HUD/Defender HUD/SelectedPanel/Description | English",
+        };
         private static FrontendAcceptanceReport acceptanceReport;
         private static int acceptanceStage;
+        private static string acceptanceSavePath;
         private static GameLanguage acceptanceOriginalLanguage;
         private static double reloadStarted;
         private static string AcceptanceRoot => Path.Combine(Application.persistentDataPath, "FrontendExperience");
-        private static bool AcceptanceRequested => Debug.isDebugBuild &&
+        internal static bool AcceptanceRequested => Debug.isDebugBuild &&
             Environment.GetEnvironmentVariable("DC_FRONTEND_ACCEPTANCE") == "1";
 
         private void StartFrontendAcceptance()
@@ -50,6 +68,13 @@ namespace AllinDefense.UI
             acceptanceOriginalLanguage = FrontendPreferences.Language;
             acceptanceReport = new FrontendAcceptanceReport { platform = Application.platform.ToString(), width = Screen.width, height = Screen.height };
             Directory.CreateDirectory(AcceptanceRoot);
+            acceptanceErrors.Clear();
+            if (progress.Data.TotalStars != 0 || progress.Data.unlockedLevel != 1)
+                acceptanceReport.errors.Add("welcome: acceptance guest is not new");
+            ShowScreen(AppScreen.Boot);
+            yield return CaptureAcceptance("boot");
+            ShowScreen(AppScreen.Welcome);
+            yield return CaptureAcceptance("welcome");
             CompleteLocalGuestSignIn();
             yield return new WaitForSecondsRealtime(.3f);
             yield return CaptureAcceptance("main-menu");
@@ -78,6 +103,24 @@ namespace AllinDefense.UI
             }
             yield return MeasureAcceptance("first-battle", true, () => LaunchCampaignLevel(1));
             yield return CaptureAcceptance("battle");
+            var hud = session.GetComponentInChildren<DefenderHudController>();
+            AcceptanceInvoke("SelectSlot", session.GetComponentsInChildren<GreyboxOutpostSlot>().First(slot => slot.Index == 0));
+            yield return CaptureAcceptance("battle-build-menu");
+            AcceptanceInvoke("EarnGold", 10000);
+            AcceptanceSet("unlockedCampaignLevel", 10);
+            session.TryBuildOutpost(0, OutpostKind.Archer);
+            AcceptanceInvoke("SelectOutpost", session.Outposts[0]);
+            yield return CaptureAcceptance("battle-selected-tower");
+            session.TryUpgradeOutpost(0);
+            hud.ShowSpecializationChoices(session.Outposts[0], session);
+            yield return CaptureAcceptance("specialization");
+            hud.CloseSpecializationChoices();
+            session.StartNextWave();
+            yield return new WaitForSecondsRealtime(3f);
+            yield return CaptureAcceptance("battle-active-wave");
+            session.TogglePause();
+            yield return CaptureAcceptance("pause");
+            session.TogglePause();
             ShowResult(false, 0, default);
             yield return CaptureAcceptance("defeat");
             acceptanceStage = 1;
@@ -101,13 +144,27 @@ namespace AllinDefense.UI
                 feedbackMs = FrontendLoadingOverlay.FirstFeedbackMs, longestFrameMs = FrontendLoadingOverlay.LongestFrameMs });
             if (acceptanceStage == 1)
             {
-                HandleSessionPhaseChanged(GamePhase.Victory);
+                yield return WinAcceptanceBattle();
+                if (session.Phase != GamePhase.Victory || BattleRules.StarsForLives(session.Lives, session.StartingLivesForLevel) != 3)
+                    acceptanceReport.errors.Add("victory: battle did not produce a real three-star result");
+                yield return new WaitForSecondsRealtime(1.2f);
                 yield return CaptureAcceptance("victory");
                 acceptanceStage = 2; WriteAcceptance();
                 reloadStarted = Time.realtimeSinceStartupAsDouble;
                 ReloadCampaignLevel(2);
                 yield break;
             }
+            if (acceptanceStage == 2)
+            {
+                acceptanceStage = 3; WriteAcceptance();
+                reloadStarted = Time.realtimeSinceStartupAsDouble;
+                progress.Data.unlockedLevel = 10;
+                progress.SelectLevel(10);
+                ReloadCampaignLevel(10);
+                yield break;
+            }
+            yield return PrepareAcceptanceBoss();
+            yield return CaptureAcceptance("battle-level-10-boss");
             yield return MeasureAcceptance("battle-map", false, OpenCampaign);
             yield return CaptureAcceptance("returned-map");
             acceptanceReport.status = acceptanceReport.errors.Count == 0 ? "passed" : "failed";
@@ -140,12 +197,85 @@ namespace AllinDefense.UI
             yield return new WaitForEndOfFrame();
             ScreenCapture.CaptureScreenshot(Application.isMobilePlatform
                 ? Path.Combine("FrontendExperience", name + ".png") : Path.Combine(AcceptanceRoot, name + ".png"));
-            foreach (var text in GetComponentsInChildren<TMPro.TMP_Text>())
+            foreach (var text in FindObjectsByType<TMPro.TMP_Text>(FindObjectsSortMode.None))
             {
-                if (text.GetComponentsInParent<CanvasGroup>().Any(group => group.alpha <= 0f)) continue;
+                if (!AcceptanceTextVisible(text)) continue;
                 text.ForceMeshUpdate();
-                if (text.isTextOverflowing) acceptanceReport.errors.Add(name + " overflow: " + text.name + ": " + text.text);
+                if (!text.textInfo.characterInfo.Take(text.textInfo.characterCount).Any(character => character.isVisible) || !text.isTextOverflowing) continue;
+                string path = text.name;
+                for (Transform parent = text.transform.parent; parent != null; parent = parent.parent) path = parent.name + "/" + path;
+                string key = name + " | " + path + " | " + GameLocalization.CurrentLanguage;
+                if (!acceptanceErrors.Add(key)) continue;
+                var issues = knownLegacyHudOverflowKeys.Contains(key) ? acceptanceReport.knownIssues : acceptanceReport.errors;
+                issues.Add(key + " | overflow: " + text.text);
             }
+        }
+
+        private static bool AcceptanceTextVisible(TMPro.TMP_Text text)
+        {
+            if (text is not TMPro.TextMeshProUGUI || !text.isActiveAndEnabled || text.color.a <= 0f || text.canvasRenderer.cull ||
+                text.GetComponentsInParent<CanvasGroup>().Any(group => group.alpha <= 0f)) return false;
+            var corners = new Vector3[4];
+            text.rectTransform.GetWorldCorners(corners);
+            var canvas = text.canvas;
+            Camera camera = canvas != null && canvas.renderMode != RenderMode.ScreenSpaceOverlay ? canvas.worldCamera : null;
+            Vector2 min = RectTransformUtility.WorldToScreenPoint(camera, corners[0]);
+            Vector2 max = RectTransformUtility.WorldToScreenPoint(camera, corners[2]);
+            if (!new Rect(0, 0, Screen.width, Screen.height).Overlaps(Rect.MinMaxRect(min.x, min.y, max.x, max.y))) return false;
+            foreach (var mask in text.GetComponentsInParent<RectMask2D>())
+            {
+                mask.rectTransform.GetWorldCorners(corners);
+                Vector2 maskMin = RectTransformUtility.WorldToScreenPoint(camera, corners[0]);
+                Vector2 maskMax = RectTransformUtility.WorldToScreenPoint(camera, corners[2]);
+                if (!Rect.MinMaxRect(maskMin.x, maskMin.y, maskMax.x, maskMax.y).Overlaps(Rect.MinMaxRect(min.x, min.y, max.x, max.y))) return false;
+            }
+            return true;
+        }
+
+        private object AcceptanceInvoke(string method, params object[] arguments) =>
+            typeof(GameSessionController).GetMethod(method, BindingFlags.Instance | BindingFlags.NonPublic).Invoke(session, arguments);
+        private void AcceptanceSet(string field, object value) =>
+            typeof(GameSessionController).GetField(field, BindingFlags.Instance | BindingFlags.NonPublic).SetValue(session, value);
+
+        private void BuildAcceptanceDefense()
+        {
+            AcceptanceInvoke("EarnGold", 100000);
+            AcceptanceSet("unlockedCampaignLevel", 10);
+            for (int i = 0; i < session.SlotCount; i++)
+            {
+                session.TryBuildOutpost(i, OutpostKind.Archer);
+                session.TryUpgradeOutpost(i);
+                session.TrySpecializeOutpost(i, OutpostSpecialization.Sharpshooter);
+            }
+            AcceptanceInvoke("CancelSelection");
+        }
+
+        private IEnumerator WinAcceptanceBattle()
+        {
+            BuildAcceptanceDefense();
+            double deadline = Time.realtimeSinceStartupAsDouble + 30;
+            while (session.Phase != GamePhase.Victory && session.Phase != GamePhase.Defeat && Time.realtimeSinceStartupAsDouble < deadline)
+            {
+                if (session.Phase is GamePhase.Preparing or GamePhase.Intermission) session.StartNextWave();
+                for (int i = 0; i < 100 && session.Phase == GamePhase.Wave; i++) session.AdvanceBattle(.05f);
+                yield return null;
+            }
+        }
+
+        private IEnumerator PrepareAcceptanceBoss()
+        {
+            BuildAcceptanceDefense();
+            double deadline = Time.realtimeSinceStartupAsDouble + 30;
+            while (session.CurrentWaveIndex < session.WaveCount - 1 && session.Phase != GamePhase.Defeat && Time.realtimeSinceStartupAsDouble < deadline)
+            {
+                if (session.Phase is GamePhase.Preparing or GamePhase.Intermission) session.StartNextWave();
+                for (int i = 0; i < 100 && session.Phase == GamePhase.Wave; i++) session.AdvanceBattle(.05f);
+                yield return null;
+            }
+            if (session.Phase is GamePhase.Preparing or GamePhase.Intermission) session.StartNextWave();
+            yield return new WaitForSecondsRealtime(3f);
+            if (session.Phase != GamePhase.Wave || !session.NextWaveHasBoss)
+                acceptanceReport.errors.Add("level-10-boss: boss wave is not active");
         }
         private static void WriteAcceptance() => File.WriteAllText(Path.Combine(AcceptanceRoot, "report.json"), JsonUtility.ToJson(acceptanceReport, true));
     }

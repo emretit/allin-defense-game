@@ -51,7 +51,7 @@ namespace AllinDefense.Tests
             foreach (var session in Object.FindObjectsByType<GameSessionController>(FindObjectsSortMode.None))
                 if (session != null) Object.Destroy(session.gameObject);
             foreach (var hud in GameObject.FindGameObjectsWithTag("Untagged"))
-                if (hud != null && hud.name == "Game HUD") Object.Destroy(hud);
+                if (hud != null && hud.GetComponent<UiId>()?.Id == "Game HUD") Object.Destroy(hud);
             yield return null;
         }
 
@@ -156,8 +156,7 @@ namespace AllinDefense.Tests
             flow.Initialize(catalog, session, false, savePath);
             Assert.That(MobileOrientationController.CurrentMode,
                 Is.EqualTo(MobileOrientationMode.PortraitFrontend));
-            UnityEngine.UI.Image bootLogo = flow.GetComponentsInChildren<UnityEngine.UI.Image>(true)
-                .Single(image => image.name == "Boot Brand Logo");
+            UnityEngine.UI.Image bootLogo = UiQuery.FindById<UnityEngine.UI.Image>(flow, "Boot Brand Logo");
             Assert.That(bootLogo.sprite, Is.SameAs(catalog.frontendTheme.brandLogo));
             Assert.That(bootLogo.preserveAspect, Is.True);
             Assert.That(bootLogo.raycastTarget, Is.False);
@@ -165,36 +164,33 @@ namespace AllinDefense.Tests
             Assert.That(flow.CurrentScreen, Is.EqualTo(AppScreen.Welcome));
             Assert.That(flow.GetComponentInChildren<CanvasScaler>(true).referenceResolution,
                 Is.EqualTo(new Vector2(1080f, 1920f)));
-            Assert.That(GameObject.Find("Start"), Is.Not.Null);
-            UnityEngine.UI.Image welcomeLogo = flow.GetComponentsInChildren<UnityEngine.UI.Image>(true)
-                .Single(image => image.name == "Welcome Brand Logo");
+            Assert.That(UiQuery.FindById(flow, "Start"), Is.Not.Null);
+            UnityEngine.UI.Image welcomeLogo = UiQuery.FindById<UnityEngine.UI.Image>(flow, "Welcome Brand Logo");
             Assert.That(welcomeLogo.sprite, Is.SameAs(catalog.frontendTheme.brandLogo));
             Assert.That(welcomeLogo.preserveAspect, Is.True);
             Assert.That(flow.GetComponentsInChildren<Transform>(true)
-                .Any(child => child.name == "Welcome Royal Crest" || child.name == "Boot Title"), Is.False);
-            Assert.That(GameObject.Find("Subtitle").GetComponent<TMPro.TextMeshProUGUI>().text,
+                .Any(child => child.GetComponent<UiId>() != null && (child.GetComponent<UiId>().Id == "Welcome Royal Crest" || child.GetComponent<UiId>().Id == "Boot Title")), Is.False);
+            Assert.That(UiQuery.FindById(flow, "Subtitle").GetComponent<TMPro.TextMeshProUGUI>().text,
                 Does.Contain("Şafağa kadar dayan"));
 
             InvokePrivate(flow, "ShowScreen", AppScreen.Login);
             Assert.That(flow.CurrentScreen, Is.EqualTo(AppScreen.Login));
-            Assert.That(GameObject.Find("Guest Sign In"), Is.Not.Null);
-            Assert.That(GameObject.Find("Player Account Sign In"), Is.Not.Null);
-            Assert.That(GameObject.Find("Apple Sign In"), Is.Null);
-            Assert.That(GameObject.Find("Google Sign In"), Is.Null);
+            Assert.That(UiQuery.FindById(flow, "Guest Sign In"), Is.Not.Null);
+            Assert.That(UiQuery.FindById(flow, "Player Account Sign In"), Is.Not.Null);
+            Assert.That(UiQuery.FindById(flow, "Apple Sign In"), Is.Null);
+            Assert.That(UiQuery.FindById(flow, "Google Sign In"), Is.Null);
 
             InvokePrivate(flow, "SignInAsGuest");
             Assert.That(flow.CurrentScreen, Is.EqualTo(AppScreen.MainMenu));
-            UnityEngine.UI.Image mainMenuLogo = flow.GetComponentsInChildren<UnityEngine.UI.Image>(true)
-                .Single(image => image.name == "Brand Logo");
-            UnityEngine.UI.Image profileMark = flow.GetComponentsInChildren<UnityEngine.UI.Image>(true)
-                .Single(image => image.name == "Profile Brand Mark");
+            UnityEngine.UI.Image mainMenuLogo = UiQuery.FindById<UnityEngine.UI.Image>(flow, "Brand Logo");
+            UnityEngine.UI.Image profileMark = UiQuery.FindById<UnityEngine.UI.Image>(flow, "Profile Brand Mark");
             Assert.That(mainMenuLogo.sprite, Is.SameAs(catalog.frontendTheme.brandLogo));
             Assert.That(profileMark.sprite, Is.SameAs(catalog.frontendTheme.brandMark));
-            Assert.That(GameObject.Find("Moonlit Sigil"), Is.Not.Null);
-            Assert.That(GameObject.Find("Ember Sigil"), Is.Not.Null);
-            Assert.That(GameObject.Find("Continue Chronicle").transform.Find("Accent Rail"), Is.Not.Null);
+            Assert.That(UiQuery.FindById(flow, "Moonlit Sigil"), Is.Not.Null);
+            Assert.That(UiQuery.FindById(flow, "Ember Sigil"), Is.Not.Null);
+            Assert.That(UiQuery.FindById(flow, "Continue Chronicle/Accent Rail"), Is.Not.Null);
             Assert.That(flow.GetComponentsInChildren<Transform>(true)
-                .Any(child => child.name == "Profile Sigil"), Is.False);
+                .Any(child => child.GetComponent<UiId>()?.Id == "Profile Sigil"), Is.False);
             InvokePrivate(flow, "OpenCampaign");
             yield return null;
             Assert.That(flow.CurrentScreen, Is.EqualTo(AppScreen.Campaign));
@@ -204,31 +200,28 @@ namespace AllinDefense.Tests
             Assert.That(tacticalPreview.SlotMarkerCount, Is.EqualTo(8));
             Assert.That(tacticalPreview.RouteSegmentCount, Is.GreaterThan(0));
             int levelButtonCount = flow.GetComponentsInChildren<Button>(true)
-                .Count(button => button.name.StartsWith("Level "));
+                .Count(button => button.GetComponent<UiId>() != null && button.GetComponent<UiId>().Id.StartsWith("Level "));
             Assert.That(levelButtonCount, Is.EqualTo(10));
-            RectTransform firstLevel = flow.GetComponentsInChildren<Button>(true)
-                .First(button => button.name == "Level 1").GetComponent<RectTransform>();
-            RectTransform tenthLevel = flow.GetComponentsInChildren<Button>(true)
-                .First(button => button.name == "Level 10").GetComponent<RectTransform>();
+            RectTransform firstLevel = UiQuery.FindById<Button>(flow, "Level 1").GetComponent<RectTransform>();
+            RectTransform tenthLevel = UiQuery.FindById<Button>(flow, "Level 10").GetComponent<RectTransform>();
             Assert.That(firstLevel.anchoredPosition.y, Is.GreaterThan(tenthLevel.anchoredPosition.y),
                 "The portrait kingdom path must progress from the top of the map to the bottom.");
-            Assert.That(GameObject.Find("Level 1").GetComponent<Button>().interactable, Is.True);
-            Assert.That(GameObject.Find("Level 2").GetComponent<Button>().interactable, Is.False);
-            Transform selectionRing = GameObject.Find("Level 1").transform.Find("Selection Ring");
+            Assert.That(UiQuery.FindById(flow, "Level 1").GetComponent<Button>().interactable, Is.True);
+            Assert.That(UiQuery.FindById(flow, "Level 2").GetComponent<Button>().interactable, Is.False);
+            Transform selectionRing = UiQuery.FindById(flow, "Level 1/Selection Ring");
             Assert.That(selectionRing, Is.Not.Null);
             Assert.That(selectionRing.gameObject.activeSelf, Is.True);
-            ScrollRect campaignScroll = flow.GetComponentsInChildren<ScrollRect>(true)
-                .Single(item => item.name == "Campaign Scroll");
-            LayoutElement firstRegionLayout = campaignScroll.content.Find("Region 1").GetComponent<LayoutElement>();
+            ScrollRect campaignScroll = UiQuery.FindById<ScrollRect>(flow, "Campaign Scroll");
+            LayoutElement firstRegionLayout = UiQuery.FindById(campaignScroll.content, "Region 1").GetComponent<LayoutElement>();
             Assert.That(firstRegionLayout.preferredWidth,
                 Is.EqualTo(campaignScroll.viewport.rect.width).Within(0.5f));
 
             InvokePrivate(flow, "OpenBriefing");
             yield return null;
             Assert.That(flow.CurrentScreen, Is.EqualTo(AppScreen.Campaign));
-            Assert.That(GameObject.Find("Selected Level"), Is.Not.Null);
-            Assert.That(GameObject.Find("Enemy Intel"), Is.Not.Null);
-            Assert.That(GameObject.Find("Play Selected"), Is.Not.Null);
+            Assert.That(UiQuery.FindById(flow, "Selected Level"), Is.Not.Null);
+            Assert.That(UiQuery.FindById(flow, "Enemy Intel"), Is.Not.Null);
+            Assert.That(UiQuery.FindById(flow, "Play Selected"), Is.Not.Null);
 
             InvokePrivate(flow, "StartSelectedLevel");
             yield return WaitForBattle(flow);
@@ -396,14 +389,14 @@ namespace AllinDefense.Tests
             var hud = GetPrivate<DefenderHudController>(session, "artHud");
             hud.Refresh(session);
 
-            Transform pauseOverlay = hud.transform.Find("PauseOverlay");
+            Transform pauseOverlay = UiQuery.FindById(hud, "PauseOverlay");
             Assert.That(pauseOverlay, Is.Not.Null);
             Assert.That(pauseOverlay.gameObject.activeSelf, Is.True);
             Assert.That(pauseOverlay.GetComponent<Image>().raycastTarget, Is.True,
                 "The pause overlay must block touches from reaching the battlefield.");
 
-            Button resumeButton = pauseOverlay.Find("Card/Resume").GetComponent<Button>();
-            Button mainMenuButton = pauseOverlay.Find("Card/MainMenu").GetComponent<Button>();
+            Button resumeButton = UiQuery.FindById(pauseOverlay, "Card/Resume").GetComponent<Button>();
+            Button mainMenuButton = UiQuery.FindById(pauseOverlay, "Card/MainMenu").GetComponent<Button>();
             Assert.That(resumeButton.GetComponent<RectTransform>().rect.width, Is.GreaterThanOrEqualTo(44f));
             Assert.That(resumeButton.GetComponent<RectTransform>().rect.height, Is.GreaterThanOrEqualTo(44f));
             Assert.That(mainMenuButton.GetComponent<RectTransform>().rect.width, Is.GreaterThanOrEqualTo(44f));
@@ -484,31 +477,31 @@ namespace AllinDefense.Tests
             }
             Assert.That(GameObject.Find("Free Placement 9"), Is.Null);
             Assert.That(GameObject.Find("Stationary Defender Anchor 1"), Is.Null);
-            GameObject defenderHud = GameObject.Find("Defender HUD");
+            GameObject defenderHud = Object.FindAnyObjectByType<DefenderHudController>().gameObject;
             Assert.That(defenderHud, Is.Not.Null);
-            Assert.That(defenderHud.transform.parent.name, Is.EqualTo("Game HUD"),
+            Assert.That(defenderHud.transform.parent.GetComponent<UiId>().Id, Is.EqualTo("Game HUD"),
                 "Production chrome must fill the screen instead of shrinking to the safe area.");
             Assert.That(defenderHud.transform.parent.GetComponent<CanvasScaler>().referenceResolution,
                 Is.EqualTo(new Vector2(1920f, 1080f)),
                 "Battlefield HUD stays landscape while frontend screens use the portrait reference resolution.");
             Assert.That(defenderHud.GetComponent<DefenderHudResponsiveLayout>(), Is.Not.Null);
-            var topRail = defenderHud.transform.Find("TopBar").GetComponent<UnityEngine.UI.Image>();
-            var bottomRail = defenderHud.transform.Find("BottomBar").GetComponent<UnityEngine.UI.Image>();
+            var topRail = UiQuery.FindById(defenderHud.transform, "TopBar").GetComponent<UnityEngine.UI.Image>();
+            var bottomRail = UiQuery.FindById(defenderHud.transform, "BottomBar").GetComponent<UnityEngine.UI.Image>();
             Assert.That(topRail.enabled, Is.False);
             Assert.That(bottomRail.enabled, Is.False);
             Assert.That(topRail.sprite, Is.Null, "The status controls must leave the terrain visible between cards.");
             Assert.That(bottomRail.sprite, Is.Null, "The command deck should float over the battlefield.");
-            Assert.That(defenderHud.transform.Find("TopBar/SafeContent/GoldChrome"), Is.Not.Null);
-            Assert.That(defenderHud.transform.Find("TopBar/SafeContent/LivesChrome"), Is.Not.Null);
-            Assert.That(defenderHud.transform.Find("TopBar/SafeContent/WaveChrome"), Is.Not.Null);
-            var phaseHint = defenderHud.transform.Find("TopBar/SafeContent/PhaseChrome/PhaseHint") as RectTransform;
+            Assert.That(UiQuery.FindById(defenderHud.transform, "TopBar/SafeContent/GoldChrome"), Is.Not.Null);
+            Assert.That(UiQuery.FindById(defenderHud.transform, "TopBar/SafeContent/LivesChrome"), Is.Not.Null);
+            Assert.That(UiQuery.FindById(defenderHud.transform, "TopBar/SafeContent/WaveChrome"), Is.Not.Null);
+            var phaseHint = UiQuery.FindById(defenderHud.transform, "TopBar/SafeContent/PhaseChrome/PhaseHint") as RectTransform;
             Assert.That(phaseHint, Is.Not.Null);
             Assert.That(phaseHint.offsetMin.y, Is.GreaterThanOrEqualTo(34f),
                 "The phase hint must occupy its own upper row instead of overlapping the phase label.");
-            Assert.That(defenderHud.transform.Find("BottomBar/SafeContent/BuildDeck").GetComponent<UnityEngine.UI.Image>().enabled, Is.False);
-            Assert.That(defenderHud.transform.Find("BottomBar/SafeContent/HeroDeck").GetComponent<UnityEngine.UI.Image>().enabled, Is.False);
-            Assert.That(defenderHud.transform.Find("BottomBar/SafeContent/CommandDeck").GetComponent<UnityEngine.UI.Image>().enabled, Is.False);
-            Assert.That(defenderHud.transform.Find("MessageChrome"), Is.Not.Null);
+            Assert.That(UiQuery.FindById(defenderHud.transform, "BottomBar/SafeContent/BuildDeck").GetComponent<UnityEngine.UI.Image>().enabled, Is.False);
+            Assert.That(UiQuery.FindById(defenderHud.transform, "BottomBar/SafeContent/HeroDeck").GetComponent<UnityEngine.UI.Image>().enabled, Is.False);
+            Assert.That(UiQuery.FindById(defenderHud.transform, "BottomBar/SafeContent/CommandDeck").GetComponent<UnityEngine.UI.Image>().enabled, Is.False);
+            Assert.That(UiQuery.FindById(defenderHud.transform, "MessageChrome"), Is.Not.Null);
             Assert.That(Camera.main.GetComponent<AdaptiveBattlefieldCamera>(), Is.Not.Null);
             Assert.That(session.Hero.GetComponent<StylizedActorView>(), Is.Not.Null);
             Assert.That(session.Hero.GetComponentInChildren<StylizedGroundingAura>(), Is.Not.Null);
@@ -834,13 +827,13 @@ namespace AllinDefense.Tests
 
         private static void AssertResultPanelExists()
         {
-            GameObject defenderHud = GameObject.Find("Defender HUD");
+            GameObject defenderHud = Object.FindAnyObjectByType<DefenderHudController>().gameObject;
             Assert.That(defenderHud, Is.Not.Null);
-            Transform panel = defenderHud.transform.Find("ResultPanel");
+            Transform panel = UiQuery.FindById(defenderHud.transform, "ResultPanel");
             Assert.That(panel, Is.Not.Null);
 
-            RectTransform hint = panel.Find("Card/Hint") as RectTransform;
-            RectTransform restart = panel.Find("Restart") as RectTransform;
+            RectTransform hint = UiQuery.FindById(panel, "Card/Hint") as RectTransform;
+            RectTransform restart = UiQuery.FindById(panel, "Restart") as RectTransform;
             Assert.That(hint, Is.Not.Null);
             Assert.That(restart, Is.Not.Null);
 
@@ -924,32 +917,32 @@ namespace AllinDefense.Tests
             hud.Refresh(session);
             yield return null;
 
-            Assert.That(hud.GetButtonInteractable("BottomBar/Archer"), Is.False);
-            Assert.That(hud.GetButtonInteractable("BottomBar/Barracks"), Is.False);
-            Assert.That(hud.GetButtonInteractable("BottomBar/Mage"), Is.False);
-            Assert.That(hud.GetButtonInteractable("BottomBar/Ability"), Is.True);
-            Assert.That(hud.GetButtonInteractable("TopBar/Pause"), Is.True);
-            Assert.That(hud.GetButtonInteractable("BottomBar/Cancel"), Is.False);
-            Assert.That(hud.GetButtonInteractable("BottomBar/NextWave"), Is.True);
+            Assert.That(UiQuery.FindById<Button>(hud, "Archer").interactable, Is.False);
+            Assert.That(UiQuery.FindById<Button>(hud, "Barracks").interactable, Is.False);
+            Assert.That(UiQuery.FindById<Button>(hud, "Mage").interactable, Is.False);
+            Assert.That(UiQuery.FindById<Button>(hud, "Ability").interactable, Is.True);
+            Assert.That(UiQuery.FindById<Button>(hud, "Pause").interactable, Is.True);
+            Assert.That(UiQuery.FindById<Button>(hud, "Cancel").interactable, Is.False);
+            Assert.That(UiQuery.FindById<Button>(hud, "NextWave").interactable, Is.True);
 
             SelectSlot(session, 0);
             InvokePrivate(session, "RefreshUi");
             hud.SetBuildAvailability(true, session.Gold);
 
-            Assert.That(hud.GetButtonInteractable("BottomBar/Archer"), Is.True,
+            Assert.That(UiQuery.FindById<Button>(hud, "Archer").interactable, Is.True,
                 $"Archer should be available after selecting an empty slot. Phase={session.Phase}, Gold={session.Gold}.");
-            Assert.That(hud.GetButtonInteractable("BottomBar/Barracks"), Is.True);
-            Assert.That(hud.GetButtonInteractable("BottomBar/Mage"), Is.True);
-            Assert.That(hud.GetButtonInteractable("BottomBar/Ability"), Is.True);
-            Assert.That(hud.GetButtonInteractable("TopBar/Pause"), Is.True);
-            Assert.That(hud.GetButtonInteractable("BottomBar/Cancel"), Is.True);
-            Assert.That(hud.GetButtonInteractable("BottomBar/NextWave"), Is.True);
-            Transform contextualChoices = hud.transform.Find("SelectedPanel/BuildChoices");
+            Assert.That(UiQuery.FindById<Button>(hud, "Barracks").interactable, Is.True);
+            Assert.That(UiQuery.FindById<Button>(hud, "Mage").interactable, Is.True);
+            Assert.That(UiQuery.FindById<Button>(hud, "Ability").interactable, Is.True);
+            Assert.That(UiQuery.FindById<Button>(hud, "Pause").interactable, Is.True);
+            Assert.That(UiQuery.FindById<Button>(hud, "Cancel").interactable, Is.True);
+            Assert.That(UiQuery.FindById<Button>(hud, "NextWave").interactable, Is.True);
+            Transform contextualChoices = UiQuery.FindById(hud, "SelectedPanel/BuildChoices");
             Assert.That(contextualChoices, Is.Not.Null);
             Assert.That(contextualChoices.gameObject.activeSelf, Is.True);
-            Assert.That(contextualChoices.Find("Archer"), Is.Not.Null);
-            Assert.That(contextualChoices.Find("Barracks"), Is.Not.Null);
-            Assert.That(contextualChoices.Find("Mage"), Is.Not.Null);
+            Assert.That(UiQuery.FindById(contextualChoices, "Archer"), Is.Not.Null);
+            Assert.That(UiQuery.FindById(contextualChoices, "Barracks"), Is.Not.Null);
+            Assert.That(UiQuery.FindById(contextualChoices, "Mage"), Is.Not.Null);
 
             int goldBeforePreview = session.Gold;
             InvokePrivate(session, "TryBuildSelected", Data.OutpostKind.Archer);
@@ -963,8 +956,8 @@ namespace AllinDefense.Tests
             hud.Refresh(session);
             yield return null;
 
-            Assert.That(hud.GetButtonInteractable("SelectedPanel/Upgrade"), Is.True);
-            Assert.That(hud.GetButtonInteractable("SelectedPanel/Sell"), Is.True);
+            Assert.That(UiQuery.FindById<Button>(hud, "Upgrade").interactable, Is.True);
+            Assert.That(UiQuery.FindById<Button>(hud, "Sell").interactable, Is.True);
             Assert.That(contextualChoices.gameObject.activeSelf, Is.False);
 
             SelectSlot(session, 1);
@@ -984,18 +977,18 @@ namespace AllinDefense.Tests
             hud.Refresh(session);
             yield return null;
 
-            Assert.That(hud.GetButtonInteractable("BottomBar/Archer"), Is.False);
-            Assert.That(hud.GetButtonInteractable("BottomBar/Barracks"), Is.False);
-            Assert.That(hud.GetButtonInteractable("BottomBar/Mage"), Is.False);
+            Assert.That(UiQuery.FindById<Button>(hud, "Archer").interactable, Is.False);
+            Assert.That(UiQuery.FindById<Button>(hud, "Barracks").interactable, Is.False);
+            Assert.That(UiQuery.FindById<Button>(hud, "Mage").interactable, Is.False);
 
             session.TogglePause();
             yield return null;
             hud.Refresh(session);
             yield return null;
 
-            Assert.That(hud.GetButtonInteractable("BottomBar/Ability"), Is.False);
-            Assert.That(hud.GetButtonInteractable("TopBar/Pause"), Is.True);
-            Assert.That(hud.GetButtonInteractable("BottomBar/Cancel"), Is.True);
+            Assert.That(UiQuery.FindById<Button>(hud, "Ability").interactable, Is.False);
+            Assert.That(UiQuery.FindById<Button>(hud, "Pause").interactable, Is.True);
+            Assert.That(UiQuery.FindById<Button>(hud, "Cancel").interactable, Is.True);
 
             LogAssert.NoUnexpectedReceived();
             Object.Destroy(gameObject);

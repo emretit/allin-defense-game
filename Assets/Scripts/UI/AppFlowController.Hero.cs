@@ -98,18 +98,17 @@ namespace AllinDefense.UI
             if (heroNameProfileKey != progress.ProfileKey) { CloseHeroName(); return; }
             if (!HeroIdentity.TryNormalize(heroNameInput.text, out string name))
             {
-                heroNameStatus.text = GameLocalization.Text("En fazla 20 karakter kullan; satır sonu ve < > ekleme.",
-                    "Use up to 20 characters, without line breaks or < >.");
+                heroNameStatus.text = FrontendCopy.HeroNameInvalid.Value;
                 return;
             }
             if (!progress.TrySetHeroName(name))
             {
-                heroNameStatus.text = GameLocalization.Text("Ad kaydedilemedi. Yeniden dene.", "Name could not be saved. Please try again.");
+                heroNameStatus.text = FrontendCopy.HeroNameSaveFailed.Value;
                 return;
             }
             heroNameInput.SetTextWithoutNotify(name);
             heroNameInput.DeactivateInputField();
-            heroNameStatus.text = GameLocalization.Text($"Kaydedildi: {progress.HeroName}", $"Saved: {progress.HeroName}");
+            heroNameStatus.text = FrontendCopy.Saved.Format(progress.HeroName);
         }
 
         private void CloseHeroName()

@@ -45,14 +45,13 @@ namespace AllinDefense.Presentation
         {
             saleConfirmationOutpost = null;
             if (sellButton != null && displayedOutpost != null)
-                SetButtonLabel(sellButton, GameLocalization.Text($"SAT\n+{displayedOutpost.SellValue}", $"SELL\n+{displayedOutpost.SellValue}"));
+                SetButtonLabel(sellButton, FrontendCopy.Sell.Format(displayedOutpost.SellValue));
         }
 
         private void ApplySaleConfirmationLabel()
         {
             if (saleConfirmationOutpost != null && sellButton != null)
-                SetButtonLabel(sellButton, GameLocalization.Text($"ONAYLA +{saleConfirmationOutpost.SellValue}",
-                    $"CONFIRM +{saleConfirmationOutpost.SellValue}"));
+                SetButtonLabel(sellButton, FrontendCopy.Confirm.Format(saleConfirmationOutpost.SellValue));
         }
 
         private void LateUpdate()

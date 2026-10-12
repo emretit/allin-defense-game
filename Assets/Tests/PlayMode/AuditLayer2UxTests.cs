@@ -31,7 +31,7 @@ namespace AllinDefense.Tests
         private static object Call(object target, string method, params object[] args) =>
             target.GetType().GetMethod(method, Private).Invoke(target, args);
         private static T Field<T>(object target, string name) => (T)target.GetType().GetField(name, Private).GetValue(target);
-        private Button Button(string name) => hud.GetComponentsInChildren<Button>(true).Single(b => b.name == name);
+        private Button Button(string name) => UiQuery.FindById<Button>(hud, name);
         private static string Label(Button button) => button.GetComponentInChildren<TMP_Text>(true).text;
 
         [SetUp] public void SetUp()
@@ -103,7 +103,7 @@ namespace AllinDefense.Tests
             session = new GameObject("Audit legacy mobile UX").AddComponent<GameSessionController>();
             session.SetCampaignLevel(10); session.Initialize(); Time.timeScale = 0;
             var tower = SelectTower();
-            var sell = session.GetComponentsInChildren<Button>().Single(b => b.name == "Sell");
+            var sell = UiQuery.FindById<Button>(session, "Sell");
             sell.onClick.Invoke(); Assert.That(session.Outposts, Does.Contain(tower));
             sell.onClick.Invoke(); Assert.That(session.Outposts.Count, Is.Zero);
             yield return null;
@@ -181,7 +181,7 @@ namespace AllinDefense.Tests
             Call(frontend, "CompleteLocalGuestSignIn"); Call(frontend, "OpenSettings");
             Canvas.ForceUpdateCanvases(); yield return null;
             AssertHitRects(frontend.GetComponentsInChildren<Button>(true));
-            var import = frontend.GetComponentsInChildren<Button>(true).Single(b => b.name == "Import Guest Progress");
+            var import = UiQuery.FindById<Button>(frontend, "Import Guest Progress");
             Call(frontend, "CloseSettings");
             yield return new WaitForSecondsRealtime(.25f);
             import.gameObject.SetActive(true);
@@ -194,12 +194,12 @@ namespace AllinDefense.Tests
 
         private static void AssertHitRects(Button[] buttons)
         {
-            const float pointsPerUnit = .39842f;
+
             foreach (var button in buttons)
             {
                 var root = (RectTransform)button.transform;
                 // Transparent raycast padding is a child so the original visuals retain their layout.
-                var hit = button.transform.Find("Touch Target") as RectTransform;
+                var hit = UiQuery.FindById(button, "Touch Target") as RectTransform;
                 var size = hit != null ? hit.rect.size : root.rect.size;
                 var canvas = button.GetComponentInParent<Canvas>();
                 if (canvas != null) size = Vector2.Scale(size, new Vector2(
@@ -207,8 +207,8 @@ namespace AllinDefense.Tests
                     Mathf.Abs(root.lossyScale.y / canvas.transform.lossyScale.y)));
                 if (size.x <= 0 || size.y <= 0) continue; // A lazy inactive screen has not been laid out yet.
                 Debug.Log($"[UX_HIT_RECT] {button.name} visual={root.rect.size} hit={size}");
-                Assert.That(size.x * pointsPerUnit, Is.GreaterThanOrEqualTo(44), button.name + " width");
-                Assert.That(size.y * pointsPerUnit, Is.GreaterThanOrEqualTo(44), button.name + " height");
+                Assert.That(size.x * UiMetrics.PointsPerCanvasUnit(canvas).x, Is.GreaterThanOrEqualTo(44), button.name + " width");
+                Assert.That(size.y * UiMetrics.PointsPerCanvasUnit(canvas).y, Is.GreaterThanOrEqualTo(44), button.name + " height");
                 if (hit != null) Assert.That(hit.GetComponent<Image>().raycastTarget, Is.True);
             }
         }
@@ -274,7 +274,7 @@ namespace AllinDefense.Tests
             Create(); var tower = SelectTower(); session.TryUpgradeOutpost(0);
             hud.ShowSpecializationChoices(tower, session);
             var branch = TowerProgression.Branch(OutpostKind.Archer, 0);
-            Field<GameObject>(hud, "specializationModal").GetComponentsInChildren<Button>().Single(b => b.name == branch.ToString()).onClick.Invoke();
+            UiQuery.FindById<Button>(Field<GameObject>(hud, "specializationModal").transform, branch.ToString()).onClick.Invoke();
             Assert.That(tower.Specialization, Is.EqualTo(branch));
             Assert.That(session.Phase, Is.EqualTo(GamePhase.Preparing));
             Assert.That(Time.timeScale, Is.EqualTo(session.CurrentGameSpeed));

@@ -132,8 +132,7 @@ namespace AllinDefense.Tests
                 .Invoke(frontend, new object[] { AppScreen.MainMenu });
             typeof(AppFlowController).GetMethod("OpenSettings", BindingFlags.Instance | BindingFlags.NonPublic)
                 .Invoke(frontend, null);
-            Slider effects = frontend.GetComponentsInChildren<Slider>(true)
-                .Single(slider => slider.transform.parent.name == "EFEKTLER Row");
+            Slider effects = UiQuery.FindById(frontend, "EFEKTLER Row").GetComponentInChildren<Slider>(true);
             Assert.That(effects.value, Is.EqualTo(1f));
             foreach (float preference in new[] { 0.5f, 0f, 1f })
             {

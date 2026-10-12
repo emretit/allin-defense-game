@@ -53,44 +53,38 @@ namespace AllinDefense.Presentation
         public string locale = "tr-TR";
         public UiCopyEntry[] entries = Array.Empty<UiCopyEntry>();
 
-        public string Get(UiTextKey key)
+        public string Get(UiTextKey key) => key switch
         {
-            if (GameLocalization.IsEnglish) return English(key);
-            return entries.FirstOrDefault(entry => entry != null && entry.key == key)?.value ?? $"[{key}]";
-        }
-
-        private static string English(UiTextKey key) => key switch
-        {
-            UiTextKey.Gold => "GOLD",
-            UiTextKey.Keep => "KEEP",
-            UiTextKey.Wave => "WAVE",
-            UiTextKey.Preparing => "PREPARING",
-            UiTextKey.Combat => "COMBAT",
-            UiTextKey.Intermission => "INTERMISSION",
-            UiTextKey.Paused => "PAUSED",
-            UiTextKey.Loading => "LOADING",
-            UiTextKey.Pause => "PAUSE",
-            UiTextKey.Continue => "RESUME",
-            UiTextKey.Archer => "ARCHER",
-            UiTextKey.Barracks => "BARRACKS",
-            UiTextKey.Mage => "MAGE",
-            UiTextKey.ShieldBash => "STUNNING STRIKE",
-            UiTextKey.Cancel => "CANCEL",
-            UiTextKey.FirstWave => "START FIRST WAVE",
-            UiTextKey.EarlyWave => "CALL WAVE EARLY",
-            UiTextKey.NextWave => "NEXT WAVE",
-            UiTextKey.Upgrade => "UPGRADE",
-            UiTextKey.Sell => "SELL",
-            UiTextKey.Knight => "Warrior",
-            UiTextKey.AbilityReady => "READY",
-            UiTextKey.KnightReturning => "Warrior returns",
-            UiTextKey.Victory => "VICTORY\nGREENWATCH DEFENDED",
-            UiTextKey.Defeat => "DEFEAT\nGREENWATCH HAS FALLEN",
-            UiTextKey.VictoryPhase => "VICTORY",
-            UiTextKey.DefeatPhase => "DEFEAT",
-            UiTextKey.Restart => "TRY AGAIN",
-            UiTextKey.SlotInstruction => "Choose an outpost below.",
-            UiTextKey.BuildInstruction => "Tap an outpost platform and build your defence.",
+            UiTextKey.Gold => FrontendCopy.HudGold.Value,
+            UiTextKey.Keep => FrontendCopy.HudKeep.Value,
+            UiTextKey.Wave => FrontendCopy.HudWave.Value,
+            UiTextKey.Preparing => FrontendCopy.HudPreparing.Value,
+            UiTextKey.Combat => FrontendCopy.HudCombat.Value,
+            UiTextKey.Intermission => FrontendCopy.HudIntermission.Value,
+            UiTextKey.Paused => FrontendCopy.HudPaused.Value,
+            UiTextKey.Loading => FrontendCopy.HudLoading.Value,
+            UiTextKey.Pause => FrontendCopy.HudPause.Value,
+            UiTextKey.Continue => FrontendCopy.HudContinue.Value,
+            UiTextKey.Archer => FrontendCopy.HudArcher.Value,
+            UiTextKey.Barracks => FrontendCopy.HudBarracks.Value,
+            UiTextKey.Mage => FrontendCopy.HudMage.Value,
+            UiTextKey.ShieldBash => FrontendCopy.HudShieldBash.Value,
+            UiTextKey.Cancel => FrontendCopy.HudCancel.Value,
+            UiTextKey.FirstWave => FrontendCopy.HudFirstWave.Value,
+            UiTextKey.EarlyWave => FrontendCopy.HudEarlyWave.Value,
+            UiTextKey.NextWave => FrontendCopy.HudNextWave.Value,
+            UiTextKey.Upgrade => FrontendCopy.HudUpgrade.Value,
+            UiTextKey.Sell => FrontendCopy.HudSell.Value,
+            UiTextKey.Knight => FrontendCopy.HudKnight.Value,
+            UiTextKey.AbilityReady => FrontendCopy.HudAbilityReady.Value,
+            UiTextKey.KnightReturning => FrontendCopy.HudKnightReturning.Value,
+            UiTextKey.Victory => FrontendCopy.HudVictory.Value,
+            UiTextKey.Defeat => FrontendCopy.HudDefeat.Value,
+            UiTextKey.VictoryPhase => FrontendCopy.HudVictoryPhase.Value,
+            UiTextKey.DefeatPhase => FrontendCopy.HudDefeatPhase.Value,
+            UiTextKey.Restart => FrontendCopy.HudRestart.Value,
+            UiTextKey.SlotInstruction => FrontendCopy.HudSlotInstruction.Value,
+            UiTextKey.BuildInstruction => FrontendCopy.HudBuildInstruction.Value,
             _ => $"[{key}]"
         };
 

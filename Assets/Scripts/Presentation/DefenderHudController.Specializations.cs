@@ -14,15 +14,15 @@ namespace AllinDefense.Presentation
         private void ApplySpecializationSelection(GreyboxOutpost outpost)
         {
             var session = GameSessionController.Instance;
-            selectedBadgeText.text = GameLocalization.Text($"SV {outpost.Level}", $"LV {outpost.Level}");
-            selectedText.text = GameLocalization.Text(
-                $"HASAR {outpost.DamageValue} · {(outpost.Kind == OutpostKind.Mage ? "Büyü" : "Fiziksel")}\nMENZİL {outpost.RangeValue:0.0}\nATIŞ {outpost.AttackRateValue:0.0}/s",
-                $"DAMAGE {outpost.DamageValue} · {(outpost.Kind == OutpostKind.Mage ? "Magic" : "Physical")}\nRANGE {outpost.RangeValue:0.0}\nRATE {outpost.AttackRateValue:0.0}/s");
-            selectedHintText.text = GameLocalization.Text($"Satışta {outpost.SellValue} altın geri alırsın.", $"Selling returns {outpost.SellValue} gold.");
-            SetButtonLabel(sellButton, GameLocalization.Text($"SAT\n+{outpost.SellValue}", $"SELL\n+{outpost.SellValue}"));
-            SetButtonLabel(upgradeButton, outpost.CanUpgrade ? GameLocalization.Text($"YÜKSELT\n{outpost.UpgradeCost}", $"UPGRADE\n{outpost.UpgradeCost}") : GameLocalization.Text("TAMAM", "MAX"));
+            selectedBadgeText.text = FrontendCopy.TowerLevel.Format(outpost.Level);
+            selectedText.text = FrontendCopy.TowerDamageStats.Format(outpost.DamageValue,
+                (outpost.Kind == OutpostKind.Mage ? FrontendCopy.MagicDamage : FrontendCopy.PhysicalDamage).Value,
+                outpost.RangeValue, outpost.AttackRateValue);
+            selectedHintText.text = FrontendCopy.SellingReturnsGold.Format(outpost.SellValue);
+            SetButtonLabel(sellButton, FrontendCopy.Sell.Format(outpost.SellValue));
+            SetButtonLabel(upgradeButton, outpost.CanUpgrade ? FrontendCopy.Upgrade.Format(outpost.UpgradeCost) : FrontendCopy.Max.Value);
             if (outpost.CanUpgrade && session != null && session.Gold < outpost.UpgradeCost)
-                selectedHintText.text = GameLocalization.Text($"Yükseltme için {outpost.UpgradeCost-session.Gold} altın eksik.", $"Need {outpost.UpgradeCost-session.Gold} more gold to upgrade.");
+                selectedHintText.text = FrontendCopy.NeedMoreGoldToUpgrade.Format(outpost.UpgradeCost-session.Gold);
             if (outpost.Specialization != OutpostSpecialization.None)
             {
                 selectedTitleText.text = TowerProgression.Name(outpost.Specialization);
@@ -33,8 +33,8 @@ namespace AllinDefense.Presentation
                 bool unlocked = session != null && session.UnlockedCampaignLevel >= TowerProgression.UnlockLevel(outpost.Kind);
                 upgradeButton.interactable = unlocked;
                 SetButtonLabel(upgradeButton, unlocked
-                    ? GameLocalization.Text($"UZMANLAŞ\n{TowerProgression.Cost(outpost.Kind)} ALTIN", $"SPECIALIZE\n{TowerProgression.Cost(outpost.Kind)} GOLD")
-                    : GameLocalization.Text($"BÖLÜM {TowerProgression.UnlockLevel(outpost.Kind) - 1} SONRASI", $"AFTER LEVEL {TowerProgression.UnlockLevel(outpost.Kind) - 1}"));
+                    ? FrontendCopy.SpecializeGold.Format(TowerProgression.Cost(outpost.Kind))
+                    : FrontendCopy.AfterLevel.Format(TowerProgression.UnlockLevel(outpost.Kind) - 1));
             }
         }
 
@@ -57,6 +57,7 @@ namespace AllinDefense.Presentation
                 var branch = TowerProgression.Branch(outpost.Kind, i);
                 var button = Instantiate(upgradeButton, specializationModal.transform);
                 button.name = branch.ToString();
+                UiId.Assign(button.transform, branch.ToString());
                 button.onClick = new Button.ButtonClickedEvent();
                 var br = (RectTransform)button.transform;
                 br.anchorMin = br.anchorMax = new Vector2(.5f, .5f);
@@ -65,8 +66,8 @@ namespace AllinDefense.Presentation
                 br.sizeDelta = new Vector2(440, 260);
                 int cost = TowerProgression.Cost(outpost.Kind);
                 SetButtonLabel(button, $"{TowerProgression.Name(branch)}\n{TowerProgression.Description(branch)}\n" +
-                    GameLocalization.Text($"{cost} ALTIN", $"{cost} GOLD") +
-                    (session.Gold < cost ? GameLocalization.Text($"\n{cost-session.Gold} altın eksik", $"\nNeed {cost-session.Gold} more gold") : ""));
+                    FrontendCopy.Gold.Format(cost) +
+                    (session.Gold < cost ? FrontendCopy.NeedMoreGold.Format(cost-session.Gold) : ""));
                 foreach (var label in button.GetComponentsInChildren<TMP_Text>()) { label.fontSize = 32; label.enableAutoSizing = true; label.fontSizeMin = 28; label.fontSizeMax = 34; }
                 button.interactable = session.UnlockedCampaignLevel >= TowerProgression.UnlockLevel(outpost.Kind) && session.Gold >= cost;
                 button.onClick.AddListener(() =>
@@ -80,9 +81,10 @@ namespace AllinDefense.Presentation
             var cr = (RectTransform)close.transform;
             cr.anchorMin = cr.anchorMax = cr.pivot = new Vector2(.5f,.5f);
             cr.anchoredPosition = new Vector2(0,-190); cr.sizeDelta = new Vector2(440,130);
-            SetButtonLabel(close, GameLocalization.Text("GERİ • Dal değiştirmek için satıp yeniden kur", "BACK • Sell and rebuild to change branch"));
+            SetButtonLabel(close, FrontendCopy.BackSellAndRebuildToChangeBranch.Value);
             close.interactable = true;
             close.onClick.AddListener(CloseSpecializationChoices);
+            UiId.AssignHierarchy(specializationModal.transform);
         }
 
         private void HandleSpecializationPhaseChanged(GamePhase phase)

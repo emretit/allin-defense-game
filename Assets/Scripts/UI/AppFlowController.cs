@@ -110,6 +110,12 @@ namespace AllinDefense.UI
                 : throw new ArgumentNullException(nameof(presentationCatalog));
             session = owner != null ? owner : throw new ArgumentNullException(nameof(owner));
             if ((AcceptanceRequested || (Application.isEditor && Environment.GetEnvironmentVariable("DC_FRONTEND_EDITOR") == "1")) && string.IsNullOrEmpty(savePath)) savePath = Path.Combine(Application.temporaryCachePath, "frontend-acceptance-save.json");
+            if (AcceptanceRequested)
+            {
+                if (acceptanceStage == 0 || string.IsNullOrEmpty(acceptanceSavePath))
+                    acceptanceSavePath = Path.Combine(Application.temporaryCachePath, $"frontend-acceptance-{Guid.NewGuid():N}.json");
+                savePath = acceptanceSavePath;
+            }
             progress = savePath == null ? CampaignApplication.GetOrCreate().Progress : new CampaignProgressStore(savePath);
             progress.Changed += HandleProgressChanged;
             if (pendingNavigation != null) { navigationState = pendingNavigation; pendingNavigation = null; }
@@ -387,7 +393,7 @@ namespace AllinDefense.UI
             string id = string.IsNullOrWhiteSpace(progress.Data.playerId)
                 ? $"guest-{Guid.NewGuid():N}"
                 : progress.Data.playerId;
-            progress.SignIn(PlayerAuthProvider.Guest, id, GameLocalization.Text("Misafir Muhafız", "Guest Defender"));
+            progress.SignIn(PlayerAuthProvider.Guest, id, FrontendCopy.GuestDefender.Value);
             RefreshProfile();
             ShowScreen(CurrentScreen == AppScreen.Login && navigationState.AccountReturn != AppScreen.Welcome
                 ? navigationState.AccountReturn : AppScreen.MainMenu);
@@ -396,13 +402,10 @@ namespace AllinDefense.UI
         private void RequestExternalSignIn(PlayerAuthProvider provider)
         {
             ShowScreen(AppScreen.Login);
-            SetLoginStatus(GameLocalization.Text("Güvenli hesap penceresi açılıyor...",
-                "Opening the secure account window..."));
+            SetLoginStatus(FrontendCopy.OpeningTheSecureAccountWindow.Value);
             if (AuthenticationRequested == null)
             {
-                loginStatus.text = GameLocalization.Text(
-                    "Çevrimiçi giriş bu geliştirme sürümünde henüz etkin değil. Misafir olarak devam edebilirsin.",
-                    "Online sign-in is not enabled in this development build yet. You can continue as a guest.");
+                loginStatus.text = FrontendCopy.AccountSignInUnavailable.Value;
                 return;
             }
             AuthenticationRequested.Invoke(provider);
@@ -465,15 +468,12 @@ namespace AllinDefense.UI
                 BiomeDefinition biome = CampaignLevelFactory.Biome(map.biomeIndex);
                 tacticalMapPreview.Configure(map, biome.accentColor, catalog.bodyFont);
             }
-            string routeLabel = GameLocalization.IsEnglish
-                ? $"{map.entranceCount} entrance{(map.entranceCount == 1 ? "" : "s")}"
-                : $"{map.entranceCount} giriş";
+            string routeLabel = (map.entranceCount == 1 ? FrontendCopy.SingleEntrance : FrontendCopy.MultipleEntrances).Format(map.entranceCount);
             selectedLevelTitle.text = $"{definition.number}. {definition.localizedName}";
-            selectedLevelDetails.text = GameLocalization.IsEnglish
-                ? $"{definition.waveCount} waves · ~{definition.targetMinutes:0.#} min · {definition.startingGold} gold · {routeLabel}"
-                : $"{definition.waveCount} dalga · ~{definition.targetMinutes:0.#} dk · {definition.startingGold} altın · {routeLabel}";
-            briefingEnemies.text = GameLocalization.Text("DÜŞMANLAR", "ENEMIES") + "\n" + EnemyPreviewForLevel(definition.number);
-            briefingReward.text = GameLocalization.Text("HEDEF", "OBJECTIVE") + "\n" + LearningObjective(definition.number);
+            selectedLevelDetails.text = FrontendCopy.BriefingDetails.Format(definition.waveCount, definition.targetMinutes,
+                definition.startingGold, routeLabel);
+            briefingEnemies.text = FrontendCopy.Enemies.Value + "\n" + EnemyPreviewForLevel(definition.number);
+            briefingReward.text = FrontendCopy.Objective.Value + "\n" + LearningObjective(definition.number);
             playSelectedButton.interactable = selectedLevel <= progress.Data.unlockedLevel;
         }
 
@@ -545,10 +545,10 @@ namespace AllinDefense.UI
                 if (progressLabel != null)
                 {
                     progressLabel.text = !unlocked
-                        ? GameLocalization.Text("KİLİTLİ", "LOCKED")
+                        ? FrontendCopy.Locked.Value
                         : levelProgress != null && levelProgress.stars > 0
-                            ? GameLocalization.Text($"{levelProgress.stars}/3 YILDIZ", $"{levelProgress.stars}/3 STARS")
-                            : definition.isBoss ? "LORD" : GameLocalization.Text("AÇIK", "READY");
+                            ? FrontendCopy.MapLevelStars.Format(levelProgress.stars)
+                            : definition.isBoss ? "LORD" : FrontendCopy.MapReady.Value;
                 }
                 Transform selectionRing = button.transform.Find("Selection Ring");
                 if (selectionRing != null) selectionRing.gameObject.SetActive(unlocked && selected);
@@ -558,16 +558,12 @@ namespace AllinDefense.UI
         private static string EnemyPreviewForLevel(int level) => string.Join(" · ",
             CampaignLevelFactory.Create(level).waves.SelectMany(w => w.groups).Select(g => g.enemy).Distinct().Select(FirstRegionCampaign.EnemyName));
 
-        private static string ThreatLabel(int level) => (level, GameLocalization.IsEnglish) switch
+        private static string ThreatLabel(int level) => level switch
         {
-            (<= 3, false) => "I  Düşük",
-            (<= 6, false) => "II  Yükseliyor",
-            (< 10, false) => "III  Yüksek",
-            (_, false) => "LORD SALDIRISI",
-            (<= 3, true) => "I  Low",
-            (<= 6, true) => "II  Rising",
-            (< 10, true) => "III  High",
-            _ => "LORD ASSAULT"
+            <= 3 => FrontendCopy.ThreatLow.Value,
+            <= 6 => FrontendCopy.ThreatRising.Value,
+            < 10 => FrontendCopy.ThreatHigh.Value,
+            _ => FrontendCopy.ThreatLord.Value
         };
 
         private void UpdateRegionTabs()
@@ -594,36 +590,33 @@ namespace AllinDefense.UI
             if (profileLabel == null) return;
             string provider = progress.Data.authProvider switch
             {
-                PlayerAuthProvider.PlayerAccount => GameLocalization.Text("Bağlı hesap", "Linked account"),
-                _ => GameLocalization.Text("Misafir", "Guest")
+                PlayerAuthProvider.PlayerAccount => FrontendCopy.LinkedAccount.Value,
+                _ => FrontendCopy.Guest.Value
             };
             string displayName = string.IsNullOrWhiteSpace(progress.Data.displayName)
-                ? GameLocalization.Text("Greenwatch Muhafızı", "Greenwatch Defender")
+                ? FrontendCopy.GreenwatchDefender.Value
                 : progress.Data.displayName;
             int visibleStars = progress.Data.levels.Where(x => x.level <= 10).Sum(x => x.stars);
             profileLabel.text = $"{displayName}  ·  {provider}\n" +
-                GameLocalization.Text($"{visibleStars}/30 yıldız", $"{visibleStars}/30 stars") + (string.IsNullOrEmpty(SaveStatus()) ? "" : "  ·  " + SaveStatus());
+                FrontendCopy.ProfileStars.Format(visibleStars) + (string.IsNullOrEmpty(SaveStatus()) ? "" : "  ·  " + SaveStatus());
             if (continueDetails != null)
             {
                 int target = progress.NextUnfinishedLevel();
                 CampaignLevelDefinition last = CampaignCatalog.Level(target);
                 CampaignLevelProgress result = progress.ProgressFor(target);
                 string stars = result == null || result.stars <= 0
-                    ? GameLocalization.Text("0/3 YILDIZ", "0/3 STARS")
-                    : GameLocalization.Text($"{result.stars}/3 YILDIZ", $"{result.stars}/3 STARS");
-                continueDetails.text = GameLocalization.IsEnglish
-                    ? $"REGION {last.region}  ·  {GameLocalization.Uppercase(last.localizedName)}  ·  {stars}\n" +
-                      $"{last.waveCount} waves  ·  ~{last.targetMinutes:0.#} min  ·  {last.startingGold} starting gold"
-                    : $"BÖLGE {last.region}  ·  {GameLocalization.Uppercase(last.localizedName)}  ·  {stars}\n" +
-                      $"{last.waveCount} dalga  ·  ~{last.targetMinutes:0.#} dk  ·  {last.startingGold} başlangıç altını";
+                    ? FrontendCopy.MapNoStars.Value
+                    : FrontendCopy.MapLevelStars.Format(result.stars);
+                continueDetails.text = FrontendCopy.ContinueDetails.Format(last.region, GameLocalization.Uppercase(last.localizedName),
+                    stars, last.waveCount, last.targetMinutes, last.startingGold);
             }
             if (continueButton != null)
             {
                 TextMeshProUGUI label = continueButton.GetComponentInChildren<TextMeshProUGUI>(true);
                 if (label != null)
                     label.text = IsFirstDefence()
-                        ? GameLocalization.Text("İLK SAVUNMANA HAZIRLAN  ›", "PREPARE YOUR FIRST DEFENCE  ›")
-                        : GameLocalization.Text("DEVAM ET  ›", "CONTINUE  ›");
+                        ? FrontendCopy.PrepareYourFirstDefence.Value
+                        : FrontendCopy.Continue.Value;
             }
         }
 
@@ -654,19 +647,17 @@ namespace AllinDefense.UI
                 ? Mathf.Min(FirstRegionCampaign.LevelCount, session.CampaignLevelNumber + 1)
                 : session.CampaignLevelNumber;
             resultTitle.text = victory
-                ? GameLocalization.Text(
-                    $"ZAFER\n{GameLocalization.Uppercase(CampaignCatalog.Level(session.CampaignLevelNumber).localizedName)} TAMAMLANDI",
-                    $"VICTORY\n{GameLocalization.Uppercase(CampaignCatalog.Level(session.CampaignLevelNumber).localizedName)} COMPLETE")
-                : GameLocalization.Text("SAVUNMA HATTI DÜŞTÜ", "THE DEFENCE LINE HAS FALLEN");
+                ? FrontendCopy.VictoryComplete.Format(GameLocalization.Uppercase(CampaignCatalog.Level(session.CampaignLevelNumber).localizedName))
+                : FrontendCopy.TheDefenceLineHasFallen.Value;
             resultTitle.color = victory ? theme.textPrimary : theme.enemyRed;
             resultStars.text = victory
-                ? GameLocalization.Text($"{stars} / 3 YILDIZ", $"{stars} / 3 STARS")
-                : GameLocalization.Text("0 / 3 YILDIZ", "0 / 3 STARS");
+                ? FrontendCopy.ResultStars.Format(stars)
+                : FrontendCopy.ResultNoStars.Value;
             resultReward.text = victory ? (string.IsNullOrEmpty(SaveStatus()) ? "" : SaveStatus() + "\n") +
                 (session.CampaignLevelNumber == 1 && progress.Data.authProvider == PlayerAuthProvider.Guest
-                    ? GameLocalization.Text("İlerlemeni korumak için menüden hesabını bağlayabilirsin.", "You can link an account from the menu to protect your progress.")
+                    ? FrontendCopy.ResultGuestAccountHint.Value
                     : LearningObjective(Mathf.Min(10, selectedLevel)))
-                : GameLocalization.Text($"Dalga {session.CurrentWaveIndex + 1} · ", $"Wave {session.CurrentWaveIndex + 1} · ") +
+                : FrontendCopy.Wave.Format(session.CurrentWaveIndex + 1) +
                     FirstRegionCampaign.EnemyName(session.MostDamagingLeak) + "\n" + DefenceAdvice(session.MostDamagingLeak);
             bool hasNextLevel = victory && session.CampaignLevelNumber < FirstRegionCampaign.LevelCount;
             nextLevelButton.gameObject.SetActive(hasNextLevel);
@@ -760,7 +751,7 @@ namespace AllinDefense.UI
                 {
                     Debug.LogWarning("Battle preparation failed: " + failure);
                     FrontendLoadingOverlay.Hide();
-                    orientationCurtainLabel.text = GameLocalization.Text("Savaş hazırlanamadı. Yeniden deneyebilirsin.", "Battle preparation failed. Please try again.");
+                    orientationCurtainLabel.text = FrontendCopy.BattlePreparationFailedPleaseTryAgain.Value;
                     retryOrientation = () => ReloadCampaignLevel(level);
                     orientationRetry.gameObject.SetActive(true);
                     orientationRoutine = null;
@@ -819,9 +810,7 @@ namespace AllinDefense.UI
             if (!orientationReady)
             {
                 FrontendLoadingOverlay.Hide();
-                orientationCurtainLabel.text = GameLocalization.Text(
-                    "Ekran yönü değiştirilemedi.\nCihazı çevirip yeniden deneyebilirsin.",
-                    "The screen could not rotate.\nTurn your device and try again.");
+                orientationCurtainLabel.text = FrontendCopy.OrientationFailed.Value;
                 orientationRetry.gameObject.SetActive(true);
             }
         }
@@ -830,10 +819,8 @@ namespace AllinDefense.UI
         {
             if (orientationCurtain == null) return;
             orientationCurtainLabel.text = mode == MobileOrientationMode.LandscapeBattle
-                ? GameLocalization.Text("SAVAŞ ALANI HAZIRLANIYOR\nCİHAZ YATAYA ALINIYOR",
-                    "PREPARING THE BATTLEFIELD\nROTATING TO LANDSCAPE")
-                : GameLocalization.Text("KRALLIK HARİTASI HAZIRLANIYOR\nCİHAZ PORTREYE ALINIYOR",
-                    "PREPARING THE REALM MAP\nROTATING TO PORTRAIT");
+                ? FrontendCopy.PreparingTheBattlefieldRotatingToLandscape.Value
+                : FrontendCopy.PreparingTheRealmMapRotatingToPortrait.Value;
             orientationRetry.gameObject.SetActive(false);
             orientationCurtain.SetActive(true);
             orientationCurtain.transform.SetAsLastSibling();
@@ -877,6 +864,7 @@ namespace AllinDefense.UI
             if (launchingBattle || orientationRoutine != null || (settingsModal != null && settingsModal.activeSelf)) return;
             performance.Begin("menu-settings");
             if (settingsModal == null) BuildSettingsModal();
+            UiId.AssignHierarchy(settingsModal.transform);
             RefreshLanguageButtons();
             navigation.Cancel();
             settingsModal.SetActive(true);
@@ -926,7 +914,7 @@ namespace AllinDefense.UI
                 pendingLevel = 0; pendingNavigation = null; launchingBattle = false;
                 Debug.LogWarning("Battle reload failed: " + error);
                 ShowOrientationCurtain(MobileOrientationMode.LandscapeBattle);
-                orientationCurtainLabel.text = GameLocalization.Text("Bölüm yüklenemedi. Yeniden deneyebilirsin.", "The level could not load. Please try again.");
+                orientationCurtainLabel.text = FrontendCopy.LevelLoadFailed.Value;
                 retryOrientation = () => ReloadCampaignLevel(level);
                 orientationRetry.gameObject.SetActive(true);
             }, () => MobileOrientationController.Request(MobileOrientationMode.LandscapeBattle));
@@ -1155,6 +1143,7 @@ namespace AllinDefense.UI
                 case AppScreen.Campaign: BuildCampaignScreen(); break;
                 case AppScreen.Result: BuildResultScreen(); break;
             }
+            UiId.AssignHierarchy(screens[screen].transform);
             builtScreens.Add(screen);
         }
 
@@ -1273,6 +1262,7 @@ namespace AllinDefense.UI
         {
             var root = new GameObject(name, typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
             root.transform.SetParent(parent, false);
+            UiId.Assign(root.transform, name);
             Image image = root.GetComponent<Image>();
             image.color = color;
             image.raycastTarget = false;
@@ -1299,6 +1289,7 @@ namespace AllinDefense.UI
             var root = new GameObject(name, typeof(RectTransform), typeof(CanvasRenderer),
                 typeof(UnityEngine.UI.Image));
             root.transform.SetParent(parent, false);
+            UiId.Assign(root.transform, name);
             UnityEngine.UI.Image image = root.GetComponent<UnityEngine.UI.Image>();
             image.sprite = sprite;
             image.color = Color.white;
@@ -1319,14 +1310,14 @@ namespace AllinDefense.UI
         {
             if (FrontendPreferences.ReducedMotion)
             {
-                resultStars.text = GameLocalization.Text($"{stars} / 3 YILDIZ", $"{stars} / 3 STARS");
+                resultStars.text = FrontendCopy.ResultStars.Format(stars);
                 yield break;
             }
-            resultStars.text = GameLocalization.Text("0 / 3 YILDIZ", "0 / 3 STARS");
+            resultStars.text = FrontendCopy.ResultNoStars.Value;
             for (int index = 1; index <= stars; index++)
             {
                 yield return new WaitForSecondsRealtime(0.35f);
-                resultStars.text = GameLocalization.Text($"{index} / 3 YILDIZ", $"{index} / 3 STARS");
+                resultStars.text = FrontendCopy.ResultStars.Format(index);
                 PlayFrontendCue(theme.starReveal, PresentationCue.Victory);
             }
         }
@@ -1354,6 +1345,7 @@ namespace AllinDefense.UI
         {
             var root = new GameObject(name, typeof(RectTransform), typeof(CanvasRenderer), typeof(TextMeshProUGUI));
             root.transform.SetParent(parent, false);
+            UiId.Assign(root.transform, name);
             TextMeshProUGUI text = root.GetComponent<TextMeshProUGUI>();
             text.text = value.Value;
             text.font = font;

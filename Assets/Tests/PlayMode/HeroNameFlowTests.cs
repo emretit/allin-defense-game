@@ -75,7 +75,7 @@ namespace AllinDefense.Tests
             yield return null;
             var hud = Object.FindAnyObjectByType<DefenderHudController>();
             hud.Refresh(session);
-            var ability = hud.GetComponentsInChildren<Button>(true).Single(b => b.name == "Ability")
+            var ability = UiQuery.FindById<Button>(hud, "Ability")
                 .GetComponentInChildren<TMP_Text>();
             Assert.That(ability.text, Does.StartWith("AYARLAR\n"));
             flow.Progress.TrySetHeroName("");
@@ -88,7 +88,7 @@ namespace AllinDefense.Tests
 
         private static void Click(AppFlowController flow, string name)
         {
-            var button = flow.GetComponentsInChildren<Button>(true).Single(b => b.name == name);
+            var button = UiQuery.FindById<Button>(flow, name);
             Assert.That(button.gameObject.activeInHierarchy, Is.True, name);
             button.onClick.Invoke();
         }
