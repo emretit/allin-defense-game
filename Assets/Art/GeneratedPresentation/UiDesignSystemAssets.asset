@@ -24,3 +24,17 @@ MonoBehaviour:
   goldGradient: {fileID: 21300000, guid: 4d6c22e7de6134548b08037394f1de6c, type: 3}
   filledCircle: {fileID: 21300000, guid: 6b4d230b3e232477e8f239b68b5712e5, type: 3}
   cooldownRing: {fileID: 21300000, guid: bd858ef38072443f7805d2b3e82f1740, type: 3}
+  iconPause: {fileID: 21300000, guid: 5d82cf8c88e244a69865f107765caad3, type: 3}
+  iconPlay: {fileID: 21300000, guid: 2317b7fd09ee445249d54cde7b060f2a, type: 3}
+  iconFastForward: {fileID: 21300000, guid: 22b96df7f39dd4eadaa96053de1ba28b, type: 3}
+  iconSettings: {fileID: 21300000, guid: ea994ef63e2fc4de3bd9b19ea4159b3d, type: 3}
+  iconClose: {fileID: 21300000, guid: 2aa38b012b5a94b548f258e3714b5bda, type: 3}
+  iconBack: {fileID: 21300000, guid: 98cc960824302442e9613ebed20c12b1, type: 3}
+  iconMap: {fileID: 21300000, guid: b55af486d50314f938796fe44996492a, type: 3}
+  iconLock: {fileID: 21300000, guid: 9a871bd16da984002853f745807de5e0, type: 3}
+  iconStarFilled: {fileID: 21300000, guid: 2868fb9f8398d4898b785f11e10ac253, type: 3}
+  iconStarEmpty: {fileID: 21300000, guid: 17b508dca1fdb44ed9d8aa04d56b1afc, type: 3}
+  iconCheck: {fileID: 21300000, guid: 489ad93532d874baeb1ab02397235856, type: 3}
+  iconShield: {fileID: 21300000, guid: 6868da19286f244028acea9d3e29e937, type: 3}
+  iconUpgrade: {fileID: 21300000, guid: 1a9a268e1847b4c55b0c17be54032187, type: 3}
+  iconSell: {fileID: 21300000, guid: 5bdc6e620926d43559b1fa225d956dbc, type: 3}

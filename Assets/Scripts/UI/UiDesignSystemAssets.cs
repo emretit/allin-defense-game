@@ -18,5 +18,19 @@ namespace AllinDefense.UI
         public Sprite goldGradient;
         public Sprite filledCircle;
         public Sprite cooldownRing;
+        public Sprite iconPause;
+        public Sprite iconPlay;
+        public Sprite iconFastForward;
+        public Sprite iconSettings;
+        public Sprite iconClose;
+        public Sprite iconBack;
+        public Sprite iconMap;
+        public Sprite iconLock;
+        public Sprite iconStarFilled;
+        public Sprite iconStarEmpty;
+        public Sprite iconCheck;
+        public Sprite iconShield;
+        public Sprite iconUpgrade;
+        public Sprite iconSell;
     }
 }

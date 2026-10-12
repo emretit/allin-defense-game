@@ -32,6 +32,11 @@ namespace AllinDefense.UI
     /// </summary>
     public static class FrontendCopy
     {
+        public static readonly LocalizedCopy Seconds = new("{0} sn", "{0} sec");
+        public static readonly LocalizedCopy SwitchOn = new("AÇIK", "ON");
+        public static readonly LocalizedCopy SwitchOff = new("KAPALI", "OFF");
+        public static readonly LocalizedCopy KitPreview = new("ÖNİZLEME", "PREVIEW");
+        public static readonly LocalizedCopy KitConfirm = new("TEKRAR DOKUN · KUR", "TAP AGAIN · BUILD");
         public static readonly LocalizedCopy CampaignEyebrow = new("GREENWATCH SEFERİ", "THE GREENWATCH CAMPAIGN");
         public static readonly LocalizedCopy BattleResult = new("SAVAŞ SONUCU", "BATTLE RESULT");
         public static readonly LocalizedCopy TryAgain = new("YENİDEN DENE", "TRY AGAIN");

@@ -31,6 +31,11 @@ namespace AllinDefense.UI
         public static readonly Color GlassHighlight = WithAlpha(Color.white, .07f);
         public static readonly Color Shadow = WithAlpha(Color.black, .38f);
         public static readonly Color GoldShadow = WithAlpha(Gold, .35f);
+        public static readonly Color KitSurface = WithAlpha(Surface, GlassStrongAlpha);
+        public static readonly Color White = Color.white;
+        public static readonly Color Clear = Color.clear;
+        public static readonly Color PressedTint = new Color(.82f, .82f, .82f, 1f);
+        public const float HairlineWidth = 1f;
         public const float GlassAlpha = .68f;
         public const float GlassStrongAlpha = .9f;
 
@@ -49,6 +54,7 @@ namespace AllinDefense.UI
         public const float ShadowSoftness = 24f;
 
         // Existing reference-canvas typography; screen-specific sizes remain explicit.
+        public const float TypeCompact = 14f;
         public const float TypeCaption = 20f;
         public const float TypeLabel = 24f;
         public const float TypeBody = 28f;
