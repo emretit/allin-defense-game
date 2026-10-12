@@ -7,6 +7,7 @@ using System.Reflection;
 using DefenderChronicles.Core;
 using DefenderChronicles.Data;
 using DefenderChronicles.Presentation;
+using DefenderChronicles.UI;
 using TMPro;
 using UnityEditor;
 using UnityEditor.Animations;
@@ -44,6 +45,7 @@ namespace DefenderChronicles.Editor
             Directory.CreateDirectory(ResourceRoot);
             AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
             EnsureTmpResources();
+            UiDesignSystemAssetBuilder.Build();
             ConfigureBrandImports();
 
             TMP_FontAsset bodyFont = CreateFontAsset("Assets/Art/Fonts/NotoSans-Regular.ttf", "NotoSans-DC");
@@ -105,6 +107,7 @@ namespace DefenderChronicles.Editor
             Directory.CreateDirectory(ResourceRoot);
             AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
             EnsureTmpResources();
+            UiDesignSystemAssetBuilder.Build();
             ConfigureForwardRenderer();
             ConfigureImports();
 
@@ -914,6 +917,7 @@ namespace DefenderChronicles.Editor
                 AssetDatabase.CreateAsset(theme, path);
             }
 
+            theme.ApplyDesignTokens();
             theme.brandLogo = AssetDatabase.LoadAssetAtPath<Sprite>(BrandLogoPath);
             theme.brandMark = AssetDatabase.LoadAssetAtPath<Sprite>(BrandMarkPath);
             theme.welcomeBackdrop = AssetDatabase.LoadAssetAtPath<Texture2D>(
@@ -1277,16 +1281,36 @@ namespace DefenderChronicles.Editor
             return result;
         }
 
-        private static GameObject CreateHudPrefab(Sprite panel, Sprite frame, TMP_FontAsset body, TMP_FontAsset title)
+        // Opt-in rebuild for builder changes; normal asset builds keep the existing HUD.
+        // Also callable from batchmode with -executeMethod.
+        [MenuItem("Defender Chronicles/Regenerate HUD Prefab")]
+        public static void RegenerateHudPrefab()
+        {
+            var catalog = AssetDatabase.LoadAssetAtPath<DefenderPresentationCatalog>(
+                $"{ResourceRoot}/DefenderPresentationCatalog.asset");
+            if (catalog == null || catalog.panelSprite == null || catalog.uiFrameSprite == null ||
+                catalog.bodyFont == null || catalog.titleFont == null)
+                throw new InvalidOperationException("HUD regeneration requires the existing presentation catalog, sprites and fonts.");
+
+            Directory.CreateDirectory(GeneratedRoot);
+            catalog.hudPrefab = CreateHudPrefab(catalog.panelSprite, catalog.uiFrameSprite,
+                catalog.bodyFont, catalog.titleFont, regenerate: true);
+            EditorUtility.SetDirty(catalog);
+            AssetDatabase.SaveAssets();
+            Debug.Log("[DC_HUD_ASSETS] HUD prefab regenerated from the presentation builder.");
+        }
+
+        private static GameObject CreateHudPrefab(Sprite panel, Sprite frame, TMP_FontAsset body, TMP_FontAsset title,
+            bool regenerate = false)
         {
             string path = $"{GeneratedRoot}/DefenderHud.prefab";
             GameObject existing = AssetDatabase.LoadAssetAtPath<GameObject>(path);
-            if (existing != null) return existing;
+            if (existing != null && !regenerate) return existing;
             activeUiFrameSprite = frame;
 
             var root = new GameObject("DefenderHud", typeof(RectTransform), typeof(DefenderHudController));
             Stretch(root.GetComponent<RectTransform>());
-            GameObject top = Panel(root.transform, "TopBar", panel, new Color(0.025f, 0.055f, 0.095f, 0.96f),
+            GameObject top = Panel(root.transform, "TopBar", panel, UiTokens.HudTopBar,
                 new Vector2(0, 1), new Vector2(1, 1), new Vector2(0, -82), Vector2.zero);
             Text(top.transform, "Gold", "ALTIN  200", body, 28, TextAlignmentOptions.MidlineLeft,
                 new Vector2(20, 8), new Vector2(310, 62), Vector2.zero, Vector2.zero);
@@ -1304,7 +1328,7 @@ namespace DefenderChronicles.Editor
             Text(root.transform, "Message", string.Empty, body, 28, TextAlignmentOptions.Center,
                 new Vector2(-550, -214), new Vector2(1100, 60), new Vector2(.5f, 1), new Vector2(.5f, 1));
 
-            GameObject bottom = Panel(root.transform, "BottomBar", panel, new Color(0.025f, 0.055f, 0.095f, 0.97f),
+            GameObject bottom = Panel(root.transform, "BottomBar", panel, UiTokens.HudBottomBar,
                 Vector2.zero, new Vector2(1, 0), Vector2.zero, new Vector2(0, 132));
             Button(bottom.transform, "Archer", "[A]  OKÇU\n75", panel, body, new Vector2(18, 36), new Vector2(188, 70), Vector2.zero, Vector2.zero);
             Button(bottom.transform, "Barracks", "[K]  KIŞLA\n100", panel, body, new Vector2(218, 36), new Vector2(188, 70), Vector2.zero, Vector2.zero);
@@ -1316,7 +1340,7 @@ namespace DefenderChronicles.Editor
             Button(bottom.transform, "NextWave", "İLK DALGAYI BAŞLAT", panel, title, new Vector2(-340, 36), new Vector2(320, 70),
                 new Vector2(1, 0), new Vector2(1, 0), Hex("174D78"));
 
-            GameObject selected = Panel(root.transform, "SelectedPanel", panel, new Color(0.025f, 0.055f, 0.095f, 0.97f),
+            GameObject selected = Panel(root.transform, "SelectedPanel", panel, UiTokens.HudBottomBar,
                 new Vector2(1, .5f), new Vector2(1, .5f), new Vector2(-338, -126), new Vector2(-18, 184));
             TMP_Text description = Text(selected.transform, "Description", string.Empty, body, 22, TextAlignmentOptions.TopLeft,
                 Vector2.zero, Vector2.zero, Vector2.zero, Vector2.one);
@@ -1325,7 +1349,7 @@ namespace DefenderChronicles.Editor
             Button(selected.transform, "Upgrade", "YÜKSELT", panel, body, new Vector2(14, 18), new Vector2(138, 58), Vector2.zero, Vector2.zero);
             Button(selected.transform, "Sell", "SAT", panel, body, new Vector2(168, 18), new Vector2(138, 58), Vector2.zero, Vector2.zero);
 
-            GameObject result = Panel(root.transform, "ResultPanel", null, new Color(0.01f, 0.02f, 0.035f, 0.92f),
+            GameObject result = Panel(root.transform, "ResultPanel", null, UiTokens.HudResultBacking,
                 Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero);
             Text(result.transform, "Title", string.Empty, title, 68, TextAlignmentOptions.Center,
                 new Vector2(-520, -40), new Vector2(1040, 190), new Vector2(.5f, .5f), new Vector2(.5f, .5f));
@@ -1390,13 +1414,13 @@ namespace DefenderChronicles.Editor
             var image = go.GetComponent<Image>();
             image.sprite = sprite;
             image.type = Image.Type.Sliced;
-            image.color = tint ?? new Color(0.06f, 0.18f, 0.30f, 0.98f);
+            image.color = tint ?? UiTokens.HudBuilderButton;
             var button = go.GetComponent<Button>();
             button.targetGraphic = image;
             ColorBlock colors = button.colors;
-            colors.highlightedColor = new Color(0.20f, 0.48f, 0.78f, 1f);
-            colors.pressedColor = new Color(1f, 0.48f, 0.13f, 1f);
-            colors.disabledColor = new Color(0.08f, 0.10f, 0.14f, 0.72f);
+            colors.highlightedColor = UiTokens.HudBuilderHighlight;
+            colors.pressedColor = UiTokens.HudBuilderPressed;
+            colors.disabledColor = UiTokens.HudBuilderDisabled;
             button.colors = colors;
             if (activeUiFrameSprite != null)
             {

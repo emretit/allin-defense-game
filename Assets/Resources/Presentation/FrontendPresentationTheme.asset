@@ -12,17 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b71ac4eff184040dbbc0d73eecc0fa31, type: 3}
   m_Name: FrontendPresentationTheme
   m_EditorClassIdentifier: DefenderChronicles.Runtime::DefenderChronicles.Presentation.FrontendPresentationTheme
-  night: {r: 0.024, g: 0.063, b: 0.125, a: 1}
-  nightDeep: {r: 0.008, g: 0.02, b: 0.04, a: 1}
+  night: {r: 0.023529412, g: 0.0627451, b: 0.1254902, a: 1}
+  nightDeep: {r: 0.007843138, g: 0.019607844, b: 0.039215688, a: 1}
   defenderBlue: {r: 0.031, g: 0.216, b: 0.522, a: 1}
-  moonEdge: {r: 0.608, g: 0.796, b: 1, a: 1}
-  commandGold: {r: 0.949, g: 0.722, b: 0.294, a: 1}
+  moonEdge: {r: 0.60784316, g: 0.79607844, b: 1, a: 1}
+  commandGold: {r: 0.9490196, g: 0.72156864, b: 0.29411766, a: 1}
   roadEarth: {r: 0.545, g: 0.416, b: 0.29, a: 1}
-  enemyRed: {r: 0.698, g: 0.227, b: 0.18, a: 1}
-  textPrimary: {r: 0.957, g: 0.98, b: 1, a: 1}
-  textMuted: {r: 0.647, g: 0.733, b: 0.8, a: 1}
-  panel: {r: 0.018, g: 0.043, b: 0.078, a: 0.94}
-  panelRaised: {r: 0.035, g: 0.082, b: 0.133, a: 0.96}
+  enemyRed: {r: 0.9372549, g: 0.41568628, b: 0.30980393, a: 1}
+  textPrimary: {r: 0.95686275, g: 0.98039216, b: 1, a: 1}
+  textMuted: {r: 0.64705884, g: 0.73333335, b: 0.8, a: 1}
+  panel: {r: 0.03137255, g: 0.05882353, b: 0.10980392, a: 0.9}
+  panelRaised: {r: 0.03529412, g: 0.07058824, b: 0.13333334, a: 0.94}
   fadeDuration: 0.18
   slideDuration: 0.22
   reducedMotionDuration: 0.1

@@ -37,15 +37,15 @@ namespace DefenderChronicles.UI
             shade.transform.SetParent(root.transform, false);
             var rect = (RectTransform)shade.transform;
             rect.anchorMin = Vector2.zero; rect.anchorMax = Vector2.one; rect.sizeDelta = Vector2.zero;
-            shade.GetComponent<Image>().color = new Color(0.018f, 0.032f, 0.052f);
+            shade.GetComponent<Image>().color = UiTokens.LoadingSurface;
             var text = new GameObject("Status", typeof(RectTransform), typeof(TextMeshProUGUI));
             text.transform.SetParent(shade.transform, false);
             rect = (RectTransform)text.transform;
             rect.anchorMin = new Vector2(.1f, .35f); rect.anchorMax = new Vector2(.9f, .65f); rect.sizeDelta = Vector2.zero;
             instance.label = text.GetComponent<TextMeshProUGUI>();
-            instance.label.font = font; instance.label.fontSize = 38;
+            instance.label.font = font; instance.label.fontSize = UiTokens.TypeSubheading;
             instance.label.alignment = TextAlignmentOptions.Center;
-            instance.label.color = new Color(0.92f, 0.76f, 0.42f);
+            instance.label.color = UiTokens.Gold;
             SetStatus(GameLocalization.Text("Savaş alanı hazırlanıyor…", "Preparing the battlefield…"));
         }
 

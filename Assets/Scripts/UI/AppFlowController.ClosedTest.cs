@@ -41,7 +41,7 @@ namespace DefenderChronicles.UI
                     var accept = CreateButton("Confirm Import", modal.transform, GameLocalization.Text("AKTAR", "IMPORT"), new Vector2(340,130), theme.commandGold,
                         () => { progress.ImportGuestProgress(); RefreshProfile(); importGuestButton.gameObject.SetActive(progress.CanImportGuest); Destroy(modal); });
                     SetRect(accept.GetComponent<RectTransform>(), new Vector2(-180,-135), new Vector2(340,130), Center(), Center());
-                    var cancel = CreateButton("Cancel Import", modal.transform, GameLocalization.Text("İPTAL", "CANCEL"), new Vector2(340,130), theme.night, () => Destroy(modal));
+                    var cancel = CreateButton("Cancel Import", modal.transform, FrontendCopy.Cancel, new Vector2(340,130), theme.night, () => Destroy(modal));
                     SetRect(cancel.GetComponent<RectTransform>(), new Vector2(180,-135), new Vector2(340,130), Center(), Center());
                     modal.transform.SetAsLastSibling();
                 });
