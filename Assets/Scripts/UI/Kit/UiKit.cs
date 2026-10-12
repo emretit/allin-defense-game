@@ -77,8 +77,20 @@ namespace AllinDefense.UI.Kit
             Size(rect).ignoreLayout = true;
             var image = rect.gameObject.AddComponent<Image>();
             image.sprite = sprite; image.type = sprite != null && sprite.border != Vector4.zero ? Image.Type.Sliced : Image.Type.Simple;
+            if (sprite == Assets.pill) rect.gameObject.AddComponent<UiPillShape>();
             image.color = color; image.raycastTarget = false;
             return image;
+        }
+
+        public static void SetHorizontalFill(Image image, float fraction)
+        {
+            fraction = Mathf.Clamp01(fraction);
+            image.fillAmount = fraction;
+            image.type = Image.Type.Sliced;
+            image.rectTransform.anchorMin = Vector2.zero;
+            image.rectTransform.anchorMax = new Vector2(fraction, 1);
+            image.rectTransform.offsetMin = image.rectTransform.offsetMax = Vector2.zero;
+            image.enabled = fraction > 0;
         }
 
         public RectTransform Surface(Transform parent, string id, float radius = UiTokens.RadiusCard, bool vertical = true)
@@ -103,7 +115,7 @@ namespace AllinDefense.UI.Kit
             var outline = body.gameObject.AddComponent<Outline>();
             outline.effectDistance = Vector2.one * UiTokens.HairlineWidth;
             outline.useGraphicAlpha = false;
-            body.gameObject.AddComponent<Mask>().showMaskGraphic = true;
+            if (variant != UiButtonVariant.Gold) body.gameObject.AddComponent<Mask>().showMaskGraphic = true;
             var gradient = Decoration(body.transform, root.name + ".Gradient",
                 variant == UiButtonVariant.Gold ? Assets.goldGradient : Assets.verticalGradient, UiTokens.White);
             var ring = Decoration(root, root.name + ".ReadyRing", Assets.cooldownRing, UiTokens.Gold);
@@ -145,7 +157,10 @@ namespace AllinDefense.UI.Kit
         {
             if (icon == null) throw new ArgumentNullException(nameof(icon));
             var button = Button(parent, id, "", UiButtonVariant.Glass, icon, null, clicked, verticalContent);
-            button.GetComponent<UiVisualState>().Surface.sprite = pill ? Assets.pill : Assets.filledCircle;
+            var surface = button.GetComponent<UiVisualState>().Surface;
+            surface.sprite = pill ? Assets.pill : Assets.filledCircle;
+            surface.type = pill ? Image.Type.Sliced : Image.Type.Simple;
+            if (pill) surface.gameObject.AddComponent<UiPillShape>();
             button.GetComponent<UiVisualState>().SetCircular(!pill);
             button.GetComponent<UiVisualState>().Icon.GetComponent<UiProportionalIcon>().Configure(button.GetComponent<UiPointSize>());
             Size((RectTransform)button.transform, UiMetrics.MinTouchPt, UiMetrics.MinTouchPt);
@@ -191,6 +206,7 @@ namespace AllinDefense.UI.Kit
             var track = Node(root, id + ".Track");
             Size(track, UiMetrics.AbilityPt * 2, UiTokens.Space1, 1);
             var background = track.gameObject.AddComponent<Image>(); background.sprite = Assets.pill; background.type = Image.Type.Sliced;
+            track.gameObject.AddComponent<UiPillShape>();
             background.color = UiTokens.HairlineStrong;
             var fill = Decoration(track, id + ".Fill", Assets.pill, UiTokens.Gold);
             var thumb = Decoration(track, id + ".Thumb", Assets.filledCircle, UiTokens.GoldHigh);
@@ -224,8 +240,9 @@ namespace AllinDefense.UI.Kit
             {
                 var track = Node(root, id + "." + i); Size(track, UiTokens.Space4, UiTokens.Space1, 1);
                 var bg = track.gameObject.AddComponent<Image>(); bg.sprite = Assets.pill; bg.type = Image.Type.Sliced; bg.color = UiTokens.HairlineStrong; bg.raycastTarget = false;
+                track.gameObject.AddComponent<UiPillShape>();
                 fills[i] = Decoration(track, id + ".Fill." + i, Assets.pill, UiTokens.Gold);
-                fills[i].type = Image.Type.Filled; fills[i].fillMethod = Image.FillMethod.Horizontal;
+                fills[i].type = Image.Type.Sliced;
             }
             var control = root.gameObject.AddComponent<UiProgressSegments>(); control.Configure(fills); return control;
         }

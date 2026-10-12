@@ -12,7 +12,7 @@ namespace AllinDefense.UI.Kit
         public void SetProgress(float completedSegments)
         {
             Progress = Mathf.Clamp(completedSegments, 0, Count);
-            for (int i = 0; i < Count; i++) fills[i].fillAmount = Mathf.Clamp01(Progress - i);
+            for (int i = 0; i < Count; i++) UiKit.SetHorizontalFill(fills[i], Mathf.Clamp01(Progress - i));
         }
     }
 }

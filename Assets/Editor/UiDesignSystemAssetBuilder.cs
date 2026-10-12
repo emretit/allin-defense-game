@@ -70,11 +70,13 @@ namespace AllinDefense.Editor
             // Stretch vertically, with no vertical 9-slice borders, to preserve the gradient.
             set.verticalGradient = WriteSprite("VerticalGradient", 0,
                 (x, y) => UiTokens.WithAlpha(Color.white, .07f * Mathf.Clamp01((y / (Size - 1f) - .55f) / .45f)));
-            set.goldGradient = WriteSprite("GoldGradient", 0, (x, y) =>
+            set.goldGradient = WriteSprite("GoldGradient", UiTokens.RadiusMedium + 2, (x, y) =>
             {
                 float t = y / (Size - 1f);
-                return t < .55f ? Color.Lerp(UiTokens.GoldLow, UiTokens.Gold, t / .55f)
+                Color color = t < .55f ? Color.Lerp(UiTokens.GoldLow, UiTokens.Gold, t / .55f)
                     : Color.Lerp(UiTokens.Gold, UiTokens.GoldHigh, (t - .55f) / .45f);
+                color.a = Coverage(RoundedDistance(x, y, 64, UiTokens.RadiusMedium));
+                return color;
             });
             set.filledCircle = WriteSprite("FilledCircle", 0, (x, y) =>
                 UiTokens.WithAlpha(Color.white, Coverage(Radius(x, y) - 62f)));

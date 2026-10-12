@@ -247,8 +247,11 @@ namespace AllinDefense.Presentation
             preview.localScale = scale;
             Place(message, new Vector2(metrics.SafeCenterX, metrics.SafeMinY), new Vector2(.5f, 0), new Vector2(-24 / points.x, 10 / points.y), new Vector2(Mathf.Min(280, width - 330), 36));
             message.localScale = scale;
-            Place(RequireRect(bottomBar, "AbilityCooldown"), Vector2.zero, Vector2.zero, new Vector2(8, 4), new Vector2(74, 102));
-            Place(RequireRect(bottomBar, "Hero"), Vector2.zero, Vector2.zero, new Vector2(90, 8), new Vector2(92, 18));
+            var messageChrome = RequireRect("MessageChrome");
+            Place(messageChrome, message.anchorMin, message.pivot, message.anchoredPosition - new Vector2(0, 4 / points.y), message.sizeDelta + new Vector2(20, 8));
+            messageChrome.localScale = scale;
+            Place(RequireRect(bottomBar, "AbilityCooldown"), Vector2.zero, Vector2.zero, new Vector2(8, 20), new Vector2(74, 102));
+            Place(RequireRect(bottomBar, "Hero"), Vector2.zero, Vector2.zero, new Vector2(4, 2), new Vector2(82, 18));
             Place(RequireRect(bottomBar, "NextWave"), new Vector2(1, 0), new Vector2(1, 0), new Vector2(-8, 8), new Vector2(208, 54));
             foreach (string path in new[] { "PauseOverlay", "MapConfirmation" })
             {

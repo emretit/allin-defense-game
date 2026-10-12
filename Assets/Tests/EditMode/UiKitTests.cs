@@ -63,6 +63,27 @@ namespace AllinDefense.Tests
             Assert.That(card.GetComponentInChildren<Outline>().effectDistance, Is.EqualTo(Vector2.one * UiTokens.HairlineWidth));
             foreach (UiState state in Enum.GetValues(typeof(UiState))) { card.GetComponent<UiVisualState>().SetState(state); Assert.That(card.GetComponent<UiVisualState>().State, Is.EqualTo(state)); }
         }
+        [Test] public void PillAndRoundedSurfacesKeepSlicedBordersAndCircularCaps()
+        {
+            var stat = kit.StatPill(root.transform, "pill.shape", kit.Assets.iconSell, 100);
+            var rect = (RectTransform)stat.transform;
+            rect.sizeDelta = new Vector2(180, 44);
+            LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
+            var surface = stat.GetComponent<UiVisualState>().Surface;
+            Assert.That(surface.type, Is.EqualTo(Image.Type.Sliced));
+            Assert.That(surface.sprite.border.x, Is.GreaterThan(0));
+            Assert.That(surface.pixelsPerUnitMultiplier, Is.EqualTo(128f / 44).Within(.01f));
+            kit.Button(root.transform, "rounded.shape", "CTA", UiButtonVariant.Gold);
+            kit.IconButton(root.transform, "speed.shape", kit.Assets.iconPause, pill: true);
+            kit.ProgressSegments(root.transform, "progress.shape", 3).SetProgress(1.5f);
+            foreach (var image in root.GetComponentsInChildren<Image>(true).Where(image =>
+                image.sprite == kit.Assets.pill || image.sprite == kit.Assets.roundedMedium))
+            {
+                Assert.That(image.type, Is.EqualTo(Image.Type.Sliced), image.name);
+                Assert.That(image.sprite.border.x, Is.GreaterThan(0), image.name);
+            }
+        }
+
         [Test] public void IconButtonHasCircularShapeAnd44PointMinimum()
         {
             var button = kit.IconButton(root.transform, "pause", kit.Assets.iconPause);
@@ -122,7 +143,7 @@ namespace AllinDefense.Tests
         [Test] public void ProgressSegmentsFillCompleteAndPartialWaves()
         {
             var progress = kit.ProgressSegments(root.transform, "wave", 7); progress.SetProgress(2.5f);
-            var fills = progress.GetComponentsInChildren<Image>().Where(i => i.type == Image.Type.Filled).ToArray();
+            var fills = progress.GetComponentsInChildren<Image>().Where(i => i.name.StartsWith("wave.Fill.")).ToArray();
             Assert.That(fills.Select(i => i.fillAmount), Is.EqualTo(new[] { 1f, 1f, .5f, 0, 0, 0, 0 }));
             progress.SetProgress(100); Assert.That(progress.Progress, Is.EqualTo(7));
         }

@@ -1346,7 +1346,7 @@ namespace AllinDefense.Editor
             kit.Text(boss, "BossHealth", "", 12);
             var track = kit.Decoration(boss, "BossTrack", kit.Assets.pill, UiTokens.HairlineStrong);
             var fill = kit.Decoration(track.transform, "BossFill", kit.Assets.pill, UiTokens.Danger);
-            fill.type = Image.Type.Filled; fill.fillMethod = Image.FillMethod.Horizontal;
+            fill.type = Image.Type.Sliced;
             foreach (var fraction in new[] { .33f, .66f })
             {
                 var notch = kit.Decoration(track.transform, fraction < .5f ? "Notch33" : "Notch66", null, UiTokens.TextPrimary);
@@ -1362,6 +1362,8 @@ namespace AllinDefense.Editor
             kit.IconButton(top, "Pause", kit.Assets.iconPause);
             var next = kit.Chip(root.transform, "Preview", "", 12);
             kit.Icon(next, "EnemyIcon", kit.Assets.iconEnemy, 18).transform.SetSiblingIndex(1);
+            var messageBacking = kit.Decoration(root.transform, "MessageChrome", kit.Assets.roundedSmall, UiTokens.KitSurface);
+            messageBacking.gameObject.SetActive(false);
             var message = kit.Text(root.transform, "Message", "", 13);
             message.alignment = TextAlignmentOptions.Center;
             message.textWrappingMode = TextWrappingModes.Normal;
@@ -1373,6 +1375,17 @@ namespace AllinDefense.Editor
             var action = ability.GetComponentInChildren<UnityEngine.UI.Button>();
             action.name = "Ability"; UiId.Assign(action.transform, "Ability");
             action.GetComponent<UiPointSize>().Configure(74);
+            var portrait = action.GetComponent<UiVisualState>().Icon;
+            var portraitMask = UiKit.Node(portrait.transform.parent, "PortraitMask");
+            portraitMask.SetSiblingIndex(portrait.transform.GetSiblingIndex());
+            var maskImage = portraitMask.gameObject.AddComponent<Image>();
+            maskImage.sprite = kit.Assets.filledCircle;
+            maskImage.raycastTarget = false;
+            portraitMask.gameObject.AddComponent<Mask>().showMaskGraphic = false;
+            UiKit.Size(portraitMask, 44, 44);
+            portrait.transform.SetParent(portraitMask, false);
+            UnityEngine.Object.DestroyImmediate(portrait.GetComponent<UiProportionalIcon>());
+            UiKit.Stretch(portrait.rectTransform);
             foreach (var text in ability.GetComponentsInChildren<TMP_Text>(true)) text.fontSize = 12;
             var heroName = kit.Text(bottom, "Hero", "", 12);
             heroName.alignment = TextAlignmentOptions.Center;

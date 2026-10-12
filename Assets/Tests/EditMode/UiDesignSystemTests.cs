@@ -167,7 +167,7 @@ namespace AllinDefense.Tests
             // Imported atlas caches can still contain the old ten sprites until the target is packed.
             SpriteAtlasUtility.PackAtlases(new[] { atlas }, EditorUserBuildSettings.activeBuildTarget);
             var sprites = new[] { (set.roundedSmall, 12f), (set.roundedMedium, 16f), (set.roundedCard, 22f),
-                (set.pill, 63f), (set.softShadow, 46f), (set.verticalGradient, 0f), (set.goldGradient, 0f),
+                (set.pill, 63f), (set.softShadow, 46f), (set.verticalGradient, 0f), (set.goldGradient, 16f),
                 (set.filledCircle, 0f), (set.cooldownRing, 0f) };
             foreach (var pair in sprites)
             {
@@ -220,6 +220,7 @@ namespace AllinDefense.Tests
             });
             WithPixels(Set.goldGradient, image =>
             {
+                Assert.That(image.GetPixel(0, 0).a, Is.Zero);
                 Assert.That(image.GetPixel(64, 127), Is.EqualTo(UiTokens.GoldHigh).Using(ColorComparer));
                 Assert.That(image.GetPixel(64, 0), Is.EqualTo(UiTokens.GoldLow).Using(ColorComparer));
             });

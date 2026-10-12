@@ -136,7 +136,7 @@ namespace AllinDefense.Presentation
             {
                 bossName.text = FrontendCopy.BossName.Value;
                 bossHealth.text = $"{boss.Health}/{boss.MaxHealth}";
-                bossFill.fillAmount = (float)boss.Health / Mathf.Max(1, boss.MaxHealth);
+                UiKit.SetHorizontalFill(bossFill, (float)boss.Health / Mathf.Max(1, boss.MaxHealth));
                 if (boss != shownBoss)
                 {
                     var motion = bossBar.GetComponent<UiMotion>() ?? bossBar.AddComponent<UiMotion>();

@@ -417,6 +417,7 @@ namespace AllinDefense.Presentation
             speedLabel = speedButton.GetComponentInChildren<TMP_Text>(true);
             previewText = Find<TMP_Text>("Preview/Preview.Label");
             messageText = Find<TMP_Text>("Message");
+            messageChromeImage = Find<Image>("MessageChrome");
             archerButton = Find<Button>("BottomBar/Archer");
             barracksButton = Find<Button>("BottomBar/Barracks");
             mageButton = Find<Button>("BottomBar/Mage");

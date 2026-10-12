@@ -104,6 +104,13 @@ namespace AllinDefense.UI
             }
             yield return MeasureAcceptance("first-battle", true, () => LaunchCampaignLevel(1));
             yield return CaptureAcceptance("battle");
+            FrontendPreferences.Language = GameLanguage.Turkish;
+            AcceptanceSet("tutorialStep", -1);
+            AcceptanceInvoke("RefreshFirstBattleGuide");
+            yield return CaptureAcceptance("battle-Turkish");
+            FrontendPreferences.Language = GameLanguage.English;
+            AcceptanceSet("tutorialStep", -1);
+            AcceptanceInvoke("RefreshFirstBattleGuide");
             var hud = session.GetComponentInChildren<DefenderHudController>();
             AcceptanceInvoke("SelectSlot", session.GetComponentsInChildren<GreyboxOutpostSlot>().First(slot => slot.Index == 0));
             yield return CaptureAcceptance("battle-build-menu");
