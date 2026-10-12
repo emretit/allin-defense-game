@@ -378,6 +378,94 @@ namespace DefenderChronicles.Tests
             Assert.That(reference.path[^1], Is.EqualTo(new Vector3(24f, 0f, 9f)));
         }
 
+        [TestCase(1)]
+        [TestCase(10)]
+        [TestCase(14)]
+        [TestCase(24)]
+        [TestCase(43)]
+        public void CampaignDecorationLeavesSlotFootprintsClear(int levelNumber)
+        {
+            RuntimeCampaignLevel level = CampaignLevelFactory.Create(levelNumber);
+            DefenderPresentationCatalog catalog = Resources.Load<DefenderPresentationCatalog>("Presentation/DefenderPresentationCatalog");
+            Assert.That(catalog, Is.Not.Null);
+            GameObject environment = Object.Instantiate(catalog.environmentPrefab);
+            try
+            {
+                environment.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+                Renderer[] renderers = environment.GetComponentsInChildren<Renderer>(true);
+                bool[] enabledBefore = renderers.Select(renderer => renderer.enabled).ToArray();
+                DefenderBattlefieldDressing.HideObstructingDecoration(environment.transform, level.outpostSlots, level.routes);
+                int visible = 0;
+                for (int index = 0; index < renderers.Length; index++)
+                {
+                    Renderer renderer = renderers[index];
+                    if (!DefenderBattlefieldDressing.IsDecoration(renderer.transform, environment.transform))
+                    {
+                        Assert.That(renderer.enabled, Is.EqualTo(enabledBefore[index]), "Terrain and backdrop must be preserved.");
+                        continue;
+                    }
+                    if (!renderer.enabled) continue;
+                    visible++;
+                    foreach (Vector3 slot in level.outpostSlots)
+                    {
+                        Vector3 nearest = renderer.bounds.ClosestPoint(slot);
+                        float distance = Vector2.Distance(new Vector2(slot.x, slot.z), new Vector2(nearest.x, nearest.z));
+                        Assert.That(distance, Is.GreaterThan(1.1f), $"Level {levelNumber}: {renderer.name} covers a slot footprint.");
+                    }
+                    Assert.That(DefenderBattlefieldDressing.DecorationOverlapsGameplay(renderer.bounds, null, level.routes),
+                        Is.False, $"Level {levelNumber}: {renderer.name} covers a road corridor.");
+                }
+                Assert.That(visible, Is.GreaterThan(0), "Decoration outside gameplay corridors should remain visible.");
+            }
+            finally { Object.DestroyImmediate(environment); }
+        }
+
+        [Test]
+        public void DecorationClearanceUsesFootprintsAndRouteCrossings()
+        {
+            var tree = new Bounds(new Vector3(3f, 8f, 0f), new Vector3(4f, 6f, 2f));
+            Assert.That(DefenderBattlefieldDressing.DecorationOverlapsGameplay(tree,
+                new[] { Vector3.zero }, null), Is.True, "Overhanging foliage matters even if the pivot is distant.");
+            Assert.That(DefenderBattlefieldDressing.DecorationOverlapsGameplay(tree,
+                new[] { new Vector3(-0.2f, 0f, 0f) }, null), Is.False);
+            var routes = new[] { new[] { new Vector3(-10f, 0f, 0f), new Vector3(10f, 0f, 0f) } };
+            Assert.That(DefenderBattlefieldDressing.DecorationOverlapsGameplay(tree, null, routes), Is.True);
+            var distantRock = new Bounds(new Vector3(0f, 2f, 4f), Vector3.one);
+            Assert.That(DefenderBattlefieldDressing.DecorationOverlapsGameplay(distantRock, null, routes), Is.False);
+        }
+
+        [TestCase(1f, 0.88f, true)]
+        [TestCase(1f, -0.88f, false)]
+        [TestCase(3f, 0.88f, false)]
+        public void BranchJunctionOpensOnlyItsIncomingPrimaryBorder(float x, float z, bool omitted)
+        {
+            var primary = new[] { Vector3.zero, new Vector3(6f, 0f, 0f) };
+            var branch = new[] { new Vector3(1f, 0f, 5f), new Vector3(1f, 0f, 0f), primary[1] };
+            Assert.That(DefenderBattlefieldDressing.ShouldOmitRoadBorder(new Vector3(x, 0f, z), 0,
+                new[] { primary, branch }), Is.EqualTo(omitted));
+            Assert.That(DefenderBattlefieldDressing.ShouldOmitRoadBorder(new Vector3(1.88f, 0f, 0.5f), 1,
+                new[] { primary, branch }), Is.True, "Branch borders must stop at the primary pavement.");
+            Assert.That(DefenderBattlefieldDressing.ShouldOmitRoadBorder(new Vector3(1.88f, 0f, 2f), 1,
+                new[] { primary, branch }), Is.False);
+        }
+
+        [Test]
+        public void CampaignOutpostSlotsPreserveGateAndKeepClearance()
+        {
+            for (int levelNumber = 1; levelNumber <= CampaignCatalog.LevelCount; levelNumber++)
+            {
+                RuntimeCampaignLevel level = CampaignLevelFactory.Create(levelNumber);
+                foreach (Vector3 slot in level.outpostSlots)
+                foreach (Vector3[] route in level.routes)
+                {
+                    Assert.That(Vector2.Distance(new Vector2(slot.x, slot.z), new Vector2(route[0].x, route[0].z)),
+                        Is.GreaterThanOrEqualTo(2f), $"Level {levelNumber}: slot is too close to an entrance.");
+                    Assert.That(Vector2.Distance(new Vector2(slot.x, slot.z), new Vector2(route[^1].x, route[^1].z)),
+                        Is.GreaterThanOrEqualTo(3f), $"Level {levelNumber}: slot is too close to the keep.");
+                }
+            }
+        }
+
         [Test]
         public void CampaignOutpostSlotsStayClearOfEveryRoute()
         {
@@ -391,6 +479,8 @@ namespace DefenderChronicles.Tests
                         .Min(segment => DistanceToSegment2D(runtime.outpostSlots[slotIndex], segment.from, segment.to));
                     Assert.That(clearance, Is.GreaterThanOrEqualTo(1.55f),
                         $"Level {levelNumber} slot {slotIndex + 1} overlaps a road (clearance {clearance:0.00}).");
+                    Assert.That(clearance, Is.LessThanOrEqualTo(CampaignLevelFactory.SlotRouteClearanceMax),
+                        $"Level {levelNumber} slot {slotIndex + 1} floats away from the road edge (clearance {clearance:0.00}).");
                 }
 
                 for (int first = 0; first < runtime.outpostSlots.Length; first++)
@@ -398,6 +488,48 @@ namespace DefenderChronicles.Tests
                     Assert.That(Vector3.Distance(runtime.outpostSlots[first], runtime.outpostSlots[second]),
                         Is.GreaterThanOrEqualTo(1.2f),
                         $"Level {levelNumber} slots {first + 1} and {second + 1} overlap.");
+            }
+        }
+
+        [Test]
+        public void CampaignBranchRoutesJoinPrimaryOnceWithoutOverlap()
+        {
+            for (int levelNumber = 1; levelNumber <= CampaignCatalog.LevelCount; levelNumber++)
+            {
+                RuntimeCampaignLevel runtime = CampaignLevelFactory.Create(levelNumber);
+                Vector3[] primary = runtime.routes[0];
+                for (int routeIndex = 1; routeIndex < runtime.routes.Length; routeIndex++)
+                {
+                    Vector3[] branch = runtime.routes[routeIndex];
+                    int owned = CampaignLevelFactory.OwnedBranchSegments(branch, primary);
+                    Assert.That(owned, Is.GreaterThan(0), $"Level {levelNumber} route {routeIndex + 1} starts on the primary road.");
+                    for (int index = owned; index < branch.Length; index++)
+                        Assert.That(CampaignLevelFactory.DistanceToRoute(branch[index], primary), Is.LessThan(0.05f),
+                            $"Level {levelNumber} route {routeIndex + 1} leaves the primary road after joining it.");
+
+                    // Everything before the perpendicular approach into the junction keeps clear of other roads.
+                    float ownedLength = 0f;
+                    for (int segment = 0; segment < owned; segment++)
+                        ownedLength += Vector3.Distance(branch[segment], branch[segment + 1]);
+                    float walked = 0f;
+                    for (int segment = 0; segment < owned; segment++)
+                    {
+                        float length = Vector3.Distance(branch[segment], branch[segment + 1]);
+                        for (float along = 0f; along <= length; along += 0.25f)
+                        {
+                            if (walked + along > ownedLength - CampaignLevelFactory.RouteSeparation - 0.1f) break;
+                            Vector3 point = Vector3.Lerp(branch[segment], branch[segment + 1], along / length);
+                            for (int other = 0; other < runtime.routes.Length; other++)
+                            {
+                                if (other == routeIndex) continue;
+                                float clearance = CampaignLevelFactory.DistanceToRoute(point, runtime.routes[other]);
+                                Assert.That(clearance, Is.GreaterThanOrEqualTo(CampaignLevelFactory.RouteSeparation - 0.01f),
+                                    $"Level {levelNumber} route {routeIndex + 1} overlaps route {other + 1} (clearance {clearance:0.00}).");
+                            }
+                        }
+                        walked += length;
+                    }
+                }
             }
         }
 

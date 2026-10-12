@@ -549,6 +549,62 @@ namespace DefenderChronicles.Tests
         }
 
         [UnityTest]
+        public IEnumerator CampaignSceneryKeepsSlotsClearAndBranchesMatchPrimaryRoad()
+        {
+            var catalog = Resources.Load<DefenderPresentationCatalog>("Presentation/DefenderPresentationCatalog");
+            Assert.That(catalog, Is.Not.Null);
+            foreach (int levelNumber in new[] { 1, 10, 14, 24, 43 })
+            {
+                var root = new GameObject($"Map Visual Regression {levelNumber}");
+                var session = root.AddComponent<GameSessionController>();
+                session.ConfigurePresentation(catalog);
+                session.SetCampaignLevel(levelNumber);
+                session.Initialize();
+                yield return null;
+                Data.RuntimeCampaignLevel level = Data.CampaignLevelFactory.Create(levelNumber);
+                Transform world = root.transform.Find("Greenwatch Valley");
+                Assert.That(world, Is.Not.Null);
+                Vector3[] slots = Enumerable.Range(1, 8).Select(index =>
+                    GameObject.Find($"Outpost Slot {index}").transform.position).ToArray();
+                foreach (Renderer renderer in world.GetComponentsInChildren<Renderer>(true))
+                    if (renderer.enabled && renderer.gameObject.activeInHierarchy &&
+                        DefenderBattlefieldDressing.IsDecoration(renderer.transform, world))
+                        Assert.That(DefenderBattlefieldDressing.DecorationOverlapsGameplay(renderer.bounds, slots, level.routes),
+                            Is.False, $"Level {levelNumber}: {renderer.name} obscures a slot or route.");
+
+                Transform dressing = world.Find("Scenic Battlefield Dressing");
+                Renderer primary = dressing.Find("Road Organic Earth Surface").GetComponent<Renderer>();
+                MeshFilter[] branches = dressing.GetComponentsInChildren<MeshFilter>()
+                    .Where(filter => filter.name == "Road Surface").ToArray();
+                Assert.That(branches.Length, Is.EqualTo(level.routes.Length - 1));
+                Renderer primaryEdge = dressing.Find("Road Hand-Laid Stone Borders").GetComponent<Renderer>();
+                Assert.That(dressing.GetComponentsInChildren<Renderer>().Count(renderer => renderer.name == "Road Edge"),
+                    Is.EqualTo(branches.Length));
+                foreach (Renderer edge in dressing.GetComponentsInChildren<Renderer>().Where(renderer => renderer.name == "Road Edge"))
+                    Assert.That(edge.sharedMaterial, Is.SameAs(primaryEdge.sharedMaterial));
+                for (int index = 0; index < branches.Length; index++)
+                {
+                    MeshFilter branch = branches[index];
+                    Assert.That(branch.GetComponent<Renderer>().sharedMaterial, Is.SameAs(primary.sharedMaterial));
+                    Assert.That(branch.GetComponent<Collider>(), Is.Null);
+                    Vector3[] route = level.routes[index + 1];
+                    int owned = Data.CampaignLevelFactory.OwnedBranchSegments(route, level.path);
+                    Vector3[] prefix = route.Take(owned + 1).ToArray();
+                    Assert.That(branch.sharedMesh.normals.All(normal => Vector3.Dot(normal, Vector3.up) > 0.999f),
+                        Is.True, "Branch pavement must receive the same lighting as the primary road.");
+                    foreach (Vector3 vertex in branch.sharedMesh.vertices)
+                    {
+                        Assert.That(vertex.y, Is.InRange(0.081f, 0.085f), "Branch pavement must share primary surface height.");
+                        Assert.That(Data.CampaignLevelFactory.DistanceToRoute(vertex, prefix), Is.LessThan(1.5f),
+                            "Branch dressing must not redraw the shared primary tail.");
+                    }
+                }
+                Object.Destroy(root);
+                yield return null;
+            }
+        }
+
+        [UnityTest]
         public IEnumerator ProductionPresentationAllowsBuildUpgradeSellOnEveryFixedSlot()
         {
             var catalog = Resources.Load<DefenderPresentationCatalog>("Presentation/DefenderPresentationCatalog");

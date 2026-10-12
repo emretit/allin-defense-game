@@ -58,10 +58,10 @@ namespace DefenderChronicles.Core
         private static readonly string[] SpeedLabels = { "1x", "2x", "4x", "8x" };
         private static readonly Vector3[] OutpostSlotPositions =
         {
-            new(2f, 0.15f, 0f), new(2f, 0.15f, 5f),
-            new(6.5f, 0.15f, 6f), new(8f, 0.15f, 10.5f),
-            new(12f, 0.15f, 1.2f), new(14f, 0.15f, 6f),
-            new(18f, 0.15f, 6.8f), new(20.5f, 0.15f, 11.2f)
+            new(2f, 0.15f, 0.42f), new(2.42f, 0.15f, 5f),
+            new(6.5f, 0.15f, 6.42f), new(8f, 0.15f, 9.58f),
+            new(12f, 0.15f, 1.92f), new(14.42f, 0.15f, 6f),
+            new(17.58f, 0.15f, 6.8f), new(20.5f, 0.15f, 10.58f)
         };
 
         public static GameSessionController Instance { get; private set; }
@@ -543,7 +543,9 @@ namespace DefenderChronicles.Core
             for (int routeIndex = 0; routeIndex < routePaths.Count; routeIndex++)
             {
                 IReadOnlyList<Vector3> route = routePaths[routeIndex];
-                int segmentCount = routeIndex == 0 ? route.Count - 1 : route.Count - 2;
+                int segmentCount = routeIndex == 0
+                    ? route.Count - 1
+                    : CampaignLevelFactory.OwnedBranchSegments(route, routePaths[0]);
                 for (int i = 0; i < segmentCount; i++)
                     CreateRoadSegment(route[i], route[i + 1], world);
             }
@@ -603,10 +605,12 @@ namespace DefenderChronicles.Core
                         renderer.enabled = false;
                 }
             }
+            DefenderBattlefieldDressing.HideObstructingDecoration(environment != null ? environment.transform : null,
+                activeOutpostSlotPositions, routePaths);
             yield return null;
             BuildBiomeDressing(world);
             yield return null;
-            DefenderBattlefieldDressing.Install(world, presentationCatalog, gameCamera, path, ActiveBiomeIndex);
+            DefenderBattlefieldDressing.Install(world, presentationCatalog, gameCamera, path, ActiveBiomeIndex, routePaths);
             yield return null;
 
             CreateRouteOverlays(world);
@@ -665,8 +669,7 @@ namespace DefenderChronicles.Core
             for (int routeIndex = 1; routeIndex < routePaths.Count; routeIndex++)
             {
                 IReadOnlyList<Vector3> route = routePaths[routeIndex];
-                for (int i = 0; i < route.Count - 2; i++)
-                    CreateRoadSegment(route[i], route[i + 1], world);
+                // Scenic dressing already draws only this branch's owned prefix.
                 Vector3 entry = route[0] + Vector3.up * 0.12f;
                 GameObject marker = CreatePrimitive($"Enemy Entrance {routeIndex + 1}", PrimitiveType.Cylinder,
                     entry, new Vector3(0.72f, 0.08f, 0.72f),
@@ -696,8 +699,11 @@ namespace DefenderChronicles.Core
                     ? new Vector3(0.42f + (i % 3) * 0.15f, height, 0.42f)
                     : new Vector3(0.48f, height, 0.48f);
                 Color color = Color.Lerp(palette.groundColor, palette.accentColor, 0.28f + (i % 3) * 0.08f);
-                CreatePrimitive($"{names[ActiveBiomeIndex]} Landmark {i + 1}", propType,
+                GameObject prop = CreatePrimitive($"{names[ActiveBiomeIndex]} Landmark {i + 1}", propType,
                     new Vector3(x, height * 0.5f, z), scale, color, world, false);
+                Renderer renderer = prop.GetComponent<Renderer>();
+                if (DefenderBattlefieldDressing.DecorationOverlapsGameplay(renderer.bounds, activeOutpostSlotPositions, routePaths))
+                    renderer.enabled = false;
             }
         }
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using DefenderChronicles.Data;
 using UnityEngine;
@@ -21,9 +22,12 @@ namespace DefenderChronicles.Presentation
         private readonly List<Material> runtimeMaterials = new();
         private IReadOnlyList<Vector3> roadPath = DefaultRoadPath;
         private int biomeIndex;
+        private IReadOnlyList<Vector3[]> routes;
+        private readonly List<IReadOnlyList<Vector3>> ownedRoadPaths = new();
 
         public static DefenderBattlefieldDressing Install(Transform parent, DefenderPresentationCatalog catalog,
-            Camera camera, IReadOnlyList<Vector3> path = null, int biomeIndex = 0)
+            Camera camera, IReadOnlyList<Vector3> path = null, int biomeIndex = 0,
+            IReadOnlyList<Vector3[]> routes = null)
         {
             if (parent == null || catalog == null) return null;
             Transform existing = parent.Find("Scenic Battlefield Dressing");
@@ -34,8 +38,116 @@ namespace DefenderChronicles.Presentation
             DefenderBattlefieldDressing dressing = root.AddComponent<DefenderBattlefieldDressing>();
             if (path != null && path.Count > 1) dressing.roadPath = path;
             dressing.biomeIndex = Mathf.Clamp(biomeIndex, 0, 4);
+            dressing.routes = routes;
+            dressing.ownedRoadPaths.Add(dressing.roadPath);
+            if (routes != null)
+                for (int index = 1; index < routes.Count; index++)
+                {
+                    int count = CampaignLevelFactory.OwnedBranchSegments(routes[index], dressing.roadPath);
+                    if (count == 0) continue;
+                    var owned = new Vector3[count + 1];
+                    for (int point = 0; point <= count; point++) owned[point] = routes[index][point];
+                    dressing.ownedRoadPaths.Add(owned);
+                }
             dressing.Build(catalog, camera);
             return dressing;
+        }
+
+        public const float DecorationSlotClearance = 1.1f;
+        public const float DecorationRouteClearance = 1.2f;
+
+        public static bool IsDecoration(Transform piece, Transform root)
+        {
+            bool decoration = false;
+            for (Transform current = piece; current != null && current != root; current = current.parent)
+            {
+                string name = current.name;
+                if (Contains(name, "Ground") || Contains(name, "Ridge") || Contains(name, "Backdrop"))
+                    return false;
+                decoration |= Contains(name, "Tree") || Contains(name, "Pine") || Contains(name, "Rock") ||
+                              Contains(name, "Bush") || Contains(name, "Shrub") || Contains(name, "Landmark");
+            }
+            return decoration;
+        }
+
+        private static bool Contains(string name, string token) =>
+            name.IndexOf(token, StringComparison.OrdinalIgnoreCase) >= 0;
+
+        /// <summary>Tests the visible footprint, including overhanging foliage, on the gameplay XZ plane.</summary>
+        public static bool DecorationOverlapsGameplay(Bounds bounds, IReadOnlyList<Vector3> slots,
+            IReadOnlyList<Vector3[]> routes)
+        {
+            if (slots != null)
+                foreach (Vector3 slot in slots)
+                {
+                    Vector3 nearest = bounds.ClosestPoint(slot);
+                    Vector2 delta = new(nearest.x - slot.x, nearest.z - slot.z);
+                    if (delta.sqrMagnitude <= DecorationSlotClearance * DecorationSlotClearance) return true;
+                }
+            if (routes != null)
+            {
+                // A padded footprint is conservative at corners and also catches a route crossing
+                // a large prop whose pivot and bounding-box centre are both outside the corridor.
+                Vector2 min = new(bounds.min.x - DecorationRouteClearance, bounds.min.z - DecorationRouteClearance);
+                Vector2 max = new(bounds.max.x + DecorationRouteClearance, bounds.max.z + DecorationRouteClearance);
+                foreach (IReadOnlyList<Vector3> route in routes)
+                    for (int segment = 0; segment < route.Count - 1; segment++)
+                        if (SegmentIntersectsFootprint(route[segment], route[segment + 1], min, max)) return true;
+            }
+            return false;
+        }
+
+        private static bool SegmentIntersectsFootprint(Vector3 from, Vector3 to, Vector2 min, Vector2 max)
+        {
+            float enter = 0f;
+            float exit = 1f;
+            for (int axis = 0; axis < 2; axis++)
+            {
+                float origin = axis == 0 ? from.x : from.z;
+                float delta = axis == 0 ? to.x - from.x : to.z - from.z;
+                if (Mathf.Abs(delta) < 0.0001f)
+                {
+                    if (origin < min[axis] || origin > max[axis]) return false;
+                    continue;
+                }
+                float a = (min[axis] - origin) / delta;
+                float b = (max[axis] - origin) / delta;
+                enter = Mathf.Max(enter, Mathf.Min(a, b));
+                exit = Mathf.Min(exit, Mathf.Max(a, b));
+                if (enter > exit) return false;
+            }
+            return true;
+        }
+
+        public static void HideObstructingDecoration(Transform root, IReadOnlyList<Vector3> slots,
+            IReadOnlyList<Vector3[]> routes)
+        {
+            if (root == null) return;
+            foreach (Renderer renderer in root.GetComponentsInChildren<Renderer>(true))
+                if (IsDecoration(renderer.transform, root) && DecorationOverlapsGameplay(renderer.bounds, slots, routes))
+                    renderer.enabled = false;
+        }
+
+        /// <summary>Open the incoming side of a T junction while preserving its opposite primary border.</summary>
+        public static bool ShouldOmitRoadBorder(Vector3 center, int routeIndex, IReadOnlyList<Vector3[]> routes)
+        {
+            if (routes == null || routes.Count < 2) return false;
+            if (routeIndex > 0 && CampaignLevelFactory.DistanceToRoute(center, routes[0]) < 1.12f) return true;
+            for (int index = 1; index < routes.Count; index++)
+            {
+                if (index == routeIndex) continue;
+                IReadOnlyList<Vector3> branch = routes[index];
+                int owned = CampaignLevelFactory.OwnedBranchSegments(branch, routes[0]);
+                if (owned == 0) continue;
+                Vector3 junction = branch[owned];
+                Vector3 outward = (branch[owned - 1] - junction).normalized;
+                Vector3 offset = center - junction;
+                float incomingSide = Vector3.Dot(offset, outward);
+                float across = Mathf.Abs(offset.x * outward.z - offset.z * outward.x);
+                // Include the stone half-length so the lip cannot protrude into the mouth.
+                if (incomingSide > 0.05f && incomingSide < 1.3f && across < 1.12f) return true;
+            }
+            return false;
         }
 
         private void Build(DefenderPresentationCatalog catalog, Camera camera)
@@ -145,54 +257,60 @@ namespace DefenderChronicles.Presentation
             var vertices = new List<Vector3>(420);
             var triangles = new List<int>(720);
             int sample = 0;
-            for (int segment = 0; segment < roadPath.Count - 1; segment++)
+            for (int routeIndex = 0; routeIndex < ownedRoadPaths.Count; routeIndex++)
             {
-                Vector3 from = roadPath[segment];
-                Vector3 to = roadPath[segment + 1];
-                Vector3 direction = (to - from).normalized;
-                Vector3 side = new(-direction.z, 0f, direction.x);
-                float length = Vector3.Distance(from, to);
-                int count = Mathf.Max(2, Mathf.CeilToInt(length / 0.72f));
-                int start = vertices.Count;
-
-                for (int i = 0; i <= count; i++)
+                IReadOnlyList<Vector3> roadPath = ownedRoadPaths[routeIndex];
+                vertices.Clear();
+                triangles.Clear();
+                for (int segment = 0; segment < roadPath.Count - 1; segment++)
                 {
-                    float t = i / (float)count;
-                    float endpointFeather = Mathf.Sin(t * Mathf.PI);
-                    Vector3 center = Vector3.Lerp(from - direction * 0.22f, to + direction * 0.22f, t);
-                    float wobble = Mathf.Sin((sample + i) * 1.83f) * 0.055f +
-                                   Mathf.Cos((sample + i) * 3.17f) * 0.025f;
-                    center += side * wobble * endpointFeather;
-                    center.y = 0.082f;
+                    Vector3 from = roadPath[segment];
+                    Vector3 to = roadPath[segment + 1];
+                    Vector3 direction = (to - from).normalized;
+                    Vector3 side = new(-direction.z, 0f, direction.x);
+                    float length = Vector3.Distance(from, to);
+                    int count = Mathf.Max(2, Mathf.CeilToInt(length / 0.72f));
+                    int start = vertices.Count;
 
-                    float width = 0.78f + Mathf.Sin((sample + i) * 2.41f) * 0.055f;
-                    float leftNoise = 1f + Mathf.Sin((sample + i) * 4.13f) * 0.045f;
-                    float rightNoise = 1f + Mathf.Cos((sample + i) * 3.77f) * 0.045f;
-                    vertices.Add(center - side * width * leftNoise);
-                    vertices.Add(center + side * width * rightNoise);
+                    for (int i = 0; i <= count; i++)
+                    {
+                        float t = i / (float)count;
+                        float endpointFeather = Mathf.Sin(t * Mathf.PI);
+                        Vector3 center = Vector3.Lerp(from - direction * 0.22f, to + direction * 0.22f, t);
+                        float wobble = Mathf.Sin((sample + i) * 1.83f) * 0.055f +
+                                       Mathf.Cos((sample + i) * 3.17f) * 0.025f;
+                        center += side * wobble * endpointFeather;
+                        center.y = 0.082f;
+
+                        float width = 0.78f + Mathf.Sin((sample + i) * 2.41f) * 0.055f;
+                        float leftNoise = 1f + Mathf.Sin((sample + i) * 4.13f) * 0.045f;
+                        float rightNoise = 1f + Mathf.Cos((sample + i) * 3.77f) * 0.045f;
+                        vertices.Add(center - side * width * leftNoise);
+                        vertices.Add(center + side * width * rightNoise);
+                    }
+
+                    for (int i = 0; i < count; i++)
+                    {
+                        int a = start + i * 2;
+                        triangles.Add(a);
+                        triangles.Add(a + 3);
+                        triangles.Add(a + 1);
+                        triangles.Add(a);
+                        triangles.Add(a + 2);
+                        triangles.Add(a + 3);
+                    }
+
+                    sample += count + 1;
                 }
 
-                for (int i = 0; i < count; i++)
-                {
-                    int a = start + i * 2;
-                    triangles.Add(a);
-                    triangles.Add(a + 3);
-                    triangles.Add(a + 1);
-                    triangles.Add(a);
-                    triangles.Add(a + 2);
-                    triangles.Add(a + 3);
-                }
+                for (int i = 1; i < roadPath.Count - 1; i++)
+                    AddGroundPatch(vertices, triangles, roadPath[i] + Vector3.up * 0.084f, 1.06f, 0.84f,
+                        i % 2 == 0 ? 0f : 90f, i * 0.61f);
 
-                sample += count + 1;
+                AddGroundPatch(vertices, triangles, roadPath[0] + Vector3.up * 0.084f, 0.96f, 0.70f, 0f, 0.13f);
+                AddGroundPatch(vertices, triangles, roadPath[^1] + Vector3.up * 0.084f, 1.14f, 0.82f, 0f, 1.47f);
+                CreateMeshObject(routeIndex == 0 ? "Road Organic Earth Surface" : "Road Surface", vertices, triangles, surface, true);
             }
-
-            for (int i = 1; i < roadPath.Count - 1; i++)
-                AddGroundPatch(vertices, triangles, roadPath[i] + Vector3.up * 0.084f, 1.06f, 0.84f,
-                    i % 2 == 0 ? 0f : 90f, i * 0.61f);
-
-            AddGroundPatch(vertices, triangles, roadPath[0] + Vector3.up * 0.084f, 0.96f, 0.70f, 0f, 0.13f);
-            AddGroundPatch(vertices, triangles, roadPath[^1] + Vector3.up * 0.084f, 1.14f, 0.82f, 0f, 1.47f);
-            CreateMeshObject("Road Organic Earth Surface", vertices, triangles, surface, true);
         }
 
         private void CreateRoadCobbles()
@@ -201,62 +319,74 @@ namespace DefenderChronicles.Presentation
             var vertices = new List<Vector3>(8000);
             var triangles = new List<int>(12000);
             int stoneIndex = 0;
-            for (int segment = 0; segment < roadPath.Count - 1; segment++)
+            for (int routeIndex = 0; routeIndex < ownedRoadPaths.Count; routeIndex++)
             {
-                Vector3 from = roadPath[segment];
-                Vector3 to = roadPath[segment + 1];
-                Vector3 direction = (to - from).normalized;
-                Vector3 side = new(-direction.z, 0f, direction.x);
-                float length = Vector3.Distance(from, to);
-                float distance = -0.08f;
-                while (distance <= length + 0.18f)
+                IReadOnlyList<Vector3> roadPath = ownedRoadPaths[routeIndex];
+                vertices.Clear();
+                triangles.Clear();
+                for (int segment = 0; segment < roadPath.Count - 1; segment++)
                 {
-                    float clampedDistance = Mathf.Clamp(distance, 0f, length);
-                    Vector3 along = from + direction * clampedDistance;
+                    Vector3 from = roadPath[segment];
+                    Vector3 to = roadPath[segment + 1];
+                    Vector3 direction = (to - from).normalized;
+                    Vector3 side = new(-direction.z, 0f, direction.x);
+                    float length = Vector3.Distance(from, to);
+                    float distance = -0.08f;
+                    while (distance <= length + 0.18f)
+                    {
+                        float clampedDistance = Mathf.Clamp(distance, 0f, length);
+                        Vector3 along = from + direction * clampedDistance;
+                        for (int edge = -1; edge <= 1; edge += 2)
+                        {
+                            bool nearEndpoint = clampedDistance < 0.55f || clampedDistance > length - 0.55f;
+                            float omitSignal = Mathf.Sin((stoneIndex + segment * 13) * 2.37f + edge * 0.51f);
+                            if (!nearEndpoint && omitSignal > 0.82f)
+                            {
+                                stoneIndex++;
+                                continue;
+                            }
+
+                            float wave = Mathf.Sin((stoneIndex + 1) * 4.73f);
+                            float scatter = Mathf.Cos((stoneIndex + 5) * 3.09f);
+                            Vector3 center = along + side * (edge * (0.88f + wave * 0.055f));
+                            center += direction * scatter * 0.085f;
+                            center.y = 0.105f + Mathf.Abs(wave) * 0.018f;
+                            float yaw = Mathf.Atan2(direction.z, direction.x) + wave * 0.16f + scatter * 0.055f;
+                            if (ShouldOmitRoadBorder(center, routeIndex, routes))
+                            {
+                                stoneIndex++;
+                                continue;
+                            }
+                            AddCobble(vertices, triangles, center, yaw,
+                                new Vector3(0.36f + wave * 0.075f, 0.13f + Mathf.Abs(wave) * 0.04f,
+                                    0.23f - wave * 0.035f));
+                            stoneIndex++;
+                        }
+                        distance += 0.54f + Mathf.Abs(Mathf.Sin((stoneIndex + segment) * 1.91f)) * 0.22f;
+                    }
+                }
+
+                for (int i = 1; i < roadPath.Count - 1; i++)
+                {
+                    Vector3 from = roadPath[i - 1];
+                    Vector3 corner = roadPath[i];
+                    Vector3 to = roadPath[i + 1];
+                    Vector3 incoming = (corner - from).normalized;
+                    Vector3 outgoing = (to - corner).normalized;
+                    Vector3 sideA = new(-incoming.z, 0f, incoming.x);
+                    Vector3 sideB = new(-outgoing.z, 0f, outgoing.x);
                     for (int edge = -1; edge <= 1; edge += 2)
                     {
-                        bool nearEndpoint = clampedDistance < 0.55f || clampedDistance > length - 0.55f;
-                        float omitSignal = Mathf.Sin((stoneIndex + segment * 13) * 2.37f + edge * 0.51f);
-                        if (!nearEndpoint && omitSignal > 0.82f)
-                        {
-                            stoneIndex++;
-                            continue;
-                        }
-
-                        float wave = Mathf.Sin((stoneIndex + 1) * 4.73f);
-                        float scatter = Mathf.Cos((stoneIndex + 5) * 3.09f);
-                        Vector3 center = along + side * (edge * (0.88f + wave * 0.055f));
-                        center += direction * scatter * 0.085f;
-                        center.y = 0.105f + Mathf.Abs(wave) * 0.018f;
-                        float yaw = Mathf.Atan2(direction.z, direction.x) + wave * 0.16f + scatter * 0.055f;
+                        float yaw = Mathf.Atan2((incoming + outgoing).z, (incoming + outgoing).x) + edge * 0.13f;
+                        Vector3 center = corner + (sideA + sideB).normalized * edge * 0.88f;
+                        center.y = 0.125f;
+                        if (ShouldOmitRoadBorder(center, routeIndex, routes)) continue;
                         AddCobble(vertices, triangles, center, yaw,
-                            new Vector3(0.36f + wave * 0.075f, 0.13f + Mathf.Abs(wave) * 0.04f,
-                                0.23f - wave * 0.035f));
-                        stoneIndex++;
+                            new Vector3(0.52f, 0.17f, 0.34f));
                     }
-                    distance += 0.54f + Mathf.Abs(Mathf.Sin((stoneIndex + segment) * 1.91f)) * 0.22f;
                 }
+                CreateMeshObject(routeIndex == 0 ? "Road Hand-Laid Stone Borders" : "Road Edge", vertices, triangles, cobble, true);
             }
-
-            for (int i = 1; i < roadPath.Count - 1; i++)
-            {
-                Vector3 from = roadPath[i - 1];
-                Vector3 corner = roadPath[i];
-                Vector3 to = roadPath[i + 1];
-                Vector3 incoming = (corner - from).normalized;
-                Vector3 outgoing = (to - corner).normalized;
-                Vector3 sideA = new(-incoming.z, 0f, incoming.x);
-                Vector3 sideB = new(-outgoing.z, 0f, outgoing.x);
-                for (int edge = -1; edge <= 1; edge += 2)
-                {
-                    float yaw = Mathf.Atan2((incoming + outgoing).z, (incoming + outgoing).x) + edge * 0.13f;
-                    Vector3 center = corner + (sideA + sideB).normalized * edge * 0.88f;
-                    center.y = 0.125f;
-                    AddCobble(vertices, triangles, center, yaw,
-                        new Vector3(0.52f, 0.17f, 0.34f));
-                }
-            }
-            CreateMeshObject("Road Hand-Laid Stone Borders", vertices, triangles, cobble, true);
         }
 
         private void CreateRoadWear(Material source)
@@ -265,24 +395,30 @@ namespace DefenderChronicles.Presentation
             var vertices = new List<Vector3>();
             var triangles = new List<int>();
             int patch = 0;
-            for (int segment = 0; segment < roadPath.Count - 1; segment++)
+            for (int routeIndex = 0; routeIndex < ownedRoadPaths.Count; routeIndex++)
             {
-                Vector3 from = roadPath[segment];
-                Vector3 to = roadPath[segment + 1];
-                Vector3 direction = (to - from).normalized;
-                Vector3 side = new(-direction.z, 0f, direction.x);
-                float length = Vector3.Distance(from, to);
-                for (float distance = 0.85f; distance < length - 0.35f; distance += 1.35f)
+                IReadOnlyList<Vector3> roadPath = ownedRoadPaths[routeIndex];
+                vertices.Clear();
+                triangles.Clear();
+                for (int segment = 0; segment < roadPath.Count - 1; segment++)
                 {
-                    float wave = Mathf.Sin((patch + 2) * 3.71f);
-                    Vector3 center = from + direction * distance + side * wave * 0.22f;
-                    center.y = 0.153f;
-                    AddFlatPatch(vertices, triangles, center, direction, side,
-                        0.17f + Mathf.Abs(wave) * 0.11f, 0.035f + Mathf.Abs(wave) * 0.025f);
-                    patch++;
+                    Vector3 from = roadPath[segment];
+                    Vector3 to = roadPath[segment + 1];
+                    Vector3 direction = (to - from).normalized;
+                    Vector3 side = new(-direction.z, 0f, direction.x);
+                    float length = Vector3.Distance(from, to);
+                    for (float distance = 0.85f; distance < length - 0.35f; distance += 1.35f)
+                    {
+                        float wave = Mathf.Sin((patch + 2) * 3.71f);
+                        Vector3 center = from + direction * distance + side * wave * 0.22f;
+                        center.y = 0.153f;
+                        AddFlatPatch(vertices, triangles, center, direction, side,
+                            0.17f + Mathf.Abs(wave) * 0.11f, 0.035f + Mathf.Abs(wave) * 0.025f);
+                        patch++;
+                    }
                 }
+                CreateMeshObject("Road Travel Wear", vertices, triangles, wear, false);
             }
-            CreateMeshObject("Road Travel Wear", vertices, triangles, wear, false);
         }
 
         private void CreateNightBackdrop(Camera camera)
@@ -367,7 +503,7 @@ namespace DefenderChronicles.Presentation
             mesh.SetVertices(vertices);
             mesh.SetTriangles(triangles, 0);
             mesh.RecalculateNormals();
-            if (objectName == "Road Organic Earth Surface")
+            if (objectName == "Road Organic Earth Surface" || objectName == "Road Surface")
             {
                 var normals = new List<Vector3>(vertices.Count);
                 for (int i = 0; i < vertices.Count; i++) normals.Add(Vector3.up);

@@ -1,7 +1,7 @@
 # Defender Chronicles — Map, Route and Outpost System
 
 Durum: Faz 2 ilk uygulama ve tasarim notu
-Son guncelleme: 2026-10-11
+Son guncelleme: 2026-10-12
 
 ## Koordinat Standardi
 
@@ -25,6 +25,15 @@ Eski prototip uygulamasi:
 - Her segmentin uzunlugu hesaplanir.
 - Kumulatif mesafe tutulur.
 - Dusmanin hedef waypoint index'i ve pozisyonu ile gercek rota ilerlemesi hesaplanir.
+
+Cok girisli bolumler (14-50):
+
+- Ek giris rotalari ana yola tek bir dik T-kavsakta baglanir; kavsaktan sonra ana yolu paylasir. Kavsak noktasi ana yolun %18-80'i arasinda, koselere en az 1,4 unit uzakta secilir.
+- Kavsaga dik giris bacagi disinda yan yol, diger tum yollarin merkez cizgisinden en az 2,4 unit uzak kalir (yol kenari 1,92 genis; ~0,5 unit cim kalir). Girisler birbirinden en az 3,5 unit uzaktadir.
+- Once sol kenar girisleri denenir; sol kenar doluysa giris ust (z 10,9) veya alt (z 0,6) kenardan gelir.
+- Yalniz kavsaga kadar olan parca yeni yol olarak cizilir (`CampaignLevelFactory.OwnedBranchSegments`). Kural `CampaignBranchRoutesJoinPrimaryOnceWithoutOverlap` testiyle 50 bolumde dogrulanir.
+
+- Ana yol ve yan yollar ayni organik kaplama, renk, yukseklik, genislik ve tas kenar uretimini kullanir. Yan yollarda yalniz `OwnedBranchSegments` on eki cizilir; T agzinda giris tarafindaki ana kenar taslari ve ana kaplamaya giren yan kenar taslari atlanir, karsi ana kenar korunur.
 
 Gelecek genisleme:
 
@@ -50,6 +59,8 @@ Canli uygulama (`Assets/Scripts/Data/CampaignLevelFactory.cs`, `Assets/Scripts/C
 
 - `GreyboxOutpostSlot` ve `GameSessionController` sabit slotlari yonetir; `OutpostSlotManager` / `TowerPlacer` eski prototiptir.
 - Ilk bolge haritalarinda 8 stratejik slot vardir.
+- Slotlar yol kenarina oturur: slot merkezi en yakin rota merkez cizgisinden 1,58-1,95 unit uzaktadir; hedef uzaklik 1,58 unit'tir (1,62 denemesinde kalan ince aralik icin son gorsel kalibrasyon) (yol kenar taslari ~1,07, platform yaricapi 0,625; mevcut test alt siniri 1,55 korunur). Kaleye 3, dusman kapisina 2 unit'ten fazla yaklasmaz. Uretici once esit dagilima yakin aday arar, sikisan virajlarda pencereyi genisletir (`CampaignLevelFactory.BuildOutpostSlots`); `CampaignOutpostSlotsStayClearOfEveryRoute` iki siniri da 50 bolumde dogrular.
+- Environment agac/cam/kaya/cali renderer ayak izi herhangi bir slot merkezine 1,1 unit veya rota merkez cizgisine 1,2 unit yaklasirsa renderer gizlenir. Biome dekor proplari da ayni kurala tabidir; zemin/sirt/backdrop bu dekor filtresinin disindadir. Buyuk foliage ayak izleri ve rota kesismeleri de hesaba katilir.
 - Kurulum secili bos slota yapilir; serbest grid kurulumu yoktur.
 - Karakol satilinca slot tekrar bosalir.
 

@@ -82,8 +82,8 @@ namespace DefenderChronicles.Data
 
         private static readonly Vector3[] ExistingOutposts =
         {
-            new(2f, 0.15f, 0f), new(2f, 0.15f, 5f), new(6.5f, 0.15f, 6f), new(8f, 0.15f, 10.5f),
-            new(12f, 0.15f, 1.2f), new(14f, 0.15f, 6f), new(18f, 0.15f, 6.8f), new(20.5f, 0.15f, 11.2f)
+            new(2f, 0.15f, 0.42f), new(2.42f, 0.15f, 5f), new(6.5f, 0.15f, 6.42f), new(8f, 0.15f, 9.58f),
+            new(12f, 0.15f, 1.92f), new(14.42f, 0.15f, 6f), new(17.58f, 0.15f, 6.8f), new(20.5f, 0.15f, 10.58f)
         };
 
         public static RuntimeCampaignLevel Create(int levelNumber)
@@ -153,7 +153,22 @@ namespace DefenderChronicles.Data
             };
         }
 
+        // Branch and slot searches are deterministic but not free; build each level's map once.
+        private static readonly Dictionary<int, MapDefinition> MapCache = new();
+
         private static MapDefinition BuildMap(CampaignLevelDefinition level)
+        {
+            if (!MapCache.TryGetValue(level.number, out MapDefinition map))
+                MapCache[level.number] = map = GenerateMap(level);
+            return new MapDefinition
+            {
+                id = map.id, biomeIndex = map.biomeIndex, entranceCount = map.entranceCount,
+                routes = CloneRoutes(map.routes), outpostSlots = (Vector3[])map.outpostSlots.Clone(),
+                guardianPosition = map.guardianPosition
+            };
+        }
+
+        private static MapDefinition GenerateMap(CampaignLevelDefinition level)
         {
             bool existingFinal = level.number == 10;
             int entranceCount = level.number >= 43 ? 3 : level.number >= 14 ? 2 : 1;
@@ -187,20 +202,193 @@ namespace DefenderChronicles.Data
             if (entranceCount == 1) return new[] { primary };
 
             var routes = new List<Vector3[]>(entranceCount) { primary };
-            float mergeZ = Mathf.Clamp(primary[Mathf.Max(1, primary.Length - 3)].z, 3.2f, 8.2f);
             for (int route = 1; route < entranceCount; route++)
-            {
-                float entryZ = route == 1 ? 10.8f : 0.65f;
-                float bendZ = route == 1 ? 8.9f : 2.4f;
-                Vector3[] branch =
-                {
-                    new(-2f, 0f, entryZ), new(2.5f + route * 0.6f, 0f, entryZ),
-                    new(5.0f + route * 0.6f, 0f, bendZ), new(10f, 0f, bendZ),
-                    new(14f, 0f, mergeZ), new(primary[^2].x, 0f, primary[^2].z), primary[^1]
-                };
-                routes.Add(branch);
-            }
+                routes.Add(BuildBranchRoute(primary, routes, route) ??
+                           throw new InvalidOperationException($"Level {level.number} has no clear branch route {route + 1}."));
             return routes.ToArray();
+        }
+
+        // A branch keeps this centreline distance from every other road (road edges are 1.92 wide,
+        // so ~0.5 grass remains) and joins the primary route once, at a perpendicular T-junction.
+        public const float RouteSeparation = 2.4f;
+        private const float RouteMinZ = 0.8f;
+        private const float RouteMaxZ = 10.7f;
+        private const float RouteMaxX = 22.8f;
+        private const float LeftEntryX = -2f;
+        private const float TopEntryZ = 10.9f;
+        private const float BottomEntryZ = 0.6f;
+        private const float EntrySeparation = 3.5f;
+        private const float JunctionCornerClearance = 1.4f;
+        private const float JunctionApproach = RouteSeparation + 0.3f;
+
+        // Searches T-junction points along the primary route and orthogonal left-edge paths into them,
+        // falling back to top/bottom edge entrances when the left edge is crowded.
+        private static Vector3[] BuildBranchRoute(Vector3[] primary, List<Vector3[]> routes, int routeIndex)
+        {
+            float primaryLength = PathLength(primary, 0);
+            float targetFraction = 0.42f + 0.18f * (routeIndex - 1);
+            var path = new List<Vector3>(4);
+            List<Vector3> best = null;
+            int bestSegment = -1;
+            float bestScore = float.MinValue;
+
+            void Consider(int segment, float fraction, float penalty)
+            {
+                float length = PathLength(path, 0) + Vector3.Distance(path[^1], primary[segment + 1]) +
+                               PathLength(primary, segment + 1);
+                float score = -Mathf.Abs(fraction - targetFraction) * 4f - Mathf.Abs(length / primaryLength - 0.9f) * 3f -
+                              (path.Count - 2) * 0.4f - penalty;
+                if (score <= bestScore || !IsClearBranch(path, routes)) return;
+                bestScore = score;
+                best = new List<Vector3>(path);
+                bestSegment = segment;
+            }
+
+            float traversed = 0f;
+            for (int segment = 0; segment < primary.Length - 1; segment++)
+            {
+                Vector3 from = primary[segment];
+                Vector3 to = primary[segment + 1];
+                float segmentLength = Vector3.Distance(from, to);
+                bool horizontal = Mathf.Abs(to.z - from.z) < 0.0001f;
+                int steps = (int)(segmentLength / 0.5f);
+                for (int step = 1; step < steps; step++)
+                {
+                    float t = step / (float)steps;
+                    Vector3 merge = Vector3.Lerp(from, to, t);
+                    if (Mathf.Min(Vector3.Distance(merge, from), Vector3.Distance(merge, to)) < JunctionCornerClearance) continue;
+                    float fraction = (traversed + segmentLength * t) / primaryLength;
+                    if (fraction < 0.18f || fraction > 0.8f) continue;
+
+                    int rows = (int)((RouteMaxZ - RouteMinZ) / 0.2f);
+                    for (int row = 0; row <= rows + (horizontal ? 0 : 1); row++)
+                    {
+                        float entryZ = row <= rows ? RouteMinZ + row * 0.2f : merge.z;
+                        var entry = new Vector3(LeftEntryX, 0f, entryZ);
+                        if (horizontal)
+                        {
+                            if (Mathf.Abs(merge.z - entryZ) < 1.6f) continue;
+                            SetPath(path, entry, new Vector3(merge.x, 0f, entryZ), merge);
+                            Consider(segment, fraction, 0f);
+                            continue;
+                        }
+                        if (Mathf.Abs(entryZ - merge.z) < 0.000001f)
+                        {
+                            SetPath(path, entry, merge);
+                            Consider(segment, fraction, 0f);
+                        }
+                        if (Mathf.Abs(entryZ - merge.z) < 1f) continue;
+                        for (int column = 0; column < (int)(merge.x / 0.5f); column++)
+                        {
+                            float bendX = column * 0.5f;
+                            if (merge.x - bendX < 1.6f) continue;
+                            SetPath(path, entry, new Vector3(bendX, 0f, entryZ), new Vector3(bendX, 0f, merge.z), merge);
+                            Consider(segment, fraction, 0f);
+                        }
+                    }
+
+                    for (int edge = 0; edge < 2; edge++)
+                    {
+                        float edgeZ = edge == 0 ? TopEntryZ : BottomEntryZ;
+                        if (horizontal)
+                        {
+                            SetPath(path, new Vector3(merge.x, 0f, edgeZ), merge);
+                            Consider(segment, fraction, 0.6f);
+                            continue;
+                        }
+                        for (int column = 2; column < (int)(RouteMaxX / 0.5f); column++)
+                        {
+                            float entryX = column * 0.5f;
+                            if (Mathf.Abs(entryX - merge.x) < JunctionApproach) continue;
+                            SetPath(path, new Vector3(entryX, 0f, edgeZ), new Vector3(entryX, 0f, merge.z), merge);
+                            Consider(segment, fraction, 0.6f);
+                        }
+                    }
+                }
+                traversed += segmentLength;
+            }
+
+            if (best == null) return null;
+            for (int index = bestSegment + 1; index < primary.Length; index++) best.Add(primary[index]);
+            return best.ToArray();
+        }
+
+        private static void SetPath(List<Vector3> path, Vector3 a, Vector3 b)
+        {
+            path.Clear();
+            path.Add(a); path.Add(b);
+        }
+
+        private static void SetPath(List<Vector3> path, Vector3 a, Vector3 b, Vector3 c)
+        {
+            SetPath(path, a, b);
+            path.Add(c);
+        }
+
+        private static void SetPath(List<Vector3> path, Vector3 a, Vector3 b, Vector3 c, Vector3 d)
+        {
+            SetPath(path, a, b, c);
+            path.Add(d);
+        }
+
+        private static bool IsClearBranch(List<Vector3> path, List<Vector3[]> routes)
+        {
+            for (int index = 0; index < path.Count; index++)
+            {
+                Vector3 point = path[index];
+                float minZ = index == 0 ? BottomEntryZ : RouteMinZ;
+                float maxZ = index == 0 ? TopEntryZ : RouteMaxZ;
+                if (point.x < LeftEntryX - 0.01f || point.x > RouteMaxX + 0.01f ||
+                    point.z < minZ - 0.01f || point.z > maxZ + 0.01f) return false;
+            }
+            for (int route = 0; route < routes.Count; route++)
+                if (FlatDistance(path[0], routes[route][0]) < EntrySeparation) return false;
+            if (Vector3.Distance(path[^2], path[^1]) < JunctionApproach) return false;
+
+            // The final approach leg is perpendicular to the primary road, so only the part
+            // before it has to keep the full separation.
+            float clearLength = PathLength(path, 0) - (RouteSeparation + 0.1f);
+            float traversed = 0f;
+            for (int segment = 0; segment < path.Count - 1; segment++)
+            {
+                float length = Vector3.Distance(path[segment], path[segment + 1]);
+                int samples = Mathf.Max(1, (int)(length / 0.25f));
+                for (int sample = 0; sample <= samples; sample++)
+                {
+                    float t = sample / (float)samples;
+                    if (traversed + length * t > clearLength) return true;
+                    Vector3 point = Vector3.Lerp(path[segment], path[segment + 1], t);
+                    for (int route = 0; route < routes.Count; route++)
+                        if (DistanceToRoute(point, routes[route]) < RouteSeparation) return false;
+                }
+                traversed += length;
+            }
+            return true;
+        }
+
+        private static float PathLength(IReadOnlyList<Vector3> path, int startIndex)
+        {
+            float length = 0f;
+            for (int index = startIndex; index < path.Count - 1; index++)
+                length += Vector3.Distance(path[index], path[index + 1]);
+            return length;
+        }
+
+        /// <summary>Number of leading segments a branch route owns before it joins the primary road.</summary>
+        public static int OwnedBranchSegments(IReadOnlyList<Vector3> branch, IReadOnlyList<Vector3> primary)
+        {
+            for (int segment = 0; segment < branch.Count - 1; segment++)
+                if (DistanceToRoute(branch[segment], primary) < 0.05f && DistanceToRoute(branch[segment + 1], primary) < 0.05f)
+                    return segment;
+            return branch.Count - 1;
+        }
+
+        public static float DistanceToRoute(Vector3 point, IReadOnlyList<Vector3> route)
+        {
+            float minimum = float.MaxValue;
+            for (int segment = 0; segment < route.Count - 1; segment++)
+                minimum = Mathf.Min(minimum, DistanceToSegment(point, route[segment], route[segment + 1]));
+            return minimum;
         }
 
         private static WaveDefinition[] BuildProgressiveWaves(CampaignLevelDefinition level, int entranceCount)
@@ -281,6 +469,18 @@ namespace DefenderChronicles.Data
                 new SpawnGroupDefinition(EnemyArchetype.Boss, 1, 2f, 1f))
         };
 
+        // Slot centre distance from the nearest route centreline. The road border stones end
+        // ~1.07 units out and the platform radius is 0.625, so this band seats every
+        // platform against the road edge instead of out on the grass.
+        public const float SlotRouteClearanceMin = 1.58f;
+        public const float SlotRouteClearanceMax = 1.95f;
+        private const float SlotRouteClearanceIdeal = 1.58f;
+        private const float SlotPreferredSpacing = 2.6f;
+        private const float SlotCoverageRange = 4.2f;
+        private const float SlotKeepClearance = 3f;
+        private const float SlotGateClearance = 2f;
+        private static readonly float[] SlotEdgeOffsets = { SlotRouteClearanceIdeal, 1.62f, 1.68f };
+
         private static Vector3[] BuildOutpostSlots(IReadOnlyList<Vector3> path, IReadOnlyList<Vector3[]> routes)
         {
             var slots = new Vector3[8];
@@ -291,65 +491,106 @@ namespace DefenderChronicles.Data
             for (int slotIndex = 0; slotIndex < slots.Length; slotIndex++)
             {
                 float target = totalLength * Mathf.Lerp(0.12f, 0.88f, slotIndex / 7f);
-                float traversed = 0f;
-                for (int segment = 0; segment < path.Count - 1; segment++)
-                {
-                    Vector3 from = path[segment];
-                    Vector3 to = path[segment + 1];
-                    float length = Vector3.Distance(from, to);
-                    if (traversed + length < target)
-                    {
-                        traversed += length;
-                        continue;
-                    }
-
-                    float t = Mathf.Clamp01((target - traversed) / Mathf.Max(0.01f, length));
-                    Vector3 point = Vector3.Lerp(from, to, t);
-                    Vector3 direction = (to - from).normalized;
-                    Vector3 side = new(-direction.z, 0f, direction.x);
-                    // Sample a ring around the path point instead of assuming that one
-                    // perpendicular side is safe. At a tight bend the other segment can
-                    // run directly through that side, which used to put a slot on the road.
-                    float bestScore = float.MinValue;
-                    float fallbackScore = float.MinValue;
-                    Vector3 bestPoint = ClampSlot(point + side * 2.25f);
-                    Vector3 fallbackPoint = bestPoint;
-                    for (int radiusIndex = 0; radiusIndex < 4; radiusIndex++)
-                    {
-                        float radius = 2.1f + radiusIndex * 0.45f;
-                        for (int directionIndex = 0; directionIndex < 16; directionIndex++)
-                        {
-                            float angle = directionIndex * Mathf.PI * 2f / 16f;
-                            Vector3 candidate = ClampSlot(point + new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle)) * radius);
-                            float clearance = MinimumRouteDistance(candidate, routes);
-                            float minimumSpacing = float.MaxValue;
-                            for (int previous = 0; previous < slotIndex; previous++)
-                                minimumSpacing = Mathf.Min(minimumSpacing, Vector3.Distance(candidate, slots[previous]));
-                            float score = clearance + Mathf.Min(2f, minimumSpacing) * 0.5f;
-                            if (minimumSpacing > fallbackScore)
-                            {
-                                fallbackScore = minimumSpacing;
-                                fallbackPoint = candidate;
-                            }
-                            // Keep the platform footprint separate from an earlier one
-                            // whenever the map has room to do so.
-                            if (slotIndex > 0 && minimumSpacing < 1.2f) continue;
-                            if (score > bestScore)
-                            {
-                                bestScore = score;
-                                bestPoint = candidate;
-                            }
-                        }
-                    }
-                    if (bestScore == float.MinValue) bestPoint = fallbackPoint;
-                    point = bestPoint;
-                    point.y = 0.15f;
-                    slots[slotIndex] = point;
-                    break;
-                }
+                // Search close to the even spread first; widen the window and relax spacing
+                // only when bends or merging routes leave no road-edge spot nearby.
+                if (TryPickSlot(path, routes, slots, slotIndex, target, totalLength, 2f, 1.5f, out Vector3 slot) ||
+                    TryPickSlot(path, routes, slots, slotIndex, target, totalLength, 4f, 1.5f, out slot) ||
+                    TryPickSlot(path, routes, slots, slotIndex, target, totalLength, 6f, 1.3f, out slot) ||
+                    TryPickSlot(path, routes, slots, slotIndex, target, totalLength, totalLength, 1.2f, out slot))
+                    slots[slotIndex] = slot;
+                else
+                    throw new InvalidOperationException($"No road-edge outpost slot fits slot {slotIndex + 1}.");
             }
             return slots;
         }
+
+        private static bool TryPickSlot(IReadOnlyList<Vector3> path, IReadOnlyList<Vector3[]> routes, Vector3[] slots,
+            int slotIndex, float target, float totalLength, float window, float minimumSpacing, out Vector3 slot)
+        {
+            slot = default;
+            float bestScore = float.MinValue;
+            int steps = Mathf.CeilToInt(window / 0.25f);
+            for (int step = -steps; step <= steps; step++)
+            {
+                float shift = step * 0.25f;
+                Vector3 point = PointAlongPath(path, Mathf.Clamp(target + shift, 0.5f, totalLength - 0.5f), out Vector3 direction);
+                Vector3 side = new(-direction.z, 0f, direction.x);
+                for (int sign = -1; sign <= 1; sign += 2)
+                foreach (float offset in SlotEdgeOffsets)
+                {
+                    Vector3 candidate = ClampSlot(point + side * (offset * sign));
+                    float clearance = MinimumRouteDistance(candidate, routes);
+                    // Subtraction at world coordinates can round a valid 1.58 offset a few ulps below the boundary.
+                    if (clearance + 0.0001f < SlotRouteClearanceMin || clearance > SlotRouteClearanceMax) continue;
+                    if (IsNearRouteEnds(candidate, routes)) continue;
+                    float spacing = float.MaxValue;
+                    for (int previous = 0; previous < slotIndex; previous++)
+                        spacing = Mathf.Min(spacing, Vector3.Distance(candidate, slots[previous]));
+                    if (spacing < minimumSpacing) continue;
+                    float score = -Mathf.Abs(clearance - SlotRouteClearanceIdeal) * 3f
+                                  - Mathf.Abs(shift) * 0.35f
+                                  + RouteCoverage(candidate, routes) * 0.03f
+                                  - Mathf.Max(0f, SlotPreferredSpacing - spacing) * 3f;
+                    if (score <= bestScore) continue;
+                    bestScore = score;
+                    slot = candidate;
+                }
+            }
+            return bestScore > float.MinValue;
+        }
+
+        private static Vector3 PointAlongPath(IReadOnlyList<Vector3> path, float distance, out Vector3 direction)
+        {
+            float traversed = 0f;
+            for (int segment = 0; segment < path.Count - 1; segment++)
+            {
+                Vector3 from = path[segment];
+                Vector3 to = path[segment + 1];
+                float length = Vector3.Distance(from, to);
+                if (traversed + length >= distance || segment == path.Count - 2)
+                {
+                    direction = (to - from).normalized;
+                    return Vector3.Lerp(from, to, Mathf.Clamp01((distance - traversed) / Mathf.Max(0.01f, length)));
+                }
+                traversed += length;
+            }
+            direction = Vector3.right;
+            return path[^1];
+        }
+
+        private static bool IsNearRouteEnds(Vector3 point, IReadOnlyList<Vector3[]> routes)
+        {
+            for (int routeIndex = 0; routeIndex < routes.Count; routeIndex++)
+            {
+                Vector3[] route = routes[routeIndex];
+                if (FlatDistance(point, route[^1]) < SlotKeepClearance || FlatDistance(point, route[0]) < SlotGateClearance)
+                    return true;
+            }
+            return false;
+        }
+
+        // Route length a ranged outpost at this point could reach; nudges ties toward bends.
+        private static float RouteCoverage(Vector3 point, IReadOnlyList<Vector3[]> routes)
+        {
+            float covered = 0f;
+            for (int routeIndex = 0; routeIndex < routes.Count; routeIndex++)
+            {
+                Vector3[] route = routes[routeIndex];
+                for (int segment = 0; segment < route.Length - 1; segment++)
+                {
+                    float length = Vector3.Distance(route[segment], route[segment + 1]);
+                    int samples = Mathf.Max(1, (int)(length / 0.25f));
+                    for (int sample = 0; sample < samples; sample++)
+                    {
+                        Vector3 along = Vector3.Lerp(route[segment], route[segment + 1], (sample + 0.5f) / samples);
+                        if (FlatDistance(point, along) <= SlotCoverageRange) covered += length / samples;
+                    }
+                }
+            }
+            return covered;
+        }
+
+        private static float FlatDistance(Vector3 a, Vector3 b) => Vector2.Distance(new Vector2(a.x, a.z), new Vector2(b.x, b.z));
 
         private static Vector3 ClampSlot(Vector3 point)
         {
@@ -363,11 +604,7 @@ namespace DefenderChronicles.Data
         {
             float minimum = float.MaxValue;
             for (int routeIndex = 0; routeIndex < routes.Count; routeIndex++)
-            {
-                Vector3[] route = routes[routeIndex];
-                for (int segment = 0; segment < route.Length - 1; segment++)
-                    minimum = Mathf.Min(minimum, DistanceToSegment(point, route[segment], route[segment + 1]));
-            }
+                minimum = Mathf.Min(minimum, DistanceToRoute(point, routes[routeIndex]));
             return minimum;
         }
 
