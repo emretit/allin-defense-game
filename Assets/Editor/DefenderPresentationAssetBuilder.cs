@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using DefenderChronicles.Core;
-using DefenderChronicles.Data;
-using DefenderChronicles.Presentation;
-using DefenderChronicles.UI;
+using AllinDefense.Core;
+using AllinDefense.Data;
+using AllinDefense.Presentation;
+using AllinDefense.UI;
 using TMPro;
 using UnityEditor;
 using UnityEditor.Animations;
@@ -18,7 +18,7 @@ using UnityEngine.Rendering.Universal;
 using UnityEngine.TextCore.LowLevel;
 using UnityEngine.UI;
 
-namespace DefenderChronicles.Editor
+namespace AllinDefense.Editor
 {
     public static class DefenderPresentationAssetBuilder
     {
@@ -30,15 +30,15 @@ namespace DefenderChronicles.Editor
         private const string UiFramePath = "Assets/ThirdParty/Kenney/FantasyUiBorders/HudFrameBorder.png";
         private const string FrontendUiRoot = "Assets/Art/UI/Frontend";
         private const string BrandLogoPath =
-            "Assets/Resources/Presentation/Brand/DefenderChronicles-Logo-v2.png";
+            "Assets/Resources/Presentation/Brand/AllinDefense-Logo-v2.png";
         private const string BrandMarkPath =
-            "Assets/Resources/Presentation/Brand/DefenderChronicles-Mark-v2.png";
+            "Assets/Resources/Presentation/Brand/AllinDefense-Mark-v2.png";
         private const string BrandAppIconPath =
-            "Assets/Art/AppIcon/BrandV2/DefenderChronicles-AppIcon-v2-1024.png";
+            "Assets/Art/AppIcon/BrandV2/AllinDefense-AppIcon-v2-1024.png";
         private const string BrandLaunchPath = "Assets/Art/Brand/Launch/GreenwatchLaunch-v2.png";
         private static Sprite activeUiFrameSprite;
 
-        [MenuItem("Defender Chronicles/Build Frontend Presentation Assets")]
+        [MenuItem("ALLIN: Defense/Build Frontend Presentation Assets")]
         public static void BuildFrontendPresentationAssets()
         {
             Directory.CreateDirectory(GeneratedRoot);
@@ -66,10 +66,10 @@ namespace DefenderChronicles.Editor
                                 entry.assetName != "Greenwatch war table artwork" &&
                                 entry.assetName != "Medieval frontend panel" &&
                                 entry.assetName != "Medieval frontend button" &&
-                                entry.assetName != "Defender Chronicles V2 logo" &&
-                                entry.assetName != "Defender Chronicles V2 brand mark" &&
-                                entry.assetName != "Defender Chronicles V2 application icon" &&
-                                entry.assetName != "Defender Chronicles V2 launch artwork")
+                                entry.assetName != "ALLIN: Defense V2 logo" &&
+                                entry.assetName != "ALLIN: Defense V2 brand mark" &&
+                                entry.assetName != "ALLIN: Defense V2 application icon" &&
+                                entry.assetName != "ALLIN: Defense V2 launch artwork")
                 .ToList();
             entries.Add(Provenance("Cinzel SemiBold", "Assets/Art/Fonts/Cinzel-SemiBold.ttf",
                 AssetLicenseKind.OpenFontLicense, "https://github.com/google/fonts/tree/main/ofl/cinzel", "2026-08-25"));
@@ -80,17 +80,17 @@ namespace DefenderChronicles.Editor
                 "Assets/Resources/Presentation/Frontend/GreenwatchWarTable.png", AssetLicenseKind.OpenAIGenerated,
                 "OpenAI image generation / this project session", "2026-08-25"));
             entries.Add(Provenance("Medieval frontend panel", $"{FrontendUiRoot}/MedievalPanel.png",
-                AssetLicenseKind.Original, "Procedurally authored for Defender Chronicles", "2026-08-25"));
+                AssetLicenseKind.Original, "Procedurally authored for ALLIN: Defense", "2026-08-25"));
             entries.Add(Provenance("Medieval frontend button", $"{FrontendUiRoot}/MedievalButton.png",
-                AssetLicenseKind.Original, "Procedurally authored for Defender Chronicles", "2026-08-25"));
-            entries.Add(Provenance("Defender Chronicles V2 logo", BrandLogoPath, AssetLicenseKind.Original,
-                "Defender Chronicles vector brand system", "2026-08-25"));
-            entries.Add(Provenance("Defender Chronicles V2 brand mark", BrandMarkPath, AssetLicenseKind.Original,
-                "Defender Chronicles vector brand system", "2026-08-25"));
-            entries.Add(Provenance("Defender Chronicles V2 application icon", BrandAppIconPath,
-                AssetLicenseKind.Original, "Derived from the Defender Chronicles V2 brand mark", "2026-08-25"));
-            entries.Add(Provenance("Defender Chronicles V2 launch artwork", BrandLaunchPath,
-                AssetLicenseKind.Original, "Greenwatch artwork with the Defender Chronicles V2 logo", "2026-08-25"));
+                AssetLicenseKind.Original, "Procedurally authored for ALLIN: Defense", "2026-08-25"));
+            entries.Add(Provenance("ALLIN: Defense V2 logo", BrandLogoPath, AssetLicenseKind.Original,
+                "ALLIN: Defense vector brand system", "2026-08-25"));
+            entries.Add(Provenance("ALLIN: Defense V2 brand mark", BrandMarkPath, AssetLicenseKind.Original,
+                "ALLIN: Defense vector brand system", "2026-08-25"));
+            entries.Add(Provenance("ALLIN: Defense V2 application icon", BrandAppIconPath,
+                AssetLicenseKind.Original, "Derived from the ALLIN: Defense V2 brand mark", "2026-08-25"));
+            entries.Add(Provenance("ALLIN: Defense V2 launch artwork", BrandLaunchPath,
+                AssetLicenseKind.Original, "Greenwatch artwork with the ALLIN: Defense V2 logo", "2026-08-25"));
             catalog.provenance = entries.ToArray();
 
             EditorUtility.SetDirty(frontendTheme);
@@ -100,7 +100,7 @@ namespace DefenderChronicles.Editor
             Debug.Log("[DC_FRONTEND_ASSETS] Frontend theme, artwork and Cinzel title font are ready.");
         }
 
-        [MenuItem("Defender Chronicles/Build Artistic Presentation Assets")]
+        [MenuItem("ALLIN: Defense/Build Artistic Presentation Assets")]
         public static void BuildPresentationAssets()
         {
             Directory.CreateDirectory(GeneratedRoot);
@@ -291,20 +291,20 @@ namespace DefenderChronicles.Editor
                     AssetLicenseKind.OpenAIGenerated, "OpenAI image generation / this project session", "2026-08-25"),
                 Provenance("Greenwatch war table artwork", "Assets/Resources/Presentation/Frontend/GreenwatchWarTable.png",
                     AssetLicenseKind.OpenAIGenerated, "OpenAI image generation / this project session", "2026-08-25"),
-                Provenance("Defender Chronicles V2 logo", BrandLogoPath, AssetLicenseKind.Original,
-                    "Defender Chronicles vector brand system", "2026-08-25"),
-                Provenance("Defender Chronicles V2 brand mark", BrandMarkPath, AssetLicenseKind.Original,
-                    "Defender Chronicles vector brand system", "2026-08-25"),
-                Provenance("Defender Chronicles V2 application icon", BrandAppIconPath, AssetLicenseKind.Original,
-                    "Derived from the Defender Chronicles V2 brand mark", "2026-08-25"),
-                Provenance("Defender Chronicles V2 launch artwork", BrandLaunchPath, AssetLicenseKind.Original,
-                    "Greenwatch artwork with the Defender Chronicles V2 logo", "2026-08-25"),
+                Provenance("ALLIN: Defense V2 logo", BrandLogoPath, AssetLicenseKind.Original,
+                    "ALLIN: Defense vector brand system", "2026-08-25"),
+                Provenance("ALLIN: Defense V2 brand mark", BrandMarkPath, AssetLicenseKind.Original,
+                    "ALLIN: Defense vector brand system", "2026-08-25"),
+                Provenance("ALLIN: Defense V2 application icon", BrandAppIconPath, AssetLicenseKind.Original,
+                    "Derived from the ALLIN: Defense V2 brand mark", "2026-08-25"),
+                Provenance("ALLIN: Defense V2 launch artwork", BrandLaunchPath, AssetLicenseKind.Original,
+                    "Greenwatch artwork with the ALLIN: Defense V2 logo", "2026-08-25"),
                 Provenance("HUD panel", "Assets/Art/UI/DefenderHudPanel.png", AssetLicenseKind.OpenAIGenerated,
                     "OpenAI image generation / this project session", "2026-08-16"),
                 Provenance("HUD icons", "Assets/Art/UI/DefenderIconAtlas.png", AssetLicenseKind.OpenAIGenerated,
                     "OpenAI image generation / this project session", "2026-08-16"),
                 Provenance("Blender source", "ArtSource/Blender", AssetLicenseKind.Original,
-                    "Defender Chronicles procedural art pipeline", "2026-08-16"),
+                    "ALLIN: Defense procedural art pipeline", "2026-08-16"),
                 Provenance("CC0 sound effects", "Assets/Audio/Presentation/SFX", AssetLicenseKind.CreativeCommonsZero,
                     "https://kenney.nl/assets/interface-sounds | https://www.kenney.nl/assets/impact-sounds | https://www.kenney.nl/assets/rpg-audio", "2026-08-16"),
                 Provenance("CC0 music", "Assets/Audio/Presentation/Music", AssetLicenseKind.CreativeCommonsZero,
@@ -336,13 +336,13 @@ namespace DefenderChronicles.Editor
                       $"{catalog.outpostVisuals.Length} outposts and {catalog.audioCues.Length} audio cues.");
         }
 
-        [MenuItem("Defender Chronicles/Apply Mobile Texture Import Profile")]
+        [MenuItem("ALLIN: Defense/Apply Mobile Texture Import Profile")]
         public static void ApplyMobileTextureImportProfile()
         {
             ConfigureImports();
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
-            Debug.Log("Defender Chronicles mobile texture import profile applied.");
+            Debug.Log("ALLIN: Defense mobile texture import profile applied.");
         }
 
         public static void LogPresentationBounds()
@@ -446,7 +446,7 @@ namespace DefenderChronicles.Editor
                 512, false, TextureImporterCompression.Compressed, TextureImporterFormat.ASTC_4x4);
             ConfigureTextureImport("Assets/Art/White32.png", TextureImporterType.Default,
                 32, false, TextureImporterCompression.Uncompressed, TextureImporterFormat.RGBA32);
-            ConfigureTextureImport("Assets/Art/AppIcon/DefenderChronicles-AppIcon-1024.png",
+            ConfigureTextureImport("Assets/Art/AppIcon/AllinDefense-AppIcon-1024.png",
                 TextureImporterType.Default, 1024, false, TextureImporterCompression.CompressedHQ,
                 TextureImporterFormat.ASTC_4x4);
             ConfigureBrandImports();
@@ -1283,7 +1283,7 @@ namespace DefenderChronicles.Editor
 
         // Opt-in rebuild for builder changes; normal asset builds keep the existing HUD.
         // Also callable from batchmode with -executeMethod.
-        [MenuItem("Defender Chronicles/Regenerate HUD Prefab")]
+        [MenuItem("ALLIN: Defense/Regenerate HUD Prefab")]
         public static void RegenerateHudPrefab()
         {
             var catalog = AssetDatabase.LoadAssetAtPath<DefenderPresentationCatalog>(

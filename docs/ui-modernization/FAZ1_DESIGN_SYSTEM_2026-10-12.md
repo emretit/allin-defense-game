@@ -1,7 +1,7 @@
 # Faz 1 — UI tasarım sistemi
 
 Tarih: 2026-10-12  
-Worktree: `/Users/emreaydin/orca/workspaces/DefenderChronicles/ui-faz0`  
+Worktree: `/Users/emreaydin/orca/workspaces/AllinDefense/ui-faz0`  
 Unity: `6000.4.1f1`  
 Durum: Uygulama ve asset üretimi tamam; EditMode 154/154, PlayMode 117/117 başarılı; toplam 271/271. Commit/push yapılmadı.
 
@@ -51,7 +51,7 @@ Eski ekranların diğer yüzey, scrim, kontur, cooldown ve durum renkleri `UiTok
 
 ## Sprite listesi
 
-Tüm PNG'ler `Assets/Art/GeneratedPresentation/UiPrimitives/` içinde 128×128, FullRect, bilinear, mipmapsiz, sıkıştırmasız ve alfa kanallıdır. Sprite listesi ve font rolleri `UiDesignSystemAssets.asset` içinde tutulur; mevcut `Assets/Art/UI/DefenderChroniclesUI.spriteatlas` genişletilir. Eski on sprite korunur; rotation/tight packing kapalı kalır.
+Tüm PNG'ler `Assets/Art/GeneratedPresentation/UiPrimitives/` içinde 128×128, FullRect, bilinear, mipmapsiz, sıkıştırmasız ve alfa kanallıdır. Sprite listesi ve font rolleri `UiDesignSystemAssets.asset` içinde tutulur; mevcut `Assets/Art/UI/AllinDefenseUI.spriteatlas` genişletilir. Eski on sprite korunur; rotation/tight packing kapalı kalır.
 
 | Sprite | Geometri | 9-slice border (L/B/R/T) |
 |---|---|---|
@@ -69,11 +69,11 @@ Beyaz şekiller UI Image tint'iyle renklendirilir. Gölge şekli `UiTokens.Shado
 
 ## Üretim
 
-Unity menüsü: **Defender Chronicles > Build UI Design System Assets**.
+Unity menüsü: **ALLIN: Defense > Build UI Design System Assets**.
 
 ```sh
 unity run . --editor-version 6000.4.1f1 --timeout 600 -- \
-  -executeMethod DefenderChronicles.Editor.UiDesignSystemAssetBuilder.Build \
+  -executeMethod AllinDefense.Editor.UiDesignSystemAssetBuilder.Build \
   -logFile Builds/faz1-assets.log
 ```
 
@@ -125,7 +125,7 @@ Frontend ve tam presentation builder girişleri aynı tasarım sistemi builder'�
 - `Assets/Art/GeneratedPresentation/UiPrimitives/SoftShadow.png.meta`
 - `Assets/Art/GeneratedPresentation/UiPrimitives/VerticalGradient.png`
 - `Assets/Art/GeneratedPresentation/UiPrimitives/VerticalGradient.png.meta`
-- `Assets/Art/UI/DefenderChroniclesUI.spriteatlas`
+- `Assets/Art/UI/AllinDefenseUI.spriteatlas`
 - `Assets/Editor/DefenderPresentationAssetBuilder.cs`
 - `Assets/Editor/UiDesignSystemAssetBuilder.cs`
 - `Assets/Editor/UiDesignSystemAssetBuilder.cs.meta`

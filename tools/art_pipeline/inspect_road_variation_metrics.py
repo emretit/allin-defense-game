@@ -150,7 +150,7 @@ def main() -> None:
 
     assets = [inspect_asset(entry) for entry in ASSETS]
     report = {
-        "schema": "defender-chronicles.visual-development.road-variation-metrics.v1",
+        "schema": "allin-defense.visual-development.road-variation-metrics.v1",
         "captured_on": "2026-08-16",
         "todo": "VIS-405",
         "asset_scope": "Generated road surface/edge/wear candidate FBX files only; not bound to runtime environment prefab.",

@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
-using DefenderChronicles.Core;
-using DefenderChronicles.Data;
-using DefenderChronicles.UI;
+using AllinDefense.Core;
+using AllinDefense.Data;
+using AllinDefense.UI;
 using NUnit.Framework;
 using TMPro;
 using UnityEditor;
@@ -11,7 +11,7 @@ using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.U2D;
 
-namespace DefenderChronicles.Tests
+namespace AllinDefense.Tests
 {
     public sealed class AuditRemediationTests
     {
@@ -116,7 +116,7 @@ namespace DefenderChronicles.Tests
         public void UiAtlasUsesNineSliceSafePacking()
         {
             SpriteAtlas atlas = AssetDatabase.LoadAssetAtPath<SpriteAtlas>(
-                "Assets/Art/UI/DefenderChroniclesUI.spriteatlas");
+                "Assets/Art/UI/AllinDefenseUI.spriteatlas");
             Assert.That(atlas, Is.Not.Null);
             SpriteAtlasPackingSettings settings = atlas.GetPackingSettings();
             Assert.That(settings.enableRotation, Is.False);

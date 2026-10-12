@@ -206,7 +206,7 @@ def main() -> None:
     existing_actors = [actor for actor in actors if actor.get("exists")]
 
     report = {
-        "schema": "defender-chronicles.visual-development.actor-metrics.v2",
+        "schema": "allin-defense.visual-development.actor-metrics.v2",
         "captured_on": datetime.date.today().isoformat(),
         "model_root": str(model_root),
         "roles_expected": list(ACTORS),

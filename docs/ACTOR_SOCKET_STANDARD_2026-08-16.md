@@ -1,4 +1,4 @@
-# Defender Chronicles — Actor Scale, Budget And Socket Standard
+# ALLIN: Defense — Actor Scale, Budget And Socket Standard
 
 Status: M1 actor production standard
 Date: 2026-08-16

@@ -1,8 +1,8 @@
 using System.Collections;
-using DefenderChronicles.UI;
+using AllinDefense.UI;
 using UnityEngine;
 
-namespace DefenderChronicles.Presentation
+namespace AllinDefense.Presentation
 {
     public sealed class DefenderPresentationFeedbackController : MonoBehaviour
     {

@@ -90,7 +90,7 @@
   "Assets/Scripts/Grid/PathManager.cs": "6be98653f660317b32963be36e4e2346030748c7dd4cb6e493a68e7714606b37",
   "Assets/Scripts/Grid/OutpostSlotManager.cs": "cb138e85dc9f0c5f9eff759362ab067790770a84872bc9f68865331ffcbe2efe",
   "Assets/Scripts/Grid/CommandPointManager.cs": "c717fa2099b36ca62b2324a43ad866b676a2511366345e8e647c3d0ea3c8b6cd",
-  "Assets/Editor/DefenderChroniclesEditorBootstrap.cs": "960fabc07248276f3c8fc94bf4427c0dad32ad2a070e60164956cbffdce3d85b",
+  "Assets/Editor/AllinDefenseEditorBootstrap.cs": "960fabc07248276f3c8fc94bf4427c0dad32ad2a070e60164956cbffdce3d85b",
   "Assets/Editor/IosPlayerAccountsOrientationPostprocessor.cs": "c0b25d509aad3721600c7f9b27c18d8d32d29e887b271fc4ebca424c0546c9dd",
   "Assets/Editor/DefenderPresentationAssetBuilder.cs": "8ed2bc556bd4d45558c795134c6685a4d61f8262d085630e76633895914f816f",
   "Assets/Editor/DefenderPresentationBuildValidator.cs": "14191ea1a8a3811b3b9cfb6d68006346e26e162dd9f30f66f11cd75d6a8100cc",

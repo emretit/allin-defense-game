@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace DefenderChronicles.Presentation
+namespace AllinDefense.Presentation
 {
     // A shape, rather than a font glyph: readable when emoji fonts are unavailable on a device.
     public sealed class ShieldStatusIcon : MaskableGraphic

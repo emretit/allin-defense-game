@@ -1,4 +1,4 @@
-# Defender Chronicles — HUD Threat Preview Pass
+# ALLIN: Defense — HUD Threat Preview Pass
 
 Tarih: 2026-08-16
 Kapsam: Hazırlık ve dalga geçişlerinde yaklaşan tehdit bilgisini daha erken ve daha kolay taranır göstermek.

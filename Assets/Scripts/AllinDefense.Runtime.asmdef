@@ -1,6 +1,6 @@
 {
-  "name": "DefenderChronicles.Runtime",
-  "rootNamespace": "DefenderChronicles",
+  "name": "AllinDefense.Runtime",
+  "rootNamespace": "AllinDefense",
   "references": [
     "Unity.InputSystem",
     "Unity.Localization",

@@ -1,4 +1,4 @@
-namespace DefenderChronicles.UI
+namespace AllinDefense.UI
 {
     /// <summary>A bilingual label bound explicitly, independent of its Turkish wording.</summary>
     public readonly struct LocalizedCopy

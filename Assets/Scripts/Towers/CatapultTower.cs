@@ -1,8 +1,8 @@
 using UnityEngine;
-using DefenderChronicles.Enemies;
-using DefenderChronicles.Utils;
+using AllinDefense.Enemies;
+using AllinDefense.Utils;
 
-namespace DefenderChronicles.Towers
+namespace AllinDefense.Towers
 {
     // Long range, very high AoE damage, slow fire rate
     public class CatapultTower : TowerBase

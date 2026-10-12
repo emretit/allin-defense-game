@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace DefenderChronicles.Enemies
+namespace AllinDefense.Enemies
 {
     public class SupportEnemy : EnemyBase
     {

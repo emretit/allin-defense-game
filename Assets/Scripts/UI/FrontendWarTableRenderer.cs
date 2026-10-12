@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace DefenderChronicles.UI
+namespace AllinDefense.UI
 {
     // Original artwork, sampled directly; no offscreen camera or RenderTexture.
     public sealed class FrontendWarTableRenderer : MonoBehaviour

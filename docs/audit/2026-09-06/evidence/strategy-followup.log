@@ -19,13 +19,13 @@ COMMAND LINE ARGUMENTS:
 -projectPath
 /tmp/defender-audit-20260906
 -testResults
-/Users/emreaydin/DefenderChronicles/docs/audit/2026-09-06/evidence/strategy-followup.xml
+/Users/emreaydin/AllinDefense/docs/audit/2026-09-06/evidence/strategy-followup.xml
 -testPlatform
 PlayMode
 -testFilter
 StrategyBalanceAcceptanceTests
 -logFile
-/Users/emreaydin/DefenderChronicles/docs/audit/2026-09-06/evidence/strategy-followup.log
+/Users/emreaydin/AllinDefense/docs/audit/2026-09-06/evidence/strategy-followup.log
 -hubSessionId
 63a9d8bb-5a0b-4c6c-80ed-cfaf39f89b63
 -accessToken
@@ -302,9 +302,9 @@ info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
 info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
       Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
 info: Unity.ILPP.Runner.PostProcessingPipeline[0]
-      Processing assembly Library/Bee/artifacts/200b0aE.dag/DefenderChronicles.EditModeTests.dll, with 134 defines and 283 references
+      Processing assembly Library/Bee/artifacts/200b0aE.dag/AllinDefense.EditModeTests.dll, with 134 defines and 283 references
 info: Unity.ILPP.Runner.PostProcessingPipeline[0]
-      Processing assembly Library/Bee/artifacts/200b0aE.dag/DefenderChronicles.Runtime.dll, with 136 defines and 293 references
+      Processing assembly Library/Bee/artifacts/200b0aE.dag/AllinDefense.Runtime.dll, with 136 defines and 293 references
 info: Unity.ILPP.Runner.PostProcessingPipeline[0]
       processors: Unity.Jobs.CodeGen.JobsILPostProcessor, Unity.Pipeline.CodeGen.HotReloadInPlaceILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
 info: Unity.ILPP.Runner.PostProcessingPipeline[0]
@@ -356,7 +356,7 @@ info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
 info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
       Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
 info: Unity.ILPP.Runner.PostProcessingPipeline[0]
-      Processing assembly Library/Bee/artifacts/200b0aE.dag/DefenderChronicles.PlayModeTests.dll, with 136 defines and 271 references
+      Processing assembly Library/Bee/artifacts/200b0aE.dag/AllinDefense.PlayModeTests.dll, with 136 defines and 271 references
 info: Unity.ILPP.Runner.PostProcessingPipeline[0]
       processors: Unity.Jobs.CodeGen.JobsILPostProcessor, Unity.Pipeline.CodeGen.HotReloadInPlaceILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
 info: Unity.ILPP.Runner.PostProcessingPipeline[0]
@@ -371,7 +371,7 @@ info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
       Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly - 200 - application/grpc 3.1772ms
 ExitCode: 0 Duration: 3s113ms
 [1285/1758  0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
-[1742/1758  2s] Csc Library/Bee/artifacts/200b0aE.dag/DefenderChronicles.Runtime.dll (+2 others)
+[1742/1758  2s] Csc Library/Bee/artifacts/200b0aE.dag/AllinDefense.Runtime.dll (+2 others)
 Assets/Scripts/UI/TowerWorldTapHandler.cs(35,60): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
 Assets/Scripts/UI/TowerWorldTapHandler.cs(35,31): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
 Assets/Scripts/Presentation/StylizedPresentationFactory.cs(272,48): warning CS0618: 'Object.GetInstanceID()' is obsolete: 'GetInstanceID is deprecated. Use GetEntityId instead. This will be removed in a future version.'
@@ -387,15 +387,15 @@ Assets/Scripts/Presentation/DefenderSceneLook.cs(98,66): warning CS0618: 'FindOb
 Assets/Scripts/Presentation/DefenderSceneLook.cs(98,41): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
 Assets/Scripts/Presentation/DefenderHudController.cs(1576,13): warning CS0618: 'TMP_Text.enableWordWrapping' is obsolete: 'The enabledWordWrapping property is now obsolete. Please use the textWrappingMode property instead.'
 Assets/Scripts/UI/AppFlowController.cs(1824,13): warning CS0618: 'TMP_Text.enableWordWrapping' is obsolete: 'The enabledWordWrapping property is now obsolete. Please use the textWrappingMode property instead.'
-[1745/1758  0s] ILPostProcess Library/Bee/artifacts/200b0aE.dag/post-processed/DefenderChronicles.Runtime.dll (+pdb)
-Processing assembly Library/Bee/artifacts/200b0aE.dag/DefenderChronicles.Runtime.dll, with 136 defines and 293 references
+[1745/1758  0s] ILPostProcess Library/Bee/artifacts/200b0aE.dag/post-processed/AllinDefense.Runtime.dll (+pdb)
+Processing assembly Library/Bee/artifacts/200b0aE.dag/AllinDefense.Runtime.dll, with 136 defines and 293 references
 processors: Unity.Jobs.CodeGen.JobsILPostProcessor, Unity.Pipeline.CodeGen.HotReloadInPlaceILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
 running Unity.Jobs.CodeGen.JobsILPostProcessor
 running Unity.Pipeline.CodeGen.HotReloadInPlaceILPostProcessor
 running zzzUnity.Burst.CodeGen.BurstILPostProcessor
-[1746/1758  0s] CopyFiles Library/ScriptAssemblies/DefenderChronicles.Runtime.dll
-[1747/1758  0s] CopyFiles Library/ScriptAssemblies/DefenderChronicles.Runtime.pdb
-[1748/1758  0s] Csc Library/Bee/artifacts/200b0aE.dag/DefenderChronicles.PlayModeTests.dll (+2 others)
+[1746/1758  0s] CopyFiles Library/ScriptAssemblies/AllinDefense.Runtime.dll
+[1747/1758  0s] CopyFiles Library/ScriptAssemblies/AllinDefense.Runtime.pdb
+[1748/1758  0s] Csc Library/Bee/artifacts/200b0aE.dag/AllinDefense.PlayModeTests.dll (+2 others)
 Assets/Tests/PlayMode/StrategyBalanceAcceptanceTests.cs(43,70): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
 Assets/Tests/PlayMode/StrategyBalanceAcceptanceTests.cs(43,22): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
 Assets/Tests/PlayMode/GreyboxSceneTests.cs(44,85): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
@@ -404,8 +404,8 @@ Assets/Tests/PlayMode/AuditObservationTests.cs(58,78): warning CS0618: 'FindObje
 Assets/Tests/PlayMode/AuditObservationTests.cs(58,30): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
 Assets/Tests/PlayMode/GreyboxSceneTests.cs(681,71): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
 Assets/Tests/PlayMode/GreyboxSceneTests.cs(681,39): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
-[1749/1758  0s] ILPostProcess Library/Bee/artifacts/200b0aE.dag/post-processed/DefenderChronicles.EditModeTests.dll (+pdb)
-Processing assembly Library/Bee/artifacts/200b0aE.dag/DefenderChronicles.EditModeTests.dll, with 134 defines and 283 references
+[1749/1758  0s] ILPostProcess Library/Bee/artifacts/200b0aE.dag/post-processed/AllinDefense.EditModeTests.dll (+pdb)
+Processing assembly Library/Bee/artifacts/200b0aE.dag/AllinDefense.EditModeTests.dll, with 134 defines and 283 references
 processors: Unity.Jobs.CodeGen.JobsILPostProcessor, Unity.Pipeline.CodeGen.HotReloadInPlaceILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
 running Unity.Jobs.CodeGen.JobsILPostProcessor
 running Unity.Pipeline.CodeGen.HotReloadInPlaceILPostProcessor
@@ -416,14 +416,14 @@ processors: Unity.Jobs.CodeGen.JobsILPostProcessor, Unity.Pipeline.CodeGen.HotRe
 running Unity.Jobs.CodeGen.JobsILPostProcessor
 running Unity.Pipeline.CodeGen.HotReloadInPlaceILPostProcessor
 running zzzUnity.Burst.CodeGen.BurstILPostProcessor
-[1751/1758  0s] ILPostProcess Library/Bee/artifacts/200b0aE.dag/post-processed/DefenderChronicles.PlayModeTests.dll (+pdb)
-Processing assembly Library/Bee/artifacts/200b0aE.dag/DefenderChronicles.PlayModeTests.dll, with 136 defines and 271 references
+[1751/1758  0s] ILPostProcess Library/Bee/artifacts/200b0aE.dag/post-processed/AllinDefense.PlayModeTests.dll (+pdb)
+Processing assembly Library/Bee/artifacts/200b0aE.dag/AllinDefense.PlayModeTests.dll, with 136 defines and 271 references
 processors: Unity.Jobs.CodeGen.JobsILPostProcessor, Unity.Pipeline.CodeGen.HotReloadInPlaceILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
 running Unity.Jobs.CodeGen.JobsILPostProcessor
 running Unity.Pipeline.CodeGen.HotReloadInPlaceILPostProcessor
 running zzzUnity.Burst.CodeGen.BurstILPostProcessor
-[1756/1758  0s] CopyFiles Library/ScriptAssemblies/DefenderChronicles.PlayModeTests.dll
-[1757/1758  0s] CopyFiles Library/ScriptAssemblies/DefenderChronicles.PlayModeTests.pdb
+[1756/1758  0s] CopyFiles Library/ScriptAssemblies/AllinDefense.PlayModeTests.dll
+[1757/1758  0s] CopyFiles Library/ScriptAssemblies/AllinDefense.PlayModeTests.pdb
 *** Tundra build success (3.09 seconds), 11 items updated, 1758 evaluated
 Assets/Scripts/UI/TowerWorldTapHandler.cs(35,60): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
 Assets/Scripts/UI/TowerWorldTapHandler.cs(35,31): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
@@ -604,7 +604,7 @@ Scanning for USB devices : 0.040ms
 Initializing Unity extensions:
 [MODES] ModeService[none].Initialize
 [MODES] ModeService[none].LoadModes
-[MODES] Loading mode Default (0) for mode-current-id-Defender Chronicles
+[MODES] Loading mode Default (0) for mode-current-id-ALLIN: Defense
 2026-09-06 10:16:39.758 Unity[20796:9006055] NSEventModifierFlagFunction specified to -setKeyEquivalentModifierMask: for item <NSMenuItem: 0x97875c780 SDF, ke='Command-F12'>, but is only supported for system-provided menu items; will not be used
 Unloading 32 Unused Serialized files (Serialized files now loaded: 0)
 Unloading 10211 unused Assets / (5.9 MB). Loaded Objects now: 11079.
@@ -931,7 +931,7 @@ UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOpt
 UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
-DefenderChronicles.Tests.StrategyBalanceAcceptanceTests/<RunStrategy>d__6:MoveNext () (at Assets/Tests/PlayMode/StrategyBalanceAcceptanceTests.cs:85)
+AllinDefense.Tests.StrategyBalanceAcceptanceTests/<RunStrategy>d__6:MoveNext () (at Assets/Tests/PlayMode/StrategyBalanceAcceptanceTests.cs:85)
 UnityEngine.TestTools.TestEnumerator/<Execute>d__7:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44)
 UnityEngine.TestTools.EnumerableTestMethodCommand/<ExecuteEnumerableAndRecordExceptions>d__4:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:79)
 UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/Coroutines.cs:17)
@@ -945,7 +945,7 @@ UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOpt
 UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
-DefenderChronicles.Tests.StrategyBalanceAcceptanceTests/<RunStrategy>d__6:MoveNext () (at Assets/Tests/PlayMode/StrategyBalanceAcceptanceTests.cs:85)
+AllinDefense.Tests.StrategyBalanceAcceptanceTests/<RunStrategy>d__6:MoveNext () (at Assets/Tests/PlayMode/StrategyBalanceAcceptanceTests.cs:85)
 UnityEngine.TestTools.TestEnumerator/<Execute>d__7:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44)
 UnityEngine.TestTools.EnumerableTestMethodCommand/<ExecuteEnumerableAndRecordExceptions>d__4:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:79)
 UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/Coroutines.cs:17)
@@ -959,15 +959,15 @@ UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOpt
 UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
-DefenderChronicles.Tests.StrategyBalanceAcceptanceTests/<RunStrategy>d__6:MoveNext () (at Assets/Tests/PlayMode/StrategyBalanceAcceptanceTests.cs:85)
+AllinDefense.Tests.StrategyBalanceAcceptanceTests/<RunStrategy>d__6:MoveNext () (at Assets/Tests/PlayMode/StrategyBalanceAcceptanceTests.cs:85)
 UnityEngine.TestTools.TestEnumerator/<Execute>d__7:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44)
 UnityEngine.TestTools.EnumerableTestMethodCommand/<ExecuteEnumerableAndRecordExceptions>d__4:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:79)
 UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/Coroutines.cs:17)
 
 (Filename: Assets/Tests/PlayMode/StrategyBalanceAcceptanceTests.cs Line: 85)
 
-Saving results to: /Users/emreaydin/Library/Application Support/Emre Aydin/Defender Chronicles/TestResults.xml
-Saving results to: /Users/emreaydin/DefenderChronicles/docs/audit/2026-09-06/evidence/strategy-followup.xml
+Saving results to: /Users/emreaydin/Library/Application Support/Emre Aydin/ALLIN: Defense/TestResults.xml
+Saving results to: /Users/emreaydin/AllinDefense/docs/audit/2026-09-06/evidence/strategy-followup.xml
 Thread 0x170fcb000 may have been prematurely finalized
 Unloading 6 Unused Serialized files (Serialized files now loaded: 0)
 Loaded scene 'Temp/__Backupscenes/0.backup'

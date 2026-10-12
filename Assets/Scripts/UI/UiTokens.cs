@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace DefenderChronicles.UI
+namespace AllinDefense.UI
 {
     /// <summary>Temiz Fantastik design system. Points are Canvas reference units (8 pt grid).
     /// Colors use sRGB; translucent glass requires a dark backing surface for text contrast.</summary>

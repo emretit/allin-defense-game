@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <test-run id="2" testcasecount="1" result="Failed(Child)" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-09-06 09:42:32Z" end-time="2026-09-06 09:42:40Z" duration="7.7216749">
-  <test-suite type="TestSuite" id="1032" name="Defender Chronicles" fullname="Defender Chronicles" runstate="Runnable" testcasecount="21" result="Failed" site="Child" start-time="2026-09-06 09:42:32Z" end-time="2026-09-06 09:42:40Z" duration="7.721675" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+  <test-suite type="TestSuite" id="1032" name="ALLIN: Defense" fullname="ALLIN: Defense" runstate="Runnable" testcasecount="21" result="Failed" site="Child" start-time="2026-09-06 09:42:32Z" end-time="2026-09-06 09:42:40Z" duration="7.721675" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
     <properties>
       <property name="platform" value="PlayMode" />
     </properties>
     <failure>
       <message><![CDATA[One or more child tests had errors]]></message>
     </failure>
-    <test-suite type="Assembly" id="1026" name="DefenderChronicles.PlayModeTests.dll" fullname="/Users/emreaydin/DefenderChronicles-first-region/Library/ScriptAssemblies/DefenderChronicles.PlayModeTests.dll" runstate="Runnable" testcasecount="21" result="Failed" site="Child" start-time="2026-09-06 09:42:32Z" end-time="2026-09-06 09:42:40Z" duration="7.718341" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+    <test-suite type="Assembly" id="1026" name="AllinDefense.PlayModeTests.dll" fullname="/Users/emreaydin/AllinDefense-first-region/Library/ScriptAssemblies/AllinDefense.PlayModeTests.dll" runstate="Runnable" testcasecount="21" result="Failed" site="Child" start-time="2026-09-06 09:42:32Z" end-time="2026-09-06 09:42:40Z" duration="7.718341" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
       <properties>
         <property name="_PID" value="62898" />
         <property name="_APPDOMAIN" value="Unity Child Domain" />
@@ -17,22 +17,22 @@
       <failure>
         <message><![CDATA[One or more child tests had errors]]></message>
       </failure>
-      <test-suite type="TestSuite" id="1027" name="DefenderChronicles" fullname="DefenderChronicles" runstate="Runnable" testcasecount="21" result="Failed" site="Child" start-time="2026-09-06 09:42:32Z" end-time="2026-09-06 09:42:40Z" duration="7.717977" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <test-suite type="TestSuite" id="1027" name="AllinDefense" fullname="AllinDefense" runstate="Runnable" testcasecount="21" result="Failed" site="Child" start-time="2026-09-06 09:42:32Z" end-time="2026-09-06 09:42:40Z" duration="7.717977" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
         <properties />
         <failure>
           <message><![CDATA[One or more child tests had errors]]></message>
         </failure>
-        <test-suite type="TestSuite" id="1028" name="Tests" fullname="DefenderChronicles.Tests" runstate="Runnable" testcasecount="21" result="Failed" site="Child" start-time="2026-09-06 09:42:32Z" end-time="2026-09-06 09:42:40Z" duration="7.717712" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <test-suite type="TestSuite" id="1028" name="Tests" fullname="AllinDefense.Tests" runstate="Runnable" testcasecount="21" result="Failed" site="Child" start-time="2026-09-06 09:42:32Z" end-time="2026-09-06 09:42:40Z" duration="7.717712" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
           <properties />
           <failure>
             <message><![CDATA[One or more child tests had errors]]></message>
           </failure>
-          <test-suite type="TestFixture" id="1001" name="FirstRegionBalanceTests" fullname="DefenderChronicles.Tests.FirstRegionBalanceTests" classname="DefenderChronicles.Tests.FirstRegionBalanceTests" runstate="Runnable" testcasecount="1" result="Failed" site="Child" start-time="2026-09-06 09:42:32Z" end-time="2026-09-06 09:42:40Z" duration="7.716694" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+          <test-suite type="TestFixture" id="1001" name="FirstRegionBalanceTests" fullname="AllinDefense.Tests.FirstRegionBalanceTests" classname="AllinDefense.Tests.FirstRegionBalanceTests" runstate="Runnable" testcasecount="1" result="Failed" site="Child" start-time="2026-09-06 09:42:32Z" end-time="2026-09-06 09:42:40Z" duration="7.716694" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
             <properties />
             <failure>
               <message><![CDATA[One or more child tests had errors]]></message>
             </failure>
-            <test-case id="1002" name="RealResourceCampaign" fullname="DefenderChronicles.Tests.FirstRegionBalanceTests.RealResourceCampaign" methodname="RealResourceCampaign" classname="DefenderChronicles.Tests.FirstRegionBalanceTests" runstate="Runnable" seed="2097261770" result="Failed" start-time="2026-09-06 09:42:32Z" end-time="2026-09-06 09:42:40Z" duration="7.707913" asserts="0">
+            <test-case id="1002" name="RealResourceCampaign" fullname="AllinDefense.Tests.FirstRegionBalanceTests.RealResourceCampaign" methodname="RealResourceCampaign" classname="AllinDefense.Tests.FirstRegionBalanceTests" runstate="Runnable" seed="2097261770" result="Failed" start-time="2026-09-06 09:42:32Z" end-time="2026-09-06 09:42:40Z" duration="7.707913" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
@@ -43,7 +43,7 @@
   Expected: <empty>
   But was:  < "level 6 strategy 0: Defeat, 43.33s", "level 7 strategy 0: Defeat, 35.32s", "level 7 strategy 1: Defeat, 35.25s", "level 8 strategy 0: Defeat, 36.85s", "level 8 strategy 1: Defeat, 32.20s", "level 9 strategy 0: Defeat, 32.63s", "level 9 strategy 1: Defeat, 33.78s", "level 10 strategy 0: Defeat, 28.83s", "level 10 strategy 1: Defeat, 29.98s" >
 ]]></message>
-                <stack-trace><![CDATA[at DefenderChronicles.Tests.FirstRegionBalanceTests+<RealResourceCampaign>d__0.MoveNext () [0x004a2] in /Users/emreaydin/DefenderChronicles-first-region/Assets/Tests/PlayMode/FirstRegionBalanceTests.cs:55
+                <stack-trace><![CDATA[at AllinDefense.Tests.FirstRegionBalanceTests+<RealResourceCampaign>d__0.MoveNext () [0x004a2] in /Users/emreaydin/AllinDefense-first-region/Assets/Tests/PlayMode/FirstRegionBalanceTests.cs:55
 at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
 ]]></stack-trace>
               </failure>
@@ -123,7 +123,7 @@ The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] 
 [BALANCE] level=10 strategy=0 phase=Defeat lives=0 seconds=28.83 gold=6 towers=2 specialized=0 target=360-480
 The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
 [BALANCE] level=10 strategy=1 phase=Defeat lives=0 seconds=29.98 gold=45 towers=2 specialized=0 target=360-480
-Saving results to: /Users/emreaydin/Library/Application Support/Emre Aydin/Defender Chronicles/TestResults.xml
+Saving results to: /Users/emreaydin/Library/Application Support/Emre Aydin/ALLIN: Defense/TestResults.xml
 ]]></output>
             </test-case>
           </test-suite>

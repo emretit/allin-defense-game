@@ -1,4 +1,4 @@
-# Defender Chronicles — Build-In VFX Standard
+# ALLIN: Defense — Build-In VFX Standard
 
 Status: VIS-341 generated candidate pass
 Date: 2026-08-16

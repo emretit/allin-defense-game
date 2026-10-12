@@ -2,8 +2,8 @@
 using System;
 using System.IO;
 using System.Linq;
-using DefenderChronicles.Presentation;
-using DefenderChronicles.UI;
+using AllinDefense.Presentation;
+using AllinDefense.UI;
 using TMPro;
 using UnityEditor;
 using UnityEditor.U2D;
@@ -11,7 +11,7 @@ using UnityEngine;
 using UnityEngine.TextCore.LowLevel;
 using UnityEngine.U2D;
 
-namespace DefenderChronicles.Editor
+namespace AllinDefense.Editor
 {
     /// <summary>Deterministic CPU rasterization; no blur, grab-pass, or downloaded assets.</summary>
     public static class UiDesignSystemAssetBuilder
@@ -19,12 +19,12 @@ namespace DefenderChronicles.Editor
         public const string Root = "Assets/Art/GeneratedPresentation";
         public const string SpriteRoot = Root + "/UiPrimitives";
         public const string SetPath = Root + "/UiDesignSystemAssets.asset";
-        public const string AtlasPath = "Assets/Art/UI/DefenderChroniclesUI.spriteatlas";
+        public const string AtlasPath = "Assets/Art/UI/AllinDefenseUI.spriteatlas";
         private const int Size = 128;
         private const string RegularPath = "Assets/Art/Fonts/NotoSans-Regular.ttf";
         private const string BoldPath = "Assets/Art/Fonts/NotoSans-Bold.ttf";
 
-        [MenuItem("Defender Chronicles/Build UI Design System Assets")]
+        [MenuItem("ALLIN: Defense/Build UI Design System Assets")]
         public static void Build()
         {
             Directory.CreateDirectory(SpriteRoot);

@@ -3,7 +3,7 @@
   "source_commit": "42157026af9694158b6e5e5313bb7606c9686491",
   "device": "iPhone 13 Simulator",
   "runtime": "iOS 26.5",
-  "bundle": "com.emreaydin.defenderchronicles.closedtest",
+  "bundle": "com.emreaydin.allindefense.closedtest",
   "installed_framework_matches_build": true,
   "framework_sha256": "d7f840d3e76cbc7b6cb86f8916e5898f3972a27f2a192ae749937ca65a92a963",
   "level": 2,

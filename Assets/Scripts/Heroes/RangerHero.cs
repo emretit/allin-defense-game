@@ -1,8 +1,8 @@
 using UnityEngine;
-using DefenderChronicles.Enemies;
-using DefenderChronicles.Heroes;
+using AllinDefense.Enemies;
+using AllinDefense.Heroes;
 
-namespace DefenderChronicles.Heroes
+namespace AllinDefense.Heroes
 {
     // Ranger Hero: Long range sniper, special = Explosive Shot
     public class RangerHero : HeroBase

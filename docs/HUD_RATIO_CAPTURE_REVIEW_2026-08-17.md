@@ -1,4 +1,4 @@
-# Defender Chronicles — HUD Ratio Capture Review
+# ALLIN: Defense — HUD Ratio Capture Review
 
 Tarih: 2026-08-17
 Kapsam: `VIS-612`, `VIS-613`, `VIS-809`

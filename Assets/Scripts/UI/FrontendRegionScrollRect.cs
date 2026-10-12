@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace DefenderChronicles.UI
+namespace AllinDefense.UI
 {
     // A vertical route can still be swiped sideways to change the region.
     public sealed class FrontendRegionScrollRect : ScrollRect

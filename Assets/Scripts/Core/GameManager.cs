@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace DefenderChronicles.Core
+namespace AllinDefense.Core
 {
     public class GameManager : MonoBehaviour
     {

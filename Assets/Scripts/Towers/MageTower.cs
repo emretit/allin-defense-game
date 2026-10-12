@@ -1,9 +1,9 @@
 using System.Collections;
 using UnityEngine;
-using DefenderChronicles.Enemies;
-using DefenderChronicles.Utils;
+using AllinDefense.Enemies;
+using AllinDefense.Utils;
 
-namespace DefenderChronicles.Towers
+namespace AllinDefense.Towers
 {
     // AoE splash damage, slow effect on hit
     public class MageTower : TowerBase

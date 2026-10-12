@@ -3,7 +3,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using DefenderChronicles.Core;
+using AllinDefense.Core;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -11,16 +11,16 @@ using Unity.Services.Core.Editor;
 using Unity.Services.Core.Editor.Environments;
 using Unity.Services.DeploymentApi.Editor;
 
-namespace DefenderChronicles.Editor
+namespace AllinDefense.Editor
 {
     public static class ClosedTestServicesEditor
     {
-        [MenuItem("Defender Chronicles/Closed Test/Deploy Test Services")]
+        [MenuItem("ALLIN: Defense/Closed Test/Deploy Test Services")]
         public static async void DeployTestEnvironment()
         {
             try
             {
-                if (!Application.dataPath.Contains("DefenderChronicles-first-region")) throw new InvalidOperationException("Use the isolated closed-test checkout.");
+                if (!Application.dataPath.Contains("AllinDefense-first-region")) throw new InvalidOperationException("Use the isolated closed-test checkout.");
                 Environment.SetEnvironmentVariable("PATH", Environment.GetEnvironmentVariable("PATH") + ":/opt/homebrew/bin:/usr/local/share/dotnet");
                 Environment.SetEnvironmentVariable("DOTNET_ROLL_FORWARD", "Major");
                 // Set only this editor's authoring service; do not change shared EditorPrefs.

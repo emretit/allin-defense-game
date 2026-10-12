@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using DefenderChronicles.Combat;
-using DefenderChronicles.Data;
-using DefenderChronicles.Presentation;
+using AllinDefense.Combat;
+using AllinDefense.Data;
+using AllinDefense.Presentation;
 using UnityEngine;
 
-namespace DefenderChronicles.Core
+namespace AllinDefense.Core
 {
     public sealed partial class GameSessionController
     {

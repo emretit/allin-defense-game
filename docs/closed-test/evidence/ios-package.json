@@ -3,7 +3,7 @@
   "native_build": "succeeded",
   "signed": false,
   "installable_on_device": false,
-  "bundle": "com.emreaydin.defenderchronicles.closedtest",
+  "bundle": "com.emreaydin.allindefense.closedtest",
   "version": "0.4.0",
   "build_number": "2026090601",
   "app_bytes": 443529935,

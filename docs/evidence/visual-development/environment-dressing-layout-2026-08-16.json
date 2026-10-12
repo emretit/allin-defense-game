@@ -1,5 +1,5 @@
 {
-  "schema": "defender-chronicles.visual-development.greenwatch-dressing-layout.v1",
+  "schema": "allin-defense.visual-development.greenwatch-dressing-layout.v1",
   "captured_on": "2026-08-16",
   "todo": "VIS-409",
   "scope": "Placement manifest only; no pathing/collider/camera/runtime behavior changes.",

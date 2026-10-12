@@ -1,5 +1,5 @@
 {
-  "schema": "defender-chronicles.visual-development.catalog-baseline.v1",
+  "schema": "allin-defense.visual-development.catalog-baseline.v1",
   "captured_on": "2026-08-16",
   "source_asset": "Assets/Resources/Presentation/DefenderPresentationCatalog.asset",
   "source_script": "Assets/Scripts/Presentation/DefenderPresentationCatalog.cs",

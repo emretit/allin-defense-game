@@ -1,11 +1,11 @@
-# Defender Chronicles — Product Brief
+# ALLIN: Defense — Product Brief
 
 Durum: Faz 0 karar notu
 Son guncelleme: 2026-08-15
 
 ## Tek Cumlelik Urun Vaadi
 
-Defender Chronicles, oyuncunun stratejik sabit noktalara karakollar kurdugu ve kale muhafizinin alan yetenegini kritik anlarda kullandigi mobil odakli bir izometrik savunma/RPG oyunudur.
+ALLIN: Defense, oyuncunun stratejik sabit noktalara karakollar kurdugu ve kale muhafizinin alan yetenegini kritik anlarda kullandigi mobil odakli bir izometrik savunma/RPG oyunudur.
 
 ## Kisa Aciklama
 
@@ -15,7 +15,7 @@ Knight kale onundeki son savunma hattini otomatik korur. Oyuncu kahramani harita
 
 ## Ayirt Edici Nokta
 
-Defender Chronicles'in ana farki, savunmanin yalnizca bina ekonomisiyle degil, "hangi sabit noktada durduracagim, hangi rolu kuracagim ve son hat yetenegini ne zaman kullanacagim" kararlarinin birlesimiyle kazanilmasidir.
+ALLIN: Defense'in ana farki, savunmanin yalnizca bina ekonomisiyle degil, "hangi sabit noktada durduracagim, hangi rolu kuracagim ve son hat yetenegini ne zaman kullanacagim" kararlarinin birlesimiyle kazanilmasidir.
 
 ## Ilk Dikey Dilim Vaadi
 
@@ -96,7 +96,7 @@ Bu karar, mobilde okunabilirligi ve dokunma dogrulugunu korumak icin alindi.
 
 ## Gorsel Kimlik
 
-Hedef stil, Age of Arena'nin temiz izometrik okunabilirliginden ilham alan ama Defender Chronicles'a daha fantastik savunma/RPG hissi veren bir yondur.
+Hedef stil, Age of Arena'nin temiz izometrik okunabilirliginden ilham alan ama ALLIN: Defense'e daha fantastik savunma/RPG hissi veren bir yondur.
 
 Gorsel sinirlar:
 
@@ -127,7 +127,7 @@ Kopyalanmayacak unsurlar:
 - Sesler, muzikler ve gorsel varliklar
 - Metinler, tutorial akislari ve gorev adlari
 
-Calisma adi "Defender Chronicles" olarak kalabilir; yayin oncesi marka ve magaza uygunlugu ayrica kontrol edilecek.
+Calisma adi "ALLIN: Defense" olarak kalabilir; yayin oncesi marka ve magaza uygunlugu ayrica kontrol edilecek.
 
 ## Temel Oyun Sutunlari
 

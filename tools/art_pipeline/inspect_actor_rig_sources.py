@@ -76,7 +76,7 @@ def main() -> None:
     args = parser.parse_args(sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else [])
 
     report = {
-        "schema": "defender-chronicles.visual-development.actor-rig-source-inspection.v2",
+        "schema": "allin-defense.visual-development.actor-rig-source-inspection.v2",
         "captured_on": datetime.date.today().isoformat(),
         "sources": [inspect_source(name, Path(path), purpose, target)
                     for name, (path, purpose, target) in SOURCES.items()],

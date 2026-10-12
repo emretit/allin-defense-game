@@ -2,10 +2,10 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Reflection;
-using DefenderChronicles.Core;
-using DefenderChronicles.Data;
-using DefenderChronicles.Presentation;
-using DefenderChronicles.UI;
+using AllinDefense.Core;
+using AllinDefense.Data;
+using AllinDefense.Presentation;
+using AllinDefense.UI;
 using TMPro;
 using NUnit.Framework;
 using UnityEngine;
@@ -13,7 +13,7 @@ using UnityEngine.TestTools;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
-namespace DefenderChronicles.Tests
+namespace AllinDefense.Tests
 {
     public sealed class AuditBossVictoryTests
     {

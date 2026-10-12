@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
-using DefenderChronicles.Grid;
+using AllinDefense.Grid;
 
-namespace DefenderChronicles.Core
+namespace AllinDefense.Core
 {
     public class PathManager : MonoBehaviour
     {

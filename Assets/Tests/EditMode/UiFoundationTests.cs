@@ -2,13 +2,13 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using DefenderChronicles.UI;
+using AllinDefense.UI;
 using NUnit.Framework;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
 
-namespace DefenderChronicles.Tests
+namespace AllinDefense.Tests
 {
     public sealed class UiFoundationTests
     {
@@ -42,7 +42,7 @@ namespace DefenderChronicles.Tests
             byte[] before = File.ReadAllBytes(path);
             string guid = AssetDatabase.AssetPathToGUID(path);
             Type builder = AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType(
-                "DefenderChronicles.Editor.DefenderPresentationAssetBuilder")).First(type => type != null);
+                "AllinDefense.Editor.DefenderPresentationAssetBuilder")).First(type => type != null);
             MethodInfo method = builder.GetMethod("CreateHudPrefab", BindingFlags.Static | BindingFlags.NonPublic);
             Assert.That(method, Is.Not.Null);
             Assert.That(method.GetParameters().Last().DefaultValue, Is.False);

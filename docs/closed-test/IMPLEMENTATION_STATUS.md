@@ -18,7 +18,7 @@ Savaş alanının çevresindeki lacivert platform, koyu kenar ve gökyüzü şer
 
 ## Kaynak ve çalışma alanı
 
-- Çalışma kopyası: `/Users/emreaydin/DefenderChronicles-first-region`
+- Çalışma kopyası: `/Users/emreaydin/AllinDefense-first-region`
 - Dal: `codex/first-region-closed-test`
 - Kullanıcının mevcut değişikliklerinin başlangıç görüntüsü: `5d486a5`.
 - Savaş ve kayıt temeli: `34cf710`; ilk 10 bölüm uygulaması: `823c4f0`. Son kaynak ve paket özetleri: `BUILD_MANIFEST.json`.
@@ -69,9 +69,9 @@ Otomatik satın alma stratejisinde bölüm 6–9 dalları geç safhada, boss bö
 
 ## Paketler ve kurulum durumu
 
-- **Android:** Unity IL2CPP ARM64 geliştirme APK derlemesi başarılı, sıfır hata. `Builds/ClosedTest-Android/DefenderChronicles-ct-20260906-01.apk`. Güncel APK dosyasının boyutu ve SHA-256 değeri manifestte; imzası doğrulandı. Android cihaz çalıştırması ölçülmedi.
-- **iOS:** Unity Xcode projesi dışa aktarımı ve Xcode cihaz kodu derlemesi başarılı. `Builds/ClosedTest-iOS/Unity-iPhone.xcodeproj`; imzasız `.app`, `Builds/ClosedTest-Xcode/Build/Products/Debug-iphoneos/DefenderChroniclesTest.app` içinde.
-- Her iki test uygulaması ayrı `com.emreaydin.defenderchronicles.closedtest` kimliğini kullanır. Mevcut telefondaki uygulamanın üzerine yazmaz.
+- **Android:** Unity IL2CPP ARM64 geliştirme APK derlemesi başarılı, sıfır hata. `Builds/ClosedTest-Android/AllinDefense-ct-20260906-01.apk`. Güncel APK dosyasının boyutu ve SHA-256 değeri manifestte; imzası doğrulandı. Android cihaz çalıştırması ölçülmedi.
+- **iOS:** Unity Xcode projesi dışa aktarımı ve Xcode cihaz kodu derlemesi başarılı. `Builds/ClosedTest-iOS/Unity-iPhone.xcodeproj`; imzasız `.app`, `Builds/ClosedTest-Xcode/Build/Products/Debug-iphoneos/AllinDefenseTest.app` içinde.
+- Her iki test uygulaması ayrı `com.emreaydin.allindefense.closedtest` kimliğini kullanır. Mevcut telefondaki uygulamanın üzerine yazmaz.
 - Kullanıcı Xcode hesabı ve imza profilinin mevcut olduğunu belirtti. Bu turda simülatör kurulumu tamamlandı; ayrı kapalı test kimliğinin fiziksel cihaz imzası yeniden denenmedi. İmzasız iOS uygulaması telefona kurulabilir teslim sayılmaz. Adımlar: `INSTALL_TR.md`.
 
 Editor'de incelenen uzmanlaşma ekranı: `evidence/specialization-ui-tr.png`. Bu görüntü cihaz ölçümü değildir.

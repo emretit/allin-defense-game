@@ -1,4 +1,4 @@
-# Defender Chronicles - Next Visual TODO
+# ALLIN: Defense - Next Visual TODO
 
 Date: 2026-08-25
 Branch: `codex/visual-slice-closeout`

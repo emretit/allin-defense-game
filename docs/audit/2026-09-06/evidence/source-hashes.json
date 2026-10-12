@@ -1,6 +1,6 @@
 {
   "Assets/Editor/AndroidBuildSettings.cs": "88543432ef3bb9cbf1d5348ead0326c9a3170987de9631e402044adda2bb43c6",
-  "Assets/Editor/DefenderChroniclesEditorBootstrap.cs": "960fabc07248276f3c8fc94bf4427c0dad32ad2a070e60164956cbffdce3d85b",
+  "Assets/Editor/AllinDefenseEditorBootstrap.cs": "960fabc07248276f3c8fc94bf4427c0dad32ad2a070e60164956cbffdce3d85b",
   "Assets/Editor/DefenderPresentationAssetBuilder.cs": "8ed2bc556bd4d45558c795134c6685a4d61f8262d085630e76633895914f816f",
   "Assets/Editor/DefenderPresentationBuildValidator.cs": "14191ea1a8a3811b3b9cfb6d68006346e26e162dd9f30f66f11cd75d6a8100cc",
   "Assets/Editor/IosFirstBuildSettings.cs": "85450c96d8bddfe0887e28c91c233859e1ce1780620de8eab186e648525c2411",

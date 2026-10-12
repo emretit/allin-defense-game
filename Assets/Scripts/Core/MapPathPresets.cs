@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace DefenderChronicles.Core
+namespace AllinDefense.Core
 {
     /// <summary>Optional path layouts for multi-map support (see README). Index 0 matches GameBootstrap default.</summary>
     public static class MapPathPresets

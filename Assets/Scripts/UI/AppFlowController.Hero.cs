@@ -1,8 +1,8 @@
-using DefenderChronicles.Core;
+using AllinDefense.Core;
 using TMPro;
 using UnityEngine;
 
-namespace DefenderChronicles.UI
+namespace AllinDefense.UI
 {
     public sealed partial class AppFlowController
     {

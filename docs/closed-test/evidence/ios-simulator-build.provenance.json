@@ -15,7 +15,7 @@
   },
   "build": {
     "target": "iOS",
-    "executeMethod": "DefenderChronicles.Editor.ClosedTestBuilds.IosSimulator",
+    "executeMethod": "AllinDefense.Editor.ClosedTestBuilds.IosSimulator",
     "logFile": "docs/closed-test/evidence/ios-simulator-build.log"
   },
   "source": {

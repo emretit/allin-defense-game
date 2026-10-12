@@ -1,11 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using DefenderChronicles.UI;
+using AllinDefense.UI;
 using UnityEngine;
 using UnityEngine.Audio;
 
-namespace DefenderChronicles.Presentation
+namespace AllinDefense.Presentation
 {
     public sealed class DefenderAudioController : MonoBehaviour
     {

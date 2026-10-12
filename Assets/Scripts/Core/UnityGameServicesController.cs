@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DefenderChronicles.UI;
+using AllinDefense.UI;
 using Unity.Services.Authentication;
 using Unity.Services.Authentication.PlayerAccounts;
 using Unity.Services.CloudCode;
@@ -10,7 +10,7 @@ using Unity.Services.Core;
 using Unity.Services.Core.Environments;
 using UnityEngine;
 
-namespace DefenderChronicles.Core
+namespace AllinDefense.Core
 {
     public sealed class UnityGameServicesController : MonoBehaviour, ICampaignProgressionService
     {

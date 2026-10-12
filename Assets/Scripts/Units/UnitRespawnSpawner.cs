@@ -1,8 +1,8 @@
 using System.Collections;
 using UnityEngine;
-using DefenderChronicles.Grid;
+using AllinDefense.Grid;
 
-namespace DefenderChronicles.Units
+namespace AllinDefense.Units
 {
     public class UnitRespawnSpawner : MonoBehaviour
     {

@@ -3,7 +3,7 @@ set -euo pipefail
 
 project_root="${0:A:h:h}"
 log_path="$project_root/Builds/ios-actor-capture.log"
-bundle_id="com.emreaydin.defenderchronicles"
+bundle_id="com.emreaydin.allindefense"
 stamp="actor-runtime-vfx-animation-$(date +%Y%m%d-%H%M%S)"
 
 simulator_id="$(xcrun simctl list devices booted -j | plutil -extract devices xml1 -o - - | \

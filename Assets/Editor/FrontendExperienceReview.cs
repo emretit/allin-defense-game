@@ -4,11 +4,11 @@ using System.Collections;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using DefenderChronicles.UI;
+using AllinDefense.UI;
 using UnityEditor;
 using UnityEngine;
 
-namespace DefenderChronicles.Editor
+namespace AllinDefense.Editor
 {
     // Reproducible Game View captures; sizes are real backbuffers, not resized screenshots.
     public static class FrontendExperienceReview

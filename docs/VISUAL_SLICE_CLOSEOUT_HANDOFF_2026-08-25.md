@@ -1,4 +1,4 @@
-# Defender Chronicles — Visual Slice Closeout Handoff
+# ALLIN: Defense — Visual Slice Closeout Handoff
 
 Date: 2026-08-25
 Branch: `codex/visual-slice-closeout`

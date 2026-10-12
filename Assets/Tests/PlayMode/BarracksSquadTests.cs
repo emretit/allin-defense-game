@@ -2,14 +2,14 @@ using System.Collections;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using DefenderChronicles.Core;
-using DefenderChronicles.Data;
-using DefenderChronicles.Presentation;
+using AllinDefense.Core;
+using AllinDefense.Data;
+using AllinDefense.Presentation;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-namespace DefenderChronicles.Tests
+namespace AllinDefense.Tests
 {
     public sealed class BarracksSquadTests
     {

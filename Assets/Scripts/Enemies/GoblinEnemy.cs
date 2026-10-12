@@ -1,8 +1,8 @@
 using UnityEngine;
-using DefenderChronicles.Enemies;
-using DefenderChronicles.Utils;
+using AllinDefense.Enemies;
+using AllinDefense.Utils;
 
-namespace DefenderChronicles.Enemies
+namespace AllinDefense.Enemies
 {
     // Fast but fragile - rushes through the path quickly
     public class GoblinEnemy : EnemyBase

@@ -1,4 +1,4 @@
-# Defender Chronicles — Building Budget Report
+# ALLIN: Defense — Building Budget Report
 
 Tarih: 2026-08-16
 TODO: VIS-346

@@ -1,5 +1,5 @@
 {
-  "schema": "defender-chronicles.visual-development.greenwatch-boundary-layout.v1",
+  "schema": "allin-defense.visual-development.greenwatch-boundary-layout.v1",
   "captured_on": "2026-08-16",
   "todo": "VIS-410",
   "scope": "Boundary framing and distant silhouette staging pass; runtime route/slot/collider/sizing not changed.",

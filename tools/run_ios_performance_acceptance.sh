@@ -3,7 +3,7 @@ set -euo pipefail
 
 project_root="${0:A:h:h}"
 log_path="$project_root/Builds/ios-performance-acceptance.log"
-bundle_id="com.emreaydin.defenderchronicles"
+bundle_id="com.emreaydin.allindefense"
 campaign_level="${DC_CAMPAIGN_LEVEL:-10}"
 
 simulator_id="${DC_SIMULATOR_ID:-}"

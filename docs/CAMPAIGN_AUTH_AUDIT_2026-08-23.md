@@ -30,7 +30,7 @@ misrepresent the status of the gameplay and application-flow work in this audit.
 - Welcome, login, main menu, five-region campaign map and result screens are available before battle.
 - Login offers guest, Apple and Google choices.
 - Account switching clears stale external credentials before a different provider is opened.
-- The local Unity project is linked to the Defender Chronicles Unity Cloud project.
+- The local Unity project is linked to the ALLIN: Defense Unity Cloud project.
 - The Unity Player Accounts OAuth provider is enabled for iOS/Android and its client ID is stored in
   the project Player Accounts settings.
 - Guest sign-in creates a live Unity Authentication player and synchronizes campaign progress with

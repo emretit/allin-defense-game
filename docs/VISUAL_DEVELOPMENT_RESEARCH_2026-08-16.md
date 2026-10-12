@@ -1,4 +1,4 @@
-# Defender Chronicles — Görsel Geliştirme Araştırması
+# ALLIN: Defense — Görsel Geliştirme Araştırması
 
 Durum: Üretim öncesi araştırma ve karar kaydı
 Tarih: 2026-08-16
@@ -8,7 +8,7 @@ Bu belge, `docs/VISUAL_DEVELOPMENT_TODO.md` dosyasının karar kaynağıdır. Ta
 
 ## 1. Yönetici Özeti
 
-Defender Chronicles'ın mevcut sunumu işlevsel ve oynanabilir bir teknik temel oluşturuyor. Unity 6 URP, sabit izometrik kamera, responsive yatay HUD, üç karakol türü, sekiz actor rolü, ses durumları ve lisans kayıtları hazır. Buna karşın mevcut görsel dil henüz sanat vertical slice seviyesinde değil:
+ALLIN: Defense'in mevcut sunumu işlevsel ve oynanabilir bir teknik temel oluşturuyor. Unity 6 URP, sabit izometrik kamera, responsive yatay HUD, üç karakol türü, sekiz actor rolü, ses durumları ve lisans kayıtları hazır. Buna karşın mevcut görsel dil henüz sanat vertical slice seviyesinde değil:
 
 - Sekiz rol, katalogda yalnızca beş özgün actor prefabını paylaşıyor; bazı roller renk ve ölçek farkıyla ayrılıyor.
 - Dokuz ortak animasyon klibi kemik/rig animasyonu yerine actor kökündeki konum ve ölçek eğrilerinden oluşuyor.
@@ -17,7 +17,7 @@ Defender Chronicles'ın mevcut sunumu işlevsel ve oynanabilir bir teknik temel 
 - Greenwatch Valley'in yol ve oynanış rotası okunuyor; fakat zemin, prop dağılımı, landmark ve harita sınırı çeşitliliği sınırlı.
 - Tam ekran HUD cihaz alanını kullanıyor; sonraki ihtiyaç layout'u değiştirmek değil, kontrastı, durum geri bildirimini ve fantasy materyal dilini geliştirmek.
 
-Karar: Mevcut gece atmosferli, düşük/orta detaylı stylized low-poly fantasy temel korunacak. Yeni bir sanat yönüne geçilmeyecek; siluet, aksesuar, materyal, ışık, animasyon ve VFX yoluyla Defender Chronicles kimliği derinleştirilecek. İlk üretim kapsamı tek harita ve mevcut oynanış içeriğiyle sınırlı olacak.
+Karar: Mevcut gece atmosferli, düşük/orta detaylı stylized low-poly fantasy temel korunacak. Yeni bir sanat yönüne geçilmeyecek; siluet, aksesuar, materyal, ışık, animasyon ve VFX yoluyla ALLIN: Defense kimliği derinleştirilecek. İlk üretim kapsamı tek harita ve mevcut oynanış içeriğiyle sınırlı olacak.
 
 ## 2. İncelenen Proje Durumu
 

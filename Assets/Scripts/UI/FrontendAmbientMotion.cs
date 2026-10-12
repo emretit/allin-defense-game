@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace DefenderChronicles.UI
+namespace AllinDefense.UI
 {
     /// <summary>
     /// Adds restrained, unscaled-time motion to decorative frontend elements.

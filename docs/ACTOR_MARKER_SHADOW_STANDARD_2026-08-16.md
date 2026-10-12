@@ -1,4 +1,4 @@
-# Defender Chronicles — Actor Marker And Contact Shadow Standard
+# ALLIN: Defense — Actor Marker And Contact Shadow Standard
 
 Status: M1 actor grounding standard
 Date: 2026-08-16

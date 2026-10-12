@@ -4,7 +4,7 @@ Doğrulama tamamlandı: PlayMode **116/116 geçti**, iOS simülatör derlemesi b
 
 ## Test ve derleme
 
-- Worktree: `/Users/emreaydin/orca/workspaces/DefenderChronicles/main`.
+- Worktree: `/Users/emreaydin/orca/workspaces/AllinDefense/main`.
 - Test öncesinde süreç listesinde bu projeyi açık tutan başka Unity Editor yoktu. Sonradan görülen diğer Editor `ui-faz0` worktree'sindeydi.
 - Unity: `6000.4.1f1`; istenen `-batchmode -runTests -testPlatform PlayMode` komutu çalıştırıldı.
 - Sonuç: toplam **116**, geçti **116**, başarısız **0**, atlanan **0**; Unity çıkış kodu **0**.
@@ -24,7 +24,7 @@ Her seviye öncesinde uygulama sonlandırıldı ve şu biçimde açıldı:
 
 ```sh
 SIMCTL_CHILD_DC_CAMPAIGN_LEVEL=43 SIMCTL_CHILD_DC_ABILITY_CAPTURE=1 \
-  xcrun simctl launch 81AAFCAB-9741-4819-B9F7-B9DFA47D6F21 com.emreaydin.defenderchronicles
+  xcrun simctl launch 81AAFCAB-9741-4819-B9F7-B9DFA47D6F21 com.emreaydin.allindefense
 xcrun simctl io 81AAFCAB-9741-4819-B9F7-B9DFA47D6F21 screenshot docs/evidence/slot-route-sim-2026-10-12/level-43.png
 ```
 

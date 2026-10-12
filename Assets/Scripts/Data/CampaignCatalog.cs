@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace DefenderChronicles.Data
+namespace AllinDefense.Data
 {
     [Serializable]
     public sealed class CampaignLevelDefinition
@@ -12,7 +12,7 @@ namespace DefenderChronicles.Data
         public int indexInRegion;
         public string id;
         public string displayName;
-        public string localizedName => DefenderChronicles.UI.GameLocalization.Translate(displayName);
+        public string localizedName => AllinDefense.UI.GameLocalization.Translate(displayName);
         public int waveCount;
         public int startingGold;
         public int startingLives;
@@ -33,7 +33,7 @@ namespace DefenderChronicles.Data
         public int number;
         public string id;
         public string displayName;
-        public string localizedName => DefenderChronicles.UI.GameLocalization.Translate(displayName);
+        public string localizedName => AllinDefense.UI.GameLocalization.Translate(displayName);
         public string subtitle;
         public Color primaryColor;
         public Color accentColor;

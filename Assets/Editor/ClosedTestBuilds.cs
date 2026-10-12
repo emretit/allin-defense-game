@@ -2,38 +2,38 @@
 using System;
 using System.IO;
 using System.Linq;
-using DefenderChronicles.Core;
+using AllinDefense.Core;
 using UnityEditor;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
-namespace DefenderChronicles.Editor
+namespace AllinDefense.Editor
 {
     public static class ClosedTestBuilds
     {
         public static void Ios()
         {
             IosFirstBuildSettings.Apply();
-            PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.iOS,"com.emreaydin.defenderchronicles.closedtest");
+            PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.iOS,"com.emreaydin.allindefense.closedtest");
             PlayerSettings.iOS.buildNumber="2026090601";
             Build(BuildTarget.iOS,"Builds/ClosedTest-iOS");
         }
         public static void Android()
         {
             AndroidBuildSettings.Apply();
-            PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Android,"com.emreaydin.defenderchronicles.closedtest");
+            PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Android,"com.emreaydin.allindefense.closedtest");
             EditorUserBuildSettings.buildAppBundle=false;
-            Build(BuildTarget.Android,"Builds/ClosedTest-Android/DefenderChronicles-ct-20260906-01.apk");
+            Build(BuildTarget.Android,"Builds/ClosedTest-Android/AllinDefense-ct-20260906-01.apk");
         }
         public static void IosSimulator()
         {
             IosFirstBuildSettings.ApplySimulator();
-            PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.iOS,"com.emreaydin.defenderchronicles.closedtest");
+            PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.iOS,"com.emreaydin.allindefense.closedtest");
             PlayerSettings.iOS.buildNumber="2026090601";
             Build(BuildTarget.iOS,"Builds/ClosedTest-iOS-Simulator","iOS-Simulator");
         }
         private static void Build(BuildTarget target,string destination,string evidenceName=null)
         {
-            PlayerSettings.productName="Defender Chronicles Test";
+            PlayerSettings.productName="ALLIN: Defense Test";
             PlayerSettings.bundleVersion="0.4.0";
             var report=BuildPipeline.BuildPlayer(new BuildPlayerOptions
             {

@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DefenderChronicles.Core;
-using DefenderChronicles.Data;
-using DefenderChronicles.Enemies;
-using DefenderChronicles.Projectiles;
-using DefenderChronicles.Utils;
+using AllinDefense.Core;
+using AllinDefense.Data;
+using AllinDefense.Enemies;
+using AllinDefense.Projectiles;
+using AllinDefense.Utils;
 
-namespace DefenderChronicles.Towers
+namespace AllinDefense.Towers
 {
     public class TowerBase : MonoBehaviour
     {

@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using UnityEngine;
 
-namespace DefenderChronicles.Core
+namespace AllinDefense.Core
 {
     public enum SaveWriteStage { TemporaryFlushed, BeforeReplace, Committed }
 

@@ -2,15 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using DefenderChronicles.Core;
-using DefenderChronicles.Data;
-using DefenderChronicles.Presentation;
+using AllinDefense.Core;
+using AllinDefense.Data;
+using AllinDefense.Presentation;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 using Object = UnityEngine.Object;
 
-namespace DefenderChronicles.Tests
+namespace AllinDefense.Tests
 {
     public sealed class AuditLayer2PerfTests
     {
@@ -150,7 +150,7 @@ namespace DefenderChronicles.Tests
         }
 
         private delegate void DamageArea(Vector3 position, float radius, int damage, float slowFactor,
-            float slowDuration, DefenderChronicles.Combat.DamageType damageType);
+            float slowDuration, AllinDefense.Combat.DamageType damageType);
 
         [Test]
         public void AreaDamageSnapshotDoesNotAllocateAndPreservesDeathsAndOrder()
@@ -160,7 +160,7 @@ namespace DefenderChronicles.Tests
             var second = Enemy(session, Vector3.right);
             var outside = Enemy(session, Vector3.right * 5);
             var damage = Method<DamageArea>(session, "DamageEnemies");
-            void Hit() => damage(Vector3.zero, 2f, 1, .5f, 3f, DefenderChronicles.Combat.DamageType.Magic);
+            void Hit() => damage(Vector3.zero, 2f, 1, .5f, 3f, AllinDefense.Combat.DamageType.Magic);
             Hit();
             Assert.That((TestDelegate)Hit,
                 UnityEngine.TestTools.Constraints.ConstraintExtensions.AllocatingGCMemory(Is.Not));
@@ -168,7 +168,7 @@ namespace DefenderChronicles.Tests
             Assert.That(second.Health, Is.EqualTo(98));
             Assert.That(outside.Health, Is.EqualTo(100));
             Assert.That(second.SlowFactor, Is.EqualTo(.5f));
-            damage(Vector3.zero, 2f, 100, 1f, 0f, DefenderChronicles.Combat.DamageType.Magic);
+            damage(Vector3.zero, 2f, 100, 1f, 0f, AllinDefense.Combat.DamageType.Magic);
             Assert.That(first.IsAlive, Is.False);
             Assert.That(second.IsAlive, Is.False);
             Assert.That(session.Enemies.Count, Is.EqualTo(1), "Removing the first victim must not skip the next");
@@ -188,9 +188,9 @@ namespace DefenderChronicles.Tests
             {
                 if (signal.cue != PresentationCue.EnemyDefeated || signal.source != first.gameObject) return;
                 added = Enemy(session, Vector3.right, 100);
-                damage(Vector3.zero, 2f, 2, 1f, 0f, DefenderChronicles.Combat.DamageType.Magic);
+                damage(Vector3.zero, 2f, 2, 1f, 0f, AllinDefense.Combat.DamageType.Magic);
             };
-            damage(Vector3.zero, 2f, 10, 1f, 0f, DefenderChronicles.Combat.DamageType.Magic);
+            damage(Vector3.zero, 2f, 10, 1f, 0f, AllinDefense.Combat.DamageType.Magic);
             Assert.That(first.IsAlive, Is.False);
             Assert.That(second.Health, Is.EqualTo(38), "Nested and outer hits must each apply once");
             Assert.That(added.Health, Is.EqualTo(98), "Only the nested snapshot includes the later spawn");
@@ -317,7 +317,7 @@ namespace DefenderChronicles.Tests
                 animator.SetTrigger(PresentationActorAnimationContract.DefeatState);
                 animator.speed = 0f;
                 animator.enabled = false;
-                enemy.TakeDamage(int.MaxValue, DefenderChronicles.Combat.DamageType.Magic);
+                enemy.TakeDamage(int.MaxValue, AllinDefense.Combat.DamageType.Magic);
                 Assert.That(enemy.IsAlive, Is.False);
                 yield return null;
                 yield return null;
@@ -330,7 +330,7 @@ namespace DefenderChronicles.Tests
                 Assert.That(enemy.State, Is.EqualTo(EnemyCombatState.Moving));
                 Assert.That(enemy.StunRemaining, Is.Zero);
                 Assert.That(enemy.SlowFactor, Is.EqualTo(1f));
-                Assert.That(Field<DefenderChronicles.Combat.SlowEffect>(enemy, "slow").Remaining, Is.Zero);
+                Assert.That(Field<AllinDefense.Combat.SlowEffect>(enemy, "slow").Remaining, Is.Zero);
                 Assert.That(Field<int>(enemy, "targetWaypoint"), Is.EqualTo(1));
                 Assert.That(Field<int>(enemy, "bossPhase"), Is.EqualTo(1));
                 foreach (string field in new[] { "attackTimer", "supportTimer", "siegeTimer", "regenerationTimer", "siegeWindup" })
@@ -353,7 +353,7 @@ namespace DefenderChronicles.Tests
                 Assert.That(animator.speed, Is.EqualTo(1f));
                 Assert.That(animator.GetCurrentAnimatorStateInfo(0).IsName(PresentationActorAnimationContract.IdleState), Is.True);
                 if (phase != null) Assert.That(phase.CurrentPhase, Is.EqualTo(1));
-                enemy.TakeDamage(int.MaxValue, DefenderChronicles.Combat.DamageType.Magic);
+                enemy.TakeDamage(int.MaxValue, AllinDefense.Combat.DamageType.Magic);
                 yield return null;
                 yield return null;
             }

@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4f81fc24d9bd4493184afff249ee1ea4, type: 3}
   m_Name: UiDesignSystemAssets
-  m_EditorClassIdentifier: DefenderChronicles.Runtime::DefenderChronicles.UI.UiDesignSystemAssets
+  m_EditorClassIdentifier: AllinDefense.Runtime::AllinDefense.UI.UiDesignSystemAssets
   regularFont: {fileID: 11400000, guid: 55ffe4fbd2df8412797e0ec01dabc31e, type: 2}
   semiBoldFont: {fileID: 11400000, guid: e141b7207c0ca48d1b8d9ebea7254b87, type: 2}
   boldFont: {fileID: 11400000, guid: e141b7207c0ca48d1b8d9ebea7254b87, type: 2}

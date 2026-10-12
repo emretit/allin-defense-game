@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <test-run id="2" testcasecount="3" result="Passed" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-09-06 07:16:46Z" end-time="2026-09-06 07:18:39Z" duration="113.6081312">
-  <test-suite type="TestSuite" id="1029" name="Defender Chronicles" fullname="Defender Chronicles" runstate="Runnable" testcasecount="19" result="Passed" start-time="2026-09-06 07:16:46Z" end-time="2026-09-06 07:18:39Z" duration="113.608131" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+  <test-suite type="TestSuite" id="1029" name="ALLIN: Defense" fullname="ALLIN: Defense" runstate="Runnable" testcasecount="19" result="Passed" start-time="2026-09-06 07:16:46Z" end-time="2026-09-06 07:18:39Z" duration="113.608131" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
     <properties>
       <property name="platform" value="PlayMode" />
     </properties>
-    <test-suite type="Assembly" id="1023" name="DefenderChronicles.PlayModeTests.dll" fullname="/private/tmp/defender-audit-20260906/Library/ScriptAssemblies/DefenderChronicles.PlayModeTests.dll" runstate="Runnable" testcasecount="19" result="Passed" start-time="2026-09-06 07:16:46Z" end-time="2026-09-06 07:18:39Z" duration="113.603808" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <test-suite type="Assembly" id="1023" name="AllinDefense.PlayModeTests.dll" fullname="/private/tmp/defender-audit-20260906/Library/ScriptAssemblies/AllinDefense.PlayModeTests.dll" runstate="Runnable" testcasecount="19" result="Passed" start-time="2026-09-06 07:16:46Z" end-time="2026-09-06 07:18:39Z" duration="113.603808" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
       <properties>
         <property name="_PID" value="20796" />
         <property name="_APPDOMAIN" value="Unity Child Domain" />
         <property name="platform" value="PlayMode" />
         <property name="EditorOnly" value="False" />
       </properties>
-      <test-suite type="TestSuite" id="1024" name="DefenderChronicles" fullname="DefenderChronicles" runstate="Runnable" testcasecount="19" result="Passed" start-time="2026-09-06 07:16:46Z" end-time="2026-09-06 07:18:39Z" duration="113.603298" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <test-suite type="TestSuite" id="1024" name="AllinDefense" fullname="AllinDefense" runstate="Runnable" testcasecount="19" result="Passed" start-time="2026-09-06 07:16:46Z" end-time="2026-09-06 07:18:39Z" duration="113.603298" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
         <properties />
-        <test-suite type="TestSuite" id="1025" name="Tests" fullname="DefenderChronicles.Tests" runstate="Runnable" testcasecount="19" result="Passed" start-time="2026-09-06 07:16:46Z" end-time="2026-09-06 07:18:39Z" duration="113.602804" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <test-suite type="TestSuite" id="1025" name="Tests" fullname="AllinDefense.Tests" runstate="Runnable" testcasecount="19" result="Passed" start-time="2026-09-06 07:16:46Z" end-time="2026-09-06 07:18:39Z" duration="113.602804" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
           <properties />
-          <test-suite type="TestFixture" id="1019" name="StrategyBalanceAcceptanceTests" fullname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests" classname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-09-06 07:16:46Z" end-time="2026-09-06 07:18:39Z" duration="113.601800" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <test-suite type="TestFixture" id="1019" name="StrategyBalanceAcceptanceTests" fullname="AllinDefense.Tests.StrategyBalanceAcceptanceTests" classname="AllinDefense.Tests.StrategyBalanceAcceptanceTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-09-06 07:16:46Z" end-time="2026-09-06 07:18:39Z" duration="113.601800" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
             <properties />
-            <test-case id="1020" name="ArcherHeavyStrategyCanClearTheVerticalSlice" fullname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests.ArcherHeavyStrategyCanClearTheVerticalSlice" methodname="ArcherHeavyStrategyCanClearTheVerticalSlice" classname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests" runstate="Runnable" seed="214124682" result="Passed" start-time="2026-09-06 07:16:46Z" end-time="2026-09-06 07:17:25Z" duration="39.807389" asserts="0">
+            <test-case id="1020" name="ArcherHeavyStrategyCanClearTheVerticalSlice" fullname="AllinDefense.Tests.StrategyBalanceAcceptanceTests.ArcherHeavyStrategyCanClearTheVerticalSlice" methodname="ArcherHeavyStrategyCanClearTheVerticalSlice" classname="AllinDefense.Tests.StrategyBalanceAcceptanceTests" runstate="Runnable" seed="214124682" result="Passed" start-time="2026-09-06 07:16:46Z" end-time="2026-09-06 07:17:25Z" duration="39.807389" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="Timeout" value="150000" />
@@ -27,7 +27,7 @@
               <output><![CDATA[[DC_BALANCE_ACCEPTANCE] strategy=Archer-heavy phase=Victory wave=7/7 lives=13 outposts=8 primary=5 actions=16/16
 ]]></output>
             </test-case>
-            <test-case id="1021" name="BarracksHeavyStrategyCanClearTheVerticalSlice" fullname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests.BarracksHeavyStrategyCanClearTheVerticalSlice" methodname="BarracksHeavyStrategyCanClearTheVerticalSlice" classname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests" runstate="Runnable" seed="1091805031" result="Passed" start-time="2026-09-06 07:17:25Z" end-time="2026-09-06 07:18:09Z" duration="43.723402" asserts="0">
+            <test-case id="1021" name="BarracksHeavyStrategyCanClearTheVerticalSlice" fullname="AllinDefense.Tests.StrategyBalanceAcceptanceTests.BarracksHeavyStrategyCanClearTheVerticalSlice" methodname="BarracksHeavyStrategyCanClearTheVerticalSlice" classname="AllinDefense.Tests.StrategyBalanceAcceptanceTests" runstate="Runnable" seed="1091805031" result="Passed" start-time="2026-09-06 07:17:25Z" end-time="2026-09-06 07:18:09Z" duration="43.723402" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="Timeout" value="150000" />
@@ -37,7 +37,7 @@
               <output><![CDATA[[DC_BALANCE_ACCEPTANCE] strategy=Barracks-heavy phase=Victory wave=7/7 lives=2 outposts=8 primary=5 actions=16/16
 ]]></output>
             </test-case>
-            <test-case id="1022" name="MageHeavyStrategyCanClearTheVerticalSlice" fullname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests.MageHeavyStrategyCanClearTheVerticalSlice" methodname="MageHeavyStrategyCanClearTheVerticalSlice" classname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests" runstate="Runnable" seed="1902762142" result="Passed" start-time="2026-09-06 07:18:09Z" end-time="2026-09-06 07:18:39Z" duration="30.060897" asserts="0">
+            <test-case id="1022" name="MageHeavyStrategyCanClearTheVerticalSlice" fullname="AllinDefense.Tests.StrategyBalanceAcceptanceTests.MageHeavyStrategyCanClearTheVerticalSlice" methodname="MageHeavyStrategyCanClearTheVerticalSlice" classname="AllinDefense.Tests.StrategyBalanceAcceptanceTests" runstate="Runnable" seed="1902762142" result="Passed" start-time="2026-09-06 07:18:09Z" end-time="2026-09-06 07:18:39Z" duration="30.060897" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="Timeout" value="150000" />
@@ -45,7 +45,7 @@
                 <property name="repeatIteration" value="0" />
               </properties>
               <output><![CDATA[[DC_BALANCE_ACCEPTANCE] strategy=Mage-heavy phase=Victory wave=7/7 lives=20 outposts=8 primary=5 actions=16/16
-Saving results to: /Users/emreaydin/Library/Application Support/Emre Aydin/Defender Chronicles/TestResults.xml
+Saving results to: /Users/emreaydin/Library/Application Support/Emre Aydin/ALLIN: Defense/TestResults.xml
 ]]></output>
             </test-case>
           </test-suite>

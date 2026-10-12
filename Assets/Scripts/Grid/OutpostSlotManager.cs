@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace DefenderChronicles.Grid
+namespace AllinDefense.Grid
 {
     public class OutpostSlotManager : MonoBehaviour
     {

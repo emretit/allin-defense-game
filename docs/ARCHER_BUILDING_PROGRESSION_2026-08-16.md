@@ -1,4 +1,4 @@
-# Defender Chronicles — Archer Building Progression Pass
+# ALLIN: Defense — Archer Building Progression Pass
 
 Status: M1 generated candidate pass
 Date: 2026-08-16

@@ -1,4 +1,4 @@
-# Defender Chronicles — HUD Phase Badge Pass
+# ALLIN: Defense — HUD Phase Badge Pass
 
 Tarih: 2026-08-16
 Kapsam: Hazırlık / savaş / boss durumunu üst bar içinde daha net okunur hale getiren state badge pass'i.

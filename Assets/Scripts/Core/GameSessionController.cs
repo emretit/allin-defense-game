@@ -2,10 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using DefenderChronicles.Data;
-using DefenderChronicles.Combat;
-using DefenderChronicles.Presentation;
-using DefenderChronicles.UI;
+using AllinDefense.Data;
+using AllinDefense.Combat;
+using AllinDefense.Presentation;
+using AllinDefense.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -15,7 +15,7 @@ using UnityEngine.Profiling;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace DefenderChronicles.Core
+namespace AllinDefense.Core
 {
     public enum GamePhase
     {
@@ -2716,7 +2716,7 @@ namespace DefenderChronicles.Core
                 errors.AddRange(presentationCatalog.ValidationErrors());
 
             if (errors.Count > 0)
-                throw new InvalidOperationException("Defender Chronicles content validation failed:\n- " + string.Join("\n- ", errors));
+                throw new InvalidOperationException("ALLIN: Defense content validation failed:\n- " + string.Join("\n- ", errors));
         }
 
         internal static EnemyStats GetStats(EnemyArchetype archetype) => archetype switch

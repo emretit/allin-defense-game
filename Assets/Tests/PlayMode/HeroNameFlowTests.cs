@@ -2,9 +2,9 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Linq;
-using DefenderChronicles.Core;
-using DefenderChronicles.Presentation;
-using DefenderChronicles.UI;
+using AllinDefense.Core;
+using AllinDefense.Presentation;
+using AllinDefense.UI;
 using NUnit.Framework;
 using TMPro;
 using UnityEngine;
@@ -12,7 +12,7 @@ using UnityEngine.TestTools;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
-namespace DefenderChronicles.Tests
+namespace AllinDefense.Tests
 {
     public sealed class HeroNameFlowTests
     {

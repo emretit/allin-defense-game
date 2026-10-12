@@ -1,9 +1,9 @@
 using System.Collections;
 using UnityEngine;
-using DefenderChronicles.Enemies;
-using DefenderChronicles.Utils;
+using AllinDefense.Enemies;
+using AllinDefense.Utils;
 
-namespace DefenderChronicles.Enemies
+namespace AllinDefense.Enemies
 {
     // Boss enemy - flies, breathing fire in area
     public class DragonEnemy : EnemyBase

@@ -1,4 +1,4 @@
-using DefenderChronicles.CloudCode;
+using AllinDefense.CloudCode;
 using Newtonsoft.Json;
 using NUnit.Framework;
 

@@ -1,4 +1,4 @@
-# Defender Chronicles — HUD Material / Frame Pass
+# ALLIN: Defense — HUD Material / Frame Pass
 
 Tarih: 2026-08-16
 Kapsam: Production HUD ray ve panellerine runtime panel/frame sprite katmanı bağlama pass'i.

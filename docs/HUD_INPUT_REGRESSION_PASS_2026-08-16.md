@@ -1,4 +1,4 @@
-# Defender Chronicles — HUD Input Regression Pass
+# ALLIN: Defense — HUD Input Regression Pass
 
 Tarih: 2026-08-16
 Kapsam: `VIS-613`

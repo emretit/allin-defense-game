@@ -1,4 +1,4 @@
-# Defender Chronicles — iPhone Cihaz Kabulü
+# ALLIN: Defense — iPhone Cihaz Kabulü
 
 Durum: **Bekliyor — araçlar hazır, manuel fiziksel cihaz koşusu yapılmadı**
 

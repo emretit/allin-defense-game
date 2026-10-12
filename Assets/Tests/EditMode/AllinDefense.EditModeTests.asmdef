@@ -1,8 +1,8 @@
 {
-  "name": "DefenderChronicles.EditModeTests",
-  "rootNamespace": "DefenderChronicles.Tests",
+  "name": "AllinDefense.EditModeTests",
+  "rootNamespace": "AllinDefense.Tests",
   "references": [
-    "DefenderChronicles.Runtime",
+    "AllinDefense.Runtime",
     "Unity.Localization",
     "Unity.TextMeshPro"
   ],

@@ -1,4 +1,4 @@
-# Defender Chronicles — Building Slot Runtime Regression
+# ALLIN: Defense — Building Slot Runtime Regression
 
 Status: VIS-345 runtime smoke evidence
 Date: 2026-08-16

@@ -1,7 +1,7 @@
 using UnityEngine;
-using DefenderChronicles.Towers;
+using AllinDefense.Towers;
 
-namespace DefenderChronicles.Enemies
+namespace AllinDefense.Enemies
 {
     public class BossEnemy : EnemyBase
     {

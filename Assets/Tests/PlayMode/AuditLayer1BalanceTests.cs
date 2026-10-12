@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
-using DefenderChronicles.Core;
-using DefenderChronicles.Presentation;
+using AllinDefense.Core;
+using AllinDefense.Presentation;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
-using Data = DefenderChronicles.Data;
+using Data = AllinDefense.Data;
 
-namespace DefenderChronicles.Tests
+namespace AllinDefense.Tests
 {
     public sealed class AuditLayer1BalanceTests
     {

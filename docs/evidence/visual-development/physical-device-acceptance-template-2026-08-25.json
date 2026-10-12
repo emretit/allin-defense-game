@@ -1,5 +1,5 @@
 {
-  "schema": "defender-chronicles.visual-device-acceptance.v1",
+  "schema": "allin-defense.visual-device-acceptance.v1",
   "acceptedBuildId": "TODO-build-id-from-the-physical-device-run",
   "deviceClass": "TODO-iPhone-13-class",
   "deviceModel": "TODO-device-model",

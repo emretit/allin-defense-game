@@ -1,4 +1,4 @@
-# Defender Chronicles — Building Generated Candidate Socket/Material Pass
+# ALLIN: Defense — Building Generated Candidate Socket/Material Pass
 
 Status: VIS-302/VIS-303 generated candidate pass
 Date: 2026-08-16

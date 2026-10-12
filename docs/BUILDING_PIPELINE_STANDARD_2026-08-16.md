@@ -1,4 +1,4 @@
-# Defender Chronicles — Building Pipeline, Footprint And Socket Standard
+# ALLIN: Defense — Building Pipeline, Footprint And Socket Standard
 
 Status: VIS-301 implementation standard
 Date: 2026-08-16

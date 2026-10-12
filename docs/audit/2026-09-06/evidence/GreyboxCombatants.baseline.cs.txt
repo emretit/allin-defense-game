@@ -1,10 +1,10 @@
 using System.Collections.Generic;
-using DefenderChronicles.Data;
-using DefenderChronicles.Presentation;
+using AllinDefense.Data;
+using AllinDefense.Presentation;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace DefenderChronicles.Core
+namespace AllinDefense.Core
 {
     public enum EnemyCombatState
     {

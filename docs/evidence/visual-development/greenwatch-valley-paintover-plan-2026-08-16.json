@@ -1,5 +1,5 @@
 {
-  "schema": "defender-chronicles.visual-development.greenwatch-paintover-plan.v1",
+  "schema": "allin-defense.visual-development.greenwatch-paintover-plan.v1",
   "captured_on": "2026-08-16",
   "todo": "VIS-401",
   "scope": "Planning artifact only; does not change runtime route, slot positions, colliders or camera.",

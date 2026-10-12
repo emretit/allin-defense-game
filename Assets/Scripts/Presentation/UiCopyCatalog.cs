@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DefenderChronicles.UI;
+using AllinDefense.UI;
 using UnityEngine;
 
-namespace DefenderChronicles.Presentation
+namespace AllinDefense.Presentation
 {
     public enum UiTextKey
     {
@@ -47,7 +47,7 @@ namespace DefenderChronicles.Presentation
         [TextArea] public string value;
     }
 
-    [CreateAssetMenu(menuName = "Defender Chronicles/UI Copy", fileName = "UiCopyTr")]
+    [CreateAssetMenu(menuName = "ALLIN: Defense/UI Copy", fileName = "UiCopyTr")]
     public sealed class UiCopyCatalog : ScriptableObject
     {
         public string locale = "tr-TR";

@@ -1,4 +1,4 @@
-namespace DefenderChronicles.Units
+namespace AllinDefense.Units
 {
     public class MeleeUnit : FriendlyUnitBase
     {

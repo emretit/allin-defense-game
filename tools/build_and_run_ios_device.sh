@@ -8,7 +8,7 @@ derived_data="$project_root/Builds/XcodeDeviceDerivedData"
 unity_log="$project_root/Builds/unity-ios-device-build.log"
 xcode_log="$project_root/Builds/xcodebuild-ios-device.log"
 device_run_log="$project_root/Builds/ios-device-acceptance.log"
-bundle_id="com.emreaydin.defenderchronicles"
+bundle_id="com.emreaydin.allindefense"
 
 mkdir -p "$project_root/Builds"
 
@@ -103,7 +103,7 @@ fi
 export DC_IOS_CONNECT_PROFILER="${DC_IOS_CONNECT_PROFILER:-0}"
 
 "$unity_app" -batchmode -quit -projectPath "$project_root" \
-  -executeMethod DefenderChronicles.Editor.IosFirstBuildSettings.BuildDeviceDevelopmentProject \
+  -executeMethod AllinDefense.Editor.IosFirstBuildSettings.BuildDeviceDevelopmentProject \
   -logFile "$unity_log"
 
 xcodebuild -project "$unity_output/Unity-iPhone.xcodeproj" \
@@ -112,7 +112,7 @@ xcodebuild -project "$unity_output/Unity-iPhone.xcodeproj" \
   -derivedDataPath "$derived_data" DEVELOPMENT_TEAM="$team_id" CODE_SIGN_STYLE=Automatic \
   -allowProvisioningUpdates -allowProvisioningDeviceRegistration build > "$xcode_log" 2>&1
 
-app_path="$derived_data/Build/Products/Debug-iphoneos/DefenderChronicles.app"
+app_path="$derived_data/Build/Products/Debug-iphoneos/AllinDefense.app"
 xcrun devicectl device install app --device "$device_id" "$app_path"
 
 if [[ "${DC_IOS_SMOKE:-0}" == "1" ]]; then
@@ -138,4 +138,4 @@ else
   xcrun devicectl device process launch --terminate-existing --device "$device_id" "$bundle_id"
 fi
 
-print "Defender Chronicles fiziksel iPhone'a kuruldu ve açıldı."
+print "ALLIN: Defense fiziksel iPhone'a kuruldu ve açıldı."

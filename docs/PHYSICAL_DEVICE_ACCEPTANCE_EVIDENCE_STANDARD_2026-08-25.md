@@ -1,4 +1,4 @@
-# Defender Chronicles - Physical Device Acceptance Evidence Standard
+# ALLIN: Defense - Physical Device Acceptance Evidence Standard
 
 Date: 2026-08-25
 Related TODO: `NEXT-003`, `NEXT-004`, `NEXT-005`, `NEXT-101`, `NEXT-102`, `NEXT-103`

@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using DefenderChronicles.Core;
+using AllinDefense.Core;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
-using Data = DefenderChronicles.Data;
+using Data = AllinDefense.Data;
 
-namespace DefenderChronicles.Tests
+namespace AllinDefense.Tests
 {
     public sealed class StrategyBalanceAcceptanceTests
     {

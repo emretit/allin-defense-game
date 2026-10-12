@@ -125,7 +125,7 @@ def main() -> None:
     ]
 
     report = {
-        "schema": "defender-chronicles.visual-development.building-budget-report.v1",
+        "schema": "allin-defense.visual-development.building-budget-report.v1",
         "captured_on": CAPTURED_ON,
         "todo": "VIS-346",
         "asset_scope": "Generated building candidates plus generated build/upgrade/sell action VFX.",

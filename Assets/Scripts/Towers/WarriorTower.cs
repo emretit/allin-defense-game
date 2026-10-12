@@ -1,7 +1,7 @@
 using UnityEngine;
-using DefenderChronicles.Enemies;
+using AllinDefense.Enemies;
 
-namespace DefenderChronicles.Towers
+namespace AllinDefense.Towers
 {
     // Melee range, very high damage, slows nearby enemies
     public class WarriorTower : TowerBase

@@ -1,11 +1,11 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using DefenderChronicles.Combat;
-using DefenderChronicles.Core;
-using DefenderChronicles.Data;
+using AllinDefense.Combat;
+using AllinDefense.Core;
+using AllinDefense.Data;
 
-namespace DefenderChronicles.Enemies
+namespace AllinDefense.Enemies
 {
     public class EnemyBase : MonoBehaviour
     {
@@ -122,7 +122,7 @@ namespace DefenderChronicles.Enemies
             if (isDead) return;
             isDead = true;
             GameManager.Instance?.EarnGold(enemyData.goldReward);
-            DefenderChronicles.Utils.AudioManager.Instance?.PlayEnemyDie();
+            AllinDefense.Utils.AudioManager.Instance?.PlayEnemyDie();
             OnEnemyDied?.Invoke(this);
 
             // Death animation could go here

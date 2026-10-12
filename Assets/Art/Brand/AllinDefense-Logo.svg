@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200" role="img" aria-labelledby="title desc">
-  <title id="title">Defender Chronicles logo</title>
-  <desc id="desc">A restrained blue and brass heraldic shield with a castle tower, crossed swords, and the Defender Chronicles wordmark.</desc>
+  <title id="title">ALLIN: Defense logo</title>
+  <desc id="desc">A restrained blue and brass heraldic shield with a castle tower, crossed swords, and the ALLIN: Defense wordmark.</desc>
   <defs>
     <style>
       @font-face {
@@ -71,8 +71,8 @@
     <path d="M132 916H1068" fill="none" stroke="#d4a84d" stroke-width="5" opacity="0.9"/>
 
     <g text-anchor="middle" font-family="DC Cinzel, Cinzel, Georgia, serif" font-weight="600" filter="url(#typeShadow)">
-      <text x="600" y="884" font-size="130" letter-spacing="3" fill="#f1eee3" stroke="#061225" stroke-width="13" paint-order="stroke fill">DEFENDER</text>
-      <text x="600" y="988" font-size="62" letter-spacing="18" fill="#d8b462" stroke="#061225" stroke-width="7" paint-order="stroke fill">CHRONICLES</text>
+      <text x="600" y="884" font-size="130" letter-spacing="14" fill="#f1eee3" stroke="#061225" stroke-width="13" paint-order="stroke fill">ALLIN</text>
+      <text x="600" y="988" font-size="62" letter-spacing="18" fill="#d8b462" stroke="#061225" stroke-width="7" paint-order="stroke fill">DEFENSE</text>
     </g>
 
     <!-- Small authored accents, kept geometric rather than ornamental. -->

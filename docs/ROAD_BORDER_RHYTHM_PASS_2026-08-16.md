@@ -1,4 +1,4 @@
-# Defender Chronicles — Road Border Rhythm Pass
+# ALLIN: Defense — Road Border Rhythm Pass
 
 Tarih: 2026-08-16
 Kapsam: Greenwatch Valley production runtime yol kenarı taş ritmi.

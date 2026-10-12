@@ -1,9 +1,9 @@
 using System;
 using System.IO;
-using DefenderChronicles.Core;
+using AllinDefense.Core;
 using NUnit.Framework;
 
-namespace DefenderChronicles.Tests
+namespace AllinDefense.Tests
 {
     public class SaveRecoveryTests
     {

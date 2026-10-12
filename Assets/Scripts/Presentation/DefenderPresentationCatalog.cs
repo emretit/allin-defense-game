@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DefenderChronicles.Data;
+using AllinDefense.Data;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
 
-namespace DefenderChronicles.Presentation
+namespace AllinDefense.Presentation
 {
     public enum PresentationActorKind
     {
@@ -118,7 +118,7 @@ namespace DefenderChronicles.Presentation
         public bool loop = true;
     }
 
-    [CreateAssetMenu(menuName = "Defender Chronicles/Presentation Catalog", fileName = "DefenderPresentationCatalog")]
+    [CreateAssetMenu(menuName = "ALLIN: Defense/Presentation Catalog", fileName = "DefenderPresentationCatalog")]
     public sealed class DefenderPresentationCatalog : ScriptableObject
     {
         [Header("Environment")]

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace DefenderChronicles.Data
+namespace AllinDefense.Data
 {
     public enum TowerType
     {

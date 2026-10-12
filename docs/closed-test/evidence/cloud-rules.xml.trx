@@ -16,41 +16,41 @@
     <UnitTestResult executionId="f9bd6578-f57d-4540-9c53-0ccd8bb5d094" testId="12ea23ae-2f68-9040-4f37-bd3d8ec96ae9" testName="LockedLevelAndInvalidLivesAreRejected" computerName="Emre-MacBook-Pro" duration="00:00:00.0037650" startTime="2026-09-06T12:13:42.5410960+03:00" endTime="2026-09-06T12:13:42.5448610+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f9bd6578-f57d-4540-9c53-0ccd8bb5d094" />
   </Results>
   <TestDefinitions>
-    <UnitTest name="MigrationKeepsOnlyContiguousValidPrefix" storage="/users/emreaydin/defenderchronicles-first-region/campaignprogressionccm/campaignprogression.tests/bin/debug/net9.0/campaignprogression.tests.dll" id="93b90f3b-2cd2-49cc-4de8-33fbd6bed4e5">
+    <UnitTest name="MigrationKeepsOnlyContiguousValidPrefix" storage="/users/emreaydin/allindefense-first-region/campaignprogressionccm/campaignprogression.tests/bin/debug/net9.0/campaignprogression.tests.dll" id="93b90f3b-2cd2-49cc-4de8-33fbd6bed4e5">
       <Execution id="d69ffd12-d197-4b98-b81c-b06542764b27" />
-      <TestMethod codeBase="/Users/emreaydin/DefenderChronicles-first-region/CampaignProgressionCCM/CampaignProgression.Tests/bin/Debug/net9.0/CampaignProgression.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="CampaignProgression.Tests.CampaignRulesEngineTests" name="MigrationKeepsOnlyContiguousValidPrefix" />
+      <TestMethod codeBase="/Users/emreaydin/AllinDefense-first-region/CampaignProgressionCCM/CampaignProgression.Tests/bin/Debug/net9.0/CampaignProgression.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="CampaignProgression.Tests.CampaignRulesEngineTests" name="MigrationKeepsOnlyContiguousValidPrefix" />
     </UnitTest>
-    <UnitTest name="NullClaimIsRejectedWithoutAbortingValidBatch" storage="/users/emreaydin/defenderchronicles-first-region/campaignprogressionccm/campaignprogression.tests/bin/debug/net9.0/campaignprogression.tests.dll" id="d463fb12-0feb-3afa-2c7f-1d08bd4b2b7f">
+    <UnitTest name="NullClaimIsRejectedWithoutAbortingValidBatch" storage="/users/emreaydin/allindefense-first-region/campaignprogressionccm/campaignprogression.tests/bin/debug/net9.0/campaignprogression.tests.dll" id="d463fb12-0feb-3afa-2c7f-1d08bd4b2b7f">
       <Execution id="55fc609c-ec01-46b2-acab-4b7ce18e9bb6" />
-      <TestMethod codeBase="/Users/emreaydin/DefenderChronicles-first-region/CampaignProgressionCCM/CampaignProgression.Tests/bin/Debug/net9.0/CampaignProgression.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="CampaignProgression.Tests.CampaignRulesEngineTests" name="NullClaimIsRejectedWithoutAbortingValidBatch" />
+      <TestMethod codeBase="/Users/emreaydin/AllinDefense-first-region/CampaignProgressionCCM/CampaignProgression.Tests/bin/Debug/net9.0/CampaignProgression.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="CampaignProgression.Tests.CampaignRulesEngineTests" name="NullClaimIsRejectedWithoutAbortingValidBatch" />
     </UnitTest>
-    <UnitTest name="StarsAreDerivedFromLivesInsteadOfClientAssertion" storage="/users/emreaydin/defenderchronicles-first-region/campaignprogressionccm/campaignprogression.tests/bin/debug/net9.0/campaignprogression.tests.dll" id="237ef02d-776f-a24c-ac62-4ebcf9eeaada">
+    <UnitTest name="StarsAreDerivedFromLivesInsteadOfClientAssertion" storage="/users/emreaydin/allindefense-first-region/campaignprogressionccm/campaignprogression.tests/bin/debug/net9.0/campaignprogression.tests.dll" id="237ef02d-776f-a24c-ac62-4ebcf9eeaada">
       <Execution id="f8f7d766-f8e6-4291-9a9a-0a4809a4339a" />
-      <TestMethod codeBase="/Users/emreaydin/DefenderChronicles-first-region/CampaignProgressionCCM/CampaignProgression.Tests/bin/Debug/net9.0/CampaignProgression.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="CampaignProgression.Tests.CampaignRulesEngineTests" name="StarsAreDerivedFromLivesInsteadOfClientAssertion" />
+      <TestMethod codeBase="/Users/emreaydin/AllinDefense-first-region/CampaignProgressionCCM/CampaignProgression.Tests/bin/Debug/net9.0/CampaignProgression.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="CampaignProgression.Tests.CampaignRulesEngineTests" name="StarsAreDerivedFromLivesInsteadOfClientAssertion" />
     </UnitTest>
-    <UnitTest name="LockedLevelAndInvalidLivesAreRejected" storage="/users/emreaydin/defenderchronicles-first-region/campaignprogressionccm/campaignprogression.tests/bin/debug/net9.0/campaignprogression.tests.dll" id="12ea23ae-2f68-9040-4f37-bd3d8ec96ae9">
+    <UnitTest name="LockedLevelAndInvalidLivesAreRejected" storage="/users/emreaydin/allindefense-first-region/campaignprogressionccm/campaignprogression.tests/bin/debug/net9.0/campaignprogression.tests.dll" id="12ea23ae-2f68-9040-4f37-bd3d8ec96ae9">
       <Execution id="f9bd6578-f57d-4540-9c53-0ccd8bb5d094" />
-      <TestMethod codeBase="/Users/emreaydin/DefenderChronicles-first-region/CampaignProgressionCCM/CampaignProgression.Tests/bin/Debug/net9.0/CampaignProgression.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="CampaignProgression.Tests.CampaignRulesEngineTests" name="LockedLevelAndInvalidLivesAreRejected" />
+      <TestMethod codeBase="/Users/emreaydin/AllinDefense-first-region/CampaignProgressionCCM/CampaignProgression.Tests/bin/Debug/net9.0/CampaignProgression.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="CampaignProgression.Tests.CampaignRulesEngineTests" name="LockedLevelAndInvalidLivesAreRejected" />
     </UnitTest>
-    <UnitTest name="IsolatedLevelFiftyCannotUnlockCampaignDuringMigration" storage="/users/emreaydin/defenderchronicles-first-region/campaignprogressionccm/campaignprogression.tests/bin/debug/net9.0/campaignprogression.tests.dll" id="c236edfc-c078-b68b-ad86-c27f0d3de3da">
+    <UnitTest name="IsolatedLevelFiftyCannotUnlockCampaignDuringMigration" storage="/users/emreaydin/allindefense-first-region/campaignprogressionccm/campaignprogression.tests/bin/debug/net9.0/campaignprogression.tests.dll" id="c236edfc-c078-b68b-ad86-c27f0d3de3da">
       <Execution id="0f47d356-2ec7-4344-9625-41b158d65a1a" />
-      <TestMethod codeBase="/Users/emreaydin/DefenderChronicles-first-region/CampaignProgressionCCM/CampaignProgression.Tests/bin/Debug/net9.0/CampaignProgression.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="CampaignProgression.Tests.CampaignRulesEngineTests" name="IsolatedLevelFiftyCannotUnlockCampaignDuringMigration" />
+      <TestMethod codeBase="/Users/emreaydin/AllinDefense-first-region/CampaignProgressionCCM/CampaignProgression.Tests/bin/Debug/net9.0/CampaignProgression.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="CampaignProgression.Tests.CampaignRulesEngineTests" name="IsolatedLevelFiftyCannotUnlockCampaignDuringMigration" />
     </UnitTest>
-    <UnitTest name="ZeroLivesCannotClaimVictory" storage="/users/emreaydin/defenderchronicles-first-region/campaignprogressionccm/campaignprogression.tests/bin/debug/net9.0/campaignprogression.tests.dll" id="7e61f22c-131f-d2f7-7f0b-f07cc8c84a65">
+    <UnitTest name="ZeroLivesCannotClaimVictory" storage="/users/emreaydin/allindefense-first-region/campaignprogressionccm/campaignprogression.tests/bin/debug/net9.0/campaignprogression.tests.dll" id="7e61f22c-131f-d2f7-7f0b-f07cc8c84a65">
       <Execution id="6be1ffa6-ace4-4357-90f7-028154af39fc" />
-      <TestMethod codeBase="/Users/emreaydin/DefenderChronicles-first-region/CampaignProgressionCCM/CampaignProgression.Tests/bin/Debug/net9.0/CampaignProgression.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="CampaignProgression.Tests.CampaignRulesEngineTests" name="ZeroLivesCannotClaimVictory" />
+      <TestMethod codeBase="/Users/emreaydin/AllinDefense-first-region/CampaignProgressionCCM/CampaignProgression.Tests/bin/Debug/net9.0/CampaignProgression.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="CampaignProgression.Tests.CampaignRulesEngineTests" name="ZeroLivesCannotClaimVictory" />
     </UnitTest>
-    <UnitTest name="LegacyMigrationRecomputesCurrencyFromValidatedStars" storage="/users/emreaydin/defenderchronicles-first-region/campaignprogressionccm/campaignprogression.tests/bin/debug/net9.0/campaignprogression.tests.dll" id="9001f476-bbe3-4d1f-082f-5615de963e07">
+    <UnitTest name="LegacyMigrationRecomputesCurrencyFromValidatedStars" storage="/users/emreaydin/allindefense-first-region/campaignprogressionccm/campaignprogression.tests/bin/debug/net9.0/campaignprogression.tests.dll" id="9001f476-bbe3-4d1f-082f-5615de963e07">
       <Execution id="b046b4a7-4f62-4415-9d7a-1f0229bf129a" />
-      <TestMethod codeBase="/Users/emreaydin/DefenderChronicles-first-region/CampaignProgressionCCM/CampaignProgression.Tests/bin/Debug/net9.0/CampaignProgression.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="CampaignProgression.Tests.CampaignRulesEngineTests" name="LegacyMigrationRecomputesCurrencyFromValidatedStars" />
+      <TestMethod codeBase="/Users/emreaydin/AllinDefense-first-region/CampaignProgressionCCM/CampaignProgression.Tests/bin/Debug/net9.0/CampaignProgression.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="CampaignProgression.Tests.CampaignRulesEngineTests" name="LegacyMigrationRecomputesCurrencyFromValidatedStars" />
     </UnitTest>
-    <UnitTest name="DuplicateClaimCannotAwardTwice" storage="/users/emreaydin/defenderchronicles-first-region/campaignprogressionccm/campaignprogression.tests/bin/debug/net9.0/campaignprogression.tests.dll" id="4d122e8b-294a-126a-0ab8-bdc860c3093b">
+    <UnitTest name="DuplicateClaimCannotAwardTwice" storage="/users/emreaydin/allindefense-first-region/campaignprogressionccm/campaignprogression.tests/bin/debug/net9.0/campaignprogression.tests.dll" id="4d122e8b-294a-126a-0ab8-bdc860c3093b">
       <Execution id="86837b5a-2d1f-4985-9f03-404b05957dc2" />
-      <TestMethod codeBase="/Users/emreaydin/DefenderChronicles-first-region/CampaignProgressionCCM/CampaignProgression.Tests/bin/Debug/net9.0/CampaignProgression.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="CampaignProgression.Tests.CampaignRulesEngineTests" name="DuplicateClaimCannotAwardTwice" />
+      <TestMethod codeBase="/Users/emreaydin/AllinDefense-first-region/CampaignProgressionCCM/CampaignProgression.Tests/bin/Debug/net9.0/CampaignProgression.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="CampaignProgression.Tests.CampaignRulesEngineTests" name="DuplicateClaimCannotAwardTwice" />
     </UnitTest>
-    <UnitTest name="OrderedOfflineBatchCanUnlockFollowingLevel" storage="/users/emreaydin/defenderchronicles-first-region/campaignprogressionccm/campaignprogression.tests/bin/debug/net9.0/campaignprogression.tests.dll" id="f6d28a03-6ebd-43a5-d128-f4ae47157423">
+    <UnitTest name="OrderedOfflineBatchCanUnlockFollowingLevel" storage="/users/emreaydin/allindefense-first-region/campaignprogressionccm/campaignprogression.tests/bin/debug/net9.0/campaignprogression.tests.dll" id="f6d28a03-6ebd-43a5-d128-f4ae47157423">
       <Execution id="a299f47d-ed8d-405f-b003-907909b24d9e" />
-      <TestMethod codeBase="/Users/emreaydin/DefenderChronicles-first-region/CampaignProgressionCCM/CampaignProgression.Tests/bin/Debug/net9.0/CampaignProgression.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="CampaignProgression.Tests.CampaignRulesEngineTests" name="OrderedOfflineBatchCanUnlockFollowingLevel" />
+      <TestMethod codeBase="/Users/emreaydin/AllinDefense-first-region/CampaignProgressionCCM/CampaignProgression.Tests/bin/Debug/net9.0/CampaignProgression.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="CampaignProgression.Tests.CampaignRulesEngineTests" name="OrderedOfflineBatchCanUnlockFollowingLevel" />
     </UnitTest>
   </TestDefinitions>
   <TestEntries>
@@ -72,7 +72,7 @@
     <Counters total="9" executed="9" passed="9" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
     <Output>
       <StdOut>NUnit Adapter 4.6.0.0: Test execution started
-Running all tests in /Users/emreaydin/DefenderChronicles-first-region/CampaignProgressionCCM/CampaignProgression.Tests/bin/Debug/net9.0/CampaignProgression.Tests.dll
+Running all tests in /Users/emreaydin/AllinDefense-first-region/CampaignProgressionCCM/CampaignProgression.Tests/bin/Debug/net9.0/CampaignProgression.Tests.dll
    NUnit3TestExecutor discovered 9 of 9 NUnit test cases using Current Discovery mode, Non-Explicit run
 NUnit Adapter 4.6.0.0: Test execution complete
 </StdOut>

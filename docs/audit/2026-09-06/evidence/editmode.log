@@ -17,17 +17,17 @@ COMMAND LINE ARGUMENTS:
 -batchmode
 -runTests
 -projectPath
-/Users/emreaydin/DefenderChronicles
+/Users/emreaydin/AllinDefense
 -testResults
-/Users/emreaydin/DefenderChronicles/docs/audit/2026-09-06/evidence/editmode.xml
+/Users/emreaydin/AllinDefense/docs/audit/2026-09-06/evidence/editmode.xml
 -testPlatform
 EditMode
 -logFile
-/Users/emreaydin/DefenderChronicles/docs/audit/2026-09-06/evidence/editmode.log
+/Users/emreaydin/AllinDefense/docs/audit/2026-09-06/evidence/editmode.log
 -hubSessionId
 af000b0d-a308-44b3-a15c-3f120526a174
 -accessToken
 nyI5c7fNTYKxY7ujMS9DMKvBAEkWIn-Uyco0XSSuzSo011f
-Successfully changed project path to: /Users/emreaydin/DefenderChronicles
-/Users/emreaydin/DefenderChronicles
+Successfully changed project path to: /Users/emreaydin/AllinDefense
+/Users/emreaydin/AllinDefense
 [Package Manager] Server process was shutdown

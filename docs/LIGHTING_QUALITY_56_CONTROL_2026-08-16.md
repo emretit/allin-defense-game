@@ -42,6 +42,6 @@ Oyunu 5.4 sonrası baseline savaş kadrajında çalıştırıp:
 - Gerekirse kısa not: hangi cihaz ve Unity versiyonu ile alındı.
 
 Kaynaklar:
-- [Assets/Scripts/Presentation/DefenderSceneLook.cs](/Users/emreaydin/DefenderChronicles/Assets/Scripts/Presentation/DefenderSceneLook.cs)
-- [Assets/Tests/PlayMode/GreyboxSceneTests.cs](/Users/emreaydin/DefenderChronicles/Assets/Tests/PlayMode/GreyboxSceneTests.cs)
-- [docs/LIGHTING_PASS_2026-08-16.md](/Users/emreaydin/DefenderChronicles/docs/LIGHTING_PASS_2026-08-16.md)
+- [Assets/Scripts/Presentation/DefenderSceneLook.cs](/Users/emreaydin/AllinDefense/Assets/Scripts/Presentation/DefenderSceneLook.cs)
+- [Assets/Tests/PlayMode/GreyboxSceneTests.cs](/Users/emreaydin/AllinDefense/Assets/Tests/PlayMode/GreyboxSceneTests.cs)
+- [docs/LIGHTING_PASS_2026-08-16.md](/Users/emreaydin/AllinDefense/docs/LIGHTING_PASS_2026-08-16.md)

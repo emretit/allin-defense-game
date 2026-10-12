@@ -1,0 +1,11 @@
+{
+  "name": "AllinDefense.PlayModeTests",
+  "rootNamespace": "AllinDefense.Tests",
+  "references": [
+    "AllinDefense.Runtime",
+    "Unity.TextMeshPro"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}

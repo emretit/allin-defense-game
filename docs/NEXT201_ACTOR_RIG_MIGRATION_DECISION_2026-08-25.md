@@ -1,4 +1,4 @@
-# Defender Chronicles - NEXT-201 Actor Rig Migration Decision
+# ALLIN: Defense - NEXT-201 Actor Rig Migration Decision
 
 Date: 2026-08-25
 Related TODO: `NEXT-201`

@@ -1,4 +1,4 @@
-# Defender Chronicles — Sell/Demolition VFX Standard
+# ALLIN: Defense — Sell/Demolition VFX Standard
 
 Status: VIS-343 generated candidate pass
 Date: 2026-08-16

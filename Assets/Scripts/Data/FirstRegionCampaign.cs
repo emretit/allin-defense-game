@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
-using DefenderChronicles.UI;
+using AllinDefense.UI;
 using UnityEngine;
 
-namespace DefenderChronicles.Data
+namespace AllinDefense.Data
 {
     [Serializable] public sealed class FirstRegionLevel
     {

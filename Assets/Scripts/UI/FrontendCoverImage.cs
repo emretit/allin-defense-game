@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace DefenderChronicles.UI
+namespace AllinDefense.UI
 {
     [RequireComponent(typeof(RawImage), typeof(RectTransform))]
     public sealed class FrontendCoverImage : MonoBehaviour

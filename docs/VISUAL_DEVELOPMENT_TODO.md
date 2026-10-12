@@ -1,4 +1,4 @@
-# Defender Chronicles — Görsel Üretim TODO
+# ALLIN: Defense — Görsel Üretim TODO
 
 Durum: Uygulamaya hazır backlog
 Tarih: 2026-08-16

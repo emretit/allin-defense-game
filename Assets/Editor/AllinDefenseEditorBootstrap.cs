@@ -2,18 +2,18 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace DefenderChronicles.Editor
+namespace AllinDefense.Editor
 {
     /// <summary>
     /// Proje açıldığında TMP Essential Resources yoksa import menüsünü bir kez dener.
-    /// Menü yolu Unity sürümüne göre değişebilir; olmazsa menü: Defender Chronicles → Import TMP Essential Resources.
+    /// Menü yolu Unity sürümüne göre değişebilir; olmazsa menü: ALLIN: Defense → Import TMP Essential Resources.
     /// </summary>
     [InitializeOnLoad]
-    public static class DefenderChroniclesEditorBootstrap
+    public static class AllinDefenseEditorBootstrap
     {
         private static bool _attemptedImportThisDomain;
 
-        static DefenderChroniclesEditorBootstrap()
+        static AllinDefenseEditorBootstrap()
         {
             EditorApplication.delayCall += TryImportTmpEssentialsOnce;
         }
@@ -44,12 +44,12 @@ namespace DefenderChronicles.Editor
                 catch
                 {
                     Debug.LogWarning(
-                        "[Defender Chronicles] TMP Essential Resources bulunamadı. Menü: Defender Chronicles → Import TMP Essential Resources veya Window → TextMeshPro.");
+                        "[ALLIN: Defense] TMP Essential Resources bulunamadı. Menü: ALLIN: Defense → Import TMP Essential Resources veya Window → TextMeshPro.");
                 }
             }
         }
 
-        [MenuItem("Defender Chronicles/Import TMP Essential Resources")]
+        [MenuItem("ALLIN: Defense/Import TMP Essential Resources")]
         private static void MenuImportTmp()
         {
             try

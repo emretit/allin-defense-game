@@ -1,4 +1,4 @@
-# Defender Chronicles - Cinematic Boss/Result Framing Plan
+# ALLIN: Defense - Cinematic Boss/Result Framing Plan
 
 Date: 2026-08-25
 Related TODO: `NEXT-204`

@@ -1,4 +1,4 @@
-# Defender Chronicles - Frostfen Hollow Second Biome Plan
+# ALLIN: Defense - Frostfen Hollow Second Biome Plan
 
 Date: 2026-08-25
 Related TODO: `NEXT-202`

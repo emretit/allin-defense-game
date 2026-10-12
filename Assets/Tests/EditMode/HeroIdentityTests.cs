@@ -1,13 +1,13 @@
 using System;
 using System.IO;
 using System.Text.RegularExpressions;
-using DefenderChronicles.Core;
-using DefenderChronicles.UI;
+using AllinDefense.Core;
+using AllinDefense.UI;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-namespace DefenderChronicles.Tests
+namespace AllinDefense.Tests
 {
     public sealed class HeroIdentityTests
     {

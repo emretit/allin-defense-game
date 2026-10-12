@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
-using DefenderChronicles.Core;
-using DefenderChronicles.Data;
-using DefenderChronicles.Presentation;
-using DefenderChronicles.Utils;
+using AllinDefense.Core;
+using AllinDefense.Data;
+using AllinDefense.Presentation;
+using AllinDefense.Utils;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -14,7 +14,7 @@ using UnityEngine.InputSystem.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace DefenderChronicles.UI
+namespace AllinDefense.UI
 {
     public enum AppScreen
     {

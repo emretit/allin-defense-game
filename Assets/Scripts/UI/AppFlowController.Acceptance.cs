@@ -3,11 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using DefenderChronicles.Core;
+using AllinDefense.Core;
 using UnityEngine;
 using UnityEngine.Profiling;
 
-namespace DefenderChronicles.UI
+namespace AllinDefense.UI
 {
     public sealed partial class AppFlowController
     {

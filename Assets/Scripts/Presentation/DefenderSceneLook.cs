@@ -1,10 +1,10 @@
 using System.Collections;
-using DefenderChronicles.Data;
+using AllinDefense.Data;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-namespace DefenderChronicles.Presentation
+namespace AllinDefense.Presentation
 {
     /// <summary>
     /// Owns the production-only camera, lighting and restrained mobile post-processing look.

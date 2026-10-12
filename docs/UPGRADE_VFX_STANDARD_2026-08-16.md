@@ -1,4 +1,4 @@
-# Defender Chronicles — Upgrade VFX Standard
+# ALLIN: Defense — Upgrade VFX Standard
 
 Status: VIS-342 generated candidate pass
 Date: 2026-08-16

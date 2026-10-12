@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace DefenderChronicles.Data
+namespace AllinDefense.Data
 {
     public enum OutpostKind
     {
@@ -68,7 +68,7 @@ namespace DefenderChronicles.Data
         }
     }
 
-    [CreateAssetMenu(fileName = "LevelDefinition", menuName = "Defender Chronicles/Level Definition")]
+    [CreateAssetMenu(fileName = "LevelDefinition", menuName = "ALLIN: Defense/Level Definition")]
     public sealed class LevelDefinition : ScriptableObject
     {
         public string id = "level_greenwatch_01";
@@ -79,7 +79,7 @@ namespace DefenderChronicles.Data
         public WaveDefinition[] waves;
     }
 
-    [CreateAssetMenu(fileName = "EnemyDefinition", menuName = "Defender Chronicles/Enemy Definition")]
+    [CreateAssetMenu(fileName = "EnemyDefinition", menuName = "ALLIN: Defense/Enemy Definition")]
     public sealed class EnemyDefinition : ScriptableObject
     {
         public string id;
@@ -91,7 +91,7 @@ namespace DefenderChronicles.Data
         public Color color = Color.red;
     }
 
-    [CreateAssetMenu(fileName = "OutpostDefinition", menuName = "Defender Chronicles/Outpost Definition")]
+    [CreateAssetMenu(fileName = "OutpostDefinition", menuName = "ALLIN: Defense/Outpost Definition")]
     public sealed class OutpostDefinition : ScriptableObject
     {
         public string id;
@@ -103,7 +103,7 @@ namespace DefenderChronicles.Data
         public float attacksPerSecond = 1f;
     }
 
-    [CreateAssetMenu(fileName = "HeroDefinition", menuName = "Defender Chronicles/Hero Definition")]
+    [CreateAssetMenu(fileName = "HeroDefinition", menuName = "ALLIN: Defense/Hero Definition")]
     public sealed class HeroDefinition : ScriptableObject
     {
         public string id = "hero_knight_commander";

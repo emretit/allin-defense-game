@@ -1,4 +1,4 @@
-# Defender Chronicles — Combat System
+# ALLIN: Defense — Combat System
 
 Durum: Canli savas kurallari ve eski Faz 3 prototip/tasarim notlari
 Son guncelleme: 2026-10-11

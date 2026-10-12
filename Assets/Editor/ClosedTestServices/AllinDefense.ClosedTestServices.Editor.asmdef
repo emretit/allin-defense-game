@@ -1,7 +1,7 @@
 {
-  "name": "DefenderChronicles.ClosedTestServices.Editor",
+  "name": "AllinDefense.ClosedTestServices.Editor",
   "references": [
-    "DefenderChronicles.Runtime",
+    "AllinDefense.Runtime",
     "Unity.Services.Core.Editor",
     "Unity.Services.DeploymentApi",
     "Unity.Services.Core",

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace DefenderChronicles.Combat
+namespace AllinDefense.Combat
 {
     public static class DamageResolver
     {

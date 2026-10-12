@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace DefenderChronicles.Presentation
+namespace AllinDefense.Presentation
 {
     /// <summary>
     /// Keeps the playable battlefield large on wide phones while preserving every critical

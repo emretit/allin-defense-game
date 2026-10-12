@@ -2,11 +2,11 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
-using DefenderChronicles.Towers;
+using AllinDefense.Towers;
 using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 using InputTouch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
-namespace DefenderChronicles.Utils
+namespace AllinDefense.Utils
 {
     // Mobile touch input handler - supports tap, drag, pinch-to-zoom
     public class TouchInputHandler : MonoBehaviour

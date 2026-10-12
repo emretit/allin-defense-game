@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace DefenderChronicles.UI
+namespace AllinDefense.UI
 {
     // Only this small surface survives scene replacement, not the old game session.
     public sealed class FrontendLoadingOverlay : MonoBehaviour

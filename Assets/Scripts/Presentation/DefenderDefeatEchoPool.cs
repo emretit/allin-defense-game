@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace DefenderChronicles.Presentation
+namespace AllinDefense.Presentation
 {
     public sealed class DefenderDefeatEchoPool : MonoBehaviour
     {

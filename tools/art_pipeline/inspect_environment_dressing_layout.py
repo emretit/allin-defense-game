@@ -133,7 +133,7 @@ def main() -> None:
                     )
 
     report: dict[str, Any] = {
-        "schema": "defender-chronicles.visual-development.greenwatch-dressing-layout-metrics.v1",
+        "schema": "allin-defense.visual-development.greenwatch-dressing-layout-metrics.v1",
         "captured_on": layout["captured_on"],
         "todo": layout["todo"],
         "source": str(layout_path),

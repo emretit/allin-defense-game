@@ -1,4 +1,4 @@
-Defender Chronicles — Audio/Visual Acceptance Evidence
+ALLIN: Defense — Audio/Visual Acceptance Evidence
 Date: 2026-08-25
 Platform: iPhone 17 Pro, iOS 26.5 Simulator
 Unity: 6000.4.1f1

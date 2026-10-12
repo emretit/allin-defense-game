@@ -1,8 +1,8 @@
 using UnityEngine;
-using DefenderChronicles.Enemies;
-using DefenderChronicles.Utils;
+using AllinDefense.Enemies;
+using AllinDefense.Utils;
 
-namespace DefenderChronicles.Enemies
+namespace AllinDefense.Enemies
 {
     // Tanky, medium speed, berserks at low health
     public class OrcEnemy : EnemyBase

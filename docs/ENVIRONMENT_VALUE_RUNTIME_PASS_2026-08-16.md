@@ -1,4 +1,4 @@
-# Defender Chronicles — Environment Value Runtime Pass
+# ALLIN: Defense — Environment Value Runtime Pass
 
 Tarih: 2026-08-16
 Kapsam: Greenwatch Valley hazırlık görünümü; gameplay path, slot, collider ve kamera davranışı değiştirilmeden runtime scenic dressing polish'i.

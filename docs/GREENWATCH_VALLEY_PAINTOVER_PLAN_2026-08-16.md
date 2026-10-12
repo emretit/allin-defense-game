@@ -1,4 +1,4 @@
-# Defender Chronicles — Greenwatch Valley Paint-over Plan
+# ALLIN: Defense — Greenwatch Valley Paint-over Plan
 
 Tarih: 2026-08-16
 TODO: VIS-401

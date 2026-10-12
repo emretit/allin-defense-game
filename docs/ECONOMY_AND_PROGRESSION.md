@@ -1,4 +1,4 @@
-# Defender Chronicles — Economy, Upgrades and Progression
+# ALLIN: Defense — Economy, Upgrades and Progression
 
 Durum: Faz 6 veri ve tasarim notu
 Son guncelleme: 2026-10-11

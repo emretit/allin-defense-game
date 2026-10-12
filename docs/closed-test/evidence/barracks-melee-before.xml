@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <test-run id="2" testcasecount="8" result="Failed(Child)" total="8" passed="6" failed="2" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-09-06 13:06:19Z" end-time="2026-09-06 13:06:20Z" duration="0.670674">
-  <test-suite type="TestSuite" id="1050" name="Defender Chronicles Test" fullname="Defender Chronicles Test" runstate="Runnable" testcasecount="36" result="Failed" site="Child" start-time="2026-09-06 13:06:19Z" end-time="2026-09-06 13:06:20Z" duration="0.670674" total="8" passed="6" failed="2" inconclusive="0" skipped="0" asserts="0">
+  <test-suite type="TestSuite" id="1050" name="ALLIN: Defense Test" fullname="ALLIN: Defense Test" runstate="Runnable" testcasecount="36" result="Failed" site="Child" start-time="2026-09-06 13:06:19Z" end-time="2026-09-06 13:06:20Z" duration="0.670674" total="8" passed="6" failed="2" inconclusive="0" skipped="0" asserts="0">
     <properties>
       <property name="platform" value="PlayMode" />
     </properties>
     <failure>
       <message><![CDATA[One or more child tests had errors]]></message>
     </failure>
-    <test-suite type="Assembly" id="1044" name="DefenderChronicles.PlayModeTests.dll" fullname="/Users/emreaydin/DefenderChronicles-first-region/Library/ScriptAssemblies/DefenderChronicles.PlayModeTests.dll" runstate="Runnable" testcasecount="36" result="Failed" site="Child" start-time="2026-09-06 13:06:19Z" end-time="2026-09-06 13:06:20Z" duration="0.667355" total="8" passed="6" failed="2" inconclusive="0" skipped="0" asserts="0">
+    <test-suite type="Assembly" id="1044" name="AllinDefense.PlayModeTests.dll" fullname="/Users/emreaydin/AllinDefense-first-region/Library/ScriptAssemblies/AllinDefense.PlayModeTests.dll" runstate="Runnable" testcasecount="36" result="Failed" site="Child" start-time="2026-09-06 13:06:19Z" end-time="2026-09-06 13:06:20Z" duration="0.667355" total="8" passed="6" failed="2" inconclusive="0" skipped="0" asserts="0">
       <properties>
         <property name="_PID" value="34847" />
         <property name="_APPDOMAIN" value="Unity Child Domain" />
@@ -17,36 +17,36 @@
       <failure>
         <message><![CDATA[One or more child tests had errors]]></message>
       </failure>
-      <test-suite type="TestSuite" id="1045" name="DefenderChronicles" fullname="DefenderChronicles" runstate="Runnable" testcasecount="36" result="Failed" site="Child" start-time="2026-09-06 13:06:19Z" end-time="2026-09-06 13:06:20Z" duration="0.667018" total="8" passed="6" failed="2" inconclusive="0" skipped="0" asserts="0">
+      <test-suite type="TestSuite" id="1045" name="AllinDefense" fullname="AllinDefense" runstate="Runnable" testcasecount="36" result="Failed" site="Child" start-time="2026-09-06 13:06:19Z" end-time="2026-09-06 13:06:20Z" duration="0.667018" total="8" passed="6" failed="2" inconclusive="0" skipped="0" asserts="0">
         <properties />
         <failure>
           <message><![CDATA[One or more child tests had errors]]></message>
         </failure>
-        <test-suite type="TestSuite" id="1046" name="Tests" fullname="DefenderChronicles.Tests" runstate="Runnable" testcasecount="36" result="Failed" site="Child" start-time="2026-09-06 13:06:19Z" end-time="2026-09-06 13:06:20Z" duration="0.666813" total="8" passed="6" failed="2" inconclusive="0" skipped="0" asserts="0">
+        <test-suite type="TestSuite" id="1046" name="Tests" fullname="AllinDefense.Tests" runstate="Runnable" testcasecount="36" result="Failed" site="Child" start-time="2026-09-06 13:06:19Z" end-time="2026-09-06 13:06:20Z" duration="0.666813" total="8" passed="6" failed="2" inconclusive="0" skipped="0" asserts="0">
           <properties />
           <failure>
             <message><![CDATA[One or more child tests had errors]]></message>
           </failure>
-          <test-suite type="TestFixture" id="1001" name="BarracksSquadTests" fullname="DefenderChronicles.Tests.BarracksSquadTests" classname="DefenderChronicles.Tests.BarracksSquadTests" runstate="Runnable" testcasecount="8" result="Failed" site="Child" start-time="2026-09-06 13:06:19Z" end-time="2026-09-06 13:06:20Z" duration="0.666075" total="8" passed="6" failed="2" inconclusive="0" skipped="0" asserts="0">
+          <test-suite type="TestFixture" id="1001" name="BarracksSquadTests" fullname="AllinDefense.Tests.BarracksSquadTests" classname="AllinDefense.Tests.BarracksSquadTests" runstate="Runnable" testcasecount="8" result="Failed" site="Child" start-time="2026-09-06 13:06:19Z" end-time="2026-09-06 13:06:20Z" duration="0.666075" total="8" passed="6" failed="2" inconclusive="0" skipped="0" asserts="0">
             <properties />
             <failure>
               <message><![CDATA[One or more child tests had errors]]></message>
             </failure>
-            <test-case id="1007" name="BothSpecializationsKeepThreeSoldiers" fullname="DefenderChronicles.Tests.BarracksSquadTests.BothSpecializationsKeepThreeSoldiers" methodname="BothSpecializationsKeepThreeSoldiers" classname="DefenderChronicles.Tests.BarracksSquadTests" runstate="Runnable" seed="1409022411" result="Passed" start-time="2026-09-06 13:06:19Z" end-time="2026-09-06 13:06:20Z" duration="0.458293" asserts="0">
+            <test-case id="1007" name="BothSpecializationsKeepThreeSoldiers" fullname="AllinDefense.Tests.BarracksSquadTests.BothSpecializationsKeepThreeSoldiers" methodname="BothSpecializationsKeepThreeSoldiers" classname="AllinDefense.Tests.BarracksSquadTests" runstate="Runnable" seed="1409022411" result="Passed" start-time="2026-09-06 13:06:19Z" end-time="2026-09-06 13:06:20Z" duration="0.458293" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1008" name="CheckpointPreservesMarchingPositionsAndMissingFormationSlots" fullname="DefenderChronicles.Tests.BarracksSquadTests.CheckpointPreservesMarchingPositionsAndMissingFormationSlots" methodname="CheckpointPreservesMarchingPositionsAndMissingFormationSlots" classname="DefenderChronicles.Tests.BarracksSquadTests" runstate="Runnable" seed="611213316" result="Passed" start-time="2026-09-06 13:06:20Z" end-time="2026-09-06 13:06:20Z" duration="0.053177" asserts="0">
+            <test-case id="1008" name="CheckpointPreservesMarchingPositionsAndMissingFormationSlots" fullname="AllinDefense.Tests.BarracksSquadTests.CheckpointPreservesMarchingPositionsAndMissingFormationSlots" methodname="CheckpointPreservesMarchingPositionsAndMissingFormationSlots" classname="AllinDefense.Tests.BarracksSquadTests" runstate="Runnable" seed="611213316" result="Passed" start-time="2026-09-06 13:06:20Z" end-time="2026-09-06 13:06:20Z" duration="0.053177" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1004" name="EnemyCannotStoreInstantAttacksWhileWaitingForAnOpponent" fullname="DefenderChronicles.Tests.BarracksSquadTests.EnemyCannotStoreInstantAttacksWhileWaitingForAnOpponent" methodname="EnemyCannotStoreInstantAttacksWhileWaitingForAnOpponent" classname="DefenderChronicles.Tests.BarracksSquadTests" runstate="Runnable" seed="1390955652" result="Failed" start-time="2026-09-06 13:06:20Z" end-time="2026-09-06 13:06:20Z" duration="0.024357" asserts="0">
+            <test-case id="1004" name="EnemyCannotStoreInstantAttacksWhileWaitingForAnOpponent" fullname="AllinDefense.Tests.BarracksSquadTests.EnemyCannotStoreInstantAttacksWhileWaitingForAnOpponent" methodname="EnemyCannotStoreInstantAttacksWhileWaitingForAnOpponent" classname="AllinDefense.Tests.BarracksSquadTests" runstate="Runnable" seed="1390955652" result="Failed" start-time="2026-09-06 13:06:20Z" end-time="2026-09-06 13:06:20Z" duration="0.024357" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
@@ -57,19 +57,19 @@
   Expected: 317
   But was:  304
 ]]></message>
-                <stack-trace><![CDATA[at DefenderChronicles.Tests.BarracksSquadTests+<EnemyCannotStoreInstantAttacksWhileWaitingForAnOpponent>d__4.MoveNext () [0x00172] in /Users/emreaydin/DefenderChronicles-first-region/Assets/Tests/PlayMode/BarracksSquadTests.cs:93
+                <stack-trace><![CDATA[at AllinDefense.Tests.BarracksSquadTests+<EnemyCannotStoreInstantAttacksWhileWaitingForAnOpponent>d__4.MoveNext () [0x00172] in /Users/emreaydin/AllinDefense-first-region/Assets/Tests/PlayMode/BarracksSquadTests.cs:93
 at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
 ]]></stack-trace>
               </failure>
             </test-case>
-            <test-case id="1009" name="LegacyTwoSoldierCheckpointRestoresAndRecruitsThirdSoldier" fullname="DefenderChronicles.Tests.BarracksSquadTests.LegacyTwoSoldierCheckpointRestoresAndRecruitsThirdSoldier" methodname="LegacyTwoSoldierCheckpointRestoresAndRecruitsThirdSoldier" classname="DefenderChronicles.Tests.BarracksSquadTests" runstate="Runnable" seed="2069803029" result="Passed" start-time="2026-09-06 13:06:20Z" end-time="2026-09-06 13:06:20Z" duration="0.038377" asserts="0">
+            <test-case id="1009" name="LegacyTwoSoldierCheckpointRestoresAndRecruitsThirdSoldier" fullname="AllinDefense.Tests.BarracksSquadTests.LegacyTwoSoldierCheckpointRestoresAndRecruitsThirdSoldier" methodname="LegacyTwoSoldierCheckpointRestoresAndRecruitsThirdSoldier" classname="AllinDefense.Tests.BarracksSquadTests" runstate="Runnable" seed="2069803029" result="Passed" start-time="2026-09-06 13:06:20Z" end-time="2026-09-06 13:06:20Z" duration="0.038377" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1005" name="MeleeReachUsesTheRoadPlaneRegardlessOfVisualPivotHeight" fullname="DefenderChronicles.Tests.BarracksSquadTests.MeleeReachUsesTheRoadPlaneRegardlessOfVisualPivotHeight" methodname="MeleeReachUsesTheRoadPlaneRegardlessOfVisualPivotHeight" classname="DefenderChronicles.Tests.BarracksSquadTests" runstate="Runnable" seed="1885364618" result="Failed" start-time="2026-09-06 13:06:20Z" end-time="2026-09-06 13:06:20Z" duration="0.018071" asserts="0">
+            <test-case id="1005" name="MeleeReachUsesTheRoadPlaneRegardlessOfVisualPivotHeight" fullname="AllinDefense.Tests.BarracksSquadTests.MeleeReachUsesTheRoadPlaneRegardlessOfVisualPivotHeight" methodname="MeleeReachUsesTheRoadPlaneRegardlessOfVisualPivotHeight" classname="AllinDefense.Tests.BarracksSquadTests" runstate="Runnable" seed="1885364618" result="Failed" start-time="2026-09-06 13:06:20Z" end-time="2026-09-06 13:06:20Z" duration="0.018071" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
@@ -80,32 +80,32 @@ at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .
   Expected: less than 248
   But was:  248
 ]]></message>
-                <stack-trace><![CDATA[at DefenderChronicles.Tests.BarracksSquadTests+<MeleeReachUsesTheRoadPlaneRegardlessOfVisualPivotHeight>d__5.MoveNext () [0x000c4] in /Users/emreaydin/DefenderChronicles-first-region/Assets/Tests/PlayMode/BarracksSquadTests.cs:110
+                <stack-trace><![CDATA[at AllinDefense.Tests.BarracksSquadTests+<MeleeReachUsesTheRoadPlaneRegardlessOfVisualPivotHeight>d__5.MoveNext () [0x000c4] in /Users/emreaydin/AllinDefense-first-region/Assets/Tests/PlayMode/BarracksSquadTests.cs:110
 at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
 ]]></stack-trace>
               </failure>
             </test-case>
-            <test-case id="1006" name="ReplacementKeepsTheMissingFormationSlotAndSellingRemovesTheSquad" fullname="DefenderChronicles.Tests.BarracksSquadTests.ReplacementKeepsTheMissingFormationSlotAndSellingRemovesTheSquad" methodname="ReplacementKeepsTheMissingFormationSlotAndSellingRemovesTheSquad" classname="DefenderChronicles.Tests.BarracksSquadTests" runstate="Runnable" seed="627574228" result="Passed" start-time="2026-09-06 13:06:20Z" end-time="2026-09-06 13:06:20Z" duration="0.023863" asserts="0">
+            <test-case id="1006" name="ReplacementKeepsTheMissingFormationSlotAndSellingRemovesTheSquad" fullname="AllinDefense.Tests.BarracksSquadTests.ReplacementKeepsTheMissingFormationSlotAndSellingRemovesTheSquad" methodname="ReplacementKeepsTheMissingFormationSlotAndSellingRemovesTheSquad" classname="AllinDefense.Tests.BarracksSquadTests" runstate="Runnable" seed="627574228" result="Passed" start-time="2026-09-06 13:06:20Z" end-time="2026-09-06 13:06:20Z" duration="0.023863" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1003" name="SoldiersMeetAnEnemyOnTheRoadAndTradeMeleeDamage" fullname="DefenderChronicles.Tests.BarracksSquadTests.SoldiersMeetAnEnemyOnTheRoadAndTradeMeleeDamage" methodname="SoldiersMeetAnEnemyOnTheRoadAndTradeMeleeDamage" classname="DefenderChronicles.Tests.BarracksSquadTests" runstate="Runnable" seed="1796723176" result="Passed" start-time="2026-09-06 13:06:20Z" end-time="2026-09-06 13:06:20Z" duration="0.022656" asserts="0">
+            <test-case id="1003" name="SoldiersMeetAnEnemyOnTheRoadAndTradeMeleeDamage" fullname="AllinDefense.Tests.BarracksSquadTests.SoldiersMeetAnEnemyOnTheRoadAndTradeMeleeDamage" methodname="SoldiersMeetAnEnemyOnTheRoadAndTradeMeleeDamage" classname="AllinDefense.Tests.BarracksSquadTests" runstate="Runnable" seed="1796723176" result="Passed" start-time="2026-09-06 13:06:20Z" end-time="2026-09-06 13:06:20Z" duration="0.022656" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1002" name="ThreeSoldiersLeaveTheBarracksAndReachSeparateRoadPositions" fullname="DefenderChronicles.Tests.BarracksSquadTests.ThreeSoldiersLeaveTheBarracksAndReachSeparateRoadPositions" methodname="ThreeSoldiersLeaveTheBarracksAndReachSeparateRoadPositions" classname="DefenderChronicles.Tests.BarracksSquadTests" runstate="Runnable" seed="42443833" result="Passed" start-time="2026-09-06 13:06:20Z" end-time="2026-09-06 13:06:20Z" duration="0.021250" asserts="0">
+            <test-case id="1002" name="ThreeSoldiersLeaveTheBarracksAndReachSeparateRoadPositions" fullname="AllinDefense.Tests.BarracksSquadTests.ThreeSoldiersLeaveTheBarracksAndReachSeparateRoadPositions" methodname="ThreeSoldiersLeaveTheBarracksAndReachSeparateRoadPositions" classname="AllinDefense.Tests.BarracksSquadTests" runstate="Runnable" seed="42443833" result="Passed" start-time="2026-09-06 13:06:20Z" end-time="2026-09-06 13:06:20Z" duration="0.021250" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
-              <output><![CDATA[Saving results to: /Users/emreaydin/Library/Application Support/Emre Aydin/Defender Chronicles Test/TestResults.xml
+              <output><![CDATA[Saving results to: /Users/emreaydin/Library/Application Support/Emre Aydin/ALLIN: Defense Test/TestResults.xml
 ]]></output>
             </test-case>
           </test-suite>

@@ -1,4 +1,4 @@
-# Defender Chronicles - Brand Handoff Acceptance Standard
+# ALLIN: Defense - Brand Handoff Acceptance Standard
 
 Date: 2026-08-26
 Related TODO: `NEXT-203`

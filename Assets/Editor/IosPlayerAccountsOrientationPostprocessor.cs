@@ -6,7 +6,7 @@ using UnityEditor.Build.Reporting;
 using UnityEditor.iOS.Xcode;
 using UnityEngine;
 
-namespace DefenderChronicles.Editor
+namespace AllinDefense.Editor
 {
     public sealed class IosPlayerAccountsOrientationPostprocessor : IPostprocessBuildWithReport
     {

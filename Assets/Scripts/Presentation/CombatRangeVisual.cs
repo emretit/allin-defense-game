@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace DefenderChronicles.Presentation
+namespace AllinDefense.Presentation
 {
     public sealed class CombatRangeVisual : MonoBehaviour
     {

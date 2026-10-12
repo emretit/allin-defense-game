@@ -1,4 +1,4 @@
-# Defender Chronicles — iOS Physical Device Acceptance Progress
+# ALLIN: Defense — iOS Physical Device Acceptance Progress
 
 Date: 2026-08-26
 Branch: `codex/visual-slice-closeout`
@@ -21,7 +21,7 @@ This does not close `VIS-816` yet. The final gate still requires manual Unity Pr
 
 The first automated device build selected the Apple Development certificate team id, but the usable local provisioning profile for the bundle id was under a different team. `tools/build_and_run_ios_device.sh` now:
 
-- selects a valid matching provisioning-profile team for `com.emreaydin.defenderchronicles` before falling back to the first Apple Development identity;
+- selects a valid matching provisioning-profile team for `com.emreaydin.allindefense` before falling back to the first Apple Development identity;
 - accepts a wired, paired, Developer Mode enabled iPhone as the target device;
 - defaults `DC_IOS_CONNECT_PROFILER=0` for console automation so automated device runs do not inherit Profiler connection overhead;
 - writes separate mode logs under `Builds/` for smoke, defeat smoke, performance and soak.

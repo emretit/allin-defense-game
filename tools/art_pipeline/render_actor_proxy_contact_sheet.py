@@ -1,4 +1,4 @@
-"""Render a visual contact sheet for Defender Chronicles actor proxy FBX files.
+"""Render a visual contact sheet for ALLIN: Defense actor proxy FBX files.
 
 Usage:
   blender -b --factory-startup --python tools/art_pipeline/render_actor_proxy_contact_sheet.py -- \

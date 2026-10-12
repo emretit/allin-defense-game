@@ -1,4 +1,4 @@
-# Defender Chronicles — HUD Runtime Resize / Orientation / Safe-Area Pass
+# ALLIN: Defense — HUD Runtime Resize / Orientation / Safe-Area Pass
 
 Tarih: 2026-08-16
 Kapsam: `VIS-612`

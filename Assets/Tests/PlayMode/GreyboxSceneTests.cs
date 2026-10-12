@@ -1,16 +1,16 @@
 using System.Collections;
 using System.IO;
 using System.Linq;
-using DefenderChronicles.Core;
-using DefenderChronicles.Presentation;
-using DefenderChronicles.UI;
+using AllinDefense.Core;
+using AllinDefense.Presentation;
+using AllinDefense.UI;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
-using Data = DefenderChronicles.Data;
+using Data = AllinDefense.Data;
 
-namespace DefenderChronicles.Tests
+namespace AllinDefense.Tests
 {
     public sealed class GreyboxSceneTests
     {

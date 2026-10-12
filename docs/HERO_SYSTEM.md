@@ -1,4 +1,4 @@
-# Defender Chronicles — Hero System
+# ALLIN: Defense — Hero System
 
 Durum: Faz 4 uygulama ve tasarim notu
 Son guncelleme: 2026-10-11

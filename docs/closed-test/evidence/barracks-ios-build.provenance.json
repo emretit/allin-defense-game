@@ -15,7 +15,7 @@
   },
   "build": {
     "target": "iOS",
-    "executeMethod": "DefenderChronicles.Editor.ClosedTestBuilds.Ios",
+    "executeMethod": "AllinDefense.Editor.ClosedTestBuilds.Ios",
     "logFile": "docs/closed-test/evidence/barracks-ios-build.log"
   },
   "source": {

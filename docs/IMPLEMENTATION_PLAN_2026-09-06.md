@@ -1,4 +1,4 @@
-# Defender Chronicles — Uygulama Planı
+# ALLIN: Defense — Uygulama Planı
 
 Tarih: 2026-09-06
 

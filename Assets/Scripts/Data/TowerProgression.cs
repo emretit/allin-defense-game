@@ -1,9 +1,9 @@
-using DefenderChronicles.Combat;
-using DefenderChronicles.Core;
-using DefenderChronicles.UI;
+using AllinDefense.Combat;
+using AllinDefense.Core;
+using AllinDefense.UI;
 using UnityEngine;
 
-namespace DefenderChronicles.Data
+namespace AllinDefense.Data
 {
     public enum OutpostSpecialization { None, RapidFire, Sharpshooter, ShieldGuard, AssaultGuard, Blast, Frost }
 

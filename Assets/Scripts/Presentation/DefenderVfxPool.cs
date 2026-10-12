@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using DefenderChronicles.Data;
+using AllinDefense.Data;
 using UnityEngine;
 
-namespace DefenderChronicles.Presentation
+namespace AllinDefense.Presentation
 {
     public enum DefenderVfxShape
     {

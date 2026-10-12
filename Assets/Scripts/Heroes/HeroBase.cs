@@ -1,12 +1,12 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
-using DefenderChronicles.Data;
-using DefenderChronicles.Utils;
-using DefenderChronicles.Enemies;
-using DefenderChronicles.Grid;
+using AllinDefense.Data;
+using AllinDefense.Utils;
+using AllinDefense.Enemies;
+using AllinDefense.Grid;
 
-namespace DefenderChronicles.Heroes
+namespace AllinDefense.Heroes
 {
     // Heroes are special units (Defender Chronicles 2 style)
     // They gain XP, level up, and have unique special abilities

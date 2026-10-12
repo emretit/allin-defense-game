@@ -1,7 +1,7 @@
-# Defender Chronicles — Art Quality Contract
+# ALLIN: Defense — Art Quality Contract
 
 Bu belge, `img2threejs` makro → meso → mikro inceleme ve açık görsel QA
-yaklaşımının Defender Chronicles için uyarlanmış halidir. Hedef görüntü:
+yaklaşımının ALLIN: Defense için uyarlanmış halidir. Hedef görüntü:
 `docs/art/defender-quality-target-v1.png`.
 
 ## Referans uygunluğu

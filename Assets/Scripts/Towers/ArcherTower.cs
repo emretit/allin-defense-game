@@ -1,9 +1,9 @@
 using UnityEngine;
-using DefenderChronicles.Enemies;
-using DefenderChronicles.Projectiles;
-using DefenderChronicles.Utils;
+using AllinDefense.Enemies;
+using AllinDefense.Projectiles;
+using AllinDefense.Utils;
 
-namespace DefenderChronicles.Towers
+namespace AllinDefense.Towers
 {
     // Fast attack speed, single target, medium damage
     public class ArcherTower : TowerBase

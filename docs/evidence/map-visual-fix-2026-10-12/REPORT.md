@@ -11,7 +11,7 @@
 
 ## Son test ve derleme
 
-Worktree: `/Users/emreaydin/orca/workspaces/DefenderChronicles/main`; Unity **6000.4.1f1**. Her koşu `-batchmode -runTests -testPlatform EditMode|PlayMode` ile yapıldı; iki son Unity test çıkış kodu da **0**.
+Worktree: `/Users/emreaydin/orca/workspaces/AllinDefense/main`; Unity **6000.4.1f1**. Her koşu `-batchmode -runTests -testPlatform EditMode|PlayMode` ile yapıldı; iki son Unity test çıkış kodu da **0**.
 
 | Koşu | Toplam | Geçti | Başarısız | Atlanan | UTC başlangıç / bitiş | Süre |
 | --- | ---: | ---: | ---: | ---: | --- | ---: |
@@ -32,7 +32,7 @@ Cihaz: **iPhone 17 Pro**, iOS **26.5**, UDID `81AAFCAB-9741-4819-B9F7-B9DFA47D6F
 
 ```sh
 SIMCTL_CHILD_DC_CAMPAIGN_LEVEL=<n> SIMCTL_CHILD_DC_ABILITY_CAPTURE=1 \
-  xcrun simctl launch 81AAFCAB-9741-4819-B9F7-B9DFA47D6F21 com.emreaydin.defenderchronicles
+  xcrun simctl launch 81AAFCAB-9741-4819-B9F7-B9DFA47D6F21 com.emreaydin.allindefense
 xcrun simctl io 81AAFCAB-9741-4819-B9F7-B9DFA47D6F21 screenshot docs/evidence/map-visual-fix-2026-10-12/level-<n>.png
 ```
 

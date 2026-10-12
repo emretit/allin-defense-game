@@ -1,4 +1,4 @@
-# Defender Chronicles Visual Art Bible
+# ALLIN: Defense Visual Art Bible
 
 Status: M0 draft, ready for review after runtime screenshots and device profiling
 Date: 2026-08-16

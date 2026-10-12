@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using DefenderChronicles.Data;
+using AllinDefense.Data;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace DefenderChronicles.Presentation
+namespace AllinDefense.Presentation
 {
     /// <summary>
     /// Adds production-only scenic geometry around the authored battlefield. All meshes are cosmetic:

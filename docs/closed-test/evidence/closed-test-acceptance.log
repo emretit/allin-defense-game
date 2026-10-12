@@ -17,21 +17,21 @@ COMMAND LINE ARGUMENTS:
 -batchmode
 -runTests
 -projectPath
-/Users/emreaydin/DefenderChronicles-first-region
+/Users/emreaydin/AllinDefense-first-region
 -testResults
-/Users/emreaydin/DefenderChronicles-first-region/docs/closed-test/evidence/closed-test-acceptance.xml
+/Users/emreaydin/AllinDefense-first-region/docs/closed-test/evidence/closed-test-acceptance.xml
 -testPlatform
 PlayMode
 -testFilter
 ClosedTestAcceptanceTests|FirstRegionRegressionTests
 -logFile
-/Users/emreaydin/DefenderChronicles-first-region/docs/closed-test/evidence/closed-test-acceptance.log
+/Users/emreaydin/AllinDefense-first-region/docs/closed-test/evidence/closed-test-acceptance.log
 -hubSessionId
 0bde5a93-4deb-49df-bfab-36bc35ccc178
 -accessToken
 [REDACTED]
-Successfully changed project path to: /Users/emreaydin/DefenderChronicles-first-region
-/Users/emreaydin/DefenderChronicles-first-region
+Successfully changed project path to: /Users/emreaydin/AllinDefense-first-region
+/Users/emreaydin/AllinDefense-first-region
 [UnityMemory] Configuration Parameters - Can be set up in boot.config
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
@@ -108,7 +108,7 @@ Library Redirect Path: Library/
 Artifact Garbage Collection - Removed 1 unused hashed content files
 Initialize engine version: 6000.4.1f1 (8535861f39e1)
 [Subsystems] Discovering subsystems at path /Applications/Unity/Hub/Editor/6000.4.1f1/Unity.app/Contents/Resources/UnitySubsystems
-[Subsystems] Discovering subsystems at path /Users/emreaydin/DefenderChronicles-first-region/Assets
+[Subsystems] Discovering subsystems at path /Users/emreaydin/AllinDefense-first-region/Assets
 GfxDevice: creating device client; kGfxThreadingModeNonThreaded
  preferred device: Apple M5 (high power)
 Metal devices available: 1
@@ -174,83 +174,83 @@ Application.AssetDatabase Initial Refresh Start
 [Licensing::Client] Successfully resolved entitlement details
 [Package Manager] Registered 75 packages:
   Packages from [https://packages.unity.com]:
-    com.unity.ai.assistant@2.5.0-pre.2 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.ai.assistant@b7ff2f2a65cc)
-    com.unity.2d.pixel-perfect@5.1.1 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.2d.pixel-perfect@09d99455b901)
-    com.unity.collab-proxy@2.11.4 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.collab-proxy@a5329f833fa8)
-    com.unity.ide.rider@3.0.39 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.ide.rider@4504839d03f7)
-    com.unity.ide.visualstudio@2.0.27 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.ide.visualstudio@dc1ddd4f09b6)
-    com.unity.inputsystem@1.19.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.inputsystem@21a28c3a6c83)
-    com.unity.localization@1.5.12 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.localization@b0a588a05f2a)
-    com.unity.services.authentication@3.7.4 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.services.authentication@39eab783227c)
-    com.unity.services.cloudcode@2.10.3 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.services.cloudcode@a071dc58aed1)
-    com.unity.services.cloudsave@3.4.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.services.cloudsave@271cfa0557ba)
-    com.unity.services.deployment@1.7.2 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.services.deployment@c07c64f9804b)
-    com.unity.services.tooling@1.4.1 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.services.tooling@4059a0fcc8b5)
-    com.unity.timeline@1.8.11 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.timeline@bfd27f8016ff)
-    com.unity.pipeline@0.5.0-exp.1 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.pipeline@24975d51528a)
-    com.unity.nuget.mono-cecil@1.11.6 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.nuget.mono-cecil@ecb9724e46ff)
-    com.unity.nuget.newtonsoft-json@3.2.2 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.nuget.newtonsoft-json@4dfd81071c64)
-    com.unity.services.deployment.api@1.1.3 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.services.deployment.api@9becf6da0f1a)
-    com.unity.services.wire@1.4.2 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.services.wire@3619c710c17e)
-    com.unity.services.core@1.18.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.services.core@3464cb68d709)
-    com.unity.addressables@2.9.1 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.addressables@8460f1c9c927)
-    com.unity.mathematics@1.3.3 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.mathematics@19a9377c4ffa)
-    com.unity.cloud.gltfast@6.14.1 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.cloud.gltfast@0847aee0f6da)
-    com.unity.serialization@3.1.5 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.serialization@c463b52e88d7)
-    com.unity.profiling.core@1.0.3 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.profiling.core@8a49f7027d06)
-    com.unity.scriptablebuildpipeline@2.6.1 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.scriptablebuildpipeline@36e3b5898ee2)
-    com.unity.searcher@4.9.4 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.searcher@d45a78918735)
-    com.unity.burst@1.8.28 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.burst@07790c2d06d9)
-    com.unity.test-framework.performance@3.2.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.test-framework.performance@0840f58e4562)
+    com.unity.ai.assistant@2.5.0-pre.2 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.ai.assistant@b7ff2f2a65cc)
+    com.unity.2d.pixel-perfect@5.1.1 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.2d.pixel-perfect@09d99455b901)
+    com.unity.collab-proxy@2.11.4 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.collab-proxy@a5329f833fa8)
+    com.unity.ide.rider@3.0.39 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.ide.rider@4504839d03f7)
+    com.unity.ide.visualstudio@2.0.27 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.ide.visualstudio@dc1ddd4f09b6)
+    com.unity.inputsystem@1.19.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.inputsystem@21a28c3a6c83)
+    com.unity.localization@1.5.12 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.localization@b0a588a05f2a)
+    com.unity.services.authentication@3.7.4 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.services.authentication@39eab783227c)
+    com.unity.services.cloudcode@2.10.3 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.services.cloudcode@a071dc58aed1)
+    com.unity.services.cloudsave@3.4.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.services.cloudsave@271cfa0557ba)
+    com.unity.services.deployment@1.7.2 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.services.deployment@c07c64f9804b)
+    com.unity.services.tooling@1.4.1 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.services.tooling@4059a0fcc8b5)
+    com.unity.timeline@1.8.11 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.timeline@bfd27f8016ff)
+    com.unity.pipeline@0.5.0-exp.1 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.pipeline@24975d51528a)
+    com.unity.nuget.mono-cecil@1.11.6 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.nuget.mono-cecil@ecb9724e46ff)
+    com.unity.nuget.newtonsoft-json@3.2.2 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.nuget.newtonsoft-json@4dfd81071c64)
+    com.unity.services.deployment.api@1.1.3 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.services.deployment.api@9becf6da0f1a)
+    com.unity.services.wire@1.4.2 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.services.wire@3619c710c17e)
+    com.unity.services.core@1.18.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.services.core@3464cb68d709)
+    com.unity.addressables@2.9.1 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.addressables@8460f1c9c927)
+    com.unity.mathematics@1.3.3 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.mathematics@19a9377c4ffa)
+    com.unity.cloud.gltfast@6.14.1 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.cloud.gltfast@0847aee0f6da)
+    com.unity.serialization@3.1.5 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.serialization@c463b52e88d7)
+    com.unity.profiling.core@1.0.3 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.profiling.core@8a49f7027d06)
+    com.unity.scriptablebuildpipeline@2.6.1 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.scriptablebuildpipeline@36e3b5898ee2)
+    com.unity.searcher@4.9.4 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.searcher@d45a78918735)
+    com.unity.burst@1.8.28 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.burst@07790c2d06d9)
+    com.unity.test-framework.performance@3.2.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.test-framework.performance@0840f58e4562)
   Built-in packages:
-    com.unity.2d.sprite@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.2d.sprite@929df5adbb1f)
-    com.unity.2d.tilemap@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.2d.tilemap@c457c5249013)
-    com.unity.render-pipelines.universal@17.4.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.render-pipelines.universal@580a03820d50)
-    com.unity.test-framework@1.6.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.test-framework@76560ee600cb)
-    com.unity.ugui@2.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.ugui@d8a2716f3013)
-    com.unity.modules.accessibility@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.accessibility)
-    com.unity.modules.adaptiveperformance@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.adaptiveperformance)
-    com.unity.modules.ai@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.ai)
-    com.unity.modules.androidjni@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.androidjni)
-    com.unity.modules.animation@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.animation)
-    com.unity.modules.assetbundle@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.assetbundle)
-    com.unity.modules.audio@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.audio)
-    com.unity.modules.cloth@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.cloth)
-    com.unity.modules.director@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.director)
-    com.unity.modules.imageconversion@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.imageconversion)
-    com.unity.modules.imgui@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.imgui)
-    com.unity.modules.jsonserialize@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.jsonserialize)
-    com.unity.modules.particlesystem@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.particlesystem)
-    com.unity.modules.physics@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.physics)
-    com.unity.modules.physics2d@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.physics2d)
-    com.unity.modules.screencapture@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.screencapture)
-    com.unity.modules.terrain@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.terrain)
-    com.unity.modules.terrainphysics@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.terrainphysics)
-    com.unity.modules.tilemap@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.tilemap)
-    com.unity.modules.ui@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.ui)
-    com.unity.modules.uielements@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.uielements)
-    com.unity.modules.umbra@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.umbra)
-    com.unity.modules.unityanalytics@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.unityanalytics)
-    com.unity.modules.unitywebrequest@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.unitywebrequest)
-    com.unity.modules.unitywebrequestassetbundle@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.unitywebrequestassetbundle)
-    com.unity.modules.unitywebrequestaudio@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.unitywebrequestaudio)
-    com.unity.modules.unitywebrequesttexture@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.unitywebrequesttexture)
-    com.unity.modules.unitywebrequestwww@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.unitywebrequestwww)
-    com.unity.modules.vectorgraphics@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.vectorgraphics)
-    com.unity.modules.vehicles@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.vehicles)
-    com.unity.modules.video@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.video)
-    com.unity.modules.vr@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.vr)
-    com.unity.modules.wind@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.wind)
-    com.unity.modules.xr@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.xr)
-    com.unity.modules.subsystems@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.subsystems)
-    com.unity.modules.hierarchycore@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.hierarchycore)
-    com.unity.ext.nunit@2.0.5 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.ext.nunit@d8c07649098d)
-    com.unity.render-pipelines.core@17.4.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.render-pipelines.core@e6c93b445dd3)
-    com.unity.shadergraph@17.4.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.shadergraph@6ab0d236faac)
-    com.unity.render-pipelines.universal-config@17.4.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.render-pipelines.universal-config@0db4263b9e6b)
-    com.unity.collections@6.4.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.collections@538ace9075bc)
+    com.unity.2d.sprite@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.2d.sprite@929df5adbb1f)
+    com.unity.2d.tilemap@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.2d.tilemap@c457c5249013)
+    com.unity.render-pipelines.universal@17.4.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.render-pipelines.universal@580a03820d50)
+    com.unity.test-framework@1.6.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.test-framework@76560ee600cb)
+    com.unity.ugui@2.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.ugui@d8a2716f3013)
+    com.unity.modules.accessibility@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.accessibility)
+    com.unity.modules.adaptiveperformance@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.adaptiveperformance)
+    com.unity.modules.ai@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.ai)
+    com.unity.modules.androidjni@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.androidjni)
+    com.unity.modules.animation@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.animation)
+    com.unity.modules.assetbundle@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.assetbundle)
+    com.unity.modules.audio@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.audio)
+    com.unity.modules.cloth@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.cloth)
+    com.unity.modules.director@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.director)
+    com.unity.modules.imageconversion@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.imageconversion)
+    com.unity.modules.imgui@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.imgui)
+    com.unity.modules.jsonserialize@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.jsonserialize)
+    com.unity.modules.particlesystem@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.particlesystem)
+    com.unity.modules.physics@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.physics)
+    com.unity.modules.physics2d@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.physics2d)
+    com.unity.modules.screencapture@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.screencapture)
+    com.unity.modules.terrain@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.terrain)
+    com.unity.modules.terrainphysics@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.terrainphysics)
+    com.unity.modules.tilemap@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.tilemap)
+    com.unity.modules.ui@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.ui)
+    com.unity.modules.uielements@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.uielements)
+    com.unity.modules.umbra@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.umbra)
+    com.unity.modules.unityanalytics@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.unityanalytics)
+    com.unity.modules.unitywebrequest@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.unitywebrequest)
+    com.unity.modules.unitywebrequestassetbundle@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.unitywebrequestassetbundle)
+    com.unity.modules.unitywebrequestaudio@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.unitywebrequestaudio)
+    com.unity.modules.unitywebrequesttexture@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.unitywebrequesttexture)
+    com.unity.modules.unitywebrequestwww@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.unitywebrequestwww)
+    com.unity.modules.vectorgraphics@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.vectorgraphics)
+    com.unity.modules.vehicles@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.vehicles)
+    com.unity.modules.video@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.video)
+    com.unity.modules.vr@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.vr)
+    com.unity.modules.wind@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.wind)
+    com.unity.modules.xr@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.xr)
+    com.unity.modules.subsystems@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.subsystems)
+    com.unity.modules.hierarchycore@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.hierarchycore)
+    com.unity.ext.nunit@2.0.5 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.ext.nunit@d8c07649098d)
+    com.unity.render-pipelines.core@17.4.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.render-pipelines.core@e6c93b445dd3)
+    com.unity.shadergraph@17.4.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.shadergraph@6ab0d236faac)
+    com.unity.render-pipelines.universal-config@17.4.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.render-pipelines.universal-config@0db4263b9e6b)
+    com.unity.collections@6.4.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.collections@538ace9075bc)
   Git packages:
-    com.unity.2d.tilemap.extras@https://github.com/Unity-Technologies/2d-extras.git#package_6000.3 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.2d.tilemap.extras@56c3a1345f3e)
+    com.unity.2d.tilemap.extras@https://github.com/Unity-Technologies/2d-extras.git#package_6000.3 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.2d.tilemap.extras@56c3a1345f3e)
 [Subsystems] No new subsystems found in resolved package list.
 [Package Manager] Done registering packages in 0.01 seconds
 [ScriptCompilation] Requested script compilation because: AssetDatabase observed changes in script compilation related files
@@ -261,7 +261,7 @@ info: Microsoft.Hosting.Lifetime[0]
 info: Microsoft.Hosting.Lifetime[0]
       Hosting environment: Production
 info: Microsoft.Hosting.Lifetime[0]
-      Content root path: /Users/emreaydin/DefenderChronicles-first-region
+      Content root path: /Users/emreaydin/AllinDefense-first-region
 info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
       Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping - application/grpc -
 info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
@@ -271,16 +271,16 @@ info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
 info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
       Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping - 200 - application/grpc 12.0895ms
 Starting: /Applications/Unity/Hub/Editor/6000.4.1f1/Unity.app/Contents/Resources/BuildPipeline/bee_backend --ipc --defer-dag-verification --dagfile="Library/Bee/200b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
-WorkingDir: /Users/emreaydin/DefenderChronicles-first-region
+WorkingDir: /Users/emreaydin/AllinDefense-first-region
 Duplicate assembly 'System.Reflection.Metadata.dll' with different versions detected, using 'Packages/com.unity.ai.assistant/Plugins/Shared/System.Reflection.Metadata.dll, AssemblyName=System.Reflection.Metadata, Version=10.0.0.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' and ignoring 'Packages/com.unity.pipeline/Runtime/Plugins/CodeAnalysis/System.Reflection.Metadata.dll, AssemblyName=System.Reflection.Metadata, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.Duplicate assembly 'System.Collections.Immutable.dll' with different versions detected, using 'Packages/com.unity.ai.assistant/Plugins/Shared/System.Collections.Immutable.dll, AssemblyName=System.Collections.Immutable, Version=10.0.0.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' and ignoring 'Packages/com.unity.pipeline/Runtime/Plugins/CodeAnalysis/System.Collections.Immutable.dll, AssemblyName=System.Collections.Immutable, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.Duplicate assembly 'System.Runtime.CompilerServices.Unsafe.dll' with different versions detected, using 'Packages/com.unity.ai.assistant/Plugins/Shared/System.Runtime.CompilerServices.Unsafe.dll, AssemblyName=System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' and ignoring 'Packages/com.unity.pipeline/Runtime/Plugins/CodeAnalysis/System.Runtime.CompilerServices.Unsafe.dll, AssemblyName=System.Runtime.CompilerServices.Unsafe, Version=4.0.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.Duplicate assembly 'System.Runtime.CompilerServices.Unsafe.dll' with different versions detected, using 'Packages/com.unity.ai.assistant/Plugins/Shared/System.Runtime.CompilerServices.Unsafe.dll, AssemblyName=System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' and ignoring 'Packages/com.unity.collections/Unity.Collections.Tests/System.Runtime.CompilerServices.Unsafe/System.Runtime.CompilerServices.Unsafe.dll, AssemblyName=System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.DisplayProgressbar: Compiling Scripts
 Starting: /Applications/Unity/Hub/Editor/6000.4.1f1/Unity.app/Contents/Resources/Scripting/netcorerun/netcorerun "/Applications/Unity/Hub/Editor/6000.4.1f1/Unity.app/Contents/Resources/BuildPipeline/ScriptCompilationBuildProgram.exe" "Library/Bee/200b0aE.dag.json" "Library/Bee/200b0aE-inputdata.json" "Library/Bee/buildprogram0.traceevents"
-WorkingDir: /Users/emreaydin/DefenderChronicles-first-region
+WorkingDir: /Users/emreaydin/AllinDefense-first-region
 ExitCode: 4 Duration: 0s202ms
 Rebuilding DAG because FileSignature timestamp changed: Library/Bee/200b0aE-inputdata.json
 *** Tundra requires additional run (0.18 seconds), 0 items updated, 0 evaluated
 ExitCode: 0 Duration: 1s548ms
 Starting: /Applications/Unity/Hub/Editor/6000.4.1f1/Unity.app/Contents/Resources/BuildPipeline/bee_backend --ipc --defer-dag-verification --dagfile="Library/Bee/200b0aE.dag" --continue-on-failure --dagfilejson="Library/Bee/200b0aE.dag.json" --profile="Library/Bee/backend2.traceevents" ScriptAssemblies
-WorkingDir: /Users/emreaydin/DefenderChronicles-first-region
+WorkingDir: /Users/emreaydin/AllinDefense-first-region
 info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
       Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors - application/grpc -
 info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
@@ -314,7 +314,7 @@ info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
 info: Unity.ILPP.Runner.PostProcessingPipeline[0]
       running Unity.Jobs.CodeGen.JobsILPostProcessor
 info: Unity.ILPP.Runner.PostProcessingPipeline[0]
-      Processing assembly Library/Bee/artifacts/200b0aE.dag/DefenderChronicles.Runtime.dll, with 136 defines and 294 references
+      Processing assembly Library/Bee/artifacts/200b0aE.dag/AllinDefense.Runtime.dll, with 136 defines and 294 references
 info: Unity.ILPP.Runner.PostProcessingPipeline[0]
       processors: Unity.Jobs.CodeGen.JobsILPostProcessor, Unity.Pipeline.CodeGen.HotReloadInPlaceILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
 info: Unity.ILPP.Runner.PostProcessingPipeline[0]
@@ -352,7 +352,7 @@ info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
 info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
       Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
 info: Unity.ILPP.Runner.PostProcessingPipeline[0]
-      Processing assembly Library/Bee/artifacts/200b0aE.dag/DefenderChronicles.PlayModeTests.dll, with 136 defines and 271 references
+      Processing assembly Library/Bee/artifacts/200b0aE.dag/AllinDefense.PlayModeTests.dll, with 136 defines and 271 references
 info: Unity.ILPP.Runner.PostProcessingPipeline[0]
       processors: Unity.Jobs.CodeGen.JobsILPostProcessor, Unity.Pipeline.CodeGen.HotReloadInPlaceILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
 info: Unity.ILPP.Runner.PostProcessingPipeline[0]
@@ -362,7 +362,7 @@ info: Unity.ILPP.Runner.PostProcessingPipeline[0]
 info: Unity.ILPP.Runner.PostProcessingPipeline[0]
       running zzzUnity.Burst.CodeGen.BurstILPostProcessor
 info: Unity.ILPP.Runner.PostProcessingPipeline[0]
-      Processing assembly Library/Bee/artifacts/200b0aE.dag/DefenderChronicles.EditModeTests.dll, with 134 defines and 283 references
+      Processing assembly Library/Bee/artifacts/200b0aE.dag/AllinDefense.EditModeTests.dll, with 134 defines and 283 references
 info: Unity.ILPP.Runner.PostProcessingPipeline[0]
       processors: Unity.Jobs.CodeGen.JobsILPostProcessor, Unity.Pipeline.CodeGen.HotReloadInPlaceILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
 info: Unity.ILPP.Runner.PostProcessingPipeline[0]
@@ -412,9 +412,9 @@ Total cache size 268374890
 Total cache size after purge 268374890, took 00:00:00.0773309
 ExitCode: 0 Duration: 3s278ms
 Finished compiling graph: 1761 nodes, 40652 flattened edges (32670 ToBuild, 326 ToUse), maximum node priority 2158
-[ 815/1758  0s] WriteText Library/Bee/artifacts/200b0aE.dag/DefenderChronicles.PlayModeTests.rsp
+[ 815/1758  0s] WriteText Library/Bee/artifacts/200b0aE.dag/AllinDefense.PlayModeTests.rsp
 [1285/1758  0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
-[1742/1758  2s] Csc Library/Bee/artifacts/200b0aE.dag/DefenderChronicles.Runtime.dll (+2 others)
+[1742/1758  2s] Csc Library/Bee/artifacts/200b0aE.dag/AllinDefense.Runtime.dll (+2 others)
 Assets/Scripts/UI/TowerWorldTapHandler.cs(35,60): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
 Assets/Scripts/UI/TowerWorldTapHandler.cs(35,31): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
 Assets/Scripts/Presentation/StylizedPresentationFactory.cs(272,48): warning CS0618: 'Object.GetInstanceID()' is obsolete: 'GetInstanceID is deprecated. Use GetEntityId instead. This will be removed in a future version.'
@@ -430,8 +430,8 @@ Assets/Scripts/Presentation/DefenderHudController.cs(943,13): warning CS0618: 'T
 Assets/Scripts/Presentation/DefenderHudController.cs(989,17): warning CS0618: 'TMP_Text.enableWordWrapping' is obsolete: 'The enabledWordWrapping property is now obsolete. Please use the textWrappingMode property instead.'
 Assets/Scripts/Presentation/DefenderHudController.cs(1577,13): warning CS0618: 'TMP_Text.enableWordWrapping' is obsolete: 'The enabledWordWrapping property is now obsolete. Please use the textWrappingMode property instead.'
 Assets/Scripts/UI/AppFlowController.cs(1815,13): warning CS0618: 'TMP_Text.enableWordWrapping' is obsolete: 'The enabledWordWrapping property is now obsolete. Please use the textWrappingMode property instead.'
-[1744/1758  0s] ILPostProcess Library/Bee/artifacts/200b0aE.dag/post-processed/DefenderChronicles.Runtime.dll (+pdb)
-Processing assembly Library/Bee/artifacts/200b0aE.dag/DefenderChronicles.Runtime.dll, with 136 defines and 294 references
+[1744/1758  0s] ILPostProcess Library/Bee/artifacts/200b0aE.dag/post-processed/AllinDefense.Runtime.dll (+pdb)
+Processing assembly Library/Bee/artifacts/200b0aE.dag/AllinDefense.Runtime.dll, with 136 defines and 294 references
 processors: Unity.Jobs.CodeGen.JobsILPostProcessor, Unity.Pipeline.CodeGen.HotReloadInPlaceILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
 running Unity.Jobs.CodeGen.JobsILPostProcessor
 running Unity.Pipeline.CodeGen.HotReloadInPlaceILPostProcessor
@@ -442,9 +442,9 @@ processors: Unity.Jobs.CodeGen.JobsILPostProcessor, Unity.Pipeline.CodeGen.HotRe
 running Unity.Jobs.CodeGen.JobsILPostProcessor
 running Unity.Pipeline.CodeGen.HotReloadInPlaceILPostProcessor
 running zzzUnity.Burst.CodeGen.BurstILPostProcessor
-[1748/1758  0s] CopyFiles Library/ScriptAssemblies/DefenderChronicles.Runtime.dll
-[1749/1758  0s] CopyFiles Library/ScriptAssemblies/DefenderChronicles.Runtime.pdb
-[1750/1758  0s] Csc Library/Bee/artifacts/200b0aE.dag/DefenderChronicles.PlayModeTests.dll (+2 others)
+[1748/1758  0s] CopyFiles Library/ScriptAssemblies/AllinDefense.Runtime.dll
+[1749/1758  0s] CopyFiles Library/ScriptAssemblies/AllinDefense.Runtime.pdb
+[1750/1758  0s] Csc Library/Bee/artifacts/200b0aE.dag/AllinDefense.PlayModeTests.dll (+2 others)
 Assets/Tests/PlayMode/GreyboxSceneTests.cs(44,85): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
 Assets/Tests/PlayMode/GreyboxSceneTests.cs(44,37): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
 Assets/Tests/PlayMode/StrategyBalanceAcceptanceTests.cs(43,70): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
@@ -459,23 +459,23 @@ Assets/Tests/PlayMode/ClosedTestAcceptanceTests.cs(110,84): warning CS0618: 'Fin
 Assets/Tests/PlayMode/ClosedTestAcceptanceTests.cs(110,36): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
 Assets/Tests/PlayMode/GreyboxSceneTests.cs(681,71): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
 Assets/Tests/PlayMode/GreyboxSceneTests.cs(681,39): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
-[1751/1758  0s] Csc Library/Bee/artifacts/200b0aE.dag/DefenderChronicles.EditModeTests.dll (+2 others)
-[1752/1758  0s] ILPostProcess Library/Bee/artifacts/200b0aE.dag/post-processed/DefenderChronicles.PlayModeTests.dll (+pdb)
-Processing assembly Library/Bee/artifacts/200b0aE.dag/DefenderChronicles.PlayModeTests.dll, with 136 defines and 271 references
+[1751/1758  0s] Csc Library/Bee/artifacts/200b0aE.dag/AllinDefense.EditModeTests.dll (+2 others)
+[1752/1758  0s] ILPostProcess Library/Bee/artifacts/200b0aE.dag/post-processed/AllinDefense.PlayModeTests.dll (+pdb)
+Processing assembly Library/Bee/artifacts/200b0aE.dag/AllinDefense.PlayModeTests.dll, with 136 defines and 271 references
 processors: Unity.Jobs.CodeGen.JobsILPostProcessor, Unity.Pipeline.CodeGen.HotReloadInPlaceILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
 running Unity.Jobs.CodeGen.JobsILPostProcessor
 running Unity.Pipeline.CodeGen.HotReloadInPlaceILPostProcessor
 running zzzUnity.Burst.CodeGen.BurstILPostProcessor
-[1753/1758  0s] ILPostProcess Library/Bee/artifacts/200b0aE.dag/post-processed/DefenderChronicles.EditModeTests.dll (+pdb)
-Processing assembly Library/Bee/artifacts/200b0aE.dag/DefenderChronicles.EditModeTests.dll, with 134 defines and 283 references
+[1753/1758  0s] ILPostProcess Library/Bee/artifacts/200b0aE.dag/post-processed/AllinDefense.EditModeTests.dll (+pdb)
+Processing assembly Library/Bee/artifacts/200b0aE.dag/AllinDefense.EditModeTests.dll, with 134 defines and 283 references
 processors: Unity.Jobs.CodeGen.JobsILPostProcessor, Unity.Pipeline.CodeGen.HotReloadInPlaceILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
 running Unity.Jobs.CodeGen.JobsILPostProcessor
 running Unity.Pipeline.CodeGen.HotReloadInPlaceILPostProcessor
 running zzzUnity.Burst.CodeGen.BurstILPostProcessor
-[1754/1758  0s] CopyFiles Library/ScriptAssemblies/DefenderChronicles.PlayModeTests.dll
-[1755/1758  0s] CopyFiles Library/ScriptAssemblies/DefenderChronicles.EditModeTests.pdb
-[1756/1758  0s] CopyFiles Library/ScriptAssemblies/DefenderChronicles.PlayModeTests.pdb
-[1757/1758  0s] CopyFiles Library/ScriptAssemblies/DefenderChronicles.EditModeTests.dll
+[1754/1758  0s] CopyFiles Library/ScriptAssemblies/AllinDefense.PlayModeTests.dll
+[1755/1758  0s] CopyFiles Library/ScriptAssemblies/AllinDefense.EditModeTests.pdb
+[1756/1758  0s] CopyFiles Library/ScriptAssemblies/AllinDefense.PlayModeTests.pdb
+[1757/1758  0s] CopyFiles Library/ScriptAssemblies/AllinDefense.EditModeTests.dll
 *** Tundra build success (3.16 seconds), 15 items updated, 1758 evaluated
 AssetDatabase: script compilation time: 5.358517s
 Begin MonoManager ReloadAssembly
@@ -630,7 +630,7 @@ Scanning for USB devices : 0.035ms
 Initializing Unity extensions:
 [MODES] ModeService[none].Initialize
 [MODES] ModeService[none].LoadModes
-[MODES] Loading mode Default (0) for mode-current-id-Defender Chronicles
+[MODES] Loading mode Default (0) for mode-current-id-ALLIN: Defense
 2026-09-06 12:54:10.004 Unity[81029:9595808] NSEventModifierFlagFunction specified to -setKeyEquivalentModifierMask: for item <NSMenuItem: 0xc2284c8c0 SDF, ke='Command-F12'>, but is only supported for system-provided menu items; will not be used
 Unloading 32 Unused Serialized files (Serialized files now loaded: 0)
 Unloading 10225 unused Assets / (6.2 MB). Loaded Objects now: 11093.
@@ -759,7 +759,7 @@ Begin MonoManager ReloadAssembly
 [INFO ] [relay] relay.startup port=9002 mcpClientPort=9003 editorPid=81029
 [INFO ] [relay] log === RELAY SERVER STARTED === (unity-ai-relay v1.0.12-build.91)
 [INFO ] [relay] log Starting relay server...
-[INFO ] [relay] log Command line arguments: ["bun","/$bunfs/root/relay_mac_arm64","--relay","--port","9002","--mcp-client-port","9003","--editor-pid","81029","--shutdown-delay","180","--log-dir","/Users/emreaydin/DefenderChronicles-first-region/Logs"]
+[INFO ] [relay] log Command line arguments: ["bun","/$bunfs/root/relay_mac_arm64","--relay","--port","9002","--mcp-client-port","9003","--editor-pid","81029","--shutdown-delay","180","--log-dir","/Users/emreaydin/AllinDefense-first-region/Logs"]
 [INFO ] [relay] log Parsed config: {"port":9002,"mcpClientPort":9003,"editorPid":"81029","shutdownDelaySeconds":180}
 [INFO ] [relay] log Initializing relay components...
 [INFO ] [relay] log Creating RelayEditor...
@@ -905,7 +905,7 @@ UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOpt
 UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
-DefenderChronicles.Tests.ClosedTestAcceptanceTests/<FrameRateAndSpeedHaveIdenticalBattleResults>d__4:MoveNext () (at Assets/Tests/PlayMode/ClosedTestAcceptanceTests.cs:79)
+AllinDefense.Tests.ClosedTestAcceptanceTests/<FrameRateAndSpeedHaveIdenticalBattleResults>d__4:MoveNext () (at Assets/Tests/PlayMode/ClosedTestAcceptanceTests.cs:79)
 UnityEngine.TestTools.TestEnumerator/<Execute>d__7:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44)
 UnityEngine.TestTools.EnumerableTestMethodCommand/<ExecuteEnumerableAndRecordExceptions>d__4:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:79)
 UnityEngine.TestTools.EnumerableTestMethodCommand:AdvanceEnumerator (System.Collections.IEnumerator) (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:64)
@@ -931,7 +931,7 @@ UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOpt
 UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
-DefenderChronicles.Tests.ClosedTestAcceptanceTests/<FrameRateAndSpeedHaveIdenticalBattleResults>d__4:MoveNext () (at Assets/Tests/PlayMode/ClosedTestAcceptanceTests.cs:79)
+AllinDefense.Tests.ClosedTestAcceptanceTests/<FrameRateAndSpeedHaveIdenticalBattleResults>d__4:MoveNext () (at Assets/Tests/PlayMode/ClosedTestAcceptanceTests.cs:79)
 UnityEngine.TestTools.TestEnumerator/<Execute>d__7:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44)
 UnityEngine.TestTools.EnumerableTestMethodCommand/<ExecuteEnumerableAndRecordExceptions>d__4:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:79)
 UnityEngine.TestTools.EnumerableTestMethodCommand:AdvanceEnumerator (System.Collections.IEnumerator) (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:64)
@@ -957,7 +957,7 @@ UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOpt
 UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
-DefenderChronicles.Tests.ClosedTestAcceptanceTests/<FrameRateAndSpeedHaveIdenticalBattleResults>d__4:MoveNext () (at Assets/Tests/PlayMode/ClosedTestAcceptanceTests.cs:79)
+AllinDefense.Tests.ClosedTestAcceptanceTests/<FrameRateAndSpeedHaveIdenticalBattleResults>d__4:MoveNext () (at Assets/Tests/PlayMode/ClosedTestAcceptanceTests.cs:79)
 UnityEngine.TestTools.TestEnumerator/<Execute>d__7:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44)
 UnityEngine.TestTools.EnumerableTestMethodCommand/<ExecuteEnumerableAndRecordExceptions>d__4:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:79)
 UnityEngine.TestTools.EnumerableTestMethodCommand:AdvanceEnumerator (System.Collections.IEnumerator) (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:64)
@@ -983,7 +983,7 @@ UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOpt
 UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
-DefenderChronicles.Tests.ClosedTestAcceptanceTests/<FrameRateAndSpeedHaveIdenticalBattleResults>d__4:MoveNext () (at Assets/Tests/PlayMode/ClosedTestAcceptanceTests.cs:79)
+AllinDefense.Tests.ClosedTestAcceptanceTests/<FrameRateAndSpeedHaveIdenticalBattleResults>d__4:MoveNext () (at Assets/Tests/PlayMode/ClosedTestAcceptanceTests.cs:79)
 UnityEngine.TestTools.TestEnumerator/<Execute>d__7:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44)
 UnityEngine.TestTools.EnumerableTestMethodCommand/<ExecuteEnumerableAndRecordExceptions>d__4:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:79)
 UnityEngine.TestTools.EnumerableTestMethodCommand:AdvanceEnumerator (System.Collections.IEnumerator) (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:64)
@@ -1009,7 +1009,7 @@ UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOpt
 UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
-DefenderChronicles.Tests.ClosedTestAcceptanceTests/<FrameRateAndSpeedHaveIdenticalBattleResults>d__4:MoveNext () (at Assets/Tests/PlayMode/ClosedTestAcceptanceTests.cs:79)
+AllinDefense.Tests.ClosedTestAcceptanceTests/<FrameRateAndSpeedHaveIdenticalBattleResults>d__4:MoveNext () (at Assets/Tests/PlayMode/ClosedTestAcceptanceTests.cs:79)
 UnityEngine.TestTools.TestEnumerator/<Execute>d__7:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44)
 UnityEngine.TestTools.EnumerableTestMethodCommand/<ExecuteEnumerableAndRecordExceptions>d__4:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:79)
 UnityEngine.TestTools.EnumerableTestMethodCommand:AdvanceEnumerator (System.Collections.IEnumerator) (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:64)
@@ -1035,7 +1035,7 @@ UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOpt
 UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
-DefenderChronicles.Tests.ClosedTestAcceptanceTests/<FrameRateAndSpeedHaveIdenticalBattleResults>d__4:MoveNext () (at Assets/Tests/PlayMode/ClosedTestAcceptanceTests.cs:79)
+AllinDefense.Tests.ClosedTestAcceptanceTests/<FrameRateAndSpeedHaveIdenticalBattleResults>d__4:MoveNext () (at Assets/Tests/PlayMode/ClosedTestAcceptanceTests.cs:79)
 UnityEngine.TestTools.TestEnumerator/<Execute>d__7:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44)
 UnityEngine.TestTools.EnumerableTestMethodCommand/<ExecuteEnumerableAndRecordExceptions>d__4:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:79)
 UnityEngine.TestTools.EnumerableTestMethodCommand:AdvanceEnumerator (System.Collections.IEnumerator) (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:64)
@@ -1061,7 +1061,7 @@ UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOpt
 UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
-DefenderChronicles.Tests.ClosedTestAcceptanceTests/<FrameRateAndSpeedHaveIdenticalBattleResults>d__4:MoveNext () (at Assets/Tests/PlayMode/ClosedTestAcceptanceTests.cs:79)
+AllinDefense.Tests.ClosedTestAcceptanceTests/<FrameRateAndSpeedHaveIdenticalBattleResults>d__4:MoveNext () (at Assets/Tests/PlayMode/ClosedTestAcceptanceTests.cs:79)
 UnityEngine.TestTools.TestEnumerator/<Execute>d__7:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44)
 UnityEngine.TestTools.EnumerableTestMethodCommand/<ExecuteEnumerableAndRecordExceptions>d__4:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:79)
 UnityEngine.TestTools.EnumerableTestMethodCommand:AdvanceEnumerator (System.Collections.IEnumerator) (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:64)
@@ -1087,7 +1087,7 @@ UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOpt
 UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
-DefenderChronicles.Tests.ClosedTestAcceptanceTests/<FrameRateAndSpeedHaveIdenticalBattleResults>d__4:MoveNext () (at Assets/Tests/PlayMode/ClosedTestAcceptanceTests.cs:79)
+AllinDefense.Tests.ClosedTestAcceptanceTests/<FrameRateAndSpeedHaveIdenticalBattleResults>d__4:MoveNext () (at Assets/Tests/PlayMode/ClosedTestAcceptanceTests.cs:79)
 UnityEngine.TestTools.TestEnumerator/<Execute>d__7:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44)
 UnityEngine.TestTools.EnumerableTestMethodCommand/<ExecuteEnumerableAndRecordExceptions>d__4:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:79)
 UnityEngine.TestTools.EnumerableTestMethodCommand:AdvanceEnumerator (System.Collections.IEnumerator) (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:64)
@@ -1241,7 +1241,7 @@ UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOpt
 UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
-DefenderChronicles.Tests.FirstRegionRegressionTests/<ObserveFirstLevel>d__2:MoveNext () (at Assets/Tests/PlayMode/FirstRegionRegressionTests.cs:28)
+AllinDefense.Tests.FirstRegionRegressionTests/<ObserveFirstLevel>d__2:MoveNext () (at Assets/Tests/PlayMode/FirstRegionRegressionTests.cs:28)
 UnityEngine.TestTools.TestEnumerator/<Execute>d__7:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44)
 UnityEngine.TestTools.EnumerableTestMethodCommand/<ExecuteEnumerableAndRecordExceptions>d__4:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:79)
 UnityEngine.TestTools.EnumerableTestMethodCommand:AdvanceEnumerator (System.Collections.IEnumerator) (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:64)
@@ -1267,7 +1267,7 @@ UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOpt
 UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
-DefenderChronicles.Tests.FirstRegionRegressionTests/<ObserveFirstLevel>d__2:MoveNext () (at Assets/Tests/PlayMode/FirstRegionRegressionTests.cs:28)
+AllinDefense.Tests.FirstRegionRegressionTests/<ObserveFirstLevel>d__2:MoveNext () (at Assets/Tests/PlayMode/FirstRegionRegressionTests.cs:28)
 UnityEngine.TestTools.TestEnumerator/<Execute>d__7:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44)
 UnityEngine.TestTools.EnumerableTestMethodCommand/<ExecuteEnumerableAndRecordExceptions>d__4:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:79)
 UnityEngine.TestTools.EnumerableTestMethodCommand:AdvanceEnumerator (System.Collections.IEnumerator) (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:64)
@@ -1302,8 +1302,8 @@ UnityEngine.Canvas:SendWillRenderCanvases () (at /Users/bokken/build/output/unit
 
 (Filename: ./Library/PackageCache/com.unity.ugui@d8a2716f3013/Runtime/TMP/TextMeshProUGUI.cs Line: 2012)
 
-Saving results to: /Users/emreaydin/Library/Application Support/Emre Aydin/Defender Chronicles/TestResults.xml
-Saving results to: /Users/emreaydin/DefenderChronicles-first-region/docs/closed-test/evidence/closed-test-acceptance.xml
+Saving results to: /Users/emreaydin/Library/Application Support/Emre Aydin/ALLIN: Defense/TestResults.xml
+Saving results to: /Users/emreaydin/AllinDefense-first-region/docs/closed-test/evidence/closed-test-acceptance.xml
 Thread 0x175c53000 may have been prematurely finalized
 Unloading 173 Unused Serialized files (Serialized files now loaded: 0)
 Loaded scene 'Temp/__Backupscenes/0.backup'

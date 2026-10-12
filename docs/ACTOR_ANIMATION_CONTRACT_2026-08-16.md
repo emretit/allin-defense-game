@@ -1,4 +1,4 @@
-# Defender Chronicles — Actor Animation Contract
+# ALLIN: Defense — Actor Animation Contract
 
 Status: M1 actor animation standard
 Date: 2026-08-16

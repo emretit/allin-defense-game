@@ -27,7 +27,7 @@ Then the actor proxy metrics report was regenerated with:
 
 Unity actor catalog validation was also re-run with:
 
-`/Applications/Unity/Hub/Editor/6000.4.1f1/Unity.app/Contents/MacOS/Unity -batchmode -quit -projectPath /Users/emreaydin/DefenderChronicles -executeMethod DefenderChronicles.Editor.DefenderPresentationBuildValidator.ValidateActorCatalogVisualDevelopmentCheckpoint -logFile Builds/unity-actor-catalog-visual-checkpoint-vis211231.log`
+`/Applications/Unity/Hub/Editor/6000.4.1f1/Unity.app/Contents/MacOS/Unity -batchmode -quit -projectPath /Users/emreaydin/AllinDefense -executeMethod AllinDefense.Editor.DefenderPresentationBuildValidator.ValidateActorCatalogVisualDevelopmentCheckpoint -logFile Builds/unity-actor-catalog-visual-checkpoint-vis211231.log`
 
 Refresh result:
 

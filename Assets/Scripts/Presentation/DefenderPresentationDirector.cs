@@ -1,7 +1,7 @@
-using DefenderChronicles.Core;
+using AllinDefense.Core;
 using UnityEngine;
 
-namespace DefenderChronicles.Presentation
+namespace AllinDefense.Presentation
 {
     public sealed class DefenderPresentationDirector : MonoBehaviour
     {

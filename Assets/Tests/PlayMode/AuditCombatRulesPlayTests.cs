@@ -1,15 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using DefenderChronicles.Combat;
-using DefenderChronicles.Core;
-using DefenderChronicles.Data;
-using DefenderChronicles.Presentation;
+using AllinDefense.Combat;
+using AllinDefense.Core;
+using AllinDefense.Data;
+using AllinDefense.Presentation;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-namespace DefenderChronicles.Tests
+namespace AllinDefense.Tests
 {
     public sealed class AuditCombatRulesPlayTests
     {

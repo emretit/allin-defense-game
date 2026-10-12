@@ -1,4 +1,4 @@
-# Defender Chronicles — iOS First Build Checklist
+# ALLIN: Defense — iOS First Build Checklist
 
 Durum: iPhone ilk test hazirligi
 Son guncelleme: 2026-08-15
@@ -19,8 +19,8 @@ Ilk gercek cihaz testi iPhone uzerinden yapilacak. Android ikinci hedef olarak k
 
 Unity icinde hizli uygulama:
 
-- `Defender Chronicles > Apply iOS First Settings`
-- Simulator icin: `Defender Chronicles > Apply iOS Simulator Settings`
+- `ALLIN: Defense > Apply iOS First Settings`
+- Simulator icin: `ALLIN: Defense > Apply iOS Simulator Settings`
 
 ## Simulator'a Kurma
 
@@ -52,7 +52,7 @@ Not:
 
 Onerilen bundle id:
 
-- `com.emreaydin.defenderchronicles`
+- `com.emreaydin.allindefense`
 
 ## Ilk Cihaz Testi
 

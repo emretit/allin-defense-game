@@ -1,4 +1,4 @@
-# Defender Chronicles - VIS-200 Actor Pipeline Index
+# ALLIN: Defense - VIS-200 Actor Pipeline Index
 
 Tarih: 2026-08-17
 

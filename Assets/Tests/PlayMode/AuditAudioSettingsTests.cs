@@ -2,21 +2,21 @@ using System.Collections;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using DefenderChronicles.Core;
-using DefenderChronicles.Presentation;
-using DefenderChronicles.UI;
+using AllinDefense.Core;
+using AllinDefense.Presentation;
+using AllinDefense.UI;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
-namespace DefenderChronicles.Tests
+namespace AllinDefense.Tests
 {
     public sealed class AuditAudioSettingsTests
     {
-        private const string MusicKey = "DefenderChronicles.Frontend.Music";
-        private const string SfxKey = "DefenderChronicles.Frontend.Sfx";
+        private const string MusicKey = "AllinDefense.Frontend.Music";
+        private const string SfxKey = "AllinDefense.Frontend.Sfx";
         private GameObject host;
         private DefenderAudioController controller;
         private DefenderPresentationCatalog catalog;

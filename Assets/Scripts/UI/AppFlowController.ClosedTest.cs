@@ -1,10 +1,10 @@
 using System.Linq;
-using DefenderChronicles.Core;
-using DefenderChronicles.Data;
+using AllinDefense.Core;
+using AllinDefense.Data;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace DefenderChronicles.UI
+namespace AllinDefense.UI
 {
     public sealed partial class AppFlowController
     {

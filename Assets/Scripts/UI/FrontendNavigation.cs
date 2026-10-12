@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-namespace DefenderChronicles.UI
+namespace AllinDefense.UI
 {
     // Session-only state survives a battle scene reload; never changes the save schema.
     public sealed class FrontendNavigationState

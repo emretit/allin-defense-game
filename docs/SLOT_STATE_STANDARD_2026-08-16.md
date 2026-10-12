@@ -1,4 +1,4 @@
-# Defender Chronicles — World-Space Slot State Standard
+# ALLIN: Defense — World-Space Slot State Standard
 
 Status: VIS-340 generated candidate pass
 Date: 2026-08-16

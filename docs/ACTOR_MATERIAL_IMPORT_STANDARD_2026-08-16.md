@@ -1,4 +1,4 @@
-# Defender Chronicles — Actor Material And Import Standard
+# ALLIN: Defense — Actor Material And Import Standard
 
 Status: M1 actor material/import standard
 Date: 2026-08-16

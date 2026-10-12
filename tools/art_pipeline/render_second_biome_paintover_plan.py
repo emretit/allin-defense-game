@@ -253,7 +253,7 @@ def draw_sheet(output: Path) -> None:
 
 def write_data(path: Path) -> None:
     data: dict[str, Any] = {
-        "schema": "defender-chronicles.visual-development.second-biome-paintover.v1",
+        "schema": "allin-defense.visual-development.second-biome-paintover.v1",
         "captured_on": CAPTURED_ON,
         "todo": "NEXT-202",
         "biome": "Frostfen Hollow",

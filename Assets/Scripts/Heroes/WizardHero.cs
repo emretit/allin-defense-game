@@ -1,9 +1,9 @@
 using System.Collections;
 using UnityEngine;
-using DefenderChronicles.Enemies;
-using DefenderChronicles.Heroes;
+using AllinDefense.Enemies;
+using AllinDefense.Heroes;
 
-namespace DefenderChronicles.Heroes
+namespace AllinDefense.Heroes
 {
     // Wizard Hero: AoE mage, special = Blizzard (freeze all in range)
     public class WizardHero : HeroBase

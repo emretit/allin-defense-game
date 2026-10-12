@@ -1,4 +1,4 @@
-# Defender Chronicles — Art and Audio Direction
+# ALLIN: Defense — Art and Audio Direction
 
 Durum: Sanatsal dikey dilim uygulandı
 Son güncelleme: 2026-08-16

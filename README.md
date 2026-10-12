@@ -1,4 +1,4 @@
-# Defender Chronicles
+# ALLIN: Defense
 
 Bağımsız, mobil öncelikli stilize 3B savunma oyununun sanatsal dikey dilimi.
 
@@ -33,14 +33,14 @@ Knight normal saldırısı 20 hasar / 0.35 sn; boşta beklemek saldırı birikti
 - iOS minimum sürüm: 15.0
 - Android minimum sürüm: API 29; ARM64 + IL2CPP
 - Yön: açılış/menü/kampanya/brifing portre; savaş/pause/sonuç yalnız Landscape Left ve Landscape Right
-- Bundle ID: `com.emreaydin.defenderchronicles`
+- Bundle ID: `com.emreaydin.allindefense`
 - Giriş: Unity Input System
 - Test: Unity Test Framework 1.6.0
 - UI metni: prefab tabanlı UGUI + TextMeshPro; Türkçe/İngilizce locale varlıkları ve çalışma zamanı kataloğu
 - Canlı oyun: Unity Authentication + Player Accounts + Cloud Code C# modülü + Protected Cloud Save
 - Production sunumu: doğrulanan `DefenderPresentationCatalog`; eksik varlık/lisans build’i durdurur
 
-Ana akış [GameSessionController.cs](/Users/emreaydin/DefenderChronicles/Assets/Scripts/Core/GameSessionController.cs), savaş aktörleri [GreyboxCombatants.cs](/Users/emreaydin/DefenderChronicles/Assets/Scripts/Core/GreyboxCombatants.cs) içindedir. Sunum varlıkları ve doğrulama [DefenderPresentationCatalog.cs](/Users/emreaydin/DefenderChronicles/Assets/Scripts/Presentation/DefenderPresentationCatalog.cs) üzerinden yönetilir.
+Ana akış [GameSessionController.cs](/Users/emreaydin/AllinDefense/Assets/Scripts/Core/GameSessionController.cs), savaş aktörleri [GreyboxCombatants.cs](/Users/emreaydin/AllinDefense/Assets/Scripts/Core/GreyboxCombatants.cs) içindedir. Sunum varlıkları ve doğrulama [DefenderPresentationCatalog.cs](/Users/emreaydin/AllinDefense/Assets/Scripts/Presentation/DefenderPresentationCatalog.cs) üzerinden yönetilir.
 
 ## Testler
 
@@ -54,16 +54,16 @@ EditMode:
 
 PlayMode için `-testPlatform PlayMode` kullanılır.
 
-HUD builder değişikliklerini uygulamak için Unity menüsünde `Defender Chronicles > Regenerate HUD Prefab`
+HUD builder değişikliklerini uygulamak için Unity menüsünde `ALLIN: Defense > Regenerate HUD Prefab`
 komutunu açıkça çalıştırın. Normal presentation build mevcut HUD prefabını korur. Aynı yeniden üretim
-komutu batchmode'da `-executeMethod DefenderChronicles.Editor.DefenderPresentationAssetBuilder.RegenerateHudPrefab`
+komutu batchmode'da `-executeMethod AllinDefense.Editor.DefenderPresentationAssetBuilder.RegenerateHudPrefab`
 ile çağrılabilir; mevcut prefab GUID'i korunur.
 
 Menü etiketleri `FrontendCopy` içindeki sabit kimlikli TR/EN çiftlerinden alınır. Metin değişikliği bu
 katalogda yapılır; `CreateText` çeviriyi Türkçe metne göre aramaz. Testlerin kullandığı nesne adları,
 özellikle ayar satırı adları, görünür etiketten bağımsız tutulur.
 
-Doğrulanan sonuçların güncel denetim özeti: [UNITY_AUDIT_REMEDIATION_2026-08-27.md](/Users/emreaydin/DefenderChronicles/docs/UNITY_AUDIT_REMEDIATION_2026-08-27.md).
+Doğrulanan sonuçların güncel denetim özeti: [UNITY_AUDIT_REMEDIATION_2026-08-27.md](/Users/emreaydin/AllinDefense/docs/UNITY_AUDIT_REMEDIATION_2026-08-27.md).
 
 Önceki fiziksel iOS kabul sonuçları (16 Ağustos 2026):
 
@@ -85,7 +85,7 @@ Simulator’da bir iPhone açıkken:
 ./tools/build_and_run_ios_simulator.sh
 ```
 
-Bu komut Unity’den Xcode projesi üretir, Development yapı alır, açık Simulator’a kurar ve oyunu normal hazırlık ekranında açar. Ayrı Release Xcode çıktısı Unity menüsündeki `Defender Chronicles > Build iOS Simulator Release Xcode Project` komutuyla üretilebilir.
+Bu komut Unity’den Xcode projesi üretir, Development yapı alır, açık Simulator’a kurar ve oyunu normal hazırlık ekranında açar. Ayrı Release Xcode çıktısı Unity menüsündeki `ALLIN: Defense > Build iOS Simulator Release Xcode Project` komutuyla üretilebilir.
 
 ## Fiziksel iPhone'a kurma
 
@@ -97,19 +97,19 @@ iPhone bağlı, kilidi açık ve Developer Mode etkin durumdayken:
 
 Akış cihazı ve geçerli Apple Development takımını otomatik bulur, imzalı Development yapısını kurar ve açar. Development yapısı FPS, frame süresi, Unity belleği, düşük bellek uyarısı ve iOS termal durumunu `[DC_DEVICE_METRICS]` kayıtlarında raporlar. Ham çıktılar `Builds/` altında tutulur.
 
-Fiziksel cihaz kabul durumu: [IOS_DEVICE_ACCEPTANCE_2026-08-16.md](/Users/emreaydin/DefenderChronicles/docs/IOS_DEVICE_ACCEPTANCE_2026-08-16.md).
+Fiziksel cihaz kabul durumu: [IOS_DEVICE_ACCEPTANCE_2026-08-16.md](/Users/emreaydin/AllinDefense/docs/IOS_DEVICE_ACCEPTANCE_2026-08-16.md).
 
 ## Android yapı
 
-Unity içinden `Defender Chronicles > Build Android Development APK` geliştirme APK’sı,
-`Defender Chronicles > Build Android Release AAB` ise mağaza AAB çıktısı üretir. Release imzası için yerel/CI keystore yapılandırması ayrıca sağlanmalıdır.
+Unity içinden `ALLIN: Defense > Build Android Development APK` geliştirme APK’sı,
+`ALLIN: Defense > Build Android Release AAB` ise mağaza AAB çıktısı üretir. Release imzası için yerel/CI keystore yapılandırması ayrıca sağlanmalıdır.
 
 ## Varlık kökeni
 
-Blender kaynakları, üretim betikleri, font lisansları ve kullanılan üretim kaynakları [ASSET_PROVENANCE.md](/Users/emreaydin/DefenderChronicles/docs/ASSET_PROVENANCE.md) içinde kayıtlıdır.
+Blender kaynakları, üretim betikleri, font lisansları ve kullanılan üretim kaynakları [ASSET_PROVENANCE.md](/Users/emreaydin/AllinDefense/docs/ASSET_PROVENANCE.md) içinde kayıtlıdır.
 
 ## Kapsam dışı
 
 Yeni kuleler, diğer kahramanlar, ekipman, PvP, reklam, IAP, Vivox ve multiplayer bu teslimin kapsamında değildir. Kesin performans/termal kapısı fiziksel iPhone ve Android cihaz profil ölçümüne bırakılmıştır.
 
-Güncel ve gerçek durum sınıflandırması: [DEFENDER_CHRONICLES_MASTER_TODO.md](/Users/emreaydin/DefenderChronicles/docs/DEFENDER_CHRONICLES_MASTER_TODO.md).
+Güncel ve gerçek durum sınıflandırması: [ALLIN_DEFENSE_MASTER_TODO.md](/Users/emreaydin/AllinDefense/docs/ALLIN_DEFENSE_MASTER_TODO.md).

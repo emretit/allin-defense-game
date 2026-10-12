@@ -36,7 +36,7 @@ Son çalışma sonuçları:
 - Unity PlayMode: 13/13 geçti.
 - Cloud Code .NET: 4/4 geçti.
 - `unity projects verify`: 0 hata, 0 uyarı.
-- Android Development APK: 90 MB, `com.emreaydin.defenderchronicles`, min SDK 29, yalnız ARM64/IL2CPP.
+- Android Development APK: 90 MB, `com.emreaydin.allindefense`, min SDK 29, yalnız ARM64/IL2CPP.
 - APK SHA-256: `7db84f74e05a7de148946d4cfa1562d7919a38b84506a379966c76c6abeee1d3`.
 - Güncel iOS Simulator Development Xcode projesi üretildi; imzasız Debug `.app` derlemesi x86_64 + arm64 için geçti.
 

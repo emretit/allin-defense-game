@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace DefenderChronicles.Core
+namespace AllinDefense.Core
 {
     public enum MobileOrientationMode
     {

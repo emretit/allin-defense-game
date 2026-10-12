@@ -1,6 +1,6 @@
 # Faz 0 — UI temel çalışması
 
-Worktree: `/Users/emreaydin/orca/workspaces/DefenderChronicles/ui-faz0`  
+Worktree: `/Users/emreaydin/orca/workspaces/AllinDefense/ui-faz0`  
 Unity: `6000.4.1f1`  
 Durum: Uygulama ve doğrulama tamamlandı; EditMode 143/143, PlayMode 117/117 başarılı. Değişiklikler commit edilmedi.
 
@@ -30,12 +30,12 @@ Unity komutlarında README'deki `-batchmode -projectPath -runTests -testPlatform
 
 Metin değişikliklerini `Assets/Scripts/UI/FrontendCopy.cs` içindeki kimliğin TR/EN çiftinde yapın; test nesne adlarını etiketten üretmeyin. Dinamik metinlerde mevcut açık `GameLocalization.Text(tr, en)` çiftleri kullanılabilir.
 
-HUD builder değişikliğinden sonra Unity menüsünde **Defender Chronicles > Regenerate HUD Prefab** komutunu çalıştırın veya:
+HUD builder değişikliğinden sonra Unity menüsünde **ALLIN: Defense > Regenerate HUD Prefab** komutunu çalıştırın veya:
 
 ```sh
 "/Applications/Unity/Hub/Editor/6000.4.1f1/Unity.app/Contents/MacOS/Unity" \
   -batchmode -quit -projectPath "$PWD" \
-  -executeMethod DefenderChronicles.Editor.DefenderPresentationAssetBuilder.RegenerateHudPrefab \
+  -executeMethod AllinDefense.Editor.DefenderPresentationAssetBuilder.RegenerateHudPrefab \
   -logFile "$PWD/Builds/hud-regeneration.log"
 ```
 

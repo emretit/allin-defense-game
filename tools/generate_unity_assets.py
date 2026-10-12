@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate .meta for all scripts, placeholder art, and Resources prefabs for Defender Chronicles."""
+"""Generate .meta for all scripts, placeholder art, and Resources prefabs for ALLIN: Defense."""
 import hashlib
 import os
 import struct

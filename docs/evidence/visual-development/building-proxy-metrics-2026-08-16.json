@@ -1,5 +1,5 @@
 {
-  "schema": "defender-chronicles.visual-development.building-proxy-metrics.v1",
+  "schema": "allin-defense.visual-development.building-proxy-metrics.v1",
   "captured_on": "2026-08-16",
   "summary": {
     "expected_building_count": 6,

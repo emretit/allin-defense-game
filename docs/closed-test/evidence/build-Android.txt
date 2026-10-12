@@ -3,4 +3,4 @@ result=Succeeded
 bytes=1486434576
 seconds=113.250359
 errors=0
-output=Builds/ClosedTest-Android/DefenderChronicles-ct-20260906-01.apk
+output=Builds/ClosedTest-Android/AllinDefense-ct-20260906-01.apk

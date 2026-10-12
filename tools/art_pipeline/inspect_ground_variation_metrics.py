@@ -146,7 +146,7 @@ def main() -> None:
 
     assets = [inspect_asset(entry) for entry in ASSETS]
     report = {
-        "schema": "defender-chronicles.visual-development.ground-variation-metrics.v1",
+        "schema": "allin-defense.visual-development.ground-variation-metrics.v1",
         "captured_on": "2026-08-16",
         "todo": "VIS-404",
         "asset_scope": "Generated candidate FBX overlays only; not bound to runtime catalog/prefab yet.",

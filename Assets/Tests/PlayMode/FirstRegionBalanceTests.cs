@@ -1,14 +1,14 @@
 using System.Collections;
 using System.Linq;
-using DefenderChronicles.Combat;
-using DefenderChronicles.Core;
-using DefenderChronicles.Data;
-using DefenderChronicles.Presentation;
+using AllinDefense.Combat;
+using AllinDefense.Core;
+using AllinDefense.Data;
+using AllinDefense.Presentation;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-namespace DefenderChronicles.Tests
+namespace AllinDefense.Tests
 {
     public sealed class FirstRegionBalanceTests
     {

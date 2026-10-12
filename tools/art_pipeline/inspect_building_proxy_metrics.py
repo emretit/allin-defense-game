@@ -210,7 +210,7 @@ def main() -> None:
     catalog_entries = [building["catalog_current"] for building in buildings if building["catalog_current"].get("exists")]
     generated_entries = [building["generated_candidate"] for building in buildings if building["generated_candidate"].get("exists")]
     report = {
-        "schema": "defender-chronicles.visual-development.building-metrics.v2",
+        "schema": "allin-defense.visual-development.building-metrics.v2",
         "captured_on": datetime.date.today().isoformat(),
         "summary": {
             "expected_building_count": len(BUILDINGS),

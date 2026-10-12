@@ -6,7 +6,7 @@ using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
-namespace DefenderChronicles.UI
+namespace AllinDefense.UI
 {
     public enum GameLanguage
     {
@@ -16,7 +16,7 @@ namespace DefenderChronicles.UI
 
     public static class GameLocalization
     {
-        private const string LanguageKey = "DefenderChronicles.Frontend.Language";
+        private const string LanguageKey = "AllinDefense.Frontend.Language";
 
         private static readonly Dictionary<string, string> English = new(StringComparer.Ordinal)
         {

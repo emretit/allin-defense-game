@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 9ff22b2bb710e44d1ab10ec6b4fd79ce
+guid: f184db724e9314053a5b437d13296cd9
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5476136315907370027
-    second: DefenderChronicles-Logo_0
+      213: 6183973408817817762
+    second: AllinDefense-Mark-v2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: DefenderChronicles-Logo_0
+      name: AllinDefense-Mark-v2_0
       rect:
         serializedVersion: 2
-        x: 22
-        y: 83
-        width: 1156
-        height: 1036
+        x: 301
+        y: 0
+        width: 1446
+        height: 1789
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b2c664b27f42ffb40800000000000000
-      internalID: 5476136315907370027
+      spriteID: 2a82c0d1d03e1d550800000000000000
+      internalID: 6183973408817817762
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      DefenderChronicles-Logo_0: 5476136315907370027
+      AllinDefense-Mark-v2_0: 6183973408817817762
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

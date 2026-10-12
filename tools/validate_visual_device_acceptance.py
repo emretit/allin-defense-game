@@ -120,8 +120,8 @@ def validate_stress(data: dict[str, Any], missing: list[str]) -> None:
 
 def validate(data: dict[str, Any]) -> list[str]:
     missing: list[str] = []
-    if data.get("schema") != "defender-chronicles.visual-device-acceptance.v1":
-        missing.append("schema must be defender-chronicles.visual-device-acceptance.v1")
+    if data.get("schema") != "allin-defense.visual-device-acceptance.v1":
+        missing.append("schema must be allin-defense.visual-device-acceptance.v1")
     for key in ("acceptedBuildId", "deviceClass", "deviceModel", "osVersion", "capturedOn", "reviewer"):
         if not isinstance(data.get(key), str) or not data[key].strip() or data[key].startswith("TODO"):
             missing.append(f"{key} must be filled")

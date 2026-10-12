@@ -1,8 +1,8 @@
 using System.Collections;
 using UnityEngine;
-using DefenderChronicles.Enemies;
+using AllinDefense.Enemies;
 
-namespace DefenderChronicles.Enemies
+namespace AllinDefense.Enemies
 {
     // Very slow, very tanky, regenerates health
     public class TrollEnemy : EnemyBase

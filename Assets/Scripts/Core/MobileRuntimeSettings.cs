@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace DefenderChronicles.Core
+namespace AllinDefense.Core
 {
     public static class MobileRuntimeSettings
     {

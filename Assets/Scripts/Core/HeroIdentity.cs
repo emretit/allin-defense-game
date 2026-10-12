@@ -2,9 +2,9 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using DefenderChronicles.UI;
+using AllinDefense.UI;
 
-namespace DefenderChronicles.Core
+namespace AllinDefense.Core
 {
     public static class HeroIdentity
     {

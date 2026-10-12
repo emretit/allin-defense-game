@@ -1,9 +1,9 @@
 using UnityEngine;
-using DefenderChronicles.UI;
+using AllinDefense.UI;
 
-namespace DefenderChronicles.Presentation
+namespace AllinDefense.Presentation
 {
-    [CreateAssetMenu(menuName = "Defender Chronicles/Frontend Presentation Theme",
+    [CreateAssetMenu(menuName = "ALLIN: Defense/Frontend Presentation Theme",
         fileName = "FrontendPresentationTheme")]
     public sealed class FrontendPresentationTheme : ScriptableObject
     {
@@ -70,8 +70,8 @@ namespace DefenderChronicles.Presentation
         {
             FrontendPresentationTheme theme = CreateInstance<FrontendPresentationTheme>();
             theme.hideFlags = HideFlags.DontSave;
-            theme.brandLogo = Resources.Load<Sprite>("Presentation/Brand/DefenderChronicles-Logo-v2");
-            theme.brandMark = Resources.Load<Sprite>("Presentation/Brand/DefenderChronicles-Mark-v2");
+            theme.brandLogo = Resources.Load<Sprite>("Presentation/Brand/AllinDefense-Logo-v2");
+            theme.brandMark = Resources.Load<Sprite>("Presentation/Brand/AllinDefense-Mark-v2");
             theme.welcomeBackdrop = Resources.Load<Texture2D>("Presentation/Frontend/GreenwatchWelcome");
             theme.warTableBackdrop = Resources.Load<Texture2D>("Presentation/Frontend/GreenwatchWarTable");
             theme.warTableShader = Shader.Find("Universal Render Pipeline/Unlit") ?? Shader.Find("UI/Default");

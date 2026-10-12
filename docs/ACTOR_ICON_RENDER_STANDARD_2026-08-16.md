@@ -1,4 +1,4 @@
-# Defender Chronicles — Actor Icon Render Standard
+# ALLIN: Defense — Actor Icon Render Standard
 
 Status: M1 icon render preset
 Date: 2026-08-16

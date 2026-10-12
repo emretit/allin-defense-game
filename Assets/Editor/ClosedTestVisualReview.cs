@@ -3,23 +3,23 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Reflection;
-using DefenderChronicles.Core;
-using DefenderChronicles.Data;
-using DefenderChronicles.Presentation;
-using DefenderChronicles.UI;
+using AllinDefense.Core;
+using AllinDefense.Data;
+using AllinDefense.Presentation;
+using AllinDefense.UI;
 using UnityEditor;
 using UnityEngine;
 
-namespace DefenderChronicles.Editor
+namespace AllinDefense.Editor
 {
     public static class ClosedTestVisualReview
     {
-        [MenuItem("Defender Chronicles/Closed Test/Close Isolated Editor")]
+        [MenuItem("ALLIN: Defense/Closed Test/Close Isolated Editor")]
         public static void Close()
         {
-            if (Application.dataPath.Contains("DefenderChronicles-first-region")) EditorApplication.Exit(0);
+            if (Application.dataPath.Contains("AllinDefense-first-region")) EditorApplication.Exit(0);
         }
-        [MenuItem("Defender Chronicles/Closed Test/Capture Game UI")]
+        [MenuItem("ALLIN: Defense/Closed Test/Capture Game UI")]
         public static void Capture() => CaptureAt(1920, 1080, "docs/closed-test/evidence/battle-ui-overlay.png");
 
         public static async void CaptureAt(int width, int height, string output)
@@ -43,7 +43,7 @@ namespace DefenderChronicles.Editor
             ScreenCapture.CaptureScreenshot(output);
             Debug.Log("[CLOSED_TEST_CAPTURE] UI capture requested.");
         }
-        [MenuItem("Defender Chronicles/Closed Test/Show Specialization UI")]
+        [MenuItem("ALLIN: Defense/Closed Test/Show Specialization UI")]
         public static void ShowSpecialization()
         {
             var session = GameSessionController.Instance;

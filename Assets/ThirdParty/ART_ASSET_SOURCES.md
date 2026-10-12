@@ -1,4 +1,4 @@
-# Defender Chronicles third-party art sources
+# ALLIN: Defense third-party art sources
 
 Acquired on: 2026-08-16
 

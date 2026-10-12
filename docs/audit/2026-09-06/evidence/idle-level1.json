@@ -4,7 +4,7 @@
   "data": {
     "command": "eval",
     "parameters": {
-      "code": "var s=DefenderChronicles.Core.GameSessionController.Instance; if(s==null)return \"Session unavailable\"; return new {s.CampaignLevelNumber,phase=s.Phase.ToString(),s.CurrentWaveIndex,s.Lives,s.Gold,towers=s.Outposts.Count,enemies=s.Enemies.Count,elapsed=UnityEngine.Time.realtimeSinceStartup-UnityEditor.SessionState.GetFloat(\"DCAuditStart\",0)};"
+      "code": "var s=AllinDefense.Core.GameSessionController.Instance; if(s==null)return \"Session unavailable\"; return new {s.CampaignLevelNumber,phase=s.Phase.ToString(),s.CurrentWaveIndex,s.Lives,s.Gold,towers=s.Outposts.Count,enemies=s.Enemies.Count,elapsed=UnityEngine.Time.realtimeSinceStartup-UnityEditor.SessionState.GetFloat(\"DCAuditStart\",0)};"
     },
     "result": {
       "output": null,
@@ -21,7 +21,7 @@
     "target": {
       "host": "127.0.0.1",
       "port": 7800,
-      "projectPath": "/Users/emreaydin/DefenderChronicles"
+      "projectPath": "/Users/emreaydin/AllinDefense"
     },
     "success": true
   },

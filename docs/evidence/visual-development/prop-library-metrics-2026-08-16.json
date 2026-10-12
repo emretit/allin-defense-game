@@ -1,5 +1,5 @@
 {
-  "schema": "defender-chronicles.visual-development.prop-library-metrics.v1",
+  "schema": "allin-defense.visual-development.prop-library-metrics.v1",
   "captured_on": "2026-08-16",
   "todo": "VIS-408",
   "asset_scope": "Generated prop library FBX files only; not bound to runtime environment prefab.",

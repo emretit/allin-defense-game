@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using DefenderChronicles.UI;
+using AllinDefense.UI;
 using UnityEngine;
 
-namespace DefenderChronicles.Data
+namespace AllinDefense.Data
 {
     public sealed class RuntimeCampaignLevel
     {

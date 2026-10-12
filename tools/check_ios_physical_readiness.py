@@ -225,7 +225,7 @@ def main() -> int:
     ddi_probes = ddi_service_probes(raw_devices)
     status = readiness_status(devices, support_versions, preferred_ddi, ddi_probes)
     report = {
-        "schema": "defender-chronicles.visual-development.ios-physical-readiness.v1",
+        "schema": "allin-defense.visual-development.ios-physical-readiness.v1",
         "capturedOn": datetime.date.today().isoformat(),
         "xcode": xcode_version(),
         "legacyDeviceSupportVersions": support_versions,

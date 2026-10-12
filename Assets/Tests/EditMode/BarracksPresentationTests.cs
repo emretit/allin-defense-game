@@ -1,9 +1,9 @@
 using System.Linq;
-using DefenderChronicles.Presentation;
+using AllinDefense.Presentation;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace DefenderChronicles.Tests
+namespace AllinDefense.Tests
 {
     public sealed class BarracksPresentationTests
     {

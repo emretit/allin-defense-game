@@ -1,9 +1,9 @@
 using System.Collections;
 using UnityEngine;
-using DefenderChronicles.Enemies;
-using DefenderChronicles.Heroes;
+using AllinDefense.Enemies;
+using AllinDefense.Heroes;
 
-namespace DefenderChronicles.Heroes
+namespace AllinDefense.Heroes
 {
     // Elven Hero: Fast attacker, special = Rain of Arrows (AoE)
     public class ElvenHero : HeroBase

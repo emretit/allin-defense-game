@@ -1,10 +1,10 @@
 using System;
 using System.Linq;
-using DefenderChronicles.Data;
+using AllinDefense.Data;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace DefenderChronicles.Core
+namespace AllinDefense.Core
 {
     // Explicit development-only device harness. Uses production purchases and the normal 1x clock.
     public sealed class ClosedTestAutoplay : MonoBehaviour

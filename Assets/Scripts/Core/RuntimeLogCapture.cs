@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using UnityEngine;
 
-namespace DefenderChronicles.Core
+namespace AllinDefense.Core
 {
     public static class RuntimeLogCapture
     {
@@ -24,7 +24,7 @@ namespace DefenderChronicles.Core
             logPath = Path.Combine(Application.persistentDataPath, "defender-runtime-log.txt");
             try
             {
-                File.WriteAllText(logPath, $"Defender Chronicles runtime log - {DateTime.UtcNow:O}\n");
+                File.WriteAllText(logPath, $"ALLIN: Defense runtime log - {DateTime.UtcNow:O}\n");
             }
             catch (Exception)
             {

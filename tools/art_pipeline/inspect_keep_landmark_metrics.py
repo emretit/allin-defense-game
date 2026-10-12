@@ -158,7 +158,7 @@ def main() -> None:
 
     assets = [inspect_asset(entry) for entry in ASSETS]
     report = {
-        "schema": "defender-chronicles.visual-development.keep-landmark-metrics.v1",
+        "schema": "allin-defense.visual-development.keep-landmark-metrics.v1",
         "captured_on": "2026-08-16",
         "todo": "VIS-407",
         "asset_scope": "Generated defender keep/command landmark FBX files only; not bound to runtime environment prefab.",

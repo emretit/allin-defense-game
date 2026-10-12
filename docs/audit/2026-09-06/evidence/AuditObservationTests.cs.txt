@@ -2,19 +2,19 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Reflection;
-using DefenderChronicles.Core;
-using DefenderChronicles.Data;
-using DefenderChronicles.Presentation;
+using AllinDefense.Core;
+using AllinDefense.Data;
+using AllinDefense.Presentation;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 using Object = UnityEngine.Object;
 
-namespace DefenderChronicles.Tests
+namespace AllinDefense.Tests
 {
     public class AuditObservationTests
     {
-        const string OutDir = "/Users/emreaydin/DefenderChronicles/docs/audit/2026-09-06/evidence/";
+        const string OutDir = "/Users/emreaydin/AllinDefense/docs/audit/2026-09-06/evidence/";
         [Serializable] public class Observation { public string scenario; public string phase; public int lives; public int gold; public int towers; public int wave; public float elapsedSeconds; public bool disruptedWhileStunned; }
         [UnityTest] public IEnumerator IdleFirstLevelProduction() { yield return ObserveFirstLevel(false); }
         [UnityTest] public IEnumerator OneArcherFirstLevelProduction() { yield return ObserveFirstLevel(true); }

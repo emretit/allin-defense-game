@@ -1,4 +1,4 @@
-# Defender Chronicles — Greenwatch Ground Variation Pass
+# ALLIN: Defense — Greenwatch Ground Variation Pass
 
 Tarih: 2026-08-16
 TODO: VIS-404

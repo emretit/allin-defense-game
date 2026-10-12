@@ -1,4 +1,4 @@
-# Defender Chronicles Actor Runtime Pipeline
+# ALLIN: Defense Actor Runtime Pipeline
 
 Status: M0/M1 implementation contract
 Date: 2026-08-16

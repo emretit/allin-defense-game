@@ -1,4 +1,4 @@
-# Defender Chronicles — Gerçek Durum Listesi
+# ALLIN: Defense — Gerçek Durum Listesi
 
 Son güncelleme: 2026-10-11
 

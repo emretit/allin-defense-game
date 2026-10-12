@@ -1,4 +1,4 @@
-# Defender Chronicles — Building Material And Import Standard
+# ALLIN: Defense — Building Material And Import Standard
 
 Status: VIS-302 material/import standard
 Date: 2026-08-16

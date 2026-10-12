@@ -1,4 +1,4 @@
-# Defender Chronicles — Building QA Readability
+# ALLIN: Defense — Building QA Readability
 
 Tarih: 2026-08-16
 TODO: VIS-344

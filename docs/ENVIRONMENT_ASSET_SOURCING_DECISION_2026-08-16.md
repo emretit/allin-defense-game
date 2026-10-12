@@ -1,4 +1,4 @@
-# Defender Chronicles — Environment Asset Sourcing Decision
+# ALLIN: Defense — Environment Asset Sourcing Decision
 
 Tarih: 2026-08-16
 TODO: VIS-402

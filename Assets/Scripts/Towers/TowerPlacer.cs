@@ -1,11 +1,11 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using DefenderChronicles.Core;
-using DefenderChronicles.Grid;
-using DefenderChronicles.Data;
-using DefenderChronicles.Utils;
+using AllinDefense.Core;
+using AllinDefense.Grid;
+using AllinDefense.Data;
+using AllinDefense.Utils;
 
-namespace DefenderChronicles.Towers
+namespace AllinDefense.Towers
 {
     public class TowerPlacer : MonoBehaviour
     {

@@ -4,48 +4,48 @@ using UnityEngine;
 using System.IO;
 using System.Linq;
 
-namespace DefenderChronicles.Editor
+namespace AllinDefense.Editor
 {
     public static class IosFirstBuildSettings
     {
-        private const string BundleIdentifier = "com.emreaydin.defenderchronicles";
+        private const string BundleIdentifier = "com.emreaydin.allindefense";
         private const string AppIconPath =
-            "Assets/Art/AppIcon/BrandV2/DefenderChronicles-AppIcon-v2-1024.png";
+            "Assets/Art/AppIcon/BrandV2/AllinDefense-AppIcon-v2-1024.png";
         private const string LaunchArtworkPath =
             "Assets/Art/Brand/Launch/GreenwatchLaunch-v2.png";
 
-        [MenuItem("Defender Chronicles/Apply iOS First Settings")]
+        [MenuItem("ALLIN: Defense/Apply iOS First Settings")]
         public static void Apply()
         {
             ApplySharedIosSettings();
             PlayerSettings.iOS.sdkVersion = iOSSdkVersion.DeviceSDK;
 
-            Debug.Log("Defender Chronicles iOS device settings applied.");
+            Debug.Log("ALLIN: Defense iOS device settings applied.");
         }
 
-        [MenuItem("Defender Chronicles/Apply iOS Simulator Settings")]
+        [MenuItem("ALLIN: Defense/Apply iOS Simulator Settings")]
         public static void ApplySimulator()
         {
             ApplySharedIosSettings();
             PlayerSettings.iOS.sdkVersion = iOSSdkVersion.SimulatorSDK;
             PlayerSettings.iOS.simulatorSdkArchitecture = AppleMobileArchitectureSimulator.Universal;
 
-            Debug.Log("Defender Chronicles iOS Simulator settings applied.");
+            Debug.Log("ALLIN: Defense iOS Simulator settings applied.");
         }
 
-        [MenuItem("Defender Chronicles/Build iOS Simulator Xcode Project")]
+        [MenuItem("ALLIN: Defense/Build iOS Simulator Xcode Project")]
         public static void BuildSimulatorProject()
         {
             BuildSimulator("Builds/iOS-Simulator", true);
         }
 
-        [MenuItem("Defender Chronicles/Build iOS Simulator Release Xcode Project")]
+        [MenuItem("ALLIN: Defense/Build iOS Simulator Release Xcode Project")]
         public static void BuildSimulatorReleaseProject()
         {
             BuildSimulator("Builds/iOS-Simulator-Release", false);
         }
 
-        [MenuItem("Defender Chronicles/Build iOS Device Development Xcode Project")]
+        [MenuItem("ALLIN: Defense/Build iOS Device Development Xcode Project")]
         public static void BuildDeviceDevelopmentProject()
         {
             Apply();
@@ -98,7 +98,7 @@ namespace DefenderChronicles.Editor
         {
             EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.iOS, BuildTarget.iOS);
             PlayerSettings.companyName = "Emre Aydin";
-            PlayerSettings.productName = "Defender Chronicles";
+            PlayerSettings.productName = "ALLIN: Defense";
             PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.iOS, BundleIdentifier);
             PlayerSettings.iOS.targetOSVersionString = "15.0";
             PlayerSettings.iOS.targetDevice = iOSTargetDevice.iPhoneAndiPad;

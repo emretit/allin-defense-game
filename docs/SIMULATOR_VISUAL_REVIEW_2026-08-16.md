@@ -1,4 +1,4 @@
-# Defender Chronicles — Simulator Visual Review
+# ALLIN: Defense — Simulator Visual Review
 
 Tarih: 2026-08-16
 Kapsam: iPhone 17 Pro Simulator, iOS 26.5, Development iOS Simulator build
@@ -7,7 +7,7 @@ Kapsam: iPhone 17 Pro Simulator, iOS 26.5, Development iOS Simulator build
 
 - Unity iOS Simulator Xcode project build geçti.
 - Xcode `iphonesimulator` build geçti.
-- `com.emreaydin.defenderchronicles` Simulator'a kuruldu ve açıldı.
+- `com.emreaydin.allindefense` Simulator'a kuruldu ve açıldı.
 - İlk screenshot yükleme/ilk frame sırasında koyu göründü; geç screenshot'ta oyun sahnesi render edildi.
 
 ## Evidence

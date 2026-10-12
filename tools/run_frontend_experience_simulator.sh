@@ -2,9 +2,9 @@
 # Run against a freshly built iOS development app. Uses an isolated campaign save.
 set -euo pipefail
 project_root="${0:A:h:h}"
-app_path="${1:-$project_root/Builds/XcodeDerivedData/Build/Products/Debug-iphonesimulator/DefenderChronicles.app}"
+app_path="${1:-$project_root/Builds/XcodeDerivedData/Build/Products/Debug-iphonesimulator/AllinDefense.app}"
 output_path="${2:-$project_root/Builds/FrontendExperience/iOS}"
-bundle_id="com.emreaydin.defenderchronicles"
+bundle_id="com.emreaydin.allindefense"
 simulator_id="$(xcrun simctl list devices booted -j | python3 -c 'import sys,json; d=json.load(sys.stdin); print(next(x["udid"] for devices in d["devices"].values() for x in devices if x["state"]=="Booted"))')"
 mkdir -p "$output_path"
 xcrun simctl install "$simulator_id" "$app_path"

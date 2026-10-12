@@ -1,7 +1,7 @@
 using UnityEngine;
-using DefenderChronicles.Enemies;
+using AllinDefense.Enemies;
 
-namespace DefenderChronicles.Units
+namespace AllinDefense.Units
 {
     public class MagicUnit : FriendlyUnitBase
     {

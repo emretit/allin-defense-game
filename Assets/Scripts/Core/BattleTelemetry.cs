@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-namespace DefenderChronicles.Core
+namespace AllinDefense.Core
 {
     public static class ClosedTestBuild { public const string Id = "ct-20260906-01"; }
     public sealed class BattleTelemetry

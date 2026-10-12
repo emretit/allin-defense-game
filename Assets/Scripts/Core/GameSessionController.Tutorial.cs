@@ -1,10 +1,10 @@
 using System.Linq;
-using DefenderChronicles.Data;
-using DefenderChronicles.Presentation;
-using DefenderChronicles.UI;
+using AllinDefense.Data;
+using AllinDefense.Presentation;
+using AllinDefense.UI;
 using UnityEngine;
 
-namespace DefenderChronicles.Core
+namespace AllinDefense.Core
 {
     public sealed partial class GameSessionController
     {

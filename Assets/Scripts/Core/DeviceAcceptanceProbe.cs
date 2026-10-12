@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Profiling;
 
-namespace DefenderChronicles.Core
+namespace AllinDefense.Core
 {
     /// <summary>
     /// Development-build telemetry for the physical iPhone acceptance gate.

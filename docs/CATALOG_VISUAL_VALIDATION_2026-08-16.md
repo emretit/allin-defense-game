@@ -1,4 +1,4 @@
-# Defender Chronicles — Catalog Visual Development Validation
+# ALLIN: Defense — Catalog Visual Development Validation
 
 Status: VIS-208 implementation scaffold
 Date: 2026-08-16

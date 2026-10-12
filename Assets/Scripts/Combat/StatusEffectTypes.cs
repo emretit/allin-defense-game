@@ -1,4 +1,4 @@
-namespace DefenderChronicles.Combat
+namespace AllinDefense.Combat
 {
     public enum StatusEffectType
     {

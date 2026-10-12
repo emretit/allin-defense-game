@@ -1,4 +1,4 @@
-# Defender Chronicles — Accessibility, Performance and QA
+# ALLIN: Defense — Accessibility, Performance and QA
 
 Durum: Faz 9 kalite kapisi notu
 Son guncelleme: 2026-08-15

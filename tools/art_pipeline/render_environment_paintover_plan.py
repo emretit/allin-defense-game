@@ -243,7 +243,7 @@ def draw_legend(draw: ImageDraw.ImageDraw) -> None:
 
 def write_data(path: Path) -> None:
     data: dict[str, Any] = {
-        "schema": "defender-chronicles.visual-development.greenwatch-paintover-plan.v1",
+        "schema": "allin-defense.visual-development.greenwatch-paintover-plan.v1",
         "captured_on": CAPTURED_ON,
         "todo": "VIS-401",
         "scope": "Planning artifact only; does not change runtime route, slot positions, colliders or camera.",

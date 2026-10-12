@@ -2,8 +2,8 @@
 set -euo pipefail
 
 project_root="${0:A:h:h}"
-app_path="$project_root/Builds/XcodeDerivedData/Build/Products/Debug-iphonesimulator/DefenderChronicles.app"
-bundle_id="com.emreaydin.defenderchronicles"
+app_path="$project_root/Builds/XcodeDerivedData/Build/Products/Debug-iphonesimulator/AllinDefense.app"
+bundle_id="com.emreaydin.allindefense"
 evidence_root="$project_root/docs/evidence/runtime"
 log_root="$project_root/Builds"
 

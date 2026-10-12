@@ -1,4 +1,4 @@
-# Defender Chronicles — Technical Foundation
+# ALLIN: Defense — Technical Foundation
 
 Durum: Faz 1 teknik karar notu
 Son guncelleme: 2026-08-15

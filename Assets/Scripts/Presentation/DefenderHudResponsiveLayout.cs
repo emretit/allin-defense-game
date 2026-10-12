@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace DefenderChronicles.Presentation
+namespace AllinDefense.Presentation
 {
     /// <summary>
     /// Extends decorative HUD rails to the physical screen edges while keeping interactive

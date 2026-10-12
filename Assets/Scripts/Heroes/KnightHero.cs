@@ -1,9 +1,9 @@
 using UnityEngine;
-using DefenderChronicles.Enemies;
-using DefenderChronicles.Heroes;
-using DefenderChronicles.Utils;
+using AllinDefense.Enemies;
+using AllinDefense.Heroes;
+using AllinDefense.Utils;
 
-namespace DefenderChronicles.Heroes
+namespace AllinDefense.Heroes
 {
     // Knight Hero: Tanky, special = Shield Bash (stun + damage)
     public class KnightHero : HeroBase

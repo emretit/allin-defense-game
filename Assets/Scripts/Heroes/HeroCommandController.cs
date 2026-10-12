@@ -1,10 +1,10 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using DefenderChronicles.Grid;
-using DefenderChronicles.Towers;
+using AllinDefense.Grid;
+using AllinDefense.Towers;
 
-namespace DefenderChronicles.Heroes
+namespace AllinDefense.Heroes
 {
     public class HeroCommandController : MonoBehaviour
     {

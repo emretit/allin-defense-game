@@ -19,11 +19,11 @@ COMMAND LINE ARGUMENTS:
 -projectPath
 /tmp/defender-audit-20260906
 -testResults
-/Users/emreaydin/DefenderChronicles/docs/audit/2026-09-06/evidence/playmode-isolated.xml
+/Users/emreaydin/AllinDefense/docs/audit/2026-09-06/evidence/playmode-isolated.xml
 -testPlatform
 PlayMode
 -logFile
-/Users/emreaydin/DefenderChronicles/docs/audit/2026-09-06/evidence/playmode-isolated.log
+/Users/emreaydin/AllinDefense/docs/audit/2026-09-06/evidence/playmode-isolated.log
 -hubSessionId
 8be82b96-beab-42ee-b04a-ee63b4563207
 -accessToken
@@ -670,7 +670,7 @@ info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
 info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
       Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
 info: Unity.ILPP.Runner.PostProcessingPipeline[0]
-      Processing assembly Library/Bee/artifacts/200b0aE.dag/DefenderChronicles.PlayModeTests.dll, with 136 defines and 271 references
+      Processing assembly Library/Bee/artifacts/200b0aE.dag/AllinDefense.PlayModeTests.dll, with 136 defines and 271 references
 info: Unity.ILPP.Runner.PostProcessingPipeline[0]
       processors: Unity.Jobs.CodeGen.JobsILPostProcessor, Unity.Pipeline.CodeGen.HotReloadInPlaceILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
 info: Unity.ILPP.Runner.PostProcessingPipeline[0]
@@ -685,9 +685,9 @@ info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
       Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly - 200 - application/grpc 7.8615ms
 ExitCode: 0 Duration: 2s503ms
 Finished compiling graph: 1761 nodes, 40648 flattened edges (32668 ToBuild, 326 ToUse), maximum node priority 2158
-[ 815/1758  0s] WriteText Library/Bee/artifacts/200b0aE.dag/DefenderChronicles.PlayModeTests.rsp
+[ 815/1758  0s] WriteText Library/Bee/artifacts/200b0aE.dag/AllinDefense.PlayModeTests.rsp
 [1288/1758  0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
-[1754/1758  1s] Csc Library/Bee/artifacts/200b0aE.dag/DefenderChronicles.PlayModeTests.dll (+2 others)
+[1754/1758  1s] Csc Library/Bee/artifacts/200b0aE.dag/AllinDefense.PlayModeTests.dll (+2 others)
 Assets/Tests/PlayMode/GreyboxSceneTests.cs(44,85): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
 Assets/Tests/PlayMode/GreyboxSceneTests.cs(44,37): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
 Assets/Tests/PlayMode/StrategyBalanceAcceptanceTests.cs(43,70): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
@@ -696,14 +696,14 @@ Assets/Tests/PlayMode/AuditObservationTests.cs(58,78): warning CS0618: 'FindObje
 Assets/Tests/PlayMode/AuditObservationTests.cs(58,30): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
 Assets/Tests/PlayMode/GreyboxSceneTests.cs(681,71): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
 Assets/Tests/PlayMode/GreyboxSceneTests.cs(681,39): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
-[1755/1758  0s] ILPostProcess Library/Bee/artifacts/200b0aE.dag/post-processed/DefenderChronicles.PlayModeTests.dll (+pdb)
-Processing assembly Library/Bee/artifacts/200b0aE.dag/DefenderChronicles.PlayModeTests.dll, with 136 defines and 271 references
+[1755/1758  0s] ILPostProcess Library/Bee/artifacts/200b0aE.dag/post-processed/AllinDefense.PlayModeTests.dll (+pdb)
+Processing assembly Library/Bee/artifacts/200b0aE.dag/AllinDefense.PlayModeTests.dll, with 136 defines and 271 references
 processors: Unity.Jobs.CodeGen.JobsILPostProcessor, Unity.Pipeline.CodeGen.HotReloadInPlaceILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
 running Unity.Jobs.CodeGen.JobsILPostProcessor
 running Unity.Pipeline.CodeGen.HotReloadInPlaceILPostProcessor
 running zzzUnity.Burst.CodeGen.BurstILPostProcessor
-[1756/1758  0s] CopyFiles Library/ScriptAssemblies/DefenderChronicles.PlayModeTests.pdb
-[1757/1758  0s] CopyFiles Library/ScriptAssemblies/DefenderChronicles.PlayModeTests.dll
+[1756/1758  0s] CopyFiles Library/ScriptAssemblies/AllinDefense.PlayModeTests.pdb
+[1757/1758  0s] CopyFiles Library/ScriptAssemblies/AllinDefense.PlayModeTests.dll
 *** Tundra build success (2.49 seconds), 6 items updated, 1758 evaluated
 Assets/Tests/PlayMode/GreyboxSceneTests.cs(44,85): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
 Assets/Tests/PlayMode/GreyboxSceneTests.cs(44,37): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
@@ -875,7 +875,7 @@ Scanning for USB devices : 0.163ms
 Initializing Unity extensions:
 [MODES] ModeService[none].Initialize
 [MODES] ModeService[none].LoadModes
-[MODES] Loading mode Default (0) for mode-current-id-Defender Chronicles
+[MODES] Loading mode Default (0) for mode-current-id-ALLIN: Defense
 2026-09-06 10:09:29.609 Unity[9069:8983822] NSEventModifierFlagFunction specified to -setKeyEquivalentModifierMask: for item <NSMenuItem: 0xb26f48780 SDF, ke='Command-F12'>, but is only supported for system-provided menu items; will not be used
 Unloading 31 Unused Serialized files (Serialized files now loaded: 0)
 Unloading 10211 unused Assets / (7.5 MB). Loaded Objects now: 11078.
@@ -951,7 +951,7 @@ UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at /Users/bokken/
 (Filename: ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEditor.TestRunner/TestRun/Tasks/BuildActionTaskBase.cs Line: 48)
 
 Thread 0x351d0f000 may have been prematurely finalized
-- DefenderChroniclesUI (0 / 3072) bytes
+- AllinDefenseUI (0 / 3072) bytes
 Unloading 161 unused Assets / (76.4 KB). Loaded Objects now: 11159.
 Memory consumption went from 268.4 MB to 268.3 MB.
 Total: 13.191167 ms (FindLiveObjects: 0.177500 ms CreateObjectMapping: 0.096250 ms MarkObjects: 12.751208 ms  DeleteObjects: 0.166125 ms)
@@ -968,7 +968,7 @@ Total: 13.191167 ms (FindLiveObjects: 0.177500 ms CreateObjectMapping: 0.096250 
 - 	Placed sprite                                                   MedievalButton in page (  0) at (1547,  259). Page is now (1804, 1024). ( 132/132) : 0
 - 	Placed sprite                                                    MedievalPanel in page (  0) at (1285,  779). Page is now (1804, 1024). ( 132/132) : 0
 Sprite Atlas Operation : " ## Generating Atlas Masks ## " took 0.047041 sec (current mem: 264 MB)
-Processing Atlas : DefenderChroniclesUI
+Processing Atlas : AllinDefenseUI
 - 	Page (  0) downsized to : (2048 x 1024).
 Source Texture (Assets/Art/UI/DefenderHudPanel.png) of Sprite (DefenderHudPanel) is using compressed format. To ensure no loss in source pixel details when packing to SpriteAtlas, please use uncompressed format in TextureImporter.
 filling image source format : 1024, 1024, 4096, 4 boundary fill : 0
@@ -992,7 +992,7 @@ Source Texture (Assets/Art/UI/Frontend/MedievalPanel.png) of Sprite (MedievalPan
 filling image source format : 128, 128, 512, 4 boundary fill : 0
 Sprite Atlas Operation : " ## Generate Texture and Render Datas ## " took 0.013930 sec (current mem: 265 MB)
 - Packing completed.
-Start importing Assets/Art/UI/DefenderChroniclesUI.spriteatlas using Guid(d52a67039f13a47f0823abfacc5eec99) (NativeFormatImporter) -> (Import Result ID: '96920c3690c0b52b0fa762248073f716') in 0.001341083 seconds [static dependencies only]. Details - ImportResultOutputID=119e5f759c3f181d4808cf156d9d4516 DependenciesID=d2060581aada3811f3f2cc71ee2b2c67 StaticDependenciesID=f3614c9d6900fa6ccefbd9c1737b3370 
+Start importing Assets/Art/UI/AllinDefenseUI.spriteatlas using Guid(d52a67039f13a47f0823abfacc5eec99) (NativeFormatImporter) -> (Import Result ID: '96920c3690c0b52b0fa762248073f716') in 0.001341083 seconds [static dependencies only]. Details - ImportResultOutputID=119e5f759c3f181d4808cf156d9d4516 DependenciesID=d2060581aada3811f3f2cc71ee2b2c67 StaticDependenciesID=f3614c9d6900fa6ccefbd9c1737b3370 
 Asset Pipeline Refresh (id=3fa75d5d746bd48e8b90c80403411fc3): Total: 0.010 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
 Asset Pipeline Refresh (id=a4532c7ec1b274f0397a9e236c2a0386): Total: 0.265 seconds - Initiated by RefreshV2(NoUpdateAssetOptions)
 Sprite Atlas Operation : " ## Packed All Sprite Atlases ## " took 0.357108 sec (current mem: 237 MB)
@@ -1193,7 +1193,7 @@ UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOpt
 UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
-DefenderChronicles.Tests.StrategyBalanceAcceptanceTests/<RunStrategy>d__6:MoveNext () (at Assets/Tests/PlayMode/StrategyBalanceAcceptanceTests.cs:85)
+AllinDefense.Tests.StrategyBalanceAcceptanceTests/<RunStrategy>d__6:MoveNext () (at Assets/Tests/PlayMode/StrategyBalanceAcceptanceTests.cs:85)
 UnityEngine.TestTools.TestEnumerator/<Execute>d__7:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44)
 UnityEngine.TestTools.EnumerableTestMethodCommand/<ExecuteEnumerableAndRecordExceptions>d__4:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:79)
 UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/Coroutines.cs:17)
@@ -1207,7 +1207,7 @@ UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOpt
 UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
-DefenderChronicles.Tests.StrategyBalanceAcceptanceTests/<RunStrategy>d__6:MoveNext () (at Assets/Tests/PlayMode/StrategyBalanceAcceptanceTests.cs:85)
+AllinDefense.Tests.StrategyBalanceAcceptanceTests/<RunStrategy>d__6:MoveNext () (at Assets/Tests/PlayMode/StrategyBalanceAcceptanceTests.cs:85)
 UnityEngine.TestTools.TestEnumerator/<Execute>d__7:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44)
 UnityEngine.TestTools.EnumerableTestMethodCommand/<ExecuteEnumerableAndRecordExceptions>d__4:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:79)
 UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/Coroutines.cs:17)
@@ -1221,15 +1221,15 @@ UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOpt
 UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
-DefenderChronicles.Tests.StrategyBalanceAcceptanceTests/<RunStrategy>d__6:MoveNext () (at Assets/Tests/PlayMode/StrategyBalanceAcceptanceTests.cs:85)
+AllinDefense.Tests.StrategyBalanceAcceptanceTests/<RunStrategy>d__6:MoveNext () (at Assets/Tests/PlayMode/StrategyBalanceAcceptanceTests.cs:85)
 UnityEngine.TestTools.TestEnumerator/<Execute>d__7:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44)
 UnityEngine.TestTools.EnumerableTestMethodCommand/<ExecuteEnumerableAndRecordExceptions>d__4:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:79)
 UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/Coroutines.cs:17)
 
 (Filename: Assets/Tests/PlayMode/StrategyBalanceAcceptanceTests.cs Line: 85)
 
-Saving results to: /Users/emreaydin/Library/Application Support/Emre Aydin/Defender Chronicles/TestResults.xml
-Saving results to: /Users/emreaydin/DefenderChronicles/docs/audit/2026-09-06/evidence/playmode-isolated.xml
+Saving results to: /Users/emreaydin/Library/Application Support/Emre Aydin/ALLIN: Defense/TestResults.xml
+Saving results to: /Users/emreaydin/AllinDefense/docs/audit/2026-09-06/evidence/playmode-isolated.xml
 Thread 0x16f8b3000 may have been prematurely finalized
 Unloading 180 Unused Serialized files (Serialized files now loaded: 0)
 Loaded scene 'Temp/__Backupscenes/0.backup'

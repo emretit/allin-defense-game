@@ -1,4 +1,4 @@
-# Defender Chronicles — Lighting & Material Balance Runtime Pass
+# ALLIN: Defense — Lighting & Material Balance Runtime Pass
 
 Tarih: 2026-08-16
 Kapsam: Greenwatch Valley hazırlık görüntüsü; yol, taş, zemin ve gece ışık dengesi.

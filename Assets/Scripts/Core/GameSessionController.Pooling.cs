@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using DefenderChronicles.Data;
+using AllinDefense.Data;
 using UnityEngine;
 
-namespace DefenderChronicles.Core
+namespace AllinDefense.Core
 {
     public sealed partial class GameSessionController
     {

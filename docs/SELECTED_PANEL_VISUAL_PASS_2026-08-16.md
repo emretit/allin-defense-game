@@ -1,4 +1,4 @@
-# Defender Chronicles — Selected Panel Visual Pass
+# ALLIN: Defense — Selected Panel Visual Pass
 
 Tarih: 2026-08-16
 Kapsam: Production HUD içindeki seçili karakol panelinin ilk kartlaştırma pass'i.

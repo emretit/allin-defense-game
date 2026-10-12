@@ -2,7 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Unity.Services.CloudCode.Apis;
 using Unity.Services.CloudCode.Core;
 
-namespace DefenderChronicles.CloudCode;
+namespace AllinDefense.CloudCode;
 
 public sealed class ModuleSetup : ICloudCodeSetup
 {

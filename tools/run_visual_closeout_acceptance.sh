@@ -13,7 +13,7 @@ device_evidence_template="$project_root/docs/evidence/visual-development/physica
 
 mkdir -p "$project_root/Builds"
 
-print "== Defender Chronicles visual closeout acceptance =="
+print "== ALLIN: Defense visual closeout acceptance =="
 print "1/6 iPhone physical readiness"
 python3 "$project_root/tools/check_ios_physical_readiness.py" | tee "$readiness_log"
 

@@ -1,9 +1,9 @@
 using UnityEngine;
-using DefenderChronicles.Enemies;
-using DefenderChronicles.Utils;
-using DefenderChronicles.Projectiles;
+using AllinDefense.Enemies;
+using AllinDefense.Utils;
+using AllinDefense.Projectiles;
 
-namespace DefenderChronicles.Projectiles
+namespace AllinDefense.Projectiles
 {
     public class FireballProjectile : ProjectileBase
     {

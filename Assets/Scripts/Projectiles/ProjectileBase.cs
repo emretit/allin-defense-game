@@ -1,7 +1,7 @@
 using UnityEngine;
-using DefenderChronicles.Enemies;
+using AllinDefense.Enemies;
 
-namespace DefenderChronicles.Projectiles
+namespace AllinDefense.Projectiles
 {
     public class ProjectileBase : MonoBehaviour
     {

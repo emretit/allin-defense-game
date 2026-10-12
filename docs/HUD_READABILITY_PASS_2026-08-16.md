@@ -1,4 +1,4 @@
-# Defender Chronicles — HUD Readability Pass
+# ALLIN: Defense — HUD Readability Pass
 
 Tarih: 2026-08-16
 Kapsam: iPhone 17 Pro Simulator, mevcut responsive HUD korunarak yapılan ilk okunabilirlik polish'i.

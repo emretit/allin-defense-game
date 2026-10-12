@@ -1,4 +1,4 @@
-# Defender Chronicles - Android Visual/Performance Acceptance Matrix
+# ALLIN: Defense - Android Visual/Performance Acceptance Matrix
 
 Date: 2026-08-25
 Related TODO: `NEXT-205`

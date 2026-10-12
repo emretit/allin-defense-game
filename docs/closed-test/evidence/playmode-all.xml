@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <test-run id="2" testcasecount="26" result="Failed(Child)" total="26" passed="20" failed="6" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-09-06 09:59:36Z" end-time="2026-09-06 10:05:47Z" duration="371.4820766">
-  <test-suite type="TestSuite" id="1038" name="Defender Chronicles" fullname="Defender Chronicles" runstate="Runnable" testcasecount="26" result="Failed" site="Child" start-time="2026-09-06 09:59:36Z" end-time="2026-09-06 10:05:47Z" duration="371.482077" total="26" passed="20" failed="6" inconclusive="0" skipped="0" asserts="0">
+  <test-suite type="TestSuite" id="1038" name="ALLIN: Defense" fullname="ALLIN: Defense" runstate="Runnable" testcasecount="26" result="Failed" site="Child" start-time="2026-09-06 09:59:36Z" end-time="2026-09-06 10:05:47Z" duration="371.482077" total="26" passed="20" failed="6" inconclusive="0" skipped="0" asserts="0">
     <properties>
       <property name="platform" value="PlayMode" />
     </properties>
     <failure>
       <message><![CDATA[One or more child tests had errors]]></message>
     </failure>
-    <test-suite type="Assembly" id="1032" name="DefenderChronicles.PlayModeTests.dll" fullname="/Users/emreaydin/DefenderChronicles-first-region/Library/ScriptAssemblies/DefenderChronicles.PlayModeTests.dll" runstate="Runnable" testcasecount="26" result="Failed" site="Child" start-time="2026-09-06 09:59:36Z" end-time="2026-09-06 10:05:47Z" duration="371.479406" total="26" passed="20" failed="6" inconclusive="0" skipped="0" asserts="0">
+    <test-suite type="Assembly" id="1032" name="AllinDefense.PlayModeTests.dll" fullname="/Users/emreaydin/AllinDefense-first-region/Library/ScriptAssemblies/AllinDefense.PlayModeTests.dll" runstate="Runnable" testcasecount="26" result="Failed" site="Child" start-time="2026-09-06 09:59:36Z" end-time="2026-09-06 10:05:47Z" duration="371.479406" total="26" passed="20" failed="6" inconclusive="0" skipped="0" asserts="0">
       <properties>
         <property name="_PID" value="89324" />
         <property name="_APPDOMAIN" value="Unity Child Domain" />
@@ -17,26 +17,26 @@
       <failure>
         <message><![CDATA[One or more child tests had errors]]></message>
       </failure>
-      <test-suite type="TestSuite" id="1033" name="DefenderChronicles" fullname="DefenderChronicles" runstate="Runnable" testcasecount="26" result="Failed" site="Child" start-time="2026-09-06 09:59:36Z" end-time="2026-09-06 10:05:47Z" duration="371.479091" total="26" passed="20" failed="6" inconclusive="0" skipped="0" asserts="0">
+      <test-suite type="TestSuite" id="1033" name="AllinDefense" fullname="AllinDefense" runstate="Runnable" testcasecount="26" result="Failed" site="Child" start-time="2026-09-06 09:59:36Z" end-time="2026-09-06 10:05:47Z" duration="371.479091" total="26" passed="20" failed="6" inconclusive="0" skipped="0" asserts="0">
         <properties />
         <failure>
           <message><![CDATA[One or more child tests had errors]]></message>
         </failure>
-        <test-suite type="TestSuite" id="1034" name="Tests" fullname="DefenderChronicles.Tests" runstate="Runnable" testcasecount="26" result="Failed" site="Child" start-time="2026-09-06 09:59:36Z" end-time="2026-09-06 10:05:47Z" duration="371.478287" total="26" passed="20" failed="6" inconclusive="0" skipped="0" asserts="0">
+        <test-suite type="TestSuite" id="1034" name="Tests" fullname="AllinDefense.Tests" runstate="Runnable" testcasecount="26" result="Failed" site="Child" start-time="2026-09-06 09:59:36Z" end-time="2026-09-06 10:05:47Z" duration="371.478287" total="26" passed="20" failed="6" inconclusive="0" skipped="0" asserts="0">
           <properties />
           <failure>
             <message><![CDATA[One or more child tests had errors]]></message>
           </failure>
-          <test-suite type="TestFixture" id="1001" name="ClosedTestAcceptanceTests" fullname="DefenderChronicles.Tests.ClosedTestAcceptanceTests" classname="DefenderChronicles.Tests.ClosedTestAcceptanceTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-09-06 09:59:36Z" end-time="2026-09-06 09:59:38Z" duration="2.425511" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <test-suite type="TestFixture" id="1001" name="ClosedTestAcceptanceTests" fullname="AllinDefense.Tests.ClosedTestAcceptanceTests" classname="AllinDefense.Tests.ClosedTestAcceptanceTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-09-06 09:59:36Z" end-time="2026-09-06 09:59:38Z" duration="2.425511" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
             <properties />
-            <test-case id="1006" name="EmptyShieldBashDoesNotSpendCooldown" fullname="DefenderChronicles.Tests.ClosedTestAcceptanceTests.EmptyShieldBashDoesNotSpendCooldown" methodname="EmptyShieldBashDoesNotSpendCooldown" classname="DefenderChronicles.Tests.ClosedTestAcceptanceTests" runstate="Runnable" seed="1034245337" result="Passed" start-time="2026-09-06 09:59:36Z" end-time="2026-09-06 09:59:36Z" duration="0.315122" asserts="0">
+            <test-case id="1006" name="EmptyShieldBashDoesNotSpendCooldown" fullname="AllinDefense.Tests.ClosedTestAcceptanceTests.EmptyShieldBashDoesNotSpendCooldown" methodname="EmptyShieldBashDoesNotSpendCooldown" classname="AllinDefense.Tests.ClosedTestAcceptanceTests" runstate="Runnable" seed="1034245337" result="Passed" start-time="2026-09-06 09:59:36Z" end-time="2026-09-06 09:59:36Z" duration="0.315122" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1004" name="FrameRateAndSpeedHaveIdenticalBattleResults" fullname="DefenderChronicles.Tests.ClosedTestAcceptanceTests.FrameRateAndSpeedHaveIdenticalBattleResults" methodname="FrameRateAndSpeedHaveIdenticalBattleResults" classname="DefenderChronicles.Tests.ClosedTestAcceptanceTests" runstate="Runnable" seed="526966728" result="Passed" start-time="2026-09-06 09:59:36Z" end-time="2026-09-06 09:59:38Z" duration="1.933619" asserts="0">
+            <test-case id="1004" name="FrameRateAndSpeedHaveIdenticalBattleResults" fullname="AllinDefense.Tests.ClosedTestAcceptanceTests.FrameRateAndSpeedHaveIdenticalBattleResults" methodname="FrameRateAndSpeedHaveIdenticalBattleResults" classname="AllinDefense.Tests.ClosedTestAcceptanceTests" runstate="Runnable" seed="526966728" result="Passed" start-time="2026-09-06 09:59:36Z" end-time="2026-09-06 09:59:38Z" duration="1.933619" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
@@ -76,14 +76,14 @@
 [CLOCK_PARITY] fps=60 speed=8 result=Victory/542/20/3/140.81
 ]]></output>
             </test-case>
-            <test-case id="1003" name="IncompatibleCheckpointLeavesCampaignFiftyIntact" fullname="DefenderChronicles.Tests.ClosedTestAcceptanceTests.IncompatibleCheckpointLeavesCampaignFiftyIntact" methodname="IncompatibleCheckpointLeavesCampaignFiftyIntact" classname="DefenderChronicles.Tests.ClosedTestAcceptanceTests" runstate="Runnable" seed="845688127" result="Passed" start-time="2026-09-06 09:59:38Z" end-time="2026-09-06 09:59:38Z" duration="0.052626" asserts="0">
+            <test-case id="1003" name="IncompatibleCheckpointLeavesCampaignFiftyIntact" fullname="AllinDefense.Tests.ClosedTestAcceptanceTests.IncompatibleCheckpointLeavesCampaignFiftyIntact" methodname="IncompatibleCheckpointLeavesCampaignFiftyIntact" classname="AllinDefense.Tests.ClosedTestAcceptanceTests" runstate="Runnable" seed="845688127" result="Passed" start-time="2026-09-06 09:59:38Z" end-time="2026-09-06 09:59:38Z" duration="0.052626" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1005" name="SpecializationIsExclusiveAndRefundIncludesItsPrice" fullname="DefenderChronicles.Tests.ClosedTestAcceptanceTests.SpecializationIsExclusiveAndRefundIncludesItsPrice" methodname="SpecializationIsExclusiveAndRefundIncludesItsPrice" classname="DefenderChronicles.Tests.ClosedTestAcceptanceTests" runstate="Runnable" seed="1164332570" result="Passed" start-time="2026-09-06 09:59:38Z" end-time="2026-09-06 09:59:38Z" duration="0.047549" asserts="0">
+            <test-case id="1005" name="SpecializationIsExclusiveAndRefundIncludesItsPrice" fullname="AllinDefense.Tests.ClosedTestAcceptanceTests.SpecializationIsExclusiveAndRefundIncludesItsPrice" methodname="SpecializationIsExclusiveAndRefundIncludesItsPrice" classname="AllinDefense.Tests.ClosedTestAcceptanceTests" runstate="Runnable" seed="1164332570" result="Passed" start-time="2026-09-06 09:59:38Z" end-time="2026-09-06 09:59:38Z" duration="0.047549" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
@@ -92,7 +92,7 @@
               <output><![CDATA[The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
 ]]></output>
             </test-case>
-            <test-case id="1002" name="WaveRestartRestoresExactResourcesWithoutPayingAgain" fullname="DefenderChronicles.Tests.ClosedTestAcceptanceTests.WaveRestartRestoresExactResourcesWithoutPayingAgain" methodname="WaveRestartRestoresExactResourcesWithoutPayingAgain" classname="DefenderChronicles.Tests.ClosedTestAcceptanceTests" runstate="Runnable" seed="2022626291" result="Passed" start-time="2026-09-06 09:59:38Z" end-time="2026-09-06 09:59:38Z" duration="0.072078" asserts="0">
+            <test-case id="1002" name="WaveRestartRestoresExactResourcesWithoutPayingAgain" fullname="AllinDefense.Tests.ClosedTestAcceptanceTests.WaveRestartRestoresExactResourcesWithoutPayingAgain" methodname="WaveRestartRestoresExactResourcesWithoutPayingAgain" classname="AllinDefense.Tests.ClosedTestAcceptanceTests" runstate="Runnable" seed="2022626291" result="Passed" start-time="2026-09-06 09:59:38Z" end-time="2026-09-06 09:59:38Z" duration="0.072078" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
@@ -100,9 +100,9 @@
               </properties>
             </test-case>
           </test-suite>
-          <test-suite type="TestFixture" id="1007" name="FirstRegionBalanceTests" fullname="DefenderChronicles.Tests.FirstRegionBalanceTests" classname="DefenderChronicles.Tests.FirstRegionBalanceTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-09-06 09:59:38Z" end-time="2026-09-06 10:00:13Z" duration="34.916684" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <test-suite type="TestFixture" id="1007" name="FirstRegionBalanceTests" fullname="AllinDefense.Tests.FirstRegionBalanceTests" classname="AllinDefense.Tests.FirstRegionBalanceTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-09-06 09:59:38Z" end-time="2026-09-06 10:00:13Z" duration="34.916684" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
             <properties />
-            <test-case id="1008" name="RealResourceCampaign" fullname="DefenderChronicles.Tests.FirstRegionBalanceTests.RealResourceCampaign" methodname="RealResourceCampaign" classname="DefenderChronicles.Tests.FirstRegionBalanceTests" runstate="Runnable" seed="830836625" result="Passed" start-time="2026-09-06 09:59:38Z" end-time="2026-09-06 10:00:13Z" duration="34.909741" asserts="0">
+            <test-case id="1008" name="RealResourceCampaign" fullname="AllinDefense.Tests.FirstRegionBalanceTests.RealResourceCampaign" methodname="RealResourceCampaign" classname="AllinDefense.Tests.FirstRegionBalanceTests" runstate="Runnable" seed="830836625" result="Passed" start-time="2026-09-06 09:59:38Z" end-time="2026-09-06 10:00:13Z" duration="34.909741" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
@@ -365,9 +365,9 @@ The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] 
 ]]></output>
             </test-case>
           </test-suite>
-          <test-suite type="TestFixture" id="1009" name="FirstRegionRegressionTests" fullname="DefenderChronicles.Tests.FirstRegionRegressionTests" classname="DefenderChronicles.Tests.FirstRegionRegressionTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-09-06 10:00:13Z" end-time="2026-09-06 10:00:23Z" duration="9.201717" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <test-suite type="TestFixture" id="1009" name="FirstRegionRegressionTests" fullname="AllinDefense.Tests.FirstRegionRegressionTests" classname="AllinDefense.Tests.FirstRegionRegressionTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-09-06 10:00:13Z" end-time="2026-09-06 10:00:23Z" duration="9.201717" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
             <properties />
-            <test-case id="1013" name="GuardsCanReachTheRouteInEveryFirstRegionLayout" fullname="DefenderChronicles.Tests.FirstRegionRegressionTests.GuardsCanReachTheRouteInEveryFirstRegionLayout" methodname="GuardsCanReachTheRouteInEveryFirstRegionLayout" classname="DefenderChronicles.Tests.FirstRegionRegressionTests" runstate="Runnable" seed="258103377" result="Passed" start-time="2026-09-06 10:00:13Z" end-time="2026-09-06 10:00:15Z" duration="1.682551" asserts="0">
+            <test-case id="1013" name="GuardsCanReachTheRouteInEveryFirstRegionLayout" fullname="AllinDefense.Tests.FirstRegionRegressionTests.GuardsCanReachTheRouteInEveryFirstRegionLayout" methodname="GuardsCanReachTheRouteInEveryFirstRegionLayout" classname="AllinDefense.Tests.FirstRegionRegressionTests" runstate="Runnable" seed="258103377" result="Passed" start-time="2026-09-06 10:00:13Z" end-time="2026-09-06 10:00:15Z" duration="1.682551" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
@@ -382,7 +382,7 @@ The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] 
 The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
 ]]></output>
             </test-case>
-            <test-case id="1010" name="NoDefencesCannotWinFirstLevel" fullname="DefenderChronicles.Tests.FirstRegionRegressionTests.NoDefencesCannotWinFirstLevel" methodname="NoDefencesCannotWinFirstLevel" classname="DefenderChronicles.Tests.FirstRegionRegressionTests" runstate="Runnable" seed="147846253" result="Passed" start-time="2026-09-06 10:00:15Z" end-time="2026-09-06 10:00:18Z" duration="3.144481" asserts="0">
+            <test-case id="1010" name="NoDefencesCannotWinFirstLevel" fullname="AllinDefense.Tests.FirstRegionRegressionTests.NoDefencesCannotWinFirstLevel" methodname="NoDefencesCannotWinFirstLevel" classname="AllinDefense.Tests.FirstRegionRegressionTests" runstate="Runnable" seed="147846253" result="Passed" start-time="2026-09-06 10:00:15Z" end-time="2026-09-06 10:00:18Z" duration="3.144481" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
@@ -391,7 +391,7 @@ The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] 
               <output><![CDATA[[FIRST_REGION_IDLE] build=False phase=Defeat lives=0 seconds=25.03312
 ]]></output>
             </test-case>
-            <test-case id="1011" name="OneIdleArcherCannotEarnThreeStars" fullname="DefenderChronicles.Tests.FirstRegionRegressionTests.OneIdleArcherCannotEarnThreeStars" methodname="OneIdleArcherCannotEarnThreeStars" classname="DefenderChronicles.Tests.FirstRegionRegressionTests" runstate="Runnable" seed="151249294" result="Passed" start-time="2026-09-06 10:00:18Z" end-time="2026-09-06 10:00:22Z" duration="4.236312" asserts="0">
+            <test-case id="1011" name="OneIdleArcherCannotEarnThreeStars" fullname="AllinDefense.Tests.FirstRegionRegressionTests.OneIdleArcherCannotEarnThreeStars" methodname="OneIdleArcherCannotEarnThreeStars" classname="AllinDefense.Tests.FirstRegionRegressionTests" runstate="Runnable" seed="151249294" result="Passed" start-time="2026-09-06 10:00:18Z" end-time="2026-09-06 10:00:22Z" duration="4.236312" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
@@ -400,7 +400,7 @@ The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] 
               <output><![CDATA[[FIRST_REGION_IDLE] build=True phase=Defeat lives=0 seconds=33.81632
 ]]></output>
             </test-case>
-            <test-case id="1012" name="StunnedSiegeCannotDisruptAnOutpost" fullname="DefenderChronicles.Tests.FirstRegionRegressionTests.StunnedSiegeCannotDisruptAnOutpost" methodname="StunnedSiegeCannotDisruptAnOutpost" classname="DefenderChronicles.Tests.FirstRegionRegressionTests" runstate="Runnable" seed="1094876959" result="Passed" start-time="2026-09-06 10:00:22Z" end-time="2026-09-06 10:00:23Z" duration="0.031421" asserts="0">
+            <test-case id="1012" name="StunnedSiegeCannotDisruptAnOutpost" fullname="AllinDefense.Tests.FirstRegionRegressionTests.StunnedSiegeCannotDisruptAnOutpost" methodname="StunnedSiegeCannotDisruptAnOutpost" classname="AllinDefense.Tests.FirstRegionRegressionTests" runstate="Runnable" seed="1094876959" result="Passed" start-time="2026-09-06 10:00:22Z" end-time="2026-09-06 10:00:23Z" duration="0.031421" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
@@ -410,12 +410,12 @@ The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] 
 ]]></output>
             </test-case>
           </test-suite>
-          <test-suite type="TestFixture" id="1014" name="GreyboxSceneTests" fullname="DefenderChronicles.Tests.GreyboxSceneTests" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" testcasecount="13" result="Failed" site="Child" start-time="2026-09-06 10:00:23Z" end-time="2026-09-06 10:00:27Z" duration="4.449125" total="13" passed="7" failed="6" inconclusive="0" skipped="0" asserts="0">
+          <test-suite type="TestFixture" id="1014" name="GreyboxSceneTests" fullname="AllinDefense.Tests.GreyboxSceneTests" classname="AllinDefense.Tests.GreyboxSceneTests" runstate="Runnable" testcasecount="13" result="Failed" site="Child" start-time="2026-09-06 10:00:23Z" end-time="2026-09-06 10:00:27Z" duration="4.449125" total="13" passed="7" failed="6" inconclusive="0" skipped="0" asserts="0">
             <properties />
             <failure>
               <message><![CDATA[One or more child tests had errors]]></message>
             </failure>
-            <test-case id="1017" name="AppFlowOpensWelcomeLoginMenuAndFiftyLevelCampaign" fullname="DefenderChronicles.Tests.GreyboxSceneTests.AppFlowOpensWelcomeLoginMenuAndFiftyLevelCampaign" methodname="AppFlowOpensWelcomeLoginMenuAndFiftyLevelCampaign" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="1973445090" result="Failed" start-time="2026-09-06 10:00:23Z" end-time="2026-09-06 10:00:24Z" duration="1.385654" asserts="0">
+            <test-case id="1017" name="AppFlowOpensWelcomeLoginMenuAndFiftyLevelCampaign" fullname="AllinDefense.Tests.GreyboxSceneTests.AppFlowOpensWelcomeLoginMenuAndFiftyLevelCampaign" methodname="AppFlowOpensWelcomeLoginMenuAndFiftyLevelCampaign" classname="AllinDefense.Tests.GreyboxSceneTests" runstate="Runnable" seed="1973445090" result="Failed" start-time="2026-09-06 10:00:23Z" end-time="2026-09-06 10:00:24Z" duration="1.385654" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
@@ -425,40 +425,40 @@ The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] 
                 <message><![CDATA[  Expected: 50
   But was:  10
 ]]></message>
-                <stack-trace><![CDATA[at DefenderChronicles.Tests.GreyboxSceneTests+<AppFlowOpensWelcomeLoginMenuAndFiftyLevelCampaign>d__3.MoveNext () [0x00511] in /Users/emreaydin/DefenderChronicles-first-region/Assets/Tests/PlayMode/GreyboxSceneTests.cs:174
+                <stack-trace><![CDATA[at AllinDefense.Tests.GreyboxSceneTests+<AppFlowOpensWelcomeLoginMenuAndFiftyLevelCampaign>d__3.MoveNext () [0x00511] in /Users/emreaydin/AllinDefense-first-region/Assets/Tests/PlayMode/GreyboxSceneTests.cs:174
 at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
 ]]></stack-trace>
               </failure>
             </test-case>
-            <test-case id="1026" name="AudioControllerCyclesReviewMusicAndCueContractsWithinVoiceBudget" fullname="DefenderChronicles.Tests.GreyboxSceneTests.AudioControllerCyclesReviewMusicAndCueContractsWithinVoiceBudget" methodname="AudioControllerCyclesReviewMusicAndCueContractsWithinVoiceBudget" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="469421297" result="Passed" start-time="2026-09-06 10:00:24Z" end-time="2026-09-06 10:00:24Z" duration="0.370021" asserts="0">
+            <test-case id="1026" name="AudioControllerCyclesReviewMusicAndCueContractsWithinVoiceBudget" fullname="AllinDefense.Tests.GreyboxSceneTests.AudioControllerCyclesReviewMusicAndCueContractsWithinVoiceBudget" methodname="AudioControllerCyclesReviewMusicAndCueContractsWithinVoiceBudget" classname="AllinDefense.Tests.GreyboxSceneTests" runstate="Runnable" seed="469421297" result="Passed" start-time="2026-09-06 10:00:24Z" end-time="2026-09-06 10:00:24Z" duration="0.370021" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1018" name="BrandScreensCaptureAtAcceptanceRatios" fullname="DefenderChronicles.Tests.GreyboxSceneTests.BrandScreensCaptureAtAcceptanceRatios" methodname="BrandScreensCaptureAtAcceptanceRatios" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="1803432460" result="Passed" start-time="2026-09-06 10:00:24Z" end-time="2026-09-06 10:00:24Z" duration="0.005081" asserts="0">
+            <test-case id="1018" name="BrandScreensCaptureAtAcceptanceRatios" fullname="AllinDefense.Tests.GreyboxSceneTests.BrandScreensCaptureAtAcceptanceRatios" methodname="BrandScreensCaptureAtAcceptanceRatios" classname="AllinDefense.Tests.GreyboxSceneTests" runstate="Runnable" seed="1803432460" result="Passed" start-time="2026-09-06 10:00:24Z" end-time="2026-09-06 10:00:24Z" duration="0.005081" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1022" name="InterruptedCameraShakeAlwaysReturnsToItsOriginalPosition" fullname="DefenderChronicles.Tests.GreyboxSceneTests.InterruptedCameraShakeAlwaysReturnsToItsOriginalPosition" methodname="InterruptedCameraShakeAlwaysReturnsToItsOriginalPosition" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="1573291492" result="Passed" start-time="2026-09-06 10:00:24Z" end-time="2026-09-06 10:00:25Z" duration="0.383331" asserts="0">
+            <test-case id="1022" name="InterruptedCameraShakeAlwaysReturnsToItsOriginalPosition" fullname="AllinDefense.Tests.GreyboxSceneTests.InterruptedCameraShakeAlwaysReturnsToItsOriginalPosition" methodname="InterruptedCameraShakeAlwaysReturnsToItsOriginalPosition" classname="AllinDefense.Tests.GreyboxSceneTests" runstate="Runnable" seed="1573291492" result="Passed" start-time="2026-09-06 10:00:24Z" end-time="2026-09-06 10:00:25Z" duration="0.383331" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1020" name="PausedBattleCanResumeOrReturnToMainMenu" fullname="DefenderChronicles.Tests.GreyboxSceneTests.PausedBattleCanResumeOrReturnToMainMenu" methodname="PausedBattleCanResumeOrReturnToMainMenu" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="527827748" result="Passed" start-time="2026-09-06 10:00:25Z" end-time="2026-09-06 10:00:26Z" duration="0.954809" asserts="0">
+            <test-case id="1020" name="PausedBattleCanResumeOrReturnToMainMenu" fullname="AllinDefense.Tests.GreyboxSceneTests.PausedBattleCanResumeOrReturnToMainMenu" methodname="PausedBattleCanResumeOrReturnToMainMenu" classname="AllinDefense.Tests.GreyboxSceneTests" runstate="Runnable" seed="527827748" result="Passed" start-time="2026-09-06 10:00:25Z" end-time="2026-09-06 10:00:26Z" duration="0.954809" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1027" name="ProductionHudButtonsAreInteractableAndClickable" fullname="DefenderChronicles.Tests.GreyboxSceneTests.ProductionHudButtonsAreInteractableAndClickable" methodname="ProductionHudButtonsAreInteractableAndClickable" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="884204425" result="Failed" start-time="2026-09-06 10:00:26Z" end-time="2026-09-06 10:00:26Z" duration="0.041862" asserts="0">
+            <test-case id="1027" name="ProductionHudButtonsAreInteractableAndClickable" fullname="AllinDefense.Tests.GreyboxSceneTests.ProductionHudButtonsAreInteractableAndClickable" methodname="ProductionHudButtonsAreInteractableAndClickable" classname="AllinDefense.Tests.GreyboxSceneTests" runstate="Runnable" seed="884204425" result="Failed" start-time="2026-09-06 10:00:26Z" end-time="2026-09-06 10:00:26Z" duration="0.041862" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
@@ -468,14 +468,14 @@ at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .
                 <message><![CDATA[  Expected: False
   But was:  True
 ]]></message>
-                <stack-trace><![CDATA[at DefenderChronicles.Tests.GreyboxSceneTests+<ProductionHudButtonsAreInteractableAndClickable>d__19.MoveNext () [0x003f0] in /Users/emreaydin/DefenderChronicles-first-region/Assets/Tests/PlayMode/GreyboxSceneTests.cs:868
+                <stack-trace><![CDATA[at AllinDefense.Tests.GreyboxSceneTests+<ProductionHudButtonsAreInteractableAndClickable>d__19.MoveNext () [0x003f0] in /Users/emreaydin/AllinDefense-first-region/Assets/Tests/PlayMode/GreyboxSceneTests.cs:868
 at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
 ]]></stack-trace>
               </failure>
               <output><![CDATA[The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
 ]]></output>
             </test-case>
-            <test-case id="1023" name="ProductionPresentationAllowsBuildUpgradeSellOnEveryFixedSlot" fullname="DefenderChronicles.Tests.GreyboxSceneTests.ProductionPresentationAllowsBuildUpgradeSellOnEveryFixedSlot" methodname="ProductionPresentationAllowsBuildUpgradeSellOnEveryFixedSlot" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="316201272" result="Failed" start-time="2026-09-06 10:00:26Z" end-time="2026-09-06 10:00:26Z" duration="0.065478" asserts="0">
+            <test-case id="1023" name="ProductionPresentationAllowsBuildUpgradeSellOnEveryFixedSlot" fullname="AllinDefense.Tests.GreyboxSceneTests.ProductionPresentationAllowsBuildUpgradeSellOnEveryFixedSlot" methodname="ProductionPresentationAllowsBuildUpgradeSellOnEveryFixedSlot" classname="AllinDefense.Tests.GreyboxSceneTests" runstate="Runnable" seed="316201272" result="Failed" start-time="2026-09-06 10:00:26Z" end-time="2026-09-06 10:00:26Z" duration="0.065478" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
@@ -494,7 +494,7 @@ UnityEngine.Canvas:SendWillRenderCanvases () (at /Users/bokken/build/output/unit
               <output><![CDATA[The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
 ]]></output>
             </test-case>
-            <test-case id="1021" name="ProductionPresentationPreservesEconomyAndEmitsTypedSignals" fullname="DefenderChronicles.Tests.GreyboxSceneTests.ProductionPresentationPreservesEconomyAndEmitsTypedSignals" methodname="ProductionPresentationPreservesEconomyAndEmitsTypedSignals" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="501555322" result="Failed" start-time="2026-09-06 10:00:26Z" end-time="2026-09-06 10:00:26Z" duration="0.029740" asserts="0">
+            <test-case id="1021" name="ProductionPresentationPreservesEconomyAndEmitsTypedSignals" fullname="AllinDefense.Tests.GreyboxSceneTests.ProductionPresentationPreservesEconomyAndEmitsTypedSignals" methodname="ProductionPresentationPreservesEconomyAndEmitsTypedSignals" classname="AllinDefense.Tests.GreyboxSceneTests" runstate="Runnable" seed="501555322" result="Failed" start-time="2026-09-06 10:00:26Z" end-time="2026-09-06 10:00:26Z" duration="0.029740" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
@@ -504,14 +504,14 @@ UnityEngine.Canvas:SendWillRenderCanvases () (at /Users/bokken/build/output/unit
                 <message><![CDATA[  Expected: 125
   But was:  325
 ]]></message>
-                <stack-trace><![CDATA[at DefenderChronicles.Tests.GreyboxSceneTests+<ProductionPresentationPreservesEconomyAndEmitsTypedSignals>d__7.MoveNext () [0x000eb] in /Users/emreaydin/DefenderChronicles-first-region/Assets/Tests/PlayMode/GreyboxSceneTests.cs:408
+                <stack-trace><![CDATA[at AllinDefense.Tests.GreyboxSceneTests+<ProductionPresentationPreservesEconomyAndEmitsTypedSignals>d__7.MoveNext () [0x000eb] in /Users/emreaydin/AllinDefense-first-region/Assets/Tests/PlayMode/GreyboxSceneTests.cs:408
 at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
 ]]></stack-trace>
               </failure>
               <output><![CDATA[The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
 ]]></output>
             </test-case>
-            <test-case id="1024" name="ProductionPresentationShowsVictoryAndDefeatResults" fullname="DefenderChronicles.Tests.GreyboxSceneTests.ProductionPresentationShowsVictoryAndDefeatResults" methodname="ProductionPresentationShowsVictoryAndDefeatResults" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="1619521058" result="Failed" start-time="2026-09-06 10:00:26Z" end-time="2026-09-06 10:00:26Z" duration="0.066377" asserts="0">
+            <test-case id="1024" name="ProductionPresentationShowsVictoryAndDefeatResults" fullname="AllinDefense.Tests.GreyboxSceneTests.ProductionPresentationShowsVictoryAndDefeatResults" methodname="ProductionPresentationShowsVictoryAndDefeatResults" classname="AllinDefense.Tests.GreyboxSceneTests" runstate="Runnable" seed="1619521058" result="Failed" start-time="2026-09-06 10:00:26Z" end-time="2026-09-06 10:00:26Z" duration="0.066377" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
@@ -540,27 +540,27 @@ The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] 
 The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
 ]]></output>
             </test-case>
-            <test-case id="1019" name="ReturningPlayerSkipsWelcomeAndContinueOpensClampedBriefing" fullname="DefenderChronicles.Tests.GreyboxSceneTests.ReturningPlayerSkipsWelcomeAndContinueOpensClampedBriefing" methodname="ReturningPlayerSkipsWelcomeAndContinueOpensClampedBriefing" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="623953199" result="Passed" start-time="2026-09-06 10:00:26Z" end-time="2026-09-06 10:00:27Z" duration="0.715946" asserts="0">
+            <test-case id="1019" name="ReturningPlayerSkipsWelcomeAndContinueOpensClampedBriefing" fullname="AllinDefense.Tests.GreyboxSceneTests.ReturningPlayerSkipsWelcomeAndContinueOpensClampedBriefing" methodname="ReturningPlayerSkipsWelcomeAndContinueOpensClampedBriefing" classname="AllinDefense.Tests.GreyboxSceneTests" runstate="Runnable" seed="623953199" result="Passed" start-time="2026-09-06 10:00:26Z" end-time="2026-09-06 10:00:27Z" duration="0.715946" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1025" name="SceneLookRespectsQualityLightingProfile" fullname="DefenderChronicles.Tests.GreyboxSceneTests.SceneLookRespectsQualityLightingProfile" methodname="SceneLookRespectsQualityLightingProfile" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="1569281731" result="Passed" start-time="2026-09-06 10:00:27Z" end-time="2026-09-06 10:00:27Z" duration="0.006961" asserts="0">
+            <test-case id="1025" name="SceneLookRespectsQualityLightingProfile" fullname="AllinDefense.Tests.GreyboxSceneTests.SceneLookRespectsQualityLightingProfile" methodname="SceneLookRespectsQualityLightingProfile" classname="AllinDefense.Tests.GreyboxSceneTests" runstate="Runnable" seed="1569281731" result="Passed" start-time="2026-09-06 10:00:27Z" end-time="2026-09-06 10:00:27Z" duration="0.006961" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1015" name="SelectableRaycastIgnoresCloserActorCollider" fullname="DefenderChronicles.Tests.GreyboxSceneTests.SelectableRaycastIgnoresCloserActorCollider" methodname="SelectableRaycastIgnoresCloserActorCollider" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="1311745426" result="Passed" start-time="2026-09-06 10:00:27Z" end-time="2026-09-06 10:00:27Z" duration="0.009335" asserts="0">
+            <test-case id="1015" name="SelectableRaycastIgnoresCloserActorCollider" fullname="AllinDefense.Tests.GreyboxSceneTests.SelectableRaycastIgnoresCloserActorCollider" methodname="SelectableRaycastIgnoresCloserActorCollider" classname="AllinDefense.Tests.GreyboxSceneTests" runstate="Runnable" seed="1311745426" result="Passed" start-time="2026-09-06 10:00:27Z" end-time="2026-09-06 10:00:27Z" duration="0.009335" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1016" name="SessionOpensWithCompleteGreyboxContent" fullname="DefenderChronicles.Tests.GreyboxSceneTests.SessionOpensWithCompleteGreyboxContent" methodname="SessionOpensWithCompleteGreyboxContent" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="521921632" result="Failed" start-time="2026-09-06 10:00:27Z" end-time="2026-09-06 10:00:27Z" duration="0.411101" asserts="0">
+            <test-case id="1016" name="SessionOpensWithCompleteGreyboxContent" fullname="AllinDefense.Tests.GreyboxSceneTests.SessionOpensWithCompleteGreyboxContent" methodname="SessionOpensWithCompleteGreyboxContent" classname="AllinDefense.Tests.GreyboxSceneTests" runstate="Runnable" seed="521921632" result="Failed" start-time="2026-09-06 10:00:27Z" end-time="2026-09-06 10:00:27Z" duration="0.411101" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
@@ -570,15 +570,15 @@ The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] 
                 <message><![CDATA[  Expected: 200
   But was:  400
 ]]></message>
-                <stack-trace><![CDATA[at DefenderChronicles.Tests.GreyboxSceneTests+<SessionOpensWithCompleteGreyboxContent>d__2.MoveNext () [0x00088] in /Users/emreaydin/DefenderChronicles-first-region/Assets/Tests/PlayMode/GreyboxSceneTests.cs:60
+                <stack-trace><![CDATA[at AllinDefense.Tests.GreyboxSceneTests+<SessionOpensWithCompleteGreyboxContent>d__2.MoveNext () [0x00088] in /Users/emreaydin/AllinDefense-first-region/Assets/Tests/PlayMode/GreyboxSceneTests.cs:60
 at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@76560ee600cb/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
 ]]></stack-trace>
               </failure>
             </test-case>
           </test-suite>
-          <test-suite type="TestFixture" id="1028" name="StrategyBalanceAcceptanceTests" fullname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests" classname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-09-06 10:00:27Z" end-time="2026-09-06 10:05:47Z" duration="320.483730" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <test-suite type="TestFixture" id="1028" name="StrategyBalanceAcceptanceTests" fullname="AllinDefense.Tests.StrategyBalanceAcceptanceTests" classname="AllinDefense.Tests.StrategyBalanceAcceptanceTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-09-06 10:00:27Z" end-time="2026-09-06 10:05:47Z" duration="320.483730" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
             <properties />
-            <test-case id="1029" name="ArcherHeavyStrategyCanClearTheVerticalSlice" fullname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests.ArcherHeavyStrategyCanClearTheVerticalSlice" methodname="ArcherHeavyStrategyCanClearTheVerticalSlice" classname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests" runstate="Runnable" seed="1667591078" result="Passed" start-time="2026-09-06 10:00:27Z" end-time="2026-09-06 10:02:16Z" duration="108.689215" asserts="0">
+            <test-case id="1029" name="ArcherHeavyStrategyCanClearTheVerticalSlice" fullname="AllinDefense.Tests.StrategyBalanceAcceptanceTests.ArcherHeavyStrategyCanClearTheVerticalSlice" methodname="ArcherHeavyStrategyCanClearTheVerticalSlice" classname="AllinDefense.Tests.StrategyBalanceAcceptanceTests" runstate="Runnable" seed="1667591078" result="Passed" start-time="2026-09-06 10:00:27Z" end-time="2026-09-06 10:02:16Z" duration="108.689215" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="Timeout" value="150000" />
@@ -596,7 +596,7 @@ at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .
 [DC_BALANCE_ACCEPTANCE] strategy=Archer-heavy phase=Victory wave=8/8 lives=13 outposts=8 primary=5 actions=16/16
 ]]></output>
             </test-case>
-            <test-case id="1030" name="BarracksHeavyStrategyCanClearTheVerticalSlice" fullname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests.BarracksHeavyStrategyCanClearTheVerticalSlice" methodname="BarracksHeavyStrategyCanClearTheVerticalSlice" classname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests" runstate="Runnable" seed="320929615" result="Passed" start-time="2026-09-06 10:02:16Z" end-time="2026-09-06 10:04:00Z" duration="104.404836" asserts="0">
+            <test-case id="1030" name="BarracksHeavyStrategyCanClearTheVerticalSlice" fullname="AllinDefense.Tests.StrategyBalanceAcceptanceTests.BarracksHeavyStrategyCanClearTheVerticalSlice" methodname="BarracksHeavyStrategyCanClearTheVerticalSlice" classname="AllinDefense.Tests.StrategyBalanceAcceptanceTests" runstate="Runnable" seed="320929615" result="Passed" start-time="2026-09-06 10:02:16Z" end-time="2026-09-06 10:04:00Z" duration="104.404836" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="Timeout" value="150000" />
@@ -614,7 +614,7 @@ at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .
 [DC_BALANCE_ACCEPTANCE] strategy=Barracks-heavy phase=Victory wave=8/8 lives=14 outposts=8 primary=5 actions=16/16
 ]]></output>
             </test-case>
-            <test-case id="1031" name="MageHeavyStrategyCanClearTheVerticalSlice" fullname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests.MageHeavyStrategyCanClearTheVerticalSlice" methodname="MageHeavyStrategyCanClearTheVerticalSlice" classname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests" runstate="Runnable" seed="1085284061" result="Passed" start-time="2026-09-06 10:04:00Z" end-time="2026-09-06 10:05:47Z" duration="107.382476" asserts="0">
+            <test-case id="1031" name="MageHeavyStrategyCanClearTheVerticalSlice" fullname="AllinDefense.Tests.StrategyBalanceAcceptanceTests.MageHeavyStrategyCanClearTheVerticalSlice" methodname="MageHeavyStrategyCanClearTheVerticalSlice" classname="AllinDefense.Tests.StrategyBalanceAcceptanceTests" runstate="Runnable" seed="1085284061" result="Passed" start-time="2026-09-06 10:04:00Z" end-time="2026-09-06 10:05:47Z" duration="107.382476" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="Timeout" value="150000" />
@@ -630,7 +630,7 @@ at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .
 [WAVE_BALANCE] level=10 wave=7 seconds=58.27 gold=1051 lives=20 peak=21
 [WAVE_BALANCE] level=10 wave=8 seconds=62.57 gold=1508 lives=15 peak=24
 [DC_BALANCE_ACCEPTANCE] strategy=Mage-heavy phase=Victory wave=8/8 lives=15 outposts=8 primary=5 actions=16/16
-Saving results to: /Users/emreaydin/Library/Application Support/Emre Aydin/Defender Chronicles/TestResults.xml
+Saving results to: /Users/emreaydin/Library/Application Support/Emre Aydin/ALLIN: Defense/TestResults.xml
 ]]></output>
             </test-case>
           </test-suite>

@@ -1,4 +1,4 @@
-# Defender Chronicles — Road Surface Runtime Pass
+# ALLIN: Defense — Road Surface Runtime Pass
 
 Tarih: 2026-08-16
 Kapsam: Greenwatch Valley production runtime yol yüzeyi; gameplay path ve collider davranışı değiştirilmedi.

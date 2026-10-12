@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace DefenderChronicles.Core
+namespace AllinDefense.Core
 {
     /// <summary>Owns profile and network work across battle/front-end scene reloads.</summary>
     public sealed class CampaignApplication : MonoBehaviour

@@ -1,4 +1,4 @@
-# Defender Chronicles — Mobile UI and UX
+# ALLIN: Defense — Mobile UI and UX
 
 Durum: Faz 7 tasarim ve kismi uygulama notu
 Son guncelleme: 2026-10-11

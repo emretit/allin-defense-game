@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace DefenderChronicles.Data
+namespace AllinDefense.Data
 {
-    [CreateAssetMenu(fileName = "WaveSet", menuName = "DefenderChronicles/Wave Set")]
+    [CreateAssetMenu(fileName = "WaveSet", menuName = "AllinDefense/Wave Set")]
     public class WaveSet : ScriptableObject
     {
         [SerializeField] private WaveData[] waves;

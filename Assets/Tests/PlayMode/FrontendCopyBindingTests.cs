@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Reflection;
-using DefenderChronicles.Presentation;
-using DefenderChronicles.UI;
+using AllinDefense.Presentation;
+using AllinDefense.UI;
 using NUnit.Framework;
 using TMPro;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-namespace DefenderChronicles.Tests
+namespace AllinDefense.Tests
 {
     public sealed class FrontendCopyBindingTests
     {

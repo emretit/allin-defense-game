@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace DefenderChronicles.Utils
+namespace AllinDefense.Utils
 {
     public class AudioManager : MonoBehaviour
     {

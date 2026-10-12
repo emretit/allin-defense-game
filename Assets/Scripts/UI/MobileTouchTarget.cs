@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace DefenderChronicles.UI
+namespace AllinDefense.UI
 {
     [DisallowMultipleComponent]
     public sealed class MobileTouchTarget : MonoBehaviour

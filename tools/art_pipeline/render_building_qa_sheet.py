@@ -270,7 +270,7 @@ def write_answer_key(path: Path, blind_order: list[tuple[str, dict[str, Any]]]) 
         )
 
     report = {
-        "schema": "defender-chronicles.visual-development.building-blind-recognition-key.v1",
+        "schema": "allin-defense.visual-development.building-blind-recognition-key.v1",
         "captured_on": "2026-08-16",
         "todo": "VIS-344",
         "asset_scope": "Generated building candidates only; production catalog binding remains pending.",

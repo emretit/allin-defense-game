@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace DefenderChronicles.Presentation
+namespace AllinDefense.Presentation
 {
     // Captured once after construction; pooled actors restore the original visual contract.
     internal sealed class PooledActorVisualState

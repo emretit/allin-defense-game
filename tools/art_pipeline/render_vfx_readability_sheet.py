@@ -95,7 +95,7 @@ def main():
     width, height = 960, 1640
     image = Image.new("RGB", (width, height), (10, 14, 18))
     draw = ImageDraw.Draw(image)
-    draw.text((32, 28), "Defender Chronicles VFX Readability QA", fill=(248, 250, 252), font=TITLE)
+    draw.text((32, 28), "ALLIN: Defense VFX Readability QA", fill=(248, 250, 252), font=TITLE)
     draw.text((32, 66), "Color and grayscale review for VIS-514", fill=(178, 190, 200), font=LABEL)
     draw.text((32, 112), "Color", fill=(238, 242, 245), font=LABEL)
     draw.text((272, 112), "Grayscale", fill=(238, 242, 245), font=LABEL)

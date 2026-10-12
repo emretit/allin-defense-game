@@ -3,7 +3,7 @@ set -euo pipefail
 
 project_root="${0:A:h:h}"
 log_path="$project_root/Builds/ios-audio-visual-acceptance.log"
-bundle_id="com.emreaydin.defenderchronicles"
+bundle_id="com.emreaydin.allindefense"
 duration_seconds="${DC_AUDIO_ACCEPTANCE_SECONDS:-480}"
 
 if ! [[ "$duration_seconds" =~ '^[0-9]+$' ]]; then

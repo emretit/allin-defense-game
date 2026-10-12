@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace DefenderChronicles.UI
+namespace AllinDefense.UI
 {
     /// <summary>Builder-owned font roles and atlas-backed UI primitives for UGUI components.</summary>
     public sealed class UiDesignSystemAssets : ScriptableObject

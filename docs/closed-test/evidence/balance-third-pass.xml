@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <test-run id="2" testcasecount="1" result="Passed" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-09-06 09:44:38Z" end-time="2026-09-06 09:45:05Z" duration="27.3163009">
-  <test-suite type="TestSuite" id="1032" name="Defender Chronicles" fullname="Defender Chronicles" runstate="Runnable" testcasecount="21" result="Passed" start-time="2026-09-06 09:44:38Z" end-time="2026-09-06 09:45:05Z" duration="27.316301" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+  <test-suite type="TestSuite" id="1032" name="ALLIN: Defense" fullname="ALLIN: Defense" runstate="Runnable" testcasecount="21" result="Passed" start-time="2026-09-06 09:44:38Z" end-time="2026-09-06 09:45:05Z" duration="27.316301" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
     <properties>
       <property name="platform" value="PlayMode" />
     </properties>
-    <test-suite type="Assembly" id="1026" name="DefenderChronicles.PlayModeTests.dll" fullname="/Users/emreaydin/DefenderChronicles-first-region/Library/ScriptAssemblies/DefenderChronicles.PlayModeTests.dll" runstate="Runnable" testcasecount="21" result="Passed" start-time="2026-09-06 09:44:38Z" end-time="2026-09-06 09:45:05Z" duration="27.313056" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <test-suite type="Assembly" id="1026" name="AllinDefense.PlayModeTests.dll" fullname="/Users/emreaydin/AllinDefense-first-region/Library/ScriptAssemblies/AllinDefense.PlayModeTests.dll" runstate="Runnable" testcasecount="21" result="Passed" start-time="2026-09-06 09:44:38Z" end-time="2026-09-06 09:45:05Z" duration="27.313056" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
       <properties>
         <property name="_PID" value="66040" />
         <property name="_APPDOMAIN" value="Unity Child Domain" />
         <property name="platform" value="PlayMode" />
         <property name="EditorOnly" value="False" />
       </properties>
-      <test-suite type="TestSuite" id="1027" name="DefenderChronicles" fullname="DefenderChronicles" runstate="Runnable" testcasecount="21" result="Passed" start-time="2026-09-06 09:44:38Z" end-time="2026-09-06 09:45:05Z" duration="27.312615" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <test-suite type="TestSuite" id="1027" name="AllinDefense" fullname="AllinDefense" runstate="Runnable" testcasecount="21" result="Passed" start-time="2026-09-06 09:44:38Z" end-time="2026-09-06 09:45:05Z" duration="27.312615" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
         <properties />
-        <test-suite type="TestSuite" id="1028" name="Tests" fullname="DefenderChronicles.Tests" runstate="Runnable" testcasecount="21" result="Passed" start-time="2026-09-06 09:44:38Z" end-time="2026-09-06 09:45:05Z" duration="27.312359" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <test-suite type="TestSuite" id="1028" name="Tests" fullname="AllinDefense.Tests" runstate="Runnable" testcasecount="21" result="Passed" start-time="2026-09-06 09:44:38Z" end-time="2026-09-06 09:45:05Z" duration="27.312359" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
           <properties />
-          <test-suite type="TestFixture" id="1001" name="FirstRegionBalanceTests" fullname="DefenderChronicles.Tests.FirstRegionBalanceTests" classname="DefenderChronicles.Tests.FirstRegionBalanceTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-09-06 09:44:38Z" end-time="2026-09-06 09:45:05Z" duration="27.311733" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <test-suite type="TestFixture" id="1001" name="FirstRegionBalanceTests" fullname="AllinDefense.Tests.FirstRegionBalanceTests" classname="AllinDefense.Tests.FirstRegionBalanceTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-09-06 09:44:38Z" end-time="2026-09-06 09:45:05Z" duration="27.311733" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
             <properties />
-            <test-case id="1002" name="RealResourceCampaign" fullname="DefenderChronicles.Tests.FirstRegionBalanceTests.RealResourceCampaign" methodname="RealResourceCampaign" classname="DefenderChronicles.Tests.FirstRegionBalanceTests" runstate="Runnable" seed="1330293894" result="Passed" start-time="2026-09-06 09:44:38Z" end-time="2026-09-06 09:45:05Z" duration="27.306210" asserts="0">
+            <test-case id="1002" name="RealResourceCampaign" fullname="AllinDefense.Tests.FirstRegionBalanceTests.RealResourceCampaign" methodname="RealResourceCampaign" classname="AllinDefense.Tests.FirstRegionBalanceTests" runstate="Runnable" seed="1330293894" result="Passed" start-time="2026-09-06 09:44:38Z" end-time="2026-09-06 09:45:05Z" duration="27.306210" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
@@ -182,7 +182,7 @@ The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] 
 The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
 The character with Unicode value \U0001F6E1 was not found in the [NotoSerif-DC] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Preview].
 [BALANCE] level=10 strategy=1 phase=Victory lives=13 seconds=393.73 gold=145 towers=8 specialized=8 target=360-480
-Saving results to: /Users/emreaydin/Library/Application Support/Emre Aydin/Defender Chronicles/TestResults.xml
+Saving results to: /Users/emreaydin/Library/Application Support/Emre Aydin/ALLIN: Defense/TestResults.xml
 ]]></output>
             </test-case>
           </test-suite>

@@ -1,8 +1,8 @@
-using DefenderChronicles.Core;
-using DefenderChronicles.Data;
+using AllinDefense.Core;
+using AllinDefense.Data;
 using UnityEngine;
 
-namespace DefenderChronicles.Presentation
+namespace AllinDefense.Presentation
 {
     public static class TowerBranchVisual
     {

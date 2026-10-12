@@ -1,8 +1,8 @@
-using DefenderChronicles.UI;
+using AllinDefense.UI;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace DefenderChronicles.Tests
+namespace AllinDefense.Tests
 {
     public sealed class FrontendNavigationTests
     {

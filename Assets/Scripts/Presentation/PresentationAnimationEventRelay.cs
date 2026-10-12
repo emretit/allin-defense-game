@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace DefenderChronicles.Presentation
+namespace AllinDefense.Presentation
 {
     public readonly struct PresentationAnimationFeedback
     {

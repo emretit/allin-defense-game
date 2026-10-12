@@ -7,20 +7,20 @@ using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
 
-namespace DefenderChronicles.Editor
+namespace AllinDefense.Editor
 {
     public static class AndroidBuildSettings
     {
-        private const string BundleIdentifier = "com.emreaydin.defenderchronicles";
+        private const string BundleIdentifier = "com.emreaydin.allindefense";
 
-        [MenuItem("Defender Chronicles/Apply Android Settings")]
+        [MenuItem("ALLIN: Defense/Apply Android Settings")]
         public static void Apply()
         {
             if (!EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android))
                 throw new InvalidOperationException("Android build target could not be activated.");
 
             PlayerSettings.companyName = "Emre Aydin";
-            PlayerSettings.productName = "Defender Chronicles";
+            PlayerSettings.productName = "ALLIN: Defense";
             PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Android, BundleIdentifier);
             PlayerSettings.SetScriptingBackend(NamedBuildTarget.Android, ScriptingImplementation.IL2CPP);
             PlayerSettings.Android.targetArchitectures = AndroidArchitecture.ARM64;
@@ -29,24 +29,24 @@ namespace DefenderChronicles.Editor
             PlayerSettings.Android.bundleVersionCode = Mathf.Max(1, PlayerSettings.Android.bundleVersionCode);
             MobileOrientationBuildSettings.ApplySupportedOrientations();
             MobileBrandingSettings.ApplyAndroidAppIcon();
-            Debug.Log("Defender Chronicles Android ARM64/IL2CPP settings applied.");
+            Debug.Log("ALLIN: Defense Android ARM64/IL2CPP settings applied.");
         }
 
-        [MenuItem("Defender Chronicles/Build Android Development APK")]
+        [MenuItem("ALLIN: Defense/Build Android Development APK")]
         public static void BuildDevelopmentApk()
         {
             Apply();
             EditorUserBuildSettings.buildAppBundle = false;
-            Build("Builds/Android/DefenderChronicles-Development.apk",
+            Build("Builds/Android/AllinDefense-Development.apk",
                 BuildOptions.Development | BuildOptions.AllowDebugging, "Android Development APK");
         }
 
-        [MenuItem("Defender Chronicles/Build Android Release AAB")]
+        [MenuItem("ALLIN: Defense/Build Android Release AAB")]
         public static void BuildReleaseAab()
         {
             Apply();
             EditorUserBuildSettings.buildAppBundle = true;
-            Build("Builds/Android/DefenderChronicles-Release.aab", BuildOptions.None, "Android Release AAB");
+            Build("Builds/Android/AllinDefense-Release.aab", BuildOptions.None, "Android Release AAB");
         }
 
         private static void Build(string relativePath, BuildOptions buildOptions, string label)

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace DefenderChronicles.Presentation
+namespace AllinDefense.Presentation
 {
     public enum PresentationFeedbackIntensityMode
     {

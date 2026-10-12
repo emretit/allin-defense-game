@@ -1,4 +1,4 @@
-namespace DefenderChronicles.Core
+namespace AllinDefense.Core
 {
     public sealed partial class GameSessionController
     {

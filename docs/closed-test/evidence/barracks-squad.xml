@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <test-run id="2" testcasecount="1" result="Passed" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-09-06 12:51:20Z" end-time="2026-09-06 12:51:20Z" duration="0.3971367">
-  <test-suite type="TestSuite" id="1043" name="Defender Chronicles Test" fullname="Defender Chronicles Test" runstate="Runnable" testcasecount="29" result="Passed" start-time="2026-09-06 12:51:20Z" end-time="2026-09-06 12:51:20Z" duration="0.397137" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+  <test-suite type="TestSuite" id="1043" name="ALLIN: Defense Test" fullname="ALLIN: Defense Test" runstate="Runnable" testcasecount="29" result="Passed" start-time="2026-09-06 12:51:20Z" end-time="2026-09-06 12:51:20Z" duration="0.397137" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
     <properties>
       <property name="platform" value="PlayMode" />
     </properties>
-    <test-suite type="Assembly" id="1037" name="DefenderChronicles.PlayModeTests.dll" fullname="/Users/emreaydin/DefenderChronicles-first-region/Library/ScriptAssemblies/DefenderChronicles.PlayModeTests.dll" runstate="Runnable" testcasecount="29" result="Passed" start-time="2026-09-06 12:51:20Z" end-time="2026-09-06 12:51:20Z" duration="0.393761" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <test-suite type="Assembly" id="1037" name="AllinDefense.PlayModeTests.dll" fullname="/Users/emreaydin/AllinDefense-first-region/Library/ScriptAssemblies/AllinDefense.PlayModeTests.dll" runstate="Runnable" testcasecount="29" result="Passed" start-time="2026-09-06 12:51:20Z" end-time="2026-09-06 12:51:20Z" duration="0.393761" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
       <properties>
         <property name="_PID" value="9575" />
         <property name="_APPDOMAIN" value="Unity Child Domain" />
         <property name="platform" value="PlayMode" />
         <property name="EditorOnly" value="False" />
       </properties>
-      <test-suite type="TestSuite" id="1038" name="DefenderChronicles" fullname="DefenderChronicles" runstate="Runnable" testcasecount="29" result="Passed" start-time="2026-09-06 12:51:20Z" end-time="2026-09-06 12:51:20Z" duration="0.393455" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <test-suite type="TestSuite" id="1038" name="AllinDefense" fullname="AllinDefense" runstate="Runnable" testcasecount="29" result="Passed" start-time="2026-09-06 12:51:20Z" end-time="2026-09-06 12:51:20Z" duration="0.393455" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
         <properties />
-        <test-suite type="TestSuite" id="1039" name="Tests" fullname="DefenderChronicles.Tests" runstate="Runnable" testcasecount="29" result="Passed" start-time="2026-09-06 12:51:20Z" end-time="2026-09-06 12:51:20Z" duration="0.393285" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <test-suite type="TestSuite" id="1039" name="Tests" fullname="AllinDefense.Tests" runstate="Runnable" testcasecount="29" result="Passed" start-time="2026-09-06 12:51:20Z" end-time="2026-09-06 12:51:20Z" duration="0.393285" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
           <properties />
-          <test-suite type="TestFixture" id="1001" name="BarracksSquadTests" fullname="DefenderChronicles.Tests.BarracksSquadTests" classname="DefenderChronicles.Tests.BarracksSquadTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-09-06 12:51:20Z" end-time="2026-09-06 12:51:20Z" duration="0.392586" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <test-suite type="TestFixture" id="1001" name="BarracksSquadTests" fullname="AllinDefense.Tests.BarracksSquadTests" classname="AllinDefense.Tests.BarracksSquadTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-09-06 12:51:20Z" end-time="2026-09-06 12:51:20Z" duration="0.392586" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
             <properties />
-            <test-case id="1002" name="ThreeSoldiersLeaveTheBarracksAndReachSeparateRoadPositions" fullname="DefenderChronicles.Tests.BarracksSquadTests.ThreeSoldiersLeaveTheBarracksAndReachSeparateRoadPositions" methodname="ThreeSoldiersLeaveTheBarracksAndReachSeparateRoadPositions" classname="DefenderChronicles.Tests.BarracksSquadTests" runstate="Runnable" seed="1986360848" result="Passed" start-time="2026-09-06 12:51:20Z" end-time="2026-09-06 12:51:20Z" duration="0.387957" asserts="0">
+            <test-case id="1002" name="ThreeSoldiersLeaveTheBarracksAndReachSeparateRoadPositions" fullname="AllinDefense.Tests.BarracksSquadTests.ThreeSoldiersLeaveTheBarracksAndReachSeparateRoadPositions" methodname="ThreeSoldiersLeaveTheBarracksAndReachSeparateRoadPositions" classname="AllinDefense.Tests.BarracksSquadTests" runstate="Runnable" seed="1986360848" result="Passed" start-time="2026-09-06 12:51:20Z" end-time="2026-09-06 12:51:20Z" duration="0.387957" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
-              <output><![CDATA[Saving results to: /Users/emreaydin/Library/Application Support/Emre Aydin/Defender Chronicles Test/TestResults.xml
+              <output><![CDATA[Saving results to: /Users/emreaydin/Library/Application Support/Emre Aydin/ALLIN: Defense Test/TestResults.xml
 ]]></output>
             </test-case>
           </test-suite>

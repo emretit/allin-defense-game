@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace DefenderChronicles.Core
+namespace AllinDefense.Core
 {
     public enum CampaignSyncStatus
     {

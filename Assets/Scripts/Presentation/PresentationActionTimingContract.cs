@@ -1,4 +1,4 @@
-namespace DefenderChronicles.Presentation
+namespace AllinDefense.Presentation
 {
     public readonly struct PresentationActionTimingSpec
     {

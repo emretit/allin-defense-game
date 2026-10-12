@@ -2593,7 +2593,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a22d0356ef21e436f93d5dc5e88e7f11, type: 3}
   m_Name:
-  m_EditorClassIdentifier: DefenderChronicles.Runtime::DefenderChronicles.Presentation.DefenderHudController
+  m_EditorClassIdentifier: AllinDefense.Runtime::AllinDefense.Presentation.DefenderHudController
 --- !u!1 &5152374177863002008
 GameObject:
   m_ObjectHideFlags: 0

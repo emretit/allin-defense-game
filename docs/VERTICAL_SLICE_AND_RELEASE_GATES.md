@@ -1,4 +1,4 @@
-# Defender Chronicles — Vertical Slice and Release Gates
+# ALLIN: Defense — Vertical Slice and Release Gates
 
 Durum: Faz 10 kapı notu
 Son guncelleme: 2026-08-15

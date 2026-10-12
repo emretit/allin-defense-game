@@ -5,9 +5,9 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
-using DefenderChronicles.Core;
-using DefenderChronicles.Data;
-using DefenderChronicles.Presentation;
+using AllinDefense.Core;
+using AllinDefense.Data;
+using AllinDefense.Presentation;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEditor.Build;
@@ -15,7 +15,7 @@ using UnityEditor.Build.Reporting;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace DefenderChronicles.Editor
+namespace AllinDefense.Editor
 {
     public sealed class DefenderPresentationBuildValidator : IPreprocessBuildWithReport
     {

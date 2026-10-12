@@ -35,7 +35,7 @@ def main() -> None:
     generated_building_triangles = int(closeout["buildings"]["total_triangles"])
 
     report: dict[str, Any] = {
-        "schema": "defender-chronicles.visual-development.vis805-geometry-decision.v1",
+        "schema": "allin-defense.visual-development.vis805-geometry-decision.v1",
         "checkpoint": "VIS-805",
         "capturedOn": "2026-08-25",
         "status": "in_review",

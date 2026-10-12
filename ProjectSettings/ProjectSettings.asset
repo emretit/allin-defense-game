@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: Emre Aydin
-  productName: Defender Chronicles Test
+  productName: 'ALLIN: Defense Test'
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.023529412, g: 0.0627451, b: 0.1254902, a: 1}
@@ -166,8 +166,8 @@ PlayerSettings:
   androidMaxAspectRatio: 2.1
   androidMinAspectRatio: 1
   applicationIdentifier:
-    Android: com.emreaydin.defenderchronicles.closedtest
-    iPhone: com.emreaydin.defenderchronicles.closedtest
+    Android: com.emreaydin.allindefense.closedtest
+    iPhone: com.emreaydin.allindefense.closedtest
   buildNumber:
     Standalone: 0
     VisionOS: 0

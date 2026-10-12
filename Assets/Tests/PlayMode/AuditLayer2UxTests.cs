@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using DefenderChronicles.Core;
-using DefenderChronicles.Data;
-using DefenderChronicles.Presentation;
-using DefenderChronicles.UI;
+using AllinDefense.Core;
+using AllinDefense.Data;
+using AllinDefense.Presentation;
+using AllinDefense.UI;
 using NUnit.Framework;
 using TMPro;
 using UnityEngine;
@@ -16,7 +16,7 @@ using UnityEngine.TestTools;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
-namespace DefenderChronicles.Tests
+namespace AllinDefense.Tests
 {
     public sealed class AuditLayer2UxTests
     {
@@ -27,7 +27,7 @@ namespace DefenderChronicles.Tests
         private string savePath;
         private GameLanguage savedLanguage;
         private bool hadLanguage;
-        private const string LanguageKey = "DefenderChronicles.Frontend.Language";
+        private const string LanguageKey = "AllinDefense.Frontend.Language";
         private static object Call(object target, string method, params object[] args) =>
             target.GetType().GetMethod(method, Private).Invoke(target, args);
         private static T Field<T>(object target, string name) => (T)target.GetType().GetField(name, Private).GetValue(target);

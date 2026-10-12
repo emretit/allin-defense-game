@@ -181,7 +181,7 @@ def main() -> None:
 
     assets = [inspect_asset(entry) for entry in ASSETS]
     report = {
-        "schema": "defender-chronicles.visual-development.boundary-asset-metrics.v1",
+        "schema": "allin-defense.visual-development.boundary-asset-metrics.v1",
         "captured_on": "2026-08-16",
         "todo": "VIS-410",
         "asset_scope": "Generated greenwatch boundary FBX assets only; no runtime prefab binding yet.",

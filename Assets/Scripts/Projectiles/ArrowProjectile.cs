@@ -1,7 +1,7 @@
 using UnityEngine;
-using DefenderChronicles.Projectiles;
+using AllinDefense.Projectiles;
 
-namespace DefenderChronicles.Projectiles
+namespace AllinDefense.Projectiles
 {
     public class ArrowProjectile : ProjectileBase
     {

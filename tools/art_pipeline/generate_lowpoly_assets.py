@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate Defender Chronicles' original low-poly Blender source and FBX exports."""
+"""Generate ALLIN: Defense' original low-poly Blender source and FBX exports."""
 
 import argparse
 import math

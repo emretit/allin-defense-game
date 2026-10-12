@@ -1,10 +1,10 @@
 using System.Collections.Generic;
-using DefenderChronicles.Data;
+using AllinDefense.Data;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace DefenderChronicles.UI
+namespace AllinDefense.UI
 {
     [DisallowMultipleComponent]
     public sealed class FrontendTacticalMapPreview : MonoBehaviour

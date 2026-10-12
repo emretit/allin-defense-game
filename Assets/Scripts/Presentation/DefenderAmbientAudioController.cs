@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
-using DefenderChronicles.UI;
+using AllinDefense.UI;
 using UnityEngine;
 using UnityEngine.Audio;
 
-namespace DefenderChronicles.Presentation
+namespace AllinDefense.Presentation
 {
     public readonly struct DefenderAmbientQualityConfig
     {

@@ -3,7 +3,7 @@ set -euo pipefail
 
 project_root="${0:A:h:h}"
 log_path="$project_root/Builds/ios-slot-regression-smoke.log"
-bundle_id="com.emreaydin.defenderchronicles"
+bundle_id="com.emreaydin.allindefense"
 
 "$project_root/tools/build_and_run_ios_simulator.sh"
 xcrun simctl terminate booted "$bundle_id" >/dev/null 2>&1 || true

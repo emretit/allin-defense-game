@@ -1,4 +1,4 @@
-# Defender Chronicles — Building Generated Catalog Binding Runtime Pass
+# ALLIN: Defense — Building Generated Catalog Binding Runtime Pass
 
 Status: VIS-313 / VIS-317 / VIS-323 / VIS-326 / VIS-333 / VIS-336 runtime binding pass
 Date: 2026-08-16

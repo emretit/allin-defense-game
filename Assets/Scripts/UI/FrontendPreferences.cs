@@ -1,11 +1,11 @@
 using System;
 using UnityEngine;
 
-namespace DefenderChronicles.UI
+namespace AllinDefense.UI
 {
     public static class FrontendPreferences
     {
-        private const string Prefix = "DefenderChronicles.Frontend.";
+        private const string Prefix = "AllinDefense.Frontend.";
         private const string MusicKey = Prefix + "Music";
         private const string SfxKey = Prefix + "Sfx";
         private const string HapticsKey = Prefix + "Haptics";

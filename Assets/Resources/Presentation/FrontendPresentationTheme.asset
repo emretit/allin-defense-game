@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b71ac4eff184040dbbc0d73eecc0fa31, type: 3}
   m_Name: FrontendPresentationTheme
-  m_EditorClassIdentifier: DefenderChronicles.Runtime::DefenderChronicles.Presentation.FrontendPresentationTheme
+  m_EditorClassIdentifier: AllinDefense.Runtime::AllinDefense.Presentation.FrontendPresentationTheme
   night: {r: 0.023529412, g: 0.0627451, b: 0.1254902, a: 1}
   nightDeep: {r: 0.007843138, g: 0.019607844, b: 0.039215688, a: 1}
   defenderBlue: {r: 0.031, g: 0.216, b: 0.522, a: 1}

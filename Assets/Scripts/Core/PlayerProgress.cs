@@ -1,14 +1,14 @@
 using UnityEngine;
 
-namespace DefenderChronicles.Core
+namespace AllinDefense.Core
 {
     /// <summary>Yerel ilerleme (PlayerPrefs). İnternet / bulut gerekmez.</summary>
     public static class PlayerProgress
     {
-        private const string HighWaveKey = "DefenderChronicles_HighWave";
-        private const string TotalGoldKey = "DefenderChronicles_TotalGold";
-        private const string MapIndexKey = "DefenderChronicles_MapIndex";
-        private const string UnlockedTowersKey = "DefenderChronicles_UnlockedTowers";
+        private const string HighWaveKey = "AllinDefense_HighWave";
+        private const string TotalGoldKey = "AllinDefense_TotalGold";
+        private const string MapIndexKey = "AllinDefense_MapIndex";
+        private const string UnlockedTowersKey = "AllinDefense_UnlockedTowers";
 
         public static int HighWaveReached => PlayerPrefs.GetInt(HighWaveKey, 0);
         public static int TotalGoldEarned => PlayerPrefs.GetInt(TotalGoldKey, 0);

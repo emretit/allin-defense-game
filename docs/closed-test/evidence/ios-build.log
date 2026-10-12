@@ -18,19 +18,19 @@ COMMAND LINE ARGUMENTS:
 -nographics
 -quit
 -projectPath
-/Users/emreaydin/DefenderChronicles-first-region
+/Users/emreaydin/AllinDefense-first-region
 -buildTarget
 iOS
 -executeMethod
-DefenderChronicles.Editor.ClosedTestBuilds.Ios
+AllinDefense.Editor.ClosedTestBuilds.Ios
 -logFile
-/Users/emreaydin/DefenderChronicles-first-region/docs/closed-test/evidence/ios-build.log
+/Users/emreaydin/AllinDefense-first-region/docs/closed-test/evidence/ios-build.log
 -hubSessionId
 935b17ac-2f27-4e4e-839c-f5a60fa7e034
 -accessToken
 [REDACTED]
-Successfully changed project path to: /Users/emreaydin/DefenderChronicles-first-region
-/Users/emreaydin/DefenderChronicles-first-region
+Successfully changed project path to: /Users/emreaydin/AllinDefense-first-region
+/Users/emreaydin/AllinDefense-first-region
 [UnityMemory] Configuration Parameters - Can be set up in boot.config
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
@@ -108,7 +108,7 @@ Artifact Garbage Collection - Removed 2 unused hashed content files
 Targeting platform: iOS
 Initialize engine version: 6000.4.1f1 (8535861f39e1)
 [Subsystems] Discovering subsystems at path /Applications/Unity/Hub/Editor/6000.4.1f1/Unity.app/Contents/Resources/UnitySubsystems
-[Subsystems] Discovering subsystems at path /Users/emreaydin/DefenderChronicles-first-region/Assets
+[Subsystems] Discovering subsystems at path /Users/emreaydin/AllinDefense-first-region/Assets
 Forcing GfxDevice: Null
 GfxDevice: creating device client; kGfxThreadingModeNonThreaded
 NullGfxDevice:
@@ -168,83 +168,83 @@ Application.AssetDatabase Initial Refresh Start
 [Licensing::Client] Successfully resolved entitlement details
 [Package Manager] Registered 75 packages:
   Packages from [https://packages.unity.com]:
-    com.unity.ai.assistant@2.5.0-pre.2 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.ai.assistant@b7ff2f2a65cc)
-    com.unity.2d.pixel-perfect@5.1.1 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.2d.pixel-perfect@09d99455b901)
-    com.unity.collab-proxy@2.11.4 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.collab-proxy@a5329f833fa8)
-    com.unity.ide.rider@3.0.39 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.ide.rider@4504839d03f7)
-    com.unity.ide.visualstudio@2.0.27 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.ide.visualstudio@dc1ddd4f09b6)
-    com.unity.inputsystem@1.19.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.inputsystem@21a28c3a6c83)
-    com.unity.localization@1.5.12 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.localization@b0a588a05f2a)
-    com.unity.services.authentication@3.7.4 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.services.authentication@39eab783227c)
-    com.unity.services.cloudcode@2.10.3 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.services.cloudcode@a071dc58aed1)
-    com.unity.services.cloudsave@3.4.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.services.cloudsave@271cfa0557ba)
-    com.unity.services.deployment@1.7.2 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.services.deployment@c07c64f9804b)
-    com.unity.services.tooling@1.4.1 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.services.tooling@4059a0fcc8b5)
-    com.unity.timeline@1.8.11 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.timeline@bfd27f8016ff)
-    com.unity.pipeline@0.5.0-exp.1 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.pipeline@24975d51528a)
-    com.unity.nuget.mono-cecil@1.11.6 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.nuget.mono-cecil@ecb9724e46ff)
-    com.unity.nuget.newtonsoft-json@3.2.2 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.nuget.newtonsoft-json@4dfd81071c64)
-    com.unity.services.deployment.api@1.1.3 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.services.deployment.api@9becf6da0f1a)
-    com.unity.services.wire@1.4.2 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.services.wire@3619c710c17e)
-    com.unity.services.core@1.18.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.services.core@3464cb68d709)
-    com.unity.addressables@2.9.1 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.addressables@8460f1c9c927)
-    com.unity.mathematics@1.3.3 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.mathematics@19a9377c4ffa)
-    com.unity.cloud.gltfast@6.14.1 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.cloud.gltfast@0847aee0f6da)
-    com.unity.serialization@3.1.5 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.serialization@c463b52e88d7)
-    com.unity.profiling.core@1.0.3 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.profiling.core@8a49f7027d06)
-    com.unity.scriptablebuildpipeline@2.6.1 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.scriptablebuildpipeline@36e3b5898ee2)
-    com.unity.searcher@4.9.4 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.searcher@d45a78918735)
-    com.unity.burst@1.8.28 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.burst@07790c2d06d9)
-    com.unity.test-framework.performance@3.2.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.test-framework.performance@0840f58e4562)
+    com.unity.ai.assistant@2.5.0-pre.2 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.ai.assistant@b7ff2f2a65cc)
+    com.unity.2d.pixel-perfect@5.1.1 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.2d.pixel-perfect@09d99455b901)
+    com.unity.collab-proxy@2.11.4 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.collab-proxy@a5329f833fa8)
+    com.unity.ide.rider@3.0.39 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.ide.rider@4504839d03f7)
+    com.unity.ide.visualstudio@2.0.27 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.ide.visualstudio@dc1ddd4f09b6)
+    com.unity.inputsystem@1.19.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.inputsystem@21a28c3a6c83)
+    com.unity.localization@1.5.12 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.localization@b0a588a05f2a)
+    com.unity.services.authentication@3.7.4 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.services.authentication@39eab783227c)
+    com.unity.services.cloudcode@2.10.3 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.services.cloudcode@a071dc58aed1)
+    com.unity.services.cloudsave@3.4.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.services.cloudsave@271cfa0557ba)
+    com.unity.services.deployment@1.7.2 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.services.deployment@c07c64f9804b)
+    com.unity.services.tooling@1.4.1 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.services.tooling@4059a0fcc8b5)
+    com.unity.timeline@1.8.11 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.timeline@bfd27f8016ff)
+    com.unity.pipeline@0.5.0-exp.1 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.pipeline@24975d51528a)
+    com.unity.nuget.mono-cecil@1.11.6 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.nuget.mono-cecil@ecb9724e46ff)
+    com.unity.nuget.newtonsoft-json@3.2.2 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.nuget.newtonsoft-json@4dfd81071c64)
+    com.unity.services.deployment.api@1.1.3 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.services.deployment.api@9becf6da0f1a)
+    com.unity.services.wire@1.4.2 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.services.wire@3619c710c17e)
+    com.unity.services.core@1.18.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.services.core@3464cb68d709)
+    com.unity.addressables@2.9.1 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.addressables@8460f1c9c927)
+    com.unity.mathematics@1.3.3 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.mathematics@19a9377c4ffa)
+    com.unity.cloud.gltfast@6.14.1 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.cloud.gltfast@0847aee0f6da)
+    com.unity.serialization@3.1.5 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.serialization@c463b52e88d7)
+    com.unity.profiling.core@1.0.3 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.profiling.core@8a49f7027d06)
+    com.unity.scriptablebuildpipeline@2.6.1 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.scriptablebuildpipeline@36e3b5898ee2)
+    com.unity.searcher@4.9.4 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.searcher@d45a78918735)
+    com.unity.burst@1.8.28 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.burst@07790c2d06d9)
+    com.unity.test-framework.performance@3.2.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.test-framework.performance@0840f58e4562)
   Built-in packages:
-    com.unity.2d.sprite@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.2d.sprite@929df5adbb1f)
-    com.unity.2d.tilemap@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.2d.tilemap@c457c5249013)
-    com.unity.render-pipelines.universal@17.4.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.render-pipelines.universal@580a03820d50)
-    com.unity.test-framework@1.6.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.test-framework@76560ee600cb)
-    com.unity.ugui@2.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.ugui@d8a2716f3013)
-    com.unity.modules.accessibility@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.accessibility)
-    com.unity.modules.adaptiveperformance@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.adaptiveperformance)
-    com.unity.modules.ai@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.ai)
-    com.unity.modules.androidjni@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.androidjni)
-    com.unity.modules.animation@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.animation)
-    com.unity.modules.assetbundle@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.assetbundle)
-    com.unity.modules.audio@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.audio)
-    com.unity.modules.cloth@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.cloth)
-    com.unity.modules.director@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.director)
-    com.unity.modules.imageconversion@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.imageconversion)
-    com.unity.modules.imgui@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.imgui)
-    com.unity.modules.jsonserialize@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.jsonserialize)
-    com.unity.modules.particlesystem@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.particlesystem)
-    com.unity.modules.physics@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.physics)
-    com.unity.modules.physics2d@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.physics2d)
-    com.unity.modules.screencapture@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.screencapture)
-    com.unity.modules.terrain@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.terrain)
-    com.unity.modules.terrainphysics@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.terrainphysics)
-    com.unity.modules.tilemap@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.tilemap)
-    com.unity.modules.ui@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.ui)
-    com.unity.modules.uielements@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.uielements)
-    com.unity.modules.umbra@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.umbra)
-    com.unity.modules.unityanalytics@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.unityanalytics)
-    com.unity.modules.unitywebrequest@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.unitywebrequest)
-    com.unity.modules.unitywebrequestassetbundle@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.unitywebrequestassetbundle)
-    com.unity.modules.unitywebrequestaudio@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.unitywebrequestaudio)
-    com.unity.modules.unitywebrequesttexture@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.unitywebrequesttexture)
-    com.unity.modules.unitywebrequestwww@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.unitywebrequestwww)
-    com.unity.modules.vectorgraphics@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.vectorgraphics)
-    com.unity.modules.vehicles@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.vehicles)
-    com.unity.modules.video@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.video)
-    com.unity.modules.vr@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.vr)
-    com.unity.modules.wind@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.wind)
-    com.unity.modules.xr@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.xr)
-    com.unity.modules.subsystems@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.subsystems)
-    com.unity.modules.hierarchycore@1.0.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.modules.hierarchycore)
-    com.unity.ext.nunit@2.0.5 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.ext.nunit@d8c07649098d)
-    com.unity.render-pipelines.core@17.4.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.render-pipelines.core@e6c93b445dd3)
-    com.unity.shadergraph@17.4.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.shadergraph@6ab0d236faac)
-    com.unity.render-pipelines.universal-config@17.4.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.render-pipelines.universal-config@0db4263b9e6b)
-    com.unity.collections@6.4.0 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.collections@538ace9075bc)
+    com.unity.2d.sprite@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.2d.sprite@929df5adbb1f)
+    com.unity.2d.tilemap@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.2d.tilemap@c457c5249013)
+    com.unity.render-pipelines.universal@17.4.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.render-pipelines.universal@580a03820d50)
+    com.unity.test-framework@1.6.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.test-framework@76560ee600cb)
+    com.unity.ugui@2.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.ugui@d8a2716f3013)
+    com.unity.modules.accessibility@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.accessibility)
+    com.unity.modules.adaptiveperformance@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.adaptiveperformance)
+    com.unity.modules.ai@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.ai)
+    com.unity.modules.androidjni@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.androidjni)
+    com.unity.modules.animation@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.animation)
+    com.unity.modules.assetbundle@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.assetbundle)
+    com.unity.modules.audio@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.audio)
+    com.unity.modules.cloth@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.cloth)
+    com.unity.modules.director@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.director)
+    com.unity.modules.imageconversion@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.imageconversion)
+    com.unity.modules.imgui@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.imgui)
+    com.unity.modules.jsonserialize@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.jsonserialize)
+    com.unity.modules.particlesystem@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.particlesystem)
+    com.unity.modules.physics@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.physics)
+    com.unity.modules.physics2d@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.physics2d)
+    com.unity.modules.screencapture@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.screencapture)
+    com.unity.modules.terrain@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.terrain)
+    com.unity.modules.terrainphysics@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.terrainphysics)
+    com.unity.modules.tilemap@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.tilemap)
+    com.unity.modules.ui@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.ui)
+    com.unity.modules.uielements@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.uielements)
+    com.unity.modules.umbra@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.umbra)
+    com.unity.modules.unityanalytics@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.unityanalytics)
+    com.unity.modules.unitywebrequest@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.unitywebrequest)
+    com.unity.modules.unitywebrequestassetbundle@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.unitywebrequestassetbundle)
+    com.unity.modules.unitywebrequestaudio@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.unitywebrequestaudio)
+    com.unity.modules.unitywebrequesttexture@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.unitywebrequesttexture)
+    com.unity.modules.unitywebrequestwww@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.unitywebrequestwww)
+    com.unity.modules.vectorgraphics@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.vectorgraphics)
+    com.unity.modules.vehicles@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.vehicles)
+    com.unity.modules.video@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.video)
+    com.unity.modules.vr@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.vr)
+    com.unity.modules.wind@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.wind)
+    com.unity.modules.xr@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.xr)
+    com.unity.modules.subsystems@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.subsystems)
+    com.unity.modules.hierarchycore@1.0.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.modules.hierarchycore)
+    com.unity.ext.nunit@2.0.5 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.ext.nunit@d8c07649098d)
+    com.unity.render-pipelines.core@17.4.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.render-pipelines.core@e6c93b445dd3)
+    com.unity.shadergraph@17.4.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.shadergraph@6ab0d236faac)
+    com.unity.render-pipelines.universal-config@17.4.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.render-pipelines.universal-config@0db4263b9e6b)
+    com.unity.collections@6.4.0 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.collections@538ace9075bc)
   Git packages:
-    com.unity.2d.tilemap.extras@https://github.com/Unity-Technologies/2d-extras.git#package_6000.3 (location: /Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.2d.tilemap.extras@56c3a1345f3e)
+    com.unity.2d.tilemap.extras@https://github.com/Unity-Technologies/2d-extras.git#package_6000.3 (location: /Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.2d.tilemap.extras@56c3a1345f3e)
 [Subsystems] No new subsystems found in resolved package list.
 [Package Manager] Done registering packages in 0.01 seconds
 [ScriptCompilation] Requested script compilation because: InitialRefresh: Force Refresh Recompile flag enabled
@@ -255,7 +255,7 @@ info: Microsoft.Hosting.Lifetime[0]
 info: Microsoft.Hosting.Lifetime[0]
       Hosting environment: Production
 info: Microsoft.Hosting.Lifetime[0]
-      Content root path: /Users/emreaydin/DefenderChronicles-first-region
+      Content root path: /Users/emreaydin/AllinDefense-first-region
 info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
       Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping - application/grpc -
 info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
@@ -266,7 +266,7 @@ info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
       Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping - 200 - application/grpc 83.1775ms
 Refreshing native plugins compatible for Editor in 4.09 ms, found 1 plugins.
 Starting: /Applications/Unity/Hub/Editor/6000.4.1f1/Unity.app/Contents/Resources/BuildPipeline/bee_backend --ipc --defer-dag-verification --dagfile="Library/Bee/900b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
-WorkingDir: /Users/emreaydin/DefenderChronicles-first-region
+WorkingDir: /Users/emreaydin/AllinDefense-first-region
 Duplicate assembly 'System.Reflection.Metadata.dll' with different versions detected, using 'Packages/com.unity.ai.assistant/Plugins/Shared/System.Reflection.Metadata.dll, AssemblyName=System.Reflection.Metadata, Version=10.0.0.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' and ignoring 'Packages/com.unity.pipeline/Runtime/Plugins/CodeAnalysis/System.Reflection.Metadata.dll, AssemblyName=System.Reflection.Metadata, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.Duplicate assembly 'System.Collections.Immutable.dll' with different versions detected, using 'Packages/com.unity.ai.assistant/Plugins/Shared/System.Collections.Immutable.dll, AssemblyName=System.Collections.Immutable, Version=10.0.0.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' and ignoring 'Packages/com.unity.pipeline/Runtime/Plugins/CodeAnalysis/System.Collections.Immutable.dll, AssemblyName=System.Collections.Immutable, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.Duplicate assembly 'System.Runtime.CompilerServices.Unsafe.dll' with different versions detected, using 'Packages/com.unity.ai.assistant/Plugins/Shared/System.Runtime.CompilerServices.Unsafe.dll, AssemblyName=System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' and ignoring 'Packages/com.unity.pipeline/Runtime/Plugins/CodeAnalysis/System.Runtime.CompilerServices.Unsafe.dll, AssemblyName=System.Runtime.CompilerServices.Unsafe, Version=4.0.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.Duplicate assembly 'System.Runtime.CompilerServices.Unsafe.dll' with different versions detected, using 'Packages/com.unity.ai.assistant/Plugins/Shared/System.Runtime.CompilerServices.Unsafe.dll, AssemblyName=System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' and ignoring 'Packages/com.unity.collections/Unity.Collections.Tests/System.Runtime.CompilerServices.Unsafe/System.Runtime.CompilerServices.Unsafe.dll, AssemblyName=System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.DisplayProgressbar: Compiling Scripts
 info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
       Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors - application/grpc -
@@ -317,7 +317,7 @@ ExitCode: 0 Duration: 0s874ms
 [1462/1767  0s] CopyFiles Library/ScriptAssemblies/glTFast.dots.dll
 [1463/1767  0s] CopyFiles Library/ScriptAssemblies/Unity.RenderPipeline.Universal.ShaderLibrary.dll
 [1464/1767  0s] CopyFiles Library/ScriptAssemblies/Unity.PerformanceTesting.dll
-[1465/1767  0s] CopyFiles Library/ScriptAssemblies/DefenderChronicles.Runtime.dll
+[1465/1767  0s] CopyFiles Library/ScriptAssemblies/AllinDefense.Runtime.dll
 [1466/1767  0s] CopyFiles Library/ScriptAssemblies/Unity.RenderPipelines.Universal.Runtime.dll
 [1467/1767  0s] CopyFiles Library/ScriptAssemblies/Unity.Burst.dll
 [1468/1767  0s] CopyFiles Library/ScriptAssemblies/Unity.ScriptableBuildPipeline.dll
@@ -359,7 +359,7 @@ ExitCode: 0 Duration: 0s874ms
 [1507/1767  0s] CopyFiles Library/ScriptAssemblies/Unity.TextMeshPro.dll
 [1508/1767  0s] CopyFiles Library/ScriptAssemblies/Unity.AI.Assistant.Runtime.dll
 [1509/1767  0s] CopyFiles Library/ScriptAssemblies/Unity.Addressables.dll
-[1510/1767  0s] CopyFiles Library/ScriptAssemblies/DefenderChronicles.PlayModeTests.dll
+[1510/1767  0s] CopyFiles Library/ScriptAssemblies/AllinDefense.PlayModeTests.dll
 [1511/1767  0s] CopyFiles Library/ScriptAssemblies/Unity.Services.Core.Configuration.dll
 [1512/1767  0s] CopyFiles Library/ScriptAssemblies/Unity.Services.CloudSave.dll
 [1513/1767  0s] CopyFiles Library/ScriptAssemblies/glTFast.dll
@@ -373,8 +373,8 @@ ExitCode: 0 Duration: 0s874ms
 [1521/1767  0s] CopyFiles Library/ScriptAssemblies/Unity.2D.PixelPerfect.Editor.dll
 [1522/1767  0s] CopyFiles Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll
 [1523/1767  0s] CopyFiles Library/ScriptAssemblies/Unity.2D.Sprite.Editor.pdb
-[1524/1767  0s] CopyFiles Library/ScriptAssemblies/DefenderChronicles.ClosedTestServices.Editor.pdb
-[1525/1767  0s] CopyFiles Library/ScriptAssemblies/DefenderChronicles.ClosedTestServices.Editor.dll
+[1524/1767  0s] CopyFiles Library/ScriptAssemblies/AllinDefense.ClosedTestServices.Editor.pdb
+[1525/1767  0s] CopyFiles Library/ScriptAssemblies/AllinDefense.ClosedTestServices.Editor.dll
 [1526/1767  0s] CopyFiles Library/ScriptAssemblies/Unity.ShaderGraph.Editor.dll
 [1527/1767  0s] CopyFiles Library/ScriptAssemblies/Unity.PlasticSCM.Editor.Entities.pdb
 [1528/1767  0s] CopyFiles Library/ScriptAssemblies/Unity.2D.PixelPerfect.Editor.pdb
@@ -407,10 +407,10 @@ ExitCode: 0 Duration: 0s874ms
 [1555/1767  0s] CopyFiles Library/ScriptAssemblies/Unity.Rendering.LightTransport.Editor.dll
 [1556/1767  0s] CopyFiles Library/ScriptAssemblies/Unity.Services.Core.Environments.Editor.dll
 [1557/1767  0s] CopyFiles Library/ScriptAssemblies/Unity.AI.Pbr.Srp.dll
-[1558/1767  0s] CopyFiles Library/ScriptAssemblies/DefenderChronicles.EditModeTests.pdb
+[1558/1767  0s] CopyFiles Library/ScriptAssemblies/AllinDefense.EditModeTests.pdb
 [1559/1767  0s] CopyFiles Library/ScriptAssemblies/Unity.Services.Core.Environments.Editor.pdb
 [1560/1767  0s] CopyFiles Library/ScriptAssemblies/Unity.InternalAPIEditorBridge.013.pdb
-[1561/1767  0s] CopyFiles Library/ScriptAssemblies/DefenderChronicles.EditModeTests.dll
+[1561/1767  0s] CopyFiles Library/ScriptAssemblies/AllinDefense.EditModeTests.dll
 [1562/1767  0s] CopyFiles Library/ScriptAssemblies/Unity.AI.Pbr.Srp.pdb
 [1563/1767  0s] CopyFiles Library/ScriptAssemblies/Unity.AI.Generators.Sdk.dll
 [1564/1767  0s] CopyFiles Library/ScriptAssemblies/Unity.InternalAPIEditorBridge.013.dll
@@ -549,7 +549,7 @@ ExitCode: 0 Duration: 0s874ms
 [1697/1767  0s] CopyFiles Library/ScriptAssemblies/Unity.AI.Generators.Redux.dll
 [1698/1767  0s] CopyFiles Library/ScriptAssemblies/Unity.AI.Generators.Tools.pdb
 [1699/1767  0s] CopyFiles Library/ScriptAssemblies/Unity.Services.Deployment.pdb
-[1700/1767  0s] CopyFiles Library/ScriptAssemblies/DefenderChronicles.PlayModeTests.pdb
+[1700/1767  0s] CopyFiles Library/ScriptAssemblies/AllinDefense.PlayModeTests.pdb
 [1701/1767  0s] CopyFiles Library/ScriptAssemblies/Unity.AI.Generators.Redux.pdb
 [1702/1767  0s] CopyFiles Library/ScriptAssemblies/Unity.AI.Generators.Tools.dll
 [1703/1767  0s] CopyFiles Library/ScriptAssemblies/Unity.TextMeshPro.pdb
@@ -585,7 +585,7 @@ ExitCode: 0 Duration: 0s874ms
 [1733/1767  0s] CopyFiles Library/ScriptAssemblies/Unity.Services.Core.Threading.pdb
 [1734/1767  0s] CopyFiles Library/ScriptAssemblies/Unity.Services.CloudSave.pdb
 [1735/1767  0s] CopyFiles Library/ScriptAssemblies/Unity.Services.Core.Analytics.pdb
-[1736/1767  0s] CopyFiles Library/ScriptAssemblies/DefenderChronicles.Runtime.pdb
+[1736/1767  0s] CopyFiles Library/ScriptAssemblies/AllinDefense.Runtime.pdb
 [1737/1767  0s] CopyFiles Library/ScriptAssemblies/Unity.Addressables.pdb
 [1738/1767  0s] CopyFiles Library/ScriptAssemblies/Unity.RenderPipelines.Universal.2D.Runtime.pdb
 [1739/1767  0s] CopyFiles Library/ScriptAssemblies/Unity.AI.Tracing.pdb
@@ -890,21 +890,21 @@ Scanning for USB devices : 0.046ms
 Initializing Unity extensions:
 [MODES] ModeService[none].Initialize
 [MODES] ModeService[none].LoadModes
-[MODES] Loading mode Default (0) for mode-current-id-Defender Chronicles Test
+[MODES] Loading mode Default (0) for mode-current-id-ALLIN: Defense Test
 Unloading 109 Unused Serialized files (Serialized files now loaded: 0)
 Unloading 10387 unused Assets / (36.6 MB). Loaded Objects now: 11112.
 Memory consumption went from 0.51 GB to 490.2 MB.
 Total: 38.145375 ms (FindLiveObjects: 0.374959 ms CreateObjectMapping: 0.168125 ms MarkObjects: 28.824791 ms  DeleteObjects: 8.776833 ms)
 
-Defender Chronicles iOS device settings applied.
+ALLIN: Defense iOS device settings applied.
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace () (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
 UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
-DefenderChronicles.Editor.IosFirstBuildSettings:Apply () (at Assets/Editor/IosFirstBuildSettings.cs:23)
-DefenderChronicles.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:15)
+AllinDefense.Editor.IosFirstBuildSettings:Apply () (at Assets/Editor/IosFirstBuildSettings.cs:23)
+AllinDefense.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:15)
 
 (Filename: Assets/Editor/IosFirstBuildSettings.cs Line: 23)
 
@@ -1060,7 +1060,7 @@ Start importing Assets/Settings/UniversalRP.asset using Guid(681886c5eb7344803b6
 Asset Pipeline Refresh (id=8c466d1c91f6d46299bbc9630feb753b): Total: 0.008 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
 DisplayProgressbar: Switch To Build Platform
 DisplayProgressbar: Rebuild Sprite Atlas Cache
-Start importing Assets/Art/UI/DefenderChroniclesUI.spriteatlas using Guid(d52a67039f13a47f0823abfacc5eec99) (NativeFormatImporter) -> (Import Result ID: '96920c3690c0b52b0fa762248073f716') in 0.001533917 seconds [static dependencies only]. Details - ImportResultOutputID=119e5f759c3f181d4808cf156d9d4516 DependenciesID=d2060581aada3811f3f2cc71ee2b2c67 StaticDependenciesID=f3614c9d6900fa6ccefbd9c1737b3370
+Start importing Assets/Art/UI/AllinDefenseUI.spriteatlas using Guid(d52a67039f13a47f0823abfacc5eec99) (NativeFormatImporter) -> (Import Result ID: '96920c3690c0b52b0fa762248073f716') in 0.001533917 seconds [static dependencies only]. Details - ImportResultOutputID=119e5f759c3f181d4808cf156d9d4516 DependenciesID=d2060581aada3811f3f2cc71ee2b2c67 StaticDependenciesID=f3614c9d6900fa6ccefbd9c1737b3370
 Asset Pipeline Refresh (id=ba355f01a083144eabd945d20bfc548e): Total: 0.010 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
 Asset Pipeline Refresh (id=7dc246b50b0e644a18b8c280635eabc2): Total: 0.289 seconds - Initiated by RefreshV2(NoUpdateAssetOptions)
 SpriteAtlasPacking completed in 0.311352 sec
@@ -1075,7 +1075,7 @@ info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
 info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
       Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping - 200 - application/grpc 2.1175ms
 Starting: /Applications/Unity/Hub/Editor/6000.4.1f1/Unity.app/Contents/Resources/BuildPipeline/bee_backend --ipc --defer-dag-verification --dagfile="Library/Bee/900b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
-WorkingDir: /Users/emreaydin/DefenderChronicles-first-region
+WorkingDir: /Users/emreaydin/AllinDefense-first-region
 Duplicate assembly 'System.Reflection.Metadata.dll' with different versions detected, using 'Packages/com.unity.ai.assistant/Plugins/Shared/System.Reflection.Metadata.dll, AssemblyName=System.Reflection.Metadata, Version=10.0.0.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' and ignoring 'Packages/com.unity.pipeline/Runtime/Plugins/CodeAnalysis/System.Reflection.Metadata.dll, AssemblyName=System.Reflection.Metadata, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.Duplicate assembly 'System.Collections.Immutable.dll' with different versions detected, using 'Packages/com.unity.ai.assistant/Plugins/Shared/System.Collections.Immutable.dll, AssemblyName=System.Collections.Immutable, Version=10.0.0.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' and ignoring 'Packages/com.unity.pipeline/Runtime/Plugins/CodeAnalysis/System.Collections.Immutable.dll, AssemblyName=System.Collections.Immutable, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.Duplicate assembly 'System.Runtime.CompilerServices.Unsafe.dll' with different versions detected, using 'Packages/com.unity.ai.assistant/Plugins/Shared/System.Runtime.CompilerServices.Unsafe.dll, AssemblyName=System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' and ignoring 'Packages/com.unity.pipeline/Runtime/Plugins/CodeAnalysis/System.Runtime.CompilerServices.Unsafe.dll, AssemblyName=System.Runtime.CompilerServices.Unsafe, Version=4.0.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.Duplicate assembly 'System.Runtime.CompilerServices.Unsafe.dll' with different versions detected, using 'Packages/com.unity.ai.assistant/Plugins/Shared/System.Runtime.CompilerServices.Unsafe.dll, AssemblyName=System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' and ignoring 'Packages/com.unity.collections/Unity.Collections.Tests/System.Runtime.CompilerServices.Unsafe/System.Runtime.CompilerServices.Unsafe.dll, AssemblyName=System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.DisplayProgressbar: Compiling Scripts
 info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
       Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors - application/grpc -
@@ -1100,7 +1100,7 @@ info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
 info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
       Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping - 200 - application/grpc 0.2811ms
 Starting: /Applications/Unity/Hub/Editor/6000.4.1f1/Unity.app/Contents/Resources/BuildPipeline/bee_backend --ipc --defer-dag-verification --dagfile="Library/Bee/900b0aP.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssembliesAndTypeDB
-WorkingDir: /Users/emreaydin/DefenderChronicles-first-region
+WorkingDir: /Users/emreaydin/AllinDefense-first-region
 Duplicate assembly 'System.Reflection.Metadata.dll' with different versions detected, using 'Packages/com.unity.ai.assistant/Plugins/Shared/System.Reflection.Metadata.dll, AssemblyName=System.Reflection.Metadata, Version=10.0.0.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' and ignoring 'Packages/com.unity.pipeline/Runtime/Plugins/CodeAnalysis/System.Reflection.Metadata.dll, AssemblyName=System.Reflection.Metadata, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.Duplicate assembly 'System.Collections.Immutable.dll' with different versions detected, using 'Packages/com.unity.ai.assistant/Plugins/Shared/System.Collections.Immutable.dll, AssemblyName=System.Collections.Immutable, Version=10.0.0.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' and ignoring 'Packages/com.unity.pipeline/Runtime/Plugins/CodeAnalysis/System.Collections.Immutable.dll, AssemblyName=System.Collections.Immutable, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.Duplicate assembly 'System.Runtime.CompilerServices.Unsafe.dll' with different versions detected, using 'Packages/com.unity.ai.assistant/Plugins/Shared/System.Runtime.CompilerServices.Unsafe.dll, AssemblyName=System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' and ignoring 'Packages/com.unity.pipeline/Runtime/Plugins/CodeAnalysis/System.Runtime.CompilerServices.Unsafe.dll, AssemblyName=System.Runtime.CompilerServices.Unsafe, Version=4.0.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.Duplicate assembly 'System.Runtime.CompilerServices.Unsafe.dll' with different versions detected, using 'Packages/com.unity.ai.assistant/Plugins/Shared/System.Runtime.CompilerServices.Unsafe.dll, AssemblyName=System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' and ignoring 'Packages/com.unity.collections/Unity.Collections.Tests/System.Runtime.CompilerServices.Unsafe/System.Runtime.CompilerServices.Unsafe.dll, AssemblyName=System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.Duplicate assembly 'System.Runtime.CompilerServices.Unsafe.dll' with different versions detected, using 'Packages/com.unity.collections/Unity.Collections.Tests/System.Runtime.CompilerServices.Unsafe/System.Runtime.CompilerServices.Unsafe.dll, AssemblyName=System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' and ignoring 'Packages/com.unity.pipeline/Runtime/Plugins/CodeAnalysis/System.Runtime.CompilerServices.Unsafe.dll, AssemblyName=System.Runtime.CompilerServices.Unsafe, Version=4.0.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.Duplicate assembly 'System.Runtime.CompilerServices.Unsafe.dll' with different versions detected, using 'Packages/com.unity.collections/Unity.Collections.Tests/System.Runtime.CompilerServices.Unsafe/System.Runtime.CompilerServices.Unsafe.dll, AssemblyName=System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' and ignoring 'Packages/com.unity.pipeline/Runtime/Plugins/CodeAnalysis/System.Runtime.CompilerServices.Unsafe.dll, AssemblyName=System.Runtime.CompilerServices.Unsafe, Version=4.0.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.Total cache size 268420570
 Total cache size after purge 268420570, took 00:00:00.8641110
 info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
@@ -1289,8 +1289,8 @@ ExitCode: 0 Duration: 2s704ms
 [885/884    0s] CopyFiles Library/PlayerScriptAssemblies/Unity.Addressables.pdb
 [887/884    0s] CopyFiles Library/PlayerScriptAssemblies/Unity.Services.Core.Internal.dll
 [889/884    0s] CopyFiles Library/PlayerScriptAssemblies/Unity.Services.Core.Internal.pdb
-[890/884    0s] CopyFiles Library/PlayerScriptAssemblies/DefenderChronicles.Runtime.dll
-[891/884    0s] CopyFiles Library/PlayerScriptAssemblies/DefenderChronicles.Runtime.pdb
+[890/884    0s] CopyFiles Library/PlayerScriptAssemblies/AllinDefense.Runtime.dll
+[891/884    0s] CopyFiles Library/PlayerScriptAssemblies/AllinDefense.Runtime.pdb
 [893/884    1s] BuildPlayerDataGenerator Library/BuildPlayerData/Player/RuntimeInitializeOnLoads.json (+1 other)
 *** Tundra build success (2.58 seconds), 146 items updated, 884 evaluated
 info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
@@ -1302,7 +1302,7 @@ info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
 info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
       Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping - 200 - application/grpc 0.2295ms
 Starting: /Applications/Unity/Hub/Editor/6000.4.1f1/Unity.app/Contents/Resources/BuildPipeline/bee_backend --ipc --defer-dag-verification --dagfile="Library/Bee/900b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssembliesAndTypeDB
-WorkingDir: /Users/emreaydin/DefenderChronicles-first-region
+WorkingDir: /Users/emreaydin/AllinDefense-first-region
 Duplicate assembly 'System.Reflection.Metadata.dll' with different versions detected, using 'Packages/com.unity.ai.assistant/Plugins/Shared/System.Reflection.Metadata.dll, AssemblyName=System.Reflection.Metadata, Version=10.0.0.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' and ignoring 'Packages/com.unity.pipeline/Runtime/Plugins/CodeAnalysis/System.Reflection.Metadata.dll, AssemblyName=System.Reflection.Metadata, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.Duplicate assembly 'System.Collections.Immutable.dll' with different versions detected, using 'Packages/com.unity.ai.assistant/Plugins/Shared/System.Collections.Immutable.dll, AssemblyName=System.Collections.Immutable, Version=10.0.0.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' and ignoring 'Packages/com.unity.pipeline/Runtime/Plugins/CodeAnalysis/System.Collections.Immutable.dll, AssemblyName=System.Collections.Immutable, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.Duplicate assembly 'System.Runtime.CompilerServices.Unsafe.dll' with different versions detected, using 'Packages/com.unity.ai.assistant/Plugins/Shared/System.Runtime.CompilerServices.Unsafe.dll, AssemblyName=System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' and ignoring 'Packages/com.unity.pipeline/Runtime/Plugins/CodeAnalysis/System.Runtime.CompilerServices.Unsafe.dll, AssemblyName=System.Runtime.CompilerServices.Unsafe, Version=4.0.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.Duplicate assembly 'System.Runtime.CompilerServices.Unsafe.dll' with different versions detected, using 'Packages/com.unity.ai.assistant/Plugins/Shared/System.Runtime.CompilerServices.Unsafe.dll, AssemblyName=System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' and ignoring 'Packages/com.unity.collections/Unity.Collections.Tests/System.Runtime.CompilerServices.Unsafe/System.Runtime.CompilerServices.Unsafe.dll, AssemblyName=System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
       Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors - application/grpc -
 info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
@@ -1372,8 +1372,8 @@ UnityEditor.Build.BuildPipelineInterfaces:PreparePlayerBuild (UnityEditor.Build.
 UnityEditor.BuildPipeline:PreparePlayerBuild (UnityEditor.BuildPlayerOptions) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipeline.bindings.cs:77)
 UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
 UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipeline.bindings.cs:190)
-DefenderChronicles.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
-DefenderChronicles.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
+AllinDefense.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
+AllinDefense.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
 
 (Filename: ./Library/PackageCache/com.unity.addressables@8460f1c9c927/Editor/Settings/AddressableAssetSettings.cs Line: 3138)
 
@@ -1402,26 +1402,26 @@ UnityEditor.Build.BuildPipelineInterfaces:InvokeCallbackInterfacesPair<UnityEdit
 UnityEditor.Build.BuildPipelineInterfaces:OnBuildPreProcess (UnityEditor.Build.Reporting.BuildReport) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipelineInterfaces.cs:524)
 UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
 UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipeline.bindings.cs:190)
-DefenderChronicles.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
-DefenderChronicles.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
+AllinDefense.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
+AllinDefense.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
 
 (Filename: ./Library/PackageCache/com.unity.render-pipelines.universal@580a03820d50/Editor/BuildProcessors/URPPreprocessBuild.cs Line: 52)
 
-Defender Chronicles iOS build supports portrait frontend and landscape battle.
+ALLIN: Defense iOS build supports portrait frontend and landscape battle.
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace () (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
 UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
-DefenderChronicles.Editor.MobileOrientationBuildPreprocessor:OnPreprocessBuild (UnityEditor.Build.Reporting.BuildReport) (at Assets/Editor/MobilePortraitBuildSettings.cs:55)
+AllinDefense.Editor.MobileOrientationBuildPreprocessor:OnPreprocessBuild (UnityEditor.Build.Reporting.BuildReport) (at Assets/Editor/MobilePortraitBuildSettings.cs:55)
 UnityEditor.Build.BuildPipelineInterfaces/<>c__DisplayClass17_0:<OnBuildPreProcess>b__1 (UnityEditor.Build.IPreprocessBuildWithReport) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipelineInterfaces.cs:526)
 UnityEditor.Build.BuildPipelineInterfaces:InvokeCallbackInterfacesPair<UnityEditor.Build.IPreprocessBuild, UnityEditor.Build.IPreprocessBuildWithReport> (System.Collections.Generic.List`1<UnityEditor.Build.IPreprocessBuild>,System.Action`1<UnityEditor.Build.IPreprocessBuild>,System.Collections.Generic.List`1<UnityEditor.Build.IPreprocessBuildWithReport>,System.Action`1<UnityEditor.Build.IPreprocessBuildWithReport>,bool) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipelineInterfaces.cs:492)
 UnityEditor.Build.BuildPipelineInterfaces:OnBuildPreProcess (UnityEditor.Build.Reporting.BuildReport) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipelineInterfaces.cs:524)
 UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
 UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipeline.bindings.cs:190)
-DefenderChronicles.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
-DefenderChronicles.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
+AllinDefense.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
+AllinDefense.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
 
 (Filename: Assets/Editor/MobilePortraitBuildSettings.cs Line: 55)
 
@@ -1442,8 +1442,8 @@ UnityEditor.Build.BuildPipelineInterfaces:InvokeCallbackInterfacesPair<UnityEdit
 UnityEditor.Build.BuildPipelineInterfaces:OnBuildPreProcess (UnityEditor.Build.Reporting.BuildReport) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipelineInterfaces.cs:524)
 UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
 UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipeline.bindings.cs:190)
-DefenderChronicles.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
-DefenderChronicles.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
+AllinDefense.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
+AllinDefense.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
 
 (Filename: ./Library/PackageCache/com.unity.services.core@3464cb68d709/Editor/Core/Build/ProjectUnlinkBuildWarning.cs Line: 29)
 
@@ -1460,8 +1460,8 @@ UnityEditor.Build.BuildPipelineInterfaces:InvokeCallbackInterfacesPair<UnityEdit
 UnityEditor.Build.BuildPipelineInterfaces:OnBuildPreProcess (UnityEditor.Build.Reporting.BuildReport) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipelineInterfaces.cs:524)
 UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
 UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipeline.bindings.cs:190)
-DefenderChronicles.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
-DefenderChronicles.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
+AllinDefense.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
+AllinDefense.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
 
 (Filename: ./Library/PackageCache/com.unity.localization@b0a588a05f2a/Editor/Platform/iOS/BuildPlayerIOS.cs Line: 24)
 
@@ -1483,8 +1483,8 @@ Unity.Pipeline.Editor.BuildProcessors.PipelineRuntimeBuildProcessor:OnPreprocess
 UnityEditor.Build.BuildPipelineInterfaces:OnBuildPreProcessWithContext (UnityEditor.Build.BuildCallbackContext) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipelineInterfaces.cs:548)
 UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
 UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipeline.bindings.cs:190)
-DefenderChronicles.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
-DefenderChronicles.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
+AllinDefense.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
+AllinDefense.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
 
 (Filename: ./Library/PackageCache/com.unity.pipeline@24975d51528a/Editor/BuildProcessors/PipelineRuntimeBuildProcessor.cs Line: 52)
 
@@ -1503,7 +1503,7 @@ info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
 info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
       Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping - 200 - application/grpc 0.3420ms
 Starting: /Applications/Unity/Hub/Editor/6000.4.1f1/Unity.app/Contents/Resources/BuildPipeline/bee_backend --ipc --defer-dag-verification --dagfile="Library/Bee/900b0aESkipCompile.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssembliesAndTypeDB
-WorkingDir: /Users/emreaydin/DefenderChronicles-first-region
+WorkingDir: /Users/emreaydin/AllinDefense-first-region
 Duplicate assembly 'System.Reflection.Metadata.dll' with different versions detected, using 'Packages/com.unity.ai.assistant/Plugins/Shared/System.Reflection.Metadata.dll, AssemblyName=System.Reflection.Metadata, Version=10.0.0.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' and ignoring 'Packages/com.unity.pipeline/Runtime/Plugins/CodeAnalysis/System.Reflection.Metadata.dll, AssemblyName=System.Reflection.Metadata, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.Duplicate assembly 'System.Collections.Immutable.dll' with different versions detected, using 'Packages/com.unity.ai.assistant/Plugins/Shared/System.Collections.Immutable.dll, AssemblyName=System.Collections.Immutable, Version=10.0.0.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' and ignoring 'Packages/com.unity.pipeline/Runtime/Plugins/CodeAnalysis/System.Collections.Immutable.dll, AssemblyName=System.Collections.Immutable, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.Duplicate assembly 'System.Runtime.CompilerServices.Unsafe.dll' with different versions detected, using 'Packages/com.unity.ai.assistant/Plugins/Shared/System.Runtime.CompilerServices.Unsafe.dll, AssemblyName=System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' and ignoring 'Packages/com.unity.pipeline/Runtime/Plugins/CodeAnalysis/System.Runtime.CompilerServices.Unsafe.dll, AssemblyName=System.Runtime.CompilerServices.Unsafe, Version=4.0.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.Duplicate assembly 'System.Runtime.CompilerServices.Unsafe.dll' with different versions detected, using 'Packages/com.unity.ai.assistant/Plugins/Shared/System.Runtime.CompilerServices.Unsafe.dll, AssemblyName=System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' and ignoring 'Packages/com.unity.collections/Unity.Collections.Tests/System.Runtime.CompilerServices.Unsafe/System.Runtime.CompilerServices.Unsafe.dll, AssemblyName=System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.DisplayProgressbar: Compiling Scripts
 Total cache size 268420570
 Total cache size after purge 268420570, took 00:00:00.0475128
@@ -1523,7 +1523,7 @@ info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
 info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
       Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping - 200 - application/grpc 3.4201ms
 Starting: /Applications/Unity/Hub/Editor/6000.4.1f1/Unity.app/Contents/Resources/BuildPipeline/bee_backend --ipc --defer-dag-verification --dagfile="Library/Bee/900b0aPDevDbg.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssembliesAndTypeDB
-WorkingDir: /Users/emreaydin/DefenderChronicles-first-region
+WorkingDir: /Users/emreaydin/AllinDefense-first-region
 Duplicate assembly 'System.Reflection.Metadata.dll' with different versions detected, using 'Packages/com.unity.ai.assistant/Plugins/Shared/System.Reflection.Metadata.dll, AssemblyName=System.Reflection.Metadata, Version=10.0.0.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' and ignoring 'Packages/com.unity.pipeline/Runtime/Plugins/CodeAnalysis/System.Reflection.Metadata.dll, AssemblyName=System.Reflection.Metadata, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.Duplicate assembly 'System.Collections.Immutable.dll' with different versions detected, using 'Packages/com.unity.ai.assistant/Plugins/Shared/System.Collections.Immutable.dll, AssemblyName=System.Collections.Immutable, Version=10.0.0.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' and ignoring 'Packages/com.unity.pipeline/Runtime/Plugins/CodeAnalysis/System.Collections.Immutable.dll, AssemblyName=System.Collections.Immutable, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.Duplicate assembly 'System.Runtime.CompilerServices.Unsafe.dll' with different versions detected, using 'Packages/com.unity.ai.assistant/Plugins/Shared/System.Runtime.CompilerServices.Unsafe.dll, AssemblyName=System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' and ignoring 'Packages/com.unity.pipeline/Runtime/Plugins/CodeAnalysis/System.Runtime.CompilerServices.Unsafe.dll, AssemblyName=System.Runtime.CompilerServices.Unsafe, Version=4.0.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.Duplicate assembly 'System.Runtime.CompilerServices.Unsafe.dll' with different versions detected, using 'Packages/com.unity.ai.assistant/Plugins/Shared/System.Runtime.CompilerServices.Unsafe.dll, AssemblyName=System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' and ignoring 'Packages/com.unity.collections/Unity.Collections.Tests/System.Runtime.CompilerServices.Unsafe/System.Runtime.CompilerServices.Unsafe.dll, AssemblyName=System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.Duplicate assembly 'System.Runtime.CompilerServices.Unsafe.dll' with different versions detected, using 'Packages/com.unity.collections/Unity.Collections.Tests/System.Runtime.CompilerServices.Unsafe/System.Runtime.CompilerServices.Unsafe.dll, AssemblyName=System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' and ignoring 'Packages/com.unity.pipeline/Runtime/Plugins/CodeAnalysis/System.Runtime.CompilerServices.Unsafe.dll, AssemblyName=System.Runtime.CompilerServices.Unsafe, Version=4.0.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.Duplicate assembly 'System.Runtime.CompilerServices.Unsafe.dll' with different versions detected, using 'Packages/com.unity.collections/Unity.Collections.Tests/System.Runtime.CompilerServices.Unsafe/System.Runtime.CompilerServices.Unsafe.dll, AssemblyName=System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' and ignoring 'Packages/com.unity.pipeline/Runtime/Plugins/CodeAnalysis/System.Runtime.CompilerServices.Unsafe.dll, AssemblyName=System.Runtime.CompilerServices.Unsafe, Version=4.0.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
       Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors - application/grpc -
 info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
@@ -1625,7 +1625,7 @@ ExitCode: 0 Duration: 2s607ms
 [798/884    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Burst.dll
 [799/884    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Services.Core.Components.dll
 [800/884    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Services.Core.Scheduler.dll
-[801/884    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/DefenderChronicles.Runtime.dll
+[801/884    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/AllinDefense.Runtime.dll
 [802/884    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.Core.Runtime.dll
 [803/884    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.TextMeshPro.dll
 [804/884    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.Universal.2D.Runtime.dll
@@ -1695,7 +1695,7 @@ ExitCode: 0 Duration: 2s607ms
 [870/884    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.InternalAPIEngineBridge.RenderPipelines.Core.Runtime.Shared.dll
 [871/884    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.InternalAPIEngineBridge.RenderPipelines.Core.Runtime.Shared.pdb
 [872/884    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Services.Core.Environments.pdb
-[873/884    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/DefenderChronicles.Runtime.pdb
+[873/884    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/AllinDefense.Runtime.pdb
 [874/884    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Addressables.pdb
 [875/884    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.Universal.Config.Runtime.pdb
 [876/884    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.InternalAPIEngineBridge.004.pdb
@@ -1977,7 +1977,7 @@ Dependency assembly - System.Xml.Serialization.dll
 Dependency assembly - glTFast.Newtonsoft.dll
 Dependency assembly - System.Reflection.Primitives.dll
 Dependency assembly - System.IO.IsolatedStorage.dll
-Dependency assembly - DefenderChronicles.Runtime.dll
+Dependency assembly - AllinDefense.Runtime.dll
 Dependency assembly - Unity.Services.Core.Components.dll
 Dependency assembly - Unity.Collections.LowLevel.ILSupport.dll
 Dependency assembly - I18N.CJK.dll
@@ -6480,8 +6480,8 @@ UnityEditor.iOS.iOSBuildPostprocessor:AddIconsToBuild (UnityEditor.Modules.AddIc
 UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:296)
 UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
 UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipeline.bindings.cs:190)
-DefenderChronicles.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
-DefenderChronicles.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
+AllinDefense.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
+AllinDefense.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
 
 (Filename: /Users/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs Line: 82)
 
@@ -6499,8 +6499,8 @@ UnityEditor.iOS.iOSBuildPostprocessor:AddIconsToBuild (UnityEditor.Modules.AddIc
 UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:296)
 UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
 UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipeline.bindings.cs:190)
-DefenderChronicles.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
-DefenderChronicles.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
+AllinDefense.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
+AllinDefense.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
 
 (Filename: /Users/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs Line: 82)
 
@@ -6518,12 +6518,12 @@ UnityEditor.iOS.iOSBuildPostprocessor:AddIconsToBuild (UnityEditor.Modules.AddIc
 UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:296)
 UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
 UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipeline.bindings.cs:190)
-DefenderChronicles.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
-DefenderChronicles.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
+AllinDefense.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
+AllinDefense.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
 
 (Filename: /Users/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs Line: 82)
 
-Compressed texture DefenderChronicles-AppIcon-v2-1024 is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
+Compressed texture AllinDefense-AppIcon-v2-1024 is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace () (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -6538,12 +6538,12 @@ UnityEditor.iOS.iOSBuildPostprocessor:AddIconsToBuild (UnityEditor.Modules.AddIc
 UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:296)
 UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
 UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipeline.bindings.cs:190)
-DefenderChronicles.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
-DefenderChronicles.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
+AllinDefense.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
+AllinDefense.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
 
 (Filename: /Users/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs Line: 82)
 
-Compressed texture DefenderChronicles-AppIcon-v2-1024 is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
+Compressed texture AllinDefense-AppIcon-v2-1024 is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace () (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -6558,12 +6558,12 @@ UnityEditor.iOS.iOSBuildPostprocessor:AddIconsToBuild (UnityEditor.Modules.AddIc
 UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:296)
 UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
 UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipeline.bindings.cs:190)
-DefenderChronicles.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
-DefenderChronicles.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
+AllinDefense.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
+AllinDefense.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
 
 (Filename: /Users/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs Line: 82)
 
-Compressed texture DefenderChronicles-AppIcon-v2-1024 is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
+Compressed texture AllinDefense-AppIcon-v2-1024 is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace () (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -6578,12 +6578,12 @@ UnityEditor.iOS.iOSBuildPostprocessor:AddIconsToBuild (UnityEditor.Modules.AddIc
 UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:296)
 UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
 UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipeline.bindings.cs:190)
-DefenderChronicles.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
-DefenderChronicles.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
+AllinDefense.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
+AllinDefense.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
 
 (Filename: /Users/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs Line: 82)
 
-Compressed texture DefenderChronicles-AppIcon-v2-1024 is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
+Compressed texture AllinDefense-AppIcon-v2-1024 is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace () (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -6598,12 +6598,12 @@ UnityEditor.iOS.iOSBuildPostprocessor:AddIconsToBuild (UnityEditor.Modules.AddIc
 UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:296)
 UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
 UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipeline.bindings.cs:190)
-DefenderChronicles.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
-DefenderChronicles.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
+AllinDefense.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
+AllinDefense.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
 
 (Filename: /Users/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs Line: 82)
 
-Compressed texture DefenderChronicles-AppIcon-v2-1024 is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
+Compressed texture AllinDefense-AppIcon-v2-1024 is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace () (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -6618,12 +6618,12 @@ UnityEditor.iOS.iOSBuildPostprocessor:AddIconsToBuild (UnityEditor.Modules.AddIc
 UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:296)
 UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
 UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipeline.bindings.cs:190)
-DefenderChronicles.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
-DefenderChronicles.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
+AllinDefense.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
+AllinDefense.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
 
 (Filename: /Users/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs Line: 82)
 
-Compressed texture DefenderChronicles-AppIcon-v2-1024 is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
+Compressed texture AllinDefense-AppIcon-v2-1024 is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace () (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -6638,12 +6638,12 @@ UnityEditor.iOS.iOSBuildPostprocessor:AddIconsToBuild (UnityEditor.Modules.AddIc
 UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:296)
 UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
 UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipeline.bindings.cs:190)
-DefenderChronicles.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
-DefenderChronicles.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
+AllinDefense.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
+AllinDefense.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
 
 (Filename: /Users/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs Line: 82)
 
-Compressed texture DefenderChronicles-AppIcon-v2-1024 is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
+Compressed texture AllinDefense-AppIcon-v2-1024 is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace () (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -6658,12 +6658,12 @@ UnityEditor.iOS.iOSBuildPostprocessor:AddIconsToBuild (UnityEditor.Modules.AddIc
 UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:296)
 UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
 UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipeline.bindings.cs:190)
-DefenderChronicles.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
-DefenderChronicles.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
+AllinDefense.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
+AllinDefense.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
 
 (Filename: /Users/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs Line: 82)
 
-Compressed texture DefenderChronicles-AppIcon-v2-1024 is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
+Compressed texture AllinDefense-AppIcon-v2-1024 is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace () (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -6678,12 +6678,12 @@ UnityEditor.iOS.iOSBuildPostprocessor:AddIconsToBuild (UnityEditor.Modules.AddIc
 UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:296)
 UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
 UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipeline.bindings.cs:190)
-DefenderChronicles.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
-DefenderChronicles.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
+AllinDefense.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
+AllinDefense.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
 
 (Filename: /Users/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs Line: 82)
 
-Compressed texture DefenderChronicles-AppIcon-v2-1024 is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
+Compressed texture AllinDefense-AppIcon-v2-1024 is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace () (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -6698,12 +6698,12 @@ UnityEditor.iOS.iOSBuildPostprocessor:AddIconsToBuild (UnityEditor.Modules.AddIc
 UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:296)
 UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
 UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipeline.bindings.cs:190)
-DefenderChronicles.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
-DefenderChronicles.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
+AllinDefense.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
+AllinDefense.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
 
 (Filename: /Users/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs Line: 82)
 
-Compressed texture DefenderChronicles-AppIcon-v2-1024 is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
+Compressed texture AllinDefense-AppIcon-v2-1024 is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace () (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -6718,12 +6718,12 @@ UnityEditor.iOS.iOSBuildPostprocessor:AddIconsToBuild (UnityEditor.Modules.AddIc
 UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:296)
 UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
 UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipeline.bindings.cs:190)
-DefenderChronicles.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
-DefenderChronicles.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
+AllinDefense.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
+AllinDefense.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
 
 (Filename: /Users/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs Line: 82)
 
-Compressed texture DefenderChronicles-AppIcon-v2-1024 is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
+Compressed texture AllinDefense-AppIcon-v2-1024 is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace () (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -6738,12 +6738,12 @@ UnityEditor.iOS.iOSBuildPostprocessor:AddIconsToBuild (UnityEditor.Modules.AddIc
 UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:296)
 UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
 UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipeline.bindings.cs:190)
-DefenderChronicles.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
-DefenderChronicles.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
+AllinDefense.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
+AllinDefense.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
 
 (Filename: /Users/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs Line: 82)
 
-Compressed texture DefenderChronicles-AppIcon-v2-1024 is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
+Compressed texture AllinDefense-AppIcon-v2-1024 is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace () (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -6758,12 +6758,12 @@ UnityEditor.iOS.iOSBuildPostprocessor:AddIconsToBuild (UnityEditor.Modules.AddIc
 UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:296)
 UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
 UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipeline.bindings.cs:190)
-DefenderChronicles.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
-DefenderChronicles.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
+AllinDefense.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
+AllinDefense.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
 
 (Filename: /Users/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs Line: 82)
 
-Compressed texture DefenderChronicles-AppIcon-v2-1024 is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
+Compressed texture AllinDefense-AppIcon-v2-1024 is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace () (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -6778,12 +6778,12 @@ UnityEditor.iOS.iOSBuildPostprocessor:AddIconsToBuild (UnityEditor.Modules.AddIc
 UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:296)
 UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
 UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipeline.bindings.cs:190)
-DefenderChronicles.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
-DefenderChronicles.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
+AllinDefense.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
+AllinDefense.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
 
 (Filename: /Users/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs Line: 82)
 
-Compressed texture DefenderChronicles-AppIcon-v2-1024 is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
+Compressed texture AllinDefense-AppIcon-v2-1024 is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace () (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -6798,12 +6798,12 @@ UnityEditor.iOS.iOSBuildPostprocessor:AddIconsToBuild (UnityEditor.Modules.AddIc
 UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:296)
 UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
 UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipeline.bindings.cs:190)
-DefenderChronicles.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
-DefenderChronicles.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
+AllinDefense.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
+AllinDefense.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
 
 (Filename: /Users/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs Line: 82)
 
-Compressed texture DefenderChronicles-AppIcon-v2-1024 is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
+Compressed texture AllinDefense-AppIcon-v2-1024 is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace () (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -6818,12 +6818,12 @@ UnityEditor.iOS.iOSBuildPostprocessor:AddIconsToBuild (UnityEditor.Modules.AddIc
 UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:296)
 UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
 UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipeline.bindings.cs:190)
-DefenderChronicles.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
-DefenderChronicles.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
+AllinDefense.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
+AllinDefense.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
 
 (Filename: /Users/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs Line: 82)
 
-Compressed texture DefenderChronicles-AppIcon-v2-1024 is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
+Compressed texture AllinDefense-AppIcon-v2-1024 is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace () (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -6838,12 +6838,12 @@ UnityEditor.iOS.iOSBuildPostprocessor:AddIconsToBuild (UnityEditor.Modules.AddIc
 UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:296)
 UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
 UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipeline.bindings.cs:190)
-DefenderChronicles.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
-DefenderChronicles.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
+AllinDefense.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
+AllinDefense.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
 
 (Filename: /Users/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs Line: 82)
 
-Compressed texture DefenderChronicles-AppIcon-v2-1024 is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
+Compressed texture AllinDefense-AppIcon-v2-1024 is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace () (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -6858,12 +6858,12 @@ UnityEditor.iOS.iOSBuildPostprocessor:AddIconsToBuild (UnityEditor.Modules.AddIc
 UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:296)
 UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
 UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipeline.bindings.cs:190)
-DefenderChronicles.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
-DefenderChronicles.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
+AllinDefense.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
+AllinDefense.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
 
 (Filename: /Users/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs Line: 82)
 
-Compressed texture DefenderChronicles-AppIcon-v2-1024 is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
+Compressed texture AllinDefense-AppIcon-v2-1024 is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace () (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -6878,12 +6878,12 @@ UnityEditor.iOS.iOSBuildPostprocessor:AddIconsToBuild (UnityEditor.Modules.AddIc
 UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:296)
 UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
 UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipeline.bindings.cs:190)
-DefenderChronicles.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
-DefenderChronicles.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
+AllinDefense.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
+AllinDefense.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
 
 (Filename: /Users/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs Line: 82)
 
-Compressed texture DefenderChronicles-AppIcon-v2-1024 is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
+Compressed texture AllinDefense-AppIcon-v2-1024 is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace () (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -6898,8 +6898,8 @@ UnityEditor.iOS.iOSBuildPostprocessor:AddIconsToBuild (UnityEditor.Modules.AddIc
 UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:296)
 UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
 UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipeline.bindings.cs:190)
-DefenderChronicles.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
-DefenderChronicles.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
+AllinDefense.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
+AllinDefense.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
 
 (Filename: /Users/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs Line: 82)
 
@@ -6913,7 +6913,7 @@ info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
 info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
       Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping - 200 - application/grpc 0.9215ms
 Duplicate assembly 'System.Runtime.CompilerServices.Unsafe.dll' with different versions detected, using 'Packages/com.unity.collections/Unity.Collections.Tests/System.Runtime.CompilerServices.Unsafe/System.Runtime.CompilerServices.Unsafe.dll, AssemblyName=System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' and ignoring 'Packages/com.unity.pipeline/Runtime/Plugins/CodeAnalysis/System.Runtime.CompilerServices.Unsafe.dll, AssemblyName=System.Runtime.CompilerServices.Unsafe, Version=4.0.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.Starting: /Applications/Unity/Hub/Editor/6000.4.1f1/Unity.app/Contents/Resources/BuildPipeline/bee_backend --ipc --dagfile="Library/Bee/Player458bad44.dag" --profile="Library/Bee/backend1.traceevents" Player
-WorkingDir: /Users/emreaydin/DefenderChronicles-first-region
+WorkingDir: /Users/emreaydin/AllinDefense-first-region
 DisplayProgressbar: Incremental Player Build
 [  95/3479  0s] WriteText Library/Bee/artifacts/csharpactions/boot.config_f4b8.info
 [  96/3479  0s] CopyFiles Builds/ClosedTest-iOS/Frameworks/UnityRuntime.framework/UnityRuntime
@@ -7678,7 +7678,7 @@ DisplayProgressbar: Incremental Player Build
 [ 947/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/Unity.TextMeshPro__5.cpp
 [ 948/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/UnityEngine.TerrainModule_CodeGen.c
 [ 949/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/__Generated_Debugger.c
-[ 950/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/DefenderChronicles.Runtime.cpp
+[ 950/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/AllinDefense.Runtime.cpp
 [ 951/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/Unity.InputSystem__5.cpp
 [ 952/3479  0s] CopyFiles Builds/ClosedTest-iOS/Data/Managed/Resources/mscorlib.dll-resources.dat
 [ 953/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/UnityEngine_Debugger.c
@@ -7686,7 +7686,7 @@ DisplayProgressbar: Incremental Player Build
 [ 955/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/System.Core_Debugger.c
 [ 956/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/Unity.Localization__2.cpp
 [ 957/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/Unity.RenderPipeline.Universal.ShaderLibrary.cpp
-[ 958/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/DefenderChronicles.Runtime_Debugger.c
+[ 958/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/AllinDefense.Runtime_Debugger.c
 [ 959/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/System.Data_Debugger.c
 [ 960/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/Unity.Burst_Debugger.c
 [ 961/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/Unity.RenderPipeline.Universal.ShaderLibrary_Debugger.c
@@ -7698,7 +7698,7 @@ DisplayProgressbar: Incremental Player Build
 [ 967/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/Unity.Localization__1.cpp
 [ 968/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/UnityEngine.TextCoreTextEngineModule.cpp
 [ 969/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/UnityEngine.UIElementsModule__14.cpp
-[ 970/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/DefenderChronicles.Runtime__4.cpp
+[ 970/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/AllinDefense.Runtime__4.cpp
 [ 971/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/UnityEngine.CoreModule__4.cpp
 [ 972/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/Il2CppCCTypeValuesTable.c
 [ 973/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/Unity.Services.Core.Device_CodeGen.c
@@ -7756,14 +7756,14 @@ DisplayProgressbar: Incremental Player Build
 [1025/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/Unity.Services.Core.Telemetry_Debugger.c
 [1026/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/UnityEngine.InputForUIModule_CodeGen.c
 [1027/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/UnityEngine.ScreenCaptureModule_CodeGen.c
-[1028/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/DefenderChronicles.Runtime__3.cpp
+[1028/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/AllinDefense.Runtime__3.cpp
 [1029/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/UnityEngine.SharedInternalsModule_CodeGen.c
 [1030/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/Unity.Services.Core.Device_Debugger.c
 [1031/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/UnityEngine.SharedInternalsModule_Debugger.c
 [1032/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/Unity.TextMeshPro__1.cpp
 [1033/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/Unity.InputSystem.ForUI.cpp
 [1034/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/Unity.InputSystem__1.cpp
-[1035/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/DefenderChronicles.Runtime__6.cpp
+[1035/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/AllinDefense.Runtime__6.cpp
 [1036/3479  0s] CopyFiles Builds/ClosedTest-iOS/Data/boot.config
 [1037/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/Il2CppTypeDefinitions.c
 [1038/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/Unity.Burst.Unsafe_CodeGen.c
@@ -7934,7 +7934,7 @@ DisplayProgressbar: Incremental Player Build
 [1203/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/Unity.Services.Wire.Internal.cpp
 [1204/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/UnityEngine.Physics2DModule_CodeGen.c
 [1205/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/Unity.Services.Core.Internal.cpp
-[1206/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/DefenderChronicles.Runtime__7.cpp
+[1206/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/AllinDefense.Runtime__7.cpp
 [1207/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/Unity.Collections.cpp
 [1208/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/GenericMethods__7.cpp
 [1209/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/GenericMethods__3.cpp
@@ -8077,7 +8077,7 @@ DisplayProgressbar: Incremental Player Build
 [1346/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/UnityEngine.PhysicsModule_CodeGen.c
 [1347/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/UnityEngine.MultiplayerModule_Debugger.c
 [1348/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/UnityEngine.AnimationModule_Debugger.c
-[1349/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/DefenderChronicles.Runtime_CodeGen.c
+[1349/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/AllinDefense.Runtime_CodeGen.c
 [1350/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/UnityEngine.ParticleSystemModule.cpp
 [1351/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/UnityEngine.TilemapModule_CodeGen.c
 [1352/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/UnityEngine.Physics2DModule_Debugger.c
@@ -8091,15 +8091,15 @@ DisplayProgressbar: Incremental Player Build
 [1360/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/UnityEngine.AudioModule.cpp
 [1361/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/UnityEngine.SubsystemsModule.cpp
 [1362/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/UnityEngine.Physics2DModule.cpp
-[1363/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/DefenderChronicles.Runtime__5.cpp
+[1363/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/AllinDefense.Runtime__5.cpp
 [1364/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/UnityEngine.IMGUIModule.cpp
-[1365/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/DefenderChronicles.Runtime__2.cpp
+[1365/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/AllinDefense.Runtime__2.cpp
 [1366/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/Unity.RenderPipelines.Core.Runtime.cpp
 [1367/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/UnityEngine.CoreModule__5.cpp
 [1368/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/Unity.InputSystem.ForUI_CodeGen.c
 [1369/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/UnityEngine.UIElementsModule__13.cpp
 [1370/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/UnityEngine.CoreModule__1.cpp
-[1371/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/DefenderChronicles.Runtime__1.cpp
+[1371/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/AllinDefense.Runtime__1.cpp
 [1372/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/UnityEngine.SpriteShapeModule_Debugger.c
 [1373/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/Unity.Services.Core.cpp
 [1374/3479  0s] CopyFiles Builds/ClosedTest-iOS/Il2CppOutputProject/Source/il2cppOutput/UnityEngine.AssetBundleModule.cpp
@@ -10192,7 +10192,7 @@ DisplayProgressbar: Incremental Player Build
 [3461/3479  0s] CopyFiles Builds/ClosedTest-iOS/Data/Raw/aa/settings.json
 [3462/3479  0s] CopyFiles Builds/ClosedTest-iOS/Data/Raw/aa/AddressablesLink/link.xml
 [3463/3479  0s] CopyFiles Builds/ClosedTest-iOS/Data/resources.assets.resS
-[3464/3479  0s] CopyF/Users/emreaydin/DefenderChronicles-first-region/Library/PackageCache/com.unity.burst@07790c2d06d9/.Runtime/bcl.exe exited after 1715 ms.
+[3464/3479  0s] CopyF/Users/emreaydin/AllinDefense-first-region/Library/PackageCache/com.unity.burst@07790c2d06d9/.Runtime/bcl.exe exited after 1715 ms.
 stdout:
 Starting 1 library requests
 Done
@@ -10212,13 +10212,13 @@ iles Builds/ClosedTest-iOS/Data/resources.assets
 [3475/3479  0s] CopyFiles Builds/ClosedTest-iOS/Libraries/lib_burst_generated.a
 [3476/3479  0s] CopyFiles Builds/ClosedTest-iOS/Libraries/lib_burst_generated.cpp
 *** Tundra requires additional run (2.07 seconds), 3290 items updated, 3479 evaluated
-*** Additional run caused by: timestamp change of Library/Bee/artifacts/iOS/Features/DefenderChronicles.Runtime-FeaturesChecked.txt
+*** Additional run caused by: timestamp change of Library/Bee/artifacts/iOS/Features/AllinDefense.Runtime-FeaturesChecked.txt
 Starting: /Applications/Unity/Hub/Editor/6000.4.1f1/Unity.app/Contents/Resources/Scripting/netcorerun/netcorerun "/Applications/Unity/Hub/Editor/6000.4.1f1/PlaybackEngines/iOSSupport/iOSPlayerBuildProgram.exe" "/Applications/Unity/Hub/Editor/6000.4.1f1/PlaybackEngines/iOSSupport/Bee:/Applications/Unity/Hub/Editor/6000.4.1f1/Unity.app/Contents/Resources/BuildPipeline" "Library/Bee/Player458bad44.dag.json" "Library/Bee/Player458bad44-inputdata.json" "Library/Bee/buildprogram0.traceevents"
-WorkingDir: /Users/emreaydin/DefenderChronicles-first-region
+WorkingDir: /Users/emreaydin/AllinDefense-first-region
 ExitCode: 4 Duration: 2s183ms
 ExitCode: 0 Duration: 0s435ms
 Starting: /Applications/Unity/Hub/Editor/6000.4.1f1/Unity.app/Contents/Resources/BuildPipeline/bee_backend --ipc --dagfile="Library/Bee/Player458bad44.dag" --dagfilejson="Library/Bee/Player458bad44.dag.json" --profile="Library/Bee/backend2.traceevents" Player
-WorkingDir: /Users/emreaydin/DefenderChronicles-first-region
+WorkingDir: /Users/emreaydin/AllinDefense-first-region
 Finished compiling graph: 3480 nodes, 7813 flattened edges (7804 ToBuild, 8 ToUse), maximum node priority 2147483647
 [2306/3479  0s] CopyFiles Builds/ClosedTest-iOS/UnityFramework/AppleRequiredReasonCSharpAPIs.txt
 *** Tundra build success (0.26 seconds), 1 items updated, 3479 evaluated
@@ -10270,8 +10270,8 @@ UnityEditor.Build.BuildPipelineInterfaces:InvokeCallbackInterfacesPair<UnityEdit
 UnityEditor.Build.BuildPipelineInterfaces:OnBuildPostProcess (UnityEditor.Build.Reporting.BuildReport) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipelineInterfaces.cs:603)
 UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
 UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipeline.bindings.cs:190)
-DefenderChronicles.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
-DefenderChronicles.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
+AllinDefense.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
+AllinDefense.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
 
 (Filename: ./Library/PackageCache/com.unity.render-pipelines.core@e6c93b445dd3/Editor/ShaderStripping/ShaderStrippingReport.cs Line: 379)
 
@@ -10282,15 +10282,15 @@ UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOpt
 UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
-DefenderChronicles.Editor.IosPlayerAccountsOrientationPostprocessor:ReplacePlayerAccountsSafariView (string) (at Assets/Editor/IosPlayerAccountsOrientationPostprocessor.cs:54)
-DefenderChronicles.Editor.IosPlayerAccountsOrientationPostprocessor:OnPostprocessBuild (UnityEditor.Build.Reporting.BuildReport) (at Assets/Editor/IosPlayerAccountsOrientationPostprocessor.cs:24)
+AllinDefense.Editor.IosPlayerAccountsOrientationPostprocessor:ReplacePlayerAccountsSafariView (string) (at Assets/Editor/IosPlayerAccountsOrientationPostprocessor.cs:54)
+AllinDefense.Editor.IosPlayerAccountsOrientationPostprocessor:OnPostprocessBuild (UnityEditor.Build.Reporting.BuildReport) (at Assets/Editor/IosPlayerAccountsOrientationPostprocessor.cs:24)
 UnityEditor.Build.BuildPipelineInterfaces/<>c__DisplayClass21_0:<OnBuildPostProcess>b__1 (UnityEditor.Build.IPostprocessBuildWithReport) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipelineInterfaces.cs:605)
 UnityEditor.Build.BuildPipelineInterfaces:InvokeCallbackInterfacesPair<UnityEditor.Build.IPostprocessBuild, UnityEditor.Build.IPostprocessBuildWithReport> (System.Collections.Generic.List`1<UnityEditor.Build.IPostprocessBuild>,System.Action`1<UnityEditor.Build.IPostprocessBuild>,System.Collections.Generic.List`1<UnityEditor.Build.IPostprocessBuildWithReport>,System.Action`1<UnityEditor.Build.IPostprocessBuildWithReport>,bool) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipelineInterfaces.cs:492)
 UnityEditor.Build.BuildPipelineInterfaces:OnBuildPostProcess (UnityEditor.Build.Reporting.BuildReport) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipelineInterfaces.cs:603)
 UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
 UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipeline.bindings.cs:190)
-DefenderChronicles.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
-DefenderChronicles.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
+AllinDefense.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
+AllinDefense.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
 
 (Filename: Assets/Editor/IosPlayerAccountsOrientationPostprocessor.cs Line: 54)
 
@@ -10301,14 +10301,14 @@ UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOpt
 UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
-DefenderChronicles.Editor.IosPlayerAccountsOrientationPostprocessor:OnPostprocessBuild (UnityEditor.Build.Reporting.BuildReport) (at Assets/Editor/IosPlayerAccountsOrientationPostprocessor.cs:25)
+AllinDefense.Editor.IosPlayerAccountsOrientationPostprocessor:OnPostprocessBuild (UnityEditor.Build.Reporting.BuildReport) (at Assets/Editor/IosPlayerAccountsOrientationPostprocessor.cs:25)
 UnityEditor.Build.BuildPipelineInterfaces/<>c__DisplayClass21_0:<OnBuildPostProcess>b__1 (UnityEditor.Build.IPostprocessBuildWithReport) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipelineInterfaces.cs:605)
 UnityEditor.Build.BuildPipelineInterfaces:InvokeCallbackInterfacesPair<UnityEditor.Build.IPostprocessBuild, UnityEditor.Build.IPostprocessBuildWithReport> (System.Collections.Generic.List`1<UnityEditor.Build.IPostprocessBuild>,System.Action`1<UnityEditor.Build.IPostprocessBuild>,System.Collections.Generic.List`1<UnityEditor.Build.IPostprocessBuildWithReport>,System.Action`1<UnityEditor.Build.IPostprocessBuildWithReport>,bool) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipelineInterfaces.cs:492)
 UnityEditor.Build.BuildPipelineInterfaces:OnBuildPostProcess (UnityEditor.Build.Reporting.BuildReport) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipelineInterfaces.cs:603)
 UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
 UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /Users/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipeline.bindings.cs:190)
-DefenderChronicles.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
-DefenderChronicles.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
+AllinDefense.Editor.ClosedTestBuilds:Build (UnityEditor.BuildTarget,string,string) (at Assets/Editor/ClosedTestBuilds.cs:38)
+AllinDefense.Editor.ClosedTestBuilds:Ios () (at Assets/Editor/ClosedTestBuilds.cs:18)
 
 (Filename: Assets/Editor/IosPlayerAccountsOrientationPostprocessor.cs Line: 25)
 
@@ -10331,9 +10331,9 @@ Used Assets and files from the Resources folder, sorted by uncompressed size:
  1.6 mb	 0.1% Assets/Art/GeneratedPresentation/NotoSans-DC.asset
  1.6 mb	 0.1% Assets/Art/GeneratedPresentation/Cinzel-SemiBold-DC.asset
  1.0 mb	 0.1% Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF.asset
- 1.0 mb	 0.1% Assets/Resources/Presentation/Brand/DefenderChronicles-Logo-v2.png
- 1.0 mb	 0.1% Assets/Resources/Presentation/Brand/DefenderChronicles-Mark-v2.png
- 914.0 kb	 0.1% Built-in Texture2D: sactx-0-2048x1024-ASTC 6x6-DefenderChroniclesUI-875fcf18
+ 1.0 mb	 0.1% Assets/Resources/Presentation/Brand/AllinDefense-Logo-v2.png
+ 1.0 mb	 0.1% Assets/Resources/Presentation/Brand/AllinDefense-Mark-v2.png
+ 914.0 kb	 0.1% Built-in Texture2D: sactx-0-2048x1024-ASTC 6x6-AllinDefenseUI-875fcf18
  688.3 kb	 0.0% Assets/Resources/Presentation/Frontend/GreenwatchWelcome.png
  685.0 kb	 0.0% Assets/Resources/Presentation/Frontend/GreenwatchWarTable.png
  626.2 kb	 0.0% Assets/Art/Fonts/NotoSerif-SemiBold.ttf
@@ -10556,7 +10556,7 @@ Used Assets and files from the Resources folder, sorted by uncompressed size:
  1.4 kb	 0.0% Assets/Audio/Presentation/SFX/OutpostUpgraded.wav
  1.4 kb	 0.0% Packages/com.unity.render-pipelines.core/Runtime/Debugging/Prefabs/Widgets/DebugUIProgressBar.prefab
  1.4 kb	 0.0% Packages/com.unity.render-pipelines.core/Runtime/Debugging/Prefabs/Widgets/DebugUIGroup.prefab
- 1.4 kb	 0.0% Assets/Art/UI/DefenderChroniclesUI.spriteatlas
+ 1.4 kb	 0.0% Assets/Art/UI/AllinDefenseUI.spriteatlas
  1.4 kb	 0.0% Assets/Audio/Presentation/SFX/EnemyDefeated.wav
  1.2 kb	 0.0% Packages/com.unity.render-pipelines.core/Runtime/Debugging/Prefabs/Widgets/DebugUIButton.prefab
  1.2 kb	 0.0% Packages/com.unity.render-pipelines.universal/Textures/SMAA/SearchTex.tga

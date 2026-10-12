@@ -52,8 +52,8 @@ def path_exists(relative_path: str) -> bool:
 
 def validate(data: dict[str, Any]) -> list[str]:
     missing: list[str] = []
-    if data.get("schema") != "defender-chronicles.visual-human-signoff.v1":
-        missing.append("schema defender-chronicles.visual-human-signoff.v1 olmali")
+    if data.get("schema") != "allin-defense.visual-human-signoff.v1":
+        missing.append("schema allin-defense.visual-human-signoff.v1 olmali")
     if not str(data.get("acceptedVisualStamp", "")).strip():
         missing.append("acceptedVisualStamp bos olamaz")
     if not str(data.get("reviewer", "")).strip():

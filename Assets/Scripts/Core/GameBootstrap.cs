@@ -1,10 +1,10 @@
 using UnityEngine;
-using DefenderChronicles.Presentation;
-using DefenderChronicles.UI;
+using AllinDefense.Presentation;
+using AllinDefense.UI;
 using System;
 using System.Linq;
 
-namespace DefenderChronicles.Core
+namespace AllinDefense.Core
 {
     /// <summary>
     /// Minimal production entry point. The scene must explicitly provide the
@@ -28,7 +28,7 @@ namespace DefenderChronicles.Core
             var session = FindAnyObjectByType<GameSessionController>();
             if (session == null)
             {
-                var root = new GameObject("DefenderChroniclesSession");
+                var root = new GameObject("AllinDefenseSession");
                 session = root.AddComponent<GameSessionController>();
             }
 
@@ -39,7 +39,7 @@ namespace DefenderChronicles.Core
 
             if (showFrontend)
             {
-                var appFlowObject = new GameObject("DefenderChroniclesAppFlow");
+                var appFlowObject = new GameObject("AllinDefenseAppFlow");
                 var appFlow = appFlowObject.AddComponent<AppFlowController>();
                 appFlow.Initialize(presentationCatalog, session);
                 session.ConfigureMainMenuAction(appFlow.ReturnToMainMenu);

@@ -1,4 +1,4 @@
-# Defender Chronicles - Visual Closeout Acceptance Runbook
+# ALLIN: Defense - Visual Closeout Acceptance Runbook
 
 Date: 2026-08-25
 Branch: `codex/visual-slice-closeout`

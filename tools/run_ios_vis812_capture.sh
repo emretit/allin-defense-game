@@ -4,7 +4,7 @@ set -euo pipefail
 project_root="${0:A:h:h}"
 log_path="$project_root/Builds/ios-vis812-final-evidence.log"
 defeat_log_path="$project_root/Builds/ios-vis812-final-evidence-defeat.log"
-bundle_id="com.emreaydin.defenderchronicles"
+bundle_id="com.emreaydin.allindefense"
 capture_script="$project_root/tools/capture_ios_simulator_screenshot.sh"
 stamp_prefix="vis812-final-$(date +%Y%m%d-%H%M%S)"
 

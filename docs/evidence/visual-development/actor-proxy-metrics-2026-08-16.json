@@ -1,5 +1,5 @@
 {
-  "schema": "defender-chronicles.visual-development.actor-proxy-metrics.v1",
+  "schema": "allin-defense.visual-development.actor-proxy-metrics.v1",
   "captured_on": "2026-08-16",
   "model_root": "Assets/Art/Models/Generated",
   "roles_expected": [

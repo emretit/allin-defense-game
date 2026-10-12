@@ -1,9 +1,9 @@
 using System;
-using DefenderChronicles.Core;
-using DefenderChronicles.UI;
+using AllinDefense.Core;
+using AllinDefense.UI;
 using UnityEngine;
 
-namespace DefenderChronicles.Presentation
+namespace AllinDefense.Presentation
 {
     public sealed partial class DefenderHudController
     {

@@ -1,4 +1,4 @@
-# Defender Chronicles — Tam Ekran Mobil HUD Araştırması
+# ALLIN: Defense — Tam Ekran Mobil HUD Araştırması
 
 Durum: Uygulandı
 Tarih: 2026-08-16
@@ -13,7 +13,7 @@ Kaynak: https://github.com/ciro-unity/UnityRoyale-Public
 
 - Mobil için baştan tasarlanmış, savaş alanı ile kart/aksiyon katmanlarını ayıran bir Unity örneği.
 - Çıkarım: oyun dünyası ve HUD aynı sabit dikdörtgene sıkıştırılmamalı; HUD ayrı bir ekran katmanı olarak davranmalı.
-- Defender Chronicles kararı: kamera kadrajı cihaz oranına göre ayarlanırken HUD bağımsız olarak safe area içinde çalışır.
+- ALLIN: Defense kararı: kamera kadrajı cihaz oranına göre ayarlanırken HUD bağımsız olarak safe area içinde çalışır.
 
 ### MiniTD / TDGame
 
@@ -21,7 +21,7 @@ Kaynak: https://github.com/eldemirberkay0/TDGame
 
 - İnşa, yükseltme, yok etme ve dalga akışını ayrı UI durumları olarak ele alan tamamlanmış bir mini tower-defense döngüsü.
 - Çıkarım: sürekli görünen savaş bilgileri ile bağlamsal seçim panelleri ayrılmalı.
-- Defender Chronicles kararı: üst durum şeridi ve alt aksiyon şeridi kalıcı; karakol paneli yalnızca seçim varken görünür kalır.
+- ALLIN: Defense kararı: üst durum şeridi ve alt aksiyon şeridi kalıcı; karakol paneli yalnızca seçim varken görünür kalır.
 
 ### UnityMobileToolkit
 
@@ -29,7 +29,7 @@ Kaynak: https://github.com/janezk7/UnityMobileToolkit
 
 - Safe area, üst bar ve içerik katmanlarını ayrı hiyerarşilerde tutan responsive mobil örneği.
 - Çıkarım: safe area bütün görsel yüzeyi küçültmemeli; yalnız okunabilir ve dokunulabilir içeriği sınırlandırmalı.
-- Defender Chronicles kararı: dekoratif HUD rayları fiziksel ekran kenarına uzanır, `SafeContent` katmanları çentik ve sistem hareket alanlarından korunur.
+- ALLIN: Defense kararı: dekoratif HUD rayları fiziksel ekran kenarına uzanır, `SafeContent` katmanları çentik ve sistem hareket alanlarından korunur.
 
 ## 2. Kök Neden
 

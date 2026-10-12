@@ -1,4 +1,4 @@
-# Defender Chronicles — Map, Route and Outpost System
+# ALLIN: Defense — Map, Route and Outpost System
 
 Durum: Faz 2 ilk uygulama ve tasarim notu
 Son guncelleme: 2026-10-12

@@ -4,11 +4,11 @@
   "data": {
     "command": "build_status",
     "parameters": {},
-    "result": "{\"status\":\"completed\",\"buildId\":\"build_bdd9f5ea1ac0\",\"result\":\"Unknown\",\"platform\":\"NoTarget\",\"outputPath\":\"/Users/emreaydin/DefenderChronicles/Builds/Audit-2026-09-06/DefenderChronicles.app\",\"totalSizeBytes\":0,\"buildTimeMs\":0,\"buildStartedAt\":\"2026-09-06T04:02:41.9175970Z\",\"buildEndedAt\":\"2026-09-06T04:02:41.9175970Z\",\"totalWarnings\":0,\"totalErrors\":0,\"buildSteps\":[],\"errors\":[],\"warnings\":[]}",
+    "result": "{\"status\":\"completed\",\"buildId\":\"build_bdd9f5ea1ac0\",\"result\":\"Unknown\",\"platform\":\"NoTarget\",\"outputPath\":\"/Users/emreaydin/AllinDefense/Builds/Audit-2026-09-06/AllinDefense.app\",\"totalSizeBytes\":0,\"buildTimeMs\":0,\"buildStartedAt\":\"2026-09-06T04:02:41.9175970Z\",\"buildEndedAt\":\"2026-09-06T04:02:41.9175970Z\",\"totalWarnings\":0,\"totalErrors\":0,\"buildSteps\":[],\"errors\":[],\"warnings\":[]}",
     "target": {
       "host": "127.0.0.1",
       "port": 7800,
-      "projectPath": "/Users/emreaydin/DefenderChronicles"
+      "projectPath": "/Users/emreaydin/AllinDefense"
     },
     "success": true
   },

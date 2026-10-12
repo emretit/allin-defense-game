@@ -1,4 +1,4 @@
-# Defender Chronicles — Greenwatch Road Variation Pass
+# ALLIN: Defense — Greenwatch Road Variation Pass
 
 Tarih: 2026-08-16
 TODO: VIS-405

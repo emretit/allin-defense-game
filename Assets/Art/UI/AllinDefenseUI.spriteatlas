@@ -6,7 +6,7 @@ SpriteAtlas:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DefenderChroniclesUI
+  m_Name: AllinDefenseUI
   m_EditorData:
     serializedVersion: 2
     textureSettings:
@@ -129,5 +129,5 @@ SpriteAtlas:
   - IconWave
   - IconArcher
   m_RenderDataMap: {}
-  m_Tag: DefenderChroniclesUI
+  m_Tag: AllinDefenseUI
   m_IsVariant: 0

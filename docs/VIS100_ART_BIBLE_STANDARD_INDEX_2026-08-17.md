@@ -1,4 +1,4 @@
-# Defender Chronicles - VIS-100 Art Bible Standard Index
+# ALLIN: Defense - VIS-100 Art Bible Standard Index
 
 Tarih: 2026-08-17
 Son mutabakat: 2026-08-25

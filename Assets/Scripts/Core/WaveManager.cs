@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using DefenderChronicles.Data;
-using DefenderChronicles.Enemies;
+using AllinDefense.Data;
+using AllinDefense.Enemies;
 
-namespace DefenderChronicles.Core
+namespace AllinDefense.Core
 {
     public class WaveManager : MonoBehaviour
     {

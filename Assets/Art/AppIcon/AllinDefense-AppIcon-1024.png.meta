@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 3ec2a18e80afa4afeab5eb3e2c55b308
+guid: b544f4b11be9343c988fb1d751051a7a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6183973408817817762
-    second: DefenderChronicles-Mark-v2_0
+      213: 2150269808317894181
+    second: AllinDefense-AppIcon-1024_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -55,9 +55,9 @@ TextureImporter:
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
-  alphaIsTransparency: 1
+  alphaIsTransparency: 0
   spriteTessellationDetail: -1
-  textureType: 8
+  textureType: 0
   textureShape: 1
   singleChannelComponent: 0
   flipbookRows: 1
@@ -75,7 +75,7 @@ TextureImporter:
     maxTextureSize: 1024
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -127,7 +127,7 @@ TextureImporter:
     maxTextureSize: 1024
     resizeAlgorithm: 0
     textureFormat: 48
-    textureCompression: 1
+    textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -139,13 +139,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: DefenderChronicles-Mark-v2_0
+      name: AllinDefense-AppIcon-1024_0
       rect:
         serializedVersion: 2
-        x: 149
+        x: 0
         y: 0
-        width: 726
-        height: 895
+        width: 1024
+        height: 1024
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -154,8 +154,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2a82c0d1d03e1d550800000000000000
-      internalID: 6183973408817817762
+      spriteID: 52e09008ffa47dd10800000000000000
+      internalID: 2150269808317894181
       vertices: []
       indices: 
       edges: []
@@ -164,7 +164,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -174,7 +174,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      DefenderChronicles-Mark-v2_0: 6183973408817817762
+      AllinDefense-AppIcon-1024_0: 2150269808317894181
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8f912ffde76bc43c38d142e1b21c0e2e, type: 3}
   m_Name: DefenderPresentationCatalog
-  m_EditorClassIdentifier: DefenderChronicles.Runtime::DefenderChronicles.Presentation.DefenderPresentationCatalog
+  m_EditorClassIdentifier: AllinDefense.Runtime::AllinDefense.Presentation.DefenderPresentationCatalog
   environmentPrefab: {fileID: 7272399280310038372, guid: 3865bce0e266445a695ef27240a4830d,
     type: 3}
   outpostSlotPrefab: {fileID: 919132149155446097, guid: d4bb914a8bbc44025898f9feea783db0,
@@ -299,25 +299,25 @@ MonoBehaviour:
     license: 3
     sourceUrl: OpenAI image generation / this project session
     acquiredOn: 2026-08-25
-  - assetName: Defender Chronicles V2 logo
-    assetPath: Assets/Resources/Presentation/Brand/DefenderChronicles-Logo-v2.png
+  - assetName: 'ALLIN: Defense V2 logo'
+    assetPath: Assets/Resources/Presentation/Brand/AllinDefense-Logo-v2.png
     license: 0
-    sourceUrl: Defender Chronicles vector brand system
+    sourceUrl: 'ALLIN: Defense vector brand system'
     acquiredOn: 2026-08-25
-  - assetName: Defender Chronicles V2 brand mark
-    assetPath: Assets/Resources/Presentation/Brand/DefenderChronicles-Mark-v2.png
+  - assetName: 'ALLIN: Defense V2 brand mark'
+    assetPath: Assets/Resources/Presentation/Brand/AllinDefense-Mark-v2.png
     license: 0
-    sourceUrl: Defender Chronicles vector brand system
+    sourceUrl: 'ALLIN: Defense vector brand system'
     acquiredOn: 2026-08-25
-  - assetName: Defender Chronicles V2 application icon
-    assetPath: Assets/Art/AppIcon/BrandV2/DefenderChronicles-AppIcon-v2-1024.png
+  - assetName: 'ALLIN: Defense V2 application icon'
+    assetPath: Assets/Art/AppIcon/BrandV2/AllinDefense-AppIcon-v2-1024.png
     license: 0
-    sourceUrl: Derived from the Defender Chronicles V2 brand mark
+    sourceUrl: 'Derived from the ALLIN: Defense V2 brand mark'
     acquiredOn: 2026-08-25
-  - assetName: Defender Chronicles V2 launch artwork
+  - assetName: 'ALLIN: Defense V2 launch artwork'
     assetPath: Assets/Art/Brand/Launch/GreenwatchLaunch-v2.png
     license: 0
-    sourceUrl: Greenwatch artwork with the Defender Chronicles V2 logo
+    sourceUrl: 'Greenwatch artwork with the ALLIN: Defense V2 logo'
     acquiredOn: 2026-08-25
   - assetName: HUD panel
     assetPath: Assets/Art/UI/DefenderHudPanel.png
@@ -332,7 +332,7 @@ MonoBehaviour:
   - assetName: Blender source
     assetPath: ArtSource/Blender
     license: 0
-    sourceUrl: Defender Chronicles procedural art pipeline
+    sourceUrl: 'ALLIN: Defense procedural art pipeline'
     acquiredOn: 2026-08-16
   - assetName: CC0 sound effects
     assetPath: Assets/Audio/Presentation/SFX

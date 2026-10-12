@@ -33,6 +33,6 @@ Bu turdaki ekran etkileşimleri Türkçe arayüzde yapıldı. İngilizce fizikse
 
 ## Güncel paketler ve kalan kabul
 
-Android APK, iOS cihaz Xcode dışa aktarımı/imzasız uygulaması ve simülatör uygulaması aynı son kaynakla yeniden derlendi. Paket boyutları ve özetleri `BUILD_MANIFEST.json` içinde. iPhone 13 simülatöründe **Defender Chronicles Test** kurulu; başlangıç ekranından devam edilebilir.
+Android APK, iOS cihaz Xcode dışa aktarımı/imzasız uygulaması ve simülatör uygulaması aynı son kaynakla yeniden derlendi. Paket boyutları ve özetleri `BUILD_MANIFEST.json` içinde. iPhone 13 simülatöründe **ALLIN: Defense Test** kurulu; başlangıç ekranından devam edilebilir.
 
 Fiziksel iPhone'da imzalı kurulum, 30 dakika FPS/termal/bellek ölçümü ve gerçek yeni oyuncu testi bekliyor. Kullanıcının mevcut Xcode hesabı/profili bu simülatör testi için kullanılmadı; profil bulunmadığı sonucuna varılmadı.

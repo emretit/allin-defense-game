@@ -1,7 +1,7 @@
-using DefenderChronicles.Combat;
+using AllinDefense.Combat;
 using NUnit.Framework;
 
-namespace DefenderChronicles.Tests
+namespace AllinDefense.Tests
 {
     public sealed class AuditBossVictoryRulesTests
     {

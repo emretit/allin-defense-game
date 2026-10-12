@@ -1,4 +1,4 @@
-# Defender Chronicles — uçtan uca oyun auditi
+# ALLIN: Defense — uçtan uca oyun auditi
 
 **Tarih:** 6 Eylül 2026 · **Kapsam:** mevcut Unity projesi, aktif oyun akışı, 50 bölümün verisi, yerel testler, sunucu kuralları ve depodaki cihaz kanıtları.
 
@@ -48,7 +48,7 @@ P1, oyuncu güvenini, temel stratejiyi veya yayın hazırlığını doğrudan et
 | S03 | P1 | İmkânsız yıldız talebi ve güvenilmeyen eski kayıt göçü kabul ediliyor | Yerel sunucu kuralı deneyleriyle doğrulandı |
 | S04 | P1 | Hesap değişimi ve reddedilen ödül taleplerinin kullanıcıya yansıması eksik | Kod analizi, açık |
 | U01 | P1 | Mobil dokunma hedefi kontrolü canvas birimini fiziksel ölçüyle karıştırıyor | Yerleşim hesabı; cihazda ölçüm gerekli |
-| R01 | P1 | “Defender Chronicles” adı aynı türde daha önce kullanılmış | Birincil kaynakla doğrulandı; ad kararı gerekli |
+| R01 | P1 | “ALLIN: Defense” adı aynı türde daha önce kullanılmış | Birincil kaynakla doğrulandı; ad kararı gerekli |
 | R02 | P1 / yayın öncesi | Gizlilik bağlantıları boş; uygulama içi hesap silme akışı bulunamadı | Kaynak/asset taraması; mağaza hazırlığı eksik |
 | P01 | P1 / yayın öncesi | Eski cihaz raporunda ciddi termal durum; kabul ölçümü bunu dışlamıyor | Tarihsel ölçüm + güncel kod analizi |
 | U02 | P2 | Başlangıç öğretimi, yenilgi açıklaması ve kaldığı yerden devam zayıf | Akış değerlendirmesi |
@@ -68,7 +68,7 @@ Normal başlangıç kaynakları, sunum kataloğu, hız düğmesindeki **1×**, o
 | Hiç kule kurma | Zafer | 4 / 20 | 54,0 sn | 1 yıldız |
 | İlk noktaya tek okçu kur; sonra müdahale etme | Zafer | 16 / 20 | 56,5 sn | 3 yıldız |
 
-Kaynak: [kulesiz gözlem](evidence/level1-idle-1x.json), [tek okçu gözlemi](evidence/level1-one-archer-1x.json). Yıldızlar deneyde açılan sonuç ekranından okunmadı; [AppFlowController.cs](/Users/emreaydin/DefenderChronicles/Assets/Scripts/UI/AppFlowController.cs:884) içindeki `%75 / %40` eşiklerinden hesaplandı. Sınırlı sayıda deterministik senaryodur; oyuncu başarı oranını ölçmez.
+Kaynak: [kulesiz gözlem](evidence/level1-idle-1x.json), [tek okçu gözlemi](evidence/level1-one-archer-1x.json). Yıldızlar deneyde açılan sonuç ekranından okunmadı; [AppFlowController.cs](/Users/emreaydin/AllinDefense/Assets/Scripts/UI/AppFlowController.cs:884) içindeki `%75 / %40` eşiklerinden hesaplandı. Sınırlı sayıda deterministik senaryodur; oyuncu başarı oranını ölçmez.
 
 İlk bölümün kolay olması doğru olabilir. Fakat hiçbir savunma kararı gerektirmemesi öğretim hedefini boşa çıkarıyor. Ayrıca katalogdaki yaklaşık **4 dakika** beklentisi bu iki senaryodaki gerçek süreyle uyuşmuyor. Sırf süreyi uzatmak için bekleme eklemek çözüm olmaz.
 
@@ -82,7 +82,7 @@ Kaynak: [kulesiz gözlem](evidence/level1-idle-1x.json), [tek okçu gözlemi](ev
 
 50 bölümün rotalarına karşı yapılan geometrik analizde **400 yerleşimin 125’inde iki asker de normal düşmanı durduramayacak kadar uzaktaydı**. Bölüm 10’da bu durum sekiz noktanın tamamında vardı; 1, 3, 4, 5 ve 8 numaralı noktalarda iki asker de normal rota üzerindeki düşmana saldırı menzili dışındaydı. Bu, 400 tam oyun deneyi değil; gerçek rota ve yerleşim verilerinin mesafe hesabıdır. İlk izole testte kışla ağırlıklı strateji de bölüm 10’da yenildi.
 
-Audit sırasında ana projeye `FindBarracksRallyPoint` eklendi: askerler en yakın yol parçasına taşınıyor. Asker sağlık/hasar değerleri de artırıldı ve strateji testinin satın alma sırası değişti. Bu değişiklikler audit tarafından yapılmadı. Aynı veriyle yeni formülün analizinde **menzil dışı yerleşim 125’ten 0’a indi**. [Önce/sonra analizi](evidence/rally-followup-analysis.json), [ilk sürüm kodu](evidence/GreyboxCombatants.baseline.cs.txt), [güncel kaynak](/Users/emreaydin/DefenderChronicles/Assets/Scripts/Core/GreyboxCombatants.cs:410).
+Audit sırasında ana projeye `FindBarracksRallyPoint` eklendi: askerler en yakın yol parçasına taşınıyor. Asker sağlık/hasar değerleri de artırıldı ve strateji testinin satın alma sırası değişti. Bu değişiklikler audit tarafından yapılmadı. Aynı veriyle yeni formülün analizinde **menzil dışı yerleşim 125’ten 0’a indi**. [Önce/sonra analizi](evidence/rally-followup-analysis.json), [ilk sürüm kodu](evidence/GreyboxCombatants.baseline.cs.txt), [güncel kaynak](/Users/emreaydin/AllinDefense/Assets/Scripts/Core/GreyboxCombatants.cs:410).
 
 **Takip testi: üç strateji de geçti.** Okçu ağırlıklı kurulum 13, kışla ağırlıklı kurulum 2, büyücü ağırlıklı kurulum 20 canla kazandı. [Sonuç XML’i](evidence/strategy-followup.xml). Bu, belirli satın alma sıralarını, hızlandırılmış oyunu, otomatik dalga çağırmayı ve otomatik yeteneği kullanan bir testtir; gerçek oyuncu başarı oranı değildir. Strateji testi sunum kataloğunu ayrıca yüklemiyor. Geometri hatası düzeltilmiş durumda; daha geniş denge doğrulaması açık. Hem geometri hem istatistikler hem satın alma sırası değiştiğinden tek başına neden-sonuç ayrıştırılamaz.
 
@@ -96,7 +96,7 @@ Audit sırasında ana projeye `FindBarracksRallyPoint` eklendi: askerler en yak�
 | Kışla | 100 | 70 | 170 | İki askerle yolu tutma |
 | Büyücü | 125 | 85 | 210 | Alan hasarı |
 
-Kaynak: [GameSessionController.cs](/Users/emreaydin/DefenderChronicles/Assets/Scripts/Core/GameSessionController.cs:2282). Her kule yalnızca ikinci seviyeye çıkabiliyor. Sekiz okçu tam yükseltmeyle **1.040**, üç okçu + iki kışla + üç büyücü **1.360**, sekiz büyücü **1.680** altına mal oluyor.
+Kaynak: [GameSessionController.cs](/Users/emreaydin/AllinDefense/Assets/Scripts/Core/GameSessionController.cs:2282). Her kule yalnızca ikinci seviyeye çıkabiliyor. Sekiz okçu tam yükseltmeyle **1.040**, üç okçu + iki kışla + üç büyücü **1.360**, sekiz büyücü **1.680** altına mal oluyor.
 
 | Bölüm | Dalga | Düşman | Toplam düşman canı | Başlangıç altını | Olası toplam altın |
 |---:|---:|---:|---:|---:|---:|
@@ -122,13 +122,13 @@ Aktif oyunda Raider, Vanguard, Regenerator, Support, Siege ve Boss var. Bu altı
 
 **Önerilen rol matrisi:** Raider kalabalık/zaman baskısı; Vanguard okçu hasarına dayanıklılık; Regenerator odak ateşi ihtiyacı; Support öldürme önceliği; Siege yaklaşmadan kesme veya yetenekle saldırısını durdurma; Boss daha önce öğrenilen iki mekaniğin birleşimi. Zırh/direnç eklenirse ikon, kısa açıklama ve hasar tepkisiyle görünür kılınmalı; görünmez hesap cezasına dönüşmemeli.
 
-**Doğrulanmış durum etkisi hatası:** sersemletilmiş bir Siege, kule menziline yerleştirildikten sonra kuleyi yine susturdu. [Deney](evidence/stunned-siege.json). `RunSpecialBehaviour()` sersemletme kontrolünden önce çalışıyor; yenilenme ve destek davranışları da aynı sırada. [Kaynak](/Users/emreaydin/DefenderChronicles/Assets/Scripts/Core/GreyboxCombatants.cs:57).
+**Doğrulanmış durum etkisi hatası:** sersemletilmiş bir Siege, kule menziline yerleştirildikten sonra kuleyi yine susturdu. [Deney](evidence/stunned-siege.json). `RunSpecialBehaviour()` sersemletme kontrolünden önce çalışıyor; yenilenme ve destek davranışları da aynı sırada. [Kaynak](/Users/emreaydin/AllinDefense/Assets/Scripts/Core/GreyboxCombatants.cs:57).
 
 Sersemletmenin hangi eylemleri durdurduğu tek sözleşmede tanımlansın. Pasif yenilenme sürsün isteniyorsa bu bilinçli kural olabilir; kuşatma saldırısının devam etmesi ise oyuncunun “doğru anda durdurdum” beklentisini kırar. Kabul testi hareket, normal saldırı ve özel saldırıyı ayrı doğrulasın.
 
 ### 4.5 Dalga düzeni, boss ve zamanlama
 
-`SpawnWave`, grupları sırayla tamamen üretip sonra bir sonraki grubun gecikmesini bekliyor. `startDelay`, dalganın başlangıcına göre ortak zaman çizelgesi gibi çalışmıyor. Tank, destek ve hızlı birliğin tasarlanmış eşzamanlı baskısı yerine birbirini takip eden paketler oluşabiliyor. “İki koldan” önizlemesi de tek aktif rota/spawn düzeniyle örtüşmüyor. [Kaynak](/Users/emreaydin/DefenderChronicles/Assets/Scripts/Core/GameSessionController.cs:685).
+`SpawnWave`, grupları sırayla tamamen üretip sonra bir sonraki grubun gecikmesini bekliyor. `startDelay`, dalganın başlangıcına göre ortak zaman çizelgesi gibi çalışmıyor. Tank, destek ve hızlı birliğin tasarlanmış eşzamanlı baskısı yerine birbirini takip eden paketler oluşabiliyor. “İki koldan” önizlemesi de tek aktif rota/spawn düzeniyle örtüşmüyor. [Kaynak](/Users/emreaydin/AllinDefense/Assets/Scripts/Core/GameSessionController.cs:685).
 
 Dalga verisinde gecikmenin anlamını açıkça belirleyin. Karma baskı isteniyorsa grupları ortak dalga saatinden planlayın; amaç ardışık paketlerse önizleme bunu söylesin. İlk bölgede her dalganın tek bir öğretim amacı olsun, sonra roller birleştirilsin.
 
@@ -142,7 +142,7 @@ Hasar bazı saldırılarda animasyondan önce uygulanıyor. `PresentationActionT
 
 ### 5.1 50 kayıt, 50 ayrı tasarım deneyimi anlamına gelmiyor
 
-Kampanya beş temel rota ve bunların aynalanmış biçimleri üzerine kurulmuş; dışa aktarılan veride **10 farklı rota geometrisi** bulunuyor. Bölüm 10 özel dalga düzenini koruyor; diğerlerinin büyük kısmı formüllerle üretiliyor. Bölge adları değişse de temel savaş sunumu ve boss davranışı benzer kalıyor. [CampaignLevelFactory.cs](/Users/emreaydin/DefenderChronicles/Assets/Scripts/Data/CampaignLevelFactory.cs:68).
+Kampanya beş temel rota ve bunların aynalanmış biçimleri üzerine kurulmuş; dışa aktarılan veride **10 farklı rota geometrisi** bulunuyor. Bölüm 10 özel dalga düzenini koruyor; diğerlerinin büyük kısmı formüllerle üretiliyor. Bölge adları değişse de temel savaş sunumu ve boss davranışı benzer kalıyor. [CampaignLevelFactory.cs](/Users/emreaydin/AllinDefense/Assets/Scripts/Data/CampaignLevelFactory.cs:68).
 
 Formül kullanmak yanlış değil. Ancak el yapımı yerleşim, dalga kompozisyonu ve çevresel mekanikle desteklenmediğinde bölüm sayısı ilerleme hissinin yerine geçiyor. Bölüm 10’dan 11’e toplam düşman canının 28.668’den 9.173’e düşmesi dinlenme noktası olarak bilinçli olabilir; buna rağmen “zorluk” alanının ikisinde de aynı olması, etikete bakarak gerçek baskının anlaşılamadığını gösteriyor. Bu alan aktif düşman istatistiklerini doğrudan yöneten tek kaynak değil.
 
@@ -185,7 +185,7 @@ Knight’ın hareket ettirilemediği açık olsun: “Kale muhafızı son hattı
 
 ### 6.2 Mobil dokunma boyutu yeniden ölçülmeli
 
-Alt eylem düğmeleri 75 canvas birimi, bazı yükseltme düğmeleri 58 birim yükseklikte. Önceki erişilebilirlik raporunun “44’ten büyük” karşılaştırması fiziksel dokunma boyutunu kanıtlamıyor; canvas birimi, piksel ve iOS point aynı birim değil. [Yerleşim](/Users/emreaydin/DefenderChronicles/Assets/Scripts/Presentation/DefenderHudResponsiveLayout.cs:213).
+Alt eylem düğmeleri 75 canvas birimi, bazı yükseltme düğmeleri 58 birim yükseklikte. Önceki erişilebilirlik raporunun “44’ten büyük” karşılaştırması fiziksel dokunma boyutunu kanıtlamıyor; canvas birimi, piksel ve iOS point aynı birim değil. [Yerleşim](/Users/emreaydin/AllinDefense/Assets/Scripts/Presentation/DefenderHudResponsiveLayout.cs:213).
 
 1920×1080 referans ve eşit genişlik/yükseklik ölçekleme varsayımıyla, 75 birimlik düğmenin yüksekliği iPhone SE sınıfı 1334×750 çözünürlükte yaklaşık **26 point**, 2532×1170 ve 3× ölçekli ekranda yaklaşık **30 point** olur. Bunlar cihaz üzerinde okunmuş hit rectangle ölçümleri değil; mevcut ölçekleme düzeninin hesaplanan sonucudur. Görünmez genişletilmiş dokunma alanı varsa ayrıca ölçülmelidir.
 
@@ -195,7 +195,7 @@ HUD’da altı şeyi aynı anda okunur tutmak yeterli: kale canı, altın, mevcu
 
 ### 6.3 Devam, yenilgi ve kesintiler
 
-Ana menüdeki devam eylemi `lastSelectedLevel` değerini kullanıyor. Sonuç ekranında ilerleme açılırken bu alanın bir sonraki oynanmamış bölüme kalıcı taşındığı bir yol bulunmadı. Oyuncu “devam” dediğinde bitirdiği bölüme dönme riski var. “Son oynadığın bölüm” ile “sıradaki bölüm” ayrı anlamlar olarak modellenmeli. [Kaynak](/Users/emreaydin/DefenderChronicles/Assets/Scripts/UI/AppFlowController.cs:694).
+Ana menüdeki devam eylemi `lastSelectedLevel` değerini kullanıyor. Sonuç ekranında ilerleme açılırken bu alanın bir sonraki oynanmamış bölüme kalıcı taşındığı bir yol bulunmadı. Oyuncu “devam” dediğinde bitirdiği bölüme dönme riski var. “Son oynadığın bölüm” ile “sıradaki bölüm” ayrı anlamlar olarak modellenmeli. [Kaynak](/Users/emreaydin/AllinDefense/Assets/Scripts/UI/AppFlowController.cs:694).
 
 Yenilgi ekranı sadece savunmayı güçlendirmeyi söylemesin. En azından hangi dalgada, hangi düşmanlardan kaç can kaybedildiğini; bir sonraki denemede değiştirilebilecek tek somut öneriyi göstersin. İleri aşamada kule hasarı ve kışla engelleme süresi eklenebilir. Bu, oyuncunun kendi stratejisini öğrenmesini sağlar.
 
@@ -203,7 +203,7 @@ Aktif kaynaklarda uygulama odağı/kesintisi için tamamlanmış `OnApplicationP
 
 ### 6.4 Dil, görsel erişilebilirlik ve ses
 
-TR/EN altyapısı ve yerelleştirme var; fakat dinamik savaş metinleri parçalı kalıyor. “SLOT SEÇ”, “SV”, “sn”, “KALKAN” gibi ifadeler ve bazı dalga önizlemeleri Türkçe kalabiliyor. `GameLocalization` eşleşmeyen metni olduğu gibi döndürüyor. Düşman sınıflandırmasını ad içindeki “muhafız” gibi sözcüklerden çıkarmak yerine archetype üzerinden yapın. [GameLocalization.cs](/Users/emreaydin/DefenderChronicles/Assets/Scripts/UI/GameLocalization.cs).
+TR/EN altyapısı ve yerelleştirme var; fakat dinamik savaş metinleri parçalı kalıyor. “SLOT SEÇ”, “SV”, “sn”, “KALKAN” gibi ifadeler ve bazı dalga önizlemeleri Türkçe kalabiliyor. `GameLocalization` eşleşmeyen metni olduğu gibi döndürüyor. Düşman sınıflandırmasını ad içindeki “muhafız” gibi sözcüklerden çıkarmak yerine archetype üzerinden yapın. [GameLocalization.cs](/Users/emreaydin/AllinDefense/Assets/Scripts/UI/GameLocalization.cs).
 
 Dil kontrolü ana menüyle sınırlı kalmasın: hazırlanma, dalga, boss, yetersiz para, cooldown, duraklatma, zafer, yenilgi ve çevrimdışı/hata durumları iki dilde gezilsin. Uzun metinler ve Türkçe karakterler küçük ekran/safe area koşullarında test edilsin.
 
@@ -215,7 +215,7 @@ Ses tarafında katman/politika altyapısı var; bu audit yeni cihaz üzerinde di
 
 Menülerdeki resimli ortaçağ atmosferi, lacivert/altın renk düzeni ve arma tutarlı bir başlangıç kimliği veriyor. İncelenen savaş görüntüsü ise daha düz/koyu zemin, köşeli rota, tekrar eden çevre öğeleri ve küçük birlik siluetleriyle daha erken geliştirme aşamasında görünüyor. Menüyle savaş arasındaki bu fark, oyuncunun ilk beklentisini zayıflatabilir.
 
-Görsel kanıtlar: [6 Eylül güncel Editor hazırlık ekranı](evidence/live-preparation-initial.png), [27 Ağustos menü görüntüsü](/Users/emreaydin/DefenderChronicles/Builds/Beautification-Final/welcome-9x19_5.png), [25 Ağustos yoğun dalga görüntüsü](/Users/emreaydin/DefenderChronicles/docs/evidence/runtime/defender-simulator-vis812-final-20260825-205459-dense-landscape-readable.png). Eski ekranlarda görülen taşma veya yerleşim sorunları yeni telefonda tekrar görülmeden “güncel cihaz hatası” olarak sayılmıyor.
+Görsel kanıtlar: [6 Eylül güncel Editor hazırlık ekranı](evidence/live-preparation-initial.png), [27 Ağustos menü görüntüsü](/Users/emreaydin/AllinDefense/Builds/Beautification-Final/welcome-9x19_5.png), [25 Ağustos yoğun dalga görüntüsü](/Users/emreaydin/AllinDefense/docs/evidence/runtime/defender-simulator-vis812-final-20260825-205459-dense-landscape-readable.png). Eski ekranlarda görülen taşma veya yerleşim sorunları yeni telefonda tekrar görülmeden “güncel cihaz hatası” olarak sayılmıyor.
 
 **Önce tek bir referans savaş sahnesi tamamlayın:**
 
@@ -232,7 +232,7 @@ Mevcut basit iskelet/animasyon varlıkları bu amaç için kullanılabilir. Baş
 
 ### 8.1 Bulut eşitlemenin yaşam döngüsü tamamlanmalı
 
-`UnityGameServicesController.Configure` olaylara bağlanıyor; başlangıçta servisi başlatmıyor. `EnsureInitializedAsync` oturum açma talebinden çağrılıyor. Yerel kayıtta oyuncu kimliği varsa frontend doğrudan ana menüye yöneliyor. Bölüm değiştirme/yeniden deneme sahneyi yeniden yüklüyor; yeni controller’ın `initialized` alanı yine false. `HandleProgressChanged` bu durumda hemen dönüyor. [Servis kaynağı](/Users/emreaydin/DefenderChronicles/Assets/Scripts/Core/UnityGameServicesController.cs:24), [sahne yükleme](/Users/emreaydin/DefenderChronicles/Assets/Scripts/UI/AppFlowController.cs:1395).
+`UnityGameServicesController.Configure` olaylara bağlanıyor; başlangıçta servisi başlatmıyor. `EnsureInitializedAsync` oturum açma talebinden çağrılıyor. Yerel kayıtta oyuncu kimliği varsa frontend doğrudan ana menüye yöneliyor. Bölüm değiştirme/yeniden deneme sahneyi yeniden yüklüyor; yeni controller’ın `initialized` alanı yine false. `HandleProgressChanged` bu durumda hemen dönüyor. [Servis kaynağı](/Users/emreaydin/AllinDefense/Assets/Scripts/Core/UnityGameServicesController.cs:24), [sahne yükleme](/Users/emreaydin/AllinDefense/Assets/Scripts/UI/AppFlowController.cs:1395).
 
 Bu akışta SDK’nın statik oturumu açık kalsa dahi controller’ın yerel başlangıç koşulu eşitlemeyi durdurabiliyor. İnternetin geri gelmesini izleyen düzenli tekrar deneme yolu da bulunmadı. Kaynakta görülen sorun budur; gerçek hesaplar arasında uzaktan veri kaybı deneyi yapılmadı.
 
@@ -240,7 +240,7 @@ Bu akışta SDK’nın statik oturumu açık kalsa dahi controller’ın yerel b
 
 ### 8.2 Yerel kayıt güvenliği
 
-Kayıt önce geçici dosyaya yazılıyor, sonra eski dosya siliniyor ve geçici dosya taşınıyor. Eski dosyanın silinmesi ile taşıma arasındaki kesinti kaydı erişilemez bırakabilir. Yükleme yalnız ana dosyayı okuyor; bozuk dosyada temiz kayıt açılıyor, `.tmp/.bak` kurtarma yolu yok. [CampaignProgressStore.cs](/Users/emreaydin/DefenderChronicles/Assets/Scripts/Core/CampaignProgressStore.cs:193).
+Kayıt önce geçici dosyaya yazılıyor, sonra eski dosya siliniyor ve geçici dosya taşınıyor. Eski dosyanın silinmesi ile taşıma arasındaki kesinti kaydı erişilemez bırakabilir. Yükleme yalnız ana dosyayı okuyor; bozuk dosyada temiz kayıt açılıyor, `.tmp/.bak` kurtarma yolu yok. [CampaignProgressStore.cs](/Users/emreaydin/AllinDefense/Assets/Scripts/Core/CampaignProgressStore.cs:193).
 
 Platforma uygun atomik dosya değiştirme, bir önceki geçerli yedek, sürüm/kayıt doğrulaması ve açılışta kurtarma sırası ekleyin. Kayıt bozulduğunda sessiz sıfırlama yerine kurtarma durumu gösterin. Test, yalnız normal yaz/oku değil; her yazma aşamasında kesinti ve bozuk JSON içermeli.
 
@@ -255,7 +255,7 @@ Yerel kurallar motoruna yapılan iki deney:
 - **Bölüm 1, kalan can 0, yıldız 3:** kabul edildi; **27 Valor** verildi, kayıt 3 yıldız/0 en iyi can oldu.
 - **Eski kayıt göçü:** yalnızca bölüm 50 için başarı kaydı içeren istemci JSON’u, ilerlemeyi **50. bölüme** açabildi.
 
-[Deney çıktısı](evidence/cloud-rules-probes.json), [CampaignProgressionModule.cs](/Users/emreaydin/DefenderChronicles/CampaignProgressionCCM/CampaignProgression/CampaignProgressionModule.cs:137). Bunlar yerel kurallar motoru deneyleridir; üretim servisine talep gönderilmedi, gerçek oyuncu verisi değiştirilmedi.
+[Deney çıktısı](evidence/cloud-rules-probes.json), [CampaignProgressionModule.cs](/Users/emreaydin/AllinDefense/CampaignProgressionCCM/CampaignProgression/CampaignProgressionModule.cs:137). Bunlar yerel kurallar motoru deneyleridir; üretim servisine talep gönderilmedi, gerçek oyuncu verisi değiştirilmedi.
 
 En azından zaferde can > 0 olmalı; yıldız sayısı sunucuda kalan can ve bölüm kuralından türetilmeli; eski kayıt göçü güvenilir kaynağa veya sınırlı bir geçiş politikasına bağlanmalı. Tek başına bunlar sahte tamamlamayı bütünüyle önlemez. Çevrimiçi değeri olan ödüller için başlangıç/bitiş ilişkisi, oturum kimliği, kural sürümü ve makul süre gibi bağlamlar gerekir. Unity de istemci kaynaklı durumun güven sınırını ve sunucuda doğrulamayı vurguluyor. [Unity Cloud Code güvenlik rehberi](https://docs.unity.com/ugs/en-us/manual/cloud-code/manual/cheat-prevention).
 
@@ -267,11 +267,11 @@ En azından zaferde can > 0 olmalı; yıldız sayısı sunucuda kalan can ve bö
 
 ### 9.1 Fiziksel cihaz kanıtı var; kapsamı doğru okunmalı
 
-26 Ağustos tarihli fiziksel iPhone 13 sınıfı cihaz raporunda yaklaşık **60,1 FPS**, **16,9 ms p95** ve otomatik kabul adımları var. Bu değerler olumlu tarihsel kanıt; “hiç cihaz testi yapılmamış” demek yanlış olur. Aynı raporda hazırlık/normal/yoğun/boss aşamalarında yaklaşık **609 / 821 / 949 / 1.015 MB** bellek, 90 saniyelik dokuz döngülü soak sırasında yaklaşık **1.089 MB**, **%7,1 büyüme**, **21,1 ms p95** ve **serious** termal durum da yer alıyor. [Fiziksel kabul raporu](/Users/emreaydin/DefenderChronicles/docs/IOS_PHYSICAL_DEVICE_ACCEPTANCE_PROGRESS_2026-08-26.md).
+26 Ağustos tarihli fiziksel iPhone 13 sınıfı cihaz raporunda yaklaşık **60,1 FPS**, **16,9 ms p95** ve otomatik kabul adımları var. Bu değerler olumlu tarihsel kanıt; “hiç cihaz testi yapılmamış” demek yanlış olur. Aynı raporda hazırlık/normal/yoğun/boss aşamalarında yaklaşık **609 / 821 / 949 / 1.015 MB** bellek, 90 saniyelik dokuz döngülü soak sırasında yaklaşık **1.089 MB**, **%7,1 büyüme**, **21,1 ms p95** ve **serious** termal durum da yer alıyor. [Fiziksel kabul raporu](/Users/emreaydin/AllinDefense/docs/IOS_PHYSICAL_DEVICE_ACCEPTANCE_PROGRESS_2026-08-26.md).
 
 Bu bellek değerleri probe’un Unity ayrılmış bellek ölçümüne dayanıyor; işletim sistemi süreç belleğiyle aynı şey değil. 90 saniyelik döngü, normal oynanışta 20 dakika testinin yerine geçmez. Ayrıca bu veriler audit günündeki sürümün yeni ölçümü değildir.
 
-Güncel `DeviceAcceptanceProbe.MarkScenario` etiketi değiştiriyor ama kare örneklerini temizlemiyor. “Boss p95” gibi etiketli değerler önceki aşamaları da içeren kümülatif dağılımdan gelebiliyor. `MeetsPerformanceGate` FPS/p95/düşük bellek uyarısını kontrol ediyor; termal durumu kabul koşuluna katmıyor. [DeviceAcceptanceProbe.cs](/Users/emreaydin/DefenderChronicles/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:90).
+Güncel `DeviceAcceptanceProbe.MarkScenario` etiketi değiştiriyor ama kare örneklerini temizlemiyor. “Boss p95” gibi etiketli değerler önceki aşamaları da içeren kümülatif dağılımdan gelebiliyor. `MeetsPerformanceGate` FPS/p95/düşük bellek uyarısını kontrol ediyor; termal durumu kabul koşuluna katmıyor. [DeviceAcceptanceProbe.cs](/Users/emreaydin/AllinDefense/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:90).
 
 **Önce ölçümü düzeltin:** ayrı aşama pencereleri, tüm oturum özeti, düşük FPS süreleri, termal durum ve ayrı bellek ölçüm adları. Sonra en düşük hedef cihazda 20–30 dakika normal savaş/menü/yeniden başlat döngüsü çalıştırın. iPhone’daki geçmiş sonuç Android’i temsil etmez; düşük ve orta seviye Android cihazı da gerekli. Hedef donanım listesi ve desteklenen kalite düzeyi açıkça yazılmalı.
 
@@ -300,7 +300,7 @@ Kule ve düşman değerleri tek veri kaynağından gelsin; açıklama/istatistik
 
 ### 9.4 Testlerin geçtiği iddia ile oyunun kaliteli olduğu iddia ayrılmalı
 
-Otomatik smoke’ın tam bölümü kazanması değerli bir entegrasyon kontrolü. Fakat `RunAutomatedSmoke` **2.200 ilave altın** verip savunmayı dolduruyor; performans akışlarında **2.600 ilave altın** ve bazı senaryolarda kale hasarını yok sayma yolu var. Bunlar normal kaynaklı denge testi değildir. [Smoke kaynağı](/Users/emreaydin/DefenderChronicles/Assets/Scripts/Core/GameSessionController.cs:1024).
+Otomatik smoke’ın tam bölümü kazanması değerli bir entegrasyon kontrolü. Fakat `RunAutomatedSmoke` **2.200 ilave altın** verip savunmayı dolduruyor; performans akışlarında **2.600 ilave altın** ve bazı senaryolarda kale hasarını yok sayma yolu var. Bunlar normal kaynaklı denge testi değildir. [Smoke kaynağı](/Users/emreaydin/AllinDefense/Assets/Scripts/Core/GameSessionController.cs:1024).
 
 Mevcut testler katalog, arayüz sözleşmeleri, yazı tipi/ses/presentation varlıkları ve temel kurallarda yararlı. Buna şu davranış testleri eklenmeli:
 
@@ -322,13 +322,13 @@ Mevcut testler katalog, arayüz sözleşmeleri, yazı tipi/ses/presentation varl
 
 ### 10.1 İsim kararı geciktirilmemeli
 
-**“Defender Chronicles” aynı türde daha önce kullanılmış bir oyun adı.** 2012 tarihli geliştirici/yayıncı duyurusu “Defender Chronicles II”yi ve önceki “Defender Chronicles – Legend of the Desert King” oyununu açıkça anıyor. Bu, genel bir isim benzerliği varsayımı değil. [Dönemin resmî basın duyurusu](https://pressreleases.triplepointpr.com/2012/05/10/man-the-battlements-defender-chronicles-ii-announced-for-ios-rallies-onto-app-store-may-24/).
+**“ALLIN: Defense” aynı türde daha önce kullanılmış bir oyun adı.** 2012 tarihli geliştirici/yayıncı duyurusu “ALLIN: Defense II”yi ve önceki “ALLIN: Defense – Legend of the Desert King” oyununu açıkça anıyor. Bu, genel bir isim benzerliği varsayımı değil. [Dönemin resmî basın duyurusu](https://pressreleases.triplepointpr.com/2012/05/10/man-the-battlements-allin-defense-ii-announced-for-ios-rallies-onto-app-store-may-24/).
 
 Bu audit marka hakkı ihlali kararı vermez. Ancak arama bulunabilirliği, oyuncunun karıştırması ve mağaza sunumu açısından adı yeniden değerlendirmek güçlü bir ürün gereği. Mağaza görsellerine, alan adına ve büyük tanıtıma yatırım yapmadan önce farklı ad seçenekleri ve uygunluk araştırması tamamlanmalı. Mevcut ürün notu da adı çalışma başlığı olarak ele alıyor.
 
 ### 10.2 Hesap özelliği, yayın sorumluluğu doğuruyor
 
-`FrontendPresentationTheme.asset` içinde gizlilik politikası ve kullanım koşulu bağlantıları boş. Uygulamada butonları bulunuyor; boş bağlantıda yapılandırma mesajı gösteriliyor. İncelenen kaynaklarda uygulama içi hesap silme akışı bulunamadı. [Theme asset](/Users/emreaydin/DefenderChronicles/Assets/Resources/Presentation/FrontendPresentationTheme.asset:41).
+`FrontendPresentationTheme.asset` içinde gizlilik politikası ve kullanım koşulu bağlantıları boş. Uygulamada butonları bulunuyor; boş bağlantıda yapılandırma mesajı gösteriliyor. İncelenen kaynaklarda uygulama içi hesap silme akışı bulunamadı. [Theme asset](/Users/emreaydin/AllinDefense/Assets/Resources/Presentation/FrontendPresentationTheme.asset:41).
 
 Apple, uygulama üzerinden hesap oluşturmayı destekleyen uygulamalarda uygulama içinden hesap silmeyi başlatma imkânı istiyor. Google Play’in kapsamına giren uygulamalarda uygulama içi yolun yanında web üzerinden talep yolu ve veri beyanları da gerekiyor. Kullanılan misafir/Player Account akışlarının kapsamı yayın öncesi netleştirilmeli. [Apple hesap silme rehberi](https://developer.apple.com/support/offering-account-deletion-in-your-app/), [Google Play hesap silme rehberi](https://support.google.com/googleplay/android-developer/answer/13327111?hl=en-EN).
 

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace DefenderChronicles.UI
+namespace AllinDefense.UI
 {
     public sealed class FrontendOrientationWait
     {

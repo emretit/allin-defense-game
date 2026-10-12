@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using DefenderChronicles.Data;
-using DefenderChronicles.Combat;
+using AllinDefense.Data;
+using AllinDefense.Combat;
 using UnityEngine;
 
-namespace DefenderChronicles.Core
+namespace AllinDefense.Core
 {
     public enum PlayerAuthProvider
     {

@@ -1,72 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <test-run id="2" testcasecount="36" result="Passed" total="36" passed="36" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-09-06 13:30:56Z" end-time="2026-09-06 13:37:45Z" duration="408.3177603">
-  <test-suite type="TestSuite" id="1050" name="Defender Chronicles Test" fullname="Defender Chronicles Test" runstate="Runnable" testcasecount="36" result="Passed" start-time="2026-09-06 13:30:56Z" end-time="2026-09-06 13:37:45Z" duration="408.317760" total="36" passed="36" failed="0" inconclusive="0" skipped="0" asserts="0">
+  <test-suite type="TestSuite" id="1050" name="ALLIN: Defense Test" fullname="ALLIN: Defense Test" runstate="Runnable" testcasecount="36" result="Passed" start-time="2026-09-06 13:30:56Z" end-time="2026-09-06 13:37:45Z" duration="408.317760" total="36" passed="36" failed="0" inconclusive="0" skipped="0" asserts="0">
     <properties>
       <property name="platform" value="PlayMode" />
     </properties>
-    <test-suite type="Assembly" id="1044" name="DefenderChronicles.PlayModeTests.dll" fullname="/Users/emreaydin/DefenderChronicles-first-region/Library/ScriptAssemblies/DefenderChronicles.PlayModeTests.dll" runstate="Runnable" testcasecount="36" result="Passed" start-time="2026-09-06 13:30:56Z" end-time="2026-09-06 13:37:45Z" duration="408.314166" total="36" passed="36" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <test-suite type="Assembly" id="1044" name="AllinDefense.PlayModeTests.dll" fullname="/Users/emreaydin/AllinDefense-first-region/Library/ScriptAssemblies/AllinDefense.PlayModeTests.dll" runstate="Runnable" testcasecount="36" result="Passed" start-time="2026-09-06 13:30:56Z" end-time="2026-09-06 13:37:45Z" duration="408.314166" total="36" passed="36" failed="0" inconclusive="0" skipped="0" asserts="0">
       <properties>
         <property name="_PID" value="76982" />
         <property name="_APPDOMAIN" value="Unity Child Domain" />
         <property name="platform" value="PlayMode" />
         <property name="EditorOnly" value="False" />
       </properties>
-      <test-suite type="TestSuite" id="1045" name="DefenderChronicles" fullname="DefenderChronicles" runstate="Runnable" testcasecount="36" result="Passed" start-time="2026-09-06 13:30:56Z" end-time="2026-09-06 13:37:45Z" duration="408.313601" total="36" passed="36" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <test-suite type="TestSuite" id="1045" name="AllinDefense" fullname="AllinDefense" runstate="Runnable" testcasecount="36" result="Passed" start-time="2026-09-06 13:30:56Z" end-time="2026-09-06 13:37:45Z" duration="408.313601" total="36" passed="36" failed="0" inconclusive="0" skipped="0" asserts="0">
         <properties />
-        <test-suite type="TestSuite" id="1046" name="Tests" fullname="DefenderChronicles.Tests" runstate="Runnable" testcasecount="36" result="Passed" start-time="2026-09-06 13:30:56Z" end-time="2026-09-06 13:37:45Z" duration="408.311820" total="36" passed="36" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <test-suite type="TestSuite" id="1046" name="Tests" fullname="AllinDefense.Tests" runstate="Runnable" testcasecount="36" result="Passed" start-time="2026-09-06 13:30:56Z" end-time="2026-09-06 13:37:45Z" duration="408.311820" total="36" passed="36" failed="0" inconclusive="0" skipped="0" asserts="0">
           <properties />
-          <test-suite type="TestFixture" id="1001" name="BarracksSquadTests" fullname="DefenderChronicles.Tests.BarracksSquadTests" classname="DefenderChronicles.Tests.BarracksSquadTests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-09-06 13:30:56Z" end-time="2026-09-06 13:30:57Z" duration="0.864186" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <test-suite type="TestFixture" id="1001" name="BarracksSquadTests" fullname="AllinDefense.Tests.BarracksSquadTests" classname="AllinDefense.Tests.BarracksSquadTests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-09-06 13:30:56Z" end-time="2026-09-06 13:30:57Z" duration="0.864186" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
             <properties />
-            <test-case id="1007" name="BothSpecializationsKeepThreeSoldiers" fullname="DefenderChronicles.Tests.BarracksSquadTests.BothSpecializationsKeepThreeSoldiers" methodname="BothSpecializationsKeepThreeSoldiers" classname="DefenderChronicles.Tests.BarracksSquadTests" runstate="Runnable" seed="1614924313" result="Passed" start-time="2026-09-06 13:30:56Z" end-time="2026-09-06 13:30:57Z" duration="0.433648" asserts="0">
+            <test-case id="1007" name="BothSpecializationsKeepThreeSoldiers" fullname="AllinDefense.Tests.BarracksSquadTests.BothSpecializationsKeepThreeSoldiers" methodname="BothSpecializationsKeepThreeSoldiers" classname="AllinDefense.Tests.BarracksSquadTests" runstate="Runnable" seed="1614924313" result="Passed" start-time="2026-09-06 13:30:56Z" end-time="2026-09-06 13:30:57Z" duration="0.433648" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1008" name="CheckpointPreservesMarchingPositionsAndMissingFormationSlots" fullname="DefenderChronicles.Tests.BarracksSquadTests.CheckpointPreservesMarchingPositionsAndMissingFormationSlots" methodname="CheckpointPreservesMarchingPositionsAndMissingFormationSlots" classname="DefenderChronicles.Tests.BarracksSquadTests" runstate="Runnable" seed="2123131087" result="Passed" start-time="2026-09-06 13:30:57Z" end-time="2026-09-06 13:30:57Z" duration="0.094158" asserts="0">
+            <test-case id="1008" name="CheckpointPreservesMarchingPositionsAndMissingFormationSlots" fullname="AllinDefense.Tests.BarracksSquadTests.CheckpointPreservesMarchingPositionsAndMissingFormationSlots" methodname="CheckpointPreservesMarchingPositionsAndMissingFormationSlots" classname="AllinDefense.Tests.BarracksSquadTests" runstate="Runnable" seed="2123131087" result="Passed" start-time="2026-09-06 13:30:57Z" end-time="2026-09-06 13:30:57Z" duration="0.094158" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1004" name="EnemyCannotStoreInstantAttacksWhileWaitingForAnOpponent" fullname="DefenderChronicles.Tests.BarracksSquadTests.EnemyCannotStoreInstantAttacksWhileWaitingForAnOpponent" methodname="EnemyCannotStoreInstantAttacksWhileWaitingForAnOpponent" classname="DefenderChronicles.Tests.BarracksSquadTests" runstate="Runnable" seed="1962047663" result="Passed" start-time="2026-09-06 13:30:57Z" end-time="2026-09-06 13:30:57Z" duration="0.052817" asserts="0">
+            <test-case id="1004" name="EnemyCannotStoreInstantAttacksWhileWaitingForAnOpponent" fullname="AllinDefense.Tests.BarracksSquadTests.EnemyCannotStoreInstantAttacksWhileWaitingForAnOpponent" methodname="EnemyCannotStoreInstantAttacksWhileWaitingForAnOpponent" classname="AllinDefense.Tests.BarracksSquadTests" runstate="Runnable" seed="1962047663" result="Passed" start-time="2026-09-06 13:30:57Z" end-time="2026-09-06 13:30:57Z" duration="0.052817" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1009" name="LegacyTwoSoldierCheckpointRestoresAndRecruitsThirdSoldier" fullname="DefenderChronicles.Tests.BarracksSquadTests.LegacyTwoSoldierCheckpointRestoresAndRecruitsThirdSoldier" methodname="LegacyTwoSoldierCheckpointRestoresAndRecruitsThirdSoldier" classname="DefenderChronicles.Tests.BarracksSquadTests" runstate="Runnable" seed="582127341" result="Passed" start-time="2026-09-06 13:30:57Z" end-time="2026-09-06 13:30:57Z" duration="0.072396" asserts="0">
+            <test-case id="1009" name="LegacyTwoSoldierCheckpointRestoresAndRecruitsThirdSoldier" fullname="AllinDefense.Tests.BarracksSquadTests.LegacyTwoSoldierCheckpointRestoresAndRecruitsThirdSoldier" methodname="LegacyTwoSoldierCheckpointRestoresAndRecruitsThirdSoldier" classname="AllinDefense.Tests.BarracksSquadTests" runstate="Runnable" seed="582127341" result="Passed" start-time="2026-09-06 13:30:57Z" end-time="2026-09-06 13:30:57Z" duration="0.072396" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1005" name="MeleeReachUsesTheRoadPlaneRegardlessOfVisualPivotHeight" fullname="DefenderChronicles.Tests.BarracksSquadTests.MeleeReachUsesTheRoadPlaneRegardlessOfVisualPivotHeight" methodname="MeleeReachUsesTheRoadPlaneRegardlessOfVisualPivotHeight" classname="DefenderChronicles.Tests.BarracksSquadTests" runstate="Runnable" seed="1312520947" result="Passed" start-time="2026-09-06 13:30:57Z" end-time="2026-09-06 13:30:57Z" duration="0.045006" asserts="0">
+            <test-case id="1005" name="MeleeReachUsesTheRoadPlaneRegardlessOfVisualPivotHeight" fullname="AllinDefense.Tests.BarracksSquadTests.MeleeReachUsesTheRoadPlaneRegardlessOfVisualPivotHeight" methodname="MeleeReachUsesTheRoadPlaneRegardlessOfVisualPivotHeight" classname="AllinDefense.Tests.BarracksSquadTests" runstate="Runnable" seed="1312520947" result="Passed" start-time="2026-09-06 13:30:57Z" end-time="2026-09-06 13:30:57Z" duration="0.045006" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1006" name="ReplacementKeepsTheMissingFormationSlotAndSellingRemovesTheSquad" fullname="DefenderChronicles.Tests.BarracksSquadTests.ReplacementKeepsTheMissingFormationSlotAndSellingRemovesTheSquad" methodname="ReplacementKeepsTheMissingFormationSlotAndSellingRemovesTheSquad" classname="DefenderChronicles.Tests.BarracksSquadTests" runstate="Runnable" seed="1375880655" result="Passed" start-time="2026-09-06 13:30:57Z" end-time="2026-09-06 13:30:57Z" duration="0.041146" asserts="0">
+            <test-case id="1006" name="ReplacementKeepsTheMissingFormationSlotAndSellingRemovesTheSquad" fullname="AllinDefense.Tests.BarracksSquadTests.ReplacementKeepsTheMissingFormationSlotAndSellingRemovesTheSquad" methodname="ReplacementKeepsTheMissingFormationSlotAndSellingRemovesTheSquad" classname="AllinDefense.Tests.BarracksSquadTests" runstate="Runnable" seed="1375880655" result="Passed" start-time="2026-09-06 13:30:57Z" end-time="2026-09-06 13:30:57Z" duration="0.041146" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1003" name="SoldiersMeetAnEnemyOnTheRoadAndTradeMeleeDamage" fullname="DefenderChronicles.Tests.BarracksSquadTests.SoldiersMeetAnEnemyOnTheRoadAndTradeMeleeDamage" methodname="SoldiersMeetAnEnemyOnTheRoadAndTradeMeleeDamage" classname="DefenderChronicles.Tests.BarracksSquadTests" runstate="Runnable" seed="595393372" result="Passed" start-time="2026-09-06 13:30:57Z" end-time="2026-09-06 13:30:57Z" duration="0.043132" asserts="0">
+            <test-case id="1003" name="SoldiersMeetAnEnemyOnTheRoadAndTradeMeleeDamage" fullname="AllinDefense.Tests.BarracksSquadTests.SoldiersMeetAnEnemyOnTheRoadAndTradeMeleeDamage" methodname="SoldiersMeetAnEnemyOnTheRoadAndTradeMeleeDamage" classname="AllinDefense.Tests.BarracksSquadTests" runstate="Runnable" seed="595393372" result="Passed" start-time="2026-09-06 13:30:57Z" end-time="2026-09-06 13:30:57Z" duration="0.043132" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1002" name="ThreeSoldiersLeaveTheBarracksAndReachSeparateRoadPositions" fullname="DefenderChronicles.Tests.BarracksSquadTests.ThreeSoldiersLeaveTheBarracksAndReachSeparateRoadPositions" methodname="ThreeSoldiersLeaveTheBarracksAndReachSeparateRoadPositions" classname="DefenderChronicles.Tests.BarracksSquadTests" runstate="Runnable" seed="1783473110" result="Passed" start-time="2026-09-06 13:30:57Z" end-time="2026-09-06 13:30:57Z" duration="0.073589" asserts="0">
+            <test-case id="1002" name="ThreeSoldiersLeaveTheBarracksAndReachSeparateRoadPositions" fullname="AllinDefense.Tests.BarracksSquadTests.ThreeSoldiersLeaveTheBarracksAndReachSeparateRoadPositions" methodname="ThreeSoldiersLeaveTheBarracksAndReachSeparateRoadPositions" classname="AllinDefense.Tests.BarracksSquadTests" runstate="Runnable" seed="1783473110" result="Passed" start-time="2026-09-06 13:30:57Z" end-time="2026-09-06 13:30:57Z" duration="0.073589" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
@@ -74,16 +74,16 @@
               </properties>
             </test-case>
           </test-suite>
-          <test-suite type="TestFixture" id="1010" name="ClosedTestAcceptanceTests" fullname="DefenderChronicles.Tests.ClosedTestAcceptanceTests" classname="DefenderChronicles.Tests.ClosedTestAcceptanceTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-09-06 13:30:57Z" end-time="2026-09-06 13:31:01Z" duration="4.071234" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <test-suite type="TestFixture" id="1010" name="ClosedTestAcceptanceTests" fullname="AllinDefense.Tests.ClosedTestAcceptanceTests" classname="AllinDefense.Tests.ClosedTestAcceptanceTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-09-06 13:30:57Z" end-time="2026-09-06 13:31:01Z" duration="4.071234" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
             <properties />
-            <test-case id="1016" name="EmptyShieldBashDoesNotSpendCooldown" fullname="DefenderChronicles.Tests.ClosedTestAcceptanceTests.EmptyShieldBashDoesNotSpendCooldown" methodname="EmptyShieldBashDoesNotSpendCooldown" classname="DefenderChronicles.Tests.ClosedTestAcceptanceTests" runstate="Runnable" seed="401551846" result="Passed" start-time="2026-09-06 13:30:57Z" end-time="2026-09-06 13:30:57Z" duration="0.029429" asserts="0">
+            <test-case id="1016" name="EmptyShieldBashDoesNotSpendCooldown" fullname="AllinDefense.Tests.ClosedTestAcceptanceTests.EmptyShieldBashDoesNotSpendCooldown" methodname="EmptyShieldBashDoesNotSpendCooldown" classname="AllinDefense.Tests.ClosedTestAcceptanceTests" runstate="Runnable" seed="401551846" result="Passed" start-time="2026-09-06 13:30:57Z" end-time="2026-09-06 13:30:57Z" duration="0.029429" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1014" name="FrameRateAndSpeedHaveIdenticalBattleResults" fullname="DefenderChronicles.Tests.ClosedTestAcceptanceTests.FrameRateAndSpeedHaveIdenticalBattleResults" methodname="FrameRateAndSpeedHaveIdenticalBattleResults" classname="DefenderChronicles.Tests.ClosedTestAcceptanceTests" runstate="Runnable" seed="420386090" result="Passed" start-time="2026-09-06 13:30:57Z" end-time="2026-09-06 13:31:00Z" duration="2.540248" asserts="0">
+            <test-case id="1014" name="FrameRateAndSpeedHaveIdenticalBattleResults" fullname="AllinDefense.Tests.ClosedTestAcceptanceTests.FrameRateAndSpeedHaveIdenticalBattleResults" methodname="FrameRateAndSpeedHaveIdenticalBattleResults" classname="AllinDefense.Tests.ClosedTestAcceptanceTests" runstate="Runnable" seed="420386090" result="Passed" start-time="2026-09-06 13:30:57Z" end-time="2026-09-06 13:31:00Z" duration="2.540248" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
@@ -123,7 +123,7 @@
 [CLOCK_PARITY] fps=60 speed=8 result=Victory/542/20/3/140.81
 ]]></output>
             </test-case>
-            <test-case id="1011" name="GuidedFirstBattleWinsAndPersistsOnceWithoutResultScreen" fullname="DefenderChronicles.Tests.ClosedTestAcceptanceTests.GuidedFirstBattleWinsAndPersistsOnceWithoutResultScreen" methodname="GuidedFirstBattleWinsAndPersistsOnceWithoutResultScreen" classname="DefenderChronicles.Tests.ClosedTestAcceptanceTests" runstate="Runnable" seed="2144143272" result="Passed" start-time="2026-09-06 13:31:00Z" end-time="2026-09-06 13:31:01Z" duration="1.216058" asserts="0">
+            <test-case id="1011" name="GuidedFirstBattleWinsAndPersistsOnceWithoutResultScreen" fullname="AllinDefense.Tests.ClosedTestAcceptanceTests.GuidedFirstBattleWinsAndPersistsOnceWithoutResultScreen" methodname="GuidedFirstBattleWinsAndPersistsOnceWithoutResultScreen" classname="AllinDefense.Tests.ClosedTestAcceptanceTests" runstate="Runnable" seed="2144143272" result="Passed" start-time="2026-09-06 13:31:00Z" end-time="2026-09-06 13:31:01Z" duration="1.216058" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
@@ -134,21 +134,21 @@
 [WAVE_BALANCE] level=1 wave=3 seconds=50.35 gold=472 lives=20 peak=15
 ]]></output>
             </test-case>
-            <test-case id="1013" name="IncompatibleCheckpointLeavesCampaignFiftyIntact" fullname="DefenderChronicles.Tests.ClosedTestAcceptanceTests.IncompatibleCheckpointLeavesCampaignFiftyIntact" methodname="IncompatibleCheckpointLeavesCampaignFiftyIntact" classname="DefenderChronicles.Tests.ClosedTestAcceptanceTests" runstate="Runnable" seed="159999770" result="Passed" start-time="2026-09-06 13:31:01Z" end-time="2026-09-06 13:31:01Z" duration="0.088193" asserts="0">
+            <test-case id="1013" name="IncompatibleCheckpointLeavesCampaignFiftyIntact" fullname="AllinDefense.Tests.ClosedTestAcceptanceTests.IncompatibleCheckpointLeavesCampaignFiftyIntact" methodname="IncompatibleCheckpointLeavesCampaignFiftyIntact" classname="AllinDefense.Tests.ClosedTestAcceptanceTests" runstate="Runnable" seed="159999770" result="Passed" start-time="2026-09-06 13:31:01Z" end-time="2026-09-06 13:31:01Z" duration="0.088193" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1015" name="SpecializationIsExclusiveAndRefundIncludesItsPrice" fullname="DefenderChronicles.Tests.ClosedTestAcceptanceTests.SpecializationIsExclusiveAndRefundIncludesItsPrice" methodname="SpecializationIsExclusiveAndRefundIncludesItsPrice" classname="DefenderChronicles.Tests.ClosedTestAcceptanceTests" runstate="Runnable" seed="1572162077" result="Passed" start-time="2026-09-06 13:31:01Z" end-time="2026-09-06 13:31:01Z" duration="0.084428" asserts="0">
+            <test-case id="1015" name="SpecializationIsExclusiveAndRefundIncludesItsPrice" fullname="AllinDefense.Tests.ClosedTestAcceptanceTests.SpecializationIsExclusiveAndRefundIncludesItsPrice" methodname="SpecializationIsExclusiveAndRefundIncludesItsPrice" classname="AllinDefense.Tests.ClosedTestAcceptanceTests" runstate="Runnable" seed="1572162077" result="Passed" start-time="2026-09-06 13:31:01Z" end-time="2026-09-06 13:31:01Z" duration="0.084428" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1012" name="WaveRestartRestoresExactResourcesWithoutPayingAgain" fullname="DefenderChronicles.Tests.ClosedTestAcceptanceTests.WaveRestartRestoresExactResourcesWithoutPayingAgain" methodname="WaveRestartRestoresExactResourcesWithoutPayingAgain" classname="DefenderChronicles.Tests.ClosedTestAcceptanceTests" runstate="Runnable" seed="1086362496" result="Passed" start-time="2026-09-06 13:31:01Z" end-time="2026-09-06 13:31:01Z" duration="0.108549" asserts="0">
+            <test-case id="1012" name="WaveRestartRestoresExactResourcesWithoutPayingAgain" fullname="AllinDefense.Tests.ClosedTestAcceptanceTests.WaveRestartRestoresExactResourcesWithoutPayingAgain" methodname="WaveRestartRestoresExactResourcesWithoutPayingAgain" classname="AllinDefense.Tests.ClosedTestAcceptanceTests" runstate="Runnable" seed="1086362496" result="Passed" start-time="2026-09-06 13:31:01Z" end-time="2026-09-06 13:31:01Z" duration="0.108549" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
@@ -156,9 +156,9 @@
               </properties>
             </test-case>
           </test-suite>
-          <test-suite type="TestFixture" id="1017" name="FirstRegionBalanceTests" fullname="DefenderChronicles.Tests.FirstRegionBalanceTests" classname="DefenderChronicles.Tests.FirstRegionBalanceTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-09-06 13:31:01Z" end-time="2026-09-06 13:31:48Z" duration="46.339890" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <test-suite type="TestFixture" id="1017" name="FirstRegionBalanceTests" fullname="AllinDefense.Tests.FirstRegionBalanceTests" classname="AllinDefense.Tests.FirstRegionBalanceTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-09-06 13:31:01Z" end-time="2026-09-06 13:31:48Z" duration="46.339890" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
             <properties />
-            <test-case id="1018" name="RealResourceCampaign" fullname="DefenderChronicles.Tests.FirstRegionBalanceTests.RealResourceCampaign" methodname="RealResourceCampaign" classname="DefenderChronicles.Tests.FirstRegionBalanceTests" runstate="Runnable" seed="2057654479" result="Passed" start-time="2026-09-06 13:31:01Z" end-time="2026-09-06 13:31:48Z" duration="46.325651" asserts="0">
+            <test-case id="1018" name="RealResourceCampaign" fullname="AllinDefense.Tests.FirstRegionBalanceTests.RealResourceCampaign" methodname="RealResourceCampaign" classname="AllinDefense.Tests.FirstRegionBalanceTests" runstate="Runnable" seed="2057654479" result="Passed" start-time="2026-09-06 13:31:01Z" end-time="2026-09-06 13:31:48Z" duration="46.325651" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
@@ -281,16 +281,16 @@
 ]]></output>
             </test-case>
           </test-suite>
-          <test-suite type="TestFixture" id="1019" name="FirstRegionRegressionTests" fullname="DefenderChronicles.Tests.FirstRegionRegressionTests" classname="DefenderChronicles.Tests.FirstRegionRegressionTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-09-06 13:31:48Z" end-time="2026-09-06 13:31:58Z" duration="10.747157" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <test-suite type="TestFixture" id="1019" name="FirstRegionRegressionTests" fullname="AllinDefense.Tests.FirstRegionRegressionTests" classname="AllinDefense.Tests.FirstRegionRegressionTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-09-06 13:31:48Z" end-time="2026-09-06 13:31:58Z" duration="10.747157" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
             <properties />
-            <test-case id="1023" name="GuardsCanReachTheRouteInEveryFirstRegionLayout" fullname="DefenderChronicles.Tests.FirstRegionRegressionTests.GuardsCanReachTheRouteInEveryFirstRegionLayout" methodname="GuardsCanReachTheRouteInEveryFirstRegionLayout" classname="DefenderChronicles.Tests.FirstRegionRegressionTests" runstate="Runnable" seed="1533313525" result="Passed" start-time="2026-09-06 13:31:48Z" end-time="2026-09-06 13:31:50Z" duration="2.253793" asserts="0">
+            <test-case id="1023" name="GuardsCanReachTheRouteInEveryFirstRegionLayout" fullname="AllinDefense.Tests.FirstRegionRegressionTests.GuardsCanReachTheRouteInEveryFirstRegionLayout" methodname="GuardsCanReachTheRouteInEveryFirstRegionLayout" classname="AllinDefense.Tests.FirstRegionRegressionTests" runstate="Runnable" seed="1533313525" result="Passed" start-time="2026-09-06 13:31:48Z" end-time="2026-09-06 13:31:50Z" duration="2.253793" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1020" name="NoDefencesCannotWinFirstLevel" fullname="DefenderChronicles.Tests.FirstRegionRegressionTests.NoDefencesCannotWinFirstLevel" methodname="NoDefencesCannotWinFirstLevel" classname="DefenderChronicles.Tests.FirstRegionRegressionTests" runstate="Runnable" seed="674388950" result="Passed" start-time="2026-09-06 13:31:50Z" end-time="2026-09-06 13:31:53Z" duration="3.382274" asserts="0">
+            <test-case id="1020" name="NoDefencesCannotWinFirstLevel" fullname="AllinDefense.Tests.FirstRegionRegressionTests.NoDefencesCannotWinFirstLevel" methodname="NoDefencesCannotWinFirstLevel" classname="AllinDefense.Tests.FirstRegionRegressionTests" runstate="Runnable" seed="674388950" result="Passed" start-time="2026-09-06 13:31:50Z" end-time="2026-09-06 13:31:53Z" duration="3.382274" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
@@ -299,7 +299,7 @@
               <output><![CDATA[[FIRST_REGION_IDLE] build=False phase=Defeat lives=0 seconds=26.71643
 ]]></output>
             </test-case>
-            <test-case id="1021" name="OneIdleArcherCannotEarnThreeStars" fullname="DefenderChronicles.Tests.FirstRegionRegressionTests.OneIdleArcherCannotEarnThreeStars" methodname="OneIdleArcherCannotEarnThreeStars" classname="DefenderChronicles.Tests.FirstRegionRegressionTests" runstate="Runnable" seed="370259384" result="Passed" start-time="2026-09-06 13:31:53Z" end-time="2026-09-06 13:31:58Z" duration="4.797564" asserts="0">
+            <test-case id="1021" name="OneIdleArcherCannotEarnThreeStars" fullname="AllinDefense.Tests.FirstRegionRegressionTests.OneIdleArcherCannotEarnThreeStars" methodname="OneIdleArcherCannotEarnThreeStars" classname="AllinDefense.Tests.FirstRegionRegressionTests" runstate="Runnable" seed="370259384" result="Passed" start-time="2026-09-06 13:31:53Z" end-time="2026-09-06 13:31:58Z" duration="4.797564" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
@@ -308,7 +308,7 @@
               <output><![CDATA[[FIRST_REGION_IDLE] build=True phase=Defeat lives=0 seconds=37.71626
 ]]></output>
             </test-case>
-            <test-case id="1022" name="StunnedSiegeCannotDisruptAnOutpost" fullname="DefenderChronicles.Tests.FirstRegionRegressionTests.StunnedSiegeCannotDisruptAnOutpost" methodname="StunnedSiegeCannotDisruptAnOutpost" classname="DefenderChronicles.Tests.FirstRegionRegressionTests" runstate="Runnable" seed="340578685" result="Passed" start-time="2026-09-06 13:31:58Z" end-time="2026-09-06 13:31:58Z" duration="0.092770" asserts="0">
+            <test-case id="1022" name="StunnedSiegeCannotDisruptAnOutpost" fullname="AllinDefense.Tests.FirstRegionRegressionTests.StunnedSiegeCannotDisruptAnOutpost" methodname="StunnedSiegeCannotDisruptAnOutpost" classname="AllinDefense.Tests.FirstRegionRegressionTests" runstate="Runnable" seed="340578685" result="Passed" start-time="2026-09-06 13:31:58Z" end-time="2026-09-06 13:31:58Z" duration="0.092770" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
@@ -316,9 +316,9 @@
               </properties>
             </test-case>
           </test-suite>
-          <test-suite type="TestFixture" id="1024" name="GreyboxSceneTests" fullname="DefenderChronicles.Tests.GreyboxSceneTests" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" testcasecount="13" result="Passed" start-time="2026-09-06 13:31:58Z" end-time="2026-09-06 13:32:04Z" duration="5.301973" total="13" passed="13" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <test-suite type="TestFixture" id="1024" name="GreyboxSceneTests" fullname="AllinDefense.Tests.GreyboxSceneTests" classname="AllinDefense.Tests.GreyboxSceneTests" runstate="Runnable" testcasecount="13" result="Passed" start-time="2026-09-06 13:31:58Z" end-time="2026-09-06 13:32:04Z" duration="5.301973" total="13" passed="13" failed="0" inconclusive="0" skipped="0" asserts="0">
             <properties />
-            <test-case id="1027" name="AppFlowShowsTenLevelsWhileStorageKeepsFifty" fullname="DefenderChronicles.Tests.GreyboxSceneTests.AppFlowShowsTenLevelsWhileStorageKeepsFifty" methodname="AppFlowShowsTenLevelsWhileStorageKeepsFifty" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="85098319" result="Passed" start-time="2026-09-06 13:31:58Z" end-time="2026-09-06 13:32:00Z" duration="2.057141" asserts="0">
+            <test-case id="1027" name="AppFlowShowsTenLevelsWhileStorageKeepsFifty" fullname="AllinDefense.Tests.GreyboxSceneTests.AppFlowShowsTenLevelsWhileStorageKeepsFifty" methodname="AppFlowShowsTenLevelsWhileStorageKeepsFifty" classname="AllinDefense.Tests.GreyboxSceneTests" runstate="Runnable" seed="85098319" result="Passed" start-time="2026-09-06 13:31:58Z" end-time="2026-09-06 13:32:00Z" duration="2.057141" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
@@ -328,83 +328,83 @@
 iPhoneUtils.Vibrate()
 ]]></output>
             </test-case>
-            <test-case id="1036" name="AudioControllerCyclesReviewMusicAndCueContractsWithinVoiceBudget" fullname="DefenderChronicles.Tests.GreyboxSceneTests.AudioControllerCyclesReviewMusicAndCueContractsWithinVoiceBudget" methodname="AudioControllerCyclesReviewMusicAndCueContractsWithinVoiceBudget" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="527059464" result="Passed" start-time="2026-09-06 13:32:00Z" end-time="2026-09-06 13:32:01Z" duration="0.369363" asserts="0">
+            <test-case id="1036" name="AudioControllerCyclesReviewMusicAndCueContractsWithinVoiceBudget" fullname="AllinDefense.Tests.GreyboxSceneTests.AudioControllerCyclesReviewMusicAndCueContractsWithinVoiceBudget" methodname="AudioControllerCyclesReviewMusicAndCueContractsWithinVoiceBudget" classname="AllinDefense.Tests.GreyboxSceneTests" runstate="Runnable" seed="527059464" result="Passed" start-time="2026-09-06 13:32:00Z" end-time="2026-09-06 13:32:01Z" duration="0.369363" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1028" name="BrandScreensCaptureAtAcceptanceRatios" fullname="DefenderChronicles.Tests.GreyboxSceneTests.BrandScreensCaptureAtAcceptanceRatios" methodname="BrandScreensCaptureAtAcceptanceRatios" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="1720107537" result="Passed" start-time="2026-09-06 13:32:01Z" end-time="2026-09-06 13:32:01Z" duration="0.004842" asserts="0">
+            <test-case id="1028" name="BrandScreensCaptureAtAcceptanceRatios" fullname="AllinDefense.Tests.GreyboxSceneTests.BrandScreensCaptureAtAcceptanceRatios" methodname="BrandScreensCaptureAtAcceptanceRatios" classname="AllinDefense.Tests.GreyboxSceneTests" runstate="Runnable" seed="1720107537" result="Passed" start-time="2026-09-06 13:32:01Z" end-time="2026-09-06 13:32:01Z" duration="0.004842" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1032" name="InterruptedCameraShakeAlwaysReturnsToItsOriginalPosition" fullname="DefenderChronicles.Tests.GreyboxSceneTests.InterruptedCameraShakeAlwaysReturnsToItsOriginalPosition" methodname="InterruptedCameraShakeAlwaysReturnsToItsOriginalPosition" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="470470553" result="Passed" start-time="2026-09-06 13:32:01Z" end-time="2026-09-06 13:32:01Z" duration="0.369406" asserts="0">
+            <test-case id="1032" name="InterruptedCameraShakeAlwaysReturnsToItsOriginalPosition" fullname="AllinDefense.Tests.GreyboxSceneTests.InterruptedCameraShakeAlwaysReturnsToItsOriginalPosition" methodname="InterruptedCameraShakeAlwaysReturnsToItsOriginalPosition" classname="AllinDefense.Tests.GreyboxSceneTests" runstate="Runnable" seed="470470553" result="Passed" start-time="2026-09-06 13:32:01Z" end-time="2026-09-06 13:32:01Z" duration="0.369406" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1030" name="PausedBattleCanResumeOrReturnToMainMenu" fullname="DefenderChronicles.Tests.GreyboxSceneTests.PausedBattleCanResumeOrReturnToMainMenu" methodname="PausedBattleCanResumeOrReturnToMainMenu" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="1318642551" result="Passed" start-time="2026-09-06 13:32:01Z" end-time="2026-09-06 13:32:02Z" duration="0.963315" asserts="0">
+            <test-case id="1030" name="PausedBattleCanResumeOrReturnToMainMenu" fullname="AllinDefense.Tests.GreyboxSceneTests.PausedBattleCanResumeOrReturnToMainMenu" methodname="PausedBattleCanResumeOrReturnToMainMenu" classname="AllinDefense.Tests.GreyboxSceneTests" runstate="Runnable" seed="1318642551" result="Passed" start-time="2026-09-06 13:32:01Z" end-time="2026-09-06 13:32:02Z" duration="0.963315" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1037" name="ProductionHudButtonsAreInteractableAndClickable" fullname="DefenderChronicles.Tests.GreyboxSceneTests.ProductionHudButtonsAreInteractableAndClickable" methodname="ProductionHudButtonsAreInteractableAndClickable" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="1876721941" result="Passed" start-time="2026-09-06 13:32:02Z" end-time="2026-09-06 13:32:02Z" duration="0.044340" asserts="0">
+            <test-case id="1037" name="ProductionHudButtonsAreInteractableAndClickable" fullname="AllinDefense.Tests.GreyboxSceneTests.ProductionHudButtonsAreInteractableAndClickable" methodname="ProductionHudButtonsAreInteractableAndClickable" classname="AllinDefense.Tests.GreyboxSceneTests" runstate="Runnable" seed="1876721941" result="Passed" start-time="2026-09-06 13:32:02Z" end-time="2026-09-06 13:32:02Z" duration="0.044340" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1033" name="ProductionPresentationAllowsBuildUpgradeSellOnEveryFixedSlot" fullname="DefenderChronicles.Tests.GreyboxSceneTests.ProductionPresentationAllowsBuildUpgradeSellOnEveryFixedSlot" methodname="ProductionPresentationAllowsBuildUpgradeSellOnEveryFixedSlot" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="1572573687" result="Passed" start-time="2026-09-06 13:32:02Z" end-time="2026-09-06 13:32:02Z" duration="0.083640" asserts="0">
+            <test-case id="1033" name="ProductionPresentationAllowsBuildUpgradeSellOnEveryFixedSlot" fullname="AllinDefense.Tests.GreyboxSceneTests.ProductionPresentationAllowsBuildUpgradeSellOnEveryFixedSlot" methodname="ProductionPresentationAllowsBuildUpgradeSellOnEveryFixedSlot" classname="AllinDefense.Tests.GreyboxSceneTests" runstate="Runnable" seed="1572573687" result="Passed" start-time="2026-09-06 13:32:02Z" end-time="2026-09-06 13:32:02Z" duration="0.083640" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1031" name="ProductionPresentationPreservesEconomyAndEmitsTypedSignals" fullname="DefenderChronicles.Tests.GreyboxSceneTests.ProductionPresentationPreservesEconomyAndEmitsTypedSignals" methodname="ProductionPresentationPreservesEconomyAndEmitsTypedSignals" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="200134640" result="Passed" start-time="2026-09-06 13:32:02Z" end-time="2026-09-06 13:32:02Z" duration="0.032593" asserts="0">
+            <test-case id="1031" name="ProductionPresentationPreservesEconomyAndEmitsTypedSignals" fullname="AllinDefense.Tests.GreyboxSceneTests.ProductionPresentationPreservesEconomyAndEmitsTypedSignals" methodname="ProductionPresentationPreservesEconomyAndEmitsTypedSignals" classname="AllinDefense.Tests.GreyboxSceneTests" runstate="Runnable" seed="200134640" result="Passed" start-time="2026-09-06 13:32:02Z" end-time="2026-09-06 13:32:02Z" duration="0.032593" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1034" name="ProductionPresentationShowsVictoryAndDefeatResults" fullname="DefenderChronicles.Tests.GreyboxSceneTests.ProductionPresentationShowsVictoryAndDefeatResults" methodname="ProductionPresentationShowsVictoryAndDefeatResults" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="665302577" result="Passed" start-time="2026-09-06 13:32:02Z" end-time="2026-09-06 13:32:02Z" duration="0.054642" asserts="0">
+            <test-case id="1034" name="ProductionPresentationShowsVictoryAndDefeatResults" fullname="AllinDefense.Tests.GreyboxSceneTests.ProductionPresentationShowsVictoryAndDefeatResults" methodname="ProductionPresentationShowsVictoryAndDefeatResults" classname="AllinDefense.Tests.GreyboxSceneTests" runstate="Runnable" seed="665302577" result="Passed" start-time="2026-09-06 13:32:02Z" end-time="2026-09-06 13:32:02Z" duration="0.054642" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1029" name="ReturningPlayerSkipsWelcomeAndContinueOpensClampedBriefing" fullname="DefenderChronicles.Tests.GreyboxSceneTests.ReturningPlayerSkipsWelcomeAndContinueOpensClampedBriefing" methodname="ReturningPlayerSkipsWelcomeAndContinueOpensClampedBriefing" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="645541600" result="Passed" start-time="2026-09-06 13:32:02Z" end-time="2026-09-06 13:32:03Z" duration="0.738016" asserts="0">
+            <test-case id="1029" name="ReturningPlayerSkipsWelcomeAndContinueOpensClampedBriefing" fullname="AllinDefense.Tests.GreyboxSceneTests.ReturningPlayerSkipsWelcomeAndContinueOpensClampedBriefing" methodname="ReturningPlayerSkipsWelcomeAndContinueOpensClampedBriefing" classname="AllinDefense.Tests.GreyboxSceneTests" runstate="Runnable" seed="645541600" result="Passed" start-time="2026-09-06 13:32:02Z" end-time="2026-09-06 13:32:03Z" duration="0.738016" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1035" name="SceneLookRespectsQualityLightingProfile" fullname="DefenderChronicles.Tests.GreyboxSceneTests.SceneLookRespectsQualityLightingProfile" methodname="SceneLookRespectsQualityLightingProfile" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="1071768287" result="Passed" start-time="2026-09-06 13:32:03Z" end-time="2026-09-06 13:32:03Z" duration="0.013470" asserts="0">
+            <test-case id="1035" name="SceneLookRespectsQualityLightingProfile" fullname="AllinDefense.Tests.GreyboxSceneTests.SceneLookRespectsQualityLightingProfile" methodname="SceneLookRespectsQualityLightingProfile" classname="AllinDefense.Tests.GreyboxSceneTests" runstate="Runnable" seed="1071768287" result="Passed" start-time="2026-09-06 13:32:03Z" end-time="2026-09-06 13:32:03Z" duration="0.013470" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1025" name="SelectableRaycastIgnoresCloserActorCollider" fullname="DefenderChronicles.Tests.GreyboxSceneTests.SelectableRaycastIgnoresCloserActorCollider" methodname="SelectableRaycastIgnoresCloserActorCollider" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="1876114539" result="Passed" start-time="2026-09-06 13:32:03Z" end-time="2026-09-06 13:32:03Z" duration="0.021900" asserts="0">
+            <test-case id="1025" name="SelectableRaycastIgnoresCloserActorCollider" fullname="AllinDefense.Tests.GreyboxSceneTests.SelectableRaycastIgnoresCloserActorCollider" methodname="SelectableRaycastIgnoresCloserActorCollider" classname="AllinDefense.Tests.GreyboxSceneTests" runstate="Runnable" seed="1876114539" result="Passed" start-time="2026-09-06 13:32:03Z" end-time="2026-09-06 13:32:03Z" duration="0.021900" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1026" name="SessionOpensWithCompleteGreyboxContent" fullname="DefenderChronicles.Tests.GreyboxSceneTests.SessionOpensWithCompleteGreyboxContent" methodname="SessionOpensWithCompleteGreyboxContent" classname="DefenderChronicles.Tests.GreyboxSceneTests" runstate="Runnable" seed="1373886087" result="Passed" start-time="2026-09-06 13:32:03Z" end-time="2026-09-06 13:32:04Z" duration="0.543509" asserts="0">
+            <test-case id="1026" name="SessionOpensWithCompleteGreyboxContent" fullname="AllinDefense.Tests.GreyboxSceneTests.SessionOpensWithCompleteGreyboxContent" methodname="SessionOpensWithCompleteGreyboxContent" classname="AllinDefense.Tests.GreyboxSceneTests" runstate="Runnable" seed="1373886087" result="Passed" start-time="2026-09-06 13:32:03Z" end-time="2026-09-06 13:32:04Z" duration="0.543509" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
@@ -412,9 +412,9 @@ iPhoneUtils.Vibrate()
               </properties>
             </test-case>
           </test-suite>
-          <test-suite type="TestFixture" id="1038" name="SpecializationCombatTests" fullname="DefenderChronicles.Tests.SpecializationCombatTests" classname="DefenderChronicles.Tests.SpecializationCombatTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-09-06 13:32:04Z" end-time="2026-09-06 13:32:04Z" duration="0.385314" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <test-suite type="TestFixture" id="1038" name="SpecializationCombatTests" fullname="AllinDefense.Tests.SpecializationCombatTests" classname="AllinDefense.Tests.SpecializationCombatTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-09-06 13:32:04Z" end-time="2026-09-06 13:32:04Z" duration="0.385314" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
             <properties />
-            <test-case id="1039" name="SixBranchesProvideTheirPromisedCombatAdvantage" fullname="DefenderChronicles.Tests.SpecializationCombatTests.SixBranchesProvideTheirPromisedCombatAdvantage" methodname="SixBranchesProvideTheirPromisedCombatAdvantage" classname="DefenderChronicles.Tests.SpecializationCombatTests" runstate="Runnable" seed="181933659" result="Passed" start-time="2026-09-06 13:32:04Z" end-time="2026-09-06 13:32:04Z" duration="0.383987" asserts="0">
+            <test-case id="1039" name="SixBranchesProvideTheirPromisedCombatAdvantage" fullname="AllinDefense.Tests.SpecializationCombatTests.SixBranchesProvideTheirPromisedCombatAdvantage" methodname="SixBranchesProvideTheirPromisedCombatAdvantage" classname="AllinDefense.Tests.SpecializationCombatTests" runstate="Runnable" seed="181933659" result="Passed" start-time="2026-09-06 13:32:04Z" end-time="2026-09-06 13:32:04Z" duration="0.383987" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
@@ -429,9 +429,9 @@ iPhoneUtils.Vibrate()
 ]]></output>
             </test-case>
           </test-suite>
-          <test-suite type="TestFixture" id="1040" name="StrategyBalanceAcceptanceTests" fullname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests" classname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-09-06 13:32:04Z" end-time="2026-09-06 13:37:45Z" duration="340.598564" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <test-suite type="TestFixture" id="1040" name="StrategyBalanceAcceptanceTests" fullname="AllinDefense.Tests.StrategyBalanceAcceptanceTests" classname="AllinDefense.Tests.StrategyBalanceAcceptanceTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-09-06 13:32:04Z" end-time="2026-09-06 13:37:45Z" duration="340.598564" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
             <properties />
-            <test-case id="1041" name="ArcherHeavyStrategyCanClearTheVerticalSlice" fullname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests.ArcherHeavyStrategyCanClearTheVerticalSlice" methodname="ArcherHeavyStrategyCanClearTheVerticalSlice" classname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests" runstate="Runnable" seed="1799705823" result="Passed" start-time="2026-09-06 13:32:04Z" end-time="2026-09-06 13:34:00Z" duration="116.012614" asserts="0">
+            <test-case id="1041" name="ArcherHeavyStrategyCanClearTheVerticalSlice" fullname="AllinDefense.Tests.StrategyBalanceAcceptanceTests.ArcherHeavyStrategyCanClearTheVerticalSlice" methodname="ArcherHeavyStrategyCanClearTheVerticalSlice" classname="AllinDefense.Tests.StrategyBalanceAcceptanceTests" runstate="Runnable" seed="1799705823" result="Passed" start-time="2026-09-06 13:32:04Z" end-time="2026-09-06 13:34:00Z" duration="116.012614" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="Timeout" value="150000" />
@@ -449,7 +449,7 @@ iPhoneUtils.Vibrate()
 [DC_BALANCE_ACCEPTANCE] strategy=Archer-heavy phase=Victory wave=8/8 lives=13 outposts=8 primary=5 actions=16/16
 ]]></output>
             </test-case>
-            <test-case id="1042" name="BarracksHeavyStrategyCanClearTheVerticalSlice" fullname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests.BarracksHeavyStrategyCanClearTheVerticalSlice" methodname="BarracksHeavyStrategyCanClearTheVerticalSlice" classname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests" runstate="Runnable" seed="508804611" result="Passed" start-time="2026-09-06 13:34:00Z" end-time="2026-09-06 13:35:57Z" duration="116.988853" asserts="0">
+            <test-case id="1042" name="BarracksHeavyStrategyCanClearTheVerticalSlice" fullname="AllinDefense.Tests.StrategyBalanceAcceptanceTests.BarracksHeavyStrategyCanClearTheVerticalSlice" methodname="BarracksHeavyStrategyCanClearTheVerticalSlice" classname="AllinDefense.Tests.StrategyBalanceAcceptanceTests" runstate="Runnable" seed="508804611" result="Passed" start-time="2026-09-06 13:34:00Z" end-time="2026-09-06 13:35:57Z" duration="116.988853" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="Timeout" value="150000" />
@@ -467,7 +467,7 @@ iPhoneUtils.Vibrate()
 [DC_BALANCE_ACCEPTANCE] strategy=Barracks-heavy phase=Victory wave=8/8 lives=20 outposts=8 primary=5 actions=16/16
 ]]></output>
             </test-case>
-            <test-case id="1043" name="MageHeavyStrategyCanClearTheVerticalSlice" fullname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests.MageHeavyStrategyCanClearTheVerticalSlice" methodname="MageHeavyStrategyCanClearTheVerticalSlice" classname="DefenderChronicles.Tests.StrategyBalanceAcceptanceTests" runstate="Runnable" seed="292207158" result="Passed" start-time="2026-09-06 13:35:57Z" end-time="2026-09-06 13:37:45Z" duration="107.592881" asserts="0">
+            <test-case id="1043" name="MageHeavyStrategyCanClearTheVerticalSlice" fullname="AllinDefense.Tests.StrategyBalanceAcceptanceTests.MageHeavyStrategyCanClearTheVerticalSlice" methodname="MageHeavyStrategyCanClearTheVerticalSlice" classname="AllinDefense.Tests.StrategyBalanceAcceptanceTests" runstate="Runnable" seed="292207158" result="Passed" start-time="2026-09-06 13:35:57Z" end-time="2026-09-06 13:37:45Z" duration="107.592881" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="Timeout" value="150000" />
@@ -483,7 +483,7 @@ iPhoneUtils.Vibrate()
 [WAVE_BALANCE] level=10 wave=7 seconds=58.35 gold=1051 lives=20 peak=24
 [WAVE_BALANCE] level=10 wave=8 seconds=62.25 gold=1558 lives=20 peak=27
 [DC_BALANCE_ACCEPTANCE] strategy=Mage-heavy phase=Victory wave=8/8 lives=20 outposts=8 primary=5 actions=16/16
-Saving results to: /Users/emreaydin/Library/Application Support/Emre Aydin/Defender Chronicles Test/TestResults.xml
+Saving results to: /Users/emreaydin/Library/Application Support/Emre Aydin/ALLIN: Defense Test/TestResults.xml
 ]]></output>
             </test-case>
           </test-suite>

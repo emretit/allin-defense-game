@@ -6,12 +6,12 @@ using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
 
-namespace DefenderChronicles.Editor
+namespace AllinDefense.Editor
 {
     public static class MobileBrandingSettings
     {
         private const string AppIconPath =
-            "Assets/Art/AppIcon/BrandV2/DefenderChronicles-AppIcon-v2-1024.png";
+            "Assets/Art/AppIcon/BrandV2/AllinDefense-AppIcon-v2-1024.png";
 
         public static void ApplyAndroidAppIcon()
         {
@@ -52,7 +52,7 @@ namespace DefenderChronicles.Editor
             MobileOrientationBuildSettings.ApplySupportedOrientations();
             if (report.summary.platform == BuildTarget.Android)
                 MobileBrandingSettings.ApplyAndroidAppIcon();
-            Debug.Log($"Defender Chronicles {report.summary.platform} build supports portrait frontend and landscape battle.");
+            Debug.Log($"ALLIN: Defense {report.summary.platform} build supports portrait frontend and landscape battle.");
         }
     }
 }

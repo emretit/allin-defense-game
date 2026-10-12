@@ -4,7 +4,7 @@ TextureImporter:
   internalIDToNameTable:
   - first:
       213: 5208688120305319662
-    second: DefenderChronicles-AppIcon-v2-1024_0
+    second: AllinDefense-AppIcon-v2-1024_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -139,7 +139,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: DefenderChronicles-AppIcon-v2-1024_0
+      name: AllinDefense-AppIcon-v2-1024_0
       rect:
         serializedVersion: 2
         x: 0
@@ -174,7 +174,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      DefenderChronicles-AppIcon-v2-1024_0: 5208688120305319662
+      AllinDefense-AppIcon-v2-1024_0: 5208688120305319662
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,5 +1,5 @@
-2026-09-06 15:19:36.474 DefenderChroniclesTest[47546:10285924] Built from '6000.4/staging' branch, Version '6000.4.1f1 (8535861f39e1)', Build type 'Development', Scripting Backend 'il2cpp'
-2026-09-06 15:19:36.475 DefenderChroniclesTest[47546:10285924] MemoryManager: Using 'Dynamic Heap' Allocator.
+2026-09-06 15:19:36.474 AllinDefenseTest[47546:10285924] Built from '6000.4/staging' branch, Version '6000.4.1f1 (8535861f39e1)', Build type 'Development', Scripting Backend 'il2cpp'
+2026-09-06 15:19:36.475 AllinDefenseTest[47546:10285924] MemoryManager: Using 'Dynamic Heap' Allocator.
 [UnityMemory] Configuration Parameters - Can be set up in boot.config
     "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
     "memorysetup-temp-allocator-size-cloud-worker=32768"
@@ -37,7 +37,7 @@ CodeReloadManager initialized
 Found 1 interfaces on host : 0) 192.168.0.21
 Player connection [4377222656]  Target information:
 
-Player connection [4377222656]  * "[IP] 192.168.0.21 [Port] 55000 [Flags] 2 [Guid] 3050296626 [EditorId] 4104818095 [Version] 1048832 [Id] iPhonePlayer(8,Emre-MacBook-Pro.local):56000 [Debug] 1 [PackageName] iPhonePlayer [ProjectName] Defender Chronicles Test"
+Player connection [4377222656]  * "[IP] 192.168.0.21 [Port] 55000 [Flags] 2 [Guid] 3050296626 [EditorId] 4104818095 [Version] 1048832 [Id] iPhonePlayer(8,Emre-MacBook-Pro.local):56000 [Debug] 1 [PackageName] iPhonePlayer [ProjectName] ALLIN: Defense Test"
 
 Player connection [4377222656] Started UDP target info broadcast (1) on [225.0.0.222:54997].
 
@@ -47,7 +47,7 @@ Input System module state changed to: Initialized.
 -> applicationWillEnterForeground()
 -> sceneDidBecomeActive()
 -> applicationDidBecomeActive()
-[Subsystems] Discovering subsystems at path /Users/emreaydin/Library/Developer/CoreSimulator/Devices/D06104AF-BAE2-470C-8191-5913709ECACB/data/Containers/Bundle/Application/C9FF85C3-A169-42B7-8C1D-26DB0A71D4D3/DefenderChroniclesTest.app/Data/UnitySubsystems
+[Subsystems] Discovering subsystems at path /Users/emreaydin/Library/Developer/CoreSimulator/Devices/D06104AF-BAE2-470C-8191-5913709ECACB/data/Containers/Bundle/Application/C9FF85C3-A169-42B7-8C1D-26DB0A71D4D3/AllinDefenseTest.app/Data/UnitySubsystems
 GfxDevice: creating device client; kGfxThreadingModeThreaded
 Initializing Metal device caps: Apple iOS simulator GPU
 Apple GPU Family: 2
@@ -80,77 +80,77 @@ UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
 UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
 UnityEngine.Logger:Log(LogType, Object)
 UnityEngine.Debug:Log(Object)
-DefenderChronicles.Core.MobileRuntimeSettings:Apply() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/MobileRuntimeSettings.cs:29)
-DefenderChronicles.Core.MobileRuntimeSettings:ApplyBeforeSceneLoad() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/MobileRuntimeSettings.cs:14)
+AllinDefense.Core.MobileRuntimeSettings:Apply() (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Core/MobileRuntimeSettings.cs:29)
+AllinDefense.Core.MobileRuntimeSettings:ApplyBeforeSceneLoad() (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Core/MobileRuntimeSettings.cs:14)
 
 [DC_FRONTEND_MODE] show=False args=
 UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
 UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
 UnityEngine.Logger:Log(LogType, Object)
 UnityEngine.Debug:Log(Object)
-DefenderChronicles.Core.GameBootstrap:ShouldShowFrontend() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameBootstrap.cs:89)
-DefenderChronicles.Core.GameBootstrap:Awake() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameBootstrap.cs:22)
+AllinDefense.Core.GameBootstrap:ShouldShowFrontend() (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Core/GameBootstrap.cs:89)
+AllinDefense.Core.GameBootstrap:Awake() (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Core/GameBootstrap.cs:22)
 
 [DC_ORIENTATION] requested=LandscapeBattle screen=1170x2532
 UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
 UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
 UnityEngine.Logger:Log(LogType, Object)
 UnityEngine.Debug:Log(Object)
-DefenderChronicles.Core.MobileOrientationController:Request(MobileOrientationMode) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/MobileOrientationController.cs:58)
-DefenderChronicles.Core.GameBootstrap:Awake() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameBootstrap.cs:24)
+AllinDefense.Core.MobileOrientationController:Request(MobileOrientationMode) (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Core/MobileOrientationController.cs:58)
+AllinDefense.Core.GameBootstrap:Awake() (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Core/GameBootstrap.cs:24)
 
-UnityException: get_isBatchMode is not allowed to be called from a MonoBehaviour constructor (or instance field initializer), call it in Awake or Start instead. Called from MonoBehaviour 'GameSessionController' on game object 'DefenderChroniclesSession'.
+UnityException: get_isBatchMode is not allowed to be called from a MonoBehaviour constructor (or instance field initializer), call it in Awake or Start instead. Called from MonoBehaviour 'GameSessionController' on game object 'AllinDefenseSession'.
 See "Script Serialization" page in the Unity Manual for further details.
-  at DefenderChronicles.Core.BattleTelemetry..ctor () [0x0002b] in /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/BattleTelemetry.cs:21
-  at DefenderChronicles.Core.GameSessionController..ctor () [0x000af] in /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameSessionController.cs:126
+  at AllinDefense.Core.BattleTelemetry..ctor () [0x0002b] in /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Core/BattleTelemetry.cs:21
+  at AllinDefense.Core.GameSessionController..ctor () [0x000af] in /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Core/GameSessionController.cs:126
   at UnityEngine.GameObject.Internal_AddComponentWithType (System.Type componentType) [0x00000] in <00000000000000000000000000000000>:0
   at UnityEngine.GameObject.AddComponent (System.Type componentType) [0x00002] in /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/GameObject.bindings.cs:246
   at UnityEngine.GameObject.AddComponent[T] () [0x0000b] in /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/GameObject.bindings.cs:251
-  at DefenderChronicles.Core.GameBootstrap.Awake () [0x0004a] in /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameBootstrap.cs:32
+  at AllinDefense.Core.GameBootstrap.Awake () [0x0004a] in /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Core/GameBootstrap.cs:32
 UnityEngine.GameObject:Internal_AddComponentWithType(Type)
 UnityEngine.GameObject:AddComponent(Type) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/GameObject.bindings.cs:246)
 UnityEngine.GameObject:AddComponent() (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/GameObject.bindings.cs:251)
-DefenderChronicles.Core.GameBootstrap:Awake() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameBootstrap.cs:32)
+AllinDefense.Core.GameBootstrap:Awake() (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Core/GameBootstrap.cs:32)
 
 [DC_AMBIENT_CONFIG] quality=Medium enabled=True wind=0,055 detail=0,080 interval=7-12
 UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
 UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
 UnityEngine.Logger:Log(LogType, Object)
 UnityEngine.Debug:Log(Object)
-DefenderChronicles.Presentation.DefenderAmbientAudioController:Initialize(AudioMixerGroup) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Presentation/DefenderAmbientAudioController.cs:55)
-DefenderChronicles.Presentation.DefenderAudioController:Initialize(DefenderPresentationCatalog) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Presentation/DefenderAudioController.cs:56)
-DefenderChronicles.Presentation.DefenderPresentationDirector:Initialize(GameSessionController, DefenderPresentationCatalog) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Presentation/DefenderPresentationDirector.cs:23)
-DefenderChronicles.Core.GameSessionController:Initialize() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameSessionController.cs:239)
-DefenderChronicles.Core.GameBootstrap:Awake() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameBootstrap.cs:64)
+AllinDefense.Presentation.DefenderAmbientAudioController:Initialize(AudioMixerGroup) (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Presentation/DefenderAmbientAudioController.cs:55)
+AllinDefense.Presentation.DefenderAudioController:Initialize(DefenderPresentationCatalog) (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Presentation/DefenderAudioController.cs:56)
+AllinDefense.Presentation.DefenderPresentationDirector:Initialize(GameSessionController, DefenderPresentationCatalog) (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Presentation/DefenderPresentationDirector.cs:23)
+AllinDefense.Core.GameSessionController:Initialize() (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Core/GameSessionController.cs:239)
+AllinDefense.Core.GameBootstrap:Awake() (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Core/GameBootstrap.cs:64)
 
 [DC_DEVICE_STARTUP] preparing_seconds=0.35
 UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
 UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
 UnityEngine.Logger:Log(LogType, Object)
 UnityEngine.Debug:Log(Object)
-DefenderChronicles.Core.DeviceAcceptanceProbe:Awake() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:48)
+AllinDefense.Core.DeviceAcceptanceProbe:Awake() (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:48)
 UnityEngine.GameObject:Internal_AddComponentWithType(Type)
 UnityEngine.GameObject:AddComponent(Type) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/GameObject.bindings.cs:246)
 UnityEngine.GameObject:AddComponent() (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/GameObject.bindings.cs:251)
-DefenderChronicles.Core.GameSessionController:Initialize() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameSessionController.cs:250)
-DefenderChronicles.Core.GameBootstrap:Awake() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameBootstrap.cs:64)
+AllinDefense.Core.GameSessionController:Initialize() (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Core/GameSessionController.cs:250)
+AllinDefense.Core.GameBootstrap:Awake() (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Core/GameBootstrap.cs:64)
 
 [DC_SLOT_REGRESSION] Slot regression smoke started.
 UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
 UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
 UnityEngine.Logger:Log(LogType, Object)
 UnityEngine.Debug:Log(Object)
-DefenderChronicles.Core.<RunAutomatedSlotRegressionSmoke>d__273:MoveNext() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameSessionController.cs:1530)
+AllinDefense.Core.<RunAutomatedSlotRegressionSmoke>d__273:MoveNext() (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Core/GameSessionController.cs:1530)
 UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/Coroutines.cs:17)
 UnityEngine.MonoBehaviour:StartCoroutineManaged2(IEnumerator)
 UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/MonoBehaviour.bindings.cs:114)
-DefenderChronicles.Core.GameSessionController:Initialize() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameSessionController.cs:290)
-DefenderChronicles.Core.GameBootstrap:Awake() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameBootstrap.cs:64)
+AllinDefense.Core.GameSessionController:Initialize() (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Core/GameSessionController.cs:290)
+AllinDefense.Core.GameBootstrap:Awake() (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Core/GameBootstrap.cs:64)
 
 CADisplayLink created
 NullReferenceException: Object reference not set to an instance of an object.
-  at DefenderChronicles.Core.GameSessionController.TryBuildOutpost (System.Int32 slotIndex, DefenderChronicles.Data.OutpostKind kind) [0x0024d] in /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameSessionController.cs:940
-  at DefenderChronicles.Core.GameSessionController+<RunAutomatedSlotRegressionSmoke>d__273.MoveNext () [0x000b3] in /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/GameSessionController.cs:1543
+  at AllinDefense.Core.GameSessionController.TryBuildOutpost (System.Int32 slotIndex, AllinDefense.Data.OutpostKind kind) [0x0024d] in /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Core/GameSessionController.cs:940
+  at AllinDefense.Core.GameSessionController+<RunAutomatedSlotRegressionSmoke>d__273.MoveNext () [0x000b3] in /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Core/GameSessionController.cs:1543
   at UnityEngine.SetupCoroutine.InvokeMoveNext (System.Collections.IEnumerator enumerator, System.IntPtr returnValueAddress) [0x00024] in /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/Coroutines.cs:17
 
 Shadowmap RenderTexture requested without a depth buffer. Changing to a 16 bit depth buffer. To resolve this warning, please specify the desired number of depth bits when creating the render texture.
@@ -179,7 +179,7 @@ UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
 UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
 UnityEngine.Logger:Log(LogType, Object)
 UnityEngine.Debug:Log(Object)
-DefenderChronicles.Presentation.<PlayDetails>d__25:MoveNext() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Presentation/DefenderAmbientAudioController.cs:133)
+AllinDefense.Presentation.<PlayDetails>d__25:MoveNext() (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Presentation/DefenderAmbientAudioController.cs:133)
 UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/Coroutines.cs:17)
 
 [DC_PROFILE_COST] build=ct-20260906-01 stage=preparation simulation_ms=0,022 hud_ms=0,554 enemies=0 samples=598
@@ -187,31 +187,31 @@ UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
 UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
 UnityEngine.Logger:Log(LogType, Object)
 UnityEngine.Debug:Log(Object)
-DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:150)
-DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+AllinDefense.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:150)
+AllinDefense.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
 
 [DC_MEMORY_SAMPLE] level=5 wave=0 battle_seconds=0.0 current_mb=297.4 serious_thermal_seconds=0.0
 UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
 UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
 UnityEngine.Logger:Log(LogType, Object)
 UnityEngine.Debug:Log(Object)
-DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:151)
-DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+AllinDefense.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:151)
+AllinDefense.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
 
 [DC_DEVICE_METRICS] stage=preparation median_fps=60.0 p95_frame_ms=16.7 peak_memory_mb=297.5 memory_growth_pct=0.0 max_under_30_seconds=3.39 thermal=nominal low_memory_warning=False
 UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
 UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
 UnityEngine.Logger:Log(LogType, Object)
 UnityEngine.Debug:Log(Object)
-DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:152)
-DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+AllinDefense.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:152)
+AllinDefense.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
 
 [DC_AMBIENT_DETAIL] count=2 clip=DC_Original_LeafRustle review_gain=1,00 state_gain=1,00
 UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
 UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
 UnityEngine.Logger:Log(LogType, Object)
 UnityEngine.Debug:Log(Object)
-DefenderChronicles.Presentation.<PlayDetails>d__25:MoveNext() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Presentation/DefenderAmbientAudioController.cs:133)
+AllinDefense.Presentation.<PlayDetails>d__25:MoveNext() (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Presentation/DefenderAmbientAudioController.cs:133)
 UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/Coroutines.cs:17)
 
 [DC_PROFILE_COST] build=ct-20260906-01 stage=preparation simulation_ms=0,022 hud_ms=0,666 enemies=0 samples=1198
@@ -219,31 +219,31 @@ UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
 UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
 UnityEngine.Logger:Log(LogType, Object)
 UnityEngine.Debug:Log(Object)
-DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:150)
-DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+AllinDefense.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:150)
+AllinDefense.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
 
 [DC_MEMORY_SAMPLE] level=5 wave=0 battle_seconds=0.0 current_mb=297.4 serious_thermal_seconds=0.0
 UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
 UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
 UnityEngine.Logger:Log(LogType, Object)
 UnityEngine.Debug:Log(Object)
-DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:151)
-DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+AllinDefense.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:151)
+AllinDefense.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
 
 [DC_DEVICE_METRICS] stage=preparation median_fps=60.0 p95_frame_ms=16.7 peak_memory_mb=297.5 memory_growth_pct=0.0 max_under_30_seconds=3.39 thermal=nominal low_memory_warning=False
 UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
 UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
 UnityEngine.Logger:Log(LogType, Object)
 UnityEngine.Debug:Log(Object)
-DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:152)
-DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+AllinDefense.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:152)
+AllinDefense.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
 
 [DC_AMBIENT_DETAIL] count=3 clip=DC_Original_CrystalChime review_gain=1,00 state_gain=1,00
 UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
 UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
 UnityEngine.Logger:Log(LogType, Object)
 UnityEngine.Debug:Log(Object)
-DefenderChronicles.Presentation.<PlayDetails>d__25:MoveNext() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Presentation/DefenderAmbientAudioController.cs:133)
+AllinDefense.Presentation.<PlayDetails>d__25:MoveNext() (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Presentation/DefenderAmbientAudioController.cs:133)
 UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/Coroutines.cs:17)
 
 [DC_PROFILE_COST] build=ct-20260906-01 stage=preparation simulation_ms=0,025 hud_ms=0,515 enemies=0 samples=1797
@@ -251,31 +251,31 @@ UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
 UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
 UnityEngine.Logger:Log(LogType, Object)
 UnityEngine.Debug:Log(Object)
-DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:150)
-DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+AllinDefense.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:150)
+AllinDefense.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
 
 [DC_MEMORY_SAMPLE] level=5 wave=0 battle_seconds=0.0 current_mb=297.4 serious_thermal_seconds=0.0
 UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
 UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
 UnityEngine.Logger:Log(LogType, Object)
 UnityEngine.Debug:Log(Object)
-DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:151)
-DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+AllinDefense.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:151)
+AllinDefense.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
 
 [DC_DEVICE_METRICS] stage=preparation median_fps=60.0 p95_frame_ms=16.7 peak_memory_mb=297.5 memory_growth_pct=0.0 max_under_30_seconds=3.39 thermal=nominal low_memory_warning=False
 UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
 UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
 UnityEngine.Logger:Log(LogType, Object)
 UnityEngine.Debug:Log(Object)
-DefenderChronicles.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:152)
-DefenderChronicles.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
+AllinDefense.Core.DeviceAcceptanceProbe:LogMetrics(String, Int64) (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:152)
+AllinDefense.Core.DeviceAcceptanceProbe:Update() (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Core/DeviceAcceptanceProbe.cs:96)
 
 [DC_AMBIENT_DETAIL] count=4 clip=DC_Original_LeafRustle review_gain=1,00 state_gain=1,00
 UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
 UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
 UnityEngine.Logger:Log(LogType, Object)
 UnityEngine.Debug:Log(Object)
-DefenderChronicles.Presentation.<PlayDetails>d__25:MoveNext() (at /Users/emreaydin/DefenderChronicles-first-region/Assets/Scripts/Presentation/DefenderAmbientAudioController.cs:133)
+AllinDefense.Presentation.<PlayDetails>d__25:MoveNext() (at /Users/emreaydin/AllinDefense-first-region/Assets/Scripts/Presentation/DefenderAmbientAudioController.cs:133)
 UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/Coroutines.cs:17)
 
-com.emreaydin.defenderchronicles.closedtest: 47546
+com.emreaydin.allindefense.closedtest: 47546

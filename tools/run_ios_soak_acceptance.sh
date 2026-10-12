@@ -3,7 +3,7 @@ set -euo pipefail
 
 project_root="${0:A:h:h}"
 log_path="$project_root/Builds/ios-soak-acceptance.log"
-bundle_id="com.emreaydin.defenderchronicles"
+bundle_id="com.emreaydin.allindefense"
 simulator_id="${DC_SIMULATOR_ID:-}"
 if [[ -z "$simulator_id" ]]; then
   simulator_id="$(xcrun simctl list devices booted -j | jq -r \

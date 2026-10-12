@@ -220,7 +220,7 @@ def main() -> None:
         family_counts[asset["family"]] = family_counts.get(asset["family"], 0) + (1 if asset.get("exists") else 0)
 
     report = {
-        "schema": "defender-chronicles.visual-development.prop-library-metrics.v1",
+        "schema": "allin-defense.visual-development.prop-library-metrics.v1",
         "captured_on": "2026-08-16",
         "todo": "VIS-408",
         "asset_scope": "Generated prop library FBX files only; not bound to runtime environment prefab.",

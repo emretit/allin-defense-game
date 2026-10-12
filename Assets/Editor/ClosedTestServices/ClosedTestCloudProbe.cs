@@ -3,18 +3,18 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using DefenderChronicles.Core;
+using AllinDefense.Core;
 using UnityEngine;
 using Unity.Services.Core;
 using Unity.Services.Core.Environments;
 using Unity.Services.Authentication;
 using Unity.Services.CloudCode;
 using Unity.Services.Core.Editor.Environments;
-namespace DefenderChronicles.Editor
+namespace AllinDefense.Editor
 {
     public static class ClosedTestCloudProbe
     {
-        [UnityEditor.MenuItem("Defender Chronicles/Closed Test/Probe Test Services")]
+        [UnityEditor.MenuItem("ALLIN: Defense/Closed Test/Probe Test Services")]
         public static async void Run()
         {
             try

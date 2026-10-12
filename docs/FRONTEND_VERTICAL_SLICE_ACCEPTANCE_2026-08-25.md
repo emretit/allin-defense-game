@@ -1,4 +1,4 @@
-# Defender Chronicles — Premium Medieval Frontend Dikey Dilim Kabul Özeti
+# ALLIN: Defense — Premium Medieval Frontend Dikey Dilim Kabul Özeti
 
 Tarih: 25 Ağustos 2026
 

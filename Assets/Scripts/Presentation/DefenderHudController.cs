@@ -1,13 +1,13 @@
 using System;
 using System.Collections;
-using DefenderChronicles.Core;
-using DefenderChronicles.Data;
-using DefenderChronicles.UI;
+using AllinDefense.Core;
+using AllinDefense.Data;
+using AllinDefense.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace DefenderChronicles.Presentation
+namespace AllinDefense.Presentation
 {
     public sealed partial class DefenderHudController : MonoBehaviour
     {

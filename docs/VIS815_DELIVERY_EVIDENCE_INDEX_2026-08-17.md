@@ -107,27 +107,27 @@ Accepted stamp: `vis812-final-20260825-210559`
 ## Reproduction Commands
 
 ```bash
-/Applications/Unity/Hub/Editor/6000.4.1f1/Unity.app/Contents/MacOS/Unity -batchmode -projectPath /Users/emreaydin/DefenderChronicles -runTests -testPlatform EditMode -testResults /Users/emreaydin/DefenderChronicles/Builds/editmode-results-vis810.xml -logFile /Users/emreaydin/DefenderChronicles/Builds/editmode-vis810.log
+/Applications/Unity/Hub/Editor/6000.4.1f1/Unity.app/Contents/MacOS/Unity -batchmode -projectPath /Users/emreaydin/AllinDefense -runTests -testPlatform EditMode -testResults /Users/emreaydin/AllinDefense/Builds/editmode-results-vis810.xml -logFile /Users/emreaydin/AllinDefense/Builds/editmode-vis810.log
 ```
 
 ```bash
-/Applications/Unity/Hub/Editor/6000.4.1f1/Unity.app/Contents/MacOS/Unity -batchmode -projectPath /Users/emreaydin/DefenderChronicles -runTests -testPlatform PlayMode -testResults /Users/emreaydin/DefenderChronicles/Builds/playmode-results-vis811.xml -logFile /Users/emreaydin/DefenderChronicles/Builds/playmode-vis811.log -burst-disable-compilation
+/Applications/Unity/Hub/Editor/6000.4.1f1/Unity.app/Contents/MacOS/Unity -batchmode -projectPath /Users/emreaydin/AllinDefense -runTests -testPlatform PlayMode -testResults /Users/emreaydin/AllinDefense/Builds/playmode-results-vis811.xml -logFile /Users/emreaydin/AllinDefense/Builds/playmode-vis811.log -burst-disable-compilation
 ```
 
 ```bash
-/Applications/Unity/Hub/Editor/6000.4.1f1/Unity.app/Contents/MacOS/Unity -batchmode -projectPath /Users/emreaydin/DefenderChronicles -runTests -testPlatform EditMode -testResults /Users/emreaydin/DefenderChronicles/Builds/editmode-results-vis223.xml -logFile /Users/emreaydin/DefenderChronicles/Builds/editmode-vis223.log
+/Applications/Unity/Hub/Editor/6000.4.1f1/Unity.app/Contents/MacOS/Unity -batchmode -projectPath /Users/emreaydin/AllinDefense -runTests -testPlatform EditMode -testResults /Users/emreaydin/AllinDefense/Builds/editmode-results-vis223.xml -logFile /Users/emreaydin/AllinDefense/Builds/editmode-vis223.log
 ```
 
 ```bash
-/Applications/Unity/Hub/Editor/6000.4.1f1/Unity.app/Contents/MacOS/Unity -batchmode -projectPath /Users/emreaydin/DefenderChronicles -runTests -testPlatform PlayMode -testResults /Users/emreaydin/DefenderChronicles/Builds/playmode-results-vis223.xml -logFile /Users/emreaydin/DefenderChronicles/Builds/playmode-vis223.log -burst-disable-compilation
+/Applications/Unity/Hub/Editor/6000.4.1f1/Unity.app/Contents/MacOS/Unity -batchmode -projectPath /Users/emreaydin/AllinDefense -runTests -testPlatform PlayMode -testResults /Users/emreaydin/AllinDefense/Builds/playmode-results-vis223.xml -logFile /Users/emreaydin/AllinDefense/Builds/playmode-vis223.log -burst-disable-compilation
 ```
 
 ```bash
-/Applications/Unity/Hub/Editor/6000.4.1f1/Unity.app/Contents/MacOS/Unity -batchmode -projectPath /Users/emreaydin/DefenderChronicles -runTests -testPlatform EditMode -testResults /Users/emreaydin/DefenderChronicles/Builds/editmode-results-vis226.xml -logFile /Users/emreaydin/DefenderChronicles/Builds/editmode-vis226.log
+/Applications/Unity/Hub/Editor/6000.4.1f1/Unity.app/Contents/MacOS/Unity -batchmode -projectPath /Users/emreaydin/AllinDefense -runTests -testPlatform EditMode -testResults /Users/emreaydin/AllinDefense/Builds/editmode-results-vis226.xml -logFile /Users/emreaydin/AllinDefense/Builds/editmode-vis226.log
 ```
 
 ```bash
-/Applications/Unity/Hub/Editor/6000.4.1f1/Unity.app/Contents/MacOS/Unity -batchmode -projectPath /Users/emreaydin/DefenderChronicles -runTests -testPlatform PlayMode -testResults /Users/emreaydin/DefenderChronicles/Builds/playmode-results-vis226.xml -logFile /Users/emreaydin/DefenderChronicles/Builds/playmode-vis226.log -burst-disable-compilation
+/Applications/Unity/Hub/Editor/6000.4.1f1/Unity.app/Contents/MacOS/Unity -batchmode -projectPath /Users/emreaydin/AllinDefense -runTests -testPlatform PlayMode -testResults /Users/emreaydin/AllinDefense/Builds/playmode-results-vis226.xml -logFile /Users/emreaydin/AllinDefense/Builds/playmode-vis226.log -burst-disable-compilation
 ```
 
 ```bash

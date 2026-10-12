@@ -1,4 +1,4 @@
-# Defender Chronicles — Enemies, Waves and Boss
+# ALLIN: Defense — Enemies, Waves and Boss
 
 Durum: Faz 5 uygulama ve tasarim notu
 Son guncelleme: 2026-10-11

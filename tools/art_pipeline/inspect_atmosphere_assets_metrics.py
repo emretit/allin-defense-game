@@ -160,7 +160,7 @@ def main() -> None:
 
     assets = [inspect_asset(entry) for entry in ASSETS]
     report = {
-        "schema": "defender-chronicles.visual-development.atmosphere-asset-metrics.v1",
+        "schema": "allin-defense.visual-development.atmosphere-asset-metrics.v1",
         "captured_on": "2026-08-16",
         "todo": "VIS-411",
         "asset_scope": "Generated atmosphere FBX candidates for single map visual depth and readability support.",

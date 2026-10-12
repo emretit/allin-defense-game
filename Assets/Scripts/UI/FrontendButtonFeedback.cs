@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace DefenderChronicles.UI
+namespace AllinDefense.UI
 {
     public sealed class FrontendButtonFeedback : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         IPointerExitHandler, ISelectHandler, IDeselectHandler

@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DefenderChronicles.Data;
+using AllinDefense.Data;
 using UnityEngine;
 
-namespace DefenderChronicles.Core
+namespace AllinDefense.Core
 {
     [Serializable] public sealed class ActorCheckpoint
     {
@@ -81,7 +81,7 @@ namespace DefenderChronicles.Core
             BattleElapsedSeconds = cp.elapsed;
             CheckpointRestored = true;
             restoringCheckpoint = false;
-            ShowMessage(DefenderChronicles.UI.GameLocalization.Text("Dalga başındaki savunman geri yüklendi.", "Your defence at the start of the wave was restored."), 5);
+            ShowMessage(AllinDefense.UI.GameLocalization.Text("Dalga başındaki savunman geri yüklendi.", "Your defence at the start of the wave was restored."), 5);
         }
         private static bool ValidTimer(float value) => !float.IsNaN(value) && !float.IsInfinity(value) && value >= -1000 && value <= 100000;
         private static bool ValidActor(ActorCheckpoint actor,int maxHealth) => actor != null && actor.health >= 0 && actor.health <= maxHealth &&

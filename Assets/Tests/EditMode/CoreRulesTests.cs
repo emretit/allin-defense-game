@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using DefenderChronicles.Core;
-using DefenderChronicles.Data;
-using DefenderChronicles.Presentation;
-using DefenderChronicles.UI;
+using AllinDefense.Core;
+using AllinDefense.Data;
+using AllinDefense.Presentation;
+using AllinDefense.UI;
 using NUnit.Framework;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -12,7 +12,7 @@ using UnityEditor.Animations;
 #endif
 using UnityEngine;
 
-namespace DefenderChronicles.Tests
+namespace AllinDefense.Tests
 {
     public sealed class CoreRulesTests
     {
@@ -570,10 +570,10 @@ namespace DefenderChronicles.Tests
             Assert.That(catalog.provenance.Any(entry => entry.assetName == "Cinzel SemiBold"), Is.True);
             Assert.That(catalog.provenance.Any(entry => entry.assetName == "Greenwatch welcome artwork"), Is.True);
             Assert.That(catalog.provenance.Any(entry => entry.assetName == "Greenwatch war table artwork"), Is.True);
-            Assert.That(catalog.provenance.Any(entry => entry.assetName == "Defender Chronicles V2 logo"), Is.True);
-            Assert.That(catalog.provenance.Any(entry => entry.assetName == "Defender Chronicles V2 brand mark"), Is.True);
-            Assert.That(catalog.provenance.Any(entry => entry.assetName == "Defender Chronicles V2 application icon"), Is.True);
-            Assert.That(catalog.provenance.Any(entry => entry.assetName == "Defender Chronicles V2 launch artwork"), Is.True);
+            Assert.That(catalog.provenance.Any(entry => entry.assetName == "ALLIN: Defense V2 logo"), Is.True);
+            Assert.That(catalog.provenance.Any(entry => entry.assetName == "ALLIN: Defense V2 brand mark"), Is.True);
+            Assert.That(catalog.provenance.Any(entry => entry.assetName == "ALLIN: Defense V2 application icon"), Is.True);
+            Assert.That(catalog.provenance.Any(entry => entry.assetName == "ALLIN: Defense V2 launch artwork"), Is.True);
             Assert.That(catalog.frontendTheme, Is.Not.Null);
             Assert.That(catalog.frontendTheme.brandLogo, Is.Not.Null);
             Assert.That(catalog.frontendTheme.brandMark, Is.Not.Null);
@@ -608,15 +608,15 @@ namespace DefenderChronicles.Tests
         public void BrandAssetsMeetTheMobileImportAndAlphaContract()
         {
             const string logoPath =
-                "Assets/Resources/Presentation/Brand/DefenderChronicles-Logo-v2.png";
+                "Assets/Resources/Presentation/Brand/AllinDefense-Logo-v2.png";
             const string markPath =
-                "Assets/Resources/Presentation/Brand/DefenderChronicles-Mark-v2.png";
+                "Assets/Resources/Presentation/Brand/AllinDefense-Mark-v2.png";
             const string iconPath =
-                "Assets/Art/AppIcon/BrandV2/DefenderChronicles-AppIcon-v2-1024.png";
+                "Assets/Art/AppIcon/BrandV2/AllinDefense-AppIcon-v2-1024.png";
             const string launchPath = "Assets/Art/Brand/Launch/GreenwatchLaunch-v2.png";
 
-            Assert.That(Resources.Load<Sprite>("Presentation/Brand/DefenderChronicles-Logo-v2"), Is.Not.Null);
-            Assert.That(Resources.Load<Sprite>("Presentation/Brand/DefenderChronicles-Mark-v2"), Is.Not.Null);
+            Assert.That(Resources.Load<Sprite>("Presentation/Brand/AllinDefense-Logo-v2"), Is.Not.Null);
+            Assert.That(Resources.Load<Sprite>("Presentation/Brand/AllinDefense-Mark-v2"), Is.Not.Null);
 
 #if UNITY_EDITOR
             foreach (string path in new[] { logoPath, markPath })

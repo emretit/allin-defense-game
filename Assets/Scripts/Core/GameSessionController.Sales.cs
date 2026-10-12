@@ -1,8 +1,8 @@
-using DefenderChronicles.UI;
+using AllinDefense.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace DefenderChronicles.Core
+namespace AllinDefense.Core
 {
     public sealed partial class GameSessionController
     {

@@ -5,7 +5,7 @@ using Unity.Services.CloudCode.Apis;
 using Unity.Services.CloudCode.Core;
 using Unity.Services.CloudSave.Model;
 
-namespace DefenderChronicles.CloudCode;
+namespace AllinDefense.CloudCode;
 
 public sealed class CampaignProgressionModule
 {

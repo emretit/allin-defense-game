@@ -12,9 +12,9 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 REQUIRED_CHANGED_FILES = (
-    "Assets/Resources/Presentation/Brand/DefenderChronicles-Logo-v2.png",
-    "Assets/Resources/Presentation/Brand/DefenderChronicles-Mark-v2.png",
-    "Assets/Art/AppIcon/BrandV2/DefenderChronicles-AppIcon-v2-1024.png",
+    "Assets/Resources/Presentation/Brand/AllinDefense-Logo-v2.png",
+    "Assets/Resources/Presentation/Brand/AllinDefense-Mark-v2.png",
+    "Assets/Art/AppIcon/BrandV2/AllinDefense-AppIcon-v2-1024.png",
     "Assets/Art/Brand/Launch/GreenwatchLaunch-v2.png",
 )
 REQUIRED_TESTS = (
@@ -46,8 +46,8 @@ def filled(data: dict[str, Any], key: str, missing: list[str]) -> str:
 
 def validate(data: dict[str, Any]) -> list[str]:
     missing: list[str] = []
-    if data.get("schema") != "defender-chronicles.brand-handoff.v1":
-        missing.append("schema must be defender-chronicles.brand-handoff.v1")
+    if data.get("schema") != "allin-defense.brand-handoff.v1":
+        missing.append("schema must be allin-defense.brand-handoff.v1")
 
     for key in ("acceptedDirection", "sourceTaskTitle", "sourceTaskStatus", "handoffDate", "reviewer"):
         filled(data, key, missing)

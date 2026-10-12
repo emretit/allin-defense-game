@@ -15,7 +15,7 @@
   },
   "build": {
     "target": "Android",
-    "executeMethod": "DefenderChronicles.Editor.ClosedTestBuilds.Android",
+    "executeMethod": "AllinDefense.Editor.ClosedTestBuilds.Android",
     "logFile": "docs/closed-test/evidence/barracks-android-build.log"
   },
   "source": {

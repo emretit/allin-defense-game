@@ -2,8 +2,8 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using DefenderChronicles.Presentation;
-using DefenderChronicles.UI;
+using AllinDefense.Presentation;
+using AllinDefense.UI;
 using NUnit.Framework;
 using TMPro;
 using UnityEditor;
@@ -11,7 +11,7 @@ using UnityEditor.U2D;
 using UnityEngine;
 using UnityEngine.U2D;
 
-namespace DefenderChronicles.Tests
+namespace AllinDefense.Tests
 {
     public sealed class UiDesignSystemTests
     {
@@ -161,7 +161,7 @@ namespace DefenderChronicles.Tests
         {
             var set = Set;
             Assert.That(set, Is.Not.Null);
-            var atlas = AssetDatabase.LoadAssetAtPath<SpriteAtlas>("Assets/Art/UI/DefenderChroniclesUI.spriteatlas");
+            var atlas = AssetDatabase.LoadAssetAtPath<SpriteAtlas>("Assets/Art/UI/AllinDefenseUI.spriteatlas");
             Assert.That(atlas, Is.Not.Null);
             var packables = SpriteAtlasExtensions.GetPackables(atlas);
             // Imported atlas caches can still contain the old ten sprites until the target is packed.
@@ -233,7 +233,7 @@ namespace DefenderChronicles.Tests
             var bytes = paths.Select(File.ReadAllBytes).ToArray();
             var guids = paths.Select(AssetDatabase.AssetPathToGUID).ToArray();
             Type builder = AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType(
-                "DefenderChronicles.Editor.UiDesignSystemAssetBuilder")).First(type => type != null);
+                "AllinDefense.Editor.UiDesignSystemAssetBuilder")).First(type => type != null);
             builder.GetMethod("Build", BindingFlags.Static | BindingFlags.Public).Invoke(null, null);
             for (int i = 0; i < paths.Length; i++)
             {

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace DefenderChronicles.UI
+namespace AllinDefense.UI
 {
     /// <summary>
     /// Keeps each campaign region equal to the ScrollRect viewport width so one complete
