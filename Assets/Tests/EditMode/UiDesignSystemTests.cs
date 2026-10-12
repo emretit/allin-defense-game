@@ -164,6 +164,8 @@ namespace DefenderChronicles.Tests
             var atlas = AssetDatabase.LoadAssetAtPath<SpriteAtlas>("Assets/Art/UI/DefenderChroniclesUI.spriteatlas");
             Assert.That(atlas, Is.Not.Null);
             var packables = SpriteAtlasExtensions.GetPackables(atlas);
+            // Imported atlas caches can still contain the old ten sprites until the target is packed.
+            SpriteAtlasUtility.PackAtlases(new[] { atlas }, EditorUserBuildSettings.activeBuildTarget);
             var sprites = new[] { (set.roundedSmall, 12f), (set.roundedMedium, 16f), (set.roundedCard, 22f),
                 (set.pill, 63f), (set.softShadow, 46f), (set.verticalGradient, 0f), (set.goldGradient, 0f),
                 (set.filledCircle, 0f), (set.cooldownRing, 0f) };
@@ -187,8 +189,6 @@ namespace DefenderChronicles.Tests
             foreach (string name in new[] { "DefenderHudPanel", "MedievalButton", "MedievalPanel", "IconAbility",
                 "IconArcher", "IconBarracks", "IconGold", "IconKeep", "IconMage", "IconWave" })
                 Assert.That(packables.Select(value => value.name), Does.Contain(name));
-            // Imported atlas caches can still contain the old ten sprites until the target is packed.
-            SpriteAtlasUtility.PackAtlases(new[] { atlas }, EditorUserBuildSettings.activeBuildTarget);
             Assert.That(atlas.spriteCount, Is.GreaterThanOrEqualTo(19), "All original and new sprites pack successfully.");
         }
 
