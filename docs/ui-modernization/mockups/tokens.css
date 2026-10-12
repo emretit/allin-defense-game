@@ -1,0 +1,62 @@
+@font-face { font-family: "Cinzel"; src: url("Cinzel-SemiBold.ttf"); font-weight: 600; }
+@font-face { font-family: "Noto"; src: url("NotoSans-Regular.ttf"); }
+
+:root {
+  --night: #061020;
+  --night-deep: #02050a;
+  --glass: rgba(9, 18, 34, 0.68);
+  --glass-strong: rgba(8, 15, 28, 0.9);
+  --hair: rgba(155, 203, 255, 0.16);
+  --hair-strong: rgba(155, 203, 255, 0.28);
+  --hair-gold: rgba(242, 184, 75, 0.5);
+  --gold: #f2b84b;
+  --gold-hi: #ffd98a;
+  --gold-lo: #d4922c;
+  --moon: #9bcbff;
+  --blue: #2e75c9;
+  --red: #ef6a4f;
+  --green: #49e07b;
+  --violet: #a77bff;
+  --text: #f4faff;
+  --muted: #a5bbcc;
+  --faint: #6f8599;
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 20px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #000; color: var(--text); font-family: "Noto", sans-serif; -webkit-font-smoothing: antialiased; overflow: hidden; }
+svg { display: block; }
+
+.glass {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0) 45%), var(--glass);
+  backdrop-filter: blur(14px) saturate(1.25);
+  -webkit-backdrop-filter: blur(14px) saturate(1.25);
+  border: 1px solid var(--hair);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+.glass.strong { background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0) 45%), var(--glass-strong); }
+
+.eyebrow { font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.title { font-family: "Cinzel", serif; font-weight: 600; letter-spacing: 0.04em; }
+.num { font-variant-numeric: tabular-nums; font-weight: 700; letter-spacing: 0.01em; }
+
+.btn-gold {
+  background: linear-gradient(180deg, var(--gold-hi), var(--gold) 45%, var(--gold-lo));
+  color: #1d1305;
+  border: 1px solid rgba(255, 230, 170, 0.9);
+  box-shadow: 0 6px 18px rgba(242, 184, 75, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.6), inset 0 -2px 0 rgba(120, 70, 10, 0.35);
+  font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.btn-glass {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text);
+}
+.icon-btn { border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.stroke { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.annot {
+  position: absolute; font-size: 9px; color: #ffe9b0; background: rgba(160, 40, 120, 0.85);
+  padding: 2px 6px; border-radius: 6px; letter-spacing: 0.02em; white-space: nowrap; z-index: 50;
+}
