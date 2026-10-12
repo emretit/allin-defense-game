@@ -104,7 +104,8 @@ namespace AllinDefense.Tests
             {
                 Assert.That(group.alpha, Is.EqualTo(1));
                 Assert.That(group.interactable, Is.True);
-                Assert.That(((RectTransform)group.transform).anchoredPosition, Is.EqualTo(Vector2.zero));
+                if (group.GetComponent<AllinDefense.UI.Kit.UiOverlay>() == null)
+                    Assert.That(((RectTransform)group.transform).anchoredPosition, Is.EqualTo(Vector2.zero));
             }
             Assert.That(flow.GetComponentsInChildren<Camera>(true).Length, Is.Zero, "Frontend artwork needs no extra camera");
         }
@@ -187,6 +188,58 @@ namespace AllinDefense.Tests
                 usableMs = (Time.realtimeSinceStartupAsDouble - start) * 1000,
                 longestFrameMs = Mathf.Max(maxFrame, Time.unscaledDeltaTime * 1000f),
                 allocatedBytes = GC.GetAllocatedBytesForCurrentThread() - allocated });
+        }
+
+        [UnityTest]
+        public IEnumerator MenuAndMapUseLayoutCardsAndGraphicalProgressInBothLanguages()
+        {
+            var original = FrontendPreferences.Language;
+            try
+            {
+                foreach (var language in new[] { GameLanguage.Turkish, GameLanguage.English })
+                {
+                    FrontendPreferences.Language = language;
+                    Call(flow, "ShowScreen", AppScreen.MainMenu);
+                    yield return null;
+                    Assert.That(UiQuery.FindById(flow, "Main Menu Layout").GetComponent<UnityEngine.UI.VerticalLayoutGroup>(), Is.Not.Null);
+                    Assert.That(UiQuery.FindById(flow, "Settings").GetComponent<AllinDefense.UI.Kit.UiVisualState>().Icon.sprite,
+                        Is.EqualTo(Resources.Load<DefenderPresentationCatalog>("Presentation/DefenderPresentationCatalog").frontendTheme.designSystem.iconSettings));
+                    Assert.That(UiQuery.FindById(flow, "Chapter Stars").GetComponent<AllinDefense.UI.Kit.UiStarRow>(), Is.Not.Null);
+                    Assert.That(UiQuery.FindById(flow, "Save Error").gameObject.activeSelf, Is.False);
+                    UiQuery.FindById<UnityEngine.UI.Button>(flow, "Menu Hero").onClick.Invoke();
+                    Assert.That(UiQuery.FindById(flow, "Hero Name Title").gameObject.activeInHierarchy, Is.True);
+                    Call(flow, "CloseHeroName");
+                    Call(flow, "OpenCampaign");
+                    yield return null;
+                    yield return null;
+                    Canvas.ForceUpdateCanvases();
+                    Assert.That(UiQuery.FindById(flow, "Selection Bar").GetComponent<AllinDefense.UI.Kit.UiOverlay>(), Is.Not.Null);
+                    yield return new WaitForSecondsRealtime(.25f);
+                    var overlay = UiQuery.FindById(flow, "Selection Bar").GetComponent<AllinDefense.UI.Kit.UiOverlay>();
+                    var card = (RectTransform)overlay.Body.parent;
+                    var bodyCorners = new Vector3[4]; overlay.Body.GetWorldCorners(bodyCorners);
+                    foreach (Vector3 corner in bodyCorners)
+                        Assert.That(card.rect.Contains(card.InverseTransformPoint(corner)), Is.True, "Animated briefing stays inside its card.");
+                    Assert.That(UiQuery.FindById(flow, "Region Tabs").gameObject.activeSelf, Is.False);
+                    Assert.That(UiQuery.FindById(flow, "Level 2/Lock").gameObject.activeSelf, Is.True);
+                    Assert.That(UiQuery.FindById(flow, "Level 1/Selection Ring").gameObject.activeSelf, Is.True);
+                    Assert.That(UiQuery.FindById(flow, "Level Stars 1").GetComponent<AllinDefense.UI.Kit.UiStarRow>(), Is.Not.Null);
+                    Assert.That(UiQuery.FindById<TMPro.TMP_Text>(flow, "Briefing Reward").text.Length, Is.LessThanOrEqualTo(40));
+                    for (int level = 1; level <= 10; level++)
+                    {
+                        string objective = (string)typeof(AppFlowController).GetMethod("LearningObjective", BindingFlags.Static | BindingFlags.NonPublic)
+                            .Invoke(null, new object[] { level });
+                        Assert.That(objective.Length, Is.LessThanOrEqualTo(40), $"{language} level {level} objective");
+                    }
+                    Assert.That(UiQuery.FindById(flow, "Enemy Intel").GetComponentsInChildren<UnityEngine.UI.Image>().Length, Is.GreaterThan(0));
+                    var map = UiQuery.FindById<UnityEngine.UI.ScrollRect>(flow, "Campaign Scroll");
+                    var sheet = (RectTransform)UiQuery.FindById(flow, "Selection Bar");
+                    var mapCorners = new Vector3[4]; var sheetCorners = new Vector3[4];
+                    ((RectTransform)map.transform).GetWorldCorners(mapCorners); sheet.GetWorldCorners(sheetCorners);
+                    Assert.That(mapCorners[0].y, Is.GreaterThanOrEqualTo(sheetCorners[1].y - .1f), "Sheet must reserve map space.");
+                }
+            }
+            finally { FrontendPreferences.Language = original; }
         }
 
         [UnityTest]

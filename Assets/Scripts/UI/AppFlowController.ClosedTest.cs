@@ -24,9 +24,8 @@ namespace AllinDefense.UI
             RefreshProfile();
             if (importGuestButton != null) importGuestButton.gameObject.SetActive(progress.CanImportGuest);
         }
-        private void BuildGuestImportAction()
+        private void BuildGuestImportAction(Transform root)
         {
-            var root = screens[AppScreen.MainMenu].transform;
             importGuestButton = CreateButton("Import Guest Progress", root,
                 FrontendCopy.ImportGuestProgress.Value, new Vector2(630, 110),
                 theme.defenderBlue, () =>
@@ -44,7 +43,7 @@ namespace AllinDefense.UI
                     SetRect(cancel.GetComponent<RectTransform>(), new Vector2(180,-135), new Vector2(340,130), Center(), Center());
                     modal.transform.SetAsLastSibling();
                 });
-            SetRect(importGuestButton.GetComponent<RectTransform>(), new Vector2(0,716), new Vector2(630,110), BottomCenter(), BottomCenter());
+            AllinDefense.UI.Kit.UiKit.Size(importGuestButton.GetComponent<RectTransform>(), height: TouchHeight);
             importGuestButton.gameObject.SetActive(progress.CanImportGuest);
         }
         private static string LearningObjective(int level) => level switch

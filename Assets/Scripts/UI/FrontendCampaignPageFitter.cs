@@ -13,7 +13,7 @@ namespace AllinDefense.UI
         private RectTransform page;
         private RectTransform viewport;
         private LayoutElement layoutElement;
-        private float minimumWidth;
+        private RectTransform[] routeNodes, routeLines;
         private float lastWidth = -1f;
 
         public void Configure(RectTransform targetViewport, float minimumPageWidth)
@@ -21,13 +21,28 @@ namespace AllinDefense.UI
             page = GetComponent<RectTransform>();
             layoutElement = GetComponent<LayoutElement>();
             viewport = targetViewport;
-            minimumWidth = Mathf.Max(1f, minimumPageWidth);
             ApplyWidth();
+        }
+
+        public void ConfigureRoute(RectTransform[] nodes, RectTransform[] lines)
+        {
+            routeNodes = nodes; routeLines = lines;
         }
 
         private void LateUpdate()
         {
             ApplyWidth();
+            if (routeNodes == null) return;
+            for (int i = 0; i < routeLines.Length; i++)
+            {
+                var line = routeLines[i];
+                Vector2 from = line.parent.InverseTransformPoint(routeNodes[i].TransformPoint(routeNodes[i].rect.center));
+                Vector2 to = line.parent.InverseTransformPoint(routeNodes[i + 1].TransformPoint(routeNodes[i + 1].rect.center));
+                Vector2 delta = to - from;
+                line.localPosition = from;
+                line.sizeDelta = new Vector2(delta.magnitude, UiTokens.Space1 / 2);
+                line.localRotation = Quaternion.Euler(0, 0, Mathf.Atan2(delta.y, delta.x) * Mathf.Rad2Deg);
+            }
         }
 
         private void ApplyWidth()

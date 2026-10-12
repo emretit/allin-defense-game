@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using AllinDefense.Core;
 using AllinDefense.Data;
+using AllinDefense.UI.Kit;
+using AllinDefense.Presentation;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,85 +15,138 @@ namespace AllinDefense.UI
         private const float Edge = 44f;
         private const float TouchHeight = 140f;
 
+        private UiKit menuKit;
+        private TMP_Text chapterEyebrow, chapterTitle, chapterWaves, chapterTime, chapterGold, chapterProgress;
+        private TMP_Text briefingTime;
+        private UiStatPill profileStars;
+        private UiStarRow chapterStars;
+        private UiProgressSegments regionProgress;
+        private Image saveErrorIcon;
+        private RectTransform enemyChips;
+        private UiOverlay briefingSheet;
+        private readonly System.Collections.Generic.List<Image> levelLocks = new();
+
+        private RectTransform MenuStack(Transform parent, string id, bool vertical = true, float padding = 0)
+        {
+            var rect = UiKit.Node(parent, id);
+            var layout = UiKit.Layout(rect, vertical, padding);
+            layout.spacing = UiTokens.Space2;
+            return rect;
+        }
+
+        private TextMeshProUGUI MenuText(Transform parent, string id, LocalizedCopy copy, float size = 32, bool bold = false)
+        {
+            return (TextMeshProUGUI)menuKit.Text(parent, id, copy, size, bold);
+        }
+
+        private void MenuClick(Action action)
+        {
+            PlayFrontendCue(null, PresentationCue.UiClick);
+            action?.Invoke();
+        }
+
+        private Button MenuButton(Transform parent, string id, LocalizedCopy copy, Sprite icon, Action action, bool gold = false)
+        {
+            var button = menuKit.Button(parent, id, copy, gold ? UiButtonVariant.Gold : UiButtonVariant.Glass, icon, clicked: () => MenuClick(action));
+            button.GetComponentInChildren<TMP_Text>(true).fontSize = 34;
+            var glyph = button.GetComponent<UiVisualState>().Icon;
+            if (glyph != null) glyph.GetComponent<UiProportionalIcon>().Configure(button.GetComponent<UiPointSize>());
+            UiKit.Size((RectTransform)button.transform, height: TouchHeight, flex: 1);
+            return button;
+        }
+
         private void BuildMainMenuScreen()
         {
+            menuKit ??= new UiKit(theme.designSystem);
             Transform root = screens[AppScreen.MainMenu].transform;
-            var brand = CreateBrandImage("Brand Logo", root, theme.brandLogo);
-            SetAnchors((RectTransform)brand.transform, new Vector2(0, 1), Vector2.one,
-                new Vector2(Edge, -260), new Vector2(-Edge, -16));
-            var profile = CreatePanel("Profile Crest", root, UiTokens.ProfileSurface);
-            SetAnchors((RectTransform)profile.transform, new Vector2(0, 1), Vector2.one,
-                new Vector2(Edge, -400), new Vector2(-Edge - 156, -264));
-            var mark = CreateBrandImage("Profile Brand Mark", profile.transform, theme.brandMark);
-            SetRect((RectTransform)mark.transform, new Vector2(20, -28), new Vector2(76, 76), TopLeft(), TopLeft());
-            profileLabel = CreateText("Profile", profile.transform, "", 34, catalog.bodyFont, FontStyles.Normal,
-                TextAlignmentOptions.Left, theme.textPrimary);
-            Stretch(profileLabel.rectTransform, new Vector2(114, 16), new Vector2(-18, -16));
-            var profileButton = profile.AddComponent<Button>();
-            profile.GetComponent<Image>().raycastTarget = true;
-            profileButton.targetGraphic = profile.GetComponent<Image>();
-            profileButton.onClick.AddListener(() => ShowScreen(AppScreen.Login));
-            var settings = CreateButton("Settings", root, FrontendCopy.SettingsButton, new Vector2(140, 136), theme.night, OpenSettings);
-            SetRect((RectTransform)settings.transform, new Vector2(-Edge, -264), new Vector2(140, 136), TopRight(), TopRight());
-
-            var card = CreatePanel("Continue Chronicle", root, UiTokens.WithAlpha(theme.panel, .9f));
-            AddCardAccent(card.transform, theme.commandGold);
-            SetAnchors((RectTransform)card.transform, Vector2.zero, new Vector2(1, 0),
-                new Vector2(Edge, 212), new Vector2(-Edge, 700));
-            var title = CreateText("Callout", card.transform, FrontendCopy.MainMenuCallout, 48,
-                catalog.titleFont, FontStyles.Bold, TextAlignmentOptions.Left, theme.textPrimary);
-            SetAnchors(title.rectTransform, new Vector2(0, 1), Vector2.one, new Vector2(32, -152), new Vector2(-32, -20));
-            continueDetails = CreateText("Continue Details", card.transform, "", 34, catalog.bodyFont,
-                FontStyles.Normal, TextAlignmentOptions.Left, theme.textMuted);
-            SetAnchors(continueDetails.rectTransform, new Vector2(0, 1), Vector2.one, new Vector2(32, -282), new Vector2(-32, -164));
-            continueButton = CreateButton("Continue", card.transform, FrontendCopy.Continue.Value,
-                new Vector2(800, TouchHeight), theme.commandGold, ContinueCampaign);
-            SetAnchors((RectTransform)continueButton.transform, Vector2.zero, new Vector2(1, 0), new Vector2(28, 26), new Vector2(-28, 166));
-            var map = CreateButton("Campaign", root, FrontendCopy.RealmMap, new Vector2(800, TouchHeight), theme.defenderBlue, OpenCampaign);
-            SetAnchors((RectTransform)map.transform, Vector2.zero, new Vector2(1, 0), new Vector2(Edge, 40), new Vector2(-Edge, 180));
-            BuildGuestImportAction();
+            var stack = MenuStack(root, "Main Menu Layout", padding: Edge);
+            UiKit.Stretch(stack);
+            stack.GetComponent<VerticalLayoutGroup>().spacing = UiTokens.Space3;
+            var top = MenuStack(stack, "Profile Row", false);
+            var profile = menuKit.Surface(top, "Profile Crest", UiTokens.RadiusPill, false);
+            UiKit.Size(profile, flex: 1);
+            menuKit.Icon(profile, "Profile Brand Mark", theme.brandMark, 76);
+            var identity = MenuStack(profile, "Profile Identity");
+            UiKit.Size(identity, flex: 1);
+            profileLabel = MenuText(identity, "Profile", "", 32, true);
+            profileLabel.enableAutoSizing = true; profileLabel.fontSizeMin = 26; profileLabel.fontSizeMax = 32;
+            profileStars = menuKit.StatPill(identity, "Profile Stars", menuKit.Assets.iconStarFilled, 0);
+            profileStars.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
+            var profileButton = profile.gameObject.AddComponent<Button>();
+            profileButton.targetGraphic = profile.GetComponent<UiVisualState>().Surface;
+            profileButton.onClick.AddListener(() => MenuClick(() => ShowScreen(AppScreen.Login)));
+            profile.gameObject.AddComponent<UiPointSize>().Configure(UiMetrics.MinTouchPt);
+            saveErrorIcon = menuKit.Icon(profile, "Save Error", menuKit.Assets.iconClose, 32);
+            saveErrorIcon.color = UiTokens.Danger;
+            var settings = menuKit.IconButton(top, "Settings", menuKit.Assets.iconSettings, () => MenuClick(OpenSettings));
+            UiKit.Size((RectTransform)settings.transform, 140, 140);
+            var brand = CreateBrandImage("Brand Logo", stack, theme.brandLogo);
+            UiKit.Size((RectTransform)brand.transform, height: 360);
+            var space = UiKit.Node(stack, "Menu Artwork Space");
+            UiKit.Size(space).flexibleHeight = 1;
+            var card = menuKit.Card(stack, "Continue Chronicle");
+            card.GetComponent<VerticalLayoutGroup>().padding = new RectOffset(32, 32, 28, 28);
+            var chapterHeader = MenuStack(card, "Chapter Header", false);
+            chapterEyebrow = MenuText(chapterHeader, "Chapter Region", "", 25, true);
+            UiKit.Size(chapterEyebrow.rectTransform, flex: 1);
+            chapterEyebrow.color = UiTokens.Gold;
+            chapterStars = menuKit.StarRow(chapterHeader, "Chapter Stars", 0);
+            chapterTitle = MenuText(card, "Callout", "", 48, true);
+            chapterTitle.font = catalog.titleFont;
+            continueDetails = MenuText(card, "Continue Details", FrontendCopy.ChapterDescription, 30);
+            continueDetails.textWrappingMode = TextWrappingModes.Normal;
+            UiKit.Size(continueDetails.rectTransform, height: 82);
+            var facts = MenuStack(card, "Chapter Facts", false);
+            chapterWaves = menuKit.Chip(facts, "Chapter Waves", "", 28).GetComponentInChildren<TMP_Text>();
+            chapterTime = menuKit.Chip(facts, "Chapter Time", "", 28).GetComponentInChildren<TMP_Text>();
+            chapterGold = menuKit.Chip(facts, "Chapter Gold", "", 28).GetComponentInChildren<TMP_Text>();
+            regionProgress = menuKit.ProgressSegments(card, "Region Progress", 10);
+            chapterProgress = MenuText(card, "Region Progress Label", "", 26);
+            chapterProgress.color = UiTokens.TextSecondary;
+            continueButton = MenuButton(stack, "Continue", FrontendCopy.MenuStart, menuKit.Assets.iconPlay, ContinueCampaign, true);
+            var actions = MenuStack(stack, "Menu Actions", false);
+            MenuButton(actions, "Campaign", FrontendCopy.MenuMap, menuKit.Assets.iconMap, OpenCampaign);
+            MenuButton(actions, "Menu Hero", FrontendCopy.MenuHero, menuKit.Assets.iconShield, OpenHeroName);
+            BuildGuestImportAction(stack);
             RefreshProfile();
         }
 
         private void BuildCampaignScreen()
         {
+            menuKit ??= new UiKit(theme.designSystem);
             Transform root = screens[AppScreen.Campaign].transform;
-            CreateHeader(root, FrontendCopy.RealmMap, "", () => ShowScreen(AppScreen.MainMenu));
-            var tabs = new GameObject("Region Tabs", typeof(RectTransform), typeof(HorizontalLayoutGroup));
-            tabs.transform.SetParent(root, false);
-            SetAnchors((RectTransform)tabs.transform, new Vector2(0, 1), Vector2.one,
-                new Vector2(Edge, -300), new Vector2(-Edge, -166));
-            var layout = tabs.GetComponent<HorizontalLayoutGroup>();
-            layout.spacing = 14; layout.childControlWidth = layout.childControlHeight = true;
-            layout.childForceExpandWidth = layout.childForceExpandHeight = true;
+            var stack = MenuStack(root, "Campaign Layout", padding: Edge);
+            UiKit.Stretch(stack);
+            var header = MenuStack(stack, "Map Header", false);
+            var back = menuKit.IconButton(header, "Back", menuKit.Assets.iconBack, () => MenuClick(() => ShowScreen(AppScreen.MainMenu)));
+            UiKit.Size((RectTransform)back.transform, 140, 140);
+            UiKit.Size(MenuText(header, "Map Title", FrontendCopy.RealmMap, 40, true).rectTransform, flex: 1);
+            var tabs = MenuStack(stack, "Region Tabs", false);
             for (int i = 0; i < VisibleRegionCount; i++)
             {
                 int region = i;
-                regionTabs.Add(CreateButton($"Region Tab {i + 1}", tabs.transform, (i + 1).ToString(),
-                    new Vector2(160, 134), theme.defenderBlue, () => FocusRegion(region)));
+                regionTabs.Add(MenuButton(tabs, $"Region Tab {i + 1}", (i + 1).ToString(), null, () => FocusRegion(region)));
             }
-            tabs.SetActive(VisibleRegionCount > 1);
-            var scroll = new GameObject("Campaign Scroll", typeof(RectTransform), typeof(FrontendCampaignPager));
-            scroll.transform.SetParent(root, false);
-            campaignScroll = scroll.GetComponent<ScrollRect>();
-            campaignScroll.horizontal = true; campaignScroll.vertical = false;
+            tabs.gameObject.SetActive(VisibleRegionCount > 1);
+            var scroll = UiKit.Node(stack, "Campaign Scroll");
+            UiKit.Size(scroll, height: 320).flexibleHeight = 1;
+            campaignScroll = scroll.gameObject.AddComponent<FrontendCampaignPager>();
+            ((FrontendCampaignPager)campaignScroll).PageCount = VisibleRegionCount;
+            campaignScroll.horizontal = VisibleRegionCount > 1; campaignScroll.vertical = false;
             campaignScroll.movementType = ScrollRect.MovementType.Clamped;
             campaignScroll.decelerationRate = .06f;
-            var viewport = CreateImage("Viewport", scroll.transform, UiTokens.ViewportScrim);
+            var viewport = CreateImage("Viewport", scroll, UiTokens.ViewportScrim);
             viewport.GetComponent<Image>().raycastTarget = true;
             Stretch((RectTransform)viewport.transform);
             viewport.AddComponent<RectMask2D>();
-            var content = new GameObject("Content", typeof(RectTransform), typeof(HorizontalLayoutGroup), typeof(ContentSizeFitter));
-            content.transform.SetParent(viewport.transform, false);
-            var rect = (RectTransform)content.transform;
-            rect.anchorMin = Vector2.zero; rect.anchorMax = new Vector2(0, 1);
-            rect.pivot = new Vector2(0, .5f); rect.sizeDelta = Vector2.zero;
+            var content = MenuStack(viewport.transform, "Content", false);
+            content.anchorMin = Vector2.zero; content.anchorMax = new Vector2(0, 1);
+            content.pivot = new Vector2(0, .5f); content.sizeDelta = Vector2.zero;
             var row = content.GetComponent<HorizontalLayoutGroup>();
-            row.childControlWidth = row.childControlHeight = true;
-            row.childForceExpandWidth = false; row.childForceExpandHeight = true;
-            content.GetComponent<ContentSizeFitter>().horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
-            campaignScroll.viewport = (RectTransform)viewport.transform; campaignScroll.content = rect;
-            for (int i = 0; i < VisibleRegionCount; i++) BuildRegion(content.transform, CampaignCatalog.Regions[i]);
+            row.spacing = 0; row.childForceExpandHeight = true;
+            content.gameObject.AddComponent<ContentSizeFitter>().horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
+            campaignScroll.viewport = (RectTransform)viewport.transform; campaignScroll.content = content;
+            for (int i = 0; i < VisibleRegionCount; i++) BuildRegion(content, CampaignCatalog.Regions[i]);
             campaignScroll.onValueChanged.AddListener(value =>
             {
                 int current = Mathf.Clamp(Mathf.RoundToInt(value.x * (VisibleRegionCount - 1)), 0, VisibleRegionCount - 1);
@@ -99,56 +154,39 @@ namespace AllinDefense.UI
                 if (navigationState.Region != current) { navigationState.Region = current; UpdateRegionTabs(); }
             });
 
-            var panel = CreatePanel("Selection Bar", root, UiTokens.WithAlpha(theme.panel, .96f));
-            AddCardAccent(panel.transform, theme.commandGold);
-            selectedLevelTitle = CreateText("Selected Level", panel.transform, "", 38, catalog.titleFont,
-                FontStyles.Bold, TextAlignmentOptions.Left, theme.textPrimary);
-            selectedLevelDetails = CreateText("Selected Details", panel.transform, "", 32, catalog.bodyFont,
-                FontStyles.Normal, TextAlignmentOptions.Left, theme.textMuted);
-            briefingEnemies = CreateText("Enemy Intel", panel.transform, "", 32, catalog.bodyFont,
-                FontStyles.Normal, TextAlignmentOptions.Left, theme.textPrimary);
-            briefingReward = CreateText("Briefing Reward", panel.transform, "", 32, catalog.bodyFont,
-                FontStyles.Normal, TextAlignmentOptions.TopLeft, theme.commandGold);
-            var preview = CreatePanel("Tactical Preview", panel.transform, UiTokens.TacticalSurface);
+            briefingSheet = menuKit.BottomSheet(stack, "Selection Bar", "");
+            briefingSheet.DismissOnScrim = false;
+            briefingSheet.GetComponent<Image>().color = UiTokens.Clear;
+            briefingSheet.GetComponent<Image>().raycastTarget = false;
+            var sheetCard = briefingSheet.Body.parent;
+            sheetCard.Find("Selection Bar.Title").gameObject.SetActive(false);
+            sheetCard.Find("Selection Bar.Close").gameObject.SetActive(false);
+            var body = briefingSheet.Body;
+            selectedLevelTitle = MenuText(body, "Selected Level", "", 38, true);
+            selectedLevelTitle.font = catalog.titleFont;
+            var facts = MenuStack(body, "Briefing Facts", false);
+            selectedLevelDetails = (TextMeshProUGUI)menuKit.Chip(facts, "Selected Details Chip", "", 28).GetComponentInChildren<TMP_Text>();
+            UiId.Assign(selectedLevelDetails.transform, "Selected Details");
+            briefingTime = menuKit.Chip(facts, "Briefing Time", "", 28).GetComponentInChildren<TMP_Text>();
+            var preview = CreatePanel("Tactical Preview", body, UiTokens.TacticalSurface);
+            UiKit.Size((RectTransform)preview.transform, height: 150);
             preview.GetComponent<Image>().raycastTarget = false;
             tacticalMapPreview = preview.AddComponent<FrontendTacticalMapPreview>();
-            playSelectedButton = CreateButton("Play Selected", panel.transform, FrontendCopy.StartDefence,
-                new Vector2(700, TouchHeight), theme.commandGold, StartSelectedLevel);
-            root.gameObject.AddComponent<FrontendResponsiveLayout>().Configure(size => LayoutCampaign(size, (RectTransform)scroll.transform, (RectTransform)panel.transform));
-            selectedLevelTitle.enableAutoSizing = true;
-            selectedLevelTitle.fontSizeMin = 28; selectedLevelTitle.fontSizeMax = 38;
-            briefingReward.enableAutoSizing = true;
-            briefingReward.fontSizeMin = 26; briefingReward.fontSizeMax = 32;
-            briefingEnemies.enableAutoSizing = true;
-            briefingEnemies.fontSizeMin = 26; briefingEnemies.fontSizeMax = 32;
+            enemyChips = MenuStack(body, "Enemy Intel", false);
+            briefingReward = MenuText(body, "Briefing Reward", "", 28);
+            briefingReward.color = UiTokens.Gold;
+            playSelectedButton = MenuButton(body, "Play Selected", FrontendCopy.MenuStart, menuKit.Assets.iconPlay, StartSelectedLevel, true);
             RefreshLevelButtons();
             UpdateSelectedDetails();
             UpdateRegionTabs();
         }
 
-        private void LayoutCampaign(Vector2 size, RectTransform map, RectTransform panel)
+        private void ShowBriefingSheet()
         {
-            bool columns = FrontendResponsiveLayout.UseColumns(size);
-            SetAnchors(map, Vector2.zero, new Vector2(columns ? .62f : 1, 1),
-                new Vector2(Edge, columns ? 30 : 654), new Vector2(columns ? -16 : -Edge, -324));
-            if (columns)
-                SetAnchors(panel, new Vector2(.62f, 1), Vector2.one, new Vector2(8, -324 - Mathf.Min(900, size.y - 354)), new Vector2(-Edge, -324));
-            else
-                SetAnchors(panel, Vector2.zero, new Vector2(1, 0), new Vector2(Edge, 26), new Vector2(-Edge, 630));
-            SetAnchors(selectedLevelTitle.rectTransform, new Vector2(0, 1), Vector2.one, new Vector2(28, -110), new Vector2(-28, -22));
-            SetAnchors(selectedLevelDetails.rectTransform, new Vector2(0, 1), Vector2.one,
-                new Vector2(28, -178), new Vector2(-28, -114));
-            RectTransform preview = tacticalMapPreview.transform as RectTransform;
-            if (columns)
-                SetAnchors(preview, new Vector2(0, 1), Vector2.one, new Vector2(24, -350), new Vector2(-24, -190));
-            else
-                SetAnchors(preview, new Vector2(0, 0), new Vector2(.55f, 1), new Vector2(28, 178), new Vector2(-14, -190));
-            SetAnchors(briefingEnemies.rectTransform, new Vector2(columns ? 0 : .57f, 1), Vector2.one,
-                new Vector2(28, columns ? -434 : -298), new Vector2(-28, columns ? -362 : -190));
-            SetAnchors(briefingReward.rectTransform, new Vector2(columns ? 0 : .57f, 1), Vector2.one,
-                new Vector2(28, columns ? -558 : -422), new Vector2(-28, columns ? -446 : -310));
-            SetAnchors((RectTransform)playSelectedButton.transform, Vector2.zero, new Vector2(1, 0),
-                new Vector2(24, 24), new Vector2(-24, 164));
+            if (briefingSheet == null || !briefingSheet.gameObject.activeInHierarchy) return;
+            Canvas.ForceUpdateCanvases();
+            LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)briefingSheet.transform);
+            briefingSheet.Show();
         }
 
         private void BuildRegion(Transform parent, CampaignRegionDefinition region)
@@ -163,11 +201,17 @@ namespace AllinDefense.UI
             var viewport = CreateImage("Route Viewport", page.transform, UiTokens.RouteViewport);
             viewport.GetComponent<Image>().raycastTarget = true;
             Stretch((RectTransform)viewport.transform); viewport.AddComponent<RectMask2D>();
-            var route = new GameObject("Route Content", typeof(RectTransform));
+            var route = new GameObject("Route Content", typeof(RectTransform), typeof(VerticalLayoutGroup), typeof(ContentSizeFitter));
             route.transform.SetParent(viewport.transform, false);
             var routeRect = (RectTransform)route.transform;
             routeRect.anchorMin = new Vector2(0, 1); routeRect.anchorMax = Vector2.one;
-            routeRect.pivot = new Vector2(.5f, 1); routeRect.sizeDelta = new Vector2(0, 1720);
+            routeRect.pivot = new Vector2(.5f, 1); routeRect.sizeDelta = Vector2.zero;
+            var routeLayout = route.GetComponent<VerticalLayoutGroup>();
+            routeLayout.padding = new RectOffset(24, 24, 16, 48);
+            routeLayout.spacing = 24;
+            routeLayout.childControlWidth = routeLayout.childControlHeight = true;
+            routeLayout.childForceExpandWidth = true; routeLayout.childForceExpandHeight = false;
+            route.GetComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
             vertical.viewport = (RectTransform)viewport.transform; vertical.content = routeRect;
             regionScrolls.Add(vertical);
             UiId.AssignHierarchy(page.transform);
@@ -199,53 +243,46 @@ namespace AllinDefense.UI
 
         private void BuildRegionContents(GameObject page, RectTransform routeRect, CampaignRegionDefinition region)
         {
-            var route = routeRect.gameObject;
-            var heading = CreateText("Region Name", route.transform,
-                $"{region.number} · {GameLocalization.Uppercase(region.localizedName)}", 32, catalog.titleFont,
-                FontStyles.Bold, TextAlignmentOptions.Left, theme.commandGold);
-            SetAnchors(heading.rectTransform, new Vector2(0, 1), Vector2.one, new Vector2(24, -98), new Vector2(-24, -16));
-            var buttons = new RectTransform[region.levels.Count];
-            var labels = new RectTransform[region.levels.Count];
+            var heading = MenuText(routeRect, "Region Name",
+                $"{region.number} · {GameLocalization.Uppercase(region.localizedName)}", 32, true);
+            heading.color = UiTokens.Gold;
+            var nodes = new RectTransform[region.levels.Count];
             var lines = new RectTransform[region.levels.Count - 1];
             for (int i = 0; i < lines.Length; i++)
             {
-                var line = CreateImage("Route", route.transform, UiTokens.RouteLine);
+                var line = CreateImage("Route", routeRect, UiTokens.HairlineStrong);
                 lines[i] = (RectTransform)line.transform;
+                UiKit.Size(lines[i]).ignoreLayout = true;
+                lines[i].pivot = new Vector2(0, .5f);
+                lines[i].SetAsFirstSibling();
             }
             for (int i = 0; i < region.levels.Count; i++)
             {
                 var level = region.levels[i];
-                var button = CreateButton($"Level {level.number}", route.transform, level.number.ToString(),
-                    new Vector2(144, 144), region.accentColor, () => SelectLevel(level.number));
-                button.interactable = level.number <= progress.Data.unlockedLevel;
-                buttons[i] = (RectTransform)button.transform;
-                CreateLevelSelectionRing(button.transform); levelButtons.Add(button); levelNumbers.Add(level.number);
-                var stars = CreateText("Progress", route.transform, "", 25, catalog.bodyFont, FontStyles.Bold,
-                    TextAlignmentOptions.Center, theme.textPrimary);
-                labels[i] = stars.rectTransform; levelStars.Add(stars);
+                var row = MenuStack(routeRect, $"Route Row {level.number}", false);
+                row.GetComponent<HorizontalLayoutGroup>().childAlignment = i % 2 == 0 ? TextAnchor.MiddleLeft : TextAnchor.MiddleRight;
+                row.GetComponent<HorizontalLayoutGroup>().padding = new RectOffset(72, 72, 0, 0);
+                var medal = MenuStack(row, $"Medallion {level.number}");
+                medal.GetComponent<VerticalLayoutGroup>().childForceExpandWidth = false;
+                var button = menuKit.Button(medal, $"Level {level.number}", level.number.ToString());
+                UiKit.Size((RectTransform)button.transform, 144, 144);
+                var state = button.GetComponent<UiVisualState>();
+                state.Surface.sprite = menuKit.Assets.filledCircle;
+                state.Surface.type = Image.Type.Simple; state.SetCircular(true);
+                button.GetComponentInChildren<TMP_Text>(true).fontSize = 40;
+                menuKit.Decoration(button.transform, "Medallion Border", menuKit.Assets.cooldownRing, UiTokens.HairlineStrong);
+                menuKit.Decoration(button.transform, "Selection Ring", menuKit.Assets.cooldownRing, UiTokens.Gold);
+                nodes[i] = (RectTransform)button.transform;
+                var locked = menuKit.Decoration(button.transform, "Lock", menuKit.Assets.iconLock, UiTokens.TextSecondary);
+                locked.rectTransform.anchorMin = Vector2.one * .3f; locked.rectTransform.anchorMax = Vector2.one * .7f;
+                locked.preserveAspect = true;
+                levelLocks.Add(locked);
+                button.onClick.AddListener(() => MenuClick(() => { SelectLevel(level.number); ShowBriefingSheet(); }));
+                levelButtons.Add(button); levelNumbers.Add(level.number);
+                levelStars.Add(menuKit.StarRow(medal, $"Level Stars {level.number}", 0));
             }
-            page.AddComponent<FrontendResponsiveLayout>().Configure(size =>
-            {
-                float height = Mathf.Max(1720, size.y);
-                routeRect.sizeDelta = new Vector2(0, height);
-                for (int i = 0; i < buttons.Length; i++)
-                {
-                    float x = size.x * (i % 2 == 0 ? .29f : .71f);
-                    float y = -190 - i * ((height - 350) / 9f);
-                    SetRect(buttons[i], new Vector2(x, y), new Vector2(144, 144), TopLeft(), TopLeft());
-                    buttons[i].pivot = new Vector2(.5f, .5f);
-                    SetRect(labels[i], new Vector2(x, y - 78), new Vector2(210, 44), TopLeft(), TopLeft());
-                    labels[i].pivot = new Vector2(.5f, 1);
-                    if (i > 0)
-                    {
-                        Vector2 from = buttons[i - 1].anchoredPosition;
-                        Vector2 delta = buttons[i].anchoredPosition - from;
-                        SetRect(lines[i - 1], from, new Vector2(delta.magnitude, 7), TopLeft(), TopLeft());
-                        lines[i - 1].pivot = new Vector2(0, .5f);
-                        lines[i - 1].localRotation = Quaternion.Euler(0, 0, Mathf.Atan2(delta.y, delta.x) * Mathf.Rad2Deg);
-                    }
-                }
-            });
+            page.GetComponent<FrontendCampaignPageFitter>().ConfigureRoute(nodes, lines);
+            LayoutRebuilder.ForceRebuildLayoutImmediate(routeRect);
         }
         private void BuildWelcomeScreen()
         {

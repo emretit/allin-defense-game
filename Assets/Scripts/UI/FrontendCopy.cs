@@ -83,7 +83,7 @@ namespace AllinDefense.UI
         public static readonly LocalizedCopy ObjectiveTowerRoles = new("Üç kule rolünü birlikte kullan.", "Combine all three tower roles.");
         public static readonly LocalizedCopy ObjectiveRegeneration = new("Yenilenen hedefe ateşi yoğunlaştır.", "Focus fire on regenerating enemies.");
         public static readonly LocalizedCopy ObjectiveHealer = new("Önce şifacıyı durdur.", "Stop the healer first.");
-        public static readonly LocalizedCopy ObjectiveSiege = new("Kuşatma saldırısını darbeyle kes.", "Interrupt siege attacks with your strike.");
+        public static readonly LocalizedCopy ObjectiveSiege = new("Kuşatma saldırısını darbeyle kes.", "Interrupt siege attacks with a strike.");
         public static readonly LocalizedCopy ObjectiveMixedPressure = new("Karma düşman baskısına hazırlan.", "Prepare for mixed enemy pressure.");
         public static readonly LocalizedCopy ObjectiveLord = new("Lordun kırmızı uyarısını darbeyle kes.", "Interrupt the lord's red warning.");
         public static readonly LocalizedCopy SaveRetry = new("Kayıt tekrar denenecek", "Save will retry");
@@ -259,6 +259,14 @@ namespace AllinDefense.UI
         public static readonly LocalizedCopy HudBuildInstruction = new("Aşağıdan bir karakol seç.", "Tap an outpost platform and build your defence.");
         public static readonly LocalizedCopy SingleEntrance = new("{0} giriş", "{0} entrance");
         public static readonly LocalizedCopy MultipleEntrances = new("{0} giriş", "{0} entrances");
+        public static readonly LocalizedCopy MenuStart = new("BAŞLAT", "START");
+        public static readonly LocalizedCopy MenuMap = new("HARİTA", "MAP");
+        public static readonly LocalizedCopy MenuHero = new("KAHRAMAN", "HERO");
+        public static readonly LocalizedCopy MenuChapter = new("Bölge {0} · {1} · Bölüm {2}", "Region {0} · {1} · Chapter {2}");
+        public static readonly LocalizedCopy MenuWaves = new("{0} dalga", "{0} waves");
+        public static readonly LocalizedCopy MenuMinutes = new("~{0:0.#} dk", "~{0:0.#} min");
+        public static readonly LocalizedCopy MenuRegionProgress = new("BÖLGE İLERLEMESİ  {0} / 10", "REGION PROGRESS  {0} / 10");
+        public static readonly LocalizedCopy ChapterDescription = new("Yolu tut, kaleyi koru. Şafağa kadar dayan.", "Hold the road. Protect the keep until dawn.");
         public static readonly LocalizedCopy BriefingDetails = new("{0} dalga · ~{1:0.#} dk · {2} altın · {3}", "{0} waves · ~{1:0.#} min · {2} gold · {3}");
         public static readonly LocalizedCopy ContinueDetails = new("BÖLGE {0}  ·  {1}  ·  {2}\n{3} dalga  ·  ~{4:0.#} dk  ·  {5} başlangıç altını", "REGION {0}  ·  {1}  ·  {2}\n{3} waves  ·  ~{4:0.#} min  ·  {5} starting gold");
         public static readonly LocalizedCopy ThreatLow = new("I  Düşük", "I  Low");

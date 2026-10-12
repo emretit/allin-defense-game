@@ -34,6 +34,8 @@ namespace AllinDefense.UI
             public List<string> screenshots = new();
             public List<string> errors = new();
             public List<string> knownIssues = new();
+            public float minimumMenuTouchPt = 999f;
+            public int menuTouchTargetsChecked;
             public string status = "running";
         }
         private static readonly HashSet<string> acceptanceErrors = new();
@@ -88,7 +90,15 @@ namespace AllinDefense.UI
             {
                 FrontendPreferences.Language = language;
                 yield return new WaitForSecondsRealtime(.3f);
+                ShowScreen(AppScreen.MainMenu);
+                yield return CaptureAcceptance("main-menu-" + language);
+                OpenCampaign();
                 yield return CaptureAcceptance("map-" + language);
+                OpenBriefing();
+                yield return CaptureAcceptance("briefing-" + language);
+                regionScrolls[0].verticalNormalizedPosition = 0;
+                yield return CaptureAcceptance("map-last-node-" + language);
+                regionScrolls[0].verticalNormalizedPosition = 1;
                 OpenSettings(); yield return CaptureAcceptance("settings-" + language); CloseSettings();
                 ShowScreen(AppScreen.Login); yield return new WaitForSecondsRealtime(.2f);
                 yield return CaptureAcceptance("account-" + language); ReturnFromAccount();
@@ -206,6 +216,35 @@ namespace AllinDefense.UI
             acceptanceReport.screenshots.Add(name + ".png");
             ScreenCapture.CaptureScreenshot(Application.isMobilePlatform
                 ? Path.Combine("FrontendExperience", name + ".png") : Path.Combine(AcceptanceRoot, name + ".png"));
+            if (name.StartsWith("main-menu", StringComparison.Ordinal) || name.StartsWith("map-", StringComparison.Ordinal) ||
+                name.StartsWith("briefing-", StringComparison.Ordinal))
+            {
+                if (CurrentScreen == AppScreen.Campaign && briefingSheet != null)
+                {
+                    RectTransform card = (RectTransform)briefingSheet.Body.parent;
+                    var corners = new Vector3[4]; briefingSheet.Body.GetWorldCorners(corners);
+                    foreach (Vector3 corner in corners)
+                        if (!card.rect.Contains(card.InverseTransformPoint(corner)))
+                        {
+                            acceptanceReport.errors.Add(name + " | briefing content outside bottom sheet");
+                            break;
+                        }
+                }
+                foreach (var button in screens[CurrentScreen].GetComponentsInChildren<Button>())
+                {
+                    if (!button.interactable) continue;
+                    var corners = new Vector3[4];
+                    ((RectTransform)button.transform).GetWorldCorners(corners);
+                    Vector2 logical = UiMetrics.LogicalScreenSize;
+                    float width = Vector3.Distance(corners[0], corners[3]) * logical.x / Screen.width;
+                    float height = Vector3.Distance(corners[0], corners[1]) * logical.y / Screen.height;
+                    float minimum = Mathf.Min(width, height);
+                    acceptanceReport.minimumMenuTouchPt = Mathf.Min(acceptanceReport.minimumMenuTouchPt, minimum);
+                    acceptanceReport.menuTouchTargetsChecked++;
+                    if (minimum < UiMetrics.MinTouchPt - .1f)
+                        acceptanceReport.errors.Add(name + " | touch target below 44 pt: " + button.GetComponent<UiId>()?.Id + " | " + minimum);
+                }
+            }
             foreach (var text in FindObjectsByType<TMPro.TMP_Text>(FindObjectsSortMode.None))
             {
                 if (!AcceptanceTextVisible(text)) continue;

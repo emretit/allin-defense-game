@@ -188,7 +188,7 @@ namespace AllinDefense.Tests
             Assert.That(profileMark.sprite, Is.SameAs(catalog.frontendTheme.brandMark));
             Assert.That(UiQuery.FindById(flow, "Moonlit Sigil"), Is.Not.Null);
             Assert.That(UiQuery.FindById(flow, "Ember Sigil"), Is.Not.Null);
-            Assert.That(UiQuery.FindById(flow, "Continue Chronicle/Accent Rail"), Is.Not.Null);
+            Assert.That(UiQuery.FindById(flow, "Continue Chronicle").GetComponent<AllinDefense.UI.Kit.UiVisualState>(), Is.Not.Null);
             Assert.That(flow.GetComponentsInChildren<Transform>(true)
                 .Any(child => child.GetComponent<UiId>()?.Id == "Profile Sigil"), Is.False);
             InvokePrivate(flow, "OpenCampaign");
@@ -204,7 +204,7 @@ namespace AllinDefense.Tests
             Assert.That(levelButtonCount, Is.EqualTo(10));
             RectTransform firstLevel = UiQuery.FindById<Button>(flow, "Level 1").GetComponent<RectTransform>();
             RectTransform tenthLevel = UiQuery.FindById<Button>(flow, "Level 10").GetComponent<RectTransform>();
-            Assert.That(firstLevel.anchoredPosition.y, Is.GreaterThan(tenthLevel.anchoredPosition.y),
+            Assert.That(firstLevel.position.y, Is.GreaterThan(tenthLevel.position.y),
                 "The portrait kingdom path must progress from the top of the map to the bottom.");
             Assert.That(UiQuery.FindById(flow, "Level 1").GetComponent<Button>().interactable, Is.True);
             Assert.That(UiQuery.FindById(flow, "Level 2").GetComponent<Button>().interactable, Is.False);

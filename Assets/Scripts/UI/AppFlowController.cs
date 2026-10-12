@@ -7,6 +7,7 @@ using AllinDefense.Core;
 using AllinDefense.Data;
 using AllinDefense.Presentation;
 using AllinDefense.Utils;
+using AllinDefense.UI.Kit;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -37,7 +38,7 @@ namespace AllinDefense.UI
         private readonly List<int> levelNumbers = new();
         private readonly List<Action> regionBuilders = new();
         private readonly HashSet<int> builtRegions = new();
-        private readonly List<TextMeshProUGUI> levelStars = new();
+        private readonly List<UiStarRow> levelStars = new();
         private DefenderPresentationCatalog catalog;
         private GameSessionController session;
         private CampaignProgressStore progress;
@@ -60,7 +61,6 @@ namespace AllinDefense.UI
         private TextMeshProUGUI resultTitle;
         private TextMeshProUGUI resultStars;
         private TextMeshProUGUI resultReward;
-        private TextMeshProUGUI briefingEnemies;
         private TextMeshProUGUI briefingReward;
         private FrontendTacticalMapPreview tacticalMapPreview;
         private Button nextLevelButton;
@@ -469,12 +469,25 @@ namespace AllinDefense.UI
                 BiomeDefinition biome = CampaignLevelFactory.Biome(map.biomeIndex);
                 tacticalMapPreview.Configure(map, biome.accentColor, catalog.bodyFont);
             }
-            string routeLabel = (map.entranceCount == 1 ? FrontendCopy.SingleEntrance : FrontendCopy.MultipleEntrances).Format(map.entranceCount);
             selectedLevelTitle.text = $"{definition.number}. {definition.localizedName}";
-            selectedLevelDetails.text = FrontendCopy.BriefingDetails.Format(definition.waveCount, definition.targetMinutes,
-                definition.startingGold, routeLabel);
-            briefingEnemies.text = FrontendCopy.Enemies.Value + "\n" + EnemyPreviewForLevel(definition.number);
-            briefingReward.text = FrontendCopy.Objective.Value + "\n" + LearningObjective(definition.number);
+            selectedLevelDetails.text = FrontendCopy.MenuWaves.Format(definition.waveCount);
+            briefingTime.text = FrontendCopy.MenuMinutes.Format(definition.targetMinutes);
+            briefingReward.text = LearningObjective(definition.number);
+            foreach (Transform chip in enemyChips) { chip.gameObject.SetActive(false); Destroy(chip.gameObject); }
+            foreach (var enemy in CampaignLevelFactory.Create(definition.number).waves.SelectMany(w => w.groups).Select(g => g.enemy).Distinct())
+            {
+                var chip = menuKit.Surface(enemyChips, "Enemy Chip " + enemy, UiTokens.RadiusPill, false);
+                Sprite icon = enemy switch
+                {
+                    EnemyArchetype.Vanguard => menuKit.Assets.iconShield,
+                    EnemyArchetype.Support => menuKit.Assets.iconUpgrade,
+                    EnemyArchetype.Siege => menuKit.Assets.iconBlast,
+                    EnemyArchetype.Regenerator => menuKit.Assets.iconRapidFire,
+                    EnemyArchetype.Boss => menuKit.Assets.iconAssaultGuard,
+                    _ => menuKit.Assets.iconEnemy
+                };
+                menuKit.Icon(chip, "Enemy Icon " + enemy, icon, 44);
+            }
             playSelectedButton.interactable = selectedLevel <= progress.Data.unlockedLevel;
         }
 
@@ -500,7 +513,8 @@ namespace AllinDefense.UI
 
         private void OpenBriefing()
         {
-            OpenCampaign(); // Compatibility for old callers and evidence commands.
+            OpenCampaign();
+            ShowBriefingSheet();
         }
 
         private void StartSelectedLevel()
@@ -523,41 +537,17 @@ namespace AllinDefense.UI
                 bool unlocked = level <= progress.Data.unlockedLevel;
                 bool selected = level == selectedLevel;
                 CampaignLevelProgress levelProgress = progress.ProgressFor(level);
-                Image image = button.targetGraphic as Image;
-                if (image == null) continue;
-                CampaignLevelDefinition definition = CampaignCatalog.Level(level);
-                CampaignRegionDefinition region = CampaignCatalog.Regions[definition.region - 1];
-                TextMeshProUGUI label = button.GetComponentInChildren<TextMeshProUGUI>();
-                TextMeshProUGUI progressLabel = index < levelStars.Count ? levelStars[index] : null;
-                if (!unlocked) image.color = UiTokens.LockedSurface;
-                else if (selected) image.color = theme.commandGold;
-                else if (levelProgress != null && levelProgress.stars >= 3) image.color = theme.moonEdge;
-                else if (levelProgress != null && levelProgress.stars > 0) image.color = theme.defenderBlue;
-                else image.color = region.accentColor;
-
-                if (label != null)
-                {
-                    label.text = !unlocked
-                        ? "×"
-                        : selected
-                            ? level.ToString()
-                            : definition.isBoss ? $"BOSS {level}" : level.ToString();
-                }
-                if (progressLabel != null)
-                {
-                    progressLabel.text = !unlocked
-                        ? FrontendCopy.Locked.Value
-                        : levelProgress != null && levelProgress.stars > 0
-                            ? FrontendCopy.MapLevelStars.Format(levelProgress.stars)
-                            : definition.isBoss ? "LORD" : FrontendCopy.MapReady.Value;
-                }
+                var state = button.GetComponent<UiVisualState>();
+                state.SetState(!unlocked ? UiState.Disabled : selected ? UiState.Selected : UiState.Normal);
+                var label = button.GetComponentInChildren<TMP_Text>(true);
+                label.text = level.ToString();
+                label.gameObject.SetActive(unlocked);
+                levelLocks[index].gameObject.SetActive(!unlocked);
+                levelStars[index].SetStars(levelProgress?.stars ?? 0, false);
                 Transform selectionRing = button.transform.Find("Selection Ring");
                 if (selectionRing != null) selectionRing.gameObject.SetActive(unlocked && selected);
             }
         }
-
-        private static string EnemyPreviewForLevel(int level) => string.Join(" · ",
-            CampaignLevelFactory.Create(level).waves.SelectMany(w => w.groups).Select(g => g.enemy).Distinct().Select(FirstRegionCampaign.EnemyName));
 
         private static string ThreatLabel(int level) => level switch
         {
@@ -589,36 +579,23 @@ namespace AllinDefense.UI
         private void RefreshProfile()
         {
             if (profileLabel == null) return;
-            string provider = progress.Data.authProvider switch
-            {
-                PlayerAuthProvider.PlayerAccount => FrontendCopy.LinkedAccount.Value,
-                _ => FrontendCopy.Guest.Value
-            };
-            string displayName = string.IsNullOrWhiteSpace(progress.Data.displayName)
-                ? FrontendCopy.GreenwatchDefender.Value
-                : progress.Data.displayName;
-            int visibleStars = progress.Data.levels.Where(x => x.level <= 10).Sum(x => x.stars);
-            profileLabel.text = $"{displayName}  ·  {provider}\n" +
-                FrontendCopy.ProfileStars.Format(visibleStars) + (string.IsNullOrEmpty(SaveStatus()) ? "" : "  ·  " + SaveStatus());
-            if (continueDetails != null)
-            {
-                int target = progress.NextUnfinishedLevel();
-                CampaignLevelDefinition last = CampaignCatalog.Level(target);
-                CampaignLevelProgress result = progress.ProgressFor(target);
-                string stars = result == null || result.stars <= 0
-                    ? FrontendCopy.MapNoStars.Value
-                    : FrontendCopy.MapLevelStars.Format(result.stars);
-                continueDetails.text = FrontendCopy.ContinueDetails.Format(last.region, GameLocalization.Uppercase(last.localizedName),
-                    stars, last.waveCount, last.targetMinutes, last.startingGold);
-            }
-            if (continueButton != null)
-            {
-                TextMeshProUGUI label = continueButton.GetComponentInChildren<TextMeshProUGUI>(true);
-                if (label != null)
-                    label.text = IsFirstDefence()
-                        ? FrontendCopy.PrepareYourFirstDefence.Value
-                        : FrontendCopy.Continue.Value;
-            }
+            string displayName = progress.Data.authProvider == PlayerAuthProvider.Guest
+                ? FrontendCopy.GuestDefender.Value
+                : string.IsNullOrWhiteSpace(progress.Data.displayName) ? FrontendCopy.GreenwatchDefender.Value : progress.Data.displayName;
+            profileLabel.text = displayName;
+            profileStars.SetValue(progress.Data.TotalStars, false, false);
+            saveErrorIcon.gameObject.SetActive(progress.HasWriteError || progress.SyncStatus == CampaignSyncStatus.Failed);
+            int target = progress.NextUnfinishedLevel();
+            CampaignLevelDefinition level = CampaignCatalog.Level(target);
+            chapterEyebrow.text = GameLocalization.Uppercase(FrontendCopy.MenuChapter.Format(level.region, CampaignCatalog.Regions[level.region - 1].localizedName, level.number));
+            chapterTitle.text = GameLocalization.Uppercase(level.localizedName);
+            chapterWaves.text = FrontendCopy.MenuWaves.Format(level.waveCount);
+            chapterTime.text = FrontendCopy.MenuMinutes.Format(level.targetMinutes);
+            chapterGold.text = FrontendCopy.GoldCost.Format(level.startingGold);
+            chapterStars.SetStars(progress.ProgressFor(target)?.stars ?? 0, false);
+            int completed = progress.Data.levels.Count(x => x.level >= (level.region - 1) * 10 + 1 && x.level <= level.region * 10 && x.stars > 0);
+            regionProgress.SetProgress(completed);
+            chapterProgress.text = FrontendCopy.MenuRegionProgress.Format(completed);
         }
 
         private void HandleSessionPhaseChanged(GamePhase phase)
@@ -679,18 +656,6 @@ namespace AllinDefense.UI
 
         private void RefreshLevelButtons()
         {
-            for (int index = 0; index < levelButtons.Count; index++)
-            {
-                int level = levelNumbers[index];
-                bool unlocked = level <= progress.Data.unlockedLevel;
-                Button button = levelButtons[index];
-                button.interactable = unlocked;
-                TextMeshProUGUI label = button.GetComponentInChildren<TextMeshProUGUI>();
-                if (label != null) label.text = unlocked ? level.ToString() : "×";
-                CampaignLevelProgress levelProgress = progress.ProgressFor(level);
-                if (levelProgress != null && levelProgress.stars > 0)
-                    levelStars[index].text = $"{levelProgress.stars}/3";
-            }
             RefreshSelectedLevelVisuals();
             progressDirty = false;
             RefreshProfile();
@@ -1130,6 +1095,7 @@ namespace AllinDefense.UI
             ApplyScreenBackdrop(screen);
             navigation.Show(screens[screen], screen is not (AppScreen.Battle or AppScreen.Result),
                 measure ? performance.Complete : null);
+            if (screen == AppScreen.Campaign) ShowBriefingSheet();
         }
 
         private void EnsureScreen(AppScreen screen)
@@ -1244,19 +1210,6 @@ namespace AllinDefense.UI
             SetRect(watermark.GetComponent<RectTransform>(), new Vector2(-44f, 38f), new Vector2(250f, 250f),
                 BottomRight(), BottomRight());
             watermark.transform.SetAsFirstSibling();
-        }
-
-        private void CreateLevelSelectionRing(Transform button)
-        {
-            GameObject ring = CreateImage("Selection Ring", button,
-                UiTokens.WithAlpha(theme.commandGold, 0.30f));
-            Image image = ring.GetComponent<Image>();
-            image.sprite = theme.buttonSprite != null ? theme.buttonSprite : catalog.panelSprite;
-            image.type = image.sprite != null ? Image.Type.Sliced : Image.Type.Simple;
-            Stretch(ring.GetComponent<RectTransform>(), new Vector2(-12f, -12f), new Vector2(12f, 12f));
-            ring.transform.SetAsFirstSibling();
-            ring.AddComponent<FrontendAmbientMotion>().Configure(Vector2.zero, 0.045f, 0f, 0.75f);
-            ring.SetActive(false);
         }
 
         private static GameObject CreateImage(string name, Transform parent, Color color)
