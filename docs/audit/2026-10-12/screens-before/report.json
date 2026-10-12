@@ -1,0 +1,714 @@
+{
+    "platform": "IPhonePlayer",
+    "width": 1206,
+    "height": 2622,
+    "samples": [
+        {
+            "route": "menu-map",
+            "cold": true,
+            "feedbackMs": 118.71008399999994,
+            "usableMs": 164.69162499999968,
+            "longestFrameMs": 116.05413055419922
+        },
+        {
+            "route": "map-menu",
+            "cold": true,
+            "feedbackMs": 16.944624999999826,
+            "usableMs": 167.11708299999996,
+            "longestFrameMs": 17.252338409423829
+        },
+        {
+            "route": "menu-settings",
+            "cold": true,
+            "feedbackMs": 16.439875000000549,
+            "usableMs": 16.441583000000649,
+            "longestFrameMs": 16.658504486083986
+        },
+        {
+            "route": "menu-map",
+            "cold": false,
+            "feedbackMs": 13.77995900000073,
+            "usableMs": 165.11200000000037,
+            "longestFrameMs": 17.259920120239259
+        },
+        {
+            "route": "map-menu",
+            "cold": false,
+            "feedbackMs": 15.952167000000017,
+            "usableMs": 150.16912499999968,
+            "longestFrameMs": 17.104917526245118
+        },
+        {
+            "route": "menu-settings",
+            "cold": false,
+            "feedbackMs": 15.693291999999915,
+            "usableMs": 15.695416999999879,
+            "longestFrameMs": 16.624710083007814
+        },
+        {
+            "route": "menu-map",
+            "cold": false,
+            "feedbackMs": 15.995667000000325,
+            "usableMs": 166.75708300000026,
+            "longestFrameMs": 17.260665893554689
+        },
+        {
+            "route": "map-menu",
+            "cold": false,
+            "feedbackMs": 15.894332999999428,
+            "usableMs": 166.02495799999952,
+            "longestFrameMs": 17.26279067993164
+        },
+        {
+            "route": "menu-settings",
+            "cold": false,
+            "feedbackMs": 16.365624999999718,
+            "usableMs": 16.37270799999957,
+            "longestFrameMs": 16.64995765686035
+        },
+        {
+            "route": "menu-map",
+            "cold": false,
+            "feedbackMs": 15.810292000000282,
+            "usableMs": 149.0444169999998,
+            "longestFrameMs": 17.306045532226564
+        },
+        {
+            "route": "map-menu",
+            "cold": false,
+            "feedbackMs": 16.129832999999928,
+            "usableMs": 167.23633299999995,
+            "longestFrameMs": 17.282127380371095
+        },
+        {
+            "route": "menu-settings",
+            "cold": false,
+            "feedbackMs": 16.150917000000044,
+            "usableMs": 16.154249999999594,
+            "longestFrameMs": 16.597705841064454
+        },
+        {
+            "route": "menu-map",
+            "cold": false,
+            "feedbackMs": 14.851625000000368,
+            "usableMs": 166.20570800000056,
+            "longestFrameMs": 17.27478790283203
+        },
+        {
+            "route": "map-menu",
+            "cold": false,
+            "feedbackMs": 15.5384999999999,
+            "usableMs": 149.35024999999946,
+            "longestFrameMs": 17.18999481201172
+        },
+        {
+            "route": "menu-settings",
+            "cold": false,
+            "feedbackMs": 15.866583000000212,
+            "usableMs": 15.86891600000051,
+            "longestFrameMs": 16.250289916992189
+        },
+        {
+            "route": "menu-map",
+            "cold": false,
+            "feedbackMs": 16.533874999999477,
+            "usableMs": 150.5544160000003,
+            "longestFrameMs": 17.27508544921875
+        },
+        {
+            "route": "map-menu",
+            "cold": false,
+            "feedbackMs": 16.172041999999999,
+            "usableMs": 166.0285840000002,
+            "longestFrameMs": 17.29500389099121
+        },
+        {
+            "route": "menu-settings",
+            "cold": false,
+            "feedbackMs": 16.535250000000447,
+            "usableMs": 16.537000000000469,
+            "longestFrameMs": 16.991376876831056
+        },
+        {
+            "route": "menu-map",
+            "cold": false,
+            "feedbackMs": 15.457542000000047,
+            "usableMs": 162.20808300000034,
+            "longestFrameMs": 21.079662322998048
+        },
+        {
+            "route": "map-menu",
+            "cold": false,
+            "feedbackMs": 15.502041999999605,
+            "usableMs": 148.76862499999977,
+            "longestFrameMs": 17.2913761138916
+        },
+        {
+            "route": "menu-settings",
+            "cold": false,
+            "feedbackMs": 16.653333000000715,
+            "usableMs": 16.655875000000543,
+            "longestFrameMs": 17.268665313720704
+        },
+        {
+            "route": "menu-map",
+            "cold": false,
+            "feedbackMs": 15.65525000000001,
+            "usableMs": 149.36704199999975,
+            "longestFrameMs": 17.27478790283203
+        },
+        {
+            "route": "map-menu",
+            "cold": false,
+            "feedbackMs": 16.09762500000045,
+            "usableMs": 166.3235830000005,
+            "longestFrameMs": 17.32450294494629
+        },
+        {
+            "route": "menu-settings",
+            "cold": false,
+            "feedbackMs": 16.01933399999922,
+            "usableMs": 16.02149999999991,
+            "longestFrameMs": 16.667247772216798
+        },
+        {
+            "route": "menu-map",
+            "cold": false,
+            "feedbackMs": 16.77029100000027,
+            "usableMs": 166.884166,
+            "longestFrameMs": 17.574087142944337
+        },
+        {
+            "route": "map-menu",
+            "cold": false,
+            "feedbackMs": 15.816667000000173,
+            "usableMs": 149.66820899999966,
+            "longestFrameMs": 17.327083587646486
+        },
+        {
+            "route": "menu-settings",
+            "cold": false,
+            "feedbackMs": 16.491957999999586,
+            "usableMs": 16.494040999999628,
+            "longestFrameMs": 17.264455795288087
+        },
+        {
+            "route": "menu-map",
+            "cold": false,
+            "feedbackMs": 16.5865829999996,
+            "usableMs": 149.56899999999963,
+            "longestFrameMs": 17.375459671020509
+        },
+        {
+            "route": "map-menu",
+            "cold": false,
+            "feedbackMs": 16.250125000000005,
+            "usableMs": 166.22020899999957,
+            "longestFrameMs": 17.300580978393556
+        },
+        {
+            "route": "menu-settings",
+            "cold": false,
+            "feedbackMs": 16.621666999999897,
+            "usableMs": 16.62379199999986,
+            "longestFrameMs": 17.250871658325197
+        },
+        {
+            "route": "menu-map",
+            "cold": false,
+            "feedbackMs": 15.687166000000197,
+            "usableMs": 149.86204099999956,
+            "longestFrameMs": 17.273122787475587
+        },
+        {
+            "route": "map-menu",
+            "cold": false,
+            "feedbackMs": 16.05512500000028,
+            "usableMs": 149.9093330000001,
+            "longestFrameMs": 17.26671028137207
+        },
+        {
+            "route": "menu-settings",
+            "cold": false,
+            "feedbackMs": 15.664457999999826,
+            "usableMs": 15.666708000000363,
+            "longestFrameMs": 16.354875564575197
+        },
+        {
+            "route": "menu-map",
+            "cold": false,
+            "feedbackMs": 13.619417000000134,
+            "usableMs": 162.39220799999999,
+            "longestFrameMs": 19.188039779663087
+        },
+        {
+            "route": "map-menu",
+            "cold": false,
+            "feedbackMs": 15.725250000000024,
+            "usableMs": 165.80091600000027,
+            "longestFrameMs": 17.374292373657228
+        },
+        {
+            "route": "menu-settings",
+            "cold": false,
+            "feedbackMs": 16.521291000000106,
+            "usableMs": 16.52316599999981,
+            "longestFrameMs": 16.9719181060791
+        },
+        {
+            "route": "menu-map",
+            "cold": false,
+            "feedbackMs": 15.574959000000277,
+            "usableMs": 149.62470900000026,
+            "longestFrameMs": 17.061586380004884
+        },
+        {
+            "route": "map-menu",
+            "cold": false,
+            "feedbackMs": 16.015291999999627,
+            "usableMs": 166.75616699999996,
+            "longestFrameMs": 17.017871856689454
+        },
+        {
+            "route": "menu-settings",
+            "cold": false,
+            "feedbackMs": 16.158625000000094,
+            "usableMs": 16.160959000000476,
+            "longestFrameMs": 16.670909881591798
+        },
+        {
+            "route": "menu-map",
+            "cold": false,
+            "feedbackMs": 15.746707999999999,
+            "usableMs": 166.4761669999999,
+            "longestFrameMs": 16.90987205505371
+        },
+        {
+            "route": "map-menu",
+            "cold": false,
+            "feedbackMs": 15.93870800000019,
+            "usableMs": 149.76508300000013,
+            "longestFrameMs": 17.073497772216798
+        },
+        {
+            "route": "menu-settings",
+            "cold": false,
+            "feedbackMs": 16.039915999999545,
+            "usableMs": 16.04237499999961,
+            "longestFrameMs": 16.537790298461915
+        },
+        {
+            "route": "menu-map",
+            "cold": false,
+            "feedbackMs": 16.213666000000516,
+            "usableMs": 150.03820800000069,
+            "longestFrameMs": 16.81849479675293
+        },
+        {
+            "route": "map-menu",
+            "cold": false,
+            "feedbackMs": 16.30658300000043,
+            "usableMs": 166.6965410000003,
+            "longestFrameMs": 17.206087112426759
+        },
+        {
+            "route": "menu-settings",
+            "cold": false,
+            "feedbackMs": 16.153375000000027,
+            "usableMs": 16.15554199999991,
+            "longestFrameMs": 16.7009220123291
+        },
+        {
+            "route": "menu-map",
+            "cold": false,
+            "feedbackMs": 15.953917000000928,
+            "usableMs": 166.40195800000158,
+            "longestFrameMs": 17.252500534057618
+        },
+        {
+            "route": "map-menu",
+            "cold": false,
+            "feedbackMs": 15.912874999999716,
+            "usableMs": 149.8117919999995,
+            "longestFrameMs": 17.029918670654298
+        },
+        {
+            "route": "menu-settings",
+            "cold": false,
+            "feedbackMs": 15.681666999999067,
+            "usableMs": 15.683624999999424,
+            "longestFrameMs": 16.074878692626954
+        },
+        {
+            "route": "menu-map",
+            "cold": false,
+            "feedbackMs": 15.280708000000587,
+            "usableMs": 162.40729200000104,
+            "longestFrameMs": 20.25583267211914
+        },
+        {
+            "route": "map-menu",
+            "cold": false,
+            "feedbackMs": 16.437791999999619,
+            "usableMs": 150.17470899999985,
+            "longestFrameMs": 17.259836196899415
+        },
+        {
+            "route": "menu-settings",
+            "cold": false,
+            "feedbackMs": 16.203832999998725,
+            "usableMs": 16.20574999999924,
+            "longestFrameMs": 16.63616943359375
+        },
+        {
+            "route": "menu-map",
+            "cold": false,
+            "feedbackMs": 16.017000000001504,
+            "usableMs": 165.89291700000076,
+            "longestFrameMs": 17.234622955322267
+        },
+        {
+            "route": "map-menu",
+            "cold": false,
+            "feedbackMs": 16.348041000000536,
+            "usableMs": 149.82083300000148,
+            "longestFrameMs": 17.066537857055665
+        },
+        {
+            "route": "menu-settings",
+            "cold": false,
+            "feedbackMs": 16.616457999999669,
+            "usableMs": 16.618457999999948,
+            "longestFrameMs": 17.03616714477539
+        },
+        {
+            "route": "menu-map",
+            "cold": false,
+            "feedbackMs": 16.168667000000526,
+            "usableMs": 149.8299170000017,
+            "longestFrameMs": 16.881744384765626
+        },
+        {
+            "route": "map-menu",
+            "cold": false,
+            "feedbackMs": 16.375625000000228,
+            "usableMs": 166.3781669999995,
+            "longestFrameMs": 17.074708938598634
+        },
+        {
+            "route": "menu-settings",
+            "cold": false,
+            "feedbackMs": 16.591958000001129,
+            "usableMs": 16.593916000001486,
+            "longestFrameMs": 17.008913040161134
+        },
+        {
+            "route": "menu-map",
+            "cold": false,
+            "feedbackMs": 15.83079199999915,
+            "usableMs": 149.80691699999938,
+            "longestFrameMs": 16.987457275390626
+        },
+        {
+            "route": "map-menu",
+            "cold": false,
+            "feedbackMs": 15.991417000000397,
+            "usableMs": 166.49649999999918,
+            "longestFrameMs": 17.11962890625
+        },
+        {
+            "route": "menu-settings",
+            "cold": false,
+            "feedbackMs": 15.751500000000363,
+            "usableMs": 15.753375000000958,
+            "longestFrameMs": 16.149921417236329
+        },
+        {
+            "route": "menu-map",
+            "cold": false,
+            "feedbackMs": 16.82404199999965,
+            "usableMs": 167.01341699999973,
+            "longestFrameMs": 17.414703369140626
+        },
+        {
+            "route": "map-menu",
+            "cold": false,
+            "feedbackMs": 15.541750000000576,
+            "usableMs": 149.8352910000005,
+            "longestFrameMs": 17.25425148010254
+        },
+        {
+            "route": "menu-settings",
+            "cold": false,
+            "feedbackMs": 16.23075000000007,
+            "usableMs": 16.23279100000019,
+            "longestFrameMs": 16.686124801635743
+        },
+        {
+            "route": "menu-map",
+            "cold": false,
+            "feedbackMs": 14.931374999999747,
+            "usableMs": 162.26616699999853,
+            "longestFrameMs": 20.710912704467775
+        },
+        {
+            "route": "map-menu",
+            "cold": false,
+            "feedbackMs": 15.347457999999037,
+            "usableMs": 149.48120799999919,
+            "longestFrameMs": 17.238378524780275
+        },
+        {
+            "route": "menu-settings",
+            "cold": false,
+            "feedbackMs": 15.190084000000326,
+            "usableMs": 15.192333999999974,
+            "longestFrameMs": 16.037662506103517
+        },
+        {
+            "route": "menu-map",
+            "cold": false,
+            "feedbackMs": 15.994375000000006,
+            "usableMs": 167.2122080000005,
+            "longestFrameMs": 17.259538650512697
+        },
+        {
+            "route": "map-menu",
+            "cold": false,
+            "feedbackMs": 16.11858400000088,
+            "usableMs": 150.04845900000064,
+            "longestFrameMs": 17.010211944580079
+        },
+        {
+            "route": "menu-settings",
+            "cold": false,
+            "feedbackMs": 15.705000000000524,
+            "usableMs": 15.70720800000025,
+            "longestFrameMs": 17.000999450683595
+        },
+        {
+            "route": "menu-map",
+            "cold": false,
+            "feedbackMs": 15.910957999999198,
+            "usableMs": 150.21983299999955,
+            "longestFrameMs": 17.29337501525879
+        },
+        {
+            "route": "map-menu",
+            "cold": false,
+            "feedbackMs": 15.988250000001259,
+            "usableMs": 166.15424999999994,
+            "longestFrameMs": 17.237125396728517
+        },
+        {
+            "route": "menu-settings",
+            "cold": false,
+            "feedbackMs": 15.83329099999986,
+            "usableMs": 15.834957999999233,
+            "longestFrameMs": 16.118793487548829
+        },
+        {
+            "route": "menu-map",
+            "cold": false,
+            "feedbackMs": 16.92920800000053,
+            "usableMs": 150.38383300000113,
+            "longestFrameMs": 17.26070785522461
+        },
+        {
+            "route": "map-menu",
+            "cold": false,
+            "feedbackMs": 15.907916999999827,
+            "usableMs": 150.32779200000057,
+            "longestFrameMs": 17.242042541503908
+        },
+        {
+            "route": "menu-settings",
+            "cold": false,
+            "feedbackMs": 15.571708000001295,
+            "usableMs": 15.573166000001138,
+            "longestFrameMs": 16.1148738861084
+        },
+        {
+            "route": "menu-map",
+            "cold": false,
+            "feedbackMs": 16.377084000000154,
+            "usableMs": 167.73266699999923,
+            "longestFrameMs": 17.286832809448243
+        },
+        {
+            "route": "map-menu",
+            "cold": false,
+            "feedbackMs": 15.953582999999938,
+            "usableMs": 166.80041699999925,
+            "longestFrameMs": 17.169294357299806
+        },
+        {
+            "route": "menu-settings",
+            "cold": false,
+            "feedbackMs": 15.671665999999363,
+            "usableMs": 15.673665999999642,
+            "longestFrameMs": 16.613874435424806
+        },
+        {
+            "route": "menu-map",
+            "cold": false,
+            "feedbackMs": 14.651833999998587,
+            "usableMs": 161.7256669999989,
+            "longestFrameMs": 20.11945915222168
+        },
+        {
+            "route": "map-menu",
+            "cold": false,
+            "feedbackMs": 16.129624999999593,
+            "usableMs": 166.37466700000125,
+            "longestFrameMs": 17.33570671081543
+        },
+        {
+            "route": "menu-settings",
+            "cold": false,
+            "feedbackMs": 15.759166999998797,
+            "usableMs": 15.7613750000003,
+            "longestFrameMs": 16.564626693725587
+        },
+        {
+            "route": "menu-map",
+            "cold": false,
+            "feedbackMs": 16.452249999998615,
+            "usableMs": 150.2757499999987,
+            "longestFrameMs": 17.284374237060548
+        },
+        {
+            "route": "map-menu",
+            "cold": false,
+            "feedbackMs": 15.876542000000882,
+            "usableMs": 166.39800000000094,
+            "longestFrameMs": 17.046669006347658
+        },
+        {
+            "route": "menu-settings",
+            "cold": false,
+            "feedbackMs": 16.1825000000011,
+            "usableMs": 16.190625000000126,
+            "longestFrameMs": 16.682828903198243
+        },
+        {
+            "route": "menu-map",
+            "cold": false,
+            "feedbackMs": 15.900665999998509,
+            "usableMs": 149.74358299999936,
+            "longestFrameMs": 17.296749114990236
+        },
+        {
+            "route": "map-menu",
+            "cold": false,
+            "feedbackMs": 16.032249999998528,
+            "usableMs": 150.306917,
+            "longestFrameMs": 17.287620544433595
+        },
+        {
+            "route": "menu-settings",
+            "cold": false,
+            "feedbackMs": 15.76029199999951,
+            "usableMs": 15.762875000000065,
+            "longestFrameMs": 16.641496658325197
+        },
+        {
+            "route": "menu-map",
+            "cold": false,
+            "feedbackMs": 16.03558300000074,
+            "usableMs": 166.16558299999975,
+            "longestFrameMs": 17.257829666137697
+        },
+        {
+            "route": "map-menu",
+            "cold": false,
+            "feedbackMs": 16.139417000001545,
+            "usableMs": 149.6997500000017,
+            "longestFrameMs": 17.29216957092285
+        },
+        {
+            "route": "menu-settings",
+            "cold": false,
+            "feedbackMs": 15.734000000000137,
+            "usableMs": 15.735917000000655,
+            "longestFrameMs": 16.07904624938965
+        },
+        {
+            "route": "menu-map",
+            "cold": false,
+            "feedbackMs": 17.019124999999137,
+            "usableMs": 149.9933339999995,
+            "longestFrameMs": 17.31296157836914
+        },
+        {
+            "route": "map-menu",
+            "cold": false,
+            "feedbackMs": 16.949750000000209,
+            "usableMs": 166.93400000000126,
+            "longestFrameMs": 17.306045532226564
+        },
+        {
+            "route": "menu-settings",
+            "cold": false,
+            "feedbackMs": 16.68804200000018,
+            "usableMs": 16.690542000000975,
+            "longestFrameMs": 17.288705825805665
+        },
+        {
+            "route": "first-battle",
+            "cold": true,
+            "feedbackMs": 90.90829199999817,
+            "usableMs": 579.9798749999993,
+            "longestFrameMs": 166.93759155273438
+        },
+        {
+            "route": "retry",
+            "cold": false,
+            "feedbackMs": 79.83508299999898,
+            "usableMs": 380.4932920000024,
+            "longestFrameMs": 82.7734603881836
+        },
+        {
+            "route": "next-level",
+            "cold": false,
+            "feedbackMs": 97.2844170000009,
+            "usableMs": 414.40941700000169,
+            "longestFrameMs": 99.4417953491211
+        },
+        {
+            "route": "battle-map",
+            "cold": false,
+            "feedbackMs": 16.616290999998286,
+            "usableMs": 349.818625000001,
+            "longestFrameMs": 166.56817626953126
+        }
+    ],
+    "memory": [
+        195077310,
+        195097438,
+        195114246,
+        195114222,
+        195114278,
+        195114254,
+        195114366
+    ],
+    "uiObjects": [
+        226,
+        226,
+        226,
+        226,
+        226,
+        226,
+        226
+    ],
+    "errors": [
+        "map-Turkish overflow: Briefing Reward: HEDEF\nOkçu kur · Yükselt · Sarsıcı Darbe ile kaleyi koru",
+        "settings-Turkish overflow: Briefing Reward: HEDEF\nOkçu kur · Yükselt · Sarsıcı Darbe ile kaleyi koru",
+        "map-English overflow: Briefing Reward: OBJECTIVE\nBuild an archer · Upgrade · Protect the keep with Stunning Strike",
+        "settings-English overflow: Briefing Reward: OBJECTIVE\nBuild an archer · Upgrade · Protect the keep with Stunning Strike",
+        "defeat overflow: Result Reward: Wave 1 · Raider\nAdd or upgrade an archer at the next bend.",
+        "victory overflow: Result Reward: Saved · Syncing\nYou can link an account from the menu to protect your progress.",
+        "returned-map overflow: Briefing Reward: OBJECTIVE\nBuild an archer · Upgrade · Protect the keep with Stunning Strike"
+    ],
+    "status": "failed"
+}
