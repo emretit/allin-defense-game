@@ -251,7 +251,7 @@ namespace AllinDefense.Presentation
                 responsiveLayout = gameObject.AddComponent<DefenderHudResponsiveLayout>();
             responsiveLayout.Initialize();
             abilityButton.gameObject.AddComponent<AbilityRangePreview>();
-            InitializeBattleRadial(cancel);
+            InitializeBattleRadial(cancel, uiClick);
             foreach (var button in GetComponentsInChildren<Button>(true)) MobileTouchTarget.Attach(button);
             UiId.AssignHierarchy(transform);
             UiId.Assign(transform.parent, transform.parent.name);
@@ -308,8 +308,6 @@ namespace AllinDefense.Presentation
             selectedPanel.SetActive(visible);
             if (visible)
             {
-                messageText.gameObject.SetActive(false);
-                messageChromeImage.gameObject.SetActive(false);
                 previewText.transform.parent.gameObject.SetActive(false);
             }
             if (selectionChanged) responsiveLayout?.RefreshLayout();

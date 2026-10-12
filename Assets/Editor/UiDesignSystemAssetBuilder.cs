@@ -145,8 +145,33 @@ namespace AllinDefense.Editor
             });
             set.iconSell = Glyph("Sell", p => Mathf.Min(Mathf.Abs((p-new Vector2(.43f,.5f)).magnitude-.28f),
                 Mathf.Min(Line(p,.42f,.5f,.86f,.5f), Mathf.Min(Line(p,.72f,.64f,.86f,.5f),Line(p,.86f,.5f,.72f,.36f)))));
+            set.iconRapidFire = Glyph("RapidFire", p => Mathf.Min(Arrow(p, .28f), Mathf.Min(Arrow(p, .5f), Arrow(p, .72f))));
+            set.iconSharpshooter = Glyph("Sharpshooter", p => Mathf.Min(Mathf.Abs((p - new Vector2(.5f,.5f)).magnitude - .23f),
+                Mathf.Min(Line(p,.5f,.12f,.5f,.88f), Line(p,.12f,.5f,.88f,.5f))));
+            set.iconAssaultGuard = Glyph("AssaultGuard", p => Mathf.Min(Line(p,.28f,.2f,.72f,.78f),
+                Mathf.Min(Line(p,.27f,.48f,.54f,.28f), Polygon(p, new[] { new Vector2(.61f,.8f), new Vector2(.8f,.87f), new Vector2(.78f,.66f) }))));
+            var blast = Enumerable.Range(0, 16).Select(i => new Vector2(.5f,.5f) +
+                new Vector2(Mathf.Cos(i*Mathf.PI/8), Mathf.Sin(i*Mathf.PI/8)) * (i % 2 == 0 ? .38f : .16f)).ToArray();
+            set.iconBlast = Glyph("Blast", p => Polygon(p, blast));
+            set.iconFrost = Glyph("Frost", p =>
+            {
+                float distance = float.MaxValue;
+                for (int i = 0; i < 6; i++)
+                {
+                    float angle = i * Mathf.PI / 3;
+                    Vector2 tip = new Vector2(.5f,.5f) + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * .36f;
+                    Vector2 joint = Vector2.Lerp(new Vector2(.5f,.5f), tip, .65f);
+                    distance = Mathf.Min(distance, Line(p,.5f,.5f,tip.x,tip.y));
+                    for (int side = -1; side <= 1; side += 2)
+                    {
+                        Vector2 branch = joint + new Vector2(Mathf.Cos(angle + side * Mathf.PI / 3), Mathf.Sin(angle + side * Mathf.PI / 3)) * .14f;
+                        distance = Mathf.Min(distance, Line(p,joint.x,joint.y,branch.x,branch.y));
+                    }
+                }
+                return distance;
+            });
             Sprite[] sprites = { set.iconEnemy, set.iconPause, set.iconPlay, set.iconFastForward, set.iconSettings, set.iconClose,
-                set.iconBack, set.iconMap, set.iconLock, set.iconStarFilled, set.iconStarEmpty, set.iconCheck, set.iconShield, set.iconUpgrade, set.iconSell };
+                set.iconBack, set.iconMap, set.iconLock, set.iconStarFilled, set.iconStarEmpty, set.iconCheck, set.iconShield, set.iconUpgrade, set.iconSell, set.iconRapidFire, set.iconSharpshooter, set.iconAssaultGuard, set.iconBlast, set.iconFrost };
             var atlas = AssetDatabase.LoadAssetAtPath<SpriteAtlas>(AtlasPath);
             var existing = SpriteAtlasExtensions.GetPackables(atlas);
             var textures = sprites.Select(sprite => (UnityEngine.Object)AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GetAssetPath(sprite)));
@@ -156,6 +181,9 @@ namespace AllinDefense.Editor
 
         private static Sprite Glyph(string name, Func<Vector2, float> distance) => WriteSprite("System" + name, 0,
             (x,y) => UiTokens.WithAlpha(UiTokens.White, Coverage(distance(new Vector2((x+.5f)/Size,(y+.5f)/Size)) * Size - 3f)), IconRoot);
+
+        private static float Arrow(Vector2 p, float x) => Mathf.Min(Line(p,x,.2f,x,.8f),
+            Mathf.Min(Line(p,x-.08f,.65f,x,.8f), Line(p,x,.8f,x+.08f,.65f)));
 
         private static float Line(Vector2 p, float x1, float y1, float x2, float y2)
         {

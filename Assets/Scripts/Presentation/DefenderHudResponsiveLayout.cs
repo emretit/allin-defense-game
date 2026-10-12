@@ -177,21 +177,32 @@ namespace AllinDefense.Presentation
                 safeCenterX, safeWidth, previewWidth, messageWidth, previewY, messageY);
         }
 
+        private static readonly string[] framePaths = { "TopBar/Lives", "TopBar/Gold", "TopBar/WavePanel", "TopBar/Speed", "TopBar/Pause",
+            "Preview", "Message", "BottomBar/AbilityCooldown", "BottomBar/Hero", "BottomBar/NextWave", "SelectedPanel" };
+        private RectTransform[] frameRects;
+        private readonly Vector3[] frameCorners = new Vector3[4];
         public Rect[] FrameScreenRects()
         {
-            string[] paths = { "TopBar/Lives", "TopBar/Gold", "TopBar/WavePanel", "TopBar/Speed", "TopBar/Pause",
-                "Preview", "Message", "BottomBar/AbilityCooldown", "BottomBar/Hero", "BottomBar/NextWave", "SelectedPanel" };
             var result = new System.Collections.Generic.List<Rect>();
-            foreach (string path in paths)
+            AppendFrameScreenRects(result);
+            return result.ToArray();
+        }
+
+        public void AppendFrameScreenRects(System.Collections.Generic.List<Rect> result)
+        {
+            if (frameRects == null)
             {
-                var rect = transform.Find(path) as RectTransform;
+                frameRects = new RectTransform[framePaths.Length];
+                for (int i = 0; i < framePaths.Length; i++) frameRects[i] = transform.Find(framePaths[i]) as RectTransform;
+            }
+            foreach (var rect in frameRects)
+            {
                 if (rect == null || !rect.gameObject.activeInHierarchy) continue;
-                var corners = new Vector3[4]; rect.GetWorldCorners(corners);
-                Vector2 min = RectTransformUtility.WorldToScreenPoint(null, corners[0]);
-                Vector2 max = RectTransformUtility.WorldToScreenPoint(null, corners[2]);
+                rect.GetWorldCorners(frameCorners);
+                Vector2 min = RectTransformUtility.WorldToScreenPoint(null, frameCorners[0]);
+                Vector2 max = RectTransformUtility.WorldToScreenPoint(null, frameCorners[2]);
                 result.Add(Rect.MinMaxRect(min.x, min.y, max.x, max.y));
             }
-            return result.ToArray();
         }
 
         private void LayoutFrame(LayoutMetrics metrics)

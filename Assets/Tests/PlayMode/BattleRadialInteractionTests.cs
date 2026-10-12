@@ -23,25 +23,176 @@ namespace AllinDefense.Tests
         private GameSessionController session;
         private DefenderHudController hud;
         private GameLanguage language;
+        private InputSettings.BackgroundBehavior backgroundBehavior;
+        private InputSettings.EditorInputBehaviorInPlayMode editorInputBehavior;
         private const BindingFlags Private = BindingFlags.Instance | BindingFlags.NonPublic;
         private static object Call(object target, string method, params object[] args) => target.GetType().GetMethod(method, Private).Invoke(target, args);
         private GreyboxOutpostSlot Slot(int index) => session.GetComponentsInChildren<GreyboxOutpostSlot>().First(s => s.Index == index);
         private Button Choice(string id) => UiQuery.FindById<Button>(hud.BattleRadial, id);
         private TMP_Text Hint => UiQuery.FindById<TMP_Text>(hud, "Hint");
-        [SetUp] public void Setup()
+        [UnitySetUp] public IEnumerator Setup()
         {
+            backgroundBehavior = InputSystem.settings.backgroundBehavior;
+            editorInputBehavior = InputSystem.settings.editorInputBehaviorInPlayMode;
+            InputSystem.settings.backgroundBehavior = InputSettings.BackgroundBehavior.IgnoreFocus;
+            InputSystem.settings.editorInputBehaviorInPlayMode = InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
+            Screen.SetResolution(1280, 720, FullScreenMode.Windowed);
+            yield return null;
             language = GameLocalization.CurrentLanguage;
             GameLocalization.SetLanguage(GameLanguage.Turkish);
             session = new GameObject("Radial interaction fixture").AddComponent<GameSessionController>();
             session.ConfigurePresentation(Resources.Load<DefenderPresentationCatalog>("Presentation/DefenderPresentationCatalog"));
             session.SetCampaignLevel(10); session.Initialize();
             hud = session.GetComponentInChildren<DefenderHudController>(); Time.timeScale = 0;
+            yield return null;
+            Physics.SyncTransforms();
         }
         [UnityTearDown] public IEnumerator Cleanup()
         {
             Object.Destroy(session.gameObject); yield return null;
+            InputSystem.settings.backgroundBehavior = backgroundBehavior;
+            InputSystem.settings.editorInputBehaviorInPlayMode = editorInputBehavior;
             GameLocalization.SetLanguage(language); Time.timeScale = 1;
         }
+        [UnityTest] public IEnumerator StableRadialPositionDoesNotAllocateAfterWarmup()
+        {
+            Call(session, "SelectSlot", Slot(0)); yield return null; Canvas.ForceUpdateCanvases();
+            var place = (System.Action<Vector2>)typeof(DefenderHudController).GetMethod("PositionBattleRadial", Private)
+                .CreateDelegate(typeof(System.Action<Vector2>), hud);
+            Vector2 point = Camera.main.WorldToScreenPoint(Slot(0).transform.position);
+            for (int i = 0; i < 10; i++) place(point);
+            long before = System.GC.GetAllocatedBytesForCurrentThread();
+            for (int i = 0; i < 10; i++) place(point);
+            long allocated = System.GC.GetAllocatedBytesForCurrentThread() - before;
+            Assert.That(allocated, Is.Zero);
+        }
+        [UnityTest] public IEnumerator TutorialCounterShowsDistinctFifthAndSixthSteps()
+        {
+            hud.SetTutorialGuide(4, Slot(0).transform, Camera.main);
+            var text = UiQuery.FindById<TMP_Text>(hud, "TutorialCopy");
+            Assert.That(text.text, Does.StartWith("5/6"));
+            hud.SetTutorialGuide(5, Slot(0).transform, Camera.main);
+            Assert.That(text.text, Does.StartWith("6/6"));
+            yield return null;
+        }
+
+        [UnityTest] public IEnumerator SelectedTowerAndTutorialPreserveMessageUntilItsDurationExpires()
+        {
+            session.TryBuildOutpost(0, OutpostKind.Archer);
+            Call(session, "ShowMessage", "Kaleyi aştı", .6f);
+            var message = (TMP_Text)typeof(DefenderHudController).GetField("messageText", Private).GetValue(hud);
+            for (int i = 0; i < 4; i++)
+            {
+                yield return new WaitForSecondsRealtime(.1f);
+                hud.SetSelected(session.Outposts[0], Slot(0), true);
+                hud.SetTutorialGuide(1, Slot(1).transform, Camera.main);
+                Assert.That(message.gameObject.activeInHierarchy, Is.True);
+                Assert.That(message.text, Is.EqualTo("Kaleyi aştı"));
+            }
+            yield return new WaitForSecondsRealtime(.3f);
+            Assert.That(message.gameObject.activeSelf, Is.False);
+        }
+        [UnityTest] public IEnumerator LevelTwoSellShowsRefundAndHidesPreviousRangePreview()
+        {
+            Call(session, "EarnGold", 1000); session.TryBuildOutpost(0, OutpostKind.Archer);
+            Choice("Upgrade").onClick.Invoke(); Choice("Sell").onClick.Invoke();
+            Assert.That(hud.GetComponentsInChildren<CombatRangeVisual>().First(v => v.name == "Radial preview range").GetComponent<LineRenderer>().enabled, Is.False);
+            hud.BattleRadial.Close(); session.TryUpgradeOutpost(0);
+            Call(session, "SpendGold", session.Gold - 100);
+            Call(session, "SelectOutpost", session.Outposts[0]);
+            Assert.That(Hint.text, Does.Not.Contain("eksik"));
+            Choice("RapidFire").onClick.Invoke();
+            Assert.That(Hint.text, Does.Contain("60 eksik"));
+            Choice("Sell").onClick.Invoke();
+            Assert.That(Hint.text, Is.EqualTo(FrontendCopy.SellingReturnsGold.Format(session.Outposts[0].SellValue)));
+            Assert.That(Hint.text, Does.Not.Contain("eksik"));
+            Assert.That(session.Phase, Is.Not.EqualTo(GamePhase.Paused));
+            yield return null;
+        }
+        [UnityTest] public IEnumerator TowerAndSlotFootprintsRemainClearForCentralAndEdgeArcs()
+        {
+            Call(session, "EarnGold", 1000);
+            foreach (int index in new[] { 0, 1 })
+            {
+                foreach (int level in new[] { 0, 1, 2 })
+                {
+                    if (level == 1) session.TryBuildOutpost(index, OutpostKind.Archer);
+                    if (level == 2) session.TryUpgradeOutpost(index);
+                    Call(session, "SelectSlot", Slot(index));
+                    if (Slot(index).Occupant != null) Call(session, "SelectOutpost", Slot(index).Occupant);
+                    yield return null; Canvas.ForceUpdateCanvases();
+                    Vector3 slotPosition = Slot(index).transform.position;
+                    var tower = Slot(index).Occupant;
+                    Vector3 towerPosition = tower != null ? tower.transform.position : Vector3.zero;
+                    Vector3 actual = Camera.main.WorldToScreenPoint(slotPosition);
+                    foreach (var point in new[] { (Vector2)actual, new Vector2(12, 12), new Vector2(Screen.width - 12, Screen.height - 12) })
+                    {
+                        Vector3 delta = Camera.main.ScreenToWorldPoint(new Vector3(point.x, point.y, actual.z)) - slotPosition;
+                        Slot(index).transform.position = slotPosition + delta;
+                        if (tower != null) tower.transform.position = towerPosition + delta;
+                        Call(hud, "PositionBattleRadial", point); Canvas.ForceUpdateCanvases();
+                        var renderers = Slot(index).GetComponentsInChildren<Renderer>().AsEnumerable();
+                        if (tower != null) renderers = renderers.Concat(tower.GetComponentsInChildren<Renderer>());
+                        var projected = renderers.Where(r => r.enabled && r is not LineRenderer && r.gameObject.activeInHierarchy)
+                            .SelectMany(r => Enumerable.Range(0, 8).Select(i => (Vector2)Camera.main.WorldToScreenPoint(r.bounds.center +
+                                Vector3.Scale(r.bounds.extents, new Vector3((i & 1) == 0 ? -1 : 1, (i & 2) == 0 ? -1 : 1, (i & 4) == 0 ? -1 : 1))))).ToArray();
+                        Assert.That(projected, Is.Not.Empty);
+                        var footprint = Rect.MinMaxRect(projected.Min(p => p.x), projected.Min(p => p.y), projected.Max(p => p.x), projected.Max(p => p.y));
+                        foreach (var button in hud.BattleRadial.GetComponentsInChildren<Button>())
+                        {
+                            var corners = new Vector3[4]; ((RectTransform)button.transform).GetWorldCorners(corners);
+                            Vector2 min = RectTransformUtility.WorldToScreenPoint(null, corners[0]);
+                            Vector2 max = RectTransformUtility.WorldToScreenPoint(null, corners[2]);
+                            Assert.That(Rect.MinMaxRect(min.x,min.y,max.x,max.y).Overlaps(footprint), Is.False, $"{index}/{level}/{button.name}/{point}");
+                        }
+                    }
+                    Slot(index).transform.position = slotPosition;
+                    if (tower != null) tower.transform.position = towerPosition;
+                }
+                hud.BattleRadial.Close();
+            }
+        }
+        [UnityTest] public IEnumerator PausedSpecializationBackgroundPointerClosesAndRestoresPhase()
+        {
+            Call(session, "EarnGold", 1000); session.TryBuildOutpost(0, OutpostKind.Archer); session.TryUpgradeOutpost(0);
+            Call(session, "SelectOutpost", session.Outposts[0]);
+            var phase = session.Phase; Choice("RapidFire").onClick.Invoke();
+            Assert.That(session.Phase, Is.EqualTo(GamePhase.Paused));
+            var mouse = InputSystem.AddDevice<Mouse>();
+            try
+            {
+                InputSystem.QueueStateEvent(mouse, new MouseState { position = new Vector2(5, Screen.height * .5f) }.WithButton(MouseButton.Left));
+                InputSystem.Update();
+                Assert.That(mouse.leftButton.wasPressedThisFrame, Is.True, $"mouse={Mouse.current == mouse}, mode={InputSystem.settings.updateMode}");
+                Call(hud, "DismissPausedRadialOnBackground");
+                Assert.That(hud.BattleRadial.IsOpen, Is.False);
+                Assert.That(session.Phase, Is.EqualTo(phase));
+            }
+            finally { InputSystem.RemoveDevice(mouse); }
+            yield return null;
+        }
+        [UnityTest] public IEnumerator WorldPointerSelectsAnotherSlotAndTowerWhileRadialIsOpen()
+        {
+            Call(session, "EarnGold", 1000); session.TryBuildOutpost(1, OutpostKind.Archer);
+            var mouse = InputSystem.AddDevice<Mouse>();
+            try
+            {
+                foreach (int index in new[] { 2, 1 })
+                {
+                    Call(session, "SelectSlot", Slot(0));
+                    InputSystem.QueueStateEvent(mouse, new MouseState()); InputSystem.Update();
+                    Physics.SyncTransforms();
+                    Vector2 point = Camera.main.WorldToScreenPoint(Slot(index).transform.position);
+                    InputSystem.QueueStateEvent(mouse, new MouseState { position = point }.WithButton(MouseButton.Left));
+                    InputSystem.Update(); Call(session, "HandleWorldPointer");
+                    Assert.That(typeof(DefenderHudController).GetField("radialSlot", Private).GetValue(hud), Is.EqualTo(Slot(index)));
+                    Assert.That(hud.BattleRadial.IsOpen, Is.True);
+                }
+            }
+            finally { InputSystem.RemoveDevice(mouse); }
+            yield return null;
+        }
+
         [UnityTest] public IEnumerator BuildPreviewsThenConfirmsAndChangingSlotCannotSpendOnPreviousPreview()
         {
             Call(session, "SelectSlot", Slot(0)); int gold = session.Gold;
@@ -80,6 +231,7 @@ namespace AllinDefense.Tests
             {
                 InputSystem.QueueStateEvent(mouse, new MouseState { position = new Vector2(5, Screen.height * .5f) }.WithButton(MouseButton.Left));
                 InputSystem.Update();
+                Assert.That(mouse.leftButton.wasPressedThisFrame, Is.True, $"mouse={Mouse.current == mouse}, mode={InputSystem.settings.updateMode}, phase={session.Phase}");
                 Call(session, "HandleWorldPointer");
                 Assert.That(hud.BattleRadial.IsOpen, Is.False);
                 Assert.That(UiQuery.FindById(hud, "SelectedPanel").gameObject.activeSelf, Is.False);
@@ -121,7 +273,7 @@ namespace AllinDefense.Tests
                     Assert.That(max.y, Is.LessThanOrEqualTo(Screen.safeArea.yMax));
                     var rect = Rect.MinMaxRect(min.x, min.y, max.x, max.y);
                     intersections += hud.GetComponent<DefenderHudResponsiveLayout>().FrameScreenRects().Count(r => r.Overlaps(rect));
-                    Assert.That(intersections, Is.Zero);
+                    Assert.That(intersections, Is.Zero, $"{point}/{button.name}/{rect}");
                 }
             }
             Debug.Log($"[RADIAL_FRAME_INTERSECTIONS] {intersections}");

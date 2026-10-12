@@ -192,7 +192,9 @@ namespace AllinDefense.Tests
             menu.Previewed += _ => previews++; menu.Confirmed += _ => confirmations++;
             var options = new[] { new UiRadialOption("next", kit.Assets.iconUpgrade, 100) };
             menu.Configure(menu.GetComponent<UiRadialLayout>(), new[] { next }, options);
+            next.GetComponent<UiVisualState>().SetState(UiState.Unaffordable);
             menu.Configure(menu.GetComponent<UiRadialLayout>(), new[] { next }, options);
+            Assert.That(next.GetComponent<UiVisualState>().State, Is.EqualTo(UiState.Normal));
             old.onClick.Invoke(); Assert.That(previews, Is.Zero);
             next.onClick.Invoke(); Assert.That(previews, Is.EqualTo(1)); Assert.That(confirmations, Is.Zero);
             next.onClick.Invoke(); Assert.That(confirmations, Is.EqualTo(1));
@@ -242,10 +244,10 @@ namespace AllinDefense.Tests
                 Assert.That(Contrast(UiTokens.GoldText, gold * UiTokens.PressedTint), Is.GreaterThanOrEqualTo(4.5f));
             }
         }
-        [Test] public void AllFifteenSystemIconsAreWhiteAndPackedAlongsidePaintedIcons()
+        [Test] public void AllTwentyGeneratedIconsAreWhiteAndPackedAlongsidePaintedIcons()
         {
             var fields = typeof(UiDesignSystemAssets).GetFields().Where(f => f.Name.StartsWith("icon")).ToArray();
-            Assert.That(fields.Length, Is.EqualTo(15));
+            Assert.That(fields.Length, Is.EqualTo(20));
             var atlas = AssetDatabase.LoadAssetAtPath<SpriteAtlas>("Assets/Art/UI/AllinDefenseUI.spriteatlas");
             var packables = SpriteAtlasExtensions.GetPackables(atlas);
             foreach (var field in fields)

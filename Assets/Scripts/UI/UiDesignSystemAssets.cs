@@ -33,5 +33,10 @@ namespace AllinDefense.UI
         public Sprite iconShield;
         public Sprite iconUpgrade;
         public Sprite iconSell;
+        public Sprite iconRapidFire;
+        public Sprite iconSharpshooter;
+        public Sprite iconAssaultGuard;
+        public Sprite iconBlast;
+        public Sprite iconFrost;
     }
 }

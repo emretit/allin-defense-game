@@ -19,6 +19,19 @@ namespace AllinDefense.Tests
         private static UiDesignSystemAssets Set =>
             AssetDatabase.LoadAssetAtPath<UiDesignSystemAssets>(Root + "/UiDesignSystemAssets.asset");
 
+        [Test]
+        public void SpecializationIconsAreDistinctFromSystemControlsAndEachOther()
+        {
+            var branches = new[] { Set.iconRapidFire, Set.iconSharpshooter, Set.iconShield,
+                Set.iconAssaultGuard, Set.iconBlast, Set.iconFrost };
+            Assert.That(branches.Distinct().Count(), Is.EqualTo(6));
+            foreach (var sprite in branches)
+            {
+                Assert.That(sprite, Is.Not.Null);
+                Assert.That(new[] { Set.iconPause, Set.iconPlay, Set.iconFastForward, Set.iconSettings }, Has.No.Member(sprite));
+            }
+        }
+
         [TestCase("NotoSans-DC")]
         [TestCase("NotoSans-Bold-DC")]
         public void TurkishGlyphsAreAlreadyInTheSerializedAtlas(string name)

@@ -17,11 +17,20 @@ namespace AllinDefense.Core
             int step = outposts.Count == 0 ? 0 : outposts.Count < 2 ? 1 :
                 Phase == GamePhase.Preparing ? 2 : AbilityUses == 0 ? 3 :
                 outposts.Count < 3 ? 4 : !outposts.Any(o=>o.Level>=2) ? 5 : 6;
+            bool changed = tutorialStep != step;
             tutorialStep = step;
             Transform target = step == 0 ? slots.FirstOrDefault()?.transform :
                 step == 1 || step == 4 ? slots.FirstOrDefault(slot => slot.Occupant == null)?.transform :
                 step == 5 ? outposts.FirstOrDefault(o => o.Level < 2)?.transform : null;
-            artHud?.SetTutorialGuide(step, target, gameCamera);
+            if (artHud != null) artHud.SetTutorialGuide(step, target, gameCamera);
+            else if (changed)
+                ShowMessage(step switch
+                {
+                    0 => FrontendCopy.TutorialBuild.Value, 1 => FrontendCopy.TutorialSecond.Value,
+                    2 => FrontendCopy.TutorialWave.Value, 3 => FrontendCopy.TutorialAbility.Value,
+                    4 => FrontendCopy.TutorialThird.Value, 5 => FrontendCopy.TutorialUpgrade.Value,
+                    _ => FrontendCopy.TutorialDone.Value
+                }, 8);
         }
     }
 }

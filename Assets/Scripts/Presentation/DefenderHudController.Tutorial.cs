@@ -66,11 +66,6 @@ namespace AllinDefense.Presentation
             tutorialDisplayStep = step;
             tutorialArrow.gameObject.SetActive(step < 6);
             tutorialSkip.gameObject.SetActive(step < 6);
-            if (step < 6)
-            {
-                messageText.gameObject.SetActive(false);
-                messageChromeImage.gameObject.SetActive(false);
-            }
             string text = step switch
             {
                 0 => FrontendCopy.TutorialBuild.Value, 1 => FrontendCopy.TutorialSecond.Value,
@@ -78,7 +73,7 @@ namespace AllinDefense.Presentation
                 4 => FrontendCopy.TutorialThird.Value, 5 => FrontendCopy.TutorialUpgrade.Value,
                 _ => FrontendCopy.TutorialDone.Value
             };
-            tutorialCopy.text = step >= 6 ? text : $"{Mathf.Min(step + 1, 5)}/5 · {text}";
+            tutorialCopy.text = step >= 6 ? text : $"{step + 1}/6 · {text}";
             tutorialHelp.gameObject.SetActive(true);
             UpdateTutorialPresentation();
         }

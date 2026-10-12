@@ -33,7 +33,11 @@ namespace AllinDefense.UI.Kit
             Unwire();
             layout = positions; buttons = choices; options = items;
             affordable = new bool[items.Length];
-            for (int i = 0; i < affordable.Length; i++) affordable[i] = true;
+            for (int i = 0; i < affordable.Length; i++)
+            {
+                affordable[i] = true;
+                buttons[i].GetComponent<UiVisualState>().SetState(UiState.Normal);
+            }
             PreviewIndex = -1;
             Wire();
         }
@@ -64,6 +68,7 @@ namespace AllinDefense.UI.Kit
         }
         public void SetAffordable(int index, bool value)
         {
+            if (affordable[index] == value) return;
             affordable[index] = value;
             if (buttons[index].interactable)
                 buttons[index].GetComponent<UiVisualState>().SetState(value
@@ -90,7 +95,9 @@ namespace AllinDefense.UI.Kit
         public void SetAvailable(int index, bool available)
         {
             if (index < 0 || index >= buttons.Length) throw new ArgumentOutOfRangeException(nameof(index));
-            buttons[index].GetComponent<UiVisualState>().SetState(available ? UiState.Normal : UiState.Disabled);
+            if (buttons[index].interactable == available) return;
+            buttons[index].GetComponent<UiVisualState>().SetState(available ?
+                affordable[index] ? PreviewIndex == index ? UiState.Selected : UiState.Normal : UiState.Unaffordable : UiState.Disabled);
             if (!available && PreviewIndex == index) PreviewIndex = -1;
         }
         public void Choose(int index)

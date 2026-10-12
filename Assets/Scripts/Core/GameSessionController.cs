@@ -332,7 +332,7 @@ namespace AllinDefense.Core
                 if (CampaignLevelNumber == 1)
                 {
                     GuidanceStep = FirstBattleGuidanceStep.SelectSlot;
-                    ShowMessage(GameLocalization.Text("1/3  Mavi bir karakol yuvasına dokun.",
+                    if (artHud == null) ShowMessage(GameLocalization.Text("1/3  Mavi bir karakol yuvasına dokun.",
                         "1/3  Tap a blue outpost slot."), 8f);
                 }
                 else if (CampaignLevelNumber == 14)
@@ -1221,7 +1221,7 @@ namespace AllinDefense.Core
             if (GuidanceStep == FirstBattleGuidanceStep.ChooseTower)
             {
                 GuidanceStep = FirstBattleGuidanceStep.StartWave;
-                ShowMessage(GameLocalization.Text("3/3  Hazır olduğunda İlk Dalgayı Başlat.",
+                if (artHud == null) ShowMessage(GameLocalization.Text("3/3  Hazır olduğunda İlk Dalgayı Başlat.",
                     "3/3  Start the first wave when you are ready."), 8f);
             }
             EmitPresentation(PresentationCue.OutpostBuilt, go.transform.position, go, outpost: kind);
@@ -2260,7 +2260,7 @@ namespace AllinDefense.Core
             if (GuidanceStep == FirstBattleGuidanceStep.SelectSlot && slot.Occupant == null)
             {
                 GuidanceStep = FirstBattleGuidanceStep.ChooseTower;
-                ShowMessage(GameLocalization.Text("2/3  Okçu, Kışla veya Büyü savunmasından birini kur.",
+                if (artHud == null) ShowMessage(GameLocalization.Text("2/3  Okçu, Kışla veya Büyü savunmasından birini kur.",
                     "2/3  Build an Archer, Barracks, or Mage defence."), 8f);
             }
             RefreshSelectedPanel();

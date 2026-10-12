@@ -24,11 +24,23 @@ namespace AllinDefense.Presentation
         private Action cancelRadialSelection;
         private CombatRangeVisual radialRange;
         private bool closingRadial;
+        private readonly List<Rect> radialObstacles = new(16);
+        private readonly List<Rect> radialFrameRects = new(16);
+        private readonly List<Renderer> radialRenderers = new(16);
+        private readonly List<Renderer> radialSlotRenderers = new(16);
+        private readonly Vector3[] radialCorners = new Vector3[4];
+        private readonly Dictionary<string, TMP_Text> radialLabels = new();
+        private readonly Dictionary<string, GameObject> radialMarks = new();
+        private Button[] radialTutorialControls;
+        private Vector2 placedCenter;
+        private Rect placedSafeArea;
+        private Vector2 placedSize;
+        private bool radialPositionDirty = true;
         public UiRadialMenu BattleRadial => battleRadial;
         public bool HasRadialRangePreview => battleRadial != null && battleRadial.IsOpen && previewOption != null && previewOption != "Sell";
         public event Action<string> RadialRejected;
 
-        private void InitializeBattleRadial(Action cancel)
+        private void InitializeBattleRadial(Action cancel, Action uiClick)
         {
             cancelRadialSelection = cancel;
             foreach (var old in new[] { archerButton, barracksButton, mageButton, upgradeButton, sellButton })
@@ -53,20 +65,30 @@ namespace AllinDefense.Presentation
             battleRadial.Confirmed += ConfirmRadial;
             battleRadial.Rejected += option => { RefreshRadialCard(); RadialRejected?.Invoke(option.Id); };
             battleRadial.Closed += DismissRadial;
-            foreach (var button in radialButtons.Values) button.interactable = false;
+            foreach (var button in radialButtons.Values)
+            {
+                button.interactable = false;
+                button.onClick.AddListener(() => uiClick?.Invoke());
+            }
             battleRadial.gameObject.SetActive(false);
             LayoutInformationCard();
             InitializeTutorial();
+            radialTutorialControls = new[] { tutorialHelp, tutorialSkip };
+            foreach (var pair in radialButtons)
+            {
+                radialLabels.Add(pair.Key, pair.Value.GetComponentsInChildren<TMP_Text>(true)[0]);
+                radialMarks.Add(pair.Key, pair.Value.transform.Find("ConfirmationMark").gameObject);
+            }
         }
 
         private Sprite BranchIcon(OutpostSpecialization branch) => branch switch
         {
-            OutpostSpecialization.RapidFire => frameKit.Assets.iconFastForward,
-            OutpostSpecialization.Sharpshooter => archerIconSprite,
+            OutpostSpecialization.RapidFire => frameKit.Assets.iconRapidFire,
+            OutpostSpecialization.Sharpshooter => frameKit.Assets.iconSharpshooter,
             OutpostSpecialization.ShieldGuard => frameKit.Assets.iconShield,
-            OutpostSpecialization.AssaultGuard => barracksIconSprite,
-            OutpostSpecialization.Blast => mageIconSprite,
-            _ => frameKit.Assets.iconStarFilled
+            OutpostSpecialization.AssaultGuard => frameKit.Assets.iconAssaultGuard,
+            OutpostSpecialization.Blast => frameKit.Assets.iconBlast,
+            _ => frameKit.Assets.iconFrost
         };
 
         private Button MakeRadialButton(string id, Sprite icon, int price)
@@ -158,6 +180,7 @@ namespace AllinDefense.Presentation
                 previewOption = null;
                 radialRange?.Show(Vector3.zero, 1, false);
                 ConfigureRadialOptions();
+                radialPositionDirty = true;
                 battleRadial.gameObject.SetActive(true);
             }
             RefreshRadialAvailability();
@@ -207,10 +230,10 @@ namespace AllinDefense.Presentation
                 battleRadial.SetAvailable(i, enabled);
                 battleRadial.SetAffordable(i, session.Gold >= option.Price);
                 var state = radialButtons[option.Id].GetComponent<UiVisualState>();
-                var label = radialButtons[option.Id].GetComponentsInChildren<TMP_Text>(true)[0];
+                var label = radialLabels[option.Id];
                 label.text = option.Id == "Sell" ? (saleConfirmationOutpost != null ? FrontendCopy.RadialConfirm.Value : FrontendCopy.RadialSell.Value) :
                     !enabled ? FrontendCopy.Locked.Value : "";
-                radialButtons[option.Id].transform.Find("ConfirmationMark").gameObject.SetActive(previewOption == option.Id && session.Gold >= option.Price && option.Id != "Sell");
+                radialMarks[option.Id].SetActive(previewOption == option.Id && session.Gold >= option.Price && option.Id != "Sell");
                 label.fontSize = 10;
                 if (option.Id == "Sell") { label.text = saleConfirmationOutpost != null ? FrontendCopy.RadialConfirm.Value : FrontendCopy.RadialSell.Value; }
                 state.Price.fontSize = 12;
@@ -222,7 +245,7 @@ namespace AllinDefense.Presentation
             if (radialSlot == null) return;
             if (option.Id != "Sell") CancelSaleConfirmation();
             previewOption = option.Id;
-            if (option.Id == "Sell") { CloseSpecializationChoices(); SellFromUi(); }
+            if (option.Id == "Sell") { radialRange?.Show(Vector3.zero, 1, false); CloseSpecializationChoices(); SellFromUi(); }
             else if (radialTower != null && Enum.TryParse(option.Id, out OutpostSpecialization branch))
                 BeginRadialSpecialization(GameSessionController.Instance);
             RefreshRadialAvailability(); RefreshRadialCard();
@@ -268,7 +291,7 @@ namespace AllinDefense.Presentation
             var before = TowerProgression.Stats(kind, radialTower != null ? radialTower.Level : 1,
                 radialTower != null ? radialTower.Specialization : OutpostSpecialization.None);
             var after = before;
-            int price = radialTower == null ? TowerProgression.Base(kind).cost : radialTower.CanSpecialize ? TowerProgression.Cost(kind) : 0;
+            int price = radialTower == null ? TowerProgression.Base(kind).cost : 0;
             selectedTitleText.text = GameSessionController.OutpostDisplayName(kind);
             selectedRoleText.text = kind switch { OutpostKind.Archer => FrontendCopy.ArcherRole.Value, OutpostKind.Barracks => FrontendCopy.BarracksRole.Value, _ => FrontendCopy.MageRole.Value };
             selectedBadgeText.text = radialTower != null ? FrontendCopy.TowerLevel.Format(radialTower.Level) : "";
@@ -297,10 +320,11 @@ namespace AllinDefense.Presentation
                 selectedRoleText.text = TowerProgression.Description(radialTower.Specialization);
             }
             string cost = price > 0 ? FrontendCopy.Gold.Format(price) + " · " + (session != null && session.Gold < price
-                ? FrontendCopy.RadialMissing.Format(price - session.Gold) : FrontendCopy.RadialTapAgain.Value) : FrontendCopy.SellingReturnsGold.Format(radialTower.SellValue);
-            selectedHintText.text = specializationSession != null ? FrontendCopy.BattlePaused.Value + " · " +
+                ? FrontendCopy.RadialMissing.Format(price - session.Gold) : FrontendCopy.RadialTapAgain.Value) : previewOption == "Sell" ? FrontendCopy.SellingReturnsGold.Format(radialTower.SellValue) : "";
+            selectedHintText.text = specializationSession != null && comparing ? FrontendCopy.BattlePaused.Value + " · " +
                 (session.Gold < price ? FrontendCopy.RadialMissing.Format(price - session.Gold) : FrontendCopy.Gold.Format(price)) +
-                "\n" + FrontendCopy.ChangeBranchHint.Value : cost;
+                "\n" + FrontendCopy.ChangeBranchHint.Value : specializationSession != null ?
+                FrontendCopy.BattlePaused.Value + "\n" + FrontendCopy.ChangeBranchHint.Value : cost;
             selectedHintText.color = price > 0 && session != null && session.Gold < price ? UiTokens.Danger : UiTokens.TextSecondary;
             if (previewOption != null && previewOption != "Sell")
             {
@@ -317,6 +341,38 @@ namespace AllinDefense.Presentation
             _ => FrontendCopy.AttackDifferences.Format(before.damage, after.damage, before.attacksPerSecond, after.attacksPerSecond)
         };
 
+        private Rect SelectionScreenFootprint(Vector2 screenPoint)
+        {
+            var camera = Camera.main;
+            var target = radialTower != null ? radialTower.transform : radialSlot != null ? radialSlot.transform : null;
+            Vector2 origin = camera != null && target != null ? (Vector2)camera.WorldToScreenPoint(radialSlot.transform.position) : screenPoint;
+            Vector2 min = origin - Vector2.one * 12, max = origin + Vector2.one * 12;
+            if (camera != null && target != null)
+            {
+                radialRenderers.Clear();
+                target.GetComponentsInChildren(radialRenderers);
+                if (radialTower != null && radialSlot != null)
+                {
+                    radialSlotRenderers.Clear();
+                    radialSlot.GetComponentsInChildren(radialSlotRenderers);
+                    radialRenderers.AddRange(radialSlotRenderers);
+                }
+                foreach (var renderer in radialRenderers)
+                {
+                    if (!renderer.enabled || renderer is LineRenderer || !renderer.gameObject.activeInHierarchy) continue;
+                    var bounds = renderer.bounds;
+                    for (int i = 0; i < 8; i++)
+                    {
+                        var point = bounds.center + Vector3.Scale(bounds.extents,
+                            new Vector3((i & 1) == 0 ? -1 : 1, (i & 2) == 0 ? -1 : 1, (i & 4) == 0 ? -1 : 1));
+                        Vector2 screen = camera.WorldToScreenPoint(point);
+                        min = Vector2.Min(min, screen); max = Vector2.Max(max, screen);
+                    }
+                }
+            }
+            return Rect.MinMaxRect(min.x, min.y, max.x, max.y);
+        }
+
         private void PositionBattleRadial(Vector2 screenPoint)
         {
             if (battleRadial == null || !battleRadial.IsOpen) return;
@@ -330,23 +386,34 @@ namespace AllinDefense.Presentation
             RectTransformUtility.ScreenPointToLocalPointInRectangle(rect, screenPoint, null, out var center);
             RectTransformUtility.ScreenPointToLocalPointInRectangle(rect, Screen.safeArea.min, null, out var min);
             RectTransformUtility.ScreenPointToLocalPointInRectangle(rect, Screen.safeArea.max, null, out var max);
-            var obstacles = new List<Rect>();
-            foreach (var screenRect in responsiveLayout.FrameScreenRects())
+            var obstacles = radialObstacles;
+            obstacles.Clear();
+            Rect footprint = SelectionScreenFootprint(screenPoint);
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(rect, footprint.min, null, out var footprintMin);
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(rect, footprint.max, null, out var footprintMax);
+            obstacles.Add(Rect.MinMaxRect(footprintMin.x - 8, footprintMin.y - 8, footprintMax.x + 8, footprintMax.y + 8));
+            radialFrameRects.Clear();
+            responsiveLayout.AppendFrameScreenRects(radialFrameRects);
+            foreach (var screenRect in radialFrameRects)
             {
                 RectTransformUtility.ScreenPointToLocalPointInRectangle(rect, screenRect.min, null, out var a);
                 RectTransformUtility.ScreenPointToLocalPointInRectangle(rect, screenRect.max, null, out var b);
                 obstacles.Add(Rect.MinMaxRect(a.x - 4, a.y - 4, b.x + 4, b.y + 4));
             }
-            foreach (var target in new[] { tutorialHelp, tutorialSkip })
+            foreach (var target in radialTutorialControls)
             {
                 if (target == null || !target.gameObject.activeInHierarchy) continue;
-                var corners = new Vector3[4]; ((RectTransform)target.transform).GetWorldCorners(corners);
+                var corners = radialCorners; ((RectTransform)target.transform).GetWorldCorners(corners);
                 Vector2 a = rect.InverseTransformPoint(corners[0]), b = rect.InverseTransformPoint(corners[2]);
                 obstacles.Add(Rect.MinMaxRect(a.x - 4, a.y - 4, b.x + 4, b.y + 4));
             }
-            battleRadialLayout.SetObstacles(obstacles.ToArray());
-            battleRadialLayout.Place(center, Rect.MinMaxRect(min.x + 6, min.y + 6, max.x - 6, max.y - 6));
-            foreach (var size in battleRadial.GetComponentsInChildren<UiPointSize>()) size.Refresh();
+            bool changed = battleRadialLayout.SetObstacles(obstacles);
+            var safe = Rect.MinMaxRect(min.x + 6, min.y + 6, max.x - 6, max.y - 6);
+            if (!radialPositionDirty && !changed && placedCenter == center && placedSafeArea == safe && placedSize == rect.sizeDelta) return;
+            radialPositionDirty = false; placedCenter = center; placedSafeArea = safe; placedSize = rect.sizeDelta;
+            battleRadialLayout.Place(center, safe);
+            foreach (var button in radialButtons.Values)
+                if (button.gameObject.activeSelf) button.GetComponent<UiPointSize>().Refresh();
             LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
         }
     }

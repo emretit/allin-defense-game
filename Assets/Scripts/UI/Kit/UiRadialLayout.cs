@@ -9,8 +9,20 @@ namespace AllinDefense.UI.Kit
         [SerializeField] private Vector2 center;
         [SerializeField] private Rect safeArea;
         private Rect[] obstacles = Array.Empty<Rect>();
+        private Vector2[] orbitPositions = Array.Empty<Vector2>();
         public bool UsesFallback { get; private set; }
         public void SetObstacles(Rect[] value) => obstacles = value ?? Array.Empty<Rect>();
+        public bool SetObstacles(System.Collections.Generic.List<Rect> value)
+        {
+            bool changed = obstacles.Length != value.Count;
+            if (!changed)
+                for (int i = 0; i < value.Count; i++)
+                    if (obstacles[i] != value[i]) { changed = true; break; }
+            if (!changed) return false;
+            if (obstacles.Length != value.Count) obstacles = new Rect[value.Count];
+            value.CopyTo(obstacles);
+            return true;
+        }
         public bool UsesHalfArc { get; private set; }
         public void Place(Vector2 localPoint, Rect localSafeArea) { center = localPoint; safeArea = localSafeArea; SetDirty(); }
         public override void CalculateLayoutInputHorizontal() { base.CalculateLayoutInputHorizontal(); SetLayoutInputForAxis(UiMetrics.AbilityPt, UiMetrics.AbilityPt * 4, -1, 0); }
@@ -29,7 +41,8 @@ namespace AllinDefense.UI.Kit
             UsesFallback = false;
             if (!Fits(positions, diameter))
             {
-                bool found = false;
+                bool found = TryOrbit(bounds, diameter, out bool orbitHalf);
+                if (found) { positions = orbitPositions; half = orbitHalf; }
                 for (float distance = diameter / 2; distance <= Mathf.Max(bounds.width, bounds.height) && !found; distance += diameter / 2)
                     for (int direction = 0; direction < 16 && !found; direction++)
                     {
@@ -58,6 +71,37 @@ namespace AllinDefense.UI.Kit
                 SetChildAlongAxis(rectChildren[i], 0, positions[i].x - rectTransform.rect.xMin - diameter / 2, diameter);
                 SetChildAlongAxis(rectChildren[i], 1, rectTransform.rect.yMax - positions[i].y - diameter / 2, diameter);
             }
+        }
+
+        private bool TryOrbit(Rect bounds, float diameter, out bool halfArc)
+        {
+            if (orbitPositions.Length != rectChildren.Count) orbitPositions = new Vector2[rectChildren.Count];
+            var inset = Rect.MinMaxRect(bounds.xMin + diameter / 2, bounds.yMin + diameter / 2,
+                bounds.xMax - diameter / 2, bounds.yMax - diameter / 2);
+            Vector2 inward = bounds.center - center;
+            float middle = inward.sqrMagnitude > .01f ? Mathf.Atan2(inward.y, inward.x) : Mathf.PI / 2;
+            for (int arc = 0; arc < 2; arc++)
+            {
+                float minimumRadius = arc == 0 || rectChildren.Count < 2 ? diameter :
+                    Mathf.Max(diameter, (diameter + UiTokens.Space1) / (2 * Mathf.Sin(Mathf.PI / (4 * (rectChildren.Count - 1)))));
+                for (float radius = minimumRadius; radius <= Mathf.Max(bounds.width, bounds.height); radius += diameter / 2)
+                    for (int direction = 0; direction < 16; direction++)
+                    {
+                        bool inside = true;
+                        for (int i = 0; i < orbitPositions.Length; i++)
+                        {
+                            float angle = middle + direction * Mathf.PI / 8 + (arc == 0 ? i * Mathf.PI * 2 / orbitPositions.Length :
+                                orbitPositions.Length == 1 ? 0 : Mathf.Lerp(-Mathf.PI / 4, Mathf.PI / 4, i / (float)(orbitPositions.Length - 1)));
+                            orbitPositions[i] = center + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * radius;
+                            inside &= inset.Contains(orbitPositions[i]);
+                        }
+                        if (!inside || !Fits(orbitPositions, diameter)) continue;
+                        halfArc = arc != 0;
+                        return true;
+                    }
+            }
+            halfArc = false;
+            return false;
         }
 
         private bool Fits(Vector2[] positions, float diameter)
