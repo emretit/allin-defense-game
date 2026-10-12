@@ -202,7 +202,9 @@ namespace AllinDefense.Tests
                 review.GetMethod("SetSize").Invoke(null, new object[] { size.x, size.y });
                 yield return null; yield return null;
                 Create(); yield return null; hud.Refresh(session); Canvas.ForceUpdateCanvases(); yield return null;
+                Call(session, "SelectSlot", session.GetComponentsInChildren<GreyboxOutpostSlot>().First());
                 var layout = hud.GetComponent<DefenderHudResponsiveLayout>(); layout.RefreshLayout(); Canvas.ForceUpdateCanvases();
+                Assert.That(((RectTransform)UiQuery.FindById<Button>(hud, "NextWave").transform).sizeDelta, Is.EqualTo(new Vector2(208, 54)));
                 var rects = layout.FrameScreenRects();
                 foreach (var text in hud.GetComponentsInChildren<TMP_Text>().Where(t => !string.IsNullOrEmpty(t.text)))
                 {
@@ -211,6 +213,7 @@ namespace AllinDefense.Tests
                     Assert.That(text.isTextOverflowing, Is.False, text.name + " overflows");
                 }
                 float coverage = rects.Sum(r => r.width * r.height) / (Screen.width * Screen.height);
+                Debug.Log($"[HUD_CARD_COVERAGE] {Screen.width}x{Screen.height} {coverage:P2}");
                 Assert.That(coverage, Is.LessThanOrEqualTo(.18f));
                 var camera = Camera.main;
                 foreach (var route in session.Routes)

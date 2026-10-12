@@ -192,7 +192,7 @@ namespace AllinDefense.Presentation
         private UnityEngine.UI.Button pauseResumeButton;
         private UnityEngine.UI.Button pauseMainMenuButton;
         private GameObject selectedPanel;
-        private RectTransform contextualBuildChoices;
+
         private GameObject resultPanel;
         private GameObject pauseOverlay;
         private Image messageChromeImage;
@@ -251,7 +251,7 @@ namespace AllinDefense.Presentation
                 responsiveLayout = gameObject.AddComponent<DefenderHudResponsiveLayout>();
             responsiveLayout.Initialize();
             abilityButton.gameObject.AddComponent<AbilityRangePreview>();
-            ConfigureContextualBuildChoices();
+            InitializeBattleRadial(cancel);
             foreach (var button in GetComponentsInChildren<Button>(true)) MobileTouchTarget.Attach(button);
             UiId.AssignHierarchy(transform);
             UiId.Assign(transform.parent, transform.parent.name);
@@ -284,16 +284,16 @@ namespace AllinDefense.Presentation
             if (!visible || displayedOutpost != outpost) CancelSaleConfirmation();
             displayedOutpost = visible ? outpost : null;
             bool emptySlot = slot != null && slot.Occupant == null;
-            if (contextualBuildChoices != null) contextualBuildChoices.gameObject.SetActive(visible && emptySlot);
-            if (upgradeButton != null) upgradeButton.gameObject.SetActive(visible && !emptySlot);
-            if (sellButton != null) sellButton.gameObject.SetActive(visible && !emptySlot);
-            if (selectedText != null) selectedText.gameObject.SetActive(visible && !emptySlot);
-            if (selectedHintText != null) selectedHintText.gameObject.SetActive(visible && !emptySlot);
+
+
+
+            if (selectedText != null) selectedText.gameObject.SetActive(visible);
+            if (selectedHintText != null) selectedHintText.gameObject.SetActive(visible);
 
             if (outpost != null)
             {
                 ApplySelectedOutpostView(outpost);
-                ApplySpecializationSelection(outpost);
+
             }
             else if (slot != null)
             {
@@ -304,7 +304,16 @@ namespace AllinDefense.Presentation
                 ApplySelectedEmptyView();
             }
             ApplySaleConfirmationLabel();
+            bool selectionChanged = selectedPanel.activeSelf != visible;
             selectedPanel.SetActive(visible);
+            if (visible)
+            {
+                messageText.gameObject.SetActive(false);
+                messageChromeImage.gameObject.SetActive(false);
+                previewText.transform.parent.gameObject.SetActive(false);
+            }
+            if (selectionChanged) responsiveLayout?.RefreshLayout();
+            UpdateRadialSelection(outpost, slot, visible);
             if (!visible) responsiveLayout?.ClearContextualSelection();
         }
 
@@ -314,10 +323,12 @@ namespace AllinDefense.Presentation
             Vector3 screenPoint = camera.WorldToScreenPoint(worldPosition + Vector3.up * 0.7f);
             if (screenPoint.z <= 0f) return;
             responsiveLayout.SetContextualSelectionFromScreenPoint(screenPoint, emptySlot);
+            PositionBattleRadial(camera.WorldToScreenPoint(worldPosition));
         }
 
         public void ShowResult(bool victory)
         {
+            resultPanel.transform.SetAsLastSibling();
             resultPanel.SetActive(true);
             resultTitle.text = copy.Get(victory ? UiTextKey.Victory : UiTextKey.Defeat);
             resultTitle.color = victory ? UiTokens.Gold : UiTokens.Danger;
@@ -358,40 +369,10 @@ namespace AllinDefense.Presentation
 
         public void SetBuildAvailability(bool slotSelected, int gold)
         {
-            ApplyBuildButtonState(archerButton, copy.Get(UiTextKey.Archer), ArcherCost, slotSelected, gold, GoldAccent);
-            ApplyBuildButtonState(barracksButton, copy.Get(UiTextKey.Barracks), BarracksCost, slotSelected, gold, WaveAccent);
-            ApplyBuildButtonState(mageButton, copy.Get(UiTextKey.Mage), MageCost, slotSelected, gold, UiTokens.Violet);
-            var session = GameSessionController.Instance;
-            if (session != null)
-                foreach (var pair in new[] { (barracksButton, OutpostKind.Barracks), (mageButton, OutpostKind.Mage) })
-                    if (!session.CanBuild(pair.Item2))
-                    {
-                        pair.Item1.interactable = false;
-                        SetButtonLabel(pair.Item1, GameSessionController.OutpostDisplayName(pair.Item2) + "\n" +
-                            FrontendCopy.Level.Format((pair.Item2 == OutpostKind.Barracks ? 2 : 3)));
-                    }
+            if (battleRadial != null) RefreshRadialAvailability();
         }
 
-        public void SetBuildPreview(OutpostKind? kind)
-        {
-            if (kind == null) return;
-            Button selected = kind switch
-            {
-                OutpostKind.Archer => archerButton,
-                OutpostKind.Barracks => barracksButton,
-                _ => mageButton
-            };
-            int cost = kind switch
-            {
-                OutpostKind.Archer => ArcherCost,
-                OutpostKind.Barracks => BarracksCost,
-                _ => MageCost
-            };
-            Color accent = OutpostAccent(kind.Value);
-            SetButtonLabel(selected, FrontendCopy.Build.Format(cost));
-            SetButtonStripe(selected, accent);
-            if (selected.targetGraphic != null) selected.targetGraphic.color = ButtonPressedTint;
-        }
+        public void SetBuildPreview(OutpostKind? kind) { }
 
         private void ApplyStaticCopy()
         {
@@ -526,46 +507,6 @@ namespace AllinDefense.Presentation
             return null;
         }
 
-        private void ConfigureContextualBuildChoices()
-        {
-            RectTransform panelRect = selectedPanel != null ? selectedPanel.transform as RectTransform : null;
-            if (panelRect == null) return;
-
-            Transform existing = panelRect.Find("BuildChoices");
-            contextualBuildChoices = existing as RectTransform;
-            if (contextualBuildChoices == null)
-            {
-                contextualBuildChoices = new GameObject("BuildChoices", typeof(RectTransform)).GetComponent<RectTransform>();
-                contextualBuildChoices.SetParent(panelRect, false);
-            }
-            contextualBuildChoices.anchorMin = new Vector2(0f, 0f);
-            contextualBuildChoices.anchorMax = new Vector2(1f, 0f);
-            contextualBuildChoices.pivot = new Vector2(0.5f, 0f);
-            contextualBuildChoices.anchoredPosition = new Vector2(0f, 14f);
-            contextualBuildChoices.sizeDelta = new Vector2(-20f, 86f);
-
-            LayoutContextualBuildButton(archerButton, 0f, 1f / 3f);
-            LayoutContextualBuildButton(barracksButton, 1f / 3f, 2f / 3f);
-            LayoutContextualBuildButton(mageButton, 2f / 3f, 1f);
-
-            Transform buildDeck = transform.Find("BottomBar/SafeContent/BuildDeck");
-            if (buildDeck != null) buildDeck.gameObject.SetActive(false);
-            contextualBuildChoices.gameObject.SetActive(false);
-            responsiveLayout?.RefreshLayout();
-        }
-
-        private void LayoutContextualBuildButton(Button button, float minX, float maxX)
-        {
-            if (button == null || contextualBuildChoices == null) return;
-            RectTransform rect = button.transform as RectTransform;
-            rect.SetParent(contextualBuildChoices, false);
-            rect.anchorMin = new Vector2(minX, 0f);
-            rect.anchorMax = new Vector2(maxX, 1f);
-            rect.pivot = new Vector2(0.5f, 0.5f);
-            rect.offsetMin = new Vector2(5f, 0f);
-            rect.offsetMax = new Vector2(-5f, 0f);
-        }
-
         private static void SetButtonLabel(Button button, string value)
         {
             if (button == null) return;
@@ -574,7 +515,7 @@ namespace AllinDefense.Presentation
         }
 
         private static string StatLabel(string title, string value) =>
-            $"<size=70%><color=#A6B4B8>{title}</color></size>  <b>{value}</b>";
+            $"{title}  {value}";
 
         private static string PhaseLabel(string label)
         {
@@ -1042,28 +983,18 @@ namespace AllinDefense.Presentation
 
         private void ApplySelectedOutpostView(GreyboxOutpost outpost)
         {
-            SelectedPanelPresentationSpec spec = SelectedOutpostPanelSpec(outpost.Kind, outpost.Level,
-                outpost.RoleLabel, outpost.DamageValue, outpost.RangeValue, outpost.AttackRateValue,
-                outpost.CanUpgrade, outpost.UpgradeCost, outpost.SellValue, outpost.IsDisrupted,
-                outpost.DisabledRemaining);
-            ApplySelectedActionState(spec);
-            Color accent = spec.accent;
+            Color accent = OutpostAccent(outpost.Kind);
             selectedHeaderImage.color = UiTokens.TintSurface(accent, 0.18f, 0.98f);
             selectedIconImage.sprite = OutpostSprite(outpost.Kind);
             selectedIconImage.color = accent;
-            selectedTitleText.text = spec.title;
-            selectedBadgeText.text = spec.badge;
-            selectedBadgeText.color = spec.badgeColor;
-            selectedRoleText.text = spec.role;
-            selectedRoleText.color = spec.state == SelectedPanelState.Disrupted ? KeepAccent : TextMuted;
-            selectedHintText.text = spec.hint;
-            selectedText.text = spec.stats;
+            selectedTitleText.color = UiTokens.TextPrimary;
+            selectedBadgeText.color = UiTokens.Gold;
         }
 
         private void ApplySelectedSlotView(GreyboxOutpostSlot slot)
         {
+            selectedRoleText.gameObject.SetActive(true);
             SelectedPanelPresentationSpec spec = SelectedSlotPanelSpec(slot.Index);
-            ApplySelectedActionState(spec);
             selectedHeaderImage.color = UiTokens.SelectedEmptyHeader;
             selectedIconImage.sprite = null;
             selectedIconImage.color = UiTokens.SelectedEmptyIcon;
@@ -1078,7 +1009,6 @@ namespace AllinDefense.Presentation
 
         private void ApplySelectedEmptyView()
         {
-            ApplySelectedActionState(SelectedSlotPanelSpec(-1));
             selectedHeaderImage.color = UiTokens.SelectedIdleHeader;
             selectedIconImage.sprite = null;
             selectedTitleText.text = FrontendCopy.NoSelection.Value;
@@ -1087,18 +1017,6 @@ namespace AllinDefense.Presentation
             selectedRoleText.color = TextMuted;
             selectedHintText.text = string.Empty;
             selectedText.text = string.Empty;
-        }
-
-        private void ApplySelectedActionState(SelectedPanelPresentationSpec spec)
-        {
-            upgradeButton.interactable = spec.upgradeInteractable;
-            sellButton.interactable = spec.sellInteractable;
-            SetButtonLabel(upgradeButton, spec.upgradeLabel);
-            SetButtonLabel(sellButton, spec.sellLabel);
-            SetButtonStripe(upgradeButton, spec.upgradeInteractable ? GoldAccent : DisabledAccent,
-                !spec.upgradeInteractable || spec.warningStripe);
-            SetButtonStripe(sellButton, spec.sellInteractable ? KeepAccent : DisabledAccent,
-                !spec.sellInteractable);
         }
 
         private static Image EnsureImage(Transform parent, string name, Color color, Vector2 anchorMin, Vector2 anchorMax,

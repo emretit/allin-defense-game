@@ -78,9 +78,9 @@ namespace AllinDefense.Tests
             var sell = Button("Sell"); sell.onClick.Invoke();
             Assert.That(session.Outposts, Does.Contain(tower), "First tap must not sell");
             Assert.That(session.Gold, Is.EqualTo(gold));
-            Assert.That(Label(sell), Does.Contain($"ONAYLA +{refund}"));
+            Assert.That(Label(sell), Does.Contain("ONAYLA"));
             GameLocalization.SetLanguage(GameLanguage.English);
-            Assert.That(Label(sell), Does.Contain($"CONFIRM +{refund}"));
+            Assert.That(Label(sell), Does.Contain("CONFIRM"));
             sell.onClick.Invoke();
             Assert.That(session.Outposts.Count, Is.Zero);
             Assert.That(session.Gold, Is.EqualTo(gold + refund));
@@ -223,6 +223,7 @@ namespace AllinDefense.Tests
                 // Spawn through the normal battle clock, then observe actual frame progression.
                 session.AdvanceBattle(.1f);
                 var enemy = session.Enemies[0];
+                Call(session, "SelectOutpost", tower);
                 hud.ShowSpecializationChoices(tower, session);
                 float battle = session.BattleElapsedSeconds, wave = session.WaveElapsedSeconds;
                 var position = enemy.Position;
@@ -230,7 +231,7 @@ namespace AllinDefense.Tests
                 Assert.That(session.BattleElapsedSeconds, Is.EqualTo(battle));
                 Assert.That(session.WaveElapsedSeconds, Is.EqualTo(wave));
                 Assert.That(enemy.Position, Is.EqualTo(position));
-                ModalClose().onClick.Invoke();
+                hud.BattleRadial.Close();
                 Assert.That(session.Phase, Is.EqualTo(GamePhase.Wave));
                 Assert.That(Time.timeScale, Is.EqualTo(GameSessionController.SpeedForStep(speedStep)));
                 yield return new WaitForSecondsRealtime(.08f);
@@ -238,19 +239,16 @@ namespace AllinDefense.Tests
             }
         }
 
-        private Button ModalClose() => Field<GameObject>(hud, "specializationModal").GetComponentsInChildren<Button>()
-            .Single(b => Label(b).StartsWith("BACK") || Label(b).StartsWith("GERİ"));
-
         [UnityTest] public IEnumerator AlreadyPausedAndTerminalSessionsDoNotResumeOnModalClose()
         {
             Create(); var tower = SelectTower(); session.TryUpgradeOutpost(0); session.TogglePause();
-            hud.ShowSpecializationChoices(tower, session); ModalClose().onClick.Invoke();
+            hud.ShowSpecializationChoices(tower, session); hud.BattleRadial.Close();
             Assert.That(session.Phase, Is.EqualTo(GamePhase.Paused)); Assert.That(Time.timeScale, Is.Zero);
             yield return null;
             session.TogglePause(); hud.ShowSpecializationChoices(tower, session);
             Call(session, "SetPhase", GamePhase.Defeat);
             yield return null;
-            Assert.That(Field<GameObject>(hud, "specializationModal") == null, Is.True);
+            Assert.That(session.SpecializationModalOpen, Is.False);
             Assert.That(session.Phase, Is.EqualTo(GamePhase.Defeat));
         }
 
@@ -261,7 +259,7 @@ namespace AllinDefense.Tests
             hud.ShowSpecializationChoices(tower, session);
             Call(session, "ToggleGameSpeed"); session.TogglePause();
             Assert.That(session.CurrentGameSpeed, Is.EqualTo(2)); Assert.That(Time.timeScale, Is.Zero);
-            Call(session, "PauseForBackground"); ModalClose().onClick.Invoke();
+            Call(session, "PauseForBackground"); hud.BattleRadial.Close();
             Assert.That(session.Phase, Is.EqualTo(GamePhase.Paused)); Assert.That(Time.timeScale, Is.Zero);
             yield return null;
             session.TogglePause(); hud.ShowSpecializationChoices(tower, session);
@@ -274,7 +272,12 @@ namespace AllinDefense.Tests
             Create(); var tower = SelectTower(); session.TryUpgradeOutpost(0);
             hud.ShowSpecializationChoices(tower, session);
             var branch = TowerProgression.Branch(OutpostKind.Archer, 0);
-            UiQuery.FindById<Button>(Field<GameObject>(hud, "specializationModal").transform, branch.ToString()).onClick.Invoke();
+            var choice = UiQuery.FindById<Button>(hud.BattleRadial, branch.ToString());
+            int gold = session.Gold;
+            choice.onClick.Invoke();
+            Assert.That(tower.Specialization, Is.EqualTo(OutpostSpecialization.None));
+            Assert.That(session.Gold, Is.EqualTo(gold));
+            choice.onClick.Invoke();
             Assert.That(tower.Specialization, Is.EqualTo(branch));
             Assert.That(session.Phase, Is.EqualTo(GamePhase.Preparing));
             Assert.That(Time.timeScale, Is.EqualTo(session.CurrentGameSpeed));

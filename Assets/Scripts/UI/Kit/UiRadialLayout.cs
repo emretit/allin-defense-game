@@ -8,6 +8,9 @@ namespace AllinDefense.UI.Kit
     {
         [SerializeField] private Vector2 center;
         [SerializeField] private Rect safeArea;
+        private Rect[] obstacles = Array.Empty<Rect>();
+        public bool UsesFallback { get; private set; }
+        public void SetObstacles(Rect[] value) => obstacles = value ?? Array.Empty<Rect>();
         public bool UsesHalfArc { get; private set; }
         public void Place(Vector2 localPoint, Rect localSafeArea) { center = localPoint; safeArea = localSafeArea; SetDirty(); }
         public override void CalculateLayoutInputHorizontal() { base.CalculateLayoutInputHorizontal(); SetLayoutInputForAxis(UiMetrics.AbilityPt, UiMetrics.AbilityPt * 4, -1, 0); }
@@ -23,12 +26,46 @@ namespace AllinDefense.UI.Kit
                     LayoutUtility.GetPreferredWidth(child), LayoutUtility.GetPreferredHeight(child));
             Rect bounds = safeArea.width > 0 ? safeArea : rectTransform.rect;
             var positions = Calculate(bounds, center, rectChildren.Count, diameter, out bool half);
+            UsesFallback = false;
+            if (!Fits(positions, diameter))
+            {
+                bool found = false;
+                for (float distance = diameter / 2; distance <= Mathf.Max(bounds.width, bounds.height) && !found; distance += diameter / 2)
+                    for (int direction = 0; direction < 16 && !found; direction++)
+                    {
+                        float angle = direction * Mathf.PI / 8;
+                        var candidate = Calculate(bounds, center + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * distance,
+                            rectChildren.Count, diameter, out bool candidateHalf);
+                        if (!Fits(candidate, diameter)) continue;
+                        positions = candidate; half = candidateHalf; found = true;
+                    }
+                if (!found)
+                {
+                    UsesFallback = true;
+                    for (float y = bounds.yMin + diameter / 2; y <= bounds.yMax - diameter / 2 && !found; y += diameter / 2)
+                        for (float x = bounds.xMin + diameter / 2; x <= bounds.xMax - (rectChildren.Count - .5f) * (diameter + UiTokens.Space1) && !found; x += diameter / 2)
+                        {
+                            var candidate = new Vector2[rectChildren.Count];
+                            for (int i = 0; i < candidate.Length; i++) candidate[i] = new Vector2(x + i * (diameter + UiTokens.Space1), y);
+                            if (!Fits(candidate, diameter)) continue;
+                            positions = candidate; found = true;
+                        }
+                }
+            }
             UsesHalfArc = half;
             for (int i = 0; i < rectChildren.Count; i++)
             {
                 SetChildAlongAxis(rectChildren[i], 0, positions[i].x - rectTransform.rect.xMin - diameter / 2, diameter);
                 SetChildAlongAxis(rectChildren[i], 1, rectTransform.rect.yMax - positions[i].y - diameter / 2, diameter);
             }
+        }
+
+        private bool Fits(Vector2[] positions, float diameter)
+        {
+            foreach (var point in positions)
+                foreach (var obstacle in obstacles)
+                    if (new Rect(point - Vector2.one * diameter / 2, Vector2.one * diameter).Overlaps(obstacle)) return false;
+            return true;
         }
 
         public static Vector2[] Calculate(Rect safe, Vector2 origin, int count, float diameter, out bool halfArc)

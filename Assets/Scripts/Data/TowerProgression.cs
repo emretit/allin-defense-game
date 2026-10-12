@@ -80,22 +80,22 @@ namespace AllinDefense.Data
 
         public static string Name(OutpostSpecialization branch) => branch switch
         {
-            OutpostSpecialization.RapidFire => GameLocalization.Text("Hızlı Atış", "Rapid Fire"),
-            OutpostSpecialization.Sharpshooter => GameLocalization.Text("Keskin Nişancı", "Sharpshooter"),
-            OutpostSpecialization.ShieldGuard => GameLocalization.Text("Kalkan Birliği", "Shield Guard"),
-            OutpostSpecialization.AssaultGuard => GameLocalization.Text("Hücum Birliği", "Assault Guard"),
-            OutpostSpecialization.Blast => GameLocalization.Text("Patlama", "Blast"),
-            OutpostSpecialization.Frost => GameLocalization.Text("Buz", "Frost"),
+            OutpostSpecialization.RapidFire => FrontendCopy.SpecializationRapidFireName.Value,
+            OutpostSpecialization.Sharpshooter => FrontendCopy.SpecializationSharpshooterName.Value,
+            OutpostSpecialization.ShieldGuard => FrontendCopy.SpecializationShieldGuardName.Value,
+            OutpostSpecialization.AssaultGuard => FrontendCopy.SpecializationAssaultGuardName.Value,
+            OutpostSpecialization.Blast => FrontendCopy.SpecializationBlastName.Value,
+            OutpostSpecialization.Frost => FrontendCopy.SpecializationFrostName.Value,
             _ => GameLocalization.Text("Temel savunma", "Basic defence")
         };
         public static string Description(OutpostSpecialization branch) => branch switch
         {
-            OutpostSpecialization.RapidFire => GameLocalization.Text("Hafif hedeflere hızlı atış", "Rapid shots against light targets"),
-            OutpostSpecialization.Sharpshooter => GameLocalization.Text("Uzun menzil • Önce şifacı ve kuşatma", "Long range • Support and siege priority"),
-            OutpostSpecialization.ShieldGuard => GameLocalization.Text("Üç dayanıklı askerle yolu tut", "Three durable soldiers hold the route"),
-            OutpostSpecialization.AssaultGuard => GameLocalization.Text("Üç askerde daha yüksek hasar", "Three soldiers deal more damage"),
-            OutpostSpecialization.Blast => GameLocalization.Text("Geniş alanda büyü hasarı", "Magic damage over a wider area"),
-            OutpostSpecialization.Frost => GameLocalization.Text("Düşmanları 2 sn %50 yavaşlatır", "Slows enemies by 50% for 2 sec"),
+            OutpostSpecialization.RapidFire => FrontendCopy.SpecializationRapidFireDescription.Value,
+            OutpostSpecialization.Sharpshooter => FrontendCopy.SpecializationSharpshooterDescription.Value,
+            OutpostSpecialization.ShieldGuard => FrontendCopy.SpecializationShieldGuardDescription.Value,
+            OutpostSpecialization.AssaultGuard => FrontendCopy.SpecializationAssaultGuardDescription.Value,
+            OutpostSpecialization.Blast => FrontendCopy.SpecializationBlastDescription.Value,
+            OutpostSpecialization.Frost => FrontendCopy.SpecializationFrostDescription.Value,
             _ => string.Empty
         };
     }

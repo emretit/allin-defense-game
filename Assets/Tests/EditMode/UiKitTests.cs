@@ -183,6 +183,33 @@ namespace AllinDefense.Tests
             menu.OnPointerClick(new PointerEventData(null) { position = new Vector2(-10000, -10000) });
             Assert.That(menu.IsOpen, Is.False); Assert.That(closes, Is.EqualTo(2));
         }
+        [Test] public void RadialReconfigureRemovesOldListenersAndWiresNewChoicesOnce()
+        {
+            var menu = kit.RadialMenu(root.transform, "build", new[] { new UiRadialOption("a", kit.Assets.iconShield, 75) });
+            var old = menu.GetComponentInChildren<UnityEngine.UI.Button>();
+            var next = kit.Button(menu.transform, "next", "", UiButtonVariant.Glass, kit.Assets.iconUpgrade);
+            int previews = 0, confirmations = 0;
+            menu.Previewed += _ => previews++; menu.Confirmed += _ => confirmations++;
+            var options = new[] { new UiRadialOption("next", kit.Assets.iconUpgrade, 100) };
+            menu.Configure(menu.GetComponent<UiRadialLayout>(), new[] { next }, options);
+            menu.Configure(menu.GetComponent<UiRadialLayout>(), new[] { next }, options);
+            old.onClick.Invoke(); Assert.That(previews, Is.Zero);
+            next.onClick.Invoke(); Assert.That(previews, Is.EqualTo(1)); Assert.That(confirmations, Is.Zero);
+            next.onClick.Invoke(); Assert.That(confirmations, Is.EqualTo(1));
+        }
+        [Test] public void UnaffordableRadialPreviewsAndRejectsWithoutDisablingTouch()
+        {
+            var menu = kit.RadialMenu(root.transform, "poor", new[] { new UiRadialOption("a", kit.Assets.iconShield, 75) });
+            int previews = 0, rejects = 0, confirmations = 0;
+            menu.Previewed += _ => previews++; menu.Rejected += _ => rejects++; menu.Confirmed += _ => confirmations++;
+            menu.SetAffordable(0, false);
+            var button = menu.GetComponentInChildren<UnityEngine.UI.Button>();
+            Assert.That(button.interactable, Is.True);
+            menu.Choose(0); menu.Choose(0);
+            Assert.That(previews, Is.EqualTo(1)); Assert.That(rejects, Is.EqualTo(1)); Assert.That(confirmations, Is.Zero);
+            Assert.That(button.GetComponent<UiVisualState>().Price.color, Is.EqualTo(UiTokens.Danger));
+            menu.SetAvailable(0, false); menu.Choose(0); Assert.That(previews, Is.EqualTo(1));
+        }
         [TestCase(false)] [TestCase(true)] public void OverlaysShowAndDismissImmediatelyWithReducedMotion(bool bottom)
         {
             var overlay = bottom ? kit.BottomSheet(root.transform, "sheet", FrontendCopy.SettingsTitle) : kit.Modal(root.transform, "modal", FrontendCopy.SettingsTitle);

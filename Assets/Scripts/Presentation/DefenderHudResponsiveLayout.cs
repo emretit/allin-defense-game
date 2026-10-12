@@ -105,17 +105,12 @@ namespace AllinDefense.Presentation
             LayoutMetrics metrics = CalculateLayoutMetrics(root.rect.size, safeArea, previousScreenSize);
             LayoutFrame(metrics);
 
-            if (contextualSelectionActive)
-            {
-                ApplyContextualSelection(metrics);
-            }
-            else
-            {
-                selectedPanel.anchorMin = selectedPanel.anchorMax = new Vector2(metrics.SafeMaxX, metrics.SafeMinY);
-                selectedPanel.pivot = new Vector2(1f, 0f);
-                selectedPanel.anchoredPosition = new Vector2(-18f, BottomContentHeight + 18f);
-                selectedPanel.sizeDelta = new Vector2(Mathf.Min(440f, metrics.SafeWidth * 0.34f), 480f);
-            }
+            var points = UiMetrics.PointsPerCanvasUnit(GetComponentInParent<Canvas>());
+            selectedPanel.anchorMin = selectedPanel.anchorMax = new Vector2(metrics.SafeMinX, metrics.SafeMinY);
+            selectedPanel.pivot = Vector2.zero;
+            selectedPanel.anchoredPosition = new Vector2(90 / points.x, 8 / points.y);
+            selectedPanel.sizeDelta = new Vector2(198, 80);
+            selectedPanel.localScale = new Vector3(1 / points.x, 1 / points.y, 1);
         }
 
         public void SetContextualSelectionFromScreenPoint(Vector2 screenPoint, bool emptySlot)
@@ -141,26 +136,6 @@ namespace AllinDefense.Presentation
         public void RefreshLayout()
         {
             if (initialized) Apply(false);
-        }
-
-        private void ApplyContextualSelection(LayoutMetrics metrics)
-        {
-            Vector2 panelSize = contextualSelectionIsEmptySlot
-                ? new Vector2(Mathf.Min(620f, metrics.SafeWidth - 36f), 210f)
-                : new Vector2(Mathf.Min(380f, metrics.SafeWidth - 36f), 340f);
-            float verticalGap = 42f;
-            Vector2 desired = contextualTarget + Vector2.up * (panelSize.y * 0.5f + verticalGap);
-
-            float pointsY = UiMetrics.PointsPerCanvasUnit(GetComponentInParent<Canvas>()).y;
-            float rootSafeTop = root.rect.yMin + metrics.SafeMaxY * root.rect.height - TopContentHeight / pointsY - 12f;
-            if (desired.y + panelSize.y * 0.5f > rootSafeTop)
-                desired.y = contextualTarget.y - panelSize.y * 0.5f - verticalGap;
-
-            selectedPanel.anchorMin = selectedPanel.anchorMax = new Vector2(0.5f, 0.5f);
-            selectedPanel.pivot = new Vector2(0.5f, 0.5f);
-            selectedPanel.sizeDelta = panelSize;
-            selectedPanel.anchoredPosition = ClampContextPanelPosition(desired, panelSize, root.rect.size, metrics,
-                TopContentHeight / pointsY, BottomContentHeight / pointsY);
         }
 
         public static Vector2 ClampContextPanelPosition(Vector2 desired, Vector2 panelSize, Vector2 rootSize,
@@ -205,7 +180,7 @@ namespace AllinDefense.Presentation
         public Rect[] FrameScreenRects()
         {
             string[] paths = { "TopBar/Lives", "TopBar/Gold", "TopBar/WavePanel", "TopBar/Speed", "TopBar/Pause",
-                "Preview", "Message", "BottomBar/AbilityCooldown", "BottomBar/Hero", "BottomBar/NextWave" };
+                "Preview", "Message", "BottomBar/AbilityCooldown", "BottomBar/Hero", "BottomBar/NextWave", "SelectedPanel" };
             var result = new System.Collections.Generic.List<Rect>();
             foreach (string path in paths)
             {
@@ -224,23 +199,24 @@ namespace AllinDefense.Presentation
             Vector2 points = UiMetrics.PointsPerCanvasUnit(GetComponentInParent<Canvas>());
             Vector3 scale = new(1 / points.x, 1 / points.y, 1);
             float width = metrics.SafeWidth * points.x;
+            bool compact = selectedPanel.gameObject.activeSelf && width < 900;
             Place(topBar, new Vector2(metrics.SafeCenterX, metrics.SafeMaxY), new Vector2(.5f, 1), Vector2.zero, new Vector2(width, TopContentHeight));
             Place(bottomBar, new Vector2(metrics.SafeCenterX, metrics.SafeMinY), new Vector2(.5f, 0), Vector2.zero, new Vector2(width, BottomContentHeight));
             topBar.localScale = bottomBar.localScale = scale;
             Place(RequireRect(topBar, "Lives"), new Vector2(0, 1), new Vector2(0, 1), new Vector2(6, -6), new Vector2(76, 44));
-            Place(RequireRect(topBar, "Gold"), new Vector2(0, 1), new Vector2(0, 1), new Vector2(88, -6), new Vector2(148, 44));
+            Place(RequireRect(topBar, "Gold"), new Vector2(0, 1), new Vector2(0, 1), new Vector2(88, -6), new Vector2(compact ? 124 : 148, 44));
             var wave = RequireRect(topBar, "WavePanel");
-            Place(wave, new Vector2(.52f, 1), new Vector2(.5f, 1), new Vector2(0, -2), new Vector2(220, 52));
-            Place(RequireRect(wave, "Wave"), new Vector2(0, 1), new Vector2(0, 1), new Vector2(10, -6), new Vector2(100, 22));
+            Place(wave, new Vector2(.52f, 1), new Vector2(.5f, 1), new Vector2(0, -2), new Vector2(compact ? 200 : 220, compact ? 44 : 52));
+            Place(RequireRect(wave, "Wave"), new Vector2(0, 1), new Vector2(0, 1), new Vector2(10, -6), new Vector2(compact ? 86 : 100, 22));
             Place(RequireRect(wave, "PhaseChip"), new Vector2(1, 1), new Vector2(1, 1), new Vector2(-8, -6), new Vector2(92, 22));
             foreach (Transform child in wave)
                 if (child.name == "WaveProgress" && child.gameObject.activeSelf)
-                    Place((RectTransform)child, new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(0, 8), new Vector2(200, 8));
+                    Place((RectTransform)child, new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(0, compact ? 4 : 8), new Vector2(compact ? 180 : 200, 8));
             var boss = RequireRect(wave, "BossBar");
             AllinDefense.UI.Kit.UiKit.Stretch(boss);
             Place(RequireRect(boss, "BossName"), new Vector2(0, 1), new Vector2(0, 1), new Vector2(10, -5), new Vector2(128, 24));
             Place(RequireRect(boss, "BossHealth"), new Vector2(1, 1), new Vector2(1, 1), new Vector2(-8, -6), new Vector2(72, 22));
-            Place(RequireRect(boss, "BossTrack"), new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(0, 8), new Vector2(200, 8));
+            Place(RequireRect(boss, "BossTrack"), new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(0, compact ? 4 : 8), new Vector2(compact ? 180 : 200, 8));
             Place(RequireRect(topBar, "Speed"), Vector2.one, Vector2.one, new Vector2(-56, -6), new Vector2(76, 44));
             Place(RequireRect(topBar, "Pause"), Vector2.one, Vector2.one, new Vector2(-6, -6), new Vector2(44, 44));
             Place(preview, new Vector2(metrics.SafeMaxX, metrics.SafeMaxY), new Vector2(1, 1), new Vector2(-144 / points.x, -16 / points.y), new Vector2(72, 24));

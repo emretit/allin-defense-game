@@ -3,7 +3,8 @@
   "rootNamespace": "AllinDefense.Tests",
   "references": [
     "AllinDefense.Runtime",
-    "Unity.TextMeshPro"
+    "Unity.TextMeshPro",
+    "Unity.InputSystem"
   ],
   "optionalUnityReferences": [
     "TestAssemblies"

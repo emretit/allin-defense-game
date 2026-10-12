@@ -37,16 +37,7 @@ namespace AllinDefense.UI
             public string status = "running";
         }
         private static readonly HashSet<string> acceptanceErrors = new();
-        private static readonly HashSet<string> knownLegacyHudOverflowKeys = new(StringComparer.Ordinal)
-        {
-            "battle-build-menu | AllinDefenseSession/Game HUD/Defender HUD/SelectedPanel/BuildChoices/Barracks/Label | English",
-            "battle-build-menu | AllinDefenseSession/Game HUD/Defender HUD/SelectedPanel/BuildChoices/Mage/Label | English",
-            "battle-selected-tower | AllinDefenseSession/Game HUD/Defender HUD/SelectedPanel/Description | English",
-            "specialization | AllinDefenseSession/Game HUD/Defender HUD/SelectedPanel/Description | English",
-            "battle-active-wave | AllinDefenseSession/Game HUD/Defender HUD/SelectedPanel/Description | English",
-            "pause | AllinDefenseSession/Game HUD/Defender HUD/SelectedPanel/Description | English",
-            "battle-level-10-boss | AllinDefenseSession/Game HUD/Defender HUD/SelectedPanel/Description | English",
-        };
+        private static readonly HashSet<string> knownLegacyHudOverflowKeys = new(StringComparer.Ordinal);
         private static FrontendAcceptanceReport acceptanceReport;
         private static int acceptanceStage;
         private static string acceptanceSavePath;
@@ -114,13 +105,18 @@ namespace AllinDefense.UI
             var hud = session.GetComponentInChildren<DefenderHudController>();
             AcceptanceInvoke("SelectSlot", session.GetComponentsInChildren<GreyboxOutpostSlot>().First(slot => slot.Index == 0));
             yield return CaptureAcceptance("battle-build-menu");
+            hud.BattleRadial.Choose(0);
+            yield return CaptureAcceptance("battle-build-preview");
             AcceptanceInvoke("EarnGold", 10000);
             AcceptanceSet("unlockedCampaignLevel", 10);
             session.TryBuildOutpost(0, OutpostKind.Archer);
             AcceptanceInvoke("SelectOutpost", session.Outposts[0]);
             yield return CaptureAcceptance("battle-selected-tower");
+            hud.BattleRadial.Choose(0);
+            yield return CaptureAcceptance("battle-upgrade-preview");
             session.TryUpgradeOutpost(0);
             hud.ShowSpecializationChoices(session.Outposts[0], session);
+            hud.BattleRadial.Choose(0);
             yield return CaptureAcceptance("specialization");
             hud.CloseSpecializationChoices();
             session.StartNextWave();

@@ -45,17 +45,19 @@ namespace AllinDefense.Presentation
         {
             saleConfirmationOutpost = null;
             if (sellButton != null && displayedOutpost != null)
-                SetButtonLabel(sellButton, FrontendCopy.Sell.Format(displayedOutpost.SellValue));
+                SetButtonLabel(sellButton, FrontendCopy.RadialSell.Value);
         }
 
         private void ApplySaleConfirmationLabel()
         {
             if (saleConfirmationOutpost != null && sellButton != null)
-                SetButtonLabel(sellButton, FrontendCopy.Confirm.Format(saleConfirmationOutpost.SellValue));
+                SetButtonLabel(sellButton, FrontendCopy.RadialConfirm.Value);
         }
 
         private void LateUpdate()
         {
+            UpdateTutorialPresentation();
+            DismissPausedRadialOnBackground();
             var session = GameSessionController.Instance;
             if (saleConfirmationOutpost != null && (Time.unscaledTime >= saleConfirmationUntil ||
                 selectedPanel == null || !selectedPanel.activeInHierarchy || session == null ||

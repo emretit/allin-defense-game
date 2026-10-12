@@ -2285,7 +2285,7 @@ namespace AllinDefense.Core
         private void RefreshSelectedPanel()
         {
             if (selectionRange != null && selectedSlot != null)
-                selectionRange.Show(selectedSlot.transform.position, selectedOutpost != null ? selectedOutpost.RangeValue : TowerProgression.Stats(OutpostKind.Archer,1).range,true);
+                selectionRange.Show(selectedSlot.transform.position, selectedOutpost != null ? selectedOutpost.RangeValue : TowerProgression.Stats(OutpostKind.Archer,1).range, artHud == null);
             if (artHud != null)
             {
                 if (selectedOutpost != null)
@@ -2328,6 +2328,13 @@ namespace AllinDefense.Core
 
         private void RefreshSelectionPreview(bool force = false)
         {
+            if (artHud != null && artHud.HasRadialRangePreview)
+            {
+                if (selectionRangePreview != null) selectionRangePreview.SetActive(false);
+                if (selectionRallyPreview != null) selectionRallyPreview.SetActive(false);
+                lastPreviewRange = -1f;
+                return;
+            }
             OutpostKind? kind = selectedOutpost != null ? selectedOutpost.Kind : pendingBuildKind;
             if (selectedSlot == null || kind == null)
             {

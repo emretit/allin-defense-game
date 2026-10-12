@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace AllinDefense.UI.Kit
 {
-    public enum UiState { Normal, Pressed, Disabled, Selected, Ready }
+    public enum UiState { Normal, Pressed, Disabled, Selected, Ready, Unaffordable }
     public enum UiButtonVariant { Gold, Glass, Danger }
 
     public sealed class UiVisualState : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler
@@ -45,11 +45,12 @@ namespace AllinDefense.UI.Kit
             bool enteringReady = value == UiState.Ready && state != UiState.Ready;
             state = value;
             if (value != UiState.Pressed) resting = value;
-            bool disabled = value == UiState.Disabled;
+            bool disabled = value == UiState.Disabled || value == UiState.Unaffordable ||
+                value == UiState.Pressed && resting == UiState.Unaffordable;
             bool gold = variant == UiButtonVariant.Gold && !disabled;
             bool selected = value == UiState.Selected || value == UiState.Ready;
             if (selectable == null) selectable = GetComponent<Selectable>();
-            if (selectable != null) selectable.interactable = !disabled;
+            if (selectable != null) selectable.interactable = value != UiState.Disabled;
             if (surface != null) surface.color = disabled ? UiTokens.Surface :
                 value == UiState.Pressed ? UiTokens.NightDeep : gold ? UiTokens.Gold : UiTokens.KitSurface;
             if (gradient != null)

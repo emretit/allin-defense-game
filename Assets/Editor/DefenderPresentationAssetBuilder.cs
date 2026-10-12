@@ -1400,8 +1400,8 @@ namespace AllinDefense.Editor
                 if (size != null) size.minHeight = label.fontSize * 1.5f;
             }
 
-            GameObject selected = Panel(root.transform, "SelectedPanel", panel, UiTokens.HudBottomBar,
-                new Vector2(1, .5f), new Vector2(1, .5f), new Vector2(-338, -126), new Vector2(-18, 184));
+            GameObject selected = kit.Card(root.transform, "SelectedPanel").gameObject;
+            selected.GetComponent<VerticalLayoutGroup>().enabled = false;
             TMP_Text description = Text(selected.transform, "Description", string.Empty, body, 22, TextAlignmentOptions.TopLeft,
                 Vector2.zero, Vector2.zero, Vector2.zero, Vector2.one);
             description.rectTransform.offsetMin = new Vector2(16, 92);

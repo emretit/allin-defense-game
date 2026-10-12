@@ -928,7 +928,7 @@ namespace AllinDefense.Tests
             Assert.That(UiQuery.FindById<Button>(hud, "Pause").interactable, Is.True);
             Assert.That(UiQuery.FindById<Button>(hud, "Cancel"), Is.Null);
             Assert.That(UiQuery.FindById<Button>(hud, "NextWave").interactable, Is.True);
-            Transform contextualChoices = UiQuery.FindById(hud, "SelectedPanel/BuildChoices");
+            Transform contextualChoices = UiQuery.FindById(hud, "BattleRadial");
             Assert.That(contextualChoices, Is.Not.Null);
             Assert.That(contextualChoices.gameObject.activeSelf, Is.True);
             Assert.That(UiQuery.FindById(contextualChoices, "Archer"), Is.Not.Null);
@@ -953,7 +953,8 @@ namespace AllinDefense.Tests
 
             Assert.That(UiQuery.FindById<Button>(hud, "Upgrade").interactable, Is.True);
             Assert.That(UiQuery.FindById<Button>(hud, "Sell").interactable, Is.True);
-            Assert.That(contextualChoices.gameObject.activeSelf, Is.False);
+            Assert.That(contextualChoices.gameObject.activeSelf, Is.True);
+            Assert.That(UiQuery.FindById(contextualChoices, "Archer").gameObject.activeSelf, Is.False);
 
             SelectSlot(session, 1);
             int goldBeforeBarracksPreview = session.Gold;
