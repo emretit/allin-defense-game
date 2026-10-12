@@ -75,15 +75,13 @@ namespace AllinDefense.Tests
             yield return null;
             var hud = Object.FindAnyObjectByType<DefenderHudController>();
             hud.Refresh(session);
-            var ability = UiQuery.FindById<Button>(hud, "Ability")
-                .GetComponentInChildren<TMP_Text>();
-            Assert.That(ability.text, Does.StartWith("AYARLAR\n"));
+            Assert.That(hud.HeroDisplayLabel, Is.EqualTo("AYARLAR"));
             flow.Progress.TrySetHeroName("");
             hud.Refresh(session);
-            Assert.That(ability.text, Does.StartWith("Warrior\n"));
+            Assert.That(hud.HeroDisplayLabel, Is.EqualTo("Warrior"));
             GameLocalization.SetLanguage(GameLanguage.Turkish);
             hud.Refresh(session);
-            Assert.That(ability.text, Does.StartWith("Savaşçı\n"));
+            Assert.That(hud.HeroDisplayLabel, Is.EqualTo("Savaşçı"));
         }
 
         private static void Click(AppFlowController flow, string name)

@@ -18,6 +18,7 @@ namespace AllinDefense.UI
         public Sprite goldGradient;
         public Sprite filledCircle;
         public Sprite cooldownRing;
+        public Sprite iconEnemy;
         public Sprite iconPause;
         public Sprite iconPlay;
         public Sprite iconFastForward;

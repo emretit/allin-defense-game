@@ -78,6 +78,7 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 6868da19286f244028acea9d3e29e937, type: 3}
     - {fileID: 2800000, guid: 1a9a268e1847b4c55b0c17be54032187, type: 3}
     - {fileID: 2800000, guid: 5bdc6e620926d43559b1fa225d956dbc, type: 3}
+    - {fileID: 2800000, guid: 5ae29ac5bdd014075844d9e47a9992c4, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -92,6 +93,7 @@ SpriteAtlas:
     - 56271692c10584855bf39edc4905b029: 21300000
     - bd858ef38072443f7805d2b3e82f1740: 21300000
     - 489ad93532d874baeb1ab02397235856: 21300000
+    - 5ae29ac5bdd014075844d9e47a9992c4: 21300000
     - a4399d56b6e44443eb15a46596281f93: 21300000
     - b55af486d50314f938796fe44996492a: 21300000
     - 60c75de6f2127498698a10372a44a8bd: 21300000
@@ -127,6 +129,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 56271692c10584855bf39edc4905b029, type: 3}
   - {fileID: 21300000, guid: bd858ef38072443f7805d2b3e82f1740, type: 3}
   - {fileID: 21300000, guid: 489ad93532d874baeb1ab02397235856, type: 3}
+  - {fileID: 21300000, guid: 5ae29ac5bdd014075844d9e47a9992c4, type: 3}
   - {fileID: 21300000, guid: a4399d56b6e44443eb15a46596281f93, type: 3}
   - {fileID: 21300000, guid: b55af486d50314f938796fe44996492a, type: 3}
   - {fileID: 21300000, guid: 60c75de6f2127498698a10372a44a8bd, type: 3}
@@ -161,6 +164,7 @@ SpriteAtlas:
   - DefenderHudPanel
   - CooldownRing
   - SystemCheck
+  - SystemEnemy
   - MedievalPanel
   - SystemMap
   - IconKeep

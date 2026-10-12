@@ -1,11 +1,13 @@
 using System;
 using UnityEngine;
+using AllinDefense.UI;
+using UnityEngine.UI;
 
 namespace AllinDefense.Presentation
 {
     /// <summary>
-    /// Extends decorative HUD rails to the physical screen edges while keeping interactive
-    /// content inside the safe area. Existing prefab references stay intact after reparenting.
+    /// Positions the kit frame in logical points inside the safe area.
+    /// Context panels retain their existing reference-canvas layout.
     /// </summary>
     [DisallowMultipleComponent]
     public sealed class DefenderHudResponsiveLayout : MonoBehaviour
@@ -44,19 +46,14 @@ namespace AllinDefense.Presentation
             public float MessageY { get; }
         }
 
-        public const float TopContentHeight = 146f;
-        public const float BottomContentHeight = 170f;
+        public const float TopContentHeight = 56f;
+        public const float BottomContentHeight = 110f;
 
         private RectTransform root;
         private RectTransform topBar;
         private RectTransform bottomBar;
-        private RectTransform topContent;
-        private RectTransform bottomContent;
         private RectTransform preview;
-        private RectTransform previewChrome;
-        private RectTransform previewTitle;
         private RectTransform message;
-        private RectTransform messageChrome;
         private RectTransform selectedPanel;
         private Rect previousSafeArea;
         private Vector2Int previousScreenSize;
@@ -72,16 +69,8 @@ namespace AllinDefense.Presentation
             topBar = RequireRect("TopBar");
             bottomBar = RequireRect("BottomBar");
             preview = RequireRect("Preview");
-            previewChrome = FindOptionalRect("PreviewChrome");
-            previewTitle = FindOptionalRect("PreviewTitle");
             message = RequireRect("Message");
-            messageChrome = FindOptionalRect("MessageChrome");
             selectedPanel = RequireRect("SelectedPanel");
-            topContent = CreateContentRoot(topBar, "SafeContent");
-            bottomContent = CreateContentRoot(bottomBar, "SafeContent");
-
-            MoveChildren(topBar, topContent);
-            MoveChildren(bottomBar, bottomContent);
             initialized = true;
             Apply(true);
         }
@@ -114,26 +103,7 @@ namespace AllinDefense.Presentation
             }
 
             LayoutMetrics metrics = CalculateLayoutMetrics(root.rect.size, safeArea, previousScreenSize);
-            SetEdgeRail(topBar, true, TopContentHeight + metrics.TopInset);
-            SetEdgeRail(bottomBar, false, BottomContentHeight + metrics.BottomInset);
-            SetSafeContent(topContent, metrics.SafeMinX, metrics.SafeMaxX, 0f, -metrics.TopInset);
-            SetSafeContent(bottomContent, metrics.SafeMinX, metrics.SafeMaxX, metrics.BottomInset, 0f);
-            LayoutTopContent();
-            LayoutBottomContent();
-
-            if (previewChrome != null)
-                SetTopCenteredBanner(previewChrome, new Vector2(metrics.SafeCenterX, metrics.SafeMaxY), metrics.PreviewY,
-                    new Vector2(metrics.PreviewWidth, 116f));
-            if (previewTitle != null)
-                SetTopCenteredBanner(previewTitle, new Vector2(metrics.SafeCenterX, metrics.SafeMaxY),
-                    metrics.PreviewY - 8f, new Vector2(metrics.PreviewWidth - 56f, 18f));
-            SetTopCenteredBanner(preview, new Vector2(metrics.SafeCenterX, metrics.SafeMaxY),
-                metrics.PreviewY - 27f, new Vector2(metrics.PreviewWidth - 56f, 80f));
-            if (messageChrome != null)
-                SetTopCenteredBanner(messageChrome, new Vector2(metrics.SafeCenterX, metrics.SafeMaxY),
-                    metrics.MessageY, new Vector2(metrics.MessageWidth, 82f));
-            SetTopCenteredBanner(message, new Vector2(metrics.SafeCenterX, metrics.SafeMaxY),
-                metrics.MessageY - 4f, new Vector2(metrics.MessageWidth - 40f, 72f));
+            LayoutFrame(metrics);
 
             if (contextualSelectionActive)
             {
@@ -181,25 +151,27 @@ namespace AllinDefense.Presentation
             float verticalGap = 42f;
             Vector2 desired = contextualTarget + Vector2.up * (panelSize.y * 0.5f + verticalGap);
 
-            float rootSafeTop = root.rect.yMin + metrics.SafeMaxY * root.rect.height - TopContentHeight - 12f;
+            float pointsY = UiMetrics.PointsPerCanvasUnit(GetComponentInParent<Canvas>()).y;
+            float rootSafeTop = root.rect.yMin + metrics.SafeMaxY * root.rect.height - TopContentHeight / pointsY - 12f;
             if (desired.y + panelSize.y * 0.5f > rootSafeTop)
                 desired.y = contextualTarget.y - panelSize.y * 0.5f - verticalGap;
 
             selectedPanel.anchorMin = selectedPanel.anchorMax = new Vector2(0.5f, 0.5f);
             selectedPanel.pivot = new Vector2(0.5f, 0.5f);
             selectedPanel.sizeDelta = panelSize;
-            selectedPanel.anchoredPosition = ClampContextPanelPosition(desired, panelSize, root.rect.size, metrics);
+            selectedPanel.anchoredPosition = ClampContextPanelPosition(desired, panelSize, root.rect.size, metrics,
+                TopContentHeight / pointsY, BottomContentHeight / pointsY);
         }
 
         public static Vector2 ClampContextPanelPosition(Vector2 desired, Vector2 panelSize, Vector2 rootSize,
-            LayoutMetrics metrics)
+            LayoutMetrics metrics, float topHeight = TopContentHeight, float bottomHeight = BottomContentHeight)
         {
             float rootMinX = -rootSize.x * 0.5f;
             float rootMinY = -rootSize.y * 0.5f;
             float minX = rootMinX + metrics.SafeMinX * rootSize.x + panelSize.x * 0.5f + 12f;
             float maxX = rootMinX + metrics.SafeMaxX * rootSize.x - panelSize.x * 0.5f - 12f;
-            float minY = rootMinY + metrics.SafeMinY * rootSize.y + BottomContentHeight + panelSize.y * 0.5f + 12f;
-            float maxY = rootMinY + metrics.SafeMaxY * rootSize.y - TopContentHeight - panelSize.y * 0.5f - 12f;
+            float minY = rootMinY + metrics.SafeMinY * rootSize.y + bottomHeight + panelSize.y * 0.5f + 12f;
+            float maxY = rootMinY + metrics.SafeMaxY * rootSize.y - topHeight - panelSize.y * 0.5f - 12f;
             return new Vector2(Mathf.Clamp(desired.x, minX, Mathf.Max(minX, maxX)),
                 Mathf.Clamp(desired.y, minY, Mathf.Max(minY, maxY)));
         }
@@ -230,119 +202,66 @@ namespace AllinDefense.Presentation
                 safeCenterX, safeWidth, previewWidth, messageWidth, previewY, messageY);
         }
 
-        private void LayoutTopContent()
+        public Rect[] FrameScreenRects()
         {
-            SetRange(RequireRect(topContent, "Gold"), 0f, 0.15f, 7f, 7f);
-            SetRange(RequireRect(topContent, "Lives"), 0.152f, 0.285f, 7f, 7f);
-            SetRange(RequireRect(topContent, "Wave"), 0.287f, 0.43f, 7f, 7f);
-            MatchOptionalChrome(topContent, "Gold", "GoldChrome");
-            MatchOptionalChrome(topContent, "Lives", "LivesChrome");
-            MatchOptionalChrome(topContent, "Wave", "WaveChrome");
-            RectTransform phase = RequireRect(topContent, "Phase");
-            SetRange(phase, 0.44f, 0.67f, 7f, 7f);
-            RectTransform phaseChrome = FindOptionalRect(topContent, "PhaseChrome");
-            if (phaseChrome != null) MatchRect(phase, phaseChrome);
-            RectTransform speed = FindOptionalRect(topContent, "Speed");
-            if (speed != null) SetRange(speed, 0.80f, 0.895f, 8f, 8f);
-            SetRange(RequireRect(topContent, "Pause"), 0.90f, 1f, 8f, 8f);
-        }
-
-        private void LayoutBottomContent()
-        {
-            RectTransform archer = FindOptionalRect(bottomContent, "Archer");
-            RectTransform barracks = FindOptionalRect(bottomContent, "Barracks");
-            RectTransform mage = FindOptionalRect(bottomContent, "Mage");
-            bool contextualBuildMenu = archer == null && barracks == null && mage == null;
-            if (archer != null) SetButtonRange(archer, 0.055f, 0.175f);
-            if (barracks != null) SetButtonRange(barracks, 0.18f, 0.30f);
-            if (mage != null) SetButtonRange(mage, 0.305f, 0.425f);
-            SetButtonRange(RequireRect(bottomContent, "Ability"), contextualBuildMenu ? 0.055f : 0.44f,
-                contextualBuildMenu ? 0.205f : 0.575f);
-            SetButtonRange(RequireRect(bottomContent, "Cancel"), contextualBuildMenu ? 0.215f : 0.585f,
-                contextualBuildMenu ? 0.305f : 0.665f);
-            SetButtonRange(RequireRect(bottomContent, "NextWave"), 0.73f, 0.965f);
-
-            RectTransform buildDeck = FindOptionalRect(bottomContent, "BuildDeck");
-            if (buildDeck != null) SetRange(buildDeck, 0.045f, 0.435f, 3f, 3f);
-            RectTransform heroDeck = FindOptionalRect(bottomContent, "HeroDeck");
-            if (heroDeck != null) SetRange(heroDeck, contextualBuildMenu ? 0.045f : 0.435f,
-                contextualBuildMenu ? 0.32f : 0.68f, 3f, 3f);
-            RectTransform commandDeck = FindOptionalRect(bottomContent, "CommandDeck");
-            if (commandDeck != null) SetRange(commandDeck, 0.70f, 0.975f, 3f, 3f);
-
-            RectTransform hero = RequireRect(bottomContent, "Hero");
-            hero.anchorMin = new Vector2(contextualBuildMenu ? 0.055f : 0.44f, 0f);
-            hero.anchorMax = new Vector2(contextualBuildMenu ? 0.315f : 0.675f, 0f);
-            hero.pivot = Vector2.zero;
-            hero.offsetMin = new Vector2(8f, 3f);
-            hero.offsetMax = new Vector2(-8f, 27f);
-        }
-
-        private static void SetButtonRange(RectTransform rect, float minX, float maxX)
-        {
-            rect.anchorMin = new Vector2(minX, 0f);
-            rect.anchorMax = new Vector2(maxX, 0f);
-            rect.pivot = Vector2.zero;
-            rect.offsetMin = new Vector2(5f, 27f);
-            rect.offsetMax = new Vector2(-5f, 158f);
-        }
-
-        private static void SetRange(RectTransform rect, float minX, float maxX, float bottom, float top)
-        {
-            rect.anchorMin = new Vector2(minX, 0f);
-            rect.anchorMax = new Vector2(maxX, 1f);
-            rect.pivot = Vector2.zero;
-            rect.offsetMin = new Vector2(8f, bottom);
-            rect.offsetMax = new Vector2(-8f, -top);
-        }
-
-        private static void SetTopCenteredBanner(RectTransform rect, Vector2 anchor, float y, Vector2 size)
-        {
-            rect.anchorMin = rect.anchorMax = anchor;
-            rect.pivot = new Vector2(0.5f, 1f);
-            rect.anchoredPosition = new Vector2(0f, y);
-            rect.sizeDelta = size;
-        }
-
-        private static void SetEdgeRail(RectTransform rect, bool top, float height)
-        {
-            rect.anchorMin = new Vector2(0f, top ? 1f : 0f);
-            rect.anchorMax = new Vector2(1f, top ? 1f : 0f);
-            rect.pivot = Vector2.zero;
-            rect.offsetMin = new Vector2(0f, top ? -height : 0f);
-            rect.offsetMax = new Vector2(0f, top ? 0f : height);
-        }
-
-        private static void SetSafeContent(RectTransform rect, float minX, float maxX, float bottom, float top)
-        {
-            rect.anchorMin = new Vector2(minX, 0f);
-            rect.anchorMax = new Vector2(maxX, 1f);
-            rect.offsetMin = new Vector2(0f, bottom);
-            rect.offsetMax = new Vector2(0f, top);
-        }
-
-        private static RectTransform CreateContentRoot(RectTransform parent, string name)
-        {
-            Transform existing = parent.Find(name);
-            if (existing is RectTransform existingRect) return existingRect;
-            var content = new GameObject(name, typeof(RectTransform)).GetComponent<RectTransform>();
-            content.SetParent(parent, false);
-            content.anchorMin = Vector2.zero;
-            content.anchorMax = Vector2.one;
-            content.offsetMin = Vector2.zero;
-            content.offsetMax = Vector2.zero;
-            return content;
-        }
-
-        private static void MoveChildren(RectTransform source, RectTransform destination)
-        {
-            for (int index = source.childCount - 1; index >= 0; index--)
+            string[] paths = { "TopBar/Lives", "TopBar/Gold", "TopBar/WavePanel", "TopBar/Speed", "TopBar/Pause",
+                "Preview", "Message", "BottomBar/AbilityCooldown", "BottomBar/Hero", "BottomBar/NextWave" };
+            var result = new System.Collections.Generic.List<Rect>();
+            foreach (string path in paths)
             {
-                Transform child = source.GetChild(index);
-                if (child == destination) continue;
-                child.SetParent(destination, false);
-                child.SetAsFirstSibling();
+                var rect = transform.Find(path) as RectTransform;
+                if (rect == null || !rect.gameObject.activeInHierarchy) continue;
+                var corners = new Vector3[4]; rect.GetWorldCorners(corners);
+                Vector2 min = RectTransformUtility.WorldToScreenPoint(null, corners[0]);
+                Vector2 max = RectTransformUtility.WorldToScreenPoint(null, corners[2]);
+                result.Add(Rect.MinMaxRect(min.x, min.y, max.x, max.y));
             }
+            return result.ToArray();
+        }
+
+        private void LayoutFrame(LayoutMetrics metrics)
+        {
+            Vector2 points = UiMetrics.PointsPerCanvasUnit(GetComponentInParent<Canvas>());
+            Vector3 scale = new(1 / points.x, 1 / points.y, 1);
+            float width = metrics.SafeWidth * points.x;
+            Place(topBar, new Vector2(metrics.SafeCenterX, metrics.SafeMaxY), new Vector2(.5f, 1), Vector2.zero, new Vector2(width, TopContentHeight));
+            Place(bottomBar, new Vector2(metrics.SafeCenterX, metrics.SafeMinY), new Vector2(.5f, 0), Vector2.zero, new Vector2(width, BottomContentHeight));
+            topBar.localScale = bottomBar.localScale = scale;
+            Place(RequireRect(topBar, "Lives"), new Vector2(0, 1), new Vector2(0, 1), new Vector2(6, -6), new Vector2(76, 44));
+            Place(RequireRect(topBar, "Gold"), new Vector2(0, 1), new Vector2(0, 1), new Vector2(88, -6), new Vector2(148, 44));
+            var wave = RequireRect(topBar, "WavePanel");
+            Place(wave, new Vector2(.52f, 1), new Vector2(.5f, 1), new Vector2(0, -2), new Vector2(220, 52));
+            Place(RequireRect(wave, "Wave"), new Vector2(0, 1), new Vector2(0, 1), new Vector2(10, -6), new Vector2(100, 22));
+            Place(RequireRect(wave, "PhaseChip"), new Vector2(1, 1), new Vector2(1, 1), new Vector2(-8, -6), new Vector2(92, 22));
+            foreach (Transform child in wave)
+                if (child.name == "WaveProgress" && child.gameObject.activeSelf)
+                    Place((RectTransform)child, new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(0, 8), new Vector2(200, 8));
+            var boss = RequireRect(wave, "BossBar");
+            AllinDefense.UI.Kit.UiKit.Stretch(boss);
+            Place(RequireRect(boss, "BossName"), new Vector2(0, 1), new Vector2(0, 1), new Vector2(10, -5), new Vector2(128, 24));
+            Place(RequireRect(boss, "BossHealth"), new Vector2(1, 1), new Vector2(1, 1), new Vector2(-8, -6), new Vector2(72, 22));
+            Place(RequireRect(boss, "BossTrack"), new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(0, 8), new Vector2(200, 8));
+            Place(RequireRect(topBar, "Speed"), Vector2.one, Vector2.one, new Vector2(-56, -6), new Vector2(76, 44));
+            Place(RequireRect(topBar, "Pause"), Vector2.one, Vector2.one, new Vector2(-6, -6), new Vector2(44, 44));
+            Place(preview, new Vector2(metrics.SafeMaxX, metrics.SafeMaxY), new Vector2(1, 1), new Vector2(-144 / points.x, -16 / points.y), new Vector2(72, 24));
+            preview.localScale = scale;
+            Place(message, new Vector2(metrics.SafeCenterX, metrics.SafeMinY), new Vector2(.5f, 0), new Vector2(-24 / points.x, 10 / points.y), new Vector2(Mathf.Min(280, width - 330), 36));
+            message.localScale = scale;
+            Place(RequireRect(bottomBar, "AbilityCooldown"), Vector2.zero, Vector2.zero, new Vector2(8, 4), new Vector2(74, 102));
+            Place(RequireRect(bottomBar, "Hero"), Vector2.zero, Vector2.zero, new Vector2(90, 8), new Vector2(92, 18));
+            Place(RequireRect(bottomBar, "NextWave"), new Vector2(1, 0), new Vector2(1, 0), new Vector2(-8, 8), new Vector2(208, 54));
+            foreach (string path in new[] { "PauseOverlay", "MapConfirmation" })
+            {
+                var modal = RequireRect(path);
+                Place(modal, new Vector2(.5f, .5f), new Vector2(.5f, .5f), Vector2.zero, Vector2.Scale(root.rect.size, points));
+                modal.localScale = scale;
+            }
+        }
+
+        private static void Place(RectTransform rect, Vector2 anchor, Vector2 pivot, Vector2 position, Vector2 size)
+        {
+            rect.anchorMin = rect.anchorMax = anchor; rect.pivot = pivot;
+            rect.anchoredPosition = position; rect.sizeDelta = size;
         }
 
         private RectTransform RequireRect(string path)
@@ -352,12 +271,6 @@ namespace AllinDefense.Presentation
             throw new InvalidOperationException($"HUD layout is missing RectTransform at {path}.");
         }
 
-        private RectTransform FindOptionalRect(string path)
-        {
-            Transform item = transform.Find(path);
-            return item as RectTransform;
-        }
-
         private static RectTransform RequireRect(RectTransform parent, string path)
         {
             Transform item = parent.Find(path);
@@ -365,28 +278,5 @@ namespace AllinDefense.Presentation
             throw new InvalidOperationException($"HUD layout is missing RectTransform at {parent.name}/{path}.");
         }
 
-        private static RectTransform FindOptionalRect(RectTransform parent, string path)
-        {
-            Transform item = parent.Find(path);
-            return item as RectTransform;
-        }
-
-        private static void MatchOptionalChrome(RectTransform parent, string sourceName, string chromeName)
-        {
-            RectTransform source = RequireRect(parent, sourceName);
-            RectTransform chrome = FindOptionalRect(parent, chromeName);
-            if (chrome != null) MatchRect(source, chrome);
-        }
-
-        private static void MatchRect(RectTransform source, RectTransform target)
-        {
-            target.anchorMin = source.anchorMin;
-            target.anchorMax = source.anchorMax;
-            target.pivot = source.pivot;
-            target.anchoredPosition = source.anchoredPosition;
-            target.sizeDelta = source.sizeDelta;
-            target.offsetMin = source.offsetMin;
-            target.offsetMax = source.offsetMax;
-        }
     }
 }

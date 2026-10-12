@@ -32,6 +32,14 @@ namespace AllinDefense.UI
     /// </summary>
     public static class FrontendCopy
     {
+        public static readonly LocalizedCopy PauseRestart = new("YENİDEN BAŞLAT", "RESTART");
+        public static readonly LocalizedCopy BattlePhase = new("SAVAŞTA", "IN BATTLE");
+        public static readonly LocalizedCopy BossPhase = new("BOSS", "BOSS");
+        public static readonly LocalizedCopy UpcomingCount = new("×{0}", "×{0}");
+        public static readonly LocalizedCopy BossName = new("Bölge Lordu", "Region Lord");
+        public static readonly LocalizedCopy LeaveBattleTitle = new("HARİTAYA DÖNÜLSÜN MÜ?", "RETURN TO THE MAP?");
+        public static readonly LocalizedCopy LeaveBattleHint = new("Bu savaştan ayrılacaksın. Haritaya dönmek istiyor musun?", "You will leave this battle. Return to the map?");
+        public static readonly LocalizedCopy EarlyWaveReward = new("SONRAKİ DALGA  +{0}", "NEXT WAVE  +{0}");
         public static readonly LocalizedCopy Seconds = new("{0} sn", "{0} sec");
         public static readonly LocalizedCopy SwitchOn = new("AÇIK", "ON");
         public static readonly LocalizedCopy SwitchOff = new("KAPALI", "OFF");

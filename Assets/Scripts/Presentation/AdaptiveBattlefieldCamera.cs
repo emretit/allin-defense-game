@@ -10,11 +10,11 @@ namespace AllinDefense.Presentation
     public sealed class AdaptiveBattlefieldCamera : MonoBehaviour
     {
         public const float TargetHorizontalWorldSize = 29.6f;
-        public const float MinimumVerticalHalfSize = 7.25f;
-        public const float MinimumOrthographicSize = 7.25f;
+        public const float MinimumVerticalHalfSize = 8.25f;
+        public const float MinimumOrthographicSize = 8.25f;
         public const float MaximumOrthographicSize = 18f;
 
-        private const float UpwardScreenFramingOffset = 0.60f;
+        private const float UpwardScreenFramingOffset = -0.90f;
         private Camera targetCamera;
         private int previousWidth;
         private int previousHeight;
@@ -40,9 +40,7 @@ namespace AllinDefense.Presentation
             targetCamera = value;
             if (targetCamera == null || !targetCamera.orthographic) return;
 
-            // The lower action rail is taller than the top status rail. Moving the camera
-            // down along its local up axis places the battlefield in the visual centre of
-            // the remaining playfield without changing the authored isometric angle.
+            // Reserve the top kit controls without hiding the keep's roof on wide phones.
             unframedWorldPosition = targetCamera.transform.position;
             unframedWorldRotation = targetCamera.transform.rotation;
             initialized = true;
@@ -63,10 +61,12 @@ namespace AllinDefense.Presentation
             previousHeight = Screen.height;
             previousSafeArea = Screen.safeArea;
             targetCamera.transform.rotation = unframedWorldRotation;
-            targetCamera.transform.position =
-                unframedWorldPosition - unframedWorldRotation * Vector3.up * UpwardScreenFramingOffset;
             targetCamera.orthographicSize = CalculateOrthographicSize(
                 new Vector2(Screen.width, Screen.height), Screen.safeArea);
+            float safeOffset = Screen.safeArea.height > 0 && Screen.height > 0
+                ? (Screen.safeArea.center.y / Screen.height - .5f) * 2 * targetCamera.orthographicSize : 0;
+            targetCamera.transform.position = unframedWorldPosition - unframedWorldRotation * Vector3.up *
+                (UpwardScreenFramingOffset + safeOffset);
         }
 
         public static float CalculateOrthographicSize(Vector2 screenSize, Rect safeArea)

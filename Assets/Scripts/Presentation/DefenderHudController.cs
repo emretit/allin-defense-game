@@ -3,6 +3,7 @@ using System.Collections;
 using AllinDefense.Core;
 using AllinDefense.Data;
 using AllinDefense.UI;
+using AllinDefense.UI.Kit;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -142,7 +143,6 @@ namespace AllinDefense.Presentation
         private static int BarracksCost => TowerProgression.Base(OutpostKind.Barracks).cost;
         private static int MageCost => TowerProgression.Base(OutpostKind.Mage).cost;
 
-        private static readonly Color RailTint = Color.clear;
         private static readonly Color PanelTint = UiTokens.HudPanel;
         private static readonly Color ButtonReadyTint = UiTokens.HudButtonReady;
         private static readonly Color ButtonPressedTint = UiTokens.HudButtonPressed;
@@ -163,9 +163,7 @@ namespace AllinDefense.Presentation
         private TMP_Text livesText;
         private TMP_Text waveText;
         private TMP_Text phaseText;
-        private TMP_Text phaseHintText;
         private TMP_Text previewText;
-        private TMP_Text previewTitleText;
         private TMP_Text messageText;
         private TMP_Text heroText;
         private TMP_Text selectedText;
@@ -177,11 +175,7 @@ namespace AllinDefense.Presentation
         private TMP_Text resultBadgeText;
         private TMP_Text resultHintText;
         private TMP_Text nextWaveLabel;
-        private TMP_Text pauseLabel;
         private TMP_Text speedLabel;
-        private TMP_Text pauseOverlayTitleText;
-        private TMP_Text pauseOverlayHintText;
-        private TMP_Text pauseOverlayBadgeText;
         private Image selectedIconImage;
         private Image selectedHeaderImage;
         private Image resultCardImage;
@@ -189,7 +183,6 @@ namespace AllinDefense.Presentation
         private Button barracksButton;
         private Button mageButton;
         private Button abilityButton;
-        private Button cancelButton;
         private Button nextWaveButton;
         private Button pauseButton;
         private Button speedButton;
@@ -202,23 +195,13 @@ namespace AllinDefense.Presentation
         private RectTransform contextualBuildChoices;
         private GameObject resultPanel;
         private GameObject pauseOverlay;
-        private Image abilityCooldownFillImage;
-        private Image abilityReadyGlowImage;
-        private Image abilityBlockedVeilImage;
-        private Image phaseChromeImage;
-        private Image phaseStripeImage;
-        private Image previewChromeImage;
         private Image messageChromeImage;
-        private CanvasGroup pauseOverlayGroup;
-        private RectTransform pauseCardRect;
         private Sprite panelSprite;
         private Sprite buttonSprite;
         private Sprite frameSprite;
         private Sprite archerIconSprite;
         private Sprite barracksIconSprite;
         private Sprite mageIconSprite;
-        private GamePhase lastPhase = (GamePhase)(-1);
-        private float phasePulseUntil;
         private bool pauseOverlayVisible;
         private DefenderHudResponsiveLayout responsiveLayout;
 
@@ -242,28 +225,25 @@ namespace AllinDefense.Presentation
             barracksIconSprite = catalog.barracksIcon;
             mageIconSprite = catalog.mageIcon;
             CacheReferences();
-            ApplyThemeFonts(catalog);
+            ApplyContextAndResultFonts(catalog);
+            InitializeFrame(catalog, mainMenu, restart, uiClick);
             Bind(archerButton, () => build(OutpostKind.Archer), uiClick);
             Bind(barracksButton, () => build(OutpostKind.Barracks), uiClick);
             Bind(mageButton, () => build(OutpostKind.Mage), uiClick);
             Bind(abilityButton, ability, uiClick);
-            Bind(cancelButton, cancel, uiClick);
+
             Bind(nextWaveButton, nextWave, uiClick);
             Bind(pauseButton, pause, uiClick);
             Bind(pauseResumeButton, pause, uiClick);
-            Bind(pauseMainMenuButton, mainMenu, uiClick);
+
             Bind(speedButton, speed, uiClick);
             Bind(upgradeButton, upgrade, uiClick);
             sellAction = sell;
             Bind(sellButton, SellFromUi, uiClick);
             Bind(restartButton, restart, uiClick);
-            AddTextIcon(goldText, catalog.goldIcon);
-            AddTextIcon(livesText, catalog.keepIcon);
-            AddTextIcon(waveText, catalog.waveIcon);
             AddButtonIcon(archerButton, catalog.archerIcon);
             AddButtonIcon(barracksButton, catalog.barracksIcon);
             AddButtonIcon(mageButton, catalog.mageIcon);
-            AddButtonIcon(abilityButton, catalog.abilityIcon);
             ApplyStaticCopy();
             ApplyReadabilityStyle();
             responsiveLayout = GetComponent<DefenderHudResponsiveLayout>();
@@ -284,76 +264,11 @@ namespace AllinDefense.Presentation
             if (session == null || goldText == null) return;
             if (session.Phase != saleConfirmationPhase) CancelSaleConfirmation();
             SetBuildAvailability(session.CanBuildOnSelection, session.Gold);
-            TopBarPresentationSpec topBar = TopBarSpec(copy.Get(UiTextKey.Gold), copy.Get(UiTextKey.Keep),
-                copy.Get(UiTextKey.Wave), session.Gold, session.Lives, session.CurrentWaveIndex,
-                session.WaveCount, session.UnpausedPhase, session.NextWaveHasBoss);
-            goldText.text = topBar.goldText;
-            goldText.color = topBar.goldColor;
-            livesText.text = topBar.livesText;
-            livesText.color = topBar.livesColor;
-            waveText.text = topBar.waveText;
-            waveText.color = topBar.waveColor;
-            ApplyPhaseBadge(session);
-            pauseLabel.text = session.Phase == GamePhase.Paused ? copy.Get(UiTextKey.Continue) : copy.Get(UiTextKey.Pause);
-            if (speedLabel != null)
-                speedLabel.text = GameSessionController.SpeedLabelForScale(session.CurrentGameSpeed);
-            bool canCallWave = session.Phase is GamePhase.Preparing or GamePhase.Intermission;
-            nextWaveButton.gameObject.SetActive(canCallWave);
-            nextWaveButton.interactable = canCallWave;
-            SetButtonStripe(nextWaveButton, canCallWave ? GoldAccent : DisabledAccent, !canCallWave);
-            SetButtonStripe(pauseButton, session.Phase == GamePhase.Paused ? GoldAccent : WaveAccent);
-            ApplyPauseOverlay(session.Phase);
-
-            GreyboxHero hero = session.Hero;
-            if (hero != null)
-            {
-                heroText.text = hero.IsAlive
-                    ? $"{session.HeroDisplayName}  {Mathf.CeilToInt(hero.HealthFraction * 100f)}%  ·  " +
-                      (hero.AbilityRemaining <= 0f ? copy.Get(UiTextKey.AbilityReady) : $"{Mathf.CeilToInt(hero.AbilityRemaining)} s")
-                    : FrontendCopy.Returns.Format(session.HeroDisplayName) +
-                      $"  {Mathf.CeilToInt(hero.RespawnRemaining)} s";
-                bool abilityReady = hero.IsAlive && hero.AbilityRemaining <= 0f && session.Phase != GamePhase.Paused;
-                abilityButton.interactable = abilityReady;
-                SetAbilityLabel(abilityButton, hero, session.HeroDisplayName, abilityReady, session.Phase == GamePhase.Paused);
-                ApplyAbilityVisualState(hero, session.Phase, abilityReady);
-                SetButtonStripe(abilityButton, abilityReady ? ReadyAccent : DisabledAccent, !abilityReady);
-            }
+            RefreshFrame(session);
         }
 
-        public void SetPreview(string value)
-        {
-            string raw = value ?? string.Empty;
-            string body = raw.Trim();
-            bool upcoming = body.StartsWith("Sıradaki:", StringComparison.OrdinalIgnoreCase) || body.StartsWith("Next:", StringComparison.OrdinalIgnoreCase);
-            if (upcoming)
-                body = body[(body.IndexOf(':')+1)..].Trim();
+        public void SetPreview(string value) { }
 
-            bool boss = GameSessionController.Instance != null && GameSessionController.Instance.NextWaveHasBoss;
-
-            if (previewTitleText != null)
-            {
-                previewTitleText.text = string.IsNullOrWhiteSpace(body)
-                    ? string.Empty
-                    : boss
-                        ? (upcoming ? FrontendCopy.BossApproaching.Value : FrontendCopy.BossPressure.Value)
-                        : (upcoming ? FrontendCopy.NextWave.Value : FrontendCopy.CurrentWave.Value);
-            }
-
-            if (previewText != null)
-            {
-                previewText.text = string.IsNullOrWhiteSpace(body)
-                    ? string.Empty
-                    : $"<b>{body}</b>";
-                previewText.color = boss ? KeepAccent : upcoming ? GoldAccent : TextPrimary;
-            }
-
-            if (previewChromeImage != null)
-            {
-                Color accent = boss ? KeepAccent : upcoming ? GoldAccent : WaveAccent;
-                previewChromeImage.color = UiTokens.PreviewSurface(accent);
-                previewChromeImage.gameObject.SetActive(!string.IsNullOrWhiteSpace(body));
-            }
-        }
         public void SetMessage(string value)
         {
             string body = value ?? string.Empty;
@@ -362,13 +277,12 @@ namespace AllinDefense.Presentation
             messageText.gameObject.SetActive(visible);
             if (messageChromeImage != null) messageChromeImage.gameObject.SetActive(visible);
         }
-        public void SetNextWaveLabel(string value) => nextWaveLabel.text = value ?? string.Empty;
+        public void SetNextWaveLabel(string value) { }
 
         public void SetSelected(GreyboxOutpost outpost, GreyboxOutpostSlot slot, bool visible)
         {
             if (!visible || displayedOutpost != outpost) CancelSaleConfirmation();
             displayedOutpost = visible ? outpost : null;
-            cancelButton.interactable = visible;
             bool emptySlot = slot != null && slot.Occupant == null;
             if (contextualBuildChoices != null) contextualBuildChoices.gameObject.SetActive(visible && emptySlot);
             if (upgradeButton != null) upgradeButton.gameObject.SetActive(visible && !emptySlot);
@@ -484,42 +398,33 @@ namespace AllinDefense.Presentation
             SetBuildButtonState(archerButton, BuildButtonSpec(copy.Get(UiTextKey.Archer), ArcherCost, true, GoldAccent));
             SetBuildButtonState(barracksButton, BuildButtonSpec(copy.Get(UiTextKey.Barracks), BarracksCost, true, WaveAccent));
             SetBuildButtonState(mageButton, BuildButtonSpec(copy.Get(UiTextKey.Mage), MageCost, true, UiTokens.Violet));
-            SetButtonLabel(abilityButton, $"{HeroIdentity.DefaultName}\n{copy.Get(UiTextKey.AbilityReady)}");
-            SetButtonLabel(cancelButton, copy.Get(UiTextKey.Cancel));
             SetButtonLabel(upgradeButton, copy.Get(UiTextKey.Upgrade));
             SetButtonLabel(sellButton, copy.Get(UiTextKey.Sell));
             SetButtonLabel(restartButton, copy.Get(UiTextKey.Restart));
             nextWaveLabel.text = copy.Get(UiTextKey.FirstWave);
-            pauseLabel.text = copy.Get(UiTextKey.Pause);
         }
 
         private void CacheReferences()
         {
-            goldText = Find<TMP_Text>("TopBar/Gold");
-            livesText = Find<TMP_Text>("TopBar/Lives");
-            waveText = Find<TMP_Text>("TopBar/Wave");
-            EnsureTopStatusChrome();
-            phaseText = Find<TMP_Text>("TopBar/Phase");
-            EnsurePhaseChrome();
+            goldPill = Find<UiStatPill>("TopBar/Gold");
+            livesPill = Find<UiStatPill>("TopBar/Lives");
+            goldText = goldPill.GetComponentInChildren<TMP_Text>();
+            livesText = livesPill.GetComponentInChildren<TMP_Text>();
+            waveText = Find<TMP_Text>("TopBar/WavePanel/Wave");
+            phaseText = Find<TMP_Text>("TopBar/WavePanel/PhaseChip/PhaseChip.Label");
             pauseButton = Find<Button>("TopBar/Pause");
-            pauseLabel = Find<TMP_Text>("TopBar/Pause/Label");
-            EnsureSpeedButton();
             speedButton = Find<Button>("TopBar/Speed");
-            speedLabel = Find<TMP_Text>("TopBar/Speed/Label");
-            previewText = Find<TMP_Text>("Preview");
-            EnsurePreviewChrome();
+            speedLabel = speedButton.GetComponentInChildren<TMP_Text>(true);
+            previewText = Find<TMP_Text>("Preview/Preview.Label");
             messageText = Find<TMP_Text>("Message");
-            EnsureMessageChrome();
             archerButton = Find<Button>("BottomBar/Archer");
             barracksButton = Find<Button>("BottomBar/Barracks");
             mageButton = Find<Button>("BottomBar/Mage");
-            abilityButton = Find<Button>("BottomBar/Ability");
-            EnsureAbilityButtonChrome();
-            cancelButton = Find<Button>("BottomBar/Cancel");
+            radialCooldown = Find<UiRadialCooldown>("BottomBar/AbilityCooldown");
+            abilityButton = radialCooldown.GetComponentInChildren<Button>(true);
             heroText = Find<TMP_Text>("BottomBar/Hero");
             nextWaveButton = Find<Button>("BottomBar/NextWave");
-            nextWaveLabel = Find<TMP_Text>("BottomBar/NextWave/Label");
-            EnsureCommandDeckChrome();
+            nextWaveLabel = nextWaveButton.GetComponentInChildren<TMP_Text>(true);
             selectedPanel = transform.Find("SelectedPanel").gameObject;
             selectedText = Find<TMP_Text>("SelectedPanel/Description");
             upgradeButton = Find<Button>("SelectedPanel/Upgrade");
@@ -529,36 +434,27 @@ namespace AllinDefense.Presentation
             resultTitle = Find<TMP_Text>("ResultPanel/Title");
             restartButton = Find<Button>("ResultPanel/Restart");
             EnsureResultPanelChrome();
-            EnsurePauseOverlayChrome();
+            CacheFrameModal();
+        }
+
+        private void ApplyContextAndResultFonts(DefenderPresentationCatalog catalog)
+        {
+            if (catalog.titleFont != null)
+            {
+                selectedTitleText.font = catalog.titleFont;
+                resultTitle.font = catalog.titleFont;
+            }
+            if (catalog.bodyFont == null) return;
+            foreach (var panel in new[] { selectedPanel, resultPanel })
+                foreach (var text in panel.GetComponentsInChildren<TMP_Text>(true))
+                    if (text.font == null) text.font = catalog.bodyFont;
         }
 
         private void ApplyReadabilityStyle()
         {
-            StylePanel("TopBar", RailTint, true);
-            StylePanel("BottomBar", RailTint, true);
             StylePanel("SelectedPanel", PanelTint, false);
             StylePanel("ResultPanel", UiTokens.HudResultSurface, false);
             StyleImage(selectedHeaderImage, UiTokens.HudHeader, frame: false);
-
-            StyleText(goldText, 36f, GoldAccent, FontStyles.Bold);
-            StyleText(livesText, 36f, TextPrimary, FontStyles.Bold);
-            StyleText(waveText, 36f, WaveAccent, FontStyles.Bold);
-            StyleText(phaseText, 30f, TextPrimary, FontStyles.Bold);
-            phaseText.alignment = TextAlignmentOptions.MidlineLeft;
-            phaseText.enableWordWrapping = false;
-            StyleText(phaseHintText, 20f, TextMuted, FontStyles.Bold);
-            phaseHintText.gameObject.SetActive(true);
-            StyleText(previewText, 26f, TextPrimary, FontStyles.Bold);
-            previewText.enableWordWrapping = true;
-            previewText.alignment = TextAlignmentOptions.TopLeft;
-            StyleText(previewTitleText, 20f, TextMuted, FontStyles.Bold);
-            previewTitleText.alignment = TextAlignmentOptions.TopLeft;
-            StyleText(messageText, 28f, TextPrimary, FontStyles.Bold);
-            messageText.enableWordWrapping = true;
-            messageText.enableAutoSizing = true;
-            messageText.fontSizeMin = 24f;
-            messageText.fontSizeMax = 28f;
-            StyleText(heroText, 24f, TextMuted, FontStyles.Bold);
             StyleText(selectedText, 30f, TextPrimary);
             selectedText.enableWordWrapping = true;
             selectedText.overflowMode = TextOverflowModes.Overflow;
@@ -572,35 +468,17 @@ namespace AllinDefense.Presentation
             StyleText(resultTitle, 68f, GoldAccent, FontStyles.Bold);
             StyleText(resultBadgeText, 17f, GoldAccent, FontStyles.Bold);
             StyleText(resultHintText, 19f, TextMuted);
-            StyleText(pauseOverlayTitleText, 42f, TextPrimary, FontStyles.Bold);
-            StyleText(pauseOverlayBadgeText, 17f, GoldAccent, FontStyles.Bold);
-            StyleText(pauseOverlayHintText, 19f, TextMuted);
             selectedHintText.enableWordWrapping = true;
             selectedHintText.overflowMode = TextOverflowModes.Ellipsis;
             resultHintText.enableWordWrapping = true;
             resultHintText.overflowMode = TextOverflowModes.Overflow;
-            pauseOverlayHintText.enableWordWrapping = true;
-            pauseOverlayHintText.overflowMode = TextOverflowModes.Overflow;
             StyleButton(archerButton, GoldAccent);
             StyleButton(barracksButton, WaveAccent);
             StyleButton(mageButton, UiTokens.Violet);
-            StyleButton(abilityButton, ReadyAccent);
-            TMP_Text heroButtonLabel = abilityButton.GetComponentInChildren<TMP_Text>(true);
-            heroButtonLabel.fontSizeMin = 16f;
-            heroButtonLabel.enableWordWrapping = false;
-            heroButtonLabel.richText = false;
-            heroText.richText = false;
-            StyleButton(cancelButton, KeepAccent);
-            StyleButton(nextWaveButton, GoldAccent);
-            StylePrimaryButton(nextWaveButton);
-            StyleButton(pauseButton, WaveAccent);
-            StyleButton(speedButton, GoldAccent);
             StyleButton(upgradeButton, GoldAccent);
             StyleButton(sellButton, KeepAccent);
             StyleButton(restartButton, GoldAccent);
             StylePrimaryButton(restartButton);
-            StyleButton(pauseResumeButton, GoldAccent);
-            StyleButton(pauseMainMenuButton, KeepAccent);
         }
 
         private T Find<T>(string path) where T : Component
@@ -636,6 +514,7 @@ namespace AllinDefense.Presentation
 
             if (path.StartsWith("TopBar/", StringComparison.Ordinal))
                 return transform.Find(path.Replace("TopBar/", "TopBar/SafeContent/"));
+            if (path == "BottomBar/Ability") return abilityButton != null ? abilityButton.transform : null;
             if (path.StartsWith("BottomBar/", StringComparison.Ordinal))
             {
                 if (path == "BottomBar/Archer") return archerButton != null ? archerButton.transform : null;
@@ -721,37 +600,6 @@ namespace AllinDefense.Presentation
                 StatLabel(keepTitle, Mathf.Max(0, lives).ToString()),
                 StatLabel(waveTitle, $"{displayedWave}/{safeWaveCount}"), GoldAccent, livesColor, waveColor,
                 livesWarning, bossSignal);
-        }
-
-        private void ApplyPhaseBadge(GameSessionController session)
-        {
-            if (session.Phase != lastPhase)
-            {
-                lastPhase = session.Phase;
-                phasePulseUntil = Time.unscaledTime + (FrontendPreferences.ReducedMotion ? 0f : 0.42f);
-            }
-
-            float pulse = Mathf.Clamp01((phasePulseUntil - Time.unscaledTime) / 0.42f);
-            bool bossUpcoming = session.NextWaveHasBoss &&
-                                session.Phase is GamePhase.Preparing or GamePhase.Intermission;
-            bool bossActive = session.NextWaveHasBoss && session.Phase == GamePhase.Wave;
-            PhaseBadgePresentationSpec spec = PhaseBadgeSpec(session.Phase, bossUpcoming, bossActive, pulse);
-
-            phaseText.text = $"<b>{spec.label}</b>";
-            phaseText.color = spec.accent;
-            if (phaseHintText != null)
-            {
-                phaseHintText.text = spec.hint;
-                phaseHintText.color = Color.Lerp(TextMuted, spec.accent, 0.55f + spec.pulseAlpha * 0.18f);
-            }
-
-            if (phaseChromeImage != null)
-                phaseChromeImage.color = UiTokens.TintSurface(spec.accent, .15f + spec.pulseAlpha * .05f, .86f);
-            if (phaseStripeImage != null)
-            {
-                phaseStripeImage.color = spec.accent;
-                phaseStripeImage.rectTransform.sizeDelta = new Vector2(0f, spec.stripeHeight);
-            }
         }
 
         public static PhaseBadgePresentationSpec PhaseBadgeSpec(GamePhase phase, bool bossUpcoming,
@@ -851,13 +699,6 @@ namespace AllinDefense.Presentation
             }
         }
 
-        private void SetAbilityLabel(Button button, GreyboxHero hero, string heroName, bool ready, bool paused)
-        {
-            if (hero == null) return;
-            string state = ready ? FrontendCopy.Ready.Value : !hero.IsAlive ? FrontendCopy.Returning.Value : paused ? FrontendCopy.AbilityPaused.Value : $"{Mathf.CeilToInt(hero.AbilityRemaining)} s";
-            SetButtonLabel(button, $"{heroName}\n{state}");
-        }
-
         public static SelectedPanelPresentationSpec SelectedOutpostPanelSpec(OutpostKind kind, int level,
             string roleLabel, int damage, float range, float attackRate, bool canUpgrade, int upgradeCost,
             int sellValue, bool isDisrupted, float disabledRemaining)
@@ -904,84 +745,6 @@ namespace AllinDefense.Presentation
                 FrontendCopy.BuildArcherBarracksOrMage.Value, stats,
                 FrontendCopy.UpgradeLocked.Value,
                 FrontendCopy.SellLocked.Value, false, false, true, WaveAccent, WaveAccent);
-        }
-
-        private void ApplyAbilityVisualState(GreyboxHero hero, GamePhase phase, bool ready)
-        {
-            if (hero == null || abilityButton == null) return;
-
-            bool paused = phase == GamePhase.Paused;
-            bool blocked = !hero.IsAlive || paused;
-            float duration = Mathf.Max(0.01f, hero.AbilityCooldownDuration);
-            float cooldownProgress = hero.IsAlive ? 1f - Mathf.Clamp01(hero.AbilityRemaining / duration) : 0f;
-
-            if (abilityCooldownFillImage != null)
-            {
-                abilityCooldownFillImage.gameObject.SetActive(hero.IsAlive && !ready);
-                abilityCooldownFillImage.color = Color.Lerp(UiTokens.CooldownStart,
-                    UiTokens.CooldownEnd, cooldownProgress);
-                float fillHeight = Mathf.Lerp(0f, 56f, cooldownProgress);
-                abilityCooldownFillImage.rectTransform.offsetMin = new Vector2(8f, 8f);
-                abilityCooldownFillImage.rectTransform.offsetMax = new Vector2(-8f, 8f + fillHeight);
-            }
-
-            if (abilityReadyGlowImage != null)
-            {
-                abilityReadyGlowImage.gameObject.SetActive(ready);
-                float pulse = FrontendPreferences.ReducedMotion
-                    ? 0.28f
-                    : 0.20f + 0.16f * (0.5f + 0.5f * Mathf.Sin(Time.unscaledTime * 4.6f));
-                abilityReadyGlowImage.color = UiTokens.WithAlpha(ReadyAccent, ready ? pulse : 0f);
-            }
-
-            if (abilityBlockedVeilImage != null)
-            {
-                abilityBlockedVeilImage.gameObject.SetActive(blocked);
-                abilityBlockedVeilImage.color = !hero.IsAlive
-                    ? UiTokens.TintSurface(KeepAccent, .26f, .36f)
-                    : UiTokens.WithAlpha(Color.black, .26f);
-            }
-
-            if (abilityButton.targetGraphic != null)
-            {
-                abilityButton.targetGraphic.color = blocked
-                    ? UiTokens.AbilityBlocked
-                    : ready
-                        ? UiTokens.AbilityReady
-                        : UiTokens.AbilityIdle;
-            }
-        }
-
-        private void ApplyPauseOverlay(GamePhase phase)
-        {
-            if (pauseOverlay == null) return;
-            var session = GameSessionController.Instance;
-            bool visible = phase == GamePhase.Paused && (session == null || !session.SpecializationModalOpen);
-            if (!visible)
-            {
-                if (pauseOverlayVisible) pauseOverlay.SetActive(false);
-                pauseOverlayVisible = false;
-                return;
-            }
-
-            if (!pauseOverlayVisible)
-            {
-                pauseOverlay.SetActive(true);
-                StartCoroutine(AnimateOverlay(pauseOverlayGroup, pauseCardRect));
-            }
-            pauseOverlayVisible = true;
-
-            if (pauseOverlayBadgeText != null)
-            {
-                pauseOverlayBadgeText.text = FrontendCopy.Status.Value;
-                pauseOverlayBadgeText.color = GoldAccent;
-            }
-
-            if (pauseOverlayTitleText != null)
-                pauseOverlayTitleText.text = GameLocalization.Uppercase(copy.Get(UiTextKey.Paused));
-
-            if (pauseOverlayHintText != null)
-                pauseOverlayHintText.text = FrontendCopy.PauseHint.Value;
         }
 
         private void StylePanel(string path, Color color, bool rail)
@@ -1159,24 +922,6 @@ namespace AllinDefense.Presentation
             return image;
         }
 
-        private static void AddTextIcon(TMP_Text text, Sprite sprite)
-        {
-            if (text == null || sprite == null || text.transform.Find("Icon") != null) return;
-            var iconObject = new GameObject("Icon", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
-            iconObject.transform.SetParent(text.transform, false);
-            var rect = iconObject.GetComponent<RectTransform>();
-            rect.anchorMin = new Vector2(0f, 0.5f);
-            rect.anchorMax = new Vector2(0f, 0.5f);
-            rect.pivot = new Vector2(0f, 0.5f);
-            rect.anchoredPosition = new Vector2(3f, 0f);
-            rect.sizeDelta = new Vector2(30f, 30f);
-            var image = iconObject.GetComponent<Image>();
-            image.sprite = sprite;
-            image.preserveAspect = true;
-            image.raycastTarget = false;
-            text.margin = new Vector4(text.margin.x + 38f, text.margin.y, text.margin.z, text.margin.w);
-        }
-
         private static void AddButtonIcon(Button button, Sprite sprite)
         {
             if (button == null || sprite == null || button.transform.Find("Icon") != null) return;
@@ -1198,82 +943,6 @@ namespace AllinDefense.Presentation
                 RectTransform labelRect = label.rectTransform;
                 labelRect.offsetMin = new Vector2(Mathf.Max(labelRect.offsetMin.x, 44f), labelRect.offsetMin.y);
             }
-        }
-
-        private void ApplyThemeFonts(DefenderPresentationCatalog catalog)
-        {
-            if (catalog == null) return;
-            if (catalog.titleFont != null)
-            {
-                waveText.font = catalog.titleFont;
-                phaseText.font = catalog.titleFont;
-                selectedTitleText.font = catalog.titleFont;
-                resultTitle.font = catalog.titleFont;
-                pauseOverlayTitleText.font = catalog.titleFont;
-                nextWaveLabel.font = catalog.titleFont;
-            }
-
-            if (catalog.bodyFont == null) return;
-            foreach (TMP_Text text in GetComponentsInChildren<TMP_Text>(true))
-            {
-                if (text.font == null) text.font = catalog.bodyFont;
-            }
-        }
-
-        private void EnsureTopStatusChrome()
-        {
-            EnsureStatusCard(goldText, "GoldChrome", GoldAccent);
-            EnsureStatusCard(livesText, "LivesChrome", KeepAccent);
-            EnsureStatusCard(waveText, "WaveChrome", WaveAccent);
-        }
-
-        private void EnsureStatusCard(TMP_Text label, string name, Color accent)
-        {
-            if (label == null || label.transform.parent == null) return;
-            RectTransform labelRect = label.rectTransform;
-            Image card = EnsureImage(label.transform.parent, name,
-                UiTokens.HudLabelBacking, labelRect.anchorMin, labelRect.anchorMax,
-                labelRect.anchoredPosition, labelRect.sizeDelta);
-            card.sprite = panelSprite;
-            card.type = panelSprite != null ? Image.Type.Sliced : Image.Type.Simple;
-            card.transform.SetSiblingIndex(Mathf.Max(0, label.transform.GetSiblingIndex()));
-            Image stripe = EnsureImage(card.rectTransform, "Accent", accent,
-                new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(10f, 6f), new Vector2(-10f, 11f));
-            stripe.sprite = null;
-        }
-
-        private void EnsureCommandDeckChrome()
-        {
-            RectTransform parent = archerButton?.transform.parent as RectTransform;
-            if (parent == null) return;
-            EnsureDeckPanel(parent, "CommandDeck", UiTokens.CommandDeck);
-            EnsureDeckPanel(parent, "HeroDeck", UiTokens.HeroDeck);
-            EnsureDeckPanel(parent, "BuildDeck", UiTokens.BuildDeck);
-        }
-
-        private void EnsureDeckPanel(RectTransform parent, string name, Color color)
-        {
-            Image image = EnsureImage(parent, name, color, Vector2.zero, Vector2.one,
-                new Vector2(4f, 4f), new Vector2(-4f, -4f));
-            image.sprite = panelSprite;
-            image.type = panelSprite != null ? Image.Type.Sliced : Image.Type.Simple;
-            image.enabled = false;
-            image.raycastTarget = false;
-            image.transform.SetAsFirstSibling();
-        }
-
-        private void EnsureMessageChrome()
-        {
-            RectTransform rootRect = transform as RectTransform;
-            if (rootRect == null) return;
-            messageChromeImage = EnsureImage(rootRect, "MessageChrome",
-                UiTokens.HudHintSurface, new Vector2(0.5f, 1f), new Vector2(0.5f, 1f),
-                new Vector2(0f, -190f), new Vector2(760f, 54f));
-            messageChromeImage.sprite = buttonSprite;
-            messageChromeImage.type = buttonSprite != null ? Image.Type.Sliced : Image.Type.Simple;
-            messageChromeImage.transform.SetSiblingIndex(Mathf.Max(0, messageText.transform.GetSiblingIndex()));
-            messageChromeImage.gameObject.SetActive(false);
-            messageText.gameObject.SetActive(false);
         }
 
         private void EnsureSelectedPanelChrome()
@@ -1314,81 +983,6 @@ namespace AllinDefense.Presentation
             }
         }
 
-        private void EnsurePreviewChrome()
-        {
-            RectTransform previewRect = previewText.rectTransform;
-            RectTransform rootRect = previewRect.parent as RectTransform;
-            if (rootRect == null) return;
-
-            previewChromeImage = EnsureImage(rootRect, "PreviewChrome", UiTokens.PreviewChrome,
-                new Vector2(0.5f, 1f), new Vector2(0.5f, 1f), new Vector2(0f, -96f), new Vector2(760f, 86f));
-            previewChromeImage.sprite = panelSprite;
-            previewChromeImage.type = panelSprite != null ? Image.Type.Sliced : Image.Type.Simple;
-
-            previewTitleText = EnsureLabel(rootRect, "PreviewTitle",
-                new Vector2(0.5f, 1f), new Vector2(0.5f, 1f), new Vector2(0f, -104f), new Vector2(660f, 22f),
-                TextAlignmentOptions.TopLeft);
-
-            previewRect.anchorMin = previewRect.anchorMax = new Vector2(0.5f, 1f);
-            previewRect.pivot = new Vector2(0.5f, 1f);
-            previewRect.anchoredPosition = new Vector2(0f, -126f);
-            previewRect.sizeDelta = new Vector2(660f, 38f);
-            previewText.margin = new Vector4(4f, 0f, 0f, 0f);
-            previewText.transform.SetAsLastSibling();
-            previewTitleText.transform.SetAsLastSibling();
-            EnsureFrameOverlay(previewChromeImage.rectTransform, "FrameOverlay", UiTokens.WithAlpha(UiTokens.HudFrame, 0.28f));
-            SetPreview(previewText.text);
-        }
-
-        private void EnsurePhaseChrome()
-        {
-            RectTransform phaseRect = phaseText.rectTransform;
-            RectTransform parentRect = phaseRect.parent as RectTransform;
-            if (parentRect == null) return;
-
-            phaseChromeImage = EnsureImage(parentRect, "PhaseChrome", UiTokens.PhaseChrome,
-                phaseRect.anchorMin, phaseRect.anchorMax, phaseRect.offsetMin, phaseRect.offsetMax);
-            phaseChromeImage.sprite = panelSprite;
-            phaseChromeImage.type = panelSprite != null ? Image.Type.Sliced : Image.Type.Simple;
-            phaseChromeImage.transform.SetSiblingIndex(phaseText.transform.GetSiblingIndex());
-
-            phaseHintText = EnsureLabel(phaseChromeImage.rectTransform, "PhaseHint",
-                new Vector2(0f, 0f), new Vector2(1f, 1f), new Vector2(14f, 38f), new Vector2(-12f, -5f),
-                TextAlignmentOptions.MidlineLeft);
-
-            phaseText.alignment = TextAlignmentOptions.MidlineLeft;
-            phaseText.margin = new Vector4(14f, 19f, 12f, 3f);
-
-            phaseStripeImage = EnsureImage(phaseChromeImage.rectTransform, "Stripe", WaveAccent,
-                new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(10f, 6f), new Vector2(-10f, 11f));
-            phaseStripeImage.sprite = null;
-
-            EnsureFrameOverlay(phaseChromeImage.rectTransform, "FrameOverlay", UiTokens.WithAlpha(UiTokens.HudFrame, 0.24f));
-        }
-
-        private void EnsureAbilityButtonChrome()
-        {
-            if (abilityButton == null) return;
-            RectTransform buttonRect = abilityButton.transform as RectTransform;
-            if (buttonRect == null) return;
-
-            abilityCooldownFillImage = EnsureImage(buttonRect, "CooldownFill", UiTokens.CooldownFill,
-                new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(8f, 8f), new Vector2(-8f, 8f));
-            abilityCooldownFillImage.transform.SetAsFirstSibling();
-
-            abilityReadyGlowImage = EnsureImage(buttonRect, "ReadyGlow", UiTokens.WithAlpha(ReadyAccent, 0f),
-                Vector2.zero, Vector2.one, new Vector2(6f, 6f), new Vector2(-6f, -6f));
-            abilityReadyGlowImage.sprite = panelSprite;
-            abilityReadyGlowImage.type = panelSprite != null ? Image.Type.Sliced : Image.Type.Simple;
-            abilityReadyGlowImage.transform.SetAsFirstSibling();
-
-            abilityBlockedVeilImage = EnsureImage(buttonRect, "BlockedVeil", Color.clear,
-                Vector2.zero, Vector2.one, new Vector2(6f, 6f), new Vector2(-6f, -6f));
-            abilityBlockedVeilImage.sprite = panelSprite;
-            abilityBlockedVeilImage.type = panelSprite != null ? Image.Type.Sliced : Image.Type.Simple;
-            abilityBlockedVeilImage.transform.SetAsLastSibling();
-        }
-
         private void EnsureResultPanelChrome()
         {
             RectTransform panelRect = resultPanel.GetComponent<RectTransform>();
@@ -1418,62 +1012,6 @@ namespace AllinDefense.Presentation
             restartRect.sizeDelta = new Vector2(340f, 84f);
         }
 
-        private void EnsurePauseOverlayChrome()
-        {
-            RectTransform rootRect = transform as RectTransform;
-            if (rootRect == null) return;
-
-            Transform existing = transform.Find("PauseOverlay");
-            if (existing != null)
-            {
-                pauseOverlay = existing.gameObject;
-            }
-            else
-            {
-                pauseOverlay = new GameObject("PauseOverlay", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
-                pauseOverlay.transform.SetParent(transform, false);
-                var overlayRect = pauseOverlay.GetComponent<RectTransform>();
-                overlayRect.anchorMin = Vector2.zero;
-                overlayRect.anchorMax = Vector2.one;
-                overlayRect.offsetMin = Vector2.zero;
-                overlayRect.offsetMax = Vector2.zero;
-                var overlayImage = pauseOverlay.GetComponent<Image>();
-                overlayImage.color = UiTokens.PauseVeil;
-                overlayImage.raycastTarget = true;
-            }
-
-            UnityEngine.UI.Image blocker = pauseOverlay.GetComponent<UnityEngine.UI.Image>();
-            if (blocker != null) blocker.raycastTarget = true;
-
-            RectTransform overlayRoot = pauseOverlay.GetComponent<RectTransform>();
-            pauseOverlayGroup = pauseOverlay.GetComponent<CanvasGroup>();
-            if (pauseOverlayGroup == null) pauseOverlayGroup = pauseOverlay.AddComponent<CanvasGroup>();
-            Image pauseCard = EnsureImage(overlayRoot, "Card", UiTokens.PauseCard,
-                new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0f, -8f), new Vector2(920f, 440f));
-            pauseCardRect = pauseCard.rectTransform;
-            pauseCard.sprite = panelSprite;
-            pauseCard.type = panelSprite != null ? Image.Type.Sliced : Image.Type.Simple;
-            EnsureFrameOverlay(pauseCard.rectTransform, "FrameOverlay", UiTokens.WithAlpha(UiTokens.HudFrame, 0.26f));
-
-            pauseOverlayBadgeText = EnsureLabel(pauseCard.rectTransform, "Badge",
-                new Vector2(0.5f, 1f), new Vector2(0.5f, 1f), new Vector2(0f, -30f), new Vector2(220f, 24f),
-                TextAlignmentOptions.Center);
-            pauseOverlayTitleText = EnsureLabel(pauseCard.rectTransform, "Title",
-                new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0f, 86f), new Vector2(620f, 72f),
-                TextAlignmentOptions.Center);
-            pauseOverlayHintText = EnsureLabel(pauseCard.rectTransform, "Hint",
-                new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0f, 18f), new Vector2(680f, 64f),
-                TextAlignmentOptions.Center);
-
-            pauseResumeButton = EnsureActionButton(pauseCard.rectTransform, "Resume", FrontendCopy.Resume.Value,
-                new Vector2(-184f, -122f), new Vector2(328f, 80f));
-            pauseMainMenuButton = EnsureActionButton(pauseCard.rectTransform, "MainMenu", FrontendCopy.MainMenu.Value,
-                new Vector2(184f, -122f), new Vector2(328f, 80f));
-
-            pauseOverlay.transform.SetAsLastSibling();
-            pauseOverlay.SetActive(false);
-        }
-
         private IEnumerator AnimateOverlay(CanvasGroup group, RectTransform card)
         {
             if (group == null) yield break;
@@ -1499,75 +1037,6 @@ namespace AllinDefense.Presentation
             }
             group.alpha = 1f;
             if (card != null) card.localScale = Vector3.one;
-        }
-
-        private UnityEngine.UI.Button EnsureActionButton(Transform parent, string name, string label,
-            Vector2 anchoredPosition, Vector2 size)
-        {
-            Transform existing = parent.Find(name);
-            UnityEngine.UI.Button button;
-            RectTransform rect;
-            UnityEngine.UI.Image image;
-            if (existing != null && existing.TryGetComponent(out button))
-            {
-                rect = existing as RectTransform;
-                image = existing.GetComponent<UnityEngine.UI.Image>();
-            }
-            else
-            {
-                var root = new GameObject(name, typeof(RectTransform), typeof(CanvasRenderer),
-                    typeof(UnityEngine.UI.Image), typeof(UnityEngine.UI.Button));
-                root.transform.SetParent(parent, false);
-                rect = root.GetComponent<RectTransform>();
-                image = root.GetComponent<UnityEngine.UI.Image>();
-                button = root.GetComponent<UnityEngine.UI.Button>();
-            }
-
-            rect.anchorMin = rect.anchorMax = new Vector2(0.5f, 0.5f);
-            rect.pivot = new Vector2(0.5f, 0.5f);
-            rect.anchoredPosition = anchoredPosition;
-            rect.sizeDelta = size;
-            image.sprite = buttonSprite;
-            image.type = buttonSprite != null ? UnityEngine.UI.Image.Type.Sliced : UnityEngine.UI.Image.Type.Simple;
-            image.raycastTarget = true;
-            button.targetGraphic = image;
-
-            TMP_Text buttonLabel = EnsureLabel(rect, "Label", Vector2.zero, Vector2.one,
-                new Vector2(12f, 10f), new Vector2(-12f, -10f), TextAlignmentOptions.Center);
-            buttonLabel.text = label;
-            return button;
-        }
-
-        private void EnsureSpeedButton()
-        {
-            if (FindControl("TopBar/Speed") != null)
-                return;
-
-            if (pauseButton == null)
-                pauseButton = Find<Button>("TopBar/Pause");
-            if (pauseButton == null)
-                return;
-
-            RectTransform pauseRect = pauseButton.transform as RectTransform;
-            RectTransform parentRect = pauseRect?.parent as RectTransform;
-            if (pauseRect == null || parentRect == null)
-                return;
-
-            GameObject speedObject = Instantiate(pauseButton.gameObject, parentRect);
-            speedObject.name = "Speed";
-            RectTransform speedRect = speedObject.transform as RectTransform;
-            if (speedRect != null)
-            {
-                speedRect.anchorMin = pauseRect.anchorMin;
-                speedRect.anchorMax = pauseRect.anchorMax;
-                speedRect.pivot = pauseRect.pivot;
-                speedRect.anchoredPosition = pauseRect.anchoredPosition + new Vector2(-108f, 0f);
-                speedRect.sizeDelta = new Vector2(92f, pauseRect.sizeDelta.y);
-            }
-
-            TMP_Text label = speedObject.GetComponentInChildren<TMP_Text>(true);
-            if (label != null)
-                label.text = "1x";
         }
 
         private void ApplySelectedOutpostView(GreyboxOutpost outpost)

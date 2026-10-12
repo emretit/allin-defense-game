@@ -1479,8 +1479,8 @@ namespace AllinDefense.Tests
             AssertTouchTarget(catalog.hudPrefab.transform, "BottomBar/Archer", 44f);
             AssertTouchTarget(catalog.hudPrefab.transform, "BottomBar/Barracks", 44f);
             AssertTouchTarget(catalog.hudPrefab.transform, "BottomBar/Mage", 44f);
-            AssertTouchTarget(catalog.hudPrefab.transform, "BottomBar/Ability", 44f);
-            AssertTouchTarget(catalog.hudPrefab.transform, "BottomBar/Cancel", 44f);
+            AssertTouchTarget(catalog.hudPrefab.transform, "BottomBar/AbilityCooldown/Ability", 44f);
+            Assert.That(catalog.hudPrefab.transform.Find("BottomBar/Cancel"), Is.Null);
             AssertTouchTarget(catalog.hudPrefab.transform, "BottomBar/NextWave", 44f);
             AssertTouchTarget(catalog.hudPrefab.transform, "SelectedPanel/Upgrade", 44f);
             AssertTouchTarget(catalog.hudPrefab.transform, "SelectedPanel/Sell", 44f);
@@ -1743,8 +1743,8 @@ namespace AllinDefense.Tests
         [Test]
         public void LandscapeHudRailsLeaveMostOfTheScreenToTheBattlefield()
         {
-            Assert.That(DefenderHudResponsiveLayout.TopContentHeight, Is.InRange(140f, 160f));
-            Assert.That(DefenderHudResponsiveLayout.BottomContentHeight, Is.InRange(160f, 180f));
+            Assert.That(DefenderHudResponsiveLayout.TopContentHeight, Is.EqualTo(56f));
+            Assert.That(DefenderHudResponsiveLayout.BottomContentHeight, Is.EqualTo(110f));
             Assert.That(DefenderHudResponsiveLayout.TopContentHeight +
                         DefenderHudResponsiveLayout.BottomContentHeight,
                 Is.LessThan(1080f * 0.30f));
@@ -1912,7 +1912,10 @@ namespace AllinDefense.Tests
             float insetSafeArea = AdaptiveBattlefieldCamera.CalculateOrthographicSize(
                 screen, new Rect(132f, 0f, 2604f, 1320f));
 
-            Assert.That(insetSafeArea, Is.GreaterThan(edgeToEdge));
+            Assert.That(insetSafeArea, Is.GreaterThanOrEqualTo(edgeToEdge));
+            Assert.That(insetSafeArea * 2f * (2604f / 1320f),
+                Is.GreaterThanOrEqualTo(AdaptiveBattlefieldCamera.TargetHorizontalWorldSize),
+                "The safe viewport must contain the full playable width even when the vertical minimum already fits it.");
         }
 
         [Test]

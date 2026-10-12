@@ -8,6 +8,7 @@ using AllinDefense.Core;
 using AllinDefense.Data;
 using AllinDefense.Presentation;
 using AllinDefense.UI;
+using AllinDefense.UI.Kit;
 using TMPro;
 using UnityEditor;
 using UnityEditor.Animations;
@@ -1293,10 +1294,14 @@ namespace AllinDefense.Editor
                 throw new InvalidOperationException("HUD regeneration requires the existing presentation catalog, sprites and fonts.");
 
             Directory.CreateDirectory(GeneratedRoot);
+            if (catalog.frontendTheme.designSystem.iconEnemy == null) UiDesignSystemAssetBuilder.BuildSystemIcons();
             catalog.hudPrefab = CreateHudPrefab(catalog.panelSprite, catalog.uiFrameSprite,
                 catalog.bodyFont, catalog.titleFont, regenerate: true);
             EditorUtility.SetDirty(catalog);
             AssetDatabase.SaveAssets();
+            string hudPath = AssetDatabase.GetAssetPath(catalog.hudPrefab);
+            File.WriteAllLines(hudPath, File.ReadAllLines(hudPath).Select(line => line.TrimEnd()));
+            AssetDatabase.ImportAsset(hudPath);
             Debug.Log("[DC_HUD_ASSETS] HUD prefab regenerated from the presentation builder.");
         }
 
@@ -1310,35 +1315,77 @@ namespace AllinDefense.Editor
 
             var root = new GameObject("DefenderHud", typeof(RectTransform), typeof(DefenderHudController));
             Stretch(root.GetComponent<RectTransform>());
-            GameObject top = Panel(root.transform, "TopBar", panel, UiTokens.HudTopBar,
-                new Vector2(0, 1), new Vector2(1, 1), new Vector2(0, -82), Vector2.zero);
-            Text(top.transform, "Gold", "ALTIN  200", body, 28, TextAlignmentOptions.MidlineLeft,
-                new Vector2(20, 8), new Vector2(310, 62), Vector2.zero, Vector2.zero);
-            Text(top.transform, "Lives", "KALE  20", body, 28, TextAlignmentOptions.MidlineLeft,
-                new Vector2(335, 8), new Vector2(240, 62), Vector2.zero, Vector2.zero);
-            Text(top.transform, "Wave", "DALGA  0 / 7", title, 28, TextAlignmentOptions.Center,
-                new Vector2(-205, 8), new Vector2(410, 62), new Vector2(.5f, 0), new Vector2(.5f, 0));
-            Text(top.transform, "Phase", "HAZIRLIK", body, 22, TextAlignmentOptions.Center,
-                new Vector2(205, 8), new Vector2(280, 62), new Vector2(.5f, 0), new Vector2(.5f, 0));
-            Button(top.transform, "Pause", "DURAKLAT", panel, body, new Vector2(-218, 12), new Vector2(198, 54),
-                new Vector2(1, 0), new Vector2(1, 0));
-
-            Text(root.transform, "Preview", string.Empty, title, 25, TextAlignmentOptions.Center,
-                new Vector2(-430, -150), new Vector2(860, 52), new Vector2(.5f, 1), new Vector2(.5f, 1), Hex("FFB14A"));
-            Text(root.transform, "Message", string.Empty, body, 28, TextAlignmentOptions.Center,
-                new Vector2(-550, -214), new Vector2(1100, 60), new Vector2(.5f, 1), new Vector2(.5f, 1));
-
-            GameObject bottom = Panel(root.transform, "BottomBar", panel, UiTokens.HudBottomBar,
-                Vector2.zero, new Vector2(1, 0), Vector2.zero, new Vector2(0, 132));
-            Button(bottom.transform, "Archer", "[A]  OKÇU\n75", panel, body, new Vector2(18, 36), new Vector2(188, 70), Vector2.zero, Vector2.zero);
-            Button(bottom.transform, "Barracks", "[K]  KIŞLA\n100", panel, body, new Vector2(218, 36), new Vector2(188, 70), Vector2.zero, Vector2.zero);
-            Button(bottom.transform, "Mage", "[B]  BÜYÜ\n125", panel, body, new Vector2(418, 36), new Vector2(188, 70), Vector2.zero, Vector2.zero);
-            Button(bottom.transform, "Ability", "Savaşçı", panel, body, new Vector2(620, 36), new Vector2(246, 70), Vector2.zero, Vector2.zero);
-            Button(bottom.transform, "Cancel", "İPTAL", panel, body, new Vector2(880, 36), new Vector2(150, 70), Vector2.zero, Vector2.zero);
-            Text(bottom.transform, "Hero", "Savaşçı", body, 20, TextAlignmentOptions.MidlineLeft,
-                new Vector2(620, 4), new Vector2(390, 30), Vector2.zero, Vector2.zero, Hex("A8DFFF"));
-            Button(bottom.transform, "NextWave", "İLK DALGAYI BAŞLAT", panel, title, new Vector2(-340, 36), new Vector2(320, 70),
-                new Vector2(1, 0), new Vector2(1, 0), Hex("174D78"));
+            var catalog = AssetDatabase.LoadAssetAtPath<DefenderPresentationCatalog>("Assets/Resources/Presentation/DefenderPresentationCatalog.asset");
+            var kit = new UiKit(catalog.frontendTheme.designSystem);
+            var top = UiKit.Node(root.transform, "TopBar");
+            var bottom = UiKit.Node(root.transform, "BottomBar");
+            var lives = kit.StatPill(top, "Lives", catalog.keepIcon, 20);
+            var gold = kit.StatPill(top, "Gold", catalog.goldIcon, 0);
+            foreach (var pill in new[] { lives, gold })
+            {
+                var layout = pill.GetComponent<HorizontalLayoutGroup>();
+                layout.padding = new RectOffset(8, 8, 4, 4); layout.spacing = 4;
+                foreach (var text in pill.GetComponentsInChildren<TMP_Text>()) text.fontSize = 18;
+                foreach (var icon in pill.GetComponentsInChildren<UiProportionalIcon>())
+                    UiKit.Size((RectTransform)icon.transform, 24, 24);
+            }
+            var goldNumber = gold.transform.Find("Gold.Number").GetComponent<TMP_Text>();
+            goldNumber.fontSize = goldNumber.fontSizeMax = 16;
+            goldNumber.fontSizeMin = 14; goldNumber.enableAutoSizing = true;
+            var goldDelta = gold.transform.Find("Gold.Delta").GetComponent<TMP_Text>();
+            goldDelta.fontSize = goldDelta.fontSizeMax = 12;
+            goldDelta.fontSizeMin = 10; goldDelta.enableAutoSizing = true;
+            UiKit.Size((RectTransform)gold.transform.Find("Gold.Icon"), 20, 20);
+            var wave = kit.Surface(top, "WavePanel");
+            UnityEngine.Object.DestroyImmediate(wave.GetComponent<VerticalLayoutGroup>());
+            var waveLabel = kit.Text(wave, "Wave", "", 14, true);
+            var phase = kit.Chip(wave, "PhaseChip", "", 12);
+            var segments = kit.ProgressSegments(wave, "WaveProgress", 1);
+            var boss = UiKit.Node(wave, "BossBar");
+            kit.Text(boss, "BossName", "", 14, true);
+            kit.Text(boss, "BossHealth", "", 12);
+            var track = kit.Decoration(boss, "BossTrack", kit.Assets.pill, UiTokens.HairlineStrong);
+            var fill = kit.Decoration(track.transform, "BossFill", kit.Assets.pill, UiTokens.Danger);
+            fill.type = Image.Type.Filled; fill.fillMethod = Image.FillMethod.Horizontal;
+            foreach (var fraction in new[] { .33f, .66f })
+            {
+                var notch = kit.Decoration(track.transform, fraction < .5f ? "Notch33" : "Notch66", null, UiTokens.TextPrimary);
+                notch.rectTransform.anchorMin = new Vector2(fraction, 0);
+                notch.rectTransform.anchorMax = new Vector2(fraction, 1);
+                notch.rectTransform.sizeDelta = new Vector2(2, 4);
+            }
+            boss.gameObject.SetActive(false);
+            var speed = kit.IconButton(top, "Speed", kit.Assets.iconFastForward, pill: true);
+            var speedText = speed.GetComponentInChildren<TMP_Text>(true);
+            speedText.gameObject.SetActive(true); speedText.text = "1×"; speedText.fontSize = 16;
+            speedText.GetComponent<LayoutElement>().minWidth = 24;
+            kit.IconButton(top, "Pause", kit.Assets.iconPause);
+            var next = kit.Chip(root.transform, "Preview", "", 12);
+            kit.Icon(next, "EnemyIcon", kit.Assets.iconEnemy, 18).transform.SetSiblingIndex(1);
+            var message = kit.Text(root.transform, "Message", "", 13);
+            message.alignment = TextAlignmentOptions.Center;
+            message.textWrappingMode = TextWrappingModes.Normal;
+            message.gameObject.SetActive(false);
+            Button(bottom, "Archer", "", panel, body, Vector2.zero, new Vector2(188, 70), Vector2.zero, Vector2.zero);
+            Button(bottom, "Barracks", "", panel, body, Vector2.zero, new Vector2(188, 70), Vector2.zero, Vector2.zero);
+            Button(bottom, "Mage", "", panel, body, Vector2.zero, new Vector2(188, 70), Vector2.zero, Vector2.zero);
+            var ability = kit.RadialCooldown(bottom, "AbilityCooldown", catalog.abilityIcon);
+            var action = ability.GetComponentInChildren<UnityEngine.UI.Button>();
+            action.name = "Ability"; UiId.Assign(action.transform, "Ability");
+            action.GetComponent<UiPointSize>().Configure(74);
+            foreach (var text in ability.GetComponentsInChildren<TMP_Text>(true)) text.fontSize = 12;
+            var heroName = kit.Text(bottom, "Hero", "", 12);
+            heroName.alignment = TextAlignmentOptions.Center;
+            var nextWave = kit.Button(bottom, "NextWave", "", UiButtonVariant.Gold);
+            nextWave.GetComponentInChildren<TMP_Text>(true).gameObject.SetActive(true);
+            nextWave.GetComponentInChildren<TMP_Text>().fontSize = 14;
+            ability.GetComponent<VerticalLayoutGroup>().spacing = 4;
+            BuildHudPause(kit, root.transform);
+            foreach (var label in root.GetComponentsInChildren<TMP_Text>(true))
+            {
+                var size = label.GetComponent<LayoutElement>();
+                if (size != null) size.minHeight = label.fontSize * 1.5f;
+            }
 
             GameObject selected = Panel(root.transform, "SelectedPanel", panel, UiTokens.HudBottomBar,
                 new Vector2(1, .5f), new Vector2(1, .5f), new Vector2(-338, -126), new Vector2(-18, 184));
@@ -1359,6 +1406,36 @@ namespace AllinDefense.Editor
             GameObject prefab = PrefabUtility.SaveAsPrefabAsset(root, path);
             UnityEngine.Object.DestroyImmediate(root);
             return prefab;
+        }
+
+        private static void BuildHudPause(UiKit kit, Transform parent)
+        {
+            var modal = kit.Modal(parent, "PauseOverlay", FrontendCopy.HudPaused);
+            modal.DismissOnScrim = false;
+            modal.Body.GetComponent<VerticalLayoutGroup>().padding = new RectOffset(0, 0, 0, 0);
+            var close = modal.transform.Find("PauseOverlay.Card/PauseOverlay.Close");
+            close.gameObject.SetActive(false);
+            kit.Button(modal.Body, "Resume", FrontendCopy.HudContinue, UiButtonVariant.Gold);
+            kit.Button(modal.Body, "PauseRestart", FrontendCopy.PauseRestart);
+            kit.Button(modal.Body, "MainMenu", FrontendCopy.ReturnToMap, icon: kit.Assets.iconMap);
+            foreach (var entry in new[] { ("Music", FrontendCopy.Music), ("Effects", FrontendCopy.Effects) })
+            {
+                var row = UiKit.Node(modal.Body, entry.Item1 + "Row"); UiKit.Layout(row, false, 0);
+                UiKit.Size(kit.Text(row, entry.Item1 + "Label", entry.Item2, 14).rectTransform, flex: 1);
+                kit.Switch(row, entry.Item1 + "Switch", true);
+            }
+            foreach (var text in modal.Body.GetComponentsInChildren<TMP_Text>(true)) text.fontSize = 14;
+            modal.transform.Find("PauseOverlay.Card/PauseOverlay.Title").GetComponent<TMP_Text>().fontSize = 20;
+            modal.gameObject.SetActive(false);
+            var confirm = kit.Modal(parent, "MapConfirmation", FrontendCopy.LeaveBattleTitle);
+            confirm.DismissOnScrim = false;
+            confirm.transform.Find("MapConfirmation.Card/MapConfirmation.Title").GetComponent<TMP_Text>().fontSize = 20;
+            confirm.transform.Find("MapConfirmation.Card/MapConfirmation.Close").gameObject.SetActive(false);
+            var hint = kit.Text(confirm.Body, "MapConfirmationHint", FrontendCopy.LeaveBattleHint, 14);
+            hint.textWrappingMode = TextWrappingModes.Normal;
+            kit.Button(confirm.Body, "ConfirmMap", FrontendCopy.ReturnToMap, UiButtonVariant.Danger);
+            kit.Button(confirm.Body, "KeepPlaying", FrontendCopy.Cancel, UiButtonVariant.Gold);
+            confirm.gameObject.SetActive(false);
         }
 
         private static GameObject Panel(Transform parent, string name, Sprite sprite, Color color,

@@ -109,6 +109,7 @@ namespace AllinDefense.UI
                 ? presentationCatalog
                 : throw new ArgumentNullException(nameof(presentationCatalog));
             session = owner != null ? owner : throw new ArgumentNullException(nameof(owner));
+            session.ConfigureBattleNavigation(() => ReloadCampaignLevel(session.CampaignLevelNumber), OpenCampaign);
             if ((AcceptanceRequested || (Application.isEditor && Environment.GetEnvironmentVariable("DC_FRONTEND_EDITOR") == "1")) && string.IsNullOrEmpty(savePath)) savePath = Path.Combine(Application.temporaryCachePath, "frontend-acceptance-save.json");
             if (AcceptanceRequested)
             {

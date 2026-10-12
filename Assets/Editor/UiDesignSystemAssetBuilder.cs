@@ -113,6 +113,10 @@ namespace AllinDefense.Editor
             AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
             var set = AssetDatabase.LoadAssetAtPath<UiDesignSystemAssets>(SetPath);
             if (set == null) throw new InvalidOperationException("Build the design system primitives first.");
+            set.iconEnemy = Glyph("Enemy", p => Mathf.Min(Polygon(p, new[] { new Vector2(.25f,.74f), new Vector2(.5f,.86f),
+                new Vector2(.75f,.74f), new Vector2(.79f,.46f), new Vector2(.64f,.35f), new Vector2(.64f,.19f),
+                new Vector2(.36f,.19f), new Vector2(.36f,.35f), new Vector2(.21f,.46f) }),
+                Mathf.Min(Line(p,.32f,.56f,.42f,.53f), Line(p,.58f,.53f,.68f,.56f))));
             set.iconPause = Glyph("Pause", p => Mathf.Min(Line(p, .36f, .25f, .36f, .75f), Line(p, .64f, .25f, .64f, .75f)));
             set.iconPlay = Glyph("Play", p => Polygon(p, new[] { new Vector2(.32f,.22f), new Vector2(.78f,.5f), new Vector2(.32f,.78f) }));
             set.iconFastForward = Glyph("FastForward", p => Mathf.Min(Polygon(p, new[] { new Vector2(.16f,.25f), new Vector2(.5f,.5f), new Vector2(.16f,.75f) }),
@@ -139,7 +143,7 @@ namespace AllinDefense.Editor
             });
             set.iconSell = Glyph("Sell", p => Mathf.Min(Mathf.Abs((p-new Vector2(.43f,.5f)).magnitude-.28f),
                 Mathf.Min(Line(p,.42f,.5f,.86f,.5f), Mathf.Min(Line(p,.72f,.64f,.86f,.5f),Line(p,.86f,.5f,.72f,.36f)))));
-            Sprite[] sprites = { set.iconPause, set.iconPlay, set.iconFastForward, set.iconSettings, set.iconClose,
+            Sprite[] sprites = { set.iconEnemy, set.iconPause, set.iconPlay, set.iconFastForward, set.iconSettings, set.iconClose,
                 set.iconBack, set.iconMap, set.iconLock, set.iconStarFilled, set.iconStarEmpty, set.iconCheck, set.iconShield, set.iconUpgrade, set.iconSell };
             var atlas = AssetDatabase.LoadAssetAtPath<SpriteAtlas>(AtlasPath);
             var existing = SpriteAtlasExtensions.GetPackables(atlas);

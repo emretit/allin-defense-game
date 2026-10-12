@@ -40,6 +40,7 @@ namespace AllinDefense.Core
         public float StunRemaining => stunRemaining;
         public float SlowFactor => slow.Factor;
         public int Health => health;
+        public int MaxHealth => stats.maxHealth;
         public bool IsWindingUp => siegeTarget != null && siegeWindup > 0f;
         private bool removed;
         private int bossPhase = 1;

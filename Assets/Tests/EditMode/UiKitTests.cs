@@ -194,10 +194,10 @@ namespace AllinDefense.Tests
                 Assert.That(Contrast(UiTokens.GoldText, gold * UiTokens.PressedTint), Is.GreaterThanOrEqualTo(4.5f));
             }
         }
-        [Test] public void AllFourteenSystemIconsAreWhiteAndPackedAlongsidePaintedIcons()
+        [Test] public void AllFifteenSystemIconsAreWhiteAndPackedAlongsidePaintedIcons()
         {
             var fields = typeof(UiDesignSystemAssets).GetFields().Where(f => f.Name.StartsWith("icon")).ToArray();
-            Assert.That(fields.Length, Is.EqualTo(14));
+            Assert.That(fields.Length, Is.EqualTo(15));
             var atlas = AssetDatabase.LoadAssetAtPath<SpriteAtlas>("Assets/Art/UI/AllinDefenseUI.spriteatlas");
             var packables = SpriteAtlasExtensions.GetPackables(atlas);
             foreach (var field in fields)

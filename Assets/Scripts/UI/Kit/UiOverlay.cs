@@ -9,6 +9,8 @@ namespace AllinDefense.UI.Kit
         [SerializeField] private RectTransform card, body;
         [SerializeField] private bool bottom;
         [SerializeField] private UnityEngine.UI.Button close;
+        [SerializeField] private bool dismissOnScrim = true;
+        public bool DismissOnScrim { get => dismissOnScrim; set => dismissOnScrim = value; }
         private UiMotion.Handle fade, scale;
         public RectTransform Body => body;
         public bool IsOpen { get; private set; } = true;
@@ -38,7 +40,7 @@ namespace AllinDefense.UI.Kit
         }
         public void OnPointerClick(PointerEventData eventData)
         {
-            if (!RectTransformUtility.RectangleContainsScreenPoint(card, eventData.position, eventData.pressEventCamera)) Hide();
+            if (dismissOnScrim && !RectTransformUtility.RectangleContainsScreenPoint(card, eventData.position, eventData.pressEventCamera)) Hide();
         }
         private void OnDisable() { fade?.Cancel(); scale?.Cancel(); }
     }

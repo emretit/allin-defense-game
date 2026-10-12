@@ -45,7 +45,7 @@ Halka menüde ilk seçenek dokunuşu `Previewed(option)` gönderir. Başka bir s
 
 ## İkonlar ve vitrin
 
-`UiDesignSystemAssetBuilder.BuildSystemIcons` 14 beyaz ince çizgi sistem ikonu üretir: pause, play, hız, ayar, kapat, geri, harita, kilit, dolu/boş yıldız, check, kalkan, yükselt, sat. Kaynakları `Assets/Art/GeneratedPresentation/UiIcons`, referansları `UiDesignSystemAssets`, hedef atlası mevcut `AllinDefenseUI.spriteatlas`tır. Altın/kale/dalga/kuleler mevcut boyalı atlas kaynaklarından kalır.
+`UiDesignSystemAssetBuilder.BuildSystemIcons` 15 beyaz ince çizgi sistem ikonu üretir: düşman, pause, play, hız, ayar, kapat, geri, harita, kilit, dolu/boş yıldız, check, kalkan, yükselt, sat. Kaynakları `Assets/Art/GeneratedPresentation/UiIcons`, referansları `UiDesignSystemAssets`, hedef atlası mevcut `AllinDefenseUI.spriteatlas`tır. Altın/kale/dalga/kuleler mevcut boyalı atlas kaynaklarından kalır.
 
 `AllinDefense.Editor.UiKitShowcaseBuilder.Render` iki gerçek Unity RenderTexture çıktısı üretir:
 
@@ -65,3 +65,9 @@ Halka menüde ilk seçenek dokunuşu `Previewed(option)` gönderir. Başka bir s
 - Mevcut AppFlowController, DefenderHudController, DefenderPresentationAssetBuilder, sahne ve prefab dosyalarında diff yok; commit/push yapılmadı.
 
 Yeni testler durum geçişleri, minimum pt, gövde kontrastı, fiyat/metin geometrisi, ikon oranı, rozet-halka ayrılığı, sayısal delta, switch, slider, segmentler, cooldown dolgu, radial güvenli alan/K3, overlay, yıldız, reduced-motion ve beyaz atlas ikonlarını kapsar. PlayMode ekleri duraklatılmış oyun saatinde hareket, iptal, çalışma sırasında reduced-motion ve sınırlı hazır nabzını sınar.
+
+## Adım 4a entegrasyon ekleri
+
+- `UiStatPill.SetValue(value, animate, showDelta)` farkı 0,4 saniye gösterir; aynı değeri tekrar vermek farkın süresini bozmaz. İlk bağlama ve can sayısı için `showDelta: false` kullanılabilir.
+- `UiOverlay.DismissOnScrim = false` zorunlu eylem gerektiren pause/onay modallarının boşluğa dokunarak gizlenmesini önler. Dünya kilidini çağıran controller yönetir.
+- `iconEnemy` atlas içindeki 15. sistem ikonudur; savaşın sayısal sıradaki-dalga çipinde kullanılır.

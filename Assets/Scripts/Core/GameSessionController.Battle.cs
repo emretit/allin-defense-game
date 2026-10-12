@@ -9,6 +9,24 @@ namespace AllinDefense.Core
 {
     public sealed partial class GameSessionController
     {
+        public int EarlyWaveReward => 0;
+        public float CurrentWaveCompletion => UnpausedPhase == GamePhase.Wave && plannedThisWave > 0
+            ? Mathf.Clamp01((float)removedThisWave / plannedThisWave) : 0;
+        public int UpcomingEnemyCount
+        {
+            get
+            {
+                int index = currentWaveIndex + (UnpausedPhase == GamePhase.Wave ? 1 : 0);
+                if (waves == null || index >= waves.Length || waves[index].groups == null) return 0;
+                int count = 0;
+                foreach (var group in waves[index].groups) if (group != null) count += Mathf.Max(0, group.count);
+                return count;
+            }
+        }
+        private Action restartCampaignBattle;
+        private Action returnToCampaignMap;
+        public void ConfigureBattleNavigation(Action restart, Action map)
+        { restartCampaignBattle = restart; returnToCampaignMap = map; }
         public bool NextWaveHasBoss => waves != null && currentWaveIndex < waves.Length && waves[currentWaveIndex].bossWave;
         public bool CanBuildOnSelection => CanChangeDefence && selectedSlot != null && selectedSlot.Occupant == null;
         internal void RecordSaveFailure() => telemetry.Record(this,"save_error","local_write_failed");

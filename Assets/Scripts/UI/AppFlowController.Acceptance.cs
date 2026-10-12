@@ -31,6 +31,7 @@ namespace AllinDefense.UI
             public List<FrontendSample> samples = new();
             public List<long> memory = new();
             public List<int> uiObjects = new();
+            public List<string> screenshots = new();
             public List<string> errors = new();
             public List<string> knownIssues = new();
             public string status = "running";
@@ -120,6 +121,10 @@ namespace AllinDefense.UI
             yield return CaptureAcceptance("battle-active-wave");
             session.TogglePause();
             yield return CaptureAcceptance("pause");
+            AcceptanceInvoke("CancelSelection");
+            hud.GetComponentsInChildren<UiId>(true).First(id => id.Id == "MainMenu").GetComponent<Button>().onClick.Invoke();
+            yield return CaptureAcceptance("pause-map-confirmation");
+            hud.GetComponentsInChildren<UiId>(true).First(id => id.Id == "KeepPlaying").GetComponent<Button>().onClick.Invoke();
             session.TogglePause();
             ShowResult(false, 0, default);
             yield return CaptureAcceptance("defeat");
@@ -195,6 +200,7 @@ namespace AllinDefense.UI
         {
             yield return new WaitForSecondsRealtime(.25f);
             yield return new WaitForEndOfFrame();
+            acceptanceReport.screenshots.Add(name + ".png");
             ScreenCapture.CaptureScreenshot(Application.isMobilePlatform
                 ? Path.Combine("FrontendExperience", name + ".png") : Path.Combine(AcceptanceRoot, name + ".png"));
             foreach (var text in FindObjectsByType<TMPro.TMP_Text>(FindObjectsSortMode.None))
@@ -273,9 +279,18 @@ namespace AllinDefense.UI
                 yield return null;
             }
             if (session.Phase is GamePhase.Preparing or GamePhase.Intermission) session.StartNextWave();
-            yield return new WaitForSecondsRealtime(3f);
-            if (session.Phase != GamePhase.Wave || !session.NextWaveHasBoss)
-                acceptanceReport.errors.Add("level-10-boss: boss wave is not active");
+            deadline = Time.realtimeSinceStartupAsDouble + 30;
+            while (session.Phase == GamePhase.Wave && !session.Enemies.Any(enemy => enemy.IsAlive && enemy.Archetype == EnemyArchetype.Boss) &&
+                   Time.realtimeSinceStartupAsDouble < deadline)
+            {
+                for (int step = 0; step < 20 && !session.Enemies.Any(enemy => enemy.IsAlive && enemy.Archetype == EnemyArchetype.Boss); step++)
+                    session.AdvanceBattle(.05f);
+                yield return null;
+            }
+            session.GetComponentInChildren<DefenderHudController>()?.Refresh(session);
+            if (session.Phase != GamePhase.Wave || !session.NextWaveHasBoss ||
+                !session.Enemies.Any(enemy => enemy.IsAlive && enemy.Archetype == EnemyArchetype.Boss))
+                acceptanceReport.errors.Add("level-10-boss: live boss is not on the battlefield");
         }
         private static void WriteAcceptance() => File.WriteAllText(Path.Combine(AcceptanceRoot, "report.json"), JsonUtility.ToJson(acceptanceReport, true));
     }

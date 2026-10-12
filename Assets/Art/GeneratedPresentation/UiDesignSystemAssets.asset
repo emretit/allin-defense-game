@@ -24,6 +24,7 @@ MonoBehaviour:
   goldGradient: {fileID: 21300000, guid: 4d6c22e7de6134548b08037394f1de6c, type: 3}
   filledCircle: {fileID: 21300000, guid: 6b4d230b3e232477e8f239b68b5712e5, type: 3}
   cooldownRing: {fileID: 21300000, guid: bd858ef38072443f7805d2b3e82f1740, type: 3}
+  iconEnemy: {fileID: 21300000, guid: 5ae29ac5bdd014075844d9e47a9992c4, type: 3}
   iconPause: {fileID: 21300000, guid: 5d82cf8c88e244a69865f107765caad3, type: 3}
   iconPlay: {fileID: 21300000, guid: 2317b7fd09ee445249d54cde7b060f2a, type: 3}
   iconFastForward: {fileID: 21300000, guid: 22b96df7f39dd4eadaa96053de1ba28b, type: 3}

@@ -153,15 +153,15 @@ namespace AllinDefense.Tests
             AssertHitRects(hud.GetComponentsInChildren<Button>(true));
         }
 
-        [UnityTest] public IEnumerator InvisiblePaddingReceivesClicksOutsideTheVisualButton()
+        [UnityTest] public IEnumerator KitResumeReceivesClicksAtItsPhysicalTouchTargetEdge()
         {
             Create(); Time.timeScale = 0;
             session.TogglePause(); Call(session, "RefreshUi");
             yield return new WaitForSecondsRealtime(.3f); Canvas.ForceUpdateCanvases();
             var resume = Button("Resume");
             var rect = (RectTransform)resume.transform;
-            var point = RectTransformUtility.WorldToScreenPoint(null, rect.TransformPoint(rect.rect.center + Vector2.up * 48));
-            Assert.That(RectTransformUtility.RectangleContainsScreenPoint(rect, point), Is.False);
+            var point = RectTransformUtility.WorldToScreenPoint(null, rect.TransformPoint(rect.rect.center + Vector2.up * (rect.rect.height * .45f)));
+            Assert.That(RectTransformUtility.RectangleContainsScreenPoint(rect, point), Is.True);
             var hits = new List<RaycastResult>();
             EventSystem.current.RaycastAll(new PointerEventData(EventSystem.current) { position = point }, hits);
             Assert.That(hits.Count, Is.GreaterThan(0));
@@ -288,10 +288,13 @@ namespace AllinDefense.Tests
                 GameLocalization.SetLanguage(GameLanguage.English);
                 Create(level); Time.timeScale = 0;
                 Assert.That(CampaignLevelFactory.Create(level).waves[0].preview, Is.EqualTo("Fast raiders"));
-                Assert.That(Field<TMP_Text>(hud, "previewText").text, Does.Contain("Fast raiders"));
+                Assert.That(Field<TMP_Text>(hud, "previewText").text, Is.EqualTo(FrontendCopy.UpcomingCount.Format(session.UpcomingEnemyCount)));
+                Assert.That(Field<TMP_Text>(hud, "phaseText").text, Is.EqualTo(FrontendCopy.HudPreparing.Value));
                 GameLocalization.SetLanguage(GameLanguage.Turkish);
                 Assert.That(CampaignLevelFactory.Create(level).waves[0].preview, Is.EqualTo("Hızlı yağmacılar"));
-                Assert.That(Field<TMP_Text>(hud, "previewText").text, Does.Contain("Hızlı yağmacılar"));
+                Assert.That(Field<WaveDefinition[]>(session, "waves")[0].preview, Is.EqualTo("Hızlı yağmacılar"));
+                Assert.That(Field<TMP_Text>(hud, "previewText").text, Is.EqualTo(FrontendCopy.UpcomingCount.Format(session.UpcomingEnemyCount)));
+                Assert.That(Field<TMP_Text>(hud, "phaseText").text, Is.EqualTo(FrontendCopy.HudPreparing.Value));
                 GameLocalization.SetLanguage(GameLanguage.English);
                 foreach (var wave in Field<WaveDefinition[]>(session, "waves"))
                     Assert.That(wave.preview, Does.Not.Match("[çğıöşüÇĞİÖŞÜ]|yağmac|öncü|birliği|muhafız"));

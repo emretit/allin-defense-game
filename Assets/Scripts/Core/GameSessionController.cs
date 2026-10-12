@@ -1109,9 +1109,9 @@ namespace AllinDefense.Core
 
         private void ReturnToMainMenu()
         {
-            if (Phase != GamePhase.Paused || returnToMainMenu == null) return;
+            if (Phase != GamePhase.Paused) return;
             Time.timeScale = 0f;
-            returnToMainMenu.Invoke();
+            (returnToCampaignMap ?? returnToMainMenu)?.Invoke();
         }
 
         private void ToggleGameSpeed()
@@ -1126,6 +1126,8 @@ namespace AllinDefense.Core
 
         private void RestartLevel()
         {
+            ClearCheckpoint();
+            if (restartCampaignBattle != null) { restartCampaignBattle(); return; }
             Time.timeScale = 1f;
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }

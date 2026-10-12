@@ -362,7 +362,7 @@ namespace AllinDefense.Tests
         }
 
         [UnityTest]
-        public IEnumerator PausedBattleCanResumeOrReturnToMainMenu()
+        public IEnumerator PausedBattleCanResumeOrConfirmReturnToMap()
         {
             string savePath = Path.Combine(Path.GetTempPath(), $"dc-pause-menu-{System.Guid.NewGuid():N}.json");
             var catalog = Resources.Load<DefenderPresentationCatalog>("Presentation/DefenderPresentationCatalog");
@@ -395,8 +395,8 @@ namespace AllinDefense.Tests
             Assert.That(pauseOverlay.GetComponent<Image>().raycastTarget, Is.True,
                 "The pause overlay must block touches from reaching the battlefield.");
 
-            Button resumeButton = UiQuery.FindById(pauseOverlay, "Card/Resume").GetComponent<Button>();
-            Button mainMenuButton = UiQuery.FindById(pauseOverlay, "Card/MainMenu").GetComponent<Button>();
+            Button resumeButton = UiQuery.FindById(pauseOverlay, "Resume").GetComponent<Button>();
+            Button mainMenuButton = UiQuery.FindById(pauseOverlay, "MainMenu").GetComponent<Button>();
             Assert.That(resumeButton.GetComponent<RectTransform>().rect.width, Is.GreaterThanOrEqualTo(44f));
             Assert.That(resumeButton.GetComponent<RectTransform>().rect.height, Is.GreaterThanOrEqualTo(44f));
             Assert.That(mainMenuButton.GetComponent<RectTransform>().rect.width, Is.GreaterThanOrEqualTo(44f));
@@ -410,8 +410,11 @@ namespace AllinDefense.Tests
             session.TogglePause();
             hud.Refresh(session);
             mainMenuButton.onClick.Invoke();
+            Assert.That(flow.CurrentScreen, Is.EqualTo(AppScreen.Battle));
+            Assert.That(hud.MapConfirmationOpen, Is.True);
+            UiQuery.FindById<Button>(hud, "ConfirmMap").onClick.Invoke();
             yield return null;
-            Assert.That(flow.CurrentScreen, Is.EqualTo(AppScreen.MainMenu));
+            Assert.That(flow.CurrentScreen, Is.EqualTo(AppScreen.Campaign));
             Assert.That(MobileOrientationController.CurrentMode,
                 Is.EqualTo(MobileOrientationMode.PortraitFrontend));
             Assert.That(Time.timeScale, Is.Zero);
@@ -485,23 +488,11 @@ namespace AllinDefense.Tests
                 Is.EqualTo(new Vector2(1920f, 1080f)),
                 "Battlefield HUD stays landscape while frontend screens use the portrait reference resolution.");
             Assert.That(defenderHud.GetComponent<DefenderHudResponsiveLayout>(), Is.Not.Null);
-            var topRail = UiQuery.FindById(defenderHud.transform, "TopBar").GetComponent<UnityEngine.UI.Image>();
-            var bottomRail = UiQuery.FindById(defenderHud.transform, "BottomBar").GetComponent<UnityEngine.UI.Image>();
-            Assert.That(topRail.enabled, Is.False);
-            Assert.That(bottomRail.enabled, Is.False);
-            Assert.That(topRail.sprite, Is.Null, "The status controls must leave the terrain visible between cards.");
-            Assert.That(bottomRail.sprite, Is.Null, "The command deck should float over the battlefield.");
-            Assert.That(UiQuery.FindById(defenderHud.transform, "TopBar/SafeContent/GoldChrome"), Is.Not.Null);
-            Assert.That(UiQuery.FindById(defenderHud.transform, "TopBar/SafeContent/LivesChrome"), Is.Not.Null);
-            Assert.That(UiQuery.FindById(defenderHud.transform, "TopBar/SafeContent/WaveChrome"), Is.Not.Null);
-            var phaseHint = UiQuery.FindById(defenderHud.transform, "TopBar/SafeContent/PhaseChrome/PhaseHint") as RectTransform;
-            Assert.That(phaseHint, Is.Not.Null);
-            Assert.That(phaseHint.offsetMin.y, Is.GreaterThanOrEqualTo(34f),
-                "The phase hint must occupy its own upper row instead of overlapping the phase label.");
-            Assert.That(UiQuery.FindById(defenderHud.transform, "BottomBar/SafeContent/BuildDeck").GetComponent<UnityEngine.UI.Image>().enabled, Is.False);
-            Assert.That(UiQuery.FindById(defenderHud.transform, "BottomBar/SafeContent/HeroDeck").GetComponent<UnityEngine.UI.Image>().enabled, Is.False);
-            Assert.That(UiQuery.FindById(defenderHud.transform, "BottomBar/SafeContent/CommandDeck").GetComponent<UnityEngine.UI.Image>().enabled, Is.False);
-            Assert.That(UiQuery.FindById(defenderHud.transform, "MessageChrome"), Is.Not.Null);
+            Assert.That(defenderHud.GetComponentsInChildren<AllinDefense.UI.Kit.UiStatPill>().Length, Is.EqualTo(2));
+            Assert.That(defenderHud.GetComponentInChildren<AllinDefense.UI.Kit.UiRadialCooldown>(), Is.Not.Null);
+            Assert.That(UiQuery.FindById(defenderHud.transform, "PhaseChrome"), Is.Null);
+            Assert.That(UiQuery.FindById(defenderHud.transform, "PreviewTitle"), Is.Null);
+            Assert.That(UiQuery.FindById(defenderHud.transform, "Cancel"), Is.Null);
             Assert.That(Camera.main.GetComponent<AdaptiveBattlefieldCamera>(), Is.Not.Null);
             Assert.That(session.Hero.GetComponent<StylizedActorView>(), Is.Not.Null);
             Assert.That(session.Hero.GetComponentInChildren<StylizedGroundingAura>(), Is.Not.Null);
@@ -922,7 +913,7 @@ namespace AllinDefense.Tests
             Assert.That(UiQuery.FindById<Button>(hud, "Mage").interactable, Is.False);
             Assert.That(UiQuery.FindById<Button>(hud, "Ability").interactable, Is.True);
             Assert.That(UiQuery.FindById<Button>(hud, "Pause").interactable, Is.True);
-            Assert.That(UiQuery.FindById<Button>(hud, "Cancel").interactable, Is.False);
+            Assert.That(UiQuery.FindById<Button>(hud, "Cancel"), Is.Null);
             Assert.That(UiQuery.FindById<Button>(hud, "NextWave").interactable, Is.True);
 
             SelectSlot(session, 0);
@@ -935,7 +926,7 @@ namespace AllinDefense.Tests
             Assert.That(UiQuery.FindById<Button>(hud, "Mage").interactable, Is.True);
             Assert.That(UiQuery.FindById<Button>(hud, "Ability").interactable, Is.True);
             Assert.That(UiQuery.FindById<Button>(hud, "Pause").interactable, Is.True);
-            Assert.That(UiQuery.FindById<Button>(hud, "Cancel").interactable, Is.True);
+            Assert.That(UiQuery.FindById<Button>(hud, "Cancel"), Is.Null);
             Assert.That(UiQuery.FindById<Button>(hud, "NextWave").interactable, Is.True);
             Transform contextualChoices = UiQuery.FindById(hud, "SelectedPanel/BuildChoices");
             Assert.That(contextualChoices, Is.Not.Null);
@@ -944,6 +935,10 @@ namespace AllinDefense.Tests
             Assert.That(UiQuery.FindById(contextualChoices, "Barracks"), Is.Not.Null);
             Assert.That(UiQuery.FindById(contextualChoices, "Mage"), Is.Not.Null);
 
+            InvokePrivate(session, "CancelSelection");
+            Assert.That(contextualChoices.gameObject.activeInHierarchy, Is.False);
+            SelectSlot(session, 0);
+            InvokePrivate(session, "RefreshUi");
             int goldBeforePreview = session.Gold;
             InvokePrivate(session, "TryBuildSelected", Data.OutpostKind.Archer);
             Assert.That(session.Gold, Is.EqualTo(goldBeforePreview), "Previewing must not spend gold.");
@@ -988,7 +983,7 @@ namespace AllinDefense.Tests
 
             Assert.That(UiQuery.FindById<Button>(hud, "Ability").interactable, Is.False);
             Assert.That(UiQuery.FindById<Button>(hud, "Pause").interactable, Is.True);
-            Assert.That(UiQuery.FindById<Button>(hud, "Cancel").interactable, Is.True);
+            Assert.That(UiQuery.FindById<Button>(hud, "Cancel"), Is.Null);
 
             LogAssert.NoUnexpectedReceived();
             Object.Destroy(gameObject);
