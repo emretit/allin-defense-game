@@ -55,40 +55,76 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 60c75de6f2127498698a10372a44a8bd, type: 3}
     - {fileID: 2800000, guid: 933850c9f3add4fc3b7ba8bca8b39c88, type: 3}
     - {fileID: 2800000, guid: 0a1ba2de912d1488fad5982f61331420, type: 3}
+    - {fileID: 2800000, guid: 73adae4188580411f9fafb07482e8af3, type: 3}
+    - {fileID: 2800000, guid: 18e24327feb4f414bbb584f50ac658d5, type: 3}
+    - {fileID: 2800000, guid: 79e990471f6c7440398551552218c63c, type: 3}
+    - {fileID: 2800000, guid: 9a10757060fef44ef9bcd3d27fba882b, type: 3}
+    - {fileID: 2800000, guid: c744d1d184c0a4e1c8f49d62d77878d3, type: 3}
+    - {fileID: 2800000, guid: 4bcdafac581eb434b857b7958791913e, type: 3}
+    - {fileID: 2800000, guid: 4d6c22e7de6134548b08037394f1de6c, type: 3}
+    - {fileID: 2800000, guid: 6b4d230b3e232477e8f239b68b5712e5, type: 3}
+    - {fileID: 2800000, guid: bd858ef38072443f7805d2b3e82f1740, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
     packedSpriteRenderDataKeys:
+    - 9a10757060fef44ef9bcd3d27fba882b: 21300000
     - 137f0411915e447e9aa161139ddaaf83: 21300000
+    - 73adae4188580411f9fafb07482e8af3: 21300000
+    - c744d1d184c0a4e1c8f49d62d77878d3: 21300000
     - 56271692c10584855bf39edc4905b029: 21300000
+    - bd858ef38072443f7805d2b3e82f1740: 21300000
     - a4399d56b6e44443eb15a46596281f93: 21300000
     - 60c75de6f2127498698a10372a44a8bd: 21300000
+    - 18e24327feb4f414bbb584f50ac658d5: 21300000
+    - 79e990471f6c7440398551552218c63c: 21300000
+    - 4d6c22e7de6134548b08037394f1de6c: 21300000
     - 933850c9f3add4fc3b7ba8bca8b39c88: 21300000
+    - 6b4d230b3e232477e8f239b68b5712e5: 21300000
     - 8ced09abc30be4d1c95a3e67645a4dc4: 21300000
     - dfe5224c4b41048a781beb5c939b5e02: 21300000
+    - 4bcdafac581eb434b857b7958791913e: 21300000
     - 77904f3d96ebe4c64b8b350aa172fc60: 21300000
     - 0a1ba2de912d1488fad5982f61331420: 21300000
     - 5a9b86bf1d46e4a21956691e6c469456: 21300000
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
+  - {fileID: 21300000, guid: 9a10757060fef44ef9bcd3d27fba882b, type: 3}
   - {fileID: 21300000, guid: 137f0411915e447e9aa161139ddaaf83, type: 3}
+  - {fileID: 21300000, guid: 73adae4188580411f9fafb07482e8af3, type: 3}
+  - {fileID: 21300000, guid: c744d1d184c0a4e1c8f49d62d77878d3, type: 3}
   - {fileID: 21300000, guid: 56271692c10584855bf39edc4905b029, type: 3}
+  - {fileID: 21300000, guid: bd858ef38072443f7805d2b3e82f1740, type: 3}
   - {fileID: 21300000, guid: a4399d56b6e44443eb15a46596281f93, type: 3}
   - {fileID: 21300000, guid: 60c75de6f2127498698a10372a44a8bd, type: 3}
+  - {fileID: 21300000, guid: 18e24327feb4f414bbb584f50ac658d5, type: 3}
+  - {fileID: 21300000, guid: 79e990471f6c7440398551552218c63c, type: 3}
+  - {fileID: 21300000, guid: 4d6c22e7de6134548b08037394f1de6c, type: 3}
   - {fileID: 21300000, guid: 933850c9f3add4fc3b7ba8bca8b39c88, type: 3}
+  - {fileID: 21300000, guid: 6b4d230b3e232477e8f239b68b5712e5, type: 3}
   - {fileID: 21300000, guid: 8ced09abc30be4d1c95a3e67645a4dc4, type: 3}
   - {fileID: 21300000, guid: dfe5224c4b41048a781beb5c939b5e02, type: 3}
+  - {fileID: 21300000, guid: 4bcdafac581eb434b857b7958791913e, type: 3}
   - {fileID: 21300000, guid: 77904f3d96ebe4c64b8b350aa172fc60, type: 3}
   - {fileID: 21300000, guid: 0a1ba2de912d1488fad5982f61331420, type: 3}
   - {fileID: 21300000, guid: 5a9b86bf1d46e4a21956691e6c469456, type: 3}
   m_PackedSpriteNamesToIndex:
+  - Pill64
   - MedievalButton
+  - Rounded10
+  - SoftShadow
   - DefenderHudPanel
+  - CooldownRing
   - MedievalPanel
   - IconKeep
+  - Rounded14
+  - Rounded20
+  - GoldGradient
   - IconMage
+  - FilledCircle
   - IconAbility
   - IconBarracks
+  - VerticalGradient
   - IconGold
   - IconWave
   - IconArcher

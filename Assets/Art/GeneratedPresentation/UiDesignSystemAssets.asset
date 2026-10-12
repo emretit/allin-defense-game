@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f81fc24d9bd4493184afff249ee1ea4, type: 3}
+  m_Name: UiDesignSystemAssets
+  m_EditorClassIdentifier: DefenderChronicles.Runtime::DefenderChronicles.UI.UiDesignSystemAssets
+  regularFont: {fileID: 11400000, guid: 55ffe4fbd2df8412797e0ec01dabc31e, type: 2}
+  semiBoldFont: {fileID: 11400000, guid: e141b7207c0ca48d1b8d9ebea7254b87, type: 2}
+  boldFont: {fileID: 11400000, guid: e141b7207c0ca48d1b8d9ebea7254b87, type: 2}
+  roundedSmall: {fileID: 21300000, guid: 73adae4188580411f9fafb07482e8af3, type: 3}
+  roundedMedium: {fileID: 21300000, guid: 18e24327feb4f414bbb584f50ac658d5, type: 3}
+  roundedCard: {fileID: 21300000, guid: 79e990471f6c7440398551552218c63c, type: 3}
+  pill: {fileID: 21300000, guid: 9a10757060fef44ef9bcd3d27fba882b, type: 3}
+  softShadow: {fileID: 21300000, guid: c744d1d184c0a4e1c8f49d62d77878d3, type: 3}
+  verticalGradient: {fileID: 21300000, guid: 4bcdafac581eb434b857b7958791913e, type: 3}
+  goldGradient: {fileID: 21300000, guid: 4d6c22e7de6134548b08037394f1de6c, type: 3}
+  filledCircle: {fileID: 21300000, guid: 6b4d230b3e232477e8f239b68b5712e5, type: 3}
+  cooldownRing: {fileID: 21300000, guid: bd858ef38072443f7805d2b3e82f1740, type: 3}

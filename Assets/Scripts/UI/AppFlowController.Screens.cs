@@ -19,7 +19,7 @@ namespace DefenderChronicles.UI
             var brand = CreateBrandImage("Brand Logo", root, theme.brandLogo);
             SetAnchors((RectTransform)brand.transform, new Vector2(0, 1), Vector2.one,
                 new Vector2(Edge, -260), new Vector2(-Edge, -16));
-            var profile = CreatePanel("Profile Crest", root, new Color(.02f, .04f, .07f, .62f));
+            var profile = CreatePanel("Profile Crest", root, UiTokens.ProfileSurface);
             SetAnchors((RectTransform)profile.transform, new Vector2(0, 1), Vector2.one,
                 new Vector2(Edge, -400), new Vector2(-Edge - 156, -264));
             var mark = CreateBrandImage("Profile Brand Mark", profile.transform, theme.brandMark);
@@ -31,14 +31,14 @@ namespace DefenderChronicles.UI
             profile.GetComponent<Image>().raycastTarget = true;
             profileButton.targetGraphic = profile.GetComponent<Image>();
             profileButton.onClick.AddListener(() => ShowScreen(AppScreen.Login));
-            var settings = CreateButton("Settings", root, "AYAR", new Vector2(140, 136), theme.night, OpenSettings);
+            var settings = CreateButton("Settings", root, FrontendCopy.SettingsButton, new Vector2(140, 136), theme.night, OpenSettings);
             SetRect((RectTransform)settings.transform, new Vector2(-Edge, -264), new Vector2(140, 136), TopRight(), TopRight());
 
-            var card = CreatePanel("Continue Chronicle", root, new Color(theme.panel.r, theme.panel.g, theme.panel.b, .9f));
+            var card = CreatePanel("Continue Chronicle", root, UiTokens.WithAlpha(theme.panel, .9f));
             AddCardAccent(card.transform, theme.commandGold);
             SetAnchors((RectTransform)card.transform, Vector2.zero, new Vector2(1, 0),
                 new Vector2(Edge, 212), new Vector2(-Edge, 700));
-            var title = CreateText("Callout", card.transform, "SAVUNMA HATTI\nSENİ BEKLİYOR", 48,
+            var title = CreateText("Callout", card.transform, FrontendCopy.MainMenuCallout, 48,
                 catalog.titleFont, FontStyles.Bold, TextAlignmentOptions.Left, theme.textPrimary);
             SetAnchors(title.rectTransform, new Vector2(0, 1), Vector2.one, new Vector2(32, -152), new Vector2(-32, -20));
             continueDetails = CreateText("Continue Details", card.transform, "", 34, catalog.bodyFont,
@@ -47,7 +47,7 @@ namespace DefenderChronicles.UI
             continueButton = CreateButton("Continue", card.transform, GameLocalization.Text("DEVAM ET  ›", "CONTINUE  ›"),
                 new Vector2(800, TouchHeight), theme.commandGold, ContinueCampaign);
             SetAnchors((RectTransform)continueButton.transform, Vector2.zero, new Vector2(1, 0), new Vector2(28, 26), new Vector2(-28, 166));
-            var map = CreateButton("Campaign", root, "KRALLIK HARİTASI", new Vector2(800, TouchHeight), theme.defenderBlue, OpenCampaign);
+            var map = CreateButton("Campaign", root, FrontendCopy.RealmMap, new Vector2(800, TouchHeight), theme.defenderBlue, OpenCampaign);
             SetAnchors((RectTransform)map.transform, Vector2.zero, new Vector2(1, 0), new Vector2(Edge, 40), new Vector2(-Edge, 180));
             BuildGuestImportAction();
             RefreshProfile();
@@ -56,7 +56,7 @@ namespace DefenderChronicles.UI
         private void BuildCampaignScreen()
         {
             Transform root = screens[AppScreen.Campaign].transform;
-            CreateHeader(root, "KRALLIK HARİTASI", "", () => ShowScreen(AppScreen.MainMenu));
+            CreateHeader(root, FrontendCopy.RealmMap, "", () => ShowScreen(AppScreen.MainMenu));
             var tabs = new GameObject("Region Tabs", typeof(RectTransform), typeof(HorizontalLayoutGroup));
             tabs.transform.SetParent(root, false);
             SetAnchors((RectTransform)tabs.transform, new Vector2(0, 1), Vector2.one,
@@ -76,7 +76,7 @@ namespace DefenderChronicles.UI
             campaignScroll.horizontal = true; campaignScroll.vertical = false;
             campaignScroll.movementType = ScrollRect.MovementType.Clamped;
             campaignScroll.decelerationRate = .06f;
-            var viewport = CreateImage("Viewport", scroll.transform, new Color(0, 0, 0, .02f));
+            var viewport = CreateImage("Viewport", scroll.transform, UiTokens.ViewportScrim);
             viewport.GetComponent<Image>().raycastTarget = true;
             Stretch((RectTransform)viewport.transform);
             viewport.AddComponent<RectMask2D>();
@@ -98,7 +98,7 @@ namespace DefenderChronicles.UI
                 if (navigationState.Region != current) { navigationState.Region = current; UpdateRegionTabs(); }
             });
 
-            var panel = CreatePanel("Selection Bar", root, new Color(theme.panel.r, theme.panel.g, theme.panel.b, .96f));
+            var panel = CreatePanel("Selection Bar", root, UiTokens.WithAlpha(theme.panel, .96f));
             AddCardAccent(panel.transform, theme.commandGold);
             selectedLevelTitle = CreateText("Selected Level", panel.transform, "", 38, catalog.titleFont,
                 FontStyles.Bold, TextAlignmentOptions.Left, theme.textPrimary);
@@ -108,10 +108,10 @@ namespace DefenderChronicles.UI
                 FontStyles.Normal, TextAlignmentOptions.Left, theme.textPrimary);
             briefingReward = CreateText("Briefing Reward", panel.transform, "", 32, catalog.bodyFont,
                 FontStyles.Normal, TextAlignmentOptions.Left, theme.commandGold);
-            var preview = CreatePanel("Tactical Preview", panel.transform, new Color(.015f, .035f, .055f, .82f));
+            var preview = CreatePanel("Tactical Preview", panel.transform, UiTokens.TacticalSurface);
             preview.GetComponent<Image>().raycastTarget = false;
             tacticalMapPreview = preview.AddComponent<FrontendTacticalMapPreview>();
-            playSelectedButton = CreateButton("Play Selected", panel.transform, "SAVUNMAYI BAŞLAT",
+            playSelectedButton = CreateButton("Play Selected", panel.transform, FrontendCopy.StartDefence,
                 new Vector2(700, TouchHeight), theme.commandGold, StartSelectedLevel);
             root.gameObject.AddComponent<FrontendResponsiveLayout>().Configure(size => LayoutCampaign(size, (RectTransform)scroll.transform, (RectTransform)panel.transform));
             selectedLevelTitle.enableAutoSizing = true;
@@ -157,7 +157,7 @@ namespace DefenderChronicles.UI
             vertical.Pages = campaignScroll;
             vertical.horizontal = false; vertical.vertical = true;
             vertical.movementType = ScrollRect.MovementType.Clamped;
-            var viewport = CreateImage("Route Viewport", page.transform, new Color(.02f, .04f, .07f, .10f));
+            var viewport = CreateImage("Route Viewport", page.transform, UiTokens.RouteViewport);
             viewport.GetComponent<Image>().raycastTarget = true;
             Stretch((RectTransform)viewport.transform); viewport.AddComponent<RectMask2D>();
             var route = new GameObject("Route Content", typeof(RectTransform));
@@ -205,7 +205,7 @@ namespace DefenderChronicles.UI
             var lines = new RectTransform[region.levels.Count - 1];
             for (int i = 0; i < lines.Length; i++)
             {
-                var line = CreateImage("Route", route.transform, new Color(.56f, .72f, .62f, .65f));
+                var line = CreateImage("Route", route.transform, UiTokens.RouteLine);
                 lines[i] = (RectTransform)line.transform;
             }
             for (int i = 0; i < region.levels.Count; i++)
@@ -248,25 +248,25 @@ namespace DefenderChronicles.UI
             Transform root = screens[AppScreen.Welcome].transform;
             var brand = CreateBrandImage("Welcome Brand Logo", root, theme.brandLogo);
             SetAnchors((RectTransform)brand.transform, new Vector2(.1f, .65f), new Vector2(.9f, .97f), Vector2.zero, Vector2.zero);
-            var card = CreatePanel("Welcome Chronicle", root, new Color(theme.panel.r, theme.panel.g, theme.panel.b, .9f));
+            var card = CreatePanel("Welcome Chronicle", root, UiTokens.WithAlpha(theme.panel, .9f));
             AddCardAccent(card.transform, theme.commandGold);
             SetAnchors((RectTransform)card.transform, Vector2.zero, new Vector2(1, 0), new Vector2(Edge, 36), new Vector2(-Edge, 746));
-            var eyebrow = CreateText("Eyebrow", card.transform, "GREENWATCH  •  SINIR SEFERİ", 30, catalog.titleFont,
+            var eyebrow = CreateText("Eyebrow", card.transform, FrontendCopy.WelcomeEyebrow, 30, catalog.titleFont,
                 FontStyles.Bold, TextAlignmentOptions.Center, theme.commandGold);
             SetAnchors(eyebrow.rectTransform, new Vector2(0, 1), Vector2.one, new Vector2(24, -88), new Vector2(-24, -26));
             var subtitle = CreateText("Subtitle", card.transform,
-                "Greenwatch Kalesi kuşatma altında.\nSavunma hattını kur. Şafağa kadar dayan.", 32,
+                FrontendCopy.WelcomeDescription, 32,
                 catalog.bodyFont, FontStyles.Normal, TextAlignmentOptions.Center, theme.textPrimary);
             SetAnchors(subtitle.rectTransform, new Vector2(0, 1), Vector2.one, new Vector2(28, -238), new Vector2(-28, -98));
             var start = CreateButton("Start", card.transform, GameLocalization.Text("OYUNA BAŞLA  ›", "PLAY NOW  ›"), new Vector2(700, 140),
                 theme.commandGold, () => LaunchCampaignLevel(1));
             SetAnchors((RectTransform)start.transform, Vector2.zero, new Vector2(1, 0), new Vector2(28, 286), new Vector2(-28, 426));
-            var account = CreateButton("Link Account", card.transform, "HESABINI BAĞLA", new Vector2(700, 140), theme.defenderBlue,
+            var account = CreateButton("Link Account", card.transform, FrontendCopy.LinkAccount, new Vector2(700, 140), theme.defenderBlue,
                 () => ShowScreen(AppScreen.Login));
             account.gameObject.SetActive(false);
             SetAnchors((RectTransform)account.transform, Vector2.zero, new Vector2(1, 0), new Vector2(28, 128), new Vector2(-28, 268));
             var note = CreateText("Guest Note", card.transform,
-                "Misafir ilerlemen bu cihazda saklanır; hesabını daha sonra bağlayabilirsin.", 27, catalog.bodyFont,
+                FrontendCopy.GuestNote, 27, catalog.bodyFont,
                 FontStyles.Normal, TextAlignmentOptions.Center, theme.textMuted);
             SetAnchors(note.rectTransform, Vector2.zero, new Vector2(1, 0), new Vector2(28, 18), new Vector2(-28, 110));
         }
@@ -274,7 +274,7 @@ namespace DefenderChronicles.UI
         private void BuildLoginScreen()
         {
             Transform root = screens[AppScreen.Login].transform;
-            var scrim = CreateImage("Account Scrim", root, new Color(0, 0, 0, .52f));
+            var scrim = CreateImage("Account Scrim", root, UiTokens.AccountScrim);
             Stretch((RectTransform)scrim.transform);
             var card = CreatePanel("Account Chronicle", root, theme.panel);
             AddCardAccent(card.transform, theme.defenderBlue);
@@ -282,25 +282,25 @@ namespace DefenderChronicles.UI
                 SetRect((RectTransform)card.transform, Vector2.zero, new Vector2(Mathf.Min(size.x - 88, 1100), Mathf.Min(size.y - 60, 1320)), Center(), Center()));
             var close = CreateButton("Back", card.transform, "×", new Vector2(140, 140), theme.night, ReturnFromAccount);
             SetRect((RectTransform)close.transform, new Vector2(-20, -20), new Vector2(140, 140), TopRight(), TopRight());
-            var title = CreateText("Heading", card.transform, "İLERLEMENİ KORU", 38, catalog.titleFont,
+            var title = CreateText("Heading", card.transform, FrontendCopy.ProtectProgress, 38, catalog.titleFont,
                 FontStyles.Bold, TextAlignmentOptions.Left, theme.textPrimary);
             SetAnchors(title.rectTransform, new Vector2(0, 1), Vector2.one, new Vector2(32, -154), new Vector2(-184, -28));
             var explanation = CreateText("Account Explanation", card.transform,
-                "Misafir olarak hemen oynayabilir veya ilerlemeni cihazlar arasında taşımak için hesabını bağlayabilirsin.",
+                FrontendCopy.AccountDescription,
                 30, catalog.bodyFont, FontStyles.Normal, TextAlignmentOptions.Left, theme.textMuted);
             SetAnchors(explanation.rectTransform, new Vector2(0, 1), Vector2.one, new Vector2(32, -338), new Vector2(-32, -184));
-            var guest = CreateButton("Guest Sign In", card.transform, "MİSAFİR OLARAK BAŞLA", new Vector2(700, 140), theme.commandGold, SignInAsGuest);
+            var guest = CreateButton("Guest Sign In", card.transform, FrontendCopy.StartAsGuest, new Vector2(700, 140), theme.commandGold, SignInAsGuest);
             SetAnchors((RectTransform)guest.transform, new Vector2(0, 1), Vector2.one, new Vector2(32, -518), new Vector2(-32, -378));
-            var link = CreateButton("Player Account Sign In", card.transform, "HESABINI BAĞLA", new Vector2(700, 140), theme.defenderBlue,
+            var link = CreateButton("Player Account Sign In", card.transform, FrontendCopy.LinkAccount, new Vector2(700, 140), theme.defenderBlue,
                 () => RequestExternalSignIn(PlayerAuthProvider.PlayerAccount));
             SetAnchors((RectTransform)link.transform, new Vector2(0, 1), Vector2.one, new Vector2(32, -684), new Vector2(-32, -544));
             loginStatus = CreateText("Login Status", card.transform, "", 34, catalog.bodyFont, FontStyles.Normal,
                 TextAlignmentOptions.Center, theme.commandGold);
             SetAnchors(loginStatus.rectTransform, new Vector2(0, 1), Vector2.one, new Vector2(32, -834), new Vector2(-32, -708));
-            var privacy = CreateButton("Privacy Policy", card.transform, "GİZLİLİK POLİTİKASI", new Vector2(700, 140), theme.night,
+            var privacy = CreateButton("Privacy Policy", card.transform, FrontendCopy.PrivacyPolicy, new Vector2(700, 140), theme.night,
                 () => OpenLegalUrl(theme.privacyPolicyUrl, "Gizlilik Politikası"));
             SetAnchors((RectTransform)privacy.transform, Vector2.zero, new Vector2(1, 0), new Vector2(32, 188), new Vector2(-32, 328));
-            var terms = CreateButton("Terms Of Service", card.transform, "KULLANIM KOŞULLARI", new Vector2(700, 140), theme.night,
+            var terms = CreateButton("Terms Of Service", card.transform, FrontendCopy.TermsOfService, new Vector2(700, 140), theme.night,
                 () => OpenLegalUrl(theme.termsOfServiceUrl, "Kullanım Koşulları"));
             SetAnchors((RectTransform)terms.transform, Vector2.zero, new Vector2(1, 0), new Vector2(32, 28), new Vector2(-32, 168));
         }
@@ -310,14 +310,14 @@ namespace DefenderChronicles.UI
             settingsModal = new GameObject("Settings Modal", typeof(RectTransform));
             settingsModal.transform.SetParent(screens[AppScreen.MainMenu].transform.parent, false);
             Stretch((RectTransform)settingsModal.transform);
-            var scrim = CreateImage("Settings Scrim", settingsModal.transform, new Color(0, 0, 0, .7f));
+            var scrim = CreateImage("Settings Scrim", settingsModal.transform, UiTokens.SettingsScrim);
             Stretch((RectTransform)scrim.transform);
             scrim.GetComponent<Image>().raycastTarget = true;
             scrim.AddComponent<Button>().onClick.AddListener(CloseSettings);
             var card = CreatePanel("Settings Chronicle", settingsModal.transform, theme.panel);
             card.GetComponent<Image>().raycastTarget = true;
             Stretch((RectTransform)card.transform, new Vector2(Edge, 30), new Vector2(-Edge, -30));
-            var title = CreateText("Settings Title", card.transform, "AYARLAR", 44, catalog.titleFont, FontStyles.Bold,
+            var title = CreateText("Settings Title", card.transform, FrontendCopy.SettingsTitle, 44, catalog.titleFont, FontStyles.Bold,
                 TextAlignmentOptions.Left, theme.textPrimary);
             SetAnchors(title.rectTransform, new Vector2(0, 1), Vector2.one, new Vector2(32, -110), new Vector2(-32, -22));
             var scrollRoot = new GameObject("Settings Scroll", typeof(RectTransform), typeof(ScrollRect));
@@ -340,31 +340,31 @@ namespace DefenderChronicles.UI
                 () => FrontendPreferences.Language = GameLanguage.English);
             SetAnchors((RectTransform)turkishLanguageButton.transform, new Vector2(0, 1), new Vector2(.5f, 1), new Vector2(4, -146), new Vector2(-10, -6));
             SetAnchors((RectTransform)englishLanguageButton.transform, new Vector2(.5f, 1), Vector2.one, new Vector2(10, -146), new Vector2(-4, -6));
-            CreateSliderRow(body.transform, "MÜZİK", new Vector2(0, -180), FrontendPreferences.MusicVolume, value =>
+            CreateSliderRow(body.transform, "MÜZİK Row", FrontendCopy.Music, new Vector2(0, -180), FrontendPreferences.MusicVolume, value =>
             {
                 FrontendPreferences.MusicVolume = value;
             });
-            CreateSliderRow(body.transform, "EFEKTLER", new Vector2(0, -346), FrontendPreferences.SfxVolume, value =>
+            CreateSliderRow(body.transform, "EFEKTLER Row", FrontendCopy.Effects, new Vector2(0, -346), FrontendPreferences.SfxVolume, value =>
             {
                 FrontendPreferences.SfxVolume = value;
                 ApplyStoredAudioPreferences();
             });
-            CreateToggleRow(body.transform, "TİTREŞİM", new Vector2(0, -512), FrontendPreferences.Haptics, value => FrontendPreferences.Haptics = value);
-            CreateToggleRow(body.transform, "KAMERA SARSINTISI", new Vector2(0, -678), FrontendPreferences.CameraShake, value => FrontendPreferences.CameraShake = value);
-            CreateToggleRow(body.transform, "AZALTILMIŞ HAREKET", new Vector2(0, -844), FrontendPreferences.ReducedMotion, value => FrontendPreferences.ReducedMotion = value);
-            var heroName = CreateButton("Settings Hero", body.transform, "KAHRAMANIM", new Vector2(700, 140), theme.defenderBlue, OpenHeroName);
+            CreateToggleRow(body.transform, "TİTREŞİM Row", FrontendCopy.Haptics, new Vector2(0, -512), FrontendPreferences.Haptics, value => FrontendPreferences.Haptics = value);
+            CreateToggleRow(body.transform, "KAMERA SARSINTISI Row", FrontendCopy.CameraShake, new Vector2(0, -678), FrontendPreferences.CameraShake, value => FrontendPreferences.CameraShake = value);
+            CreateToggleRow(body.transform, "AZALTILMIŞ HAREKET Row", FrontendCopy.ReducedMotion, new Vector2(0, -844), FrontendPreferences.ReducedMotion, value => FrontendPreferences.ReducedMotion = value);
+            var heroName = CreateButton("Settings Hero", body.transform, FrontendCopy.MyHero, new Vector2(700, 140), theme.defenderBlue, OpenHeroName);
             SetAnchors((RectTransform)heroName.transform, new Vector2(0, 1), Vector2.one, new Vector2(4, -1174), new Vector2(-4, -1034));
-            var account = CreateButton("Settings Account", body.transform, "HESAP YÖNETİMİ", new Vector2(700, 140), theme.defenderBlue,
+            var account = CreateButton("Settings Account", body.transform, FrontendCopy.AccountManagement, new Vector2(700, 140), theme.defenderBlue,
                 () => { CloseSettings(); ShowScreen(AppScreen.Login); });
             SetAnchors((RectTransform)account.transform, new Vector2(0, 1), Vector2.one, new Vector2(4, -1340), new Vector2(-4, -1200));
-            var done = CreateButton("Close Settings", card.transform, "TAMAM", new Vector2(700, 140), theme.commandGold, CloseSettings);
+            var done = CreateButton("Close Settings", card.transform, FrontendCopy.Done, new Vector2(700, 140), theme.commandGold, CloseSettings);
             SetAnchors((RectTransform)done.transform, Vector2.zero, new Vector2(1, 0), new Vector2(28, 26), new Vector2(-28, 166));
             settingsModal.SetActive(false);
         }
 
-        private void CreateSliderRow(Transform parent, string label, Vector2 position, float value, Action<float> changed)
+        private void CreateSliderRow(Transform parent, string rowName, LocalizedCopy label, Vector2 position, float value, Action<float> changed)
         {
-            var row = CreatePanel(label + " Row", parent, theme.panelRaised);
+            var row = CreatePanel(rowName, parent, theme.panelRaised);
             SetAnchors((RectTransform)row.transform, new Vector2(0, 1), Vector2.one, new Vector2(4, position.y - 140), new Vector2(-4, position.y));
             var text = CreateText("Label", row.transform, label, 30, catalog.bodyFont, FontStyles.Bold, TextAlignmentOptions.Left, theme.textPrimary);
             SetAnchors(text.rectTransform, Vector2.zero, new Vector2(.42f, 1), new Vector2(20, 8), new Vector2(-8, -8));
@@ -386,9 +386,9 @@ namespace DefenderChronicles.UI
             slider.SetValueWithoutNotify(value); slider.onValueChanged.AddListener(v => changed(v));
         }
 
-        private void CreateToggleRow(Transform parent, string label, Vector2 position, bool value, Action<bool> changed)
+        private void CreateToggleRow(Transform parent, string rowName, LocalizedCopy label, Vector2 position, bool value, Action<bool> changed)
         {
-            var row = CreatePanel(label + " Row", parent, theme.panelRaised);
+            var row = CreatePanel(rowName, parent, theme.panelRaised);
             SetAnchors((RectTransform)row.transform, new Vector2(0, 1), Vector2.one, new Vector2(4, position.y - 140), new Vector2(-4, position.y));
             row.GetComponent<Image>().raycastTarget = true;
             var text = CreateText("Label", row.transform, label, 30, catalog.bodyFont, FontStyles.Bold, TextAlignmentOptions.Left, theme.textPrimary);

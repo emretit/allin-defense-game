@@ -54,6 +54,15 @@ EditMode:
 
 PlayMode için `-testPlatform PlayMode` kullanılır.
 
+HUD builder değişikliklerini uygulamak için Unity menüsünde `Defender Chronicles > Regenerate HUD Prefab`
+komutunu açıkça çalıştırın. Normal presentation build mevcut HUD prefabını korur. Aynı yeniden üretim
+komutu batchmode'da `-executeMethod DefenderChronicles.Editor.DefenderPresentationAssetBuilder.RegenerateHudPrefab`
+ile çağrılabilir; mevcut prefab GUID'i korunur.
+
+Menü etiketleri `FrontendCopy` içindeki sabit kimlikli TR/EN çiftlerinden alınır. Metin değişikliği bu
+katalogda yapılır; `CreateText` çeviriyi Türkçe metne göre aramaz. Testlerin kullandığı nesne adları,
+özellikle ayar satırı adları, görünür etiketten bağımsız tutulur.
+
 Doğrulanan sonuçların güncel denetim özeti: [UNITY_AUDIT_REMEDIATION_2026-08-27.md](/Users/emreaydin/DefenderChronicles/docs/UNITY_AUDIT_REMEDIATION_2026-08-27.md).
 
 Önceki fiziksel iOS kabul sonuçları (16 Ağustos 2026):

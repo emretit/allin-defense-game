@@ -61,7 +61,7 @@ namespace DefenderChronicles.UI
                     RouteSegmentCount++;
                 }
                 CreateMarker($"Entrance {routeIndex + 1}", Project(route[0], bounds), new Vector2(24f, 24f),
-                    new Color(0.92f, 0.30f, 0.20f, 1f), 45f);
+                    UiTokens.Danger, 45f);
                 CreateNumber(routeIndex + 1, Project(route[0], bounds));
                 EntranceMarkerCount++;
             }
@@ -71,7 +71,7 @@ namespace DefenderChronicles.UI
                 for (int index = 0; index < map.outpostSlots.Length; index++)
                 {
                     CreateMarker($"Tower Slot {index + 1}", Project(map.outpostSlots[index], bounds),
-                        new Vector2(14f, 14f), new Color(0.35f, 0.82f, 1f, 1f), 0f);
+                        new Vector2(14f, 14f), UiTokens.Moon, 0f);
                     SlotMarkerCount++;
                 }
             }
@@ -79,7 +79,7 @@ namespace DefenderChronicles.UI
             Vector3[] primary = map.PrimaryRoute;
             if (primary.Length > 0)
                 CreateMarker("Keep", Project(primary[^1], bounds), new Vector2(28f, 28f),
-                    new Color(1f, 0.77f, 0.28f, 1f), 0f);
+                    UiTokens.Gold, 0f);
         }
 
         private static Rect CalculateWorldBounds(MapDefinition definition)

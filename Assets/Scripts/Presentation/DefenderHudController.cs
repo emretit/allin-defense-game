@@ -143,20 +143,20 @@ namespace DefenderChronicles.Presentation
         private static int MageCost => TowerProgression.Base(OutpostKind.Mage).cost;
 
         private static readonly Color RailTint = Color.clear;
-        private static readonly Color PanelTint = new(0.024f, 0.052f, 0.082f, 0.94f);
-        private static readonly Color ButtonReadyTint = new(0.060f, 0.145f, 0.225f, 0.90f);
-        private static readonly Color ButtonPressedTint = new(0.145f, 0.34f, 0.48f, 1f);
-        private static readonly Color ButtonDisabledTint = new(0.026f, 0.042f, 0.058f, 0.72f);
-        private static readonly Color TextPrimary = new(0.96f, 0.94f, 0.86f, 1f);
-        private static readonly Color TextMuted = new(0.62f, 0.68f, 0.72f, 1f);
-        private static readonly Color GoldAccent = new(1f, 0.77f, 0.28f, 1f);
-        private static readonly Color KeepAccent = new(1f, 0.37f, 0.25f, 1f);
-        private static readonly Color WaveAccent = new(0.48f, 0.82f, 1f, 1f);
-        private static readonly Color ReadyAccent = new(0.34f, 0.96f, 0.68f, 1f);
-        private static readonly Color DisabledAccent = new(0.86f, 0.30f, 0.24f, 1f);
-        private static readonly Color ArcherAccent = new(0.96f, 0.72f, 0.28f, 1f);
-        private static readonly Color BarracksAccent = new(0.70f, 0.78f, 0.86f, 1f);
-        private static readonly Color MageAccent = new(0.62f, 0.84f, 1f, 1f);
+        private static readonly Color PanelTint = UiTokens.HudPanel;
+        private static readonly Color ButtonReadyTint = UiTokens.HudButtonReady;
+        private static readonly Color ButtonPressedTint = UiTokens.HudButtonPressed;
+        private static readonly Color ButtonDisabledTint = UiTokens.HudButtonDisabled;
+        private static readonly Color TextPrimary = UiTokens.TextPrimary;
+        private static readonly Color TextMuted = UiTokens.TextSecondary;
+        private static readonly Color GoldAccent = UiTokens.Gold;
+        private static readonly Color KeepAccent = UiTokens.Danger;
+        private static readonly Color WaveAccent = UiTokens.Moon;
+        private static readonly Color ReadyAccent = UiTokens.Success;
+        private static readonly Color DisabledAccent = UiTokens.Danger;
+        private static readonly Color ArcherAccent = UiTokens.Gold;
+        private static readonly Color BarracksAccent = UiTokens.TextSecondary;
+        private static readonly Color MageAccent = UiTokens.Moon;
 
         private UiCopyCatalog copy;
         private TMP_Text goldText;
@@ -348,8 +348,7 @@ namespace DefenderChronicles.Presentation
             if (previewChromeImage != null)
             {
                 Color accent = boss ? KeepAccent : upcoming ? GoldAccent : WaveAccent;
-                previewChromeImage.color = new Color(0.025f + accent.r * 0.10f,
-                    0.045f + accent.g * 0.10f, 0.065f + accent.b * 0.10f, 0.88f);
+                previewChromeImage.color = UiTokens.PreviewSurface(accent);
                 previewChromeImage.gameObject.SetActive(!string.IsNullOrWhiteSpace(body));
             }
         }
@@ -405,7 +404,7 @@ namespace DefenderChronicles.Presentation
         {
             resultPanel.SetActive(true);
             resultTitle.text = copy.Get(victory ? UiTextKey.Victory : UiTextKey.Defeat);
-            resultTitle.color = victory ? new Color(1f, 0.74f, 0.18f) : new Color(1f, 0.32f, 0.22f);
+            resultTitle.color = victory ? UiTokens.Gold : UiTokens.Danger;
             if (resultBadgeText != null)
             {
                 resultBadgeText.text = victory ? GameLocalization.Text("SONUÇ", "RESULT") : GameLocalization.Text("KRİTİK", "CRITICAL");
@@ -417,13 +416,13 @@ namespace DefenderChronicles.Presentation
                 resultHintText.text = victory
                     ? GameLocalization.Text("Greenwatch savunması geceyi atlattı. Bir sonraki kuşatmaya hazırlan.", "Greenwatch held through the night. Prepare for the next siege.")
                     : GameLocalization.Text("Kale düştü. Savunma düzenini güçlendir ve kuşatmayı yeniden başlat.", "The keep fell. Adjust your defence and try again.");
-                resultHintText.color = victory ? TextMuted : new Color(0.92f, 0.74f, 0.72f, 1f);
+                resultHintText.color = victory ? TextMuted : UiTokens.DefeatText;
             }
 
             if (resultCardImage != null)
             {
                 Color accent = victory ? GoldAccent : KeepAccent;
-                resultCardImage.color = new Color(accent.r * 0.10f, accent.g * 0.10f, accent.b * 0.10f, 0.96f);
+                resultCardImage.color = UiTokens.TintSurface(accent, 0.10f, 0.96f);
             }
 
             CanvasGroup group = resultPanel.GetComponent<CanvasGroup>();
@@ -438,14 +437,14 @@ namespace DefenderChronicles.Presentation
             mageButton.interactable = mage;
             SetBuildButtonState(archerButton, BuildButtonSpec(copy.Get(UiTextKey.Archer), ArcherCost, archer, GoldAccent));
             SetBuildButtonState(barracksButton, BuildButtonSpec(copy.Get(UiTextKey.Barracks), BarracksCost, barracks, WaveAccent));
-            SetBuildButtonState(mageButton, BuildButtonSpec(copy.Get(UiTextKey.Mage), MageCost, mage, new Color(0.74f, 0.47f, 1f, 1f)));
+            SetBuildButtonState(mageButton, BuildButtonSpec(copy.Get(UiTextKey.Mage), MageCost, mage, UiTokens.Violet));
         }
 
         public void SetBuildAvailability(bool slotSelected, int gold)
         {
             ApplyBuildButtonState(archerButton, copy.Get(UiTextKey.Archer), ArcherCost, slotSelected, gold, GoldAccent);
             ApplyBuildButtonState(barracksButton, copy.Get(UiTextKey.Barracks), BarracksCost, slotSelected, gold, WaveAccent);
-            ApplyBuildButtonState(mageButton, copy.Get(UiTextKey.Mage), MageCost, slotSelected, gold, new Color(0.74f, 0.47f, 1f, 1f));
+            ApplyBuildButtonState(mageButton, copy.Get(UiTextKey.Mage), MageCost, slotSelected, gold, UiTokens.Violet);
             var session = GameSessionController.Instance;
             if (session != null)
                 foreach (var pair in new[] { (barracksButton, OutpostKind.Barracks), (mageButton, OutpostKind.Mage) })
@@ -482,7 +481,7 @@ namespace DefenderChronicles.Presentation
         {
             SetBuildButtonState(archerButton, BuildButtonSpec(copy.Get(UiTextKey.Archer), ArcherCost, true, GoldAccent));
             SetBuildButtonState(barracksButton, BuildButtonSpec(copy.Get(UiTextKey.Barracks), BarracksCost, true, WaveAccent));
-            SetBuildButtonState(mageButton, BuildButtonSpec(copy.Get(UiTextKey.Mage), MageCost, true, new Color(0.74f, 0.47f, 1f, 1f)));
+            SetBuildButtonState(mageButton, BuildButtonSpec(copy.Get(UiTextKey.Mage), MageCost, true, UiTokens.Violet));
             SetButtonLabel(abilityButton, $"{HeroIdentity.DefaultName}\n{copy.Get(UiTextKey.AbilityReady)}");
             SetButtonLabel(cancelButton, copy.Get(UiTextKey.Cancel));
             SetButtonLabel(upgradeButton, copy.Get(UiTextKey.Upgrade));
@@ -536,8 +535,8 @@ namespace DefenderChronicles.Presentation
             StylePanel("TopBar", RailTint, true);
             StylePanel("BottomBar", RailTint, true);
             StylePanel("SelectedPanel", PanelTint, false);
-            StylePanel("ResultPanel", new Color(0.005f, 0.012f, 0.02f, 0.90f), false);
-            StyleImage(selectedHeaderImage, new Color(0.055f, 0.11f, 0.16f, 0.98f), frame: false);
+            StylePanel("ResultPanel", UiTokens.HudResultSurface, false);
+            StyleImage(selectedHeaderImage, UiTokens.HudHeader, frame: false);
 
             StyleText(goldText, 36f, GoldAccent, FontStyles.Bold);
             StyleText(livesText, 36f, TextPrimary, FontStyles.Bold);
@@ -582,7 +581,7 @@ namespace DefenderChronicles.Presentation
             pauseOverlayHintText.overflowMode = TextOverflowModes.Overflow;
             StyleButton(archerButton, GoldAccent);
             StyleButton(barracksButton, WaveAccent);
-            StyleButton(mageButton, new Color(0.74f, 0.47f, 1f, 1f));
+            StyleButton(mageButton, UiTokens.Violet);
             StyleButton(abilityButton, ReadyAccent);
             TMP_Text heroButtonLabel = abilityButton.GetComponentInChildren<TMP_Text>(true);
             heroButtonLabel.fontSizeMin = 16f;
@@ -745,9 +744,7 @@ namespace DefenderChronicles.Presentation
             }
 
             if (phaseChromeImage != null)
-                phaseChromeImage.color = new Color(spec.accent.r * (0.15f + spec.pulseAlpha * 0.05f),
-                    spec.accent.g * (0.15f + spec.pulseAlpha * 0.05f),
-                    spec.accent.b * (0.15f + spec.pulseAlpha * 0.05f), 0.86f);
+                phaseChromeImage.color = UiTokens.TintSurface(spec.accent, .15f + spec.pulseAlpha * .05f, .86f);
             if (phaseStripeImage != null)
             {
                 phaseStripeImage.color = spec.accent;
@@ -846,7 +843,7 @@ namespace DefenderChronicles.Presentation
                 button.targetGraphic.color = spec.state switch
                 {
                     BuildButtonAvailabilityState.Affordable => ButtonReadyTint,
-                    BuildButtonAvailabilityState.NoSlot => new Color(0.040f, 0.068f, 0.090f, 0.78f),
+                    BuildButtonAvailabilityState.NoSlot => UiTokens.BuildNoSlot,
                     _ => ButtonDisabledTint
                 };
             }
@@ -922,8 +919,8 @@ namespace DefenderChronicles.Presentation
             if (abilityCooldownFillImage != null)
             {
                 abilityCooldownFillImage.gameObject.SetActive(hero.IsAlive && !ready);
-                abilityCooldownFillImage.color = Color.Lerp(new Color(0.10f, 0.18f, 0.26f, 0.72f),
-                    new Color(0.28f, 0.75f, 0.58f, 0.34f), cooldownProgress);
+                abilityCooldownFillImage.color = Color.Lerp(UiTokens.CooldownStart,
+                    UiTokens.CooldownEnd, cooldownProgress);
                 float fillHeight = Mathf.Lerp(0f, 56f, cooldownProgress);
                 abilityCooldownFillImage.rectTransform.offsetMin = new Vector2(8f, 8f);
                 abilityCooldownFillImage.rectTransform.offsetMax = new Vector2(-8f, 8f + fillHeight);
@@ -935,24 +932,24 @@ namespace DefenderChronicles.Presentation
                 float pulse = FrontendPreferences.ReducedMotion
                     ? 0.28f
                     : 0.20f + 0.16f * (0.5f + 0.5f * Mathf.Sin(Time.unscaledTime * 4.6f));
-                abilityReadyGlowImage.color = new Color(ReadyAccent.r, ReadyAccent.g, ReadyAccent.b, ready ? pulse : 0f);
+                abilityReadyGlowImage.color = UiTokens.WithAlpha(ReadyAccent, ready ? pulse : 0f);
             }
 
             if (abilityBlockedVeilImage != null)
             {
                 abilityBlockedVeilImage.gameObject.SetActive(blocked);
                 abilityBlockedVeilImage.color = !hero.IsAlive
-                    ? new Color(KeepAccent.r * 0.26f, KeepAccent.g * 0.26f, KeepAccent.b * 0.26f, 0.36f)
-                    : new Color(0f, 0f, 0f, 0.26f);
+                    ? UiTokens.TintSurface(KeepAccent, .26f, .36f)
+                    : UiTokens.WithAlpha(Color.black, .26f);
             }
 
             if (abilityButton.targetGraphic != null)
             {
                 abilityButton.targetGraphic.color = blocked
-                    ? new Color(0.050f, 0.075f, 0.100f, 0.82f)
+                    ? UiTokens.AbilityBlocked
                     : ready
-                        ? new Color(0.095f, 0.225f, 0.165f, 0.92f)
-                        : new Color(0.050f, 0.095f, 0.135f, 0.86f);
+                        ? UiTokens.AbilityReady
+                        : UiTokens.AbilityIdle;
             }
         }
 
@@ -1017,7 +1014,7 @@ namespace DefenderChronicles.Presentation
             }
 
             if (!frame) return;
-            EnsureFrameOverlay(image.transform as RectTransform, "FrameOverlay", new Color(0.42f, 0.65f, 0.92f, 0.30f));
+            EnsureFrameOverlay(image.transform as RectTransform, "FrameOverlay", UiTokens.HudFrame);
         }
 
         private void EnsureFrameOverlay(RectTransform parent, string name, Color color)
@@ -1065,7 +1062,7 @@ namespace DefenderChronicles.Presentation
             if (text.GetComponent<Shadow>() == null)
             {
                 var shadow = text.gameObject.AddComponent<Shadow>();
-                shadow.effectColor = new Color(0f, 0f, 0f, 0.66f);
+                shadow.effectColor = UiTokens.HudTextShadow;
                 shadow.effectDistance = new Vector2(1.4f, -1.4f);
                 shadow.useGraphicAlpha = true;
             }
@@ -1111,7 +1108,7 @@ namespace DefenderChronicles.Presentation
                 if (label.GetComponent<Shadow>() == null)
                 {
                     var shadow = label.gameObject.AddComponent<Shadow>();
-                    shadow.effectColor = new Color(0f, 0f, 0f, 0.72f);
+                    shadow.effectColor = UiTokens.HudButtonShadow;
                     shadow.effectDistance = new Vector2(1.1f, -1.1f);
                     shadow.useGraphicAlpha = true;
                 }
@@ -1123,12 +1120,12 @@ namespace DefenderChronicles.Presentation
         private static void StylePrimaryButton(Button button)
         {
             if (button == null) return;
-            Color normal = new(0.20f, 0.135f, 0.045f, 0.92f);
+            Color normal = UiTokens.HudGoldButton;
             ColorBlock colors = button.colors;
             colors.normalColor = normal;
-            colors.highlightedColor = new Color(0.34f, 0.235f, 0.070f, 0.98f);
-            colors.pressedColor = new Color(0.50f, 0.325f, 0.080f, 1f);
-            colors.selectedColor = new Color(0.28f, 0.185f, 0.055f, 0.96f);
+            colors.highlightedColor = UiTokens.HudGoldHighlight;
+            colors.pressedColor = UiTokens.HudGoldPressed;
+            colors.selectedColor = UiTokens.HudGoldSelected;
             colors.disabledColor = ButtonDisabledTint;
             button.colors = colors;
             if (button.targetGraphic != null) button.targetGraphic.color = normal;
@@ -1236,7 +1233,7 @@ namespace DefenderChronicles.Presentation
             if (label == null || label.transform.parent == null) return;
             RectTransform labelRect = label.rectTransform;
             Image card = EnsureImage(label.transform.parent, name,
-                new Color(0.025f, 0.060f, 0.100f, 0.76f), labelRect.anchorMin, labelRect.anchorMax,
+                UiTokens.HudLabelBacking, labelRect.anchorMin, labelRect.anchorMax,
                 labelRect.anchoredPosition, labelRect.sizeDelta);
             card.sprite = panelSprite;
             card.type = panelSprite != null ? Image.Type.Sliced : Image.Type.Simple;
@@ -1250,9 +1247,9 @@ namespace DefenderChronicles.Presentation
         {
             RectTransform parent = archerButton?.transform.parent as RectTransform;
             if (parent == null) return;
-            EnsureDeckPanel(parent, "CommandDeck", new Color(0.030f, 0.065f, 0.100f, 0.38f));
-            EnsureDeckPanel(parent, "HeroDeck", new Color(0.025f, 0.080f, 0.095f, 0.38f));
-            EnsureDeckPanel(parent, "BuildDeck", new Color(0.030f, 0.060f, 0.095f, 0.38f));
+            EnsureDeckPanel(parent, "CommandDeck", UiTokens.CommandDeck);
+            EnsureDeckPanel(parent, "HeroDeck", UiTokens.HeroDeck);
+            EnsureDeckPanel(parent, "BuildDeck", UiTokens.BuildDeck);
         }
 
         private void EnsureDeckPanel(RectTransform parent, string name, Color color)
@@ -1271,7 +1268,7 @@ namespace DefenderChronicles.Presentation
             RectTransform rootRect = transform as RectTransform;
             if (rootRect == null) return;
             messageChromeImage = EnsureImage(rootRect, "MessageChrome",
-                new Color(0.020f, 0.050f, 0.080f, 0.84f), new Vector2(0.5f, 1f), new Vector2(0.5f, 1f),
+                UiTokens.HudHintSurface, new Vector2(0.5f, 1f), new Vector2(0.5f, 1f),
                 new Vector2(0f, -190f), new Vector2(760f, 54f));
             messageChromeImage.sprite = buttonSprite;
             messageChromeImage.type = buttonSprite != null ? Image.Type.Sliced : Image.Type.Simple;
@@ -1283,7 +1280,7 @@ namespace DefenderChronicles.Presentation
         private void EnsureSelectedPanelChrome()
         {
             RectTransform panelRect = selectedPanel.GetComponent<RectTransform>();
-            selectedHeaderImage = EnsureImage(panelRect, "Header", new Color(0.045f, 0.11f, 0.17f, 0.96f),
+            selectedHeaderImage = EnsureImage(panelRect, "Header", UiTokens.SelectedHeader,
                 new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(10f, -124f), new Vector2(-10f, -14f));
             selectedIconImage = EnsureImage(selectedHeaderImage.rectTransform, "Icon", Color.white,
                 new Vector2(0f, 0.5f), new Vector2(0f, 0.5f), new Vector2(12f, 0f), new Vector2(42f, 42f));
@@ -1324,7 +1321,7 @@ namespace DefenderChronicles.Presentation
             RectTransform rootRect = previewRect.parent as RectTransform;
             if (rootRect == null) return;
 
-            previewChromeImage = EnsureImage(rootRect, "PreviewChrome", new Color(0.04f, 0.08f, 0.13f, 0.86f),
+            previewChromeImage = EnsureImage(rootRect, "PreviewChrome", UiTokens.PreviewChrome,
                 new Vector2(0.5f, 1f), new Vector2(0.5f, 1f), new Vector2(0f, -96f), new Vector2(760f, 86f));
             previewChromeImage.sprite = panelSprite;
             previewChromeImage.type = panelSprite != null ? Image.Type.Sliced : Image.Type.Simple;
@@ -1340,7 +1337,7 @@ namespace DefenderChronicles.Presentation
             previewText.margin = new Vector4(4f, 0f, 0f, 0f);
             previewText.transform.SetAsLastSibling();
             previewTitleText.transform.SetAsLastSibling();
-            EnsureFrameOverlay(previewChromeImage.rectTransform, "FrameOverlay", new Color(0.42f, 0.65f, 0.92f, 0.28f));
+            EnsureFrameOverlay(previewChromeImage.rectTransform, "FrameOverlay", UiTokens.WithAlpha(UiTokens.HudFrame, 0.28f));
             SetPreview(previewText.text);
         }
 
@@ -1350,7 +1347,7 @@ namespace DefenderChronicles.Presentation
             RectTransform parentRect = phaseRect.parent as RectTransform;
             if (parentRect == null) return;
 
-            phaseChromeImage = EnsureImage(parentRect, "PhaseChrome", new Color(0.05f, 0.09f, 0.15f, 0.84f),
+            phaseChromeImage = EnsureImage(parentRect, "PhaseChrome", UiTokens.PhaseChrome,
                 phaseRect.anchorMin, phaseRect.anchorMax, phaseRect.offsetMin, phaseRect.offsetMax);
             phaseChromeImage.sprite = panelSprite;
             phaseChromeImage.type = panelSprite != null ? Image.Type.Sliced : Image.Type.Simple;
@@ -1367,7 +1364,7 @@ namespace DefenderChronicles.Presentation
                 new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(10f, 6f), new Vector2(-10f, 11f));
             phaseStripeImage.sprite = null;
 
-            EnsureFrameOverlay(phaseChromeImage.rectTransform, "FrameOverlay", new Color(0.42f, 0.65f, 0.92f, 0.24f));
+            EnsureFrameOverlay(phaseChromeImage.rectTransform, "FrameOverlay", UiTokens.WithAlpha(UiTokens.HudFrame, 0.24f));
         }
 
         private void EnsureAbilityButtonChrome()
@@ -1376,17 +1373,17 @@ namespace DefenderChronicles.Presentation
             RectTransform buttonRect = abilityButton.transform as RectTransform;
             if (buttonRect == null) return;
 
-            abilityCooldownFillImage = EnsureImage(buttonRect, "CooldownFill", new Color(0.12f, 0.24f, 0.34f, 0.56f),
+            abilityCooldownFillImage = EnsureImage(buttonRect, "CooldownFill", UiTokens.CooldownFill,
                 new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(8f, 8f), new Vector2(-8f, 8f));
             abilityCooldownFillImage.transform.SetAsFirstSibling();
 
-            abilityReadyGlowImage = EnsureImage(buttonRect, "ReadyGlow", new Color(ReadyAccent.r, ReadyAccent.g, ReadyAccent.b, 0f),
+            abilityReadyGlowImage = EnsureImage(buttonRect, "ReadyGlow", UiTokens.WithAlpha(ReadyAccent, 0f),
                 Vector2.zero, Vector2.one, new Vector2(6f, 6f), new Vector2(-6f, -6f));
             abilityReadyGlowImage.sprite = panelSprite;
             abilityReadyGlowImage.type = panelSprite != null ? Image.Type.Sliced : Image.Type.Simple;
             abilityReadyGlowImage.transform.SetAsFirstSibling();
 
-            abilityBlockedVeilImage = EnsureImage(buttonRect, "BlockedVeil", new Color(0f, 0f, 0f, 0f),
+            abilityBlockedVeilImage = EnsureImage(buttonRect, "BlockedVeil", Color.clear,
                 Vector2.zero, Vector2.one, new Vector2(6f, 6f), new Vector2(-6f, -6f));
             abilityBlockedVeilImage.sprite = panelSprite;
             abilityBlockedVeilImage.type = panelSprite != null ? Image.Type.Sliced : Image.Type.Simple;
@@ -1396,11 +1393,11 @@ namespace DefenderChronicles.Presentation
         private void EnsureResultPanelChrome()
         {
             RectTransform panelRect = resultPanel.GetComponent<RectTransform>();
-            resultCardImage = EnsureImage(panelRect, "Card", new Color(0.05f, 0.09f, 0.14f, 0.96f),
+            resultCardImage = EnsureImage(panelRect, "Card", UiTokens.ResultCard,
                 new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0f, -8f), new Vector2(860f, 412f));
             resultCardImage.sprite = panelSprite;
             resultCardImage.type = panelSprite != null ? Image.Type.Sliced : Image.Type.Simple;
-            EnsureFrameOverlay(resultCardImage.rectTransform, "FrameOverlay", new Color(0.42f, 0.65f, 0.92f, 0.30f));
+            EnsureFrameOverlay(resultCardImage.rectTransform, "FrameOverlay", UiTokens.HudFrame);
 
             resultBadgeText = EnsureLabel(resultCardImage.rectTransform, "Badge",
                 new Vector2(0.5f, 1f), new Vector2(0.5f, 1f), new Vector2(0f, -34f), new Vector2(240f, 26f),
@@ -1442,7 +1439,7 @@ namespace DefenderChronicles.Presentation
                 overlayRect.offsetMin = Vector2.zero;
                 overlayRect.offsetMax = Vector2.zero;
                 var overlayImage = pauseOverlay.GetComponent<Image>();
-                overlayImage.color = new Color(0.01f, 0.02f, 0.03f, 0.36f);
+                overlayImage.color = UiTokens.PauseVeil;
                 overlayImage.raycastTarget = true;
             }
 
@@ -1452,12 +1449,12 @@ namespace DefenderChronicles.Presentation
             RectTransform overlayRoot = pauseOverlay.GetComponent<RectTransform>();
             pauseOverlayGroup = pauseOverlay.GetComponent<CanvasGroup>();
             if (pauseOverlayGroup == null) pauseOverlayGroup = pauseOverlay.AddComponent<CanvasGroup>();
-            Image pauseCard = EnsureImage(overlayRoot, "Card", new Color(0.05f, 0.09f, 0.14f, 0.94f),
+            Image pauseCard = EnsureImage(overlayRoot, "Card", UiTokens.PauseCard,
                 new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0f, -8f), new Vector2(920f, 440f));
             pauseCardRect = pauseCard.rectTransform;
             pauseCard.sprite = panelSprite;
             pauseCard.type = panelSprite != null ? Image.Type.Sliced : Image.Type.Simple;
-            EnsureFrameOverlay(pauseCard.rectTransform, "FrameOverlay", new Color(0.42f, 0.65f, 0.92f, 0.26f));
+            EnsureFrameOverlay(pauseCard.rectTransform, "FrameOverlay", UiTokens.WithAlpha(UiTokens.HudFrame, 0.26f));
 
             pauseOverlayBadgeText = EnsureLabel(pauseCard.rectTransform, "Badge",
                 new Vector2(0.5f, 1f), new Vector2(0.5f, 1f), new Vector2(0f, -30f), new Vector2(220f, 24f),
@@ -1490,13 +1487,13 @@ namespace DefenderChronicles.Presentation
 
             group.alpha = 0f;
             if (card != null) card.localScale = Vector3.one * 0.96f;
-            const float duration = 0.18f;
+            const float duration = UiTokens.FadeDuration;
             float elapsed = 0f;
             while (elapsed < duration)
             {
                 elapsed += Time.unscaledDeltaTime;
                 float t = Mathf.Clamp01(elapsed / duration);
-                t = 1f - Mathf.Pow(1f - t, 3f);
+                t = UiTokens.EvaluateEaseOut(t);
                 group.alpha = t;
                 if (card != null) card.localScale = Vector3.one * Mathf.Lerp(0.96f, 1f, t);
                 yield return null;
@@ -1582,7 +1579,7 @@ namespace DefenderChronicles.Presentation
                 outpost.DisabledRemaining);
             ApplySelectedActionState(spec);
             Color accent = spec.accent;
-            selectedHeaderImage.color = new Color(accent.r * 0.18f, accent.g * 0.18f, accent.b * 0.18f, 0.98f);
+            selectedHeaderImage.color = UiTokens.TintSurface(accent, 0.18f, 0.98f);
             selectedIconImage.sprite = OutpostSprite(outpost.Kind);
             selectedIconImage.color = accent;
             selectedTitleText.text = spec.title;
@@ -1598,9 +1595,9 @@ namespace DefenderChronicles.Presentation
         {
             SelectedPanelPresentationSpec spec = SelectedSlotPanelSpec(slot.Index);
             ApplySelectedActionState(spec);
-            selectedHeaderImage.color = new Color(0.045f, 0.10f, 0.16f, 0.98f);
+            selectedHeaderImage.color = UiTokens.SelectedEmptyHeader;
             selectedIconImage.sprite = null;
-            selectedIconImage.color = new Color(0.22f, 0.58f, 0.78f, 0.9f);
+            selectedIconImage.color = UiTokens.SelectedEmptyIcon;
             selectedTitleText.text = spec.title;
             selectedBadgeText.text = spec.badge;
             selectedBadgeText.color = spec.badgeColor;
@@ -1613,7 +1610,7 @@ namespace DefenderChronicles.Presentation
         private void ApplySelectedEmptyView()
         {
             ApplySelectedActionState(SelectedSlotPanelSpec(-1));
-            selectedHeaderImage.color = new Color(0.035f, 0.08f, 0.13f, 0.95f);
+            selectedHeaderImage.color = UiTokens.SelectedIdleHeader;
             selectedIconImage.sprite = null;
             selectedTitleText.text = GameLocalization.Text("SEÇİM YOK", "NO SELECTION");
             selectedBadgeText.text = string.Empty;

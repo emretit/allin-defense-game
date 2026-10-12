@@ -247,22 +247,22 @@ namespace DefenderChronicles.UI
             background.AddComponent<FrontendCoverImage>();
             Stretch(background.GetComponent<RectTransform>());
 
-            GameObject shade = CreateImage("Cinematic Shade", canvasObject.transform, new Color(0.005f, 0.012f, 0.025f, 0.46f));
+            GameObject shade = CreateImage("Cinematic Shade", canvasObject.transform, UiTokens.CinematicShade);
             backdropShade = shade.GetComponent<Image>();
             Stretch(shade.GetComponent<RectTransform>());
 
-            GameObject topShade = CreateImage("Top Shade", canvasObject.transform, new Color(0.006f, 0.014f, 0.030f, 0.72f));
+            GameObject topShade = CreateImage("Top Shade", canvasObject.transform, UiTokens.TopShade);
             SetAnchors(topShade.GetComponent<RectTransform>(), new Vector2(0f, 0.82f), Vector2.one, Vector2.zero, Vector2.zero);
-            GameObject bottomShade = CreateImage("Bottom Shade", canvasObject.transform, new Color(0.006f, 0.014f, 0.030f, 0.76f));
+            GameObject bottomShade = CreateImage("Bottom Shade", canvasObject.transform, UiTokens.BottomShade);
             SetAnchors(bottomShade.GetComponent<RectTransform>(), Vector2.zero, new Vector2(1f, 0.16f), Vector2.zero, Vector2.zero);
 
             CreateAmbientSigil("Moonlit Sigil", canvasObject.transform,
                 new Vector2(0.66f, 0.61f), new Vector2(1.08f, 1.05f),
-                new Color(theme.moonEdge.r, theme.moonEdge.g, theme.moonEdge.b, 0.055f),
+                UiTokens.WithAlpha(theme.moonEdge, 0.055f),
                 new Vector2(10f, 7f), 0.012f, 1.4f, 0.022f, 0.4f);
             CreateAmbientSigil("Ember Sigil", canvasObject.transform,
                 new Vector2(-0.10f, -0.05f), new Vector2(0.34f, 0.37f),
-                new Color(theme.commandGold.r, theme.commandGold.g, theme.commandGold.b, 0.040f),
+                UiTokens.WithAlpha(theme.commandGold, 0.040f),
                 new Vector2(8f, 5f), 0.010f, 1.0f, 0.018f, 2.1f);
 
             GameObject warTableObject = new("War Table Presentation");
@@ -296,7 +296,7 @@ namespace DefenderChronicles.UI
             SetRect(brandLogo.GetComponent<RectTransform>(), new Vector2(0f, 54f), new Vector2(560f, 560f),
                 Center(), Center());
 
-            TextMeshProUGUI chapter = CreateText("Boot Chapter", root, "GREENWATCH SEFERİ", 18, catalog.bodyFont,
+            TextMeshProUGUI chapter = CreateText("Boot Chapter", root, FrontendCopy.CampaignEyebrow, 18, catalog.bodyFont,
                 FontStyles.Bold, TextAlignmentOptions.Center, theme.moonEdge);
             chapter.characterSpacing = 6f;
             SetRect(chapter.rectTransform, new Vector2(0f, -274f), new Vector2(520f, 40f), Center(), Center());
@@ -317,7 +317,7 @@ namespace DefenderChronicles.UI
                 {
                     elapsed += Time.unscaledDeltaTime;
                     float t = Mathf.Clamp01(elapsed / revealDuration);
-                    t = 1f - Mathf.Pow(1f - t, 3f);
+                    t = UiTokens.EvaluateEaseOut(t);
                     if (crest != null) crest.localScale = Vector3.one * Mathf.Lerp(0.92f, 1f, t);
                     yield return null;
                 }
@@ -333,21 +333,21 @@ namespace DefenderChronicles.UI
         private void BuildResultScreen()
         {
             Transform root = screens[AppScreen.Result].transform;
-            GameObject scrim = CreateImage("Result Scrim", root, new Color(0.004f, 0.010f, 0.020f, 0.76f));
+            GameObject scrim = CreateImage("Result Scrim", root, UiTokens.ResultScrim);
             Stretch(scrim.GetComponent<RectTransform>());
-            GameObject card = CreatePanel("Result Chronicle", root, new Color(theme.panel.r, theme.panel.g, theme.panel.b, 0.97f));
+            GameObject card = CreatePanel("Result Chronicle", root, UiTokens.WithAlpha(theme.panel, 0.97f));
             AddCardAccent(card.transform, theme.commandGold);
             AddCardWatermark(card.transform, theme.moonEdge);
             SetRect(card.GetComponent<RectTransform>(), Vector2.zero, new Vector2(1180f, 650f), Center(), Center());
 
-            TextMeshProUGUI badge = CreateText("Result Badge", card.transform, "SAVAŞ SONUCU", 20,
+            TextMeshProUGUI badge = CreateText("Result Badge", card.transform, FrontendCopy.BattleResult, 20,
                 catalog.bodyFont, FontStyles.Bold, TextAlignmentOptions.Center, theme.commandGold);
             SetRect(badge.rectTransform, new Vector2(0f, 245f), new Vector2(720f, 42f), Center(), Center());
             resultTitle = CreateText("Result Title", card.transform, "", 64, catalog.titleFont, FontStyles.Bold,
                 TextAlignmentOptions.Center, theme.textPrimary);
             resultTitle.enableAutoSizing = true;
             resultTitle.fontSizeMin = 40f;
-            resultTitle.fontSizeMax = 64f;
+            resultTitle.fontSizeMax = UiTokens.TypeDisplay;
             SetRect(resultTitle.rectTransform, new Vector2(0f, 145f), new Vector2(980f, 130f), Center(), Center());
 
             resultStars = CreateText("Result Stars", card.transform, "", 54, catalog.titleFont, FontStyles.Bold,
@@ -358,15 +358,15 @@ namespace DefenderChronicles.UI
                 TextAlignmentOptions.Center, theme.moonEdge);
             SetRect(resultReward.rectTransform, new Vector2(0f, -42f), new Vector2(850f, 52f), Center(), Center());
 
-            retryButton = CreateButton("Retry Level", card.transform, "YENİDEN DENE", new Vector2(310f, 140f),
+            retryButton = CreateButton("Retry Level", card.transform, FrontendCopy.TryAgain, new Vector2(310f, 140f),
                 theme.defenderBlue, () => ReloadCampaignLevel(session.CampaignLevelNumber));
             SetRect(retryButton.GetComponent<RectTransform>(), new Vector2(-350f, -180f), new Vector2(310f, 140f), Center(), Center());
 
-            nextLevelButton = CreateButton("Next Level", card.transform, "SONRAKİ BÖLÜM  ›", new Vector2(340f, 140f),
+            nextLevelButton = CreateButton("Next Level", card.transform, FrontendCopy.NextLevel, new Vector2(340f, 140f),
                 theme.commandGold, () => ReloadCampaignLevel(session.CampaignLevelNumber + 1));
             SetRect(nextLevelButton.GetComponent<RectTransform>(), new Vector2(0f, -180f), new Vector2(340f, 140f), Center(), Center());
 
-            Button map = CreateButton("Return To Map", card.transform, "HARİTAYA DÖN", new Vector2(310f, 140f),
+            Button map = CreateButton("Return To Map", card.transform, FrontendCopy.ReturnToMap, new Vector2(310f, 140f),
                 theme.night, OpenCampaign);
             SetRect(map.GetComponent<RectTransform>(), new Vector2(350f, -180f), new Vector2(310f, 140f), Center(), Center());
         }
@@ -527,7 +527,7 @@ namespace DefenderChronicles.UI
                 CampaignRegionDefinition region = CampaignCatalog.Regions[definition.region - 1];
                 TextMeshProUGUI label = button.GetComponentInChildren<TextMeshProUGUI>();
                 TextMeshProUGUI progressLabel = index < levelStars.Count ? levelStars[index] : null;
-                if (!unlocked) image.color = new Color(0.11f, 0.13f, 0.16f, 0.92f);
+                if (!unlocked) image.color = UiTokens.LockedSurface;
                 else if (selected) image.color = theme.commandGold;
                 else if (levelProgress != null && levelProgress.stars >= 3) image.color = theme.moonEdge;
                 else if (levelProgress != null && levelProgress.stars > 0) image.color = theme.defenderBlue;
@@ -714,7 +714,7 @@ namespace DefenderChronicles.UI
             SetRect(orientationCurtainLabel.rectTransform, new Vector2(0f, -80f), new Vector2(720f, 100f),
                 Center(), Center());
             orientationCurtain.GetComponent<Image>().raycastTarget = true;
-            orientationRetry = CreateButton("Retry Orientation", orientationCurtain.transform, "YENİDEN DENE",
+            orientationRetry = CreateButton("Retry Orientation", orientationCurtain.transform, FrontendCopy.TryAgain,
                 new Vector2(580, 140), theme.commandGold, () => retryOrientation?.Invoke());
             SetRect((RectTransform)orientationRetry.transform, new Vector2(0, -260), new Vector2(580, 140), Center(), Center());
             orientationRetry.gameObject.SetActive(false);
@@ -1165,11 +1165,11 @@ namespace DefenderChronicles.UI
             }
         }
 
-        private void CreateHeader(Transform root, string title, string subtitle, Action back)
+        private void CreateHeader(Transform root, LocalizedCopy title, LocalizedCopy subtitle, Action back)
         {
             Button backButton = CreateButton("Back", root, "‹", new Vector2(140f, 140f), theme.night, back);
             SetRect(backButton.GetComponent<RectTransform>(), new Vector2(44f, -12f), new Vector2(140f, 140f), TopLeft(), TopLeft());
-            TextMeshProUGUI heading = CreateText("Heading", root, title, 48, catalog.titleFont, FontStyles.Bold,
+            TextMeshProUGUI heading = CreateText("Heading", root, title, UiTokens.TypeHeading, catalog.titleFont, FontStyles.Bold,
                 TextAlignmentOptions.Left, theme.textPrimary);
             SetRect(heading.rectTransform, new Vector2(210f, -44f), new Vector2(780f, 78f), TopLeft(), TopLeft());
             TextMeshProUGUI subheading = CreateText("Subheading", root, subtitle, 23, catalog.bodyFont, FontStyles.Normal,
@@ -1177,7 +1177,7 @@ namespace DefenderChronicles.UI
             SetRect(subheading.rectTransform, new Vector2(-90f, -166f), new Vector2(520f, 46f), TopRight(), TopRight());
         }
 
-        private Button CreateButton(string name, Transform parent, string label, Vector2 size, Color color, Action action)
+        private Button CreateButton(string name, Transform parent, LocalizedCopy label, Vector2 size, Color color, Action action)
         {
             GameObject root = CreateImage(name, parent, color);
             RectTransform rect = root.GetComponent<RectTransform>();
@@ -1191,10 +1191,10 @@ namespace DefenderChronicles.UI
             ColorBlock colors = button.colors;
             colors.highlightedColor = Color.Lerp(color, Color.white, 0.14f);
             colors.pressedColor = Color.Lerp(color, Color.black, 0.18f);
-            colors.disabledColor = new Color(0.12f, 0.14f, 0.16f, 0.75f);
+            colors.disabledColor = UiTokens.ButtonDisabled;
             colors.selectedColor = Color.Lerp(color, theme.moonEdge, 0.20f);
             colors.colorMultiplier = 1f;
-            colors.fadeDuration = 0.08f;
+            colors.fadeDuration = UiTokens.ButtonColorDuration;
             button.colors = colors;
             button.onClick.AddListener(() =>
             {
@@ -1203,14 +1203,14 @@ namespace DefenderChronicles.UI
             });
             root.AddComponent<FrontendButtonFeedback>();
             var outline = root.AddComponent<Outline>();
-            outline.effectColor = new Color(0.55f, 0.72f, 0.94f, 0.22f);
+            outline.effectColor = UiTokens.ButtonOutline;
             outline.effectDistance = new Vector2(1.5f, -1.5f);
 
             TextMeshProUGUI text = CreateText("Label", root.transform, label, 23, catalog.bodyFont, FontStyles.Bold,
-                TextAlignmentOptions.Center, RelativeLuminance(color) > 0.56f ? theme.nightDeep : theme.textPrimary);
+                TextAlignmentOptions.Center, RelativeLuminance(color) > 0.4f ? UiTokens.GoldText : theme.textPrimary);
             Stretch(text.rectTransform, new Vector2(12f, 8f), new Vector2(-12f, -8f));
             text.enableAutoSizing = true;
-            text.fontSizeMin = 24f;
+            text.fontSizeMin = UiTokens.TypeLabel;
             text.fontSizeMax = 34f;
             MobileTouchTarget.Attach(button);
             return button;
@@ -1229,7 +1229,7 @@ namespace DefenderChronicles.UI
         private void AddCardAccent(Transform parent, Color color)
         {
             GameObject rail = CreateImage("Accent Rail", parent,
-                new Color(color.r, color.g, color.b, 0.82f));
+                UiTokens.WithAlpha(color, 0.82f));
             SetAnchors(rail.GetComponent<RectTransform>(), new Vector2(0f, 1f), Vector2.one,
                 new Vector2(24f, -7f), new Vector2(-24f, -3f));
 
@@ -1242,7 +1242,7 @@ namespace DefenderChronicles.UI
         {
             GameObject watermark = CreateBrandImage("Card Watermark", parent, theme.brandMark);
             Image image = watermark.GetComponent<Image>();
-            image.color = new Color(color.r, color.g, color.b, 0.045f);
+            image.color = UiTokens.WithAlpha(color, 0.045f);
             SetRect(watermark.GetComponent<RectTransform>(), new Vector2(-44f, 38f), new Vector2(250f, 250f),
                 BottomRight(), BottomRight());
             watermark.transform.SetAsFirstSibling();
@@ -1251,7 +1251,7 @@ namespace DefenderChronicles.UI
         private void CreateLevelSelectionRing(Transform button)
         {
             GameObject ring = CreateImage("Selection Ring", button,
-                new Color(theme.commandGold.r, theme.commandGold.g, theme.commandGold.b, 0.30f));
+                UiTokens.WithAlpha(theme.commandGold, 0.30f));
             Image image = ring.GetComponent<Image>();
             image.sprite = theme.buttonSprite != null ? theme.buttonSprite : catalog.panelSprite;
             image.type = image.sprite != null ? Image.Type.Sliced : Image.Type.Simple;
@@ -1278,7 +1278,7 @@ namespace DefenderChronicles.UI
             image.sprite = theme.panelSprite != null ? theme.panelSprite : catalog.panelSprite;
             image.type = image.sprite != null ? Image.Type.Sliced : Image.Type.Simple;
             var outline = root.AddComponent<Outline>();
-            outline.effectColor = new Color(theme.moonEdge.r, theme.moonEdge.g, theme.moonEdge.b, 0.14f);
+            outline.effectColor = UiTokens.WithAlpha(theme.moonEdge, 0.14f);
             outline.effectDistance = new Vector2(1f, -1f);
             return root;
         }
@@ -1341,13 +1341,13 @@ namespace DefenderChronicles.UI
 #endif
         }
 
-        private static TextMeshProUGUI CreateText(string name, Transform parent, string value, float size,
+        private static TextMeshProUGUI CreateText(string name, Transform parent, LocalizedCopy value, float size,
             TMP_FontAsset font, FontStyles style, TextAlignmentOptions alignment, Color color)
         {
             var root = new GameObject(name, typeof(RectTransform), typeof(CanvasRenderer), typeof(TextMeshProUGUI));
             root.transform.SetParent(parent, false);
             TextMeshProUGUI text = root.GetComponent<TextMeshProUGUI>();
-            text.text = value;
+            text.text = value.Value;
             text.font = font;
             text.fontSize = size;
             text.fontStyle = style;
@@ -1355,7 +1355,7 @@ namespace DefenderChronicles.UI
             text.color = color;
             text.enableWordWrapping = true;
             text.raycastTarget = false;
-            if (GameLocalization.HasTranslation(value))
+            if (value.IsLocalized)
                 root.AddComponent<LocalizedTmpText>().Configure(text, value);
             return text;
         }

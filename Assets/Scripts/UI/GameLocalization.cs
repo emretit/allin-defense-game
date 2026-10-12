@@ -32,21 +32,21 @@ namespace DefenderChronicles.UI
             ["Kapı Önü"] = "At the Gate",
             ["Yeşil Muhafız"] = "Green Guardian",
             ["Savunmanın temelleri"] = "Defence fundamentals",
-            ["GREENWATCH SEFERİ"] = "THE GREENWATCH CAMPAIGN",
-            ["GREENWATCH  •  SINIR SEFERİ"] = "GREENWATCH  •  FRONTIER CAMPAIGN",
-            ["Greenwatch Kalesi kuşatma altında.\nSavunma hattını kur. Şafağa kadar dayan."] = "Greenwatch Keep is under siege.\nBuild the defence line. Hold until dawn.",
+            [FrontendCopy.CampaignEyebrow.Turkish] = FrontendCopy.CampaignEyebrow.English,
+            [FrontendCopy.WelcomeEyebrow.Turkish] = FrontendCopy.WelcomeEyebrow.English,
+            [FrontendCopy.WelcomeDescription.Turkish] = FrontendCopy.WelcomeDescription.English,
             ["KRALLIĞA GİR  ›"] = "ENTER THE REALM  ›",
-            ["HESABINI BAĞLA"] = "LINK YOUR ACCOUNT",
-            ["Misafir ilerlemen bu cihazda saklanır; hesabını daha sonra bağlayabilirsin."] = "Guest progress is saved on this device; you can link an account later.",
-            ["İLERLEMENİ KORU"] = "PROTECT YOUR PROGRESS",
-            ["Misafir olarak hemen oynayabilir veya ilerlemeni cihazlar arasında taşımak için hesabını bağlayabilirsin."] = "Play as a guest now, or link your account to carry progress between devices.",
-            ["MİSAFİR OLARAK BAŞLA"] = "START AS GUEST",
-            ["GİZLİLİK POLİTİKASI"] = "PRIVACY POLICY",
-            ["KULLANIM KOŞULLARI"] = "TERMS OF SERVICE",
-            ["AYAR"] = "SETTINGS",
-            ["SAVUNMA HATTI\nSENİ BEKLİYOR"] = "THE DEFENCE LINE\nAWAITS",
+            [FrontendCopy.LinkAccount.Turkish] = FrontendCopy.LinkAccount.English,
+            [FrontendCopy.GuestNote.Turkish] = FrontendCopy.GuestNote.English,
+            [FrontendCopy.ProtectProgress.Turkish] = FrontendCopy.ProtectProgress.English,
+            [FrontendCopy.AccountDescription.Turkish] = FrontendCopy.AccountDescription.English,
+            [FrontendCopy.StartAsGuest.Turkish] = FrontendCopy.StartAsGuest.English,
+            [FrontendCopy.PrivacyPolicy.Turkish] = FrontendCopy.PrivacyPolicy.English,
+            [FrontendCopy.TermsOfService.Turkish] = FrontendCopy.TermsOfService.English,
+            [FrontendCopy.SettingsButton.Turkish] = FrontendCopy.SettingsButton.English,
+            [FrontendCopy.MainMenuCallout.Turkish] = FrontendCopy.MainMenuCallout.English,
             ["DEVAM ET  ›"] = "CONTINUE  ›",
-            ["KRALLIK HARİTASI"] = "REALM MAP",
+            [FrontendCopy.RealmMap.Turkish] = FrontendCopy.RealmMap.English,
             ["HESABI BAĞLA / DEĞİŞTİR"] = "LINK / SWITCH ACCOUNT",
             ["Greenwatch Bölgesi\n10 savunma noktası  ·  1 bölgesel lord"] = "Greenwatch Region\n10 defence points  ·  1 regional lord",
             ["KRALLIK SAVAŞ MASASI"] = "REALM WAR TABLE",
@@ -54,25 +54,25 @@ namespace DefenderChronicles.UI
             ["SAVAŞ BRİFİNGİ"] = "BATTLE BRIEFING",
             ["Greenwatch ön hattı"] = "Greenwatch front line",
             ["KOMUTAN EMRİ\nDüşman yolunu oku, savunma noktalarını kur ve kaleyi ayakta tut."] = "COMMANDER'S ORDER\nRead the enemy route, build defence points, and keep the fortress standing.",
-            ["SAVUNMAYI BAŞLAT"] = "START DEFENCE",
-            ["SAVAŞ SONUCU"] = "BATTLE RESULT",
-            ["YENİDEN DENE"] = "TRY AGAIN",
-            ["SONRAKİ BÖLÜM  ›"] = "NEXT LEVEL  ›",
-            ["HARİTAYA DÖN"] = "RETURN TO MAP",
-            ["AYARLAR"] = "SETTINGS",
+            [FrontendCopy.StartDefence.Turkish] = FrontendCopy.StartDefence.English,
+            [FrontendCopy.BattleResult.Turkish] = FrontendCopy.BattleResult.English,
+            [FrontendCopy.TryAgain.Turkish] = FrontendCopy.TryAgain.English,
+            [FrontendCopy.NextLevel.Turkish] = FrontendCopy.NextLevel.English,
+            [FrontendCopy.ReturnToMap.Turkish] = FrontendCopy.ReturnToMap.English,
+            [FrontendCopy.SettingsTitle.Turkish] = FrontendCopy.SettingsTitle.English,
             ["DİL"] = "LANGUAGE",
-            ["MÜZİK"] = "MUSIC",
-            ["EFEKTLER"] = "SFX",
-            ["TİTREŞİM"] = "HAPTICS",
-            ["KAMERA SARSINTISI"] = "CAMERA SHAKE",
-            ["AZALTILMIŞ HAREKET"] = "REDUCED MOTION",
-            ["HESAP YÖNETİMİ"] = "ACCOUNT MANAGEMENT",
-            ["KAHRAMANIM"] = "MY HERO",
-            ["Savaşçı"] = "Warrior",
-            ["KAYDET"] = "SAVE",
-            ["Kahramanına bir ad ver. Savaşta bu adla görünecek."] = "Name your hero. This name will appear in battle.",
-            ["En fazla 20 karakter. Boş bırakırsan Savaşçı olur."] = "Up to 20 characters. Leave blank to use Warrior.",
-            ["TAMAM"] = "DONE",
+            [FrontendCopy.Music.Turkish] = FrontendCopy.Music.English,
+            [FrontendCopy.Effects.Turkish] = FrontendCopy.Effects.English,
+            [FrontendCopy.Haptics.Turkish] = FrontendCopy.Haptics.English,
+            [FrontendCopy.CameraShake.Turkish] = FrontendCopy.CameraShake.English,
+            [FrontendCopy.ReducedMotion.Turkish] = FrontendCopy.ReducedMotion.English,
+            [FrontendCopy.AccountManagement.Turkish] = FrontendCopy.AccountManagement.English,
+            [FrontendCopy.MyHero.Turkish] = FrontendCopy.MyHero.English,
+            [FrontendCopy.Warrior.Turkish] = FrontendCopy.Warrior.English,
+            [FrontendCopy.Save.Turkish] = FrontendCopy.Save.English,
+            [FrontendCopy.HeroNameDescription.Turkish] = FrontendCopy.HeroNameDescription.English,
+            [FrontendCopy.HeroNameHint.Turkish] = FrontendCopy.HeroNameHint.English,
+            [FrontendCopy.Done.Turkish] = FrontendCopy.Done.English,
             ["SAVAŞ ALANI HAZIRLANIYOR\nCİHAZ YATAYA ALINIYOR"] = "PREPARING THE BATTLEFIELD\nROTATING TO LANDSCAPE",
             ["KRALLIK HARİTASI HAZIRLANIYOR\nCİHAZ PORTREYE ALINIYOR"] = "PREPARING THE REALM MAP\nROTATING TO PORTRAIT",
             ["DURAKLAT"] = "PAUSE",
@@ -81,7 +81,7 @@ namespace DefenderChronicles.UI
             ["KIŞLA  100"] = "BARRACKS  100",
             ["BÜYÜ  125"] = "MAGE  125",
             ["SARSICI DARBE"] = "STUNNING STRIKE",
-            ["İPTAL"] = "CANCEL",
+            [FrontendCopy.Cancel.Turkish] = FrontendCopy.Cancel.English,
             ["İLK DALGAYI BAŞLAT"] = "START FIRST WAVE",
             ["YÜKSELT"] = "UPGRADE",
             ["SAT"] = "SELL",
@@ -138,6 +138,11 @@ namespace DefenderChronicles.UI
             return English.TryGetValue(turkish, out string english) ? english : turkish;
         }
 
+        // Compatibility for campaign data and legacy HUD/status callers only.
+        // Frontend labels use explicit FrontendCopy IDs instead.
+        internal static string EnglishText(string turkish) =>
+            !string.IsNullOrEmpty(turkish) && English.TryGetValue(turkish, out string english) ? english : turkish;
+
         public static bool HasTranslation(string turkish) =>
             !string.IsNullOrEmpty(turkish) && English.ContainsKey(turkish);
 
@@ -170,12 +175,15 @@ namespace DefenderChronicles.UI
     public sealed class LocalizedTmpText : MonoBehaviour
     {
         private TMP_Text target;
-        private string turkish;
+        private LocalizedCopy copy;
 
-        public void Configure(TMP_Text text, string source)
+        public void Configure(TMP_Text text, string source) =>
+            Configure(text, new LocalizedCopy(source, GameLocalization.EnglishText(source)));
+
+        public void Configure(TMP_Text text, LocalizedCopy value)
         {
             target = text;
-            turkish = source ?? string.Empty;
+            copy = value;
             Apply();
         }
 
@@ -189,7 +197,7 @@ namespace DefenderChronicles.UI
 
         private void Apply()
         {
-            if (target != null) target.text = GameLocalization.Translate(turkish);
+            if (target != null) target.text = copy.Value;
         }
     }
 

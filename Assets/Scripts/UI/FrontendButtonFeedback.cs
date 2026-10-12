@@ -18,11 +18,11 @@ namespace DefenderChronicles.UI
         public void OnPointerDown(PointerEventData eventData)
         {
             if (TryGetComponent<UnityEngine.UI.Selectable>(out var button) && !button.IsInteractable()) return;
-            AnimateTo(restingScale * 0.975f);
+            AnimateTo(restingScale * UiTokens.PressScale);
         }
         public void OnPointerUp(PointerEventData eventData) => AnimateTo(restingScale);
         public void OnPointerExit(PointerEventData eventData) => AnimateTo(restingScale);
-        public void OnSelect(BaseEventData eventData) => AnimateTo(restingScale * 1.025f);
+        public void OnSelect(BaseEventData eventData) => AnimateTo(restingScale * UiTokens.FocusScale);
         public void OnDeselect(BaseEventData eventData) => AnimateTo(restingScale);
 
         private void OnDisable()
@@ -46,13 +46,13 @@ namespace DefenderChronicles.UI
         private IEnumerator AnimateScale(Vector3 target)
         {
             Vector3 start = transform.localScale;
-            const float duration = 0.09f;
+            const float duration = UiTokens.ButtonPressDuration;
             float elapsed = 0f;
             while (elapsed < duration)
             {
                 elapsed += Time.unscaledDeltaTime;
                 float t = Mathf.Clamp01(elapsed / duration);
-                t = 1f - Mathf.Pow(1f - t, 3f);
+                t = UiTokens.EvaluateEaseOut(t);
                 transform.localScale = Vector3.LerpUnclamped(start, target, t);
                 yield return null;
             }
