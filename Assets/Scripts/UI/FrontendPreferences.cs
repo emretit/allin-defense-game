@@ -13,6 +13,7 @@ namespace AllinDefense.UI
         private const string ReducedMotionKey = Prefix + "ReducedMotion";
 
         public static event Action AudioVolumesChanged;
+        public static event Action MotionChanged;
 
         public static float MusicVolume
         {
@@ -41,7 +42,7 @@ namespace AllinDefense.UI
         public static bool ReducedMotion
         {
             get => GetBool(ReducedMotionKey, false);
-            set => SetBool(ReducedMotionKey, value);
+            set { SetBool(ReducedMotionKey, value); MotionChanged?.Invoke(); }
         }
 
         public static GameLanguage Language

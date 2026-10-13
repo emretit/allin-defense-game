@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using AllinDefense.UI.Kit;
 using UnityEngine;
 
 namespace AllinDefense.UI
@@ -17,49 +17,47 @@ namespace AllinDefense.UI
 
     public sealed class FrontendNavigation : MonoBehaviour
     {
-        public const float Duration = 0.15f;
+        public const float Duration = UiTokens.FadeDuration;
         private CanvasGroup current;
-        private Coroutine animation;
-        public bool IsTransitioning => animation != null;
+        private UiMotion.Handle animation;
+        private UiMotion.Handle exit;
+        public bool IsTransitioning => animation != null && !animation.IsComplete && !animation.IsCancelled;
 
         public void Show(GameObject target, bool animate, Action completed = null)
         {
             if (current != null && current.gameObject == target && target.activeSelf) return;
             Cancel();
-            if (current != null) current.gameObject.SetActive(false);
-            current = target.GetComponent<CanvasGroup>();
-            if (current == null) current = target.AddComponent<CanvasGroup>();
+            var previous = current;
+            current = target.GetComponent<CanvasGroup>() ?? target.AddComponent<CanvasGroup>();
             target.SetActive(true);
-            if (animate) animation = StartCoroutine(Reveal(current, completed));
-            else { Reset(current); completed?.Invoke(); }
+            var motion = GetComponent<UiMotion>() ?? gameObject.AddComponent<UiMotion>();
+            if (previous != null)
+            {
+                previous.interactable = previous.blocksRaycasts = false;
+                exit = motion.Animate(t =>
+                {
+                    if (previous == null) return;
+                    previous.alpha = 1 - t;
+                    ((RectTransform)previous.transform).anchoredPosition = Vector2.left * UiTokens.Space3 * t;
+                }, animate ? Duration : 0, () => { if (previous != null) previous.gameObject.SetActive(false); });
+            }
+            var group = current;
+            group.interactable = false;
+            group.blocksRaycasts = true;
+            animation = motion.Animate(t =>
+            {
+                group.alpha = t;
+                ((RectTransform)group.transform).anchoredPosition = Vector2.right * UiTokens.Space3 * (1 - t);
+            }, animate ? Duration : 0, () => { Reset(group); completed?.Invoke(); });
         }
 
         public void Cancel()
         {
-            if (animation != null) StopCoroutine(animation);
-            animation = null;
+            animation?.Cancel(); exit?.Cancel();
+            animation = null; exit = null;
+            foreach (var group in GetComponentsInChildren<CanvasGroup>(true))
+                if (group != current && group.transform.parent == current?.transform.parent) group.gameObject.SetActive(false);
             if (current != null) Reset(current);
-        }
-
-        private IEnumerator Reveal(CanvasGroup group, Action completed)
-        {
-            RectTransform rect = (RectTransform)group.transform;
-            float duration = FrontendPreferences.ReducedMotion ? 0.06f : Duration;
-            group.alpha = 0.15f;
-            group.interactable = false;
-            group.blocksRaycasts = true;
-            float elapsed = 0;
-            while (elapsed < duration)
-            {
-                elapsed += Time.unscaledDeltaTime;
-                float t = 1f - Mathf.Pow(1f - Mathf.Clamp01(elapsed / duration), 3f);
-                group.alpha = Mathf.Lerp(0.15f, 1, t);
-                rect.anchoredPosition = FrontendPreferences.ReducedMotion ? Vector2.zero : new Vector2(12f * (1 - t), 0);
-                yield return null;
-            }
-            Reset(group);
-            animation = null;
-            completed?.Invoke();
         }
 
         private static void Reset(CanvasGroup group)

@@ -49,6 +49,46 @@ namespace AllinDefense.Tests
             review?.GetMethod("RestoreSize").Invoke(null, null);
 #endif
         }
+        [Test] public void ReducedMotionFinishesHudCountersResultsAndWaveBannerImmediately()
+        {
+            FrontendPreferences.ReducedMotion = true; Create(); hud.Refresh(session);
+            var gold = UiQuery.FindById<UiStatPill>(hud, "Gold");
+            Call(session, "EarnGold", 12); hud.Refresh(session);
+            Assert.That(gold.GetComponentsInChildren<TMP_Text>().Any(t => t.text.Contains(session.Gold.ToString())), Is.True);
+            hud.ShowResult(true);
+            Assert.That(hud.transform.Find("ResultPanel").GetComponent<CanvasGroup>().alpha, Is.EqualTo(1));
+            hud.ShowWaveBanner(2, 3); Assert.That(hud.WaveBannerVisible, Is.False);
+            var overlay = UiQuery.FindById<UiOverlay>(hud, "MapConfirmation");
+            overlay.Show(); Assert.That(overlay.GetComponent<CanvasGroup>().alpha, Is.EqualTo(1));
+            overlay.Hide(); Assert.That(overlay.gameObject.activeSelf, Is.False);
+        }
+        [UnityTest] public IEnumerator InsufficientGoldShakesPriceAndRequestsErrorSound()
+        {
+            FrontendPreferences.ReducedMotion = false; Create(7);
+            typeof(GameSessionController).GetProperty("Gold").SetValue(session, 0);
+            hud.Refresh(session);
+            var slot = session.GetComponentsInChildren<GreyboxOutpostSlot>().First(s => s.Occupant == null);
+            Call(hud, "UpdateRadialSelection", null, slot, true);
+            int errors = 0;
+            Action<PresentationCue> requested = cue => { if (cue == PresentationCue.UiError) errors++; };
+            UiSounds.Requested += requested;
+            try
+            {
+                var button = hud.BattleRadial.GetComponentsInChildren<Button>().First(b => b.name == "Mage");
+                var chip = (RectTransform)button.GetComponent<UiVisualState>().Price.transform.parent;
+                Vector2 rest = chip.anchoredPosition;
+                Assert.That(session.Gold, Is.LessThan(TowerProgression.Base(OutpostKind.Mage).cost));
+                hud.BattleRadial.Choose(2); hud.BattleRadial.Choose(2);
+                Assert.That(errors, Is.EqualTo(1));
+                var errorClip = Resources.Load<DefenderPresentationCatalog>("Presentation/DefenderPresentationCatalog").Audio(PresentationCue.UiError).clip;
+                Assert.That(session.GetComponentsInChildren<AudioSource>().Any(source => source.clip == errorClip), Is.True);
+                yield return null; yield return null;
+                Assert.That(chip.anchoredPosition.x, Is.Not.EqualTo(rest.x));
+                FrontendPreferences.ReducedMotion = true;
+                Assert.That(chip.anchoredPosition, Is.EqualTo(rest));
+            }
+            finally { UiSounds.Requested -= requested; }
+        }
         [UnityTest] public IEnumerator ActualBossWaveControlsPhaseAndLiveBossOwnsNotchedHealthBar()
         {
             Create(1); hud.Refresh(session);

@@ -18,6 +18,14 @@ namespace AllinDefense.Presentation
             set => mode = value;
         }
 
+        private void OnEnable() => FrontendPreferences.MotionChanged += FinishReducedMotion;
+        private void FinishReducedMotion()
+        {
+            if (!FrontendPreferences.ReducedMotion) return;
+            if (shakeRoutine != null) StopCoroutine(shakeRoutine);
+            shakeRoutine = null; RestoreRestPose();
+        }
+
         public void Initialize(Camera camera)
         {
             targetCamera = camera != null ? camera : Camera.main;
@@ -59,7 +67,7 @@ namespace AllinDefense.Presentation
                 hasRestPose = true;
             }
             float elapsed = 0f;
-            while (elapsed < seconds)
+            while (elapsed < seconds && FrontendPreferences.CameraShake && !FrontendPreferences.ReducedMotion)
             {
                 elapsed += Time.unscaledDeltaTime;
                 float envelope = 1f - Mathf.Clamp01(elapsed / seconds);
@@ -74,6 +82,7 @@ namespace AllinDefense.Presentation
 
         private void OnDisable()
         {
+            FrontendPreferences.MotionChanged -= FinishReducedMotion;
             if (shakeRoutine != null)
             {
                 StopCoroutine(shakeRoutine);

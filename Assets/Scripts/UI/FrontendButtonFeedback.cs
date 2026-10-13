@@ -1,4 +1,4 @@
-using System.Collections;
+using AllinDefense.UI.Kit;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -8,7 +8,7 @@ namespace AllinDefense.UI
         IPointerExitHandler, ISelectHandler, IDeselectHandler
     {
         private Vector3 restingScale = Vector3.one;
-        private Coroutine animationRoutine;
+        private UiMotion.Handle animationRoutine;
 
         private void Awake()
         {
@@ -27,37 +27,15 @@ namespace AllinDefense.UI
 
         private void OnDisable()
         {
-            if (animationRoutine != null) StopCoroutine(animationRoutine);
+            animationRoutine?.Cancel();
             animationRoutine = null;
             transform.localScale = restingScale;
         }
 
         private void AnimateTo(Vector3 target)
         {
-            if (FrontendPreferences.ReducedMotion)
-            {
-                transform.localScale = target;
-                return;
-            }
-            if (animationRoutine != null) StopCoroutine(animationRoutine);
-            animationRoutine = StartCoroutine(AnimateScale(target));
-        }
-
-        private IEnumerator AnimateScale(Vector3 target)
-        {
-            Vector3 start = transform.localScale;
-            const float duration = UiTokens.ButtonPressDuration;
-            float elapsed = 0f;
-            while (elapsed < duration)
-            {
-                elapsed += Time.unscaledDeltaTime;
-                float t = Mathf.Clamp01(elapsed / duration);
-                t = UiTokens.EvaluateEaseOut(t);
-                transform.localScale = Vector3.LerpUnclamped(start, target, t);
-                yield return null;
-            }
-            transform.localScale = target;
-            animationRoutine = null;
+            animationRoutine?.Cancel();
+            animationRoutine = (GetComponent<UiMotion>() ?? gameObject.AddComponent<UiMotion>()).Scale(transform, target);
         }
     }
 }

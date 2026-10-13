@@ -1,4 +1,4 @@
-using System.Collections;
+using AllinDefense.UI.Kit;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -8,7 +8,7 @@ namespace AllinDefense.UI
     public sealed class FrontendCampaignPager : ScrollRect
     {
         public int PageCount = 5;
-        private Coroutine snap;
+        private UiMotion.Handle snap;
         public override void OnBeginDrag(PointerEventData data)
         {
             StopMovement();
@@ -19,23 +19,14 @@ namespace AllinDefense.UI
             base.OnEndDrag(data);
             velocity = Vector2.zero;
             float target = Mathf.Round(horizontalNormalizedPosition * (PageCount - 1)) / Mathf.Max(1, PageCount - 1);
-            snap = StartCoroutine(Snap(target));
-        }
-        private IEnumerator Snap(float target)
-        {
+            snap?.Cancel();
             float start = horizontalNormalizedPosition;
-            float elapsed = 0;
-            while (elapsed < .12f)
-            {
-                elapsed += Time.unscaledDeltaTime;
-                horizontalNormalizedPosition = Mathf.Lerp(start, target, Mathf.Clamp01(elapsed / .12f));
-                yield return null;
-            }
-            snap = null;
+            snap = (GetComponent<UiMotion>() ?? gameObject.AddComponent<UiMotion>()).Animate(t =>
+                horizontalNormalizedPosition = Mathf.Lerp(start, target, t), UiTokens.ButtonPressDuration);
         }
         public override void StopMovement()
         {
-            if (snap != null) StopCoroutine(snap);
+            snap?.Cancel();
             snap = null;
             base.StopMovement();
         }

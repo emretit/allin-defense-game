@@ -66,6 +66,7 @@ namespace AllinDefense.UI
         public const int WeightBold = 700;
         public const string TurkishCharacters = "çğıİöşüÇĞÖŞÜ";
 
+        public const float WaveBannerDuration = 1.1f;
         public const float FadeDuration = .18f;
         public const float SlideDuration = .22f;
         public const float ReducedMotionDuration = .10f;

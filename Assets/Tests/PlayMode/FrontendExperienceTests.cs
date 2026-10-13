@@ -62,6 +62,47 @@ namespace AllinDefense.Tests
             if (File.Exists(savePath)) File.Delete(savePath);
         }
 
+        [Test] public void ReducedMotionFinishesEveryScreenAndModalBeforeReturning()
+        {
+            bool reduced = FrontendPreferences.ReducedMotion;
+            try
+            {
+                FrontendPreferences.ReducedMotion = true;
+                foreach (AppScreen screen in Enum.GetValues(typeof(AppScreen)))
+                {
+                    Call(flow, "ShowScreen", screen);
+                    var navigation = flow.GetComponent<FrontendNavigation>();
+                    Assert.That(navigation.IsTransitioning, Is.False, screen.ToString());
+                    var group = flow.GetComponentsInChildren<CanvasGroup>(true).First(g => g.name == flow.CurrentScreen.ToString());
+                    Assert.That(group.alpha, Is.EqualTo(1), screen.ToString());
+                    Assert.That(((RectTransform)group.transform).anchoredPosition, Is.EqualTo(Vector2.zero));
+                    Assert.That(group.interactable, Is.True);
+                }
+                var retry = UiQuery.FindById<UnityEngine.UI.Button>(flow, "Victory Retry");
+                Assert.That(retry.GetComponent<AllinDefense.UI.Kit.UiAccessibleButton>().Label, Is.EqualTo(FrontendCopy.TryAgain.Value));
+                Assert.That(retry.GetComponent<AllinDefense.UI.Kit.UiVisualState>().Icon.sprite,
+                    Is.EqualTo(Resources.Load<DefenderPresentationCatalog>("Presentation/DefenderPresentationCatalog").frontendTheme.designSystem.iconRestart));
+                Call(flow, "ShowScreen", AppScreen.MainMenu);
+                Call(flow, "OpenSettings");
+                var settings = flow.GetComponentsInChildren<CanvasGroup>(true).First(g => g.name == "Settings Modal");
+                Assert.That(settings.alpha, Is.EqualTo(1));
+                Call(flow, "CloseSettings"); Assert.That(settings.gameObject.activeSelf, Is.False);
+            }
+            finally { FrontendPreferences.ReducedMotion = reduced; }
+        }
+        [Test] public void SecondTapDuringTransitionCannotProduceASecondAction()
+        {
+            bool reduced = FrontendPreferences.ReducedMotion;
+            try
+            {
+                FrontendPreferences.ReducedMotion = false;
+                int actions = 0;
+                Action navigate = () => { actions++; Call(flow, "ShowScreen", AppScreen.Login); };
+                Call(flow, "MenuClick", navigate); Call(flow, "MenuClick", navigate);
+                Assert.That(actions, Is.EqualTo(1));
+            }
+            finally { FrontendPreferences.ReducedMotion = reduced; }
+        }
         [UnityTest]
         public IEnumerator MenuTimingThirtyRoundTrips()
         {
@@ -123,6 +164,7 @@ namespace AllinDefense.Tests
             var route = flow.GetComponentsInChildren<FrontendRegionScrollRect>().First();
             route.verticalNormalizedPosition = .3f;
             Call(flow, "OpenSettings");
+            yield return new WaitForSecondsRealtime(UiTokens.FadeDuration + .05f);
             var account = UiQuery.FindById<UnityEngine.UI.Button>(flow, "Settings Account");
             account.onClick.Invoke();
             Call(flow, "ReturnFromAccount");
@@ -200,7 +242,7 @@ namespace AllinDefense.Tests
                 {
                     FrontendPreferences.Language = language;
                     Call(flow, "ShowScreen", AppScreen.MainMenu);
-                    yield return null;
+                    yield return new WaitForSecondsRealtime(UiTokens.FadeDuration + .05f);
                     Assert.That(UiQuery.FindById(flow, "Main Menu Layout").GetComponent<UnityEngine.UI.VerticalLayoutGroup>(), Is.Not.Null);
                     Assert.That(UiQuery.FindById(flow, "Settings").GetComponent<AllinDefense.UI.Kit.UiVisualState>().Icon.sprite,
                         Is.EqualTo(Resources.Load<DefenderPresentationCatalog>("Presentation/DefenderPresentationCatalog").frontendTheme.designSystem.iconSettings));

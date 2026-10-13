@@ -42,6 +42,16 @@ namespace AllinDefense.Presentation
         private void OnPresentationSignal(PresentationSignal signal)
         {
             audioController.Play(signal);
+            switch (signal.cue)
+            {
+                case PresentationCue.OutpostBuilt: AllinDefense.UI.UiHaptics.Medium(); break;
+                case PresentationCue.OutpostUpgraded: AllinDefense.UI.UiHaptics.Light(); break;
+                case PresentationCue.Victory: AllinDefense.UI.UiHaptics.Success(); break;
+                case PresentationCue.UiError: AllinDefense.UI.UiHaptics.Error(); break;
+                case PresentationCue.WaveStarted:
+                    session.GetComponentInChildren<DefenderHudController>()?.ShowWaveBanner(signal.value + 1, session.WaveCount);
+                    break;
+            }
             feedbackController.Play(signal);
             if (signal.cue is PresentationCue.WaveStarted or PresentationCue.BossPhase or
                 PresentationCue.Victory or PresentationCue.Defeat)

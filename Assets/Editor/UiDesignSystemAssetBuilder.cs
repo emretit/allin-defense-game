@@ -124,6 +124,12 @@ namespace AllinDefense.Editor
             set.iconFastForward = Glyph("FastForward", p => Mathf.Min(Polygon(p, new[] { new Vector2(.16f,.25f), new Vector2(.5f,.5f), new Vector2(.16f,.75f) }),
                 Polygon(p, new[] { new Vector2(.52f,.25f), new Vector2(.86f,.5f), new Vector2(.52f,.75f) })));
             set.iconClose = Glyph("Close", p => Mathf.Min(Line(p,.28f,.28f,.72f,.72f), Line(p,.28f,.72f,.72f,.28f)));
+            set.iconRestart = Glyph("Restart", p =>
+            {
+                var v = p - new Vector2(.5f, .5f);
+                float arc = Mathf.Atan2(v.y, v.x) > .7f ? 1f : Mathf.Abs(v.magnitude - .28f);
+                return Mathf.Min(arc, Mathf.Min(Line(p,.61f,.71f,.77f,.72f), Line(p,.77f,.72f,.75f,.55f)));
+            });
             set.iconBack = Glyph("Back", p => Mathf.Min(Line(p,.62f,.24f,.35f,.5f), Line(p,.35f,.5f,.62f,.76f)));
             set.iconCheck = Glyph("Check", p => Mathf.Min(Line(p,.22f,.5f,.43f,.29f), Line(p,.43f,.29f,.8f,.72f)));
             set.iconUpgrade = Glyph("Upgrade", p => Mathf.Min(Line(p,.5f,.2f,.5f,.8f), Mathf.Min(Line(p,.25f,.55f,.5f,.8f), Line(p,.5f,.8f,.75f,.55f))));
@@ -171,7 +177,7 @@ namespace AllinDefense.Editor
                 return distance;
             });
             Sprite[] sprites = { set.iconEnemy, set.iconPause, set.iconPlay, set.iconFastForward, set.iconSettings, set.iconClose,
-                set.iconBack, set.iconMap, set.iconLock, set.iconStarFilled, set.iconStarEmpty, set.iconCheck, set.iconShield, set.iconUpgrade, set.iconSell, set.iconRapidFire, set.iconSharpshooter, set.iconAssaultGuard, set.iconBlast, set.iconFrost };
+                set.iconBack, set.iconRestart, set.iconMap, set.iconLock, set.iconStarFilled, set.iconStarEmpty, set.iconCheck, set.iconShield, set.iconUpgrade, set.iconSell, set.iconRapidFire, set.iconSharpshooter, set.iconAssaultGuard, set.iconBlast, set.iconFrost };
             var atlas = AssetDatabase.LoadAssetAtPath<SpriteAtlas>(AtlasPath);
             var existing = SpriteAtlasExtensions.GetPackables(atlas);
             var textures = sprites.Select(sprite => (UnityEngine.Object)AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GetAssetPath(sprite)));

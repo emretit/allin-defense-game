@@ -24,7 +24,7 @@ namespace AllinDefense.UI
             var dismiss = scrim.AddComponent<UnityEngine.UI.Button>();
             dismiss.targetGraphic = scrimImage;
             dismiss.transition = UnityEngine.UI.Selectable.Transition.None;
-            dismiss.onClick.AddListener(CloseHeroName);
+            dismiss.onClick.AddListener(HideHeroName);
 
             var card = CreatePanel("Hero Name Card", heroNameModal.transform, theme.panel);
             heroNameCard = card.GetComponent<RectTransform>();
@@ -76,13 +76,15 @@ namespace AllinDefense.UI
             SetRect(heroNameStatus.rectTransform, new Vector2(0, -132), new Vector2(760, 64), Center(), Center());
             heroNameStatus.richText = false;
             var cancel = CreateButton("Cancel Hero Name", card.transform, FrontendCopy.Cancel, new Vector2(350, 132),
-                theme.night, CloseHeroName);
+                theme.night, HideHeroName);
             SetRect(cancel.GetComponent<RectTransform>(), new Vector2(-205, 42), new Vector2(350, 132), BottomCenter(), BottomCenter());
             var save = CreateButton("Save Hero Name", card.transform, FrontendCopy.Save, new Vector2(350, 132),
                 theme.commandGold, SaveHeroName);
             SetRect(save.GetComponent<RectTransform>(), new Vector2(205, 42), new Vector2(350, 132), BottomCenter(), BottomCenter());
             heroNameModal.SetActive(false);
         }
+
+        private AllinDefense.UI.Kit.UiMotion.Handle heroNameMotion;
 
         private void OpenHeroName()
         {
@@ -91,6 +93,14 @@ namespace AllinDefense.UI
             heroNameStatus.text = "";
             heroNameModal.SetActive(true);
             heroNameModal.transform.SetAsLastSibling();
+            UiSounds.Click();
+            var group = heroNameModal.GetComponent<CanvasGroup>();
+            if (group == null) group = heroNameModal.AddComponent<CanvasGroup>();
+            heroNameMotion?.Cancel();
+            group.interactable = false;
+            heroNameMotion = (heroNameModal.GetComponent<AllinDefense.UI.Kit.UiMotion>() ?? heroNameModal.AddComponent<AllinDefense.UI.Kit.UiMotion>())
+                .Animate(t => { group.alpha = t; heroNameCard.localScale = Vector3.one * Mathf.Lerp(UiTokens.PressScale, 1, t); },
+                    UiTokens.FadeDuration, () => group.interactable = true);
         }
 
         private void SaveHeroName()
@@ -111,10 +121,25 @@ namespace AllinDefense.UI
             heroNameStatus.text = FrontendCopy.Saved.Format(progress.HeroName);
         }
 
+        private void HideHeroName()
+        {
+            if (heroNameModal == null || !heroNameModal.activeSelf) return;
+            heroNameMotion?.Cancel(); UiSounds.Click();
+            var group = heroNameModal.GetComponent<CanvasGroup>();
+            group.interactable = false;
+            float from = group.alpha;
+            heroNameMotion = heroNameModal.GetComponent<AllinDefense.UI.Kit.UiMotion>().Animate(t =>
+            {
+                group.alpha = from * (1 - t);
+                heroNameCard.localScale = Vector3.one * Mathf.Lerp(1, UiTokens.PressScale, t);
+            }, UiTokens.FadeDuration, CloseHeroName);
+        }
+
         private void CloseHeroName()
         {
             if (heroNameModal == null) return;
             heroNameInput.DeactivateInputField();
+            heroNameMotion?.Cancel();
             heroNameModal.SetActive(false);
         }
 

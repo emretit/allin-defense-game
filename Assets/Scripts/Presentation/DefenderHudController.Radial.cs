@@ -63,7 +63,7 @@ namespace AllinDefense.Presentation
             battleRadial.CloseOnConfirm = false;
             battleRadial.Previewed += PreviewRadial;
             battleRadial.Confirmed += ConfirmRadial;
-            battleRadial.Rejected += option => { RefreshRadialCard(); RadialRejected?.Invoke(option.Id); };
+            battleRadial.Rejected += option => RejectRadial(option.Id);
             battleRadial.Closed += DismissRadial;
             foreach (var button in radialButtons.Values)
             {
@@ -251,12 +251,28 @@ namespace AllinDefense.Presentation
             RefreshRadialAvailability(); RefreshRadialCard();
         }
 
+        private UiMotion.Handle rejectionMotion;
+        private Vector2 rejectionRest;
+        private RectTransform rejectionTarget;
+        private void RejectRadial(string id)
+        {
+            rejectionMotion?.Cancel();
+            if (rejectionTarget != null) rejectionTarget.anchoredPosition = rejectionRest;
+            rejectionTarget = (RectTransform)radialButtons[id].GetComponent<UiVisualState>().Price.transform.parent;
+            rejectionRest = rejectionTarget.anchoredPosition;
+            rejectionMotion = (GetComponent<UiMotion>() ?? gameObject.AddComponent<UiMotion>()).Shake(rejectionTarget);
+            UiSounds.Play(PresentationCue.UiError);
+            UiHaptics.Error();
+            RefreshRadialCard();
+            RadialRejected?.Invoke(id);
+        }
+
         private void ConfirmRadial(UiRadialOption option)
         {
             var session = GameSessionController.Instance;
             if (session == null || radialSlot == null) return;
             if (option.Id == "Sell") { SellFromUi(); RefreshRadialAvailability(); return; }
-            if (session.Gold < option.Price) { RadialRejected?.Invoke(option.Id); RefreshRadialCard(); return; }
+            if (session.Gold < option.Price) { RejectRadial(option.Id); return; }
             var slot = radialSlot;
             if (radialTower == null && slot.Occupant == null)
                 session.TryBuildOutpost(slot.Index, Enum.Parse<OutpostKind>(option.Id));

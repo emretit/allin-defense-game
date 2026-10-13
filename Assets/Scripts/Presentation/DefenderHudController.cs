@@ -352,7 +352,7 @@ namespace AllinDefense.Presentation
 
             CanvasGroup group = resultPanel.GetComponent<CanvasGroup>();
             if (group == null) group = resultPanel.AddComponent<CanvasGroup>();
-            if (isActiveAndEnabled) StartCoroutine(AnimateOverlay(group, resultCardImage != null ? resultCardImage.rectTransform : null));
+            if (isActiveAndEnabled) AnimateOverlay(group, resultCardImage != null ? resultCardImage.rectTransform : null);
         }
 
         public void SetBuildInteractable(bool archer, bool barracks, bool mage)
@@ -952,31 +952,17 @@ namespace AllinDefense.Presentation
             restartRect.sizeDelta = new Vector2(340f, 84f);
         }
 
-        private IEnumerator AnimateOverlay(CanvasGroup group, RectTransform card)
+        private UiMotion.Handle resultMotion;
+        private void AnimateOverlay(CanvasGroup group, RectTransform card)
         {
-            if (group == null) yield break;
-            if (FrontendPreferences.ReducedMotion)
+            if (group == null) return;
+            resultMotion?.Cancel();
+            group.interactable = false;
+            resultMotion = (GetComponent<UiMotion>() ?? gameObject.AddComponent<UiMotion>()).Animate(t =>
             {
-                group.alpha = 1f;
-                if (card != null) card.localScale = Vector3.one;
-                yield break;
-            }
-
-            group.alpha = 0f;
-            if (card != null) card.localScale = Vector3.one * 0.96f;
-            const float duration = UiTokens.FadeDuration;
-            float elapsed = 0f;
-            while (elapsed < duration)
-            {
-                elapsed += Time.unscaledDeltaTime;
-                float t = Mathf.Clamp01(elapsed / duration);
-                t = UiTokens.EvaluateEaseOut(t);
                 group.alpha = t;
-                if (card != null) card.localScale = Vector3.one * Mathf.Lerp(0.96f, 1f, t);
-                yield return null;
-            }
-            group.alpha = 1f;
-            if (card != null) card.localScale = Vector3.one;
+                if (card != null) card.localScale = Vector3.one * Mathf.Lerp(UiTokens.PressScale, 1, t);
+            }, UiTokens.FadeDuration, () => group.interactable = true);
         }
 
         private void ApplySelectedOutpostView(GreyboxOutpost outpost)

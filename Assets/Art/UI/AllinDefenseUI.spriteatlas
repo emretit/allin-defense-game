@@ -84,6 +84,7 @@ SpriteAtlas:
     - {fileID: 2800000, guid: ab183c39921184da1b2144e4d4f5a204, type: 3}
     - {fileID: 2800000, guid: 23d0cc244df89405e9a7b9054716665e, type: 3}
     - {fileID: 2800000, guid: 15ff9aec149fb4ca1b81de2edb8a73b8, type: 3}
+    - {fileID: 2800000, guid: dea6412959fd2460b86b7efcd7579a62, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -111,6 +112,7 @@ SpriteAtlas:
     - 22b96df7f39dd4eadaa96053de1ba28b: 21300000
     - 98cc960824302442e9613ebed20c12b1: 21300000
     - 6868da19286f244028acea9d3e29e937: 21300000
+    - dea6412959fd2460b86b7efcd7579a62: 21300000
     - ab183c39921184da1b2144e4d4f5a204: 21300000
     - 933850c9f3add4fc3b7ba8bca8b39c88: 21300000
     - 6b4d230b3e232477e8f239b68b5712e5: 21300000
@@ -152,6 +154,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 22b96df7f39dd4eadaa96053de1ba28b, type: 3}
   - {fileID: 21300000, guid: 98cc960824302442e9613ebed20c12b1, type: 3}
   - {fileID: 21300000, guid: 6868da19286f244028acea9d3e29e937, type: 3}
+  - {fileID: 21300000, guid: dea6412959fd2460b86b7efcd7579a62, type: 3}
   - {fileID: 21300000, guid: ab183c39921184da1b2144e4d4f5a204, type: 3}
   - {fileID: 21300000, guid: 933850c9f3add4fc3b7ba8bca8b39c88, type: 3}
   - {fileID: 21300000, guid: 6b4d230b3e232477e8f239b68b5712e5, type: 3}
@@ -192,6 +195,7 @@ SpriteAtlas:
   - SystemFastForward
   - SystemBack
   - SystemShield
+  - SystemRestart
   - SystemAssaultGuard
   - IconMage
   - FilledCircle

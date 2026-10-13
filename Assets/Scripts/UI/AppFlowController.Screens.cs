@@ -42,6 +42,7 @@ namespace AllinDefense.UI
 
         private void MenuClick(Action action)
         {
+            if (navigation.IsTransitioning || (heroNameMotion != null && !heroNameMotion.IsComplete && !heroNameMotion.IsCancelled) || (settingsFade != null && !settingsFade.IsComplete && !settingsFade.IsCancelled)) return;
             PlayFrontendCue(null, PresentationCue.UiClick);
             action?.Invoke();
         }
@@ -458,7 +459,12 @@ namespace AllinDefense.UI
             turkishLanguageButton = buttons[0]; englishLanguageButton = buttons[1];
             UiId.Assign(turkishLanguageButton.transform, "Turkish Language");
             UiId.Assign(englishLanguageButton.transform, "English Language");
-            foreach (var button in buttons) UiKit.Size((RectTransform)button.transform, height: 140, flex: 1);
+            foreach (var button in buttons)
+            {
+                button.GetComponentInChildren<TMP_Text>().fontSize = UiTokens.TypeLabel;
+                button.GetComponent<UiPointSize>().Configure(UiMetrics.MinTouchPt);
+                UiKit.Size((RectTransform)button.transform, height: 140, flex: 1);
+            }
             languageSegments.Changed += index => FrontendPreferences.Language = index == 0 ? GameLanguage.Turkish : GameLanguage.English;
             settingsAccount = MenuButton(body, "Settings Account", FrontendCopy.GuestLinkAccount, menuKit.Assets.iconShield,
                 () => { CloseSettings(); ShowScreen(AppScreen.Login); });
@@ -580,7 +586,7 @@ namespace AllinDefense.UI
             if (newEnemyModal == null) return;
             FrontendPreferences.MarkEnemySeen(introducedEnemy);
             var modal = newEnemyModal; newEnemyModal = null;
-            modal.gameObject.SetActive(false); Destroy(modal.gameObject);
+            modal.Hide(() => Destroy(modal.gameObject));
             if (enemyOwnsPause && session.Phase == GamePhase.Paused)
             {
                 session.TogglePause();

@@ -25,6 +25,7 @@ namespace AllinDefense.UI
         public Sprite iconSettings;
         public Sprite iconClose;
         public Sprite iconBack;
+        public Sprite iconRestart;
         public Sprite iconMap;
         public Sprite iconLock;
         public Sprite iconStarFilled;

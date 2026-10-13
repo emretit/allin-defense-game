@@ -135,6 +135,7 @@ namespace AllinDefense.UI
                 Application.runInBackground = true;
             if (FindAnyObjectByType<AudioListener>() == null) frontendListener = gameObject.AddComponent<AudioListener>();
             frontendUiSource = gameObject.AddComponent<AudioSource>();
+            UiSounds.Playback = PlayUiSound;
             frontendUiSource.playOnAwake = false;
             frontendUiSource.spatialBlend = 0f;
             frontendUiSource.outputAudioMixerGroup = catalog.uiMixer;
@@ -312,25 +313,12 @@ namespace AllinDefense.UI
 
         private IEnumerator FinishBoot(AppScreen target)
         {
-            if (FrontendPreferences.ReducedMotion)
+            Transform crest = screens[AppScreen.Boot].transform.Find("Boot Brand Logo");
+            if (crest != null)
             {
-                yield return new WaitForSecondsRealtime(0.28f);
-            }
-            else
-            {
-                Transform crest = screens[AppScreen.Boot].transform.Find("Boot Brand Logo");
-                const float revealDuration = 0.54f;
-                float elapsed = 0f;
-                while (elapsed < revealDuration)
-                {
-                    elapsed += Time.unscaledDeltaTime;
-                    float t = Mathf.Clamp01(elapsed / revealDuration);
-                    t = UiTokens.EvaluateEaseOut(t);
-                    if (crest != null) crest.localScale = Vector3.one * Mathf.Lerp(0.92f, 1f, t);
-                    yield return null;
-                }
-                if (crest != null) crest.localScale = Vector3.one;
-                yield return new WaitForSecondsRealtime(0.16f);
+                crest.localScale = Vector3.one * UiTokens.PressScale;
+                var reveal = (crest.GetComponent<UiMotion>() ?? crest.gameObject.AddComponent<UiMotion>()).Scale(crest, Vector3.one);
+                while (!reveal.IsComplete && !reveal.IsCancelled) yield return null;
             }
             if (target == AppScreen.Welcome && progress.Data.playerId != "local-guest") target = AppScreen.MainMenu;
             ShowScreen(target);
@@ -380,13 +368,15 @@ namespace AllinDefense.UI
             resultAdviceText.textWrappingMode = TextWrappingModes.Normal;
             UiKit.Size(resultAdviceText.rectTransform, height: 90, flex: 1);
             var actions = MenuStack(card, "Result Actions", false);
-            resultRetryIcon = menuKit.IconButton(actions, "Victory Retry", menuKit.Assets.iconBack,
-                () => ReloadCampaignLevel(session.CampaignLevelNumber));
+            resultRetryIcon = menuKit.IconButton(actions, "Victory Retry", menuKit.Assets.iconRestart,
+                () => MenuClick(() => ReloadCampaignLevel(session.CampaignLevelNumber)));
+            resultRetryIcon.gameObject.AddComponent<UiAccessibleButton>().Configure(FrontendCopy.TryAgain);
             retryButton = MenuButton(actions, "Retry Level", FrontendCopy.TryAgain, null,
                 () => ReloadCampaignLevel(session.CampaignLevelNumber), true);
             nextLevelButton = MenuButton(actions, "Next Level", FrontendCopy.NextLevel, menuKit.Assets.iconPlay,
                 () => ReloadCampaignLevel(session.CampaignLevelNumber + 1), true);
-            resultMapIcon = menuKit.IconButton(actions, "Victory Map", menuKit.Assets.iconMap, OpenCampaign);
+            resultMapIcon = menuKit.IconButton(actions, "Victory Map", menuKit.Assets.iconMap, () => MenuClick(OpenCampaign));
+            resultMapIcon.gameObject.AddComponent<UiAccessibleButton>().Configure(FrontendCopy.ReturnToMap);
             foreach (var button in new[] { resultRetryIcon, resultMapIcon }) UiKit.Size((RectTransform)button.transform, 160, 160);
             resultMapText = PlainTextButton(card, "Return To Map", FrontendCopy.ReturnToMap, OpenCampaign);
             resultAccountSuggestion = menuKit.Surface(card, "Result Account Suggestion", UiTokens.RadiusMedium, false);
@@ -865,11 +855,16 @@ namespace AllinDefense.UI
                         string.Format(FrontendCopy.LinkedAccountRow.English, progress.Data.displayName)));
             navigation.Cancel();
             settingsFade?.Cancel();
+            PlayFrontendCue(null, PresentationCue.UiClick);
             settingsOpen = true;
             settingsModal.SetActive(true);
             settingsGroup.alpha = 0;
-            settingsGroup.interactable = settingsGroup.blocksRaycasts = true;
-            settingsFade = (settingsModal.GetComponent<UiMotion>() ?? settingsModal.AddComponent<UiMotion>()).Fade(settingsGroup, 1);
+            settingsGroup.interactable = false; settingsGroup.blocksRaycasts = true;
+            settingsFade = (settingsModal.GetComponent<UiMotion>() ?? settingsModal.AddComponent<UiMotion>()).Animate(t =>
+            {
+                settingsGroup.alpha = t;
+                settingsModal.transform.Find("Settings Chronicle").localScale = Vector3.one * Mathf.Lerp(UiTokens.PressScale, 1, t);
+            }, UiTokens.FadeDuration, () => settingsGroup.interactable = true);
             settingsModal.transform.SetAsLastSibling();
             screens[CurrentScreen].GetComponent<CanvasGroup>().interactable = false;
             screens[CurrentScreen].GetComponent<CanvasGroup>().alpha = 0;
@@ -878,12 +873,18 @@ namespace AllinDefense.UI
 
         private void CloseSettings()
         {
+            if (settingsOpen) PlayFrontendCue(null, PresentationCue.UiClick);
             settingsOpen = false;
             if (settingsModal != null && settingsModal.activeSelf)
             {
                 settingsFade?.Cancel();
                 settingsGroup.interactable = settingsGroup.blocksRaycasts = false;
-                settingsFade = settingsModal.GetComponent<UiMotion>().Fade(settingsGroup, 0, () => settingsModal.SetActive(false));
+                float from = settingsGroup.alpha;
+                settingsFade = settingsModal.GetComponent<UiMotion>().Animate(t =>
+                {
+                    settingsGroup.alpha = from * (1 - t);
+                    settingsModal.transform.Find("Settings Chronicle").localScale = Vector3.one * Mathf.Lerp(1, UiTokens.PressScale, t);
+                }, UiTokens.FadeDuration, () => settingsModal.SetActive(false));
             }
             if (screens.TryGetValue(CurrentScreen, out var screen))
             {
@@ -1202,11 +1203,7 @@ namespace AllinDefense.UI
             colors.colorMultiplier = 1f;
             colors.fadeDuration = UiTokens.ButtonColorDuration;
             button.colors = colors;
-            button.onClick.AddListener(() =>
-            {
-                PlayFrontendCue(null, PresentationCue.UiClick);
-                action?.Invoke();
-            });
+            button.onClick.AddListener(() => MenuClick(action));
             root.AddComponent<FrontendButtonFeedback>();
             var outline = root.AddComponent<Outline>();
             outline.effectColor = UiTokens.ButtonOutline;
@@ -1302,6 +1299,13 @@ namespace AllinDefense.UI
             if (button?.targetGraphic != null) button.targetGraphic.color = color;
         }
 
+        private void PlayUiSound(PresentationCue cue)
+        {
+            if (CurrentScreen == AppScreen.Battle)
+                session.GetComponentInChildren<DefenderAudioController>()?.Play(cue);
+            else PlayFrontendCue(null, cue);
+        }
+
         private void PlayFrontendCue(AudioClip preferred, PresentationCue fallback)
         {
             if (frontendUiSource == null) return;
@@ -1313,12 +1317,7 @@ namespace AllinDefense.UI
             frontendUiSource.Play();
         }
 
-        private static void TriggerHaptic()
-        {
-#if UNITY_IOS || UNITY_ANDROID
-            if (FrontendPreferences.Haptics) Handheld.Vibrate();
-#endif
-        }
+        private static void TriggerHaptic() => UiHaptics.Light();
 
         private static TextMeshProUGUI CreateText(string name, Transform parent, LocalizedCopy value, float size,
             TMP_FontAsset font, FontStyles style, TextAlignmentOptions alignment, Color color)
@@ -1407,6 +1406,7 @@ namespace AllinDefense.UI
 
         private void OnDestroy()
         {
+            if (UiSounds.Playback == PlayUiSound) UiSounds.Playback = null;
             if (session != null) session.BeforeWaveRequested = null;
             GameLocalization.LanguageChanged -= HandleLanguageChanged;
             if (progress != null) progress.Changed -= HandleProgressChanged;

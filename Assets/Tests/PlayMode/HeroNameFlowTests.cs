@@ -19,10 +19,13 @@ namespace AllinDefense.Tests
         private string directory;
         private GameObject sessionRoot, flowRoot;
         private GameLanguage previousLanguage;
+        private bool previousReducedMotion;
 
         [UnityTest]
         public IEnumerator PlayerCanNameCancelResetAndSeeHeroInBattleWithoutChangingAccountName()
         {
+            previousReducedMotion = FrontendPreferences.ReducedMotion;
+            FrontendPreferences.ReducedMotion = true;
             previousLanguage = GameLocalization.CurrentLanguage;
             GameLocalization.SetLanguage(GameLanguage.Turkish);
             directory = Path.Combine(Path.GetTempPath(), "dc-hero-ui-" + Guid.NewGuid().ToString("N"));
@@ -97,6 +100,7 @@ namespace AllinDefense.Tests
             Object.Destroy(sessionRoot);
             yield return null;
             Time.timeScale = 1;
+            FrontendPreferences.ReducedMotion = previousReducedMotion;
             GameLocalization.SetLanguage(previousLanguage);
             if (directory != null && Directory.Exists(directory)) Directory.Delete(directory, true);
         }
