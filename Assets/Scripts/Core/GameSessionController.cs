@@ -1014,7 +1014,7 @@ namespace AllinDefense.Core
             {
                 EarnGold(enemy.Reward);
                 EmitPresentation(PresentationCue.EnemyDefeated, enemy.Position, enemy.gameObject,
-                    ActorKind(enemy.Archetype));
+                    ActorKind(enemy.Archetype), value: enemy.Reward);
             }
             TryCompleteWave();
         }

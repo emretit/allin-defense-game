@@ -133,6 +133,18 @@ namespace AllinDefense.UI
             if (newEnemyModal != null) yield return CaptureAcceptance("new-enemy");
             while (newEnemyModal != null) AcknowledgeEnemy();
             yield return new WaitForSecondsRealtime(3f);
+            var rewards = session.GetComponentInChildren<DefenderRewardPopupPool>();
+            bool sawReward = false;
+            Action<PresentationSignal> onReward = signal =>
+            {
+                if (signal.cue == PresentationCue.EnemyDefeated && signal.value > 0) sawReward = true;
+            };
+            session.PresentationSignaled += onReward;
+            float popupDeadline = Time.realtimeSinceStartup + 20f;
+            while (!sawReward && Time.realtimeSinceStartup < popupDeadline && session.Phase == GamePhase.Wave)
+                yield return null;
+            session.PresentationSignaled -= onReward;
+            if (!sawReward || rewards.ActiveCount == 0) acceptanceReport.errors.Add("battle-active-wave | no enemy reward popup");
             yield return CaptureAcceptance("battle-active-wave");
             session.TogglePause();
             yield return CaptureAcceptance("pause");

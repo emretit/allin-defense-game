@@ -10,10 +10,12 @@ namespace AllinDefense.Presentation
         private DefenderAudioController audioController;
         private DefenderVfxPool vfxPool;
         private DefenderDefeatEchoPool defeatEchoPool;
+        private DefenderRewardPopupPool rewardPopupPool;
         private DefenderPresentationFeedbackController feedbackController;
 
         public DefenderAudioController Audio => audioController;
         public DefenderVfxPool Vfx => vfxPool;
+        public DefenderRewardPopupPool Rewards => rewardPopupPool;
         public DefenderPresentationFeedbackController Feedback => feedbackController;
 
         public void Initialize(GameSessionController owner, DefenderPresentationCatalog value)
@@ -26,6 +28,8 @@ namespace AllinDefense.Presentation
             vfxPool.Initialize(catalog);
             defeatEchoPool = gameObject.AddComponent<DefenderDefeatEchoPool>();
             defeatEchoPool.Initialize(catalog);
+            rewardPopupPool = gameObject.AddComponent<DefenderRewardPopupPool>();
+            rewardPopupPool.Initialize(catalog, Camera.main);
             feedbackController = gameObject.AddComponent<DefenderPresentationFeedbackController>();
             feedbackController.Initialize(Camera.main);
             session.PresentationSignaled += OnPresentationSignal;
@@ -83,6 +87,9 @@ namespace AllinDefense.Presentation
                     session.Hero?.GetComponent<StylizedActorView>()?.Victory();
                     break;
             }
+
+            if (signal.cue == PresentationCue.EnemyDefeated)
+                rewardPopupPool.Play(signal);
 
             if (signal.cue is PresentationCue.EnemyDefeated or PresentationCue.UnitDefeated)
                 defeatEchoPool.Play(signal.actor, signal.position);
