@@ -39,5 +39,5 @@ MonoBehaviour:
   mapOpen: {fileID: 8300000, guid: c945def296b4f4c76ac5eaaf825d31df, type: 3}
   levelSelect: {fileID: 8300000, guid: c945def296b4f4c76ac5eaaf825d31df, type: 3}
   starReveal: {fileID: 8300000, guid: 8da7ff52043c2422eae2829a4e246311, type: 3}
-  privacyPolicyUrl: 
-  termsOfServiceUrl: 
+  privacyPolicyUrl: https://emretit.github.io/allin-defense/privacy/
+  termsOfServiceUrl: https://emretit.github.io/allin-defense/terms/
