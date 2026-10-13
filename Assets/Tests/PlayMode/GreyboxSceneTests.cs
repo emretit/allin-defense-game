@@ -465,7 +465,8 @@ namespace AllinDefense.Tests
             Assert.That(GameObject.Find("Scenic Battlefield Dressing"), Is.Not.Null);
             AssertVisualOnlyDressing("Road Organic Earth Surface");
             Assert.That(GameObject.Find("Road Hand-Laid Stone Borders"), Is.Not.Null);
-            AssertVisualOnlyDressing("Ground Feathered Grove Patches");
+            Assert.That(GameObject.Find("Continuous Battlefield Ground").GetComponent<Renderer>().sharedMaterial.mainTexture.name,
+                Is.EqualTo("Battlefield Ground With Soft Moss"));
             AssertVisualOnlyDressing("Enemy Gate Warm Read Pool");
             AssertVisualOnlyDressing("Defender Keep Cool Read Pool");
             AssertVisualOnlyDressing("Continuous Battlefield Ground");
@@ -550,11 +551,15 @@ namespace AllinDefense.Tests
                     GameObject.Find($"Outpost Slot {index}").transform.position).ToArray();
                 foreach (Renderer renderer in world.GetComponentsInChildren<Renderer>(true))
                     if (renderer.enabled && renderer.gameObject.activeInHierarchy &&
-                        DefenderBattlefieldDressing.IsDecoration(renderer.transform, world))
+                        DefenderBattlefieldDressing.IsDecoration(renderer.transform, world) &&
+                        renderer.GetComponentInParent<DefenderBattlefieldDressing>() == null)
                         Assert.That(DefenderBattlefieldDressing.DecorationOverlapsGameplay(renderer.bounds, slots, level.routes),
                             Is.False, $"Level {levelNumber}: {renderer.name} obscures a slot or route.");
 
                 Transform dressing = world.Find("Scenic Battlefield Dressing");
+                foreach (Bounds footprint in dressing.GetComponent<DefenderBattlefieldDressing>().SceneryFootprints)
+                    Assert.That(DefenderBattlefieldDressing.DecorationOverlapsGameplay(footprint, slots, level.routes),
+                        Is.False, $"Level {levelNumber}: combined scenery obscures a slot or route.");
                 Renderer primary = dressing.Find("Road Organic Earth Surface").GetComponent<Renderer>();
                 MeshFilter[] branches = dressing.GetComponentsInChildren<MeshFilter>()
                     .Where(filter => filter.name == "Road Surface").ToArray();
@@ -627,7 +632,8 @@ namespace AllinDefense.Tests
                 Assert.That(session.SlotCount, Is.EqualTo(8));
                 AssertVisualOnlyDressing("Road Organic Earth Surface");
                 Assert.That(GameObject.Find("Road Hand-Laid Stone Borders"), Is.Not.Null);
-                AssertVisualOnlyDressing("Ground Feathered Grove Patches");
+                Assert.That(GameObject.Find("Continuous Battlefield Ground").GetComponent<Renderer>().sharedMaterial.mainTexture.name,
+                    Is.EqualTo("Battlefield Ground With Soft Moss"));
                 AssertVisualOnlyDressing("Enemy Gate Warm Read Pool");
                 AssertVisualOnlyDressing("Defender Keep Cool Read Pool");
                 AssertVisualOnlyDressing("Continuous Battlefield Ground");

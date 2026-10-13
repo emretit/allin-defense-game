@@ -602,11 +602,15 @@ namespace AllinDefense.Core
                 environment.transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
                 foreach (Renderer renderer in environment.GetComponentsInChildren<Renderer>(true))
                 {
+                    if (renderer.name.StartsWith("Gate", StringComparison.OrdinalIgnoreCase))
+                        renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
                     bool platformBase = renderer.name.StartsWith("DeepBackdrop", StringComparison.OrdinalIgnoreCase) ||
                                         renderer.name.StartsWith("ValleyGround", StringComparison.OrdinalIgnoreCase);
                     bool rigidBoundary = renderer.name.StartsWith("NorthRidge", StringComparison.OrdinalIgnoreCase) ||
                                          renderer.name.StartsWith("SouthRidge", StringComparison.OrdinalIgnoreCase);
-                    if (renderer.name.StartsWith("Road", StringComparison.OrdinalIgnoreCase) || rigidBoundary || platformBase ||
+                    if (renderer.name.StartsWith("GateBase", StringComparison.OrdinalIgnoreCase) ||
+                        renderer.name.StartsWith("BossRune", StringComparison.OrdinalIgnoreCase) ||
+                        renderer.name.StartsWith("Road", StringComparison.OrdinalIgnoreCase) || rigidBoundary || platformBase ||
                         renderer.sharedMaterial == presentationCatalog.navyMaterial ||
                         DefenderBattlefieldDressing.IsDecoration(renderer.transform, environment.transform) ||
                         renderer.name.StartsWith("Grass", StringComparison.OrdinalIgnoreCase) ||

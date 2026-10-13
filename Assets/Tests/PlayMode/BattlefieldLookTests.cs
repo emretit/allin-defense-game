@@ -29,6 +29,7 @@ namespace AllinDefense.Tests
         {
             public string state;
             public int width, height, drawCalls, setPassCalls, triangles;
+            public Vector3[] sceneryCenters;
             public Vector3 cameraPosition;
             public float cameraSize;
         }
@@ -52,6 +53,7 @@ namespace AllinDefense.Tests
             review = AppDomain.CurrentDomain.GetAssemblies().Select(a => a.GetType("AllinDefense.Editor.FrontendExperienceReview")).First(t => t != null);
             string phase = Environment.GetEnvironmentVariable("STEP6_CAPTURE_PHASE") ?? "after";
             bool environment = Environment.GetEnvironmentVariable("ENV_CAPTURE") == "1";
+            string environmentPrefix = Environment.GetEnvironmentVariable("ENV_CAPTURE_PREFIX") ?? "env";
             bool battleUi = Environment.GetEnvironmentVariable("BATTLE_UI_CAPTURE") == "1";
             var report = new Report();
             Directory.CreateDirectory("Builds");
@@ -89,7 +91,20 @@ namespace AllinDefense.Tests
                     Assert.That(Screen.height, Is.EqualTo(size.y));
                     var camera = Camera.main;
                     var sample = new Sample { state = state, width = Screen.width, height = Screen.height,
-                        cameraPosition = camera.transform.position, cameraSize = camera.orthographicSize };
+                        cameraPosition = camera.transform.position, cameraSize = camera.orthographicSize,
+                        sceneryCenters = session.GetComponentInChildren<DefenderBattlefieldDressing>().SceneryFootprints.Select(b => b.center).ToArray() };
+                    var dressing = session.GetComponentInChildren<DefenderBattlefieldDressing>();
+                    Assert.That(dressing.SceneryFootprints.Count, Is.InRange(25, 40));
+                    foreach (Bounds footprint in dressing.SceneryFootprints)
+                        Assert.That(DefenderBattlefieldDressing.DecorationOverlapsHud(footprint, camera, dressing.KeepHudExclusion), Is.False);
+                    var plate = session.GetComponentInChildren<DefenderKeepPlate>().Plate;
+                    var plateCorners = new Vector3[4];
+                    plate.GetWorldCorners(plateCorners);
+                    var actualPlate = Rect.MinMaxRect(plateCorners[0].x / Screen.width, plateCorners[0].y / Screen.height,
+                        plateCorners[2].x / Screen.width, plateCorners[2].y / Screen.height);
+                    foreach (Bounds footprint in dressing.SceneryFootprints)
+                        Assert.That(DefenderBattlefieldDressing.DecorationOverlapsHud(footprint, camera, actualPlate), Is.False,
+                            "Scenery must also clear the actual rendered keep plate");
                     for (int frame = 0; frame < 5; frame++)
                     {
                         yield return null;
@@ -99,15 +114,32 @@ namespace AllinDefense.Tests
                     }
                     Assert.That(sample.drawCalls, Is.GreaterThan(0), "Rendering counters must be live");
                     report.samples.Add(sample);
-                    string path = environment ? $"Builds/env-{phase}-{state}-{size.x}x{size.y}.png" : battleUi ? $"Builds/battle-ui-{phase}-{state}-{size.x}x{size.y}.png" : $"Builds/step6-{phase}-{state}-{size.x}x{size.y}.png";
+                    string path = environment ? $"Builds/{environmentPrefix}-{phase}-{state}-{size.x}x{size.y}.png" : battleUi ? $"Builds/battle-ui-{phase}-{state}-{size.x}x{size.y}.png" : $"Builds/step6-{phase}-{state}-{size.x}x{size.y}.png";
                     ScreenCapture.CaptureScreenshot(path);
                     for (int i = 0; i < 5; i++) yield return null;
                     Assert.That(File.Exists(path), Is.True);
+                    if (Environment.GetEnvironmentVariable("ENV_COUNTER_DIAGNOSTIC") == "1" &&
+                        state == "chapter1-wave" && size.x == 1280 && size.y == 960)
+                    {
+                        Canvas[] canvases = session.GetComponentsInChildren<Canvas>().Where(c => c.enabled).ToArray();
+                        foreach (Canvas canvas in canvases) canvas.enabled = false;
+                        for (int i = 0; i < 12; i++) yield return null;
+                        int worldPasses = 0;
+                        for (int i = 0; i < 5; i++) { yield return null; worldPasses = Mathf.Max(worldPasses, UnityEditor.UnityStats.setPassCalls); }
+                        Renderer[] scenery = dressing.GetComponentsInChildren<Renderer>().Where(r => r.name.StartsWith("Grove ")).ToArray();
+                        foreach (Renderer renderer in scenery) renderer.enabled = false;
+                        for (int i = 0; i < 12; i++) yield return null;
+                        int bareWorldPasses = 0;
+                        for (int i = 0; i < 5; i++) { yield return null; bareWorldPasses = Mathf.Max(bareWorldPasses, UnityEditor.UnityStats.setPassCalls); }
+                        Debug.Log($"ENV2_COUNTER_DIAGNOSTIC full={sample.setPassCalls} withoutHud={worldPasses} withoutHudAndGroves={bareWorldPasses}");
+                        foreach (Renderer renderer in scenery) renderer.enabled = true;
+                        foreach (Canvas canvas in canvases) canvas.enabled = true;
+                    }
                     Object.Destroy(session.gameObject);
                     yield return null;
                 }
             }
-            File.WriteAllText(environment ? $"Builds/env-{phase}-metrics.json" : battleUi ? $"Builds/battle-ui-{phase}-metrics.json" : $"Builds/step6-{phase}-metrics.json", JsonUtility.ToJson(report, true));
+            File.WriteAllText(environment ? $"Builds/{environmentPrefix}-{phase}-metrics.json" : battleUi ? $"Builds/battle-ui-{phase}-metrics.json" : $"Builds/step6-{phase}-metrics.json", JsonUtility.ToJson(report, true));
 #else
             yield return null;
 #endif
@@ -176,14 +208,30 @@ namespace AllinDefense.Tests
                     RuntimeCampaignLevel level = CampaignLevelFactory.Create(levelNumber);
                     var dressing = session.GetComponentInChildren<DefenderBattlefieldDressing>();
                     var clusters = dressing.GetComponentsInChildren<MeshFilter>().Where(f => f.name.StartsWith("Grove ")).ToArray();
-                    Assert.That(clusters.Length, Is.GreaterThan(0));
+                    Assert.That(clusters.Length, Is.EqualTo(2), "Shared scenery palette and existing emissive material only");
+                    Assert.That(dressing.SceneryFootprints.Count, Is.InRange(25, 40));
+                    foreach (Bounds bounds in dressing.SceneryFootprints)
+                    {
+                        Assert.That(DefenderBattlefieldDressing.DecorationOverlapsGameplay(bounds, level.outpostSlots, level.routes), Is.False);
+                        Assert.That(DefenderBattlefieldDressing.DecorationOverlapsLandmarks(bounds, level.path), Is.False);
+                        Assert.That(DefenderBattlefieldDressing.DecorationOverlapsHud(bounds, Camera.main, dressing.KeepHudExclusion), Is.False);
+                    }
+                    Assert.That(dressing.SceneryFootprints.Select(b => Mathf.FloorToInt(b.center.z / 2)).Distinct().Count(),
+                        Is.GreaterThanOrEqualTo(6), "Groves must fill the field instead of two rows");
                     foreach (var cluster in clusters)
                     {
-                        Bounds bounds = cluster.GetComponent<Renderer>().bounds;
-                        Assert.That(DefenderBattlefieldDressing.DecorationOverlapsGameplay(bounds, level.outpostSlots, level.routes), Is.False, cluster.name);
-                        Assert.That(DefenderBattlefieldDressing.DecorationOverlapsLandmarks(bounds, level.path), Is.False, cluster.name);
                         Assert.That(cluster.GetComponent<Collider>(), Is.Null);
+                        var outside = cluster.sharedMesh.vertices.Where(v => !dressing.SceneryFootprints.Any(b =>
+                        {
+                            b.Expand(.0001f);
+                            return b.Contains(v);
+                        })).ToArray();
+                        Assert.That(outside.Length, Is.Zero,
+                            cluster.name + " outside tested placement footprints: " + string.Join(", ", outside.Take(4)));
                     }
+                    Assert.That(session.GetComponentsInChildren<Renderer>().Where(r => r.name.StartsWith("GateBase")).All(r => !r.enabled), Is.True);
+                    Assert.That(session.GetComponentsInChildren<Renderer>().Where(r => r.name.StartsWith("Gate")).All(r =>
+                        r.shadowCastingMode == UnityEngine.Rendering.ShadowCastingMode.Off), Is.True);
                     Vector3[][] current = clusters.Select(f => f.sharedMesh.vertices).ToArray();
                     if (previous != null)
                     {

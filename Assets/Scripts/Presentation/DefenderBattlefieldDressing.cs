@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using AllinDefense.Data;
+using AllinDefense.UI;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -20,7 +21,7 @@ namespace AllinDefense.Presentation
 
         private Texture2D groundTexture;
         private Texture2D roadTexture;
-        private Texture2D featherTexture;
+        private Texture2D sceneryPalette;
         private IReadOnlyList<Vector3> slots;
         private readonly List<List<Vector3>> roundedPaths = new();
         private readonly List<Mesh> runtimeMeshes = new();
@@ -160,7 +161,7 @@ namespace AllinDefense.Presentation
         {
             foreach (var route in ownedRoadPaths) roundedPaths.Add(RoundRoute(route));
             CreateContinuousGround(catalog.forestMaterial);
-            CreateSceneryClusters(catalog);
+            CreateSceneryClusters(camera, catalog);
             CreateLandmarkReadabilityFields(catalog.fireMaterial, catalog.magicMaterial);
             CreateRoadSurface();
             CreateRoadCobbles();
@@ -172,21 +173,6 @@ namespace AllinDefense.Presentation
         {
             const string name = "Continuous Battlefield Ground";
             material = CreateRuntimeMaterial("DC Moonlit Ground", new Color(0.21f, 0.25f, 0.25f), false, material);
-            const int size = 128;
-            groundTexture = new Texture2D(size, size, TextureFormat.RGBA32, true)
-                { name = "Battlefield Ground Tonal Noise", wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Bilinear };
-            var pixels = new Color[size * size];
-            for (int y = 0; y < size; y++)
-                for (int x = 0; x < size; x++)
-                {
-                    float u = x / (float)(size - 1), v = y / (float)(size - 1);
-                    float edge = Mathf.SmoothStep(0f, 1f, Mathf.Max(Mathf.Abs(u - .5f) * 3.3f, Mathf.Abs(v - .5f) * 4f));
-                    float noise = Mathf.PerlinNoise(u * 75f + 6f, v * 75f + 6f);
-                    pixels[y * size + x] = Color.Lerp(new Color(.79f, .87f, .86f), new Color(.29f, .39f, .48f), edge) * (.92f + noise * .16f);
-                }
-            groundTexture.SetPixels(pixels);
-            groundTexture.Apply(true, true);
-            material.SetTexture("_BaseMap", groundTexture);
             // Extend well beyond all supported camera frames, under the HUD and device insets.
             // Match the authored ground height without adding a collider to the battle path.
             CreateMeshObject(name, new List<Vector3>
@@ -207,84 +193,263 @@ namespace AllinDefense.Presentation
             return false;
         }
 
-        private void CreateSceneryClusters(DefenderPresentationCatalog catalog)
+        private readonly List<Bounds> sceneryFootprints = new();
+        public IReadOnlyList<Bounds> SceneryFootprints => sceneryFootprints;
+        public Rect KeepHudExclusion { get; private set; }
+
+        private sealed class SceneryBatch
         {
+            public readonly List<Vector3> vertices = new();
+            public readonly List<int> indices = new();
+        }
+
+        public static bool DecorationOverlapsHud(Bounds bounds, Camera camera, Rect keepPlate)
+        {
+            if (camera == null) return false;
+            Vector2 min = Vector2.one * float.MaxValue, max = Vector2.one * float.MinValue;
+            for (int corner = 0; corner < 8; corner++)
+            {
+                Vector3 p = camera.WorldToViewportPoint(bounds.center + Vector3.Scale(bounds.extents,
+                    new Vector3((corner & 1) == 0 ? -1 : 1, (corner & 2) == 0 ? -1 : 1, (corner & 4) == 0 ? -1 : 1)));
+                min = Vector2.Min(min, p); max = Vector2.Max(max, p);
+            }
+            var projected = Rect.MinMaxRect(min.x, min.y, max.x, max.y);
+            return projected.Overlaps(new Rect(0, .915f, .23f, .085f)) ||
+                   projected.Overlaps(new Rect(.40f, .915f, .23f, .085f)) ||
+                   projected.Overlaps(new Rect(.82f, .915f, .18f, .085f)) ||
+                   projected.Overlaps(new Rect(0, 0, .24f, .20f)) ||
+                   projected.Overlaps(new Rect(.78f, 0, .22f, .13f)) ||
+                   projected.Overlaps(keepPlate);
+        }
+
+        private Rect CalculateKeepHudExclusion(Camera camera)
+        {
+            if (camera == null) return default;
+            var bounds = new Bounds(roadPath[^1] + Vector3.up * 1.7f, new Vector3(3, 3.4f, 3));
+            foreach (Transform piece in transform.parent.GetComponentsInChildren<Transform>())
+            {
+                if (piece.name != "Defender Keep Licensed") continue;
+                Renderer[] renderers = piece.GetComponentsInChildren<Renderer>();
+                if (renderers.Length == 0) break;
+                bounds = renderers[0].bounds;
+                for (int i = 1; i < renderers.Length; i++) bounds.Encapsulate(renderers[i].bounds);
+                break;
+            }
+            Vector2 logical = UiMetrics.LogicalScreenSize;
+            float top = float.MinValue, left = float.MaxValue;
+            for (int corner = 0; corner < 8; corner++)
+            {
+                Vector3 p = camera.WorldToViewportPoint(bounds.center + Vector3.Scale(bounds.extents,
+                    new Vector3((corner & 1) == 0 ? -1 : 1, (corner & 2) == 0 ? -1 : 1, (corner & 4) == 0 ? -1 : 1)));
+                top = Mathf.Max(top, p.y); left = Mathf.Min(left, p.x);
+            }
+            Rect safe = Screen.safeArea;
+            Vector2 min = safe.size.sqrMagnitude > 0 ? safe.min / new Vector2(Screen.width, Screen.height) : Vector2.zero;
+            Vector2 max = safe.size.sqrMagnitude > 0 ? safe.max / new Vector2(Screen.width, Screen.height) : Vector2.one;
+            float x = camera.WorldToViewportPoint(bounds.center).x;
+            if (top > max.y - 122f / logical.y) x = left - 83f / logical.x;
+            x = Mathf.Clamp(x, min.x + 83f / logical.x, max.x - 83f / logical.x);
+            float y = Mathf.Clamp(top + 32f / logical.y, min.y + 40f / logical.y, max.y - 90f / logical.y);
+            return new Rect(x - 85f / logical.x, y - 34f / logical.y, 170f / logical.x, 68f / logical.y);
+        }
+
+        private void CreateSceneryClusters(Camera camera, DefenderPresentationCatalog catalog)
+        {
+            KeepHudExclusion = CalculateKeepHudExclusion(camera);
             var random = new System.Random(6006 + biomeIndex * 197 + Mathf.RoundToInt(roadPath[1].x * 100));
             float Next(float a, float b) => Mathf.Lerp(a, b, (float)random.NextDouble());
-            Material foliage = CreateRuntimeMaterial("DC Grove Foliage", new Color(.16f, .29f, .22f), false);
-            Material lightFoliage = CreateRuntimeMaterial("DC Grove Sage", new Color(.23f, .34f, .26f), false);
-            Material bark = CreateRuntimeMaterial("DC Grove Bark", new Color(.22f, .20f, .17f), false);
-            Material rock = CreateRuntimeMaterial("DC Grove Stone", new Color(.27f, .32f, .34f), false);
-            Material grass = CreateRuntimeMaterial("DC Feathered Grass", new Color(.07f, .13f, .10f, .5f), true);
-            featherTexture = new Texture2D(64, 64, TextureFormat.RGBA32, true)
-                { name = "Grass Soft Edge", wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Bilinear };
-            var pixels = new Color[4096];
-            for (int y = 0; y < 64; y++)
-                for (int x = 0; x < 64; x++)
-                {
-                    float radius = new Vector2((x - 31.5f) / 31.5f, (y - 31.5f) / 31.5f).magnitude;
-                    float alpha = 1f - Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(.25f, .98f, radius + .06f * Mathf.PerlinNoise(x * .15f, y * .15f)));
-                    pixels[y * 64 + x] = new Color(1, 1, 1, alpha);
-                }
-            featherTexture.SetPixels(pixels); featherTexture.Apply(true, true);
-            grass.SetTexture("_BaseMap", featherTexture);
-            grass.SetFloat("_Surface", 1); grass.SetFloat("_SrcBlend", (float)BlendMode.SrcAlpha);
-            grass.SetFloat("_DstBlend", (float)BlendMode.OneMinusSrcAlpha); grass.SetFloat("_ZWrite", 0);
-            grass.SetFloat("_SrcBlendAlpha", (float)BlendMode.One);
-            grass.SetFloat("_DstBlendAlpha", (float)BlendMode.OneMinusSrcAlpha);
-            grass.SetOverrideTag("RenderType", "Transparent");
-            grass.EnableKeyword("_SURFACE_TYPE_TRANSPARENT"); grass.renderQueue = (int)RenderQueue.Transparent;
-            var patchVertices = new List<Vector3>(); var patchTriangles = new List<int>();
-            var patchUvs = new List<Vector2>();
-            var occupied = new List<Bounds>();
-            for (int cluster = 0; cluster < 8; cluster++)
+            var crowns = new[] { new SceneryBatch(), new SceneryBatch(), new SceneryBatch() };
+            var trunks = new SceneryBatch(); var rocks = new SceneryBatch();
+            var undergrowth = new SceneryBatch(); var glints = new SceneryBatch();
+            var mossPatches = new List<Vector4>();
+            void Patch(Vector3 center, float radius, float yaw) => mossPatches.Add(new Vector4(center.x, center.z, radius, yaw));
+            bool Clear(Bounds bounds) => !DecorationOverlapsGameplay(bounds, slots, routes) &&
+                !DecorationOverlapsLandmarks(bounds, roadPath) && !DecorationOverlapsHud(bounds, camera, KeepHudExclusion);
+            var plane = new Plane(Vector3.up, Vector3.zero);
+            int smallClusters = 0;
+            float minRouteZ = float.MaxValue, maxRouteZ = float.MinValue;
+            foreach (Vector3 point in roadPath) { minRouteZ = Mathf.Min(minRouteZ, point.z); maxRouteZ = Mathf.Max(maxRouteZ, point.z); }
+            for (int attempt = 0; attempt < 4000 && sceneryFootprints.Count < 36; attempt++)
             {
-                Vector3 center = Vector3.zero;
-                bool placed = false;
-                for (int attempt = 0; attempt < 24; attempt++)
+                Vector2 viewport = new(Next(.015f, .985f), Next(.045f, .94f));
+                Vector3 center;
+                if (camera != null)
                 {
-                    center = new Vector3(Next(.3f, 22f), 0, cluster % 2 == 0 ? Next(12f, 13.2f) : Next(-1.4f, -.2f));
-                    var bounds = new Bounds(center + Vector3.up, new Vector3(2.7f, 3, 2.2f));
-                    if (DecorationOverlapsGameplay(bounds, slots, routes) || DecorationOverlapsLandmarks(bounds, roadPath) ||
-                        occupied.Exists(other => other.Intersects(bounds))) continue;
-                    occupied.Add(bounds);
-                    placed = true;
-                    break;
+                    Ray ray = camera.ViewportPointToRay(viewport);
+                    if (!plane.Raycast(ray, out float distance)) continue;
+                    center = ray.GetPoint(distance);
                 }
-                if (!placed) continue;
-                var crowns = new List<Vector3>(); var crownIndices = new List<int>();
-                var trunks = new List<Vector3>(); var trunkIndices = new List<int>();
-                var rocks = new List<Vector3>(); var rockIndices = new List<int>();
-                for (int tree = 0; tree < 3; tree++)
+                else center = new Vector3(Next(-4f, 27f), 0, Next(-5f, 20f));
+                float edge = Mathf.Max(Mathf.Abs(viewport.x - .5f) * 2, Mathf.Abs(viewport.y - .5f) * 2);
+                float routeDistance = float.MaxValue;
+                foreach (var route in ownedRoadPaths) routeDistance = Mathf.Min(routeDistance, CampaignLevelFactory.DistanceToRoute(center, route));
+                bool interior = attempt < 300 && smallClusters < 4;
+                if (interior && (center.x < 0 || center.x > 24 || center.z < minRouteZ + 1.7f || center.z > maxRouteZ - 1.7f)) continue;
+                bool small = interior || routeDistance < 3.2f || random.NextDouble() < .24;
+                if (small && smallClusters >= 8) continue;
+                float radius = small ? Next(.4f, .65f) : Next(1.0f, 1.75f);
+                float height = small ? .65f : Next(1.7f, 2.8f);
+                var bounds = new Bounds(center + Vector3.up * (height - .14f) * .5f, new Vector3(radius * 2, height + .14f, radius * 2));
+                if (!Clear(bounds)) continue;
+                if (sceneryFootprints.Exists(other => new Vector2(other.center.x - center.x, other.center.z - center.z).magnitude <
+                    other.extents.x + radius + Mathf.Lerp(1.05f, .35f, edge))) continue;
+                if (random.NextDouble() > Mathf.Lerp(.52f, 1f, edge)) continue;
+                sceneryFootprints.Add(bounds);
+                if (small) smallClusters++;
+                int cluster = sceneryFootprints.Count;
+                int treeCount = small ? 0 : random.Next(1, 8);
+                for (int tree = 0; tree < treeCount; tree++)
                 {
-                    Vector3 p = center + new Vector3(Next(-.65f, .65f), 0, Next(-.45f, .45f));
-                    float size = Next(.65f, 1.12f), yaw = Next(0, Mathf.PI * 2);
-                    AddLathe(trunks, trunkIndices, p, new[] { .09f, .07f }, new[] { 0f, .75f * size }, yaw);
-                    if ((cluster + tree) % 3 == 0)
-                        AddLathe(crowns, crownIndices, p, new[] { 0f, .42f * size, .46f * size, .25f * size, 0f },
-                            new[] { .45f * size, .65f * size, 1.05f * size, 1.4f * size, 1.5f * size }, yaw);
-                    else
+                    float angle = Next(0, Mathf.PI * 2);
+                    float size = height / 2.25f * Next(.72f, 1f);
+                    float spread = (radius - .52f * size) * Mathf.Sqrt(Next(0, 1));
+                    Vector3 p = center + new Vector3(Mathf.Cos(angle) * spread, 0, Mathf.Sin(angle) * spread);
+                    float yaw = Next(0, Mathf.PI * 2);
+                    AddLathe(trunks.vertices, trunks.indices, p, new[] { .09f * size, .065f * size }, new[] { 0f, .9f * size }, yaw);
+                    SceneryBatch crown = crowns[(tree + cluster / 3) % 3];
+                    switch ((tree + cluster) % 3)
                     {
-                        AddLathe(crowns, crownIndices, p, new[] { .50f * size, .02f }, new[] { .45f * size, 1.5f * size }, yaw);
-                        AddLathe(crowns, crownIndices, p, new[] { .36f * size, 0f }, new[] { .92f * size, 1.95f * size }, yaw + .2f);
+                        case 0:
+                            AddLathe(crown.vertices, crown.indices, p, new[] { .5f * size, 0f }, new[] { .55f * size, 1.7f * size }, yaw);
+                            AddLathe(crown.vertices, crown.indices, p, new[] { .36f * size, 0f }, new[] { 1.04f * size, 2.25f * size }, yaw + .2f);
+                            break;
+                        case 1:
+                            AddLathe(crown.vertices, crown.indices, p, new[] { 0f, .48f * size, .5f * size, .28f * size, 0f },
+                                new[] { .65f * size, .82f * size, 1.3f * size, 1.68f * size, 1.8f * size }, yaw);
+                            break;
+                        default:
+                            AddLathe(crown.vertices, crown.indices, p, new[] { 0f, .28f * size, .32f * size, .14f * size, 0f },
+                                new[] { .6f * size, .9f * size, 1.5f * size, 1.94f * size, 2.2f * size }, yaw);
+                            break;
                     }
-                    Vector3 stone = p + new Vector3(Next(-.35f, .35f), .1f, Next(-.25f, .25f));
-                    AddCobble(rocks, rockIndices, stone, yaw, new Vector3(Next(.3f, .6f), Next(.2f, .4f), Next(.3f, .5f)));
                 }
-                CreateMeshObject($"Grove Tree Crowns {cluster}", crowns, crownIndices, cluster % 3 == 0 ? lightFoliage : foliage, true);
-                CreateMeshObject($"Grove Tree Trunks {cluster}", trunks, trunkIndices, bark, true);
-                CreateMeshObject($"Grove Rock Cluster {cluster}", rocks, rockIndices, rock, true);
-                int start = patchVertices.Count;
-                center.y = -.13f;
-                patchVertices.Add(center + new Vector3(-1.9f, 0, -1.3f));
-                patchVertices.Add(center + new Vector3(1.9f, 0, -1.3f));
-                patchVertices.Add(center + new Vector3(1.9f, 0, 1.3f));
-                patchVertices.Add(center + new Vector3(-1.9f, 0, 1.3f));
-                patchTriangles.AddRange(new[] { start, start + 2, start + 1, start, start + 3, start + 2 });
-                patchUvs.AddRange(new[] { Vector2.zero, Vector2.right, Vector2.one, Vector2.up });
+                int stones = small ? random.Next(1, 3) : random.Next(2, 5);
+                for (int stone = 0; stone < stones; stone++)
+                {
+                    Vector3 p = center + new Vector3(Next(-radius * .35f, radius * .35f), .10f, Next(-radius * .35f, radius * .35f));
+                    float size = small ? .3f : Next(.35f, .65f);
+                    AddCobble(rocks.vertices, rocks.indices, p, Next(0, 6.28f), new Vector3(size, size * .65f, size * .8f));
+                }
+                for (int bush = 0; bush < (small ? 1 : 2); bush++)
+                {
+                    Vector3 p = center + new Vector3(Next(-radius * .35f, radius * .35f), 0, Next(-radius * .35f, radius * .35f));
+                    float size = small ? radius * .34f : Next(.22f, .36f);
+                    AddLathe(undergrowth.vertices, undergrowth.indices, p, new[] { 0f, size, size * .75f, 0f },
+                        new[] { 0f, size * .3f, size, size * 1.5f }, Next(0, 6.28f));
+                    for (int leaf = 0; leaf < 5; leaf++)
+                    {
+                        float angle = leaf * 1.256f + cluster;
+                        Vector3 along = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * size;
+                        Vector3 across = new Vector3(-along.z, 0, along.x) * .3f;
+                        int start = undergrowth.vertices.Count;
+                        undergrowth.vertices.AddRange(new[] { p, p + along + across + Vector3.up * size * .8f,
+                            p + along * 1.7f + Vector3.up * size * .4f, p + along - across + Vector3.up * size * .8f });
+                        undergrowth.indices.AddRange(new[] { start, start + 1, start + 2, start, start + 2, start + 3 });
+                    }
+                }
+                if (cluster % 3 == 0)
+                    for (int spark = 0; spark < 3; spark++)
+                    {
+                        Vector3 p = center + new Vector3(Next(-radius * .35f, radius * .35f), .2f, Next(-radius * .35f, radius * .35f));
+                        AddLathe(trunks.vertices, trunks.indices, p, new[] { .025f, .02f }, new[] { -.18f, 0f }, 0);
+                        AddLathe(glints.vertices, glints.indices, p, new[] { .08f, .09f, 0f }, new[] { 0f, .04f, .09f }, 0);
+                    }
+                Patch(center, radius * Next(1.65f, 2.2f), Next(0, 360));
+                Patch(center + new Vector3(radius * .7f, 0, -radius * .5f), radius * 1.3f, Next(0, 360));
             }
-            CreateMeshObject("Ground Feathered Grove Patches", patchVertices, patchTriangles, grass, false);
-            transform.Find("Ground Feathered Grove Patches").GetComponent<MeshFilter>().sharedMesh.SetUVs(0, patchUvs);
+            // Low moss at the verge connects isolated groves without covering the road surface.
+            foreach (var route in roundedPaths)
+                for (int point = 0; point < route.Count; point += 4)
+                    foreach (float side in new[] { -1f, 1f })
+                    {
+                        Vector3 p = route[point] + RoadSide(route, point) * Next(1.25f, 1.8f);
+                        Patch(p, Next(.9f, 1.4f), Next(0, 360));
+                    }
+            // Small boundary props reuse the bark and firefly batches, without real lights.
+            foreach (float side in new[] { -1f, 1f })
+            {
+                Vector3 p = roadPath[^1] + new Vector3(-1.1f, 0, side * 3.1f);
+                var bounds = new Bounds(p + Vector3.up * .6f, new Vector3(.9f, 1.2f, .7f));
+                if (!Clear(bounds)) continue;
+                sceneryFootprints.Add(bounds);
+                AddLathe(trunks.vertices, trunks.indices, p, new[] { .06f, .045f }, new[] { 0f, 1.1f }, 0);
+                AddCobble(glints.vertices, glints.indices, p + Vector3.up * .92f, 0, new Vector3(.19f, .24f, .19f));
+                AddLathe(trunks.vertices, trunks.indices, p + Vector3.up * 1.07f, new[] { .16f, 0f }, new[] { 0f, .13f }, 0);
+            }
+            foreach (float side in new[] { -1f, 1f })
+            {
+                Vector3 p = roadPath[0] + new Vector3(-.6f, 0, side * 3.1f);
+                var bounds = new Bounds(p + Vector3.up * .35f, new Vector3(1f, .7f, .8f));
+                if (!Clear(bounds)) continue;
+                sceneryFootprints.Add(bounds);
+                for (int thorn = 0; thorn < 5; thorn++)
+                    AddLathe(trunks.vertices, trunks.indices, p + new Vector3(Next(-.35f, .35f), 0, Next(-.2f, .2f)),
+                        new[] { .12f, 0f }, new[] { 0f, Next(.25f, .65f) }, Next(0, 6.28f));
+            }
+            var colors = new[] { new Color(.26f, .43f, .36f), new Color(.36f, .48f, .34f),
+                new Color(.40f, .56f, .50f), new Color(.32f, .29f, .24f), new Color(.44f, .54f, .57f),
+                new Color(.31f, .46f, .36f), new Color(.55f, .66f, .36f), Color.white };
+            sceneryPalette = new Texture2D(8, 1, TextureFormat.RGBA32, false)
+                { name = "Grove Shared Palette", filterMode = FilterMode.Point, wrapMode = TextureWrapMode.Clamp };
+            sceneryPalette.SetPixels(colors); sceneryPalette.Apply(false, true);
+            Material palette = CreateRuntimeMaterial("DC Grove Shared Palette", Color.white, false);
+            palette.SetTexture("_BaseMap", sceneryPalette);
+            var combined = new SceneryBatch(); var uvs = new List<Vector2>();
+            var batches = new[] { crowns[0], crowns[1], crowns[2], trunks, rocks, undergrowth };
+            for (int tone = 0; tone < batches.Length; tone++)
+            {
+                SceneryBatch batch = batches[tone];
+                foreach (int index in batch.indices)
+                {
+                    combined.indices.Add(combined.vertices.Count);
+                    combined.vertices.Add(batch.vertices[index]);
+                    uvs.Add(new Vector2((tone + .5f) / 8f, .5f));
+                }
+            }
+            CreateMeshObject("Grove Combined Scenery", combined.vertices, combined.indices, palette, false);
+            transform.Find("Grove Combined Scenery").GetComponent<MeshFilter>().sharedMesh.SetUVs(0, uvs);
+            CreateMeshObject("Grove Lanterns and Mushrooms", glints.vertices, glints.indices, catalog.fireMaterial, false);
+            PaintGroundMoss(mossPatches);
+        }
+
+        private void PaintGroundMoss(List<Vector4> patches)
+        {
+            const int size = 128;
+            const float minX = -12, minZ = -16, span = 46;
+            groundTexture = new Texture2D(size, size, TextureFormat.RGBA32, true)
+                { name = "Battlefield Ground With Soft Moss", wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Bilinear };
+            var pixels = new Color[size * size];
+            var rotations = patches.ConvertAll(p => new Vector2(Mathf.Cos(p.w * Mathf.Deg2Rad), Mathf.Sin(p.w * Mathf.Deg2Rad)));
+            for (int y = 0; y < size; y++)
+                for (int x = 0; x < size; x++)
+                {
+                    float worldX = minX + x * span / (size - 1), worldZ = minZ + y * span / (size - 1);
+                    float u = (worldX + 39) / 100, v = (worldZ + 44.5f) / 100;
+                    float edge = Mathf.SmoothStep(0f, 1f, Mathf.Max(Mathf.Abs(u - .5f) * 3.3f, Mathf.Abs(v - .5f) * 4f));
+                    float noise = Mathf.PerlinNoise(u * 75f + 6f, v * 75f + 6f);
+                    Color color = Color.Lerp(new Color(.79f, .87f, .86f), new Color(.29f, .39f, .48f), edge) * (.92f + noise * .16f);
+                    float moss = 0;
+                    for (int patch = 0; patch < patches.Count; patch++)
+                    {
+                        Vector4 p = patches[patch];
+                        float dx = worldX - p.x, dz = worldZ - p.y;
+                        if (Mathf.Abs(dx) > p.z || Mathf.Abs(dz) > p.z) continue;
+                        Vector2 rotation = rotations[patch];
+                        float along = (dx * rotation.x + dz * rotation.y) / p.z;
+                        float across = (-dx * rotation.y + dz * rotation.x) / (p.z * .72f);
+                        float radius = Mathf.Sqrt(along * along + across * across);
+                        float alpha = 1 - Mathf.SmoothStep(0, 1, Mathf.InverseLerp(.15f, 1, radius + noise * .08f));
+                        moss = 1 - (1 - moss) * (1 - alpha * .82f);
+                    }
+                    pixels[y * size + x] = Color.Lerp(color, new Color(.46f, .91f, .65f) * (.88f + noise * .18f), moss);
+                }
+            groundTexture.SetPixels(pixels); groundTexture.Apply(true, true);
+            Transform ground = transform.Find("Continuous Battlefield Ground");
+            ground.GetComponent<Renderer>().sharedMaterial.SetTexture("_BaseMap", groundTexture);
+            Mesh mesh = ground.GetComponent<MeshFilter>().sharedMesh;
+            var uvs = new List<Vector2>();
+            foreach (Vector3 vertex in mesh.vertices) uvs.Add(new Vector2((vertex.x - minX) / span, (vertex.z - minZ) / span));
+            mesh.SetUVs(0, uvs);
         }
 
         private static void AddLathe(List<Vector3> vertices, List<int> triangles, Vector3 center,
@@ -722,7 +887,7 @@ namespace AllinDefense.Presentation
         {
             if (groundTexture != null) Destroy(groundTexture);
             if (roadTexture != null) Destroy(roadTexture);
-            if (featherTexture != null) Destroy(featherTexture);
+            if (sceneryPalette != null) Destroy(sceneryPalette);
             foreach (Mesh mesh in runtimeMeshes)
                 if (mesh != null) Destroy(mesh);
             foreach (Material material in runtimeMaterials)
