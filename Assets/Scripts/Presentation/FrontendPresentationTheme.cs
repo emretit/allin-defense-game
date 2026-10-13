@@ -42,6 +42,11 @@ namespace AllinDefense.Presentation
         public AudioClip levelSelect;
         public AudioClip starReveal;
 
+        [Header("External Sign In")]
+        public string googleIosClientId;
+        public Sprite appleSignInLogo;
+        public Sprite googleSignInLogo;
+
         [Header("Legal Links")]
         public string privacyPolicyUrl;
         public string termsOfServiceUrl;

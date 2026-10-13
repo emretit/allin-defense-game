@@ -90,6 +90,8 @@ namespace AllinDefense.UI
         public bool IsLaunchingBattle => launchingBattle;
         public AppScreen CurrentScreen { get; private set; }
         public CampaignProgressStore Progress => progress;
+        public string GoogleIosClientId => theme.googleIosClientId?.Trim();
+        public Func<bool> AppleSignInAvailable { get; set; } = () => Application.isEditor || Application.platform == RuntimePlatform.IPhonePlayer;
         public static bool HasPendingLevel => pendingLevel > 0;
         public event Action<PlayerAuthProvider> AuthenticationRequested;
 
@@ -192,6 +194,7 @@ namespace AllinDefense.UI
         public void SetLoginStatus(string status)
         {
             if (loginStatus != null) loginStatus.text = GameLocalization.Translate(status ?? string.Empty);
+            if (welcomeLoginStatus != null) welcomeLoginStatus.text = GameLocalization.Translate(status ?? string.Empty);
         }
 
         public void BeginAuthentication(PlayerAuthProvider provider)
@@ -409,11 +412,11 @@ namespace AllinDefense.UI
 
         private void RequestExternalSignIn(PlayerAuthProvider provider)
         {
-            ShowScreen(AppScreen.Login);
+            if (provider == PlayerAuthProvider.PlayerAccount) ShowScreen(AppScreen.Login);
             SetLoginStatus(FrontendCopy.OpeningTheSecureAccountWindow.Value);
             if (AuthenticationRequested == null)
             {
-                loginStatus.text = FrontendCopy.AccountSignInUnavailable.Value;
+                SetLoginStatus(FrontendCopy.AccountSignInUnavailable.Value);
                 return;
             }
             AuthenticationRequested.Invoke(provider);

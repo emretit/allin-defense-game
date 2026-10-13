@@ -32,7 +32,7 @@ namespace AllinDefense.Core
     [Serializable]
     public sealed class CampaignServerState
     {
-        public int schemaVersion = CampaignProgressStore.CurrentVersion;
+        public int schemaVersion = 4;
         public long revision;
         public bool migrationIncomplete;
         public int unlockedLevel = 1;

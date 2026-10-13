@@ -28,9 +28,12 @@ namespace AllinDefense.Core
         private bool syncRequested;
         private float nextAttempt;
         private int failures;
+        private IExternalSignInProvider appleSignIn, googleSignIn;
+        private IExternalTokenAuthentication externalAuthentication;
         public const string TestEnvironment = "closed-test";
 
-        public void Configure(AppFlowController appFlow, CampaignProgressStore progressStore)
+        public void Configure(AppFlowController appFlow, CampaignProgressStore progressStore,
+            IExternalSignInProvider apple = null, IExternalSignInProvider google = null, IExternalTokenAuthentication authentication = null)
         {
             if (AppFlowController.AcceptanceRequested) return;
             if (flow != null) flow.AuthenticationRequested -= HandleAuthenticationRequested;
@@ -40,7 +43,17 @@ namespace AllinDefense.Core
             flow.AuthenticationRequested += HandleAuthenticationRequested;
             flow.AccountDeletion = DeleteAccountAsync;
             progress.Changed += HandleProgressChanged;
-            RestoreSession();
+            externalAuthentication = authentication;
+            if (apple == null || google == null)
+            {
+                var bridgeRoot = new GameObject("External Sign In " + Guid.NewGuid().ToString("N"));
+                bridgeRoot.transform.SetParent(transform);
+                var bridge = bridgeRoot.AddComponent<IosExternalSignInBridge>();
+                apple ??= bridge.Provider(PlayerAuthProvider.Apple);
+                google ??= bridge.Provider(PlayerAuthProvider.Google, flow.GoogleIosClientId);
+            }
+            appleSignIn = apple; googleSignIn = google;
+            if (externalAuthentication == null) RestoreSession();
         }
 
         private async void RestoreSession()
@@ -54,7 +67,7 @@ namespace AllinDefense.Core
                 if (!AuthenticationService.Instance.IsSignedIn)
                 {
                     if (!AuthenticationService.Instance.SessionTokenExists &&
-                        progress.Data.authProvider == PlayerAuthProvider.PlayerAccount)
+                        RequiresRegisteredSession(progress.Data.authProvider))
                     { progress.FailSync(true); return; }
                     await AuthenticationService.Instance.SignInAnonymouslyAsync();
                 }
@@ -90,7 +103,8 @@ namespace AllinDefense.Core
             try
             {
                 while (syncing || restoring || authenticationOperations > 0) await Task.Yield();
-                if (!localOnly)
+                if (externalAuthentication != null) await externalAuthentication.DeleteAccountAsync(localOnly);
+                else if (!localOnly)
                 {
                     await EnsureInitializedAsync();
                     await AuthenticationService.Instance.DeleteAccountAsync();
@@ -101,6 +115,8 @@ namespace AllinDefense.Core
                     catch (Exception error) { Debug.LogWarning("Player Account sign-out: " + error.Message); }
                     AuthenticationService.Instance.SignOut(true);
                 }
+                appleSignIn?.ClearSession();
+                googleSignIn?.ClearSession();
             }
             catch
             {
@@ -109,11 +125,14 @@ namespace AllinDefense.Core
             }
         }
 
+        public static bool RequiresRegisteredSession(PlayerAuthProvider provider) =>
+            provider is PlayerAuthProvider.PlayerAccount or PlayerAuthProvider.Apple or PlayerAuthProvider.Google;
+
         public static bool CanRestoreGuestOwner(string localOwner,string sessionOwner,bool registered) =>
             !registered && (string.IsNullOrEmpty(localOwner) || localOwner == "local-guest" || localOwner == sessionOwner);
         private void Update()
         {
-            if (deletionSuspended || !syncRequested || syncing || Time.realtimeSinceStartup < nextAttempt) return;
+            if (externalAuthentication != null || deletionSuspended || authenticationOperations > 0 || !syncRequested || syncing || Time.realtimeSinceStartup < nextAttempt) return;
             syncRequested = false;
             if (!initialized || !AuthenticationService.Instance.IsSignedIn) RestoreSession();
             else _ = SynchronizeCloudAsync();
@@ -130,8 +149,7 @@ namespace AllinDefense.Core
 
         private async void HandleAuthenticationRequested(PlayerAuthProvider provider)
         {
-            if ((int)provider is 2 or 3)
-                provider = PlayerAuthProvider.PlayerAccount;
+            if (authenticationOperations > 0) return;
             if (deletionSuspended && progress.Data.playerId != "local-guest") return;
             deletionSuspended = false;
             requestedProvider = provider;
@@ -143,6 +161,14 @@ namespace AllinDefense.Core
                 syncing = true;
                 try { flow?.CompleteGuestFallback(); }
                 finally { syncing = wasSyncing; }
+            }
+            if (provider is PlayerAuthProvider.Apple or PlayerAuthProvider.Google)
+            {
+                authenticationOperations++;
+                try { await SignInWithExternalProviderAsync(provider); }
+                catch (Exception exception) { HandleSignInFailure(provider, exception); }
+                finally { authenticationOperations--; }
+                return;
             }
             flow?.SetLoginStatus(provider == PlayerAuthProvider.Guest
                 ? "Misafir hesabı hazırlanıyor..."
@@ -195,9 +221,40 @@ namespace AllinDefense.Core
             finally { authenticationOperations--; }
         }
 
+        private async Task SignInWithExternalProviderAsync(PlayerAuthProvider provider)
+        {
+            var source = provider == PlayerAuthProvider.Apple ? appleSignIn : googleSignIn;
+            flow?.SetLoginStatus(FrontendCopy.OpeningTheSecureAccountWindow.Value);
+            var result = await source.RequestIdTokenAsync();
+            if (deletionSuspended) return;
+            if (result.Status == ExternalSignInStatus.Cancelled)
+            { flow?.SetLoginStatus(string.Empty); return; }
+            if (result.Status == ExternalSignInStatus.NotConfigured)
+            { flow?.SetLoginStatus(FrontendCopy.GoogleSignInNotConfigured.Value); return; }
+            if (result.Status != ExternalSignInStatus.Success || string.IsNullOrWhiteSpace(result.IdToken))
+            { flow?.SetLoginStatus(FrontendCopy.SignInFailed.Value); return; }
+            while ((restoring || syncing) && !deletionSuspended) await Task.Yield();
+            if (deletionSuspended) return;
+            string playerId;
+            if (externalAuthentication != null)
+                playerId = await externalAuthentication.SignInAsync(provider, result.IdToken);
+            else
+            {
+                await EnsureInitializedAsync();
+                if (deletionSuspended) return;
+                if (AuthenticationService.Instance.IsSignedIn) AuthenticationService.Instance.SignOut();
+                if (provider == PlayerAuthProvider.Apple)
+                    await AuthenticationService.Instance.SignInWithAppleAsync(result.IdToken);
+                else
+                    await AuthenticationService.Instance.SignInWithGoogleAsync(result.IdToken);
+                playerId = AuthenticationService.Instance.PlayerId;
+            }
+            await CompleteAuthenticationAsync(provider, result.DisplayName, playerId);
+        }
+
         private async void HandlePlayerAccountSignedIn()
         {
-            if (deletionSuspended) return;
+            if (deletionSuspended || requestedProvider != PlayerAuthProvider.PlayerAccount) return;
             authenticationOperations++;
             try
             {
@@ -219,24 +276,25 @@ namespace AllinDefense.Core
             await CompleteAuthenticationAsync(PlayerAuthProvider.PlayerAccount);
         }
 
-        private async Task CompleteAuthenticationAsync(PlayerAuthProvider provider)
+        private async Task CompleteAuthenticationAsync(PlayerAuthProvider provider, string providerDisplayName = null, string externalPlayerId = null)
         {
             if (deletionSuspended) return;
-            string displayName = provider == PlayerAuthProvider.PlayerAccount
-                ? await ResolvePlayerNameAsync()
-                : "Misafir Muhafız";
+            string displayName = provider == PlayerAuthProvider.Guest ? FrontendCopy.GuestDefender.Value
+                : !string.IsNullOrWhiteSpace(providerDisplayName) ? providerDisplayName
+                : externalAuthentication != null ? await externalAuthentication.ResolvePlayerNameAsync()
+                : await ResolvePlayerNameAsync();
             if (deletionSuspended) return;
             syncing = true;
             try
             {
-                flow.CompleteServiceSignIn(provider, AuthenticationService.Instance.PlayerId, displayName);
+                flow.CompleteServiceSignIn(provider, externalPlayerId ?? AuthenticationService.Instance.PlayerId, displayName);
             }
             finally
             {
                 syncing = false;
             }
 
-            bool synchronized = await SynchronizeCloudAsync();
+            bool synchronized = externalAuthentication == null && await SynchronizeCloudAsync();
             if (deletionSuspended) return;
             flow?.SetLoginStatus(synchronized
                 ? "İlerleme güvenli bulut kaydıyla eşitlendi."
@@ -338,7 +396,9 @@ namespace AllinDefense.Core
                 Debug.Log("[DC_UGS_GUEST_FALLBACK_PASS] screen=MainMenu provider=Guest");
                 return;
             }
-            flow?.SetLoginStatus("Çevrimiçi hesap henüz yapılandırılmadı. Misafir olarak devam edebilirsin.");
+            flow?.SetLoginStatus(provider is PlayerAuthProvider.Apple or PlayerAuthProvider.Google
+                ? FrontendCopy.SignInFailed.Value
+                : "Çevrimiçi hesap henüz yapılandırılmadı. Misafir olarak devam edebilirsin.");
         }
 
         private void CompleteUnlinkedProjectSignIn(PlayerAuthProvider provider)

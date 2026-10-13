@@ -32,6 +32,12 @@ namespace AllinDefense.UI
     /// </summary>
     public static class FrontendCopy
     {
+        public static readonly LocalizedCopy ContinueWithApple = new("Apple ile devam et", "Continue with Apple");
+        public static readonly LocalizedCopy ContinueWithGoogle = new("Google ile devam et", "Continue with Google");
+        public static readonly LocalizedCopy LinkWithApple = new("Apple ile bağla", "Link with Apple");
+        public static readonly LocalizedCopy LinkWithGoogle = new("Google ile bağla", "Link with Google");
+        public static readonly LocalizedCopy GoogleSignInNotConfigured = new("Google girişi henüz yapılandırılmadı.", "Google sign-in is not configured yet.");
+        public static readonly LocalizedCopy SignInFailed = new("Giriş tamamlanamadı. Tekrar dene.", "Sign-in could not be completed. Try again.");
         public static readonly LocalizedCopy DeleteAccount = new("HESABI SİL", "DELETE ACCOUNT");
         public static readonly LocalizedCopy DeleteAccountTitle = new("Hesap silinsin mi?", "Delete your account?");
         public static readonly LocalizedCopy DeleteAccountHint = new("Tüm ilerlemen ve bulut kaydın kalıcı olarak silinir. Bu işlem geri alınamaz.", "All your progress and cloud save will be permanently deleted. This cannot be undone.");

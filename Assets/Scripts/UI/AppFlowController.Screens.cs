@@ -326,7 +326,7 @@ namespace AllinDefense.UI
             SetAnchors((RectTransform)brand.transform, new Vector2(.1f, .65f), new Vector2(.9f, .97f), Vector2.zero, Vector2.zero);
             var card = CreatePanel("Welcome Chronicle", root, UiTokens.WithAlpha(theme.panel, .9f));
             AddCardAccent(card.transform, theme.commandGold);
-            SetAnchors((RectTransform)card.transform, Vector2.zero, new Vector2(1, 0), new Vector2(Edge, 36), new Vector2(-Edge, 746));
+            SetAnchors((RectTransform)card.transform, Vector2.zero, new Vector2(1, 0), new Vector2(Edge, 36), new Vector2(-Edge, 1090));
             var eyebrow = CreateText("Eyebrow", card.transform, FrontendCopy.WelcomeEyebrow, 30, catalog.titleFont,
                 FontStyles.Bold, TextAlignmentOptions.Center, theme.commandGold);
             SetAnchors(eyebrow.rectTransform, new Vector2(0, 1), Vector2.one, new Vector2(24, -88), new Vector2(-24, -26));
@@ -334,9 +334,14 @@ namespace AllinDefense.UI
                 FrontendCopy.WelcomeDescription, 32,
                 catalog.bodyFont, FontStyles.Normal, TextAlignmentOptions.Center, theme.textPrimary);
             SetAnchors(subtitle.rectTransform, new Vector2(0, 1), Vector2.one, new Vector2(28, -238), new Vector2(-28, -98));
-            var start = CreateButton("Start", card.transform, FrontendCopy.PlayNow.Value, new Vector2(700, 140),
+            var apple = ExternalSignInButton(card.transform, "Welcome Apple Sign In", PlayerAuthProvider.Apple, FrontendCopy.ContinueWithApple);
+            apple.gameObject.SetActive(AppleSignInAvailable());
+            SetAnchors((RectTransform)apple.transform, Vector2.zero, new Vector2(1, 0), new Vector2(28, 650), new Vector2(-28, 790));
+            var google = ExternalSignInButton(card.transform, "Welcome Google Sign In", PlayerAuthProvider.Google, FrontendCopy.ContinueWithGoogle);
+            SetAnchors((RectTransform)google.transform, Vector2.zero, new Vector2(1, 0), new Vector2(28, 492), new Vector2(-28, 632));
+            var start = CreateButton("Start", card.transform, FrontendCopy.StartAsGuest, new Vector2(700, 140),
                 theme.commandGold, () => LaunchCampaignLevel(1));
-            SetAnchors((RectTransform)start.transform, Vector2.zero, new Vector2(1, 0), new Vector2(28, 286), new Vector2(-28, 426));
+            SetAnchors((RectTransform)start.transform, Vector2.zero, new Vector2(1, 0), new Vector2(28, 334), new Vector2(-28, 474));
             var account = CreateButton("Link Account", card.transform, FrontendCopy.LinkAccount, new Vector2(700, 140), theme.defenderBlue,
                 () => ShowScreen(AppScreen.Login));
             account.gameObject.SetActive(false);
@@ -344,12 +349,17 @@ namespace AllinDefense.UI
             deletionWelcomeStatus = CreateText("Account Deleted Status", card.transform, "", 28, catalog.bodyFont,
                 FontStyles.Normal, TextAlignmentOptions.Center, theme.textPrimary);
             SetAnchors(deletionWelcomeStatus.rectTransform, Vector2.zero, new Vector2(1, 0), new Vector2(28, 160), new Vector2(-28, 260));
+            welcomeLoginStatus = CreateText("Welcome Login Status", card.transform, "", 28, catalog.bodyFont,
+                FontStyles.Normal, TextAlignmentOptions.Center, theme.textPrimary);
+            SetAnchors(welcomeLoginStatus.rectTransform, Vector2.zero, new Vector2(1, 0), new Vector2(28, 160), new Vector2(-28, 300));
             var note = CreateText("Guest Note", card.transform,
                 FrontendCopy.GuestNote, 27, catalog.bodyFont,
                 FontStyles.Normal, TextAlignmentOptions.Center, theme.textMuted);
             SetAnchors(note.rectTransform, Vector2.zero, new Vector2(1, 0), new Vector2(28, 18), new Vector2(-28, 110));
         }
 
+        private TMP_Text welcomeLoginStatus;
+        private Button accountAppleSignIn, accountGoogleSignIn;
         private TMP_Text accountIdentity;
         private Button guestSignIn;
         private Button settingsAccount;
@@ -371,12 +381,17 @@ namespace AllinDefense.UI
             var header = MenuStack(card, "Account Header", false);
             var title = MenuText(header, "Heading", FrontendCopy.ProtectProgress, 40, true);
             UiKit.Size(title.rectTransform, flex: 1);
+            title.textWrappingMode = TextWrappingModes.Normal;
+            title.enableAutoSizing = true; title.fontSizeMin = 28; title.fontSizeMax = 40;
             var close = menuKit.IconButton(header, "Back", menuKit.Assets.iconClose, ReturnFromAccount);
             UiKit.Size((RectTransform)close.transform, 140, 140);
             accountIdentity = MenuText(card, "Account Identity", "", 30);
             var explanation = MenuText(card, "Account Explanation", FrontendCopy.AccountDescription, 30);
             explanation.textWrappingMode = TextWrappingModes.Normal;
             UiKit.Size(explanation.rectTransform, height: 132);
+            accountAppleSignIn = ExternalSignInButton(card, "Account Apple Sign In", PlayerAuthProvider.Apple, FrontendCopy.LinkWithApple);
+            accountAppleSignIn.gameObject.SetActive(AppleSignInAvailable());
+            accountGoogleSignIn = ExternalSignInButton(card, "Account Google Sign In", PlayerAuthProvider.Google, FrontendCopy.LinkWithGoogle);
             MenuButton(card, "Player Account Sign In", FrontendCopy.LinkAccount, menuKit.Assets.iconShield,
                 () => RequestExternalSignIn(PlayerAuthProvider.PlayerAccount), true);
             guestSignIn = MenuButton(card, "Guest Sign In", FrontendCopy.StartAsGuest, null, SignInAsGuest);
@@ -387,6 +402,46 @@ namespace AllinDefense.UI
             LegalLink(links, "Privacy Policy", FrontendCopy.PrivacyPolicy, theme.privacyPolicyUrl);
             LegalLink(links, "Terms Of Service", FrontendCopy.TermsOfService, theme.termsOfServiceUrl);
             AccountDeleteButton(card, "Delete Account", FrontendCopy.DeleteAccount, ConfirmAccountDeletion);
+        }
+
+        private Button ExternalSignInButton(Transform parent, string id, PlayerAuthProvider provider, LocalizedCopy copy)
+        {
+            bool apple = provider == PlayerAuthProvider.Apple;
+            var rect = UiKit.Node(parent, id);
+            var surface = rect.gameObject.AddComponent<Image>();
+            menuKit ??= new UiKit(theme.designSystem);
+            surface.sprite = menuKit.Assets.roundedMedium;
+            surface.type = Image.Type.Sliced;
+            surface.color = apple ? Color.black : UiTokens.White;
+            var button = rect.gameObject.AddComponent<Button>();
+            button.targetGraphic = surface;
+            var colors = button.colors;
+            colors.highlightedColor = UiTokens.White;
+            colors.selectedColor = UiTokens.White;
+            colors.pressedColor = UiTokens.PressedTint;
+            button.colors = colors;
+            rect.gameObject.AddComponent<UiPointSize>().Configure(UiMetrics.MinTouchPt);
+            UiKit.Size(rect, height: TouchHeight, flex: 1);
+            var label = CreateText(id + " Label", rect, copy, 34, catalog.bodyFont,
+                FontStyles.Normal, TextAlignmentOptions.Center, apple ? UiTokens.White : UiTokens.Night);
+            Stretch(label.rectTransform, new Vector2(100, 12), new Vector2(-70, -12));
+            label.enableAutoSizing = true; label.fontSizeMin = 28; label.fontSizeMax = 34;
+            var logoRoot = UiKit.Node(rect, id + " Logo");
+            var logo = logoRoot.gameObject.AddComponent<Image>();
+            logo.sprite = apple ? theme.appleSignInLogo : theme.googleSignInLogo;
+            logo.color = UiTokens.White; logo.preserveAspect = true; logo.raycastTarget = false;
+            SetRect(logoRoot, new Vector2(56, 0), new Vector2(54, 54), new Vector2(0, .5f), new Vector2(.5f, .5f));
+            rect.gameObject.AddComponent<UiAccessibleButton>().Configure(copy);
+            button.onClick.AddListener(() => MenuClick(() => RequestExternalSignIn(provider)));
+            MobileTouchTarget.Attach(button);
+            return button;
+        }
+
+        private static void RefreshExternalSignInLabel(Button button, LocalizedCopy copy)
+        {
+            var label = button.GetComponentInChildren<TMP_Text>();
+            label.GetComponent<LocalizedTmpText>().Configure(label, copy);
+            button.GetComponent<UiAccessibleButton>().Configure(copy);
         }
 
         private void LegalLink(Transform parent, string id, LocalizedCopy copy, string url)
@@ -412,6 +467,9 @@ namespace AllinDefense.UI
             if (accountIdentity == null) return;
             accountIdentity.text = progress.Data.authProvider is PlayerAuthProvider.Guest or PlayerAuthProvider.None
                 ? FrontendCopy.GuestDeviceProgress.Value : progress.Data.displayName;
+            bool guest = progress.Data.authProvider is PlayerAuthProvider.Guest or PlayerAuthProvider.None;
+            RefreshExternalSignInLabel(accountAppleSignIn, guest ? FrontendCopy.LinkWithApple : FrontendCopy.ContinueWithApple);
+            RefreshExternalSignInLabel(accountGoogleSignIn, guest ? FrontendCopy.LinkWithGoogle : FrontendCopy.ContinueWithGoogle);
             guestSignIn.gameObject.SetActive(navigationState.AccountReturn == AppScreen.Welcome && progress.Data.playerId == "local-guest");
         }
 

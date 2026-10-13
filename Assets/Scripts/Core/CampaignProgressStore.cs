@@ -12,9 +12,7 @@ namespace AllinDefense.Core
     {
         None = 0,
         Guest = 1,
-        [Obsolete("Use PlayerAccount. Kept only for save migration.")]
         Apple = 2,
-        [Obsolete("Use PlayerAccount. Kept only for save migration.")]
         Google = 3,
         PlayerAccount = 4
     }
@@ -73,7 +71,7 @@ namespace AllinDefense.Core
 
     public sealed class CampaignProgressStore
     {
-        public const int CurrentVersion = 4;
+        public const int CurrentVersion = 5;
         public const string FileName = "campaign-save.json";
 
         [Serializable] private sealed class ActiveProfile { public string key; }
@@ -114,7 +112,7 @@ namespace AllinDefense.Core
             else
             {
                 Data = LoadAt(rootPath);
-                ProfileKey = Data.authProvider == PlayerAuthProvider.PlayerAccount && !string.IsNullOrEmpty(Data.playerId)
+                ProfileKey = (Data.authProvider is PlayerAuthProvider.PlayerAccount or PlayerAuthProvider.Apple or PlayerAuthProvider.Google) && !string.IsNullOrEmpty(Data.playerId)
                     ? AtomicSaveFile.Hash(Data.playerId) : "guest";
                 SavePath = ProfilePath(ProfileKey);
             }
@@ -383,7 +381,8 @@ namespace AllinDefense.Core
             if (data.version < CurrentVersion)
             {
                 if (!File.Exists(path + ".legacy-v3")) AtomicSaveFile.Write(path + ".legacy-v3", payload);
-                data.migrationNeedsReview = data.levels != null && data.levels.Any(x => x != null && x.stars > 0);
+                if (data.version < 4)
+                    data.migrationNeedsReview = data.levels != null && data.levels.Any(x => x != null && x.stars > 0);
             }
             return Normalize(data);
         }
@@ -393,10 +392,10 @@ namespace AllinDefense.Core
             data ??= new CampaignSaveData();
             // JsonUtility materializes null serializable classes as empty objects on some players.
             if (data.checkpoint != null && string.IsNullOrEmpty(data.checkpoint.owner)) data.checkpoint = null;
+            if (data.version < 5 && (data.authProvider is PlayerAuthProvider.Apple or PlayerAuthProvider.Google))
+                data.authProvider = PlayerAuthProvider.PlayerAccount;
             data.version = CurrentVersion;
             data.heroName = HeroIdentity.TryNormalize(data.heroName, out string heroName) ? heroName : string.Empty;
-            if ((int)data.authProvider is 2 or 3)
-                data.authProvider = PlayerAuthProvider.PlayerAccount;
             data.unlockedLevel = Mathf.Clamp(data.unlockedLevel, 1, CampaignCatalog.LevelCount);
             data.lastSelectedLevel = Mathf.Clamp(data.lastSelectedLevel, 1, data.unlockedLevel);
             data.valor = Mathf.Max(0, data.valor);

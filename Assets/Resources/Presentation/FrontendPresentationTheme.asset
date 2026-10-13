@@ -39,5 +39,9 @@ MonoBehaviour:
   mapOpen: {fileID: 8300000, guid: c945def296b4f4c76ac5eaaf825d31df, type: 3}
   levelSelect: {fileID: 8300000, guid: c945def296b4f4c76ac5eaaf825d31df, type: 3}
   starReveal: {fileID: 8300000, guid: 8da7ff52043c2422eae2829a4e246311, type: 3}
+  googleIosClientId: 402925844057-38mgssoiufq7fm18babk7vcbun8or04e.apps.googleusercontent.com
+  appleSignInLogo: {fileID: -5808081451768847097, guid: e6bc8ad3c1dd24e4c81a154a00449876,
+    type: 3}
+  googleSignInLogo: {fileID: 21300000, guid: 317f562c4510d42838046c7661904d51, type: 3}
   privacyPolicyUrl: https://emretit.github.io/allin-defense/privacy/
   termsOfServiceUrl: https://emretit.github.io/allin-defense/terms/

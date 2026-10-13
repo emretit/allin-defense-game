@@ -1,0 +1,2 @@
+AppleWhite.png: official white logo-only 3x PNG, unmodified raster file with a Unity sprite rectangle around the glyph, from https://devimages-cdn.apple.com/design/resources/download/Logo-Sign-in-with-Apple.dmg (Apple Developer Artwork License for Sign in with Apple, EA1677).
+GoogleG.png: official multicolor G, unmodified, from https://developers.google.com/static/identity/images/g-logo.png (https://developers.google.com/identity/branding-guidelines).
