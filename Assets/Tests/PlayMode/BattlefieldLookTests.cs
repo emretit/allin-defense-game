@@ -7,6 +7,7 @@ using System.Reflection;
 using AllinDefense.Core;
 using AllinDefense.Data;
 using AllinDefense.Presentation;
+using AllinDefense.UI;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -19,6 +20,10 @@ namespace AllinDefense.Tests
         private GameSessionController session;
         private Type review;
         private UnityEngine.Random.State randomState;
+        private bool reducedMotion;
+#if UNITY_EDITOR
+        private bool asyncCompilation;
+#endif
         private const BindingFlags Private = BindingFlags.Instance | BindingFlags.NonPublic;
         [Serializable] private sealed class Sample
         {
@@ -30,7 +35,15 @@ namespace AllinDefense.Tests
         [Serializable] private sealed class Report { public List<Sample> samples = new(); }
 
         [SetUp]
-        public void Setup() => randomState = UnityEngine.Random.state;
+        public void Setup()
+        {
+            randomState = UnityEngine.Random.state;
+            reducedMotion = FrontendPreferences.ReducedMotion;
+#if UNITY_EDITOR
+            asyncCompilation = UnityEditor.ShaderUtil.allowAsyncCompilation;
+            UnityEditor.ShaderUtil.allowAsyncCompilation = false;
+#endif
+        }
 
         [UnityTest]
         public IEnumerator BattlefieldCapturesAndRenderingCountersAtAcceptanceRatios()
@@ -38,6 +51,7 @@ namespace AllinDefense.Tests
 #if UNITY_EDITOR
             review = AppDomain.CurrentDomain.GetAssemblies().Select(a => a.GetType("AllinDefense.Editor.FrontendExperienceReview")).First(t => t != null);
             string phase = Environment.GetEnvironmentVariable("STEP6_CAPTURE_PHASE") ?? "after";
+            bool environment = Environment.GetEnvironmentVariable("ENV_CAPTURE") == "1";
             bool battleUi = Environment.GetEnvironmentVariable("BATTLE_UI_CAPTURE") == "1";
             var report = new Report();
             Directory.CreateDirectory("Builds");
@@ -85,7 +99,7 @@ namespace AllinDefense.Tests
                     }
                     Assert.That(sample.drawCalls, Is.GreaterThan(0), "Rendering counters must be live");
                     report.samples.Add(sample);
-                    string path = battleUi ? $"Builds/battle-ui-{phase}-{state}-{size.x}x{size.y}.png" : $"Builds/step6-{phase}-{state}-{size.x}x{size.y}.png";
+                    string path = environment ? $"Builds/env-{phase}-{state}-{size.x}x{size.y}.png" : battleUi ? $"Builds/battle-ui-{phase}-{state}-{size.x}x{size.y}.png" : $"Builds/step6-{phase}-{state}-{size.x}x{size.y}.png";
                     ScreenCapture.CaptureScreenshot(path);
                     for (int i = 0; i < 5; i++) yield return null;
                     Assert.That(File.Exists(path), Is.True);
@@ -93,7 +107,7 @@ namespace AllinDefense.Tests
                     yield return null;
                 }
             }
-            File.WriteAllText(battleUi ? $"Builds/battle-ui-{phase}-metrics.json" : $"Builds/step6-{phase}-metrics.json", JsonUtility.ToJson(report, true));
+            File.WriteAllText(environment ? $"Builds/env-{phase}-metrics.json" : battleUi ? $"Builds/battle-ui-{phase}-metrics.json" : $"Builds/step6-{phase}-metrics.json", JsonUtility.ToJson(report, true));
 #else
             yield return null;
 #endif
@@ -119,6 +133,9 @@ namespace AllinDefense.Tests
             Assert.That(first.transform.localScale, Is.EqualTo(Vector3.one));
             Assert.That(first.sharedMaterial.GetColor("_EmissionColor"), Is.EqualTo(Color.black));
             Assert.That(slots[0].GetComponentsInChildren<Collider>().Length, Is.EqualTo(1));
+            Assert.That(slots[0].GetComponent<DefenderSlotVisual>().ShowsBuildPlus, Is.True);
+            Assert.That(session.TryBuildOutpost(0, OutpostKind.Archer), Is.True);
+            Assert.That(slots[0].GetComponent<DefenderSlotVisual>().ShowsBuildPlus, Is.False);
             var ground = session.GetComponentsInChildren<Renderer>().Single(r => r.name == "Continuous Battlefield Ground");
             var texture = ground.sharedMaterial.GetTexture("_BaseMap");
             Assert.That(texture.width, Is.LessThanOrEqualTo(256));
@@ -142,12 +159,81 @@ namespace AllinDefense.Tests
             camera.ResetAspect();
         }
 
+        [UnityTest]
+        public IEnumerator SceneryClustersAreDeterministicAndClearGameplayAndLandmarks()
+        {
+            foreach (int levelNumber in new[] { 1, 10, 14, 24, 43 })
+            {
+                Vector3[][] previous = null;
+                for (int repeat = 0; repeat < 2; repeat++)
+                {
+                    UnityEngine.Random.InitState(100 + repeat);
+                    session = new GameObject("Scenery repeatability").AddComponent<GameSessionController>();
+                    session.ConfigurePresentation(Resources.Load<DefenderPresentationCatalog>("Presentation/DefenderPresentationCatalog"));
+                    session.SetCampaignLevel(levelNumber);
+                    session.Initialize();
+                    yield return null;
+                    RuntimeCampaignLevel level = CampaignLevelFactory.Create(levelNumber);
+                    var dressing = session.GetComponentInChildren<DefenderBattlefieldDressing>();
+                    var clusters = dressing.GetComponentsInChildren<MeshFilter>().Where(f => f.name.StartsWith("Grove ")).ToArray();
+                    Assert.That(clusters.Length, Is.GreaterThan(0));
+                    foreach (var cluster in clusters)
+                    {
+                        Bounds bounds = cluster.GetComponent<Renderer>().bounds;
+                        Assert.That(DefenderBattlefieldDressing.DecorationOverlapsGameplay(bounds, level.outpostSlots, level.routes), Is.False, cluster.name);
+                        Assert.That(DefenderBattlefieldDressing.DecorationOverlapsLandmarks(bounds, level.path), Is.False, cluster.name);
+                        Assert.That(cluster.GetComponent<Collider>(), Is.Null);
+                    }
+                    Vector3[][] current = clusters.Select(f => f.sharedMesh.vertices).ToArray();
+                    if (previous != null)
+                    {
+                        Assert.That(current.Length, Is.EqualTo(previous.Length));
+                        for (int i = 0; i < current.Length; i++) CollectionAssert.AreEqual(previous[i], current[i]);
+                    }
+                    previous = current;
+                    Object.Destroy(session.gameObject);
+                    yield return null;
+                }
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator SlotGlowRespectsReducedMotionAndCalmsDuringWaves()
+        {
+            session = new GameObject("Slot glow states").AddComponent<GameSessionController>();
+            session.ConfigurePresentation(Resources.Load<DefenderPresentationCatalog>("Presentation/DefenderPresentationCatalog"));
+            session.SetCampaignLevel(1);
+            session.Initialize();
+            FrontendPreferences.ReducedMotion = true;
+            yield return null;
+            var ring = session.GetComponentsInChildren<Renderer>().First(r => r.name == "SlotGoldRing");
+            var properties = new MaterialPropertyBlock();
+            ring.GetPropertyBlock(properties);
+            Color preparation = properties.GetColor("_EmissionColor");
+            yield return new WaitForSecondsRealtime(.05f);
+            ring.GetPropertyBlock(properties);
+            Assert.That(properties.GetColor("_EmissionColor"), Is.EqualTo(preparation));
+            FrontendPreferences.ReducedMotion = false;
+            session.StartNextWave();
+            yield return null;
+            ring.GetPropertyBlock(properties);
+            Color wave = properties.GetColor("_EmissionColor");
+            Assert.That(wave.maxColorComponent, Is.LessThan(preparation.maxColorComponent));
+            yield return new WaitForSecondsRealtime(.05f);
+            ring.GetPropertyBlock(properties);
+            Assert.That(properties.GetColor("_EmissionColor"), Is.EqualTo(wave));
+        }
+
         [UnityTearDown]
         public IEnumerator Cleanup()
         {
             if (session != null) Object.Destroy(session.gameObject);
+#if UNITY_EDITOR
+            UnityEditor.ShaderUtil.allowAsyncCompilation = asyncCompilation;
+#endif
             Time.timeScale = 1;
             UnityEngine.Random.state = randomState;
+            FrontendPreferences.ReducedMotion = reducedMotion;
             review?.GetMethod("RestoreSize").Invoke(null, null);
             yield return null;
         }

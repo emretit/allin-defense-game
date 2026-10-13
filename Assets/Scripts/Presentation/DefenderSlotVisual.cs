@@ -12,6 +12,8 @@ namespace AllinDefense.Presentation
         private static Mesh plinthMesh;
         private static Mesh ringMesh;
         private static Material stoneMaterial;
+        private static Material markerMaterial;
+        private static Material contactMaterial;
         private static Material restingRingMaterial;
         private static Material selectedRingMaterial;
         private static int instances;
@@ -29,25 +31,30 @@ namespace AllinDefense.Presentation
             if (ringMesh == null) ringMesh = BuildMesh(true);
             if (stoneMaterial == null)
             {
-                stoneMaterial = new Material(catalog.stoneMaterial) { name = "Slot Neutral Stone", color = new Color(.40f, .40f, .37f) };
-                restingRingMaterial = new Material(catalog.fireMaterial) { name = "Slot Resting Gold", color = UiTokens.GoldLow * .72f };
+                stoneMaterial = new Material(catalog.stoneMaterial) { name = "Slot Neutral Stone", color = new Color(.22f, .27f, .29f) };
+                markerMaterial = new Material(catalog.stoneMaterial) { name = "Slot Build Gold", color = UiTokens.Gold };
+                contactMaterial = new Material(catalog.stoneMaterial) { name = "Slot Contact", color = new Color(.10f, .14f, .16f) };
+                restingRingMaterial = new Material(catalog.stoneMaterial) { name = "Slot Resting Gold", color = UiTokens.GoldLow * .72f };
                 restingRingMaterial.EnableKeyword("_EMISSION");
                 restingRingMaterial.SetColor("_EmissionColor", Color.black);
-                selectedRingMaterial = new Material(catalog.fireMaterial) { name = "Slot Selected Gold", color = UiTokens.GoldHigh };
+                selectedRingMaterial = new Material(catalog.stoneMaterial) { name = "Slot Selected Gold", color = UiTokens.GoldHigh };
                 selectedRingMaterial.EnableKeyword("_EMISSION");
-                selectedRingMaterial.SetColor("_EmissionColor", UiTokens.Gold * 1.5f);
+                selectedRingMaterial.SetColor("_EmissionColor", UiTokens.Gold * 1.12f);
             }
             instances++;
             var visual = root.AddComponent<DefenderSlotVisual>();
+            Renderer contact = CreatePart(root.transform, "SlotContact", plinthMesh, contactMaterial);
+            contact.transform.localPosition = Vector3.down * .28f;
+            contact.transform.localScale = new Vector3(1.04f, .03f, 1.04f);
             CreatePart(root.transform, "SlotStone", plinthMesh, stoneMaterial);
             visual.ring = CreatePart(root.transform, "SlotGoldRing", ringMesh, restingRingMaterial);
             var marker = new GameObject("SlotBuildPlus"); marker.transform.SetParent(root.transform, false);
-            foreach (var size in new[] { new Vector3(.36f, .018f, .075f), new Vector3(.075f, .018f, .36f) })
+            foreach (var size in new[] { new Vector3(.46f, .018f, .10f), new Vector3(.10f, .018f, .46f) })
             {
                 var bar = GameObject.CreatePrimitive(PrimitiveType.Cube); bar.name = "PlusBar";
                 bar.transform.SetParent(marker.transform, false); bar.transform.localPosition = Vector3.up * .235f; bar.transform.localScale = size;
                 Destroy(bar.GetComponent<Collider>());
-                bar.GetComponent<Renderer>().sharedMaterial = selectedRingMaterial;
+                bar.GetComponent<Renderer>().sharedMaterial = markerMaterial;
             }
             visual.plus = marker;
             visual.ringProperties = new MaterialPropertyBlock();
@@ -71,10 +78,11 @@ namespace AllinDefense.Presentation
             if (ring == null || ringProperties == null) return;
             var session = GameSessionController.Instance;
             bool affordable = session != null && session.Gold >= TowerProgression.Base(OutpostKind.Archer).cost;
-            float pulse = occupied || !affordable || FrontendPreferences.ReducedMotion ? 1 : 1 + .18f * Mathf.Sin(Time.unscaledTime * 2);
-            Color color = selected ? UiTokens.GoldHigh : occupied ? UiTokens.GoldLow * .72f : affordable ? UiTokens.Moon : UiTokens.TextSecondary;
+            bool preparation = session != null && session.UnpausedPhase is GamePhase.Preparing or GamePhase.Intermission;
+            float pulse = occupied || !affordable || !preparation || FrontendPreferences.ReducedMotion ? 1 : 1 + .14f * Mathf.Sin(Time.unscaledTime * 1.6f);
+            Color color = selected ? UiTokens.GoldHigh : occupied ? UiTokens.GoldLow * .72f : affordable ? UiTokens.Gold : UiTokens.GoldLow;
             ringProperties.SetColor("_BaseColor", color);
-            ringProperties.SetColor("_EmissionColor", selected ? UiTokens.Gold * 1.5f : occupied ? Color.black : color * (affordable ? pulse : .35f));
+            ringProperties.SetColor("_EmissionColor", selected ? UiTokens.Gold * 1.12f : occupied ? Color.black : color * (affordable ? pulse * (preparation ? .28f : .10f) : .04f));
             ring.SetPropertyBlock(ringProperties);
         }
 
@@ -105,6 +113,8 @@ namespace AllinDefense.Presentation
         {
             if (--instances != 0) return;
             Destroy(stoneMaterial);
+            Destroy(markerMaterial);
+            Destroy(contactMaterial);
             Destroy(restingRingMaterial);
             Destroy(selectedRingMaterial);
             Destroy(plinthMesh);

@@ -465,9 +465,7 @@ namespace AllinDefense.Tests
             Assert.That(GameObject.Find("Scenic Battlefield Dressing"), Is.Not.Null);
             AssertVisualOnlyDressing("Road Organic Earth Surface");
             Assert.That(GameObject.Find("Road Hand-Laid Stone Borders"), Is.Not.Null);
-            AssertVisualOnlyDressing("Ground Low-Contrast Valley Fields");
-            AssertVisualOnlyDressing("Ground Moonlit Grass Breakup");
-            AssertVisualOnlyDressing("Ground Warm Entry Scuffs");
+            AssertVisualOnlyDressing("Ground Feathered Grove Patches");
             AssertVisualOnlyDressing("Enemy Gate Warm Read Pool");
             AssertVisualOnlyDressing("Defender Keep Cool Read Pool");
             AssertVisualOnlyDressing("Continuous Battlefield Ground");
@@ -629,7 +627,7 @@ namespace AllinDefense.Tests
                 Assert.That(session.SlotCount, Is.EqualTo(8));
                 AssertVisualOnlyDressing("Road Organic Earth Surface");
                 Assert.That(GameObject.Find("Road Hand-Laid Stone Borders"), Is.Not.Null);
-                AssertVisualOnlyDressing("Ground Low-Contrast Valley Fields");
+                AssertVisualOnlyDressing("Ground Feathered Grove Patches");
                 AssertVisualOnlyDressing("Enemy Gate Warm Read Pool");
                 AssertVisualOnlyDressing("Defender Keep Cool Read Pool");
                 AssertVisualOnlyDressing("Continuous Battlefield Ground");

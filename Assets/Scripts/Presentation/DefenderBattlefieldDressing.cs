@@ -19,6 +19,10 @@ namespace AllinDefense.Presentation
         };
 
         private Texture2D groundTexture;
+        private Texture2D roadTexture;
+        private Texture2D featherTexture;
+        private IReadOnlyList<Vector3> slots;
+        private readonly List<List<Vector3>> roundedPaths = new();
         private readonly List<Mesh> runtimeMeshes = new();
         private readonly List<Material> runtimeMaterials = new();
         private IReadOnlyList<Vector3> roadPath = DefaultRoadPath;
@@ -28,7 +32,7 @@ namespace AllinDefense.Presentation
 
         public static DefenderBattlefieldDressing Install(Transform parent, DefenderPresentationCatalog catalog,
             Camera camera, IReadOnlyList<Vector3> path = null, int biomeIndex = 0,
-            IReadOnlyList<Vector3[]> routes = null)
+            IReadOnlyList<Vector3[]> routes = null, IReadOnlyList<Vector3> slots = null)
         {
             if (parent == null || catalog == null) return null;
             Transform existing = parent.Find("Scenic Battlefield Dressing");
@@ -40,6 +44,7 @@ namespace AllinDefense.Presentation
             if (path != null && path.Count > 1) dressing.roadPath = path;
             dressing.biomeIndex = Mathf.Clamp(biomeIndex, 0, 4);
             dressing.routes = routes;
+            dressing.slots = slots;
             dressing.ownedRoadPaths.Add(dressing.roadPath);
             if (routes != null)
                 for (int index = 1; index < routes.Count; index++)
@@ -153,8 +158,9 @@ namespace AllinDefense.Presentation
 
         private void Build(DefenderPresentationCatalog catalog, Camera camera)
         {
+            foreach (var route in ownedRoadPaths) roundedPaths.Add(RoundRoute(route));
             CreateContinuousGround(catalog.forestMaterial);
-            CreateGroundValueFields(catalog.grassAccentMaterial, catalog.earthMaterial);
+            CreateSceneryClusters(catalog);
             CreateLandmarkReadabilityFields(catalog.fireMaterial, catalog.magicMaterial);
             CreateRoadSurface();
             CreateRoadCobbles();
@@ -191,33 +197,113 @@ namespace AllinDefense.Presentation
             transform.Find(name).GetComponent<MeshRenderer>().receiveShadows = true;
         }
 
-        private void CreateGroundValueFields(Material grassSource, Material earthSource)
+        public static bool DecorationOverlapsLandmarks(Bounds bounds, IReadOnlyList<Vector3> path)
         {
-            BiomeDefinition palette = CampaignLevelFactory.Biome(biomeIndex);
-            Material coldGrass = CreateRuntimeMaterial("DC Cold Grass Value", Color.Lerp(new Color(.14f, .18f, .18f), palette.groundColor, .12f), false, grassSource);
-            Material moonGrass = CreateRuntimeMaterial("DC Moon Grass Value", Color.Lerp(new Color(.22f, .27f, .25f), palette.groundColor, .12f), false, grassSource);
-            Material warmScuff = CreateRuntimeMaterial("DC Gate Ground Scuff", Color.Lerp(palette.groundColor, new Color(0.08f, 0.05f, 0.03f), 0.48f), false, earthSource);
+            foreach (Vector3 endpoint in new[] { path[0], path[^1] })
+            {
+                Vector3 nearest = bounds.ClosestPoint(endpoint);
+                if (new Vector2(nearest.x - endpoint.x, nearest.z - endpoint.z).magnitude < 2f) return true;
+            }
+            return false;
+        }
 
-            var coldVertices = new List<Vector3>(96);
-            var coldTriangles = new List<int>(180);
-            AddGroundPatch(coldVertices, coldTriangles, new Vector3(2.5f, 0.068f, 5.3f), 2.35f, 0.56f, -6f, 0.12f);
-            AddGroundPatch(coldVertices, coldTriangles, new Vector3(7.9f, 0.066f, 5.2f), 1.72f, 0.48f, 11f, 1.33f);
-            AddGroundPatch(coldVertices, coldTriangles, new Vector3(13.1f, 0.067f, 6.4f), 2.12f, 0.58f, -12f, 2.25f);
-            AddGroundPatch(coldVertices, coldTriangles, new Vector3(20.0f, 0.066f, 5.0f), 2.38f, 0.54f, 8f, 3.4f);
-            CreateMeshObject("Ground Low-Contrast Valley Fields", coldVertices, coldTriangles, coldGrass, true);
+        private void CreateSceneryClusters(DefenderPresentationCatalog catalog)
+        {
+            var random = new System.Random(6006 + biomeIndex * 197 + Mathf.RoundToInt(roadPath[1].x * 100));
+            float Next(float a, float b) => Mathf.Lerp(a, b, (float)random.NextDouble());
+            Material foliage = CreateRuntimeMaterial("DC Grove Foliage", new Color(.16f, .29f, .22f), false);
+            Material lightFoliage = CreateRuntimeMaterial("DC Grove Sage", new Color(.23f, .34f, .26f), false);
+            Material bark = CreateRuntimeMaterial("DC Grove Bark", new Color(.22f, .20f, .17f), false);
+            Material rock = CreateRuntimeMaterial("DC Grove Stone", new Color(.27f, .32f, .34f), false);
+            Material grass = CreateRuntimeMaterial("DC Feathered Grass", new Color(.07f, .13f, .10f, .5f), true);
+            featherTexture = new Texture2D(64, 64, TextureFormat.RGBA32, true)
+                { name = "Grass Soft Edge", wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Bilinear };
+            var pixels = new Color[4096];
+            for (int y = 0; y < 64; y++)
+                for (int x = 0; x < 64; x++)
+                {
+                    float radius = new Vector2((x - 31.5f) / 31.5f, (y - 31.5f) / 31.5f).magnitude;
+                    float alpha = 1f - Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(.25f, .98f, radius + .06f * Mathf.PerlinNoise(x * .15f, y * .15f)));
+                    pixels[y * 64 + x] = new Color(1, 1, 1, alpha);
+                }
+            featherTexture.SetPixels(pixels); featherTexture.Apply(true, true);
+            grass.SetTexture("_BaseMap", featherTexture);
+            grass.SetFloat("_Surface", 1); grass.SetFloat("_SrcBlend", (float)BlendMode.SrcAlpha);
+            grass.SetFloat("_DstBlend", (float)BlendMode.OneMinusSrcAlpha); grass.SetFloat("_ZWrite", 0);
+            grass.SetFloat("_SrcBlendAlpha", (float)BlendMode.One);
+            grass.SetFloat("_DstBlendAlpha", (float)BlendMode.OneMinusSrcAlpha);
+            grass.SetOverrideTag("RenderType", "Transparent");
+            grass.EnableKeyword("_SURFACE_TYPE_TRANSPARENT"); grass.renderQueue = (int)RenderQueue.Transparent;
+            var patchVertices = new List<Vector3>(); var patchTriangles = new List<int>();
+            var patchUvs = new List<Vector2>();
+            var occupied = new List<Bounds>();
+            for (int cluster = 0; cluster < 8; cluster++)
+            {
+                Vector3 center = Vector3.zero;
+                bool placed = false;
+                for (int attempt = 0; attempt < 24; attempt++)
+                {
+                    center = new Vector3(Next(.3f, 22f), 0, cluster % 2 == 0 ? Next(12f, 13.2f) : Next(-1.4f, -.2f));
+                    var bounds = new Bounds(center + Vector3.up, new Vector3(2.7f, 3, 2.2f));
+                    if (DecorationOverlapsGameplay(bounds, slots, routes) || DecorationOverlapsLandmarks(bounds, roadPath) ||
+                        occupied.Exists(other => other.Intersects(bounds))) continue;
+                    occupied.Add(bounds);
+                    placed = true;
+                    break;
+                }
+                if (!placed) continue;
+                var crowns = new List<Vector3>(); var crownIndices = new List<int>();
+                var trunks = new List<Vector3>(); var trunkIndices = new List<int>();
+                var rocks = new List<Vector3>(); var rockIndices = new List<int>();
+                for (int tree = 0; tree < 3; tree++)
+                {
+                    Vector3 p = center + new Vector3(Next(-.65f, .65f), 0, Next(-.45f, .45f));
+                    float size = Next(.65f, 1.12f), yaw = Next(0, Mathf.PI * 2);
+                    AddLathe(trunks, trunkIndices, p, new[] { .09f, .07f }, new[] { 0f, .75f * size }, yaw);
+                    if ((cluster + tree) % 3 == 0)
+                        AddLathe(crowns, crownIndices, p, new[] { 0f, .42f * size, .46f * size, .25f * size, 0f },
+                            new[] { .45f * size, .65f * size, 1.05f * size, 1.4f * size, 1.5f * size }, yaw);
+                    else
+                    {
+                        AddLathe(crowns, crownIndices, p, new[] { .50f * size, .02f }, new[] { .45f * size, 1.5f * size }, yaw);
+                        AddLathe(crowns, crownIndices, p, new[] { .36f * size, 0f }, new[] { .92f * size, 1.95f * size }, yaw + .2f);
+                    }
+                    Vector3 stone = p + new Vector3(Next(-.35f, .35f), .1f, Next(-.25f, .25f));
+                    AddCobble(rocks, rockIndices, stone, yaw, new Vector3(Next(.3f, .6f), Next(.2f, .4f), Next(.3f, .5f)));
+                }
+                CreateMeshObject($"Grove Tree Crowns {cluster}", crowns, crownIndices, cluster % 3 == 0 ? lightFoliage : foliage, true);
+                CreateMeshObject($"Grove Tree Trunks {cluster}", trunks, trunkIndices, bark, true);
+                CreateMeshObject($"Grove Rock Cluster {cluster}", rocks, rockIndices, rock, true);
+                int start = patchVertices.Count;
+                center.y = -.13f;
+                patchVertices.Add(center + new Vector3(-1.9f, 0, -1.3f));
+                patchVertices.Add(center + new Vector3(1.9f, 0, -1.3f));
+                patchVertices.Add(center + new Vector3(1.9f, 0, 1.3f));
+                patchVertices.Add(center + new Vector3(-1.9f, 0, 1.3f));
+                patchTriangles.AddRange(new[] { start, start + 2, start + 1, start, start + 3, start + 2 });
+                patchUvs.AddRange(new[] { Vector2.zero, Vector2.right, Vector2.one, Vector2.up });
+            }
+            CreateMeshObject("Ground Feathered Grove Patches", patchVertices, patchTriangles, grass, false);
+            transform.Find("Ground Feathered Grove Patches").GetComponent<MeshFilter>().sharedMesh.SetUVs(0, patchUvs);
+        }
 
-            var moonVertices = new List<Vector3>(80);
-            var moonTriangles = new List<int>(150);
-            AddGroundPatch(moonVertices, moonTriangles, new Vector3(7.0f, 0.071f, 9.6f), 1.70f, 0.42f, 18f, 0.72f);
-            AddGroundPatch(moonVertices, moonTriangles, new Vector3(12.2f, 0.072f, 2.1f), 1.92f, 0.40f, -3f, 1.62f);
-            AddGroundPatch(moonVertices, moonTriangles, new Vector3(18.5f, 0.071f, 10.5f), 1.62f, 0.44f, 9f, 2.83f);
-            CreateMeshObject("Ground Moonlit Grass Breakup", moonVertices, moonTriangles, moonGrass, true);
-
-            var scuffVertices = new List<Vector3>(48);
-            var scuffTriangles = new List<int>(90);
-            AddGroundPatch(scuffVertices, scuffTriangles, new Vector3(-1.0f, 0.074f, 2.0f), 1.15f, 0.42f, 0f, 0.9f);
-            AddGroundPatch(scuffVertices, scuffTriangles, new Vector3(3.8f, 0.073f, 2.4f), 1.05f, 0.26f, 16f, 1.9f);
-            CreateMeshObject("Ground Warm Entry Scuffs", scuffVertices, scuffTriangles, warmScuff, true);
+        private static void AddLathe(List<Vector3> vertices, List<int> triangles, Vector3 center,
+            float[] radii, float[] heights, float yaw)
+        {
+            const int sides = 7;
+            int start = vertices.Count;
+            for (int row = 0; row < radii.Length; row++)
+                for (int i = 0; i <= sides; i++)
+                {
+                    float angle = yaw + i * Mathf.PI * 2 / sides;
+                    vertices.Add(center + new Vector3(Mathf.Cos(angle) * radii[row], heights[row], Mathf.Sin(angle) * radii[row]));
+                }
+            for (int row = 0; row < radii.Length - 1; row++)
+                for (int i = 0; i < sides; i++)
+                {
+                    int a = start + row * (sides + 1) + i;
+                    triangles.AddRange(new[] { a, a + sides + 1, a + 1, a + 1, a + sides + 1, a + sides + 2 });
+                }
         }
 
         private void CreateLandmarkReadabilityFields(Material fireSource, Material magicSource)
@@ -227,14 +313,14 @@ namespace AllinDefense.Presentation
 
             var gateVertices = new List<Vector3>(32);
             var gateTriangles = new List<int>(60);
-            AddGroundPatch(gateVertices, gateTriangles, new Vector3(-2.05f, 0.086f, 2.0f), 0.92f, 0.46f, 0f, 0.15f);
-            AddGroundPatch(gateVertices, gateTriangles, new Vector3(0.25f, 0.084f, 2.0f), 0.68f, 0.22f, 0f, 1.2f);
+            AddGroundPatch(gateVertices, gateTriangles, roadPath[0] + new Vector3(-.05f, .086f, 0), 0.92f, 0.46f, 0f, 0.15f);
+            AddGroundPatch(gateVertices, gateTriangles, roadPath[0] + new Vector3(1.15f, .084f, 0), 0.68f, 0.22f, 0f, 1.2f);
             CreateMeshObject("Enemy Gate Warm Read Pool", gateVertices, gateTriangles, gateRead, false);
 
             var keepVertices = new List<Vector3>(32);
             var keepTriangles = new List<int>(60);
-            AddGroundPatch(keepVertices, keepTriangles, new Vector3(23.25f, 0.086f, 9.0f), 1.12f, 0.52f, 0f, 0.4f);
-            AddGroundPatch(keepVertices, keepTriangles, new Vector3(20.4f, 0.084f, 9.0f), 0.74f, 0.26f, 0f, 1.6f);
+            AddGroundPatch(keepVertices, keepTriangles, roadPath[^1] + new Vector3(-.75f, .086f, 0), 1.12f, 0.52f, 0f, 0.4f);
+            AddGroundPatch(keepVertices, keepTriangles, roadPath[^1] + new Vector3(-2.1f, .084f, 0), 0.74f, 0.26f, 0f, 1.6f);
             CreateMeshObject("Defender Keep Cool Read Pool", keepVertices, keepTriangles, keepRead, false);
         }
 
@@ -266,172 +352,122 @@ namespace AllinDefense.Presentation
             CreateMeshObject("Dark Irregular Cliff Skirt", vertices, triangles, material, true);
         }
 
+        private static List<Vector3> RoundRoute(IReadOnlyList<Vector3> route)
+        {
+            var points = new List<Vector3> { route[0] };
+            void LineTo(Vector3 end)
+            {
+                Vector3 start = points[^1];
+                int steps = Mathf.Max(1, Mathf.CeilToInt(Vector3.Distance(start, end) / .55f));
+                for (int i = 1; i <= steps; i++) points.Add(Vector3.Lerp(start, end, i / (float)steps));
+            }
+            for (int i = 1; i < route.Count - 1; i++)
+            {
+                Vector3 incoming = (route[i] - route[i - 1]).normalized;
+                Vector3 outgoing = (route[i + 1] - route[i]).normalized;
+                float radius = Mathf.Min(1.05f, Vector3.Distance(route[i], route[i - 1]) * .3f,
+                    Vector3.Distance(route[i], route[i + 1]) * .3f);
+                Vector3 a = route[i] - incoming * radius, b = route[i] + outgoing * radius;
+                LineTo(a);
+                for (int step = 1; step <= 6; step++)
+                {
+                    float t = step / 6f;
+                    points.Add((1 - t) * (1 - t) * a + 2 * (1 - t) * t * route[i] + t * t * b);
+                }
+            }
+            LineTo(route[^1]);
+            return points;
+        }
+
+        private static Vector3 RoadSide(List<Vector3> points, int i)
+        {
+            Vector3 tangent = (points[Mathf.Min(i + 1, points.Count - 1)] - points[Mathf.Max(0, i - 1)]).normalized;
+            return new Vector3(-tangent.z, 0, tangent.x);
+        }
+
+        private static void ConnectRows(List<int> triangles, int a, int width)
+        {
+            for (int j = 0; j < width - 1; j++)
+                triangles.AddRange(new[] { a + j, a + j + 1, a + j + width,
+                    a + j + 1, a + j + width + 1, a + j + width });
+        }
+
         private void CreateRoadSurface()
         {
-            BiomeDefinition palette = CampaignLevelFactory.Biome(biomeIndex);
-            Color roadTint = Color.Lerp(new Color(0.40f, 0.36f, 0.29f), palette.accentColor, biomeIndex == 0 ? 0.04f : 0.16f);
-            Material surface = CreateRuntimeMaterial("DC Organic Road Surface", roadTint, false);
-            var vertices = new List<Vector3>(420);
-            var triangles = new List<int>(720);
-            int sample = 0;
-            for (int routeIndex = 0; routeIndex < ownedRoadPaths.Count; routeIndex++)
-            {
-                IReadOnlyList<Vector3> roadPath = ownedRoadPaths[routeIndex];
-                vertices.Clear();
-                triangles.Clear();
-                for (int segment = 0; segment < roadPath.Count - 1; segment++)
+            Material surface = CreateRuntimeMaterial("DC Organic Road Surface", new Color(.43f, .40f, .33f), false);
+            roadTexture = new Texture2D(64, 64, TextureFormat.RGBA32, true)
+                { name = "Road Fine Wear", wrapMode = TextureWrapMode.Repeat, filterMode = FilterMode.Bilinear };
+            var pixels = new Color[64 * 64];
+            for (int y = 0; y < 64; y++)
+                for (int x = 0; x < 64; x++)
                 {
-                    Vector3 from = roadPath[segment];
-                    Vector3 to = roadPath[segment + 1];
-                    Vector3 direction = (to - from).normalized;
-                    Vector3 side = new(-direction.z, 0f, direction.x);
-                    float length = Vector3.Distance(from, to);
-                    int count = Mathf.Max(2, Mathf.CeilToInt(length / 0.72f));
-                    int start = vertices.Count;
-
-                    for (int i = 0; i <= count; i++)
-                    {
-                        float t = i / (float)count;
-                        float endpointFeather = Mathf.Sin(t * Mathf.PI);
-                        Vector3 center = Vector3.Lerp(from - direction * 0.22f, to + direction * 0.22f, t);
-                        float wobble = Mathf.Sin((sample + i) * 1.83f) * 0.055f +
-                                       Mathf.Cos((sample + i) * 3.17f) * 0.025f;
-                        center += side * wobble * endpointFeather;
-                        center.y = 0.082f;
-
-                        float width = 0.78f + Mathf.Sin((sample + i) * 2.41f) * 0.055f;
-                        float leftNoise = 1f + Mathf.Sin((sample + i) * 4.13f) * 0.045f;
-                        float rightNoise = 1f + Mathf.Cos((sample + i) * 3.77f) * 0.045f;
-                        vertices.Add(center - side * width * leftNoise);
-                        vertices.Add(center + side * width * rightNoise);
-                    }
-
-                    for (int i = 0; i < count; i++)
-                    {
-                        int a = start + i * 2;
-                        triangles.Add(a);
-                        triangles.Add(a + 3);
-                        triangles.Add(a + 1);
-                        triangles.Add(a);
-                        triangles.Add(a + 2);
-                        triangles.Add(a + 3);
-                    }
-
-                    sample += count + 1;
+                    float tone = .97f + Mathf.PerlinNoise(x * .17f, y * .17f) * .045f;
+                    pixels[y * 64 + x] = new Color(tone, tone, tone, 1);
                 }
-
-                for (int i = 1; i < roadPath.Count - 1; i++)
-                    AddGroundPatch(vertices, triangles, roadPath[i] + Vector3.up * 0.084f, 1.06f, 0.84f,
-                        i % 2 == 0 ? 0f : 90f, i * 0.61f);
-
-                AddGroundPatch(vertices, triangles, roadPath[0] + Vector3.up * 0.084f, 0.96f, 0.70f, 0f, 0.13f);
-                AddGroundPatch(vertices, triangles, roadPath[^1] + Vector3.up * 0.084f, 1.14f, 0.82f, 0f, 1.47f);
-                CreateMeshObject(routeIndex == 0 ? "Road Organic Earth Surface" : "Road Surface", vertices, triangles, surface, true);
+            roadTexture.SetPixels(pixels); roadTexture.Apply(true, true);
+            surface.SetTexture("_BaseMap", roadTexture);
+            for (int route = 0; route < roundedPaths.Count; route++)
+            {
+                var vertices = new List<Vector3>(); var triangles = new List<int>();
+                var points = roundedPaths[route];
+                for (int i = 0; i < points.Count; i++)
+                {
+                    Vector3 center = points[i]; center.y = .083f;
+                    Vector3 side = RoadSide(points, i) * (.79f + .012f * Mathf.Sin(i * 1.7f));
+                    vertices.Add(center - side); vertices.Add(center + side);
+                    if (i < points.Count - 1) ConnectRows(triangles, i * 2, 2);
+                }
+                CreateMeshObject(route == 0 ? "Road Organic Earth Surface" : "Road Surface", vertices, triangles, surface, true);
             }
         }
 
         private void CreateRoadCobbles()
         {
-            Material cobble = CreateRuntimeMaterial("DC Road Cobble", new Color(0.23f, 0.27f, 0.29f), false);
-            var vertices = new List<Vector3>(8000);
-            var triangles = new List<int>(12000);
-            int stoneIndex = 0;
-            for (int routeIndex = 0; routeIndex < ownedRoadPaths.Count; routeIndex++)
+            Material stone = CreateRuntimeMaterial("DC Road Cobble", new Color(.30f, .33f, .32f), false);
+            for (int route = 0; route < roundedPaths.Count; route++)
             {
-                IReadOnlyList<Vector3> roadPath = ownedRoadPaths[routeIndex];
-                vertices.Clear();
-                triangles.Clear();
-                for (int segment = 0; segment < roadPath.Count - 1; segment++)
+                var vertices = new List<Vector3>(); var triangles = new List<int>();
+                var points = roundedPaths[route];
+                foreach (int edge in new[] { -1, 1 })
                 {
-                    Vector3 from = roadPath[segment];
-                    Vector3 to = roadPath[segment + 1];
-                    Vector3 direction = (to - from).normalized;
-                    Vector3 side = new(-direction.z, 0f, direction.x);
-                    float length = Vector3.Distance(from, to);
-                    float distance = -0.08f;
-                    while (distance <= length + 0.18f)
+                    int start = vertices.Count;
+                    for (int i = 0; i < points.Count; i++)
                     {
-                        float clampedDistance = Mathf.Clamp(distance, 0f, length);
-                        Vector3 along = from + direction * clampedDistance;
-                        for (int edge = -1; edge <= 1; edge += 2)
+                        Vector3 side = RoadSide(points, i) * edge;
+                        float wobble = .015f * Mathf.Sin(i * 2.17f);
+                        for (int r = 0; r < 4; r++)
                         {
-                            bool nearEndpoint = clampedDistance < 0.55f || clampedDistance > length - 0.55f;
-                            float omitSignal = Mathf.Sin((stoneIndex + segment * 13) * 2.37f + edge * 0.51f);
-                            if (!nearEndpoint && omitSignal > 0.82f)
-                            {
-                                stoneIndex++;
-                                continue;
-                            }
-
-                            float wave = Mathf.Sin((stoneIndex + 1) * 4.73f);
-                            float scatter = Mathf.Cos((stoneIndex + 5) * 3.09f);
-                            Vector3 center = along + side * (edge * (0.88f + wave * 0.055f));
-                            center += direction * scatter * 0.085f;
-                            center.y = 0.105f + Mathf.Abs(wave) * 0.018f;
-                            float yaw = Mathf.Atan2(direction.z, direction.x) + wave * 0.16f + scatter * 0.055f;
-                            if (ShouldOmitRoadBorder(center, routeIndex, routes))
-                            {
-                                stoneIndex++;
-                                continue;
-                            }
-                            AddCobble(vertices, triangles, center, yaw,
-                                new Vector3(0.36f + wave * 0.075f, 0.13f + Mathf.Abs(wave) * 0.04f,
-                                    0.23f - wave * 0.035f));
-                            stoneIndex++;
+                            int row = edge < 0 ? 3 - r : r;
+                            float offset = row switch { 0 => .77f, 1 => .80f, 2 => .92f, _ => .96f };
+                            Vector3 point = points[i] + side * (offset + wobble);
+                            point.y = row == 0 || row == 3 ? .045f : .13f + .009f * Mathf.Sin(i * 1.31f);
+                            vertices.Add(point);
                         }
-                        distance += 0.78f + Mathf.Abs(Mathf.Sin((stoneIndex + segment) * 1.91f)) * 0.22f;
+                        if (i < points.Count - 1 &&
+                            !ShouldOmitRoadBorder((points[i] + points[i + 1]) * .5f + side * .86f, route, routes))
+                            ConnectRows(triangles, start + i * 4, 4);
                     }
                 }
-
-                for (int i = 1; i < roadPath.Count - 1; i++)
-                {
-                    Vector3 from = roadPath[i - 1];
-                    Vector3 corner = roadPath[i];
-                    Vector3 to = roadPath[i + 1];
-                    Vector3 incoming = (corner - from).normalized;
-                    Vector3 outgoing = (to - corner).normalized;
-                    Vector3 sideA = new(-incoming.z, 0f, incoming.x);
-                    Vector3 sideB = new(-outgoing.z, 0f, outgoing.x);
-                    for (int edge = -1; edge <= 1; edge += 2)
-                    {
-                        float yaw = Mathf.Atan2((incoming + outgoing).z, (incoming + outgoing).x) + edge * 0.13f;
-                        Vector3 center = corner + (sideA + sideB).normalized * edge * 0.88f;
-                        center.y = 0.125f;
-                        if (ShouldOmitRoadBorder(center, routeIndex, routes)) continue;
-                        AddCobble(vertices, triangles, center, yaw,
-                            new Vector3(0.52f, 0.17f, 0.34f));
-                    }
-                }
-                CreateMeshObject(routeIndex == 0 ? "Road Hand-Laid Stone Borders" : "Road Edge", vertices, triangles, cobble, true);
+                CreateMeshObject(route == 0 ? "Road Hand-Laid Stone Borders" : "Road Edge", vertices, triangles, stone, true);
             }
         }
 
         private void CreateRoadWear(Material source)
         {
-            Material wear = CreateRuntimeMaterial("DC Road Wear", new Color(0.31f, 0.235f, 0.18f), false, source);
-            var vertices = new List<Vector3>();
-            var triangles = new List<int>();
-            int patch = 0;
-            for (int routeIndex = 0; routeIndex < ownedRoadPaths.Count; routeIndex++)
+            Material wear = CreateRuntimeMaterial("DC Road Wear", new Color(.40f, .38f, .32f), false);
+            foreach (var points in roundedPaths)
             {
-                IReadOnlyList<Vector3> roadPath = ownedRoadPaths[routeIndex];
-                vertices.Clear();
-                triangles.Clear();
-                for (int segment = 0; segment < roadPath.Count - 1; segment++)
+                var vertices = new List<Vector3>(); var triangles = new List<int>();
+                foreach (float track in new[] { -.34f, .34f })
                 {
-                    Vector3 from = roadPath[segment];
-                    Vector3 to = roadPath[segment + 1];
-                    Vector3 direction = (to - from).normalized;
-                    Vector3 side = new(-direction.z, 0f, direction.x);
-                    float length = Vector3.Distance(from, to);
-                    for (float distance = 0.85f; distance < length - 0.35f; distance += 1.35f)
+                    int start = vertices.Count;
+                    for (int i = 0; i < points.Count; i++)
                     {
-                        float wave = Mathf.Sin((patch + 2) * 3.71f);
-                        Vector3 center = from + direction * distance + side * wave * 0.22f;
-                        center.y = 0.153f;
-                        AddFlatPatch(vertices, triangles, center, direction, side,
-                            0.17f + Mathf.Abs(wave) * 0.11f, 0.035f + Mathf.Abs(wave) * 0.025f);
-                        patch++;
+                        Vector3 center = points[i]; center.y = .087f;
+                        Vector3 side = RoadSide(points, i);
+                        vertices.Add(center + side * (track - .035f));
+                        vertices.Add(center + side * (track + .035f));
+                        if (i < points.Count - 1) ConnectRows(triangles, start + i * 2, 2);
                     }
                 }
                 CreateMeshObject("Road Travel Wear", vertices, triangles, wear, false);
@@ -521,6 +557,15 @@ namespace AllinDefense.Presentation
             mesh.SetTriangles(triangles, 0);
             if (objectName == "Continuous Battlefield Ground")
                 mesh.uv = new[] { Vector2.zero, Vector2.right, Vector2.one, Vector2.up };
+            if (material.mainTexture == roadTexture && roadTexture != null)
+                mesh.uv = vertices.ConvertAll(v => new Vector2(v.x * .7f, v.z * .7f)).ToArray();
+            if (objectName.StartsWith("Grove ", StringComparison.Ordinal))
+            {
+                var flat = new Vector3[triangles.Count];
+                var indices = new int[triangles.Count];
+                for (int i = 0; i < triangles.Count; i++) { flat[i] = vertices[triangles[i]]; indices[i] = i; }
+                mesh.Clear(); mesh.vertices = flat; mesh.triangles = indices;
+            }
             mesh.RecalculateNormals();
             if (objectName == "Road Organic Earth Surface" || objectName == "Road Surface")
             {
@@ -546,6 +591,8 @@ namespace AllinDefense.Presentation
             Shader shader = unlit ? Shader.Find("Universal Render Pipeline/Unlit") : null;
             Material material = source != null ? new Material(source) : new Material(shader ?? Shader.Find("Universal Render Pipeline/Lit"));
             material.name = materialName;
+            if (material.HasProperty("_Smoothness")) material.SetFloat("_Smoothness", .06f);
+            if (material.HasProperty("_SpecularHighlights")) material.SetFloat("_SpecularHighlights", 0);
             material.color = color;
             if (material.HasProperty("_BaseColor")) material.SetColor("_BaseColor", color);
             if (material.HasProperty("_Color")) material.SetColor("_Color", color);
@@ -674,6 +721,8 @@ namespace AllinDefense.Presentation
         private void OnDestroy()
         {
             if (groundTexture != null) Destroy(groundTexture);
+            if (roadTexture != null) Destroy(roadTexture);
+            if (featherTexture != null) Destroy(featherTexture);
             foreach (Mesh mesh in runtimeMeshes)
                 if (mesh != null) Destroy(mesh);
             foreach (Material material in runtimeMaterials)

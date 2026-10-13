@@ -607,16 +607,29 @@ namespace AllinDefense.Core
                     bool rigidBoundary = renderer.name.StartsWith("NorthRidge", StringComparison.OrdinalIgnoreCase) ||
                                          renderer.name.StartsWith("SouthRidge", StringComparison.OrdinalIgnoreCase);
                     if (renderer.name.StartsWith("Road", StringComparison.OrdinalIgnoreCase) || rigidBoundary || platformBase ||
-                        renderer.sharedMaterial == presentationCatalog.navyMaterial)
+                        renderer.sharedMaterial == presentationCatalog.navyMaterial ||
+                        DefenderBattlefieldDressing.IsDecoration(renderer.transform, environment.transform) ||
+                        renderer.name.StartsWith("Grass", StringComparison.OrdinalIgnoreCase) ||
+                        renderer.name.StartsWith("Wildflower", StringComparison.OrdinalIgnoreCase))
                         renderer.enabled = false;
                 }
             }
+            if (environment != null)
+                foreach (Transform piece in environment.GetComponentsInChildren<Transform>())
+                {
+                    bool keep = piece.name.StartsWith("Keep", StringComparison.OrdinalIgnoreCase) || piece.name == "Defender Keep Licensed";
+                    bool gate = piece.name.StartsWith("Gate", StringComparison.OrdinalIgnoreCase);
+                    if (!keep && !gate) continue;
+                    if (piece.parent != null && (piece.parent.name.StartsWith("Keep", StringComparison.OrdinalIgnoreCase) ||
+                        piece.parent.name.StartsWith("Gate", StringComparison.OrdinalIgnoreCase))) continue;
+                    piece.position += keep ? path[^1] - new Vector3(24f, 0f, 9f) : path[0] - new Vector3(-2f, 0f, 2f);
+                }
             DefenderBattlefieldDressing.HideObstructingDecoration(environment != null ? environment.transform : null,
                 activeOutpostSlotPositions, routePaths);
             yield return null;
-            BuildBiomeDressing(world);
+            // Clustered scenery is generated with the active route and slot clearances.
             yield return null;
-            DefenderBattlefieldDressing.Install(world, presentationCatalog, gameCamera, path, ActiveBiomeIndex, routePaths);
+            DefenderBattlefieldDressing.Install(world, presentationCatalog, gameCamera, path, ActiveBiomeIndex, routePaths, activeOutpostSlotPositions);
             yield return null;
 
             CreateRouteOverlays(world);
