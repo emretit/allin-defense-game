@@ -42,6 +42,10 @@ namespace AllinDefense.Presentation
         private void InitializeFrame(DefenderPresentationCatalog catalog, Action map, Action restart, Action click)
         {
             frameKit = new UiKit(catalog.frontendTheme.designSystem);
+            radialCooldown.ActionRect.SetAsFirstSibling();
+            radialCooldown.ActionRect.GetComponent<UiPointSize>().Configure(64);
+            UiKit.Size(radialCooldown.ActionRect, 64, 64);
+            radialCooldown.GetComponent<VerticalLayoutGroup>().spacing = 2;
             waveProgress = Find<UiProgressSegments>("TopBar/WavePanel/WaveProgress");
             bossBar = transform.Find("TopBar/WavePanel/BossBar").gameObject;
             bossFill = bossBar.transform.Find("BossTrack/BossFill").GetComponent<Image>();

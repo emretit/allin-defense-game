@@ -1026,7 +1026,7 @@ namespace AllinDefense.Core
             telemetry.Record(this,"leak",enemy.Archetype.ToString(),damage);
             ShowMessage(bossBreached
                 ? GameLocalization.Text("Bölge Lordu kaleyi aştı — kale ağır hasar aldı.", "The Region Lord breached the keep — heavy damage.")
-                : GameLocalization.Text("Kaleye sızma: ","Keep breached: ") + FirstRegionCampaign.EnemyName(enemy.Archetype),2);
+                : GameLocalization.Text("Kaleye sızma: ","Keep breached: ") + FirstRegionCampaign.EnemyName(enemy.Archetype),2, true);
             EmitPresentation(PresentationCue.UiError,path[^1],value:damage);
             leakedLives[(int)enemy.Archetype] += Mathf.Max(1, damage);
             LoseLives(Mathf.Max(1, damage));
@@ -2507,18 +2507,18 @@ namespace AllinDefense.Core
         }
 
         private Coroutine messageRoutine;
-        private void ShowMessage(string message, float duration)
+        private void ShowMessage(string message, float duration, bool warning = false)
         {
             message = GameLocalization.Translate(message);
             if (messageText == null && artHud == null) return;
             if (messageRoutine != null) StopCoroutine(messageRoutine);
-            messageRoutine = StartCoroutine(MessageRoutine(message, duration));
+            messageRoutine = StartCoroutine(MessageRoutine(message, duration, warning));
         }
 
-        private IEnumerator MessageRoutine(string message, float duration)
+        private IEnumerator MessageRoutine(string message, float duration, bool warning)
         {
             if (messageText != null) messageText.text = message;
-            artHud?.SetMessage(message);
+            artHud?.SetMessage(message, warning);
             yield return new WaitForSecondsRealtime(duration);
             if (messageText != null) messageText.text = string.Empty;
             artHud?.SetMessage(string.Empty);

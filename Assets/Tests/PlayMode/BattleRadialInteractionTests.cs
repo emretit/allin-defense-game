@@ -224,7 +224,7 @@ namespace AllinDefense.Tests
         [UnityTest] public IEnumerator SelectedTowerAndTutorialPreserveMessageUntilItsDurationExpires()
         {
             session.TryBuildOutpost(0, OutpostKind.Archer);
-            Call(session, "ShowMessage", "Kaleyi aştı", .6f);
+            Call(session, "ShowMessage", "Kaleyi aştı", .6f, false);
             var message = (TMP_Text)typeof(DefenderHudController).GetField("messageText", Private).GetValue(hud);
             for (int i = 0; i < 4; i++)
             {

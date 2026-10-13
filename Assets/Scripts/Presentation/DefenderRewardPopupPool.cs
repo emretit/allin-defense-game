@@ -1,4 +1,5 @@
 using AllinDefense.UI;
+using AllinDefense.Core;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,6 +20,8 @@ namespace AllinDefense.Presentation
             public float size;
             public uint order;
             public bool active;
+            public bool damage;
+            public Image icon;
         }
 
 #if UNITY_EDITOR
@@ -31,19 +34,30 @@ namespace AllinDefense.Presentation
             return rewards;
         }
 #endif
+        private static readonly string[] damageAmounts = CreateDamageAmounts();
+        private static string[] CreateDamageAmounts()
+        {
+            var values = new string[128];
+            for (int i = 0; i < values.Length; i++) values[i] = "-" + i;
+            return values;
+        }
         private readonly Popup[] pool = new Popup[Capacity];
         private readonly char[] digits = new char[11];
         private Canvas canvas;
         private Camera worldCamera;
+        private GameSessionController owner;
+        private DefenderKeepPlate keepPlate;
         private Material textMaterial;
         private uint sequence;
         private bool reducedMotion;
         public int ActiveCount { get; private set; }
+        public int ActiveDamageCount { get; private set; }
 
         public void Initialize(DefenderPresentationCatalog catalog, Camera camera)
         {
             if (canvas != null) return;
             worldCamera = camera;
+            owner = GetComponentInParent<GameSessionController>();
             reducedMotion = FrontendPreferences.ReducedMotion;
             FrontendPreferences.MotionChanged += OnMotionChanged;
             var root = new GameObject("Reward Popups", typeof(RectTransform), typeof(Canvas));
@@ -67,6 +81,7 @@ namespace AllinDefense.Presentation
                 var icon = new GameObject("Gold Icon", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
                 icon.transform.SetParent(go.transform, false);
                 var image = icon.GetComponent<Image>();
+                popup.icon = image;
                 image.sprite = catalog.goldIcon;
                 image.preserveAspect = true;
                 image.raycastTarget = false;
@@ -89,7 +104,7 @@ namespace AllinDefense.Presentation
                 popup.text.rectTransform.anchorMax = Vector2.one;
                 popup.text.rectTransform.offsetMin = new Vector2(28, 0);
                 popup.text.rectTransform.offsetMax = Vector2.zero;
-                popup.text.SetText("+0123456789");
+                popup.text.SetText("+-0123456789");
                 popup.text.ForceMeshUpdate();
                 popup.text.SetText("+0");
                 go.SetActive(false);
@@ -99,34 +114,46 @@ namespace AllinDefense.Presentation
 
         public void Play(PresentationSignal signal)
         {
-            if (canvas == null || signal.cue != PresentationCue.EnemyDefeated || signal.value <= 0) return;
+            bool damage = signal.cue == PresentationCue.UiError && signal.value > 0;
+            if (canvas == null || (!damage && signal.cue != PresentationCue.EnemyDefeated) || signal.value <= 0) return;
             Popup selected = pool[0];
             for (int i = 0; i < Capacity; i++)
             {
                 if (!pool[i].active) { selected = pool[i]; break; }
                 if (pool[i].order < selected.order) selected = pool[i];
             }
+            if (selected.active && selected.damage) ActiveDamageCount--;
             if (!selected.active) ActiveCount++;
+            selected.damage = damage;
+            if (damage) ActiveDamageCount++;
+            selected.icon.enabled = !damage;
+            selected.text.rectTransform.offsetMin = new Vector2(damage ? 0 : 28, 0);
+            if (damage && keepPlate == null && owner != null) keepPlate = owner.GetComponentInChildren<DefenderKeepPlate>();
+            selected.text.color = damage ? UiTokens.Danger : UiTokens.Gold;
             selected.active = true;
             selected.order = ++sequence;
             selected.elapsed = 0;
             bool boss = signal.actor == PresentationActorKind.Boss;
-            selected.anchor = signal.position + Vector3.up * (boss ? 2.6f : 1.65f);
+            selected.anchor = signal.position + Vector3.up * (damage ? 4.6f : boss ? 2.6f : 1.65f);
             selected.size = boss ? 1.25f : 1f;
             selected.group.alpha = 1;
             int length = 1;
             int number = signal.value;
             do { digits[length++] = (char)('0' + number % 10); number /= 10; } while (number > 0);
-            digits[0] = '+';
+            digits[0] = damage ? '-' : '+';
             for (int left = 1, right = length - 1; left < right; left++, right--)
                 (digits[left], digits[right]) = (digits[right], digits[left]);
+            if (damage && signal.value < damageAmounts.Length) selected.text.SetText(damageAmounts[signal.value]);
+            else
+            {
 #if UNITY_EDITOR
             if (signal.value < editorRewards.Length) selected.text.SetText(editorRewards[signal.value]);
             else selected.text.SetCharArray(digits, 0, length);
 #else
             selected.text.SetCharArray(digits, 0, length);
 #endif
-            selected.rect.sizeDelta = new Vector2(28f + length * 15f, 40f);
+            }
+            selected.rect.sizeDelta = new Vector2((damage ? 0 : 28f) + length * 15f, 40f);
             selected.rect.gameObject.SetActive(true);
             Place(selected);
         }
@@ -143,6 +170,7 @@ namespace AllinDefense.Presentation
                 {
                     popup.active = false;
                     ActiveCount--;
+                    if (popup.damage) ActiveDamageCount--;
                     popup.rect.gameObject.SetActive(false);
                     continue;
                 }
@@ -158,6 +186,18 @@ namespace AllinDefense.Presentation
             Vector2 logical = UiMetrics.LogicalScreenSize;
             float pixelsPerPoint = Screen.height / Mathf.Max(1f, logical.y);
             popup.rect.localScale = Vector3.one * (pixelsPerPoint * popup.size);
+            if (popup.damage)
+            {
+                if (keepPlate != null)
+                {
+                    Vector2 anchor = keepPlate.ScreenAnchor();
+                    screen.x = anchor.x;
+                    screen.y = anchor.y + 44 * pixelsPerPoint;
+                }
+                Rect safe = Screen.safeArea;
+                screen.x = Mathf.Clamp(screen.x, safe.xMin + 40 * pixelsPerPoint, safe.xMax - 80 * pixelsPerPoint);
+                screen.y = Mathf.Clamp(screen.y, safe.yMin + 40 * pixelsPerPoint, safe.yMax - 76 * pixelsPerPoint);
+            }
             popup.rect.anchoredPosition = new Vector2(screen.x, screen.y + (reducedMotion ? 0 : 26f * pixelsPerPoint * popup.elapsed / Lifetime));
             popup.group.alpha = screen.z > 0 ? popup.group.alpha : 0;
         }

@@ -232,13 +232,13 @@ namespace AllinDefense.Presentation
             Place(RequireRect(topBar, "Pause"), Vector2.one, Vector2.one, new Vector2(-6, -6), new Vector2(44, 44));
             Place(preview, new Vector2(metrics.SafeMaxX, metrics.SafeMaxY), new Vector2(1, 1), new Vector2(-144 / points.x, -16 / points.y), new Vector2(72, 24));
             preview.localScale = scale;
-            Place(message, new Vector2(metrics.SafeCenterX, metrics.SafeMinY), new Vector2(.5f, 0), new Vector2(-24 / points.x, 10 / points.y), new Vector2(Mathf.Min(280, width - 330), 36));
+            Place(message, new Vector2(metrics.SafeCenterX, metrics.SafeMinY), new Vector2(.5f, 0), new Vector2(14 / points.x, 20 / points.y), new Vector2(Mathf.Min(330, width - 340), 32));
             message.localScale = scale;
             var messageChrome = RequireRect("MessageChrome");
-            Place(messageChrome, message.anchorMin, message.pivot, message.anchoredPosition - new Vector2(0, 4 / points.y), message.sizeDelta + new Vector2(20, 8));
+            Place(messageChrome, message.anchorMin, message.pivot, message.anchoredPosition - new Vector2(14 / points.x, 4 / points.y), message.sizeDelta + new Vector2(48, 8));
             messageChrome.localScale = scale;
-            Place(RequireRect(bottomBar, "AbilityCooldown"), Vector2.zero, Vector2.zero, new Vector2(8, 20), new Vector2(74, 102));
-            Place(RequireRect(bottomBar, "Hero"), Vector2.zero, Vector2.zero, new Vector2(4, 2), new Vector2(82, 18));
+            Place(RequireRect(bottomBar, "AbilityCooldown"), Vector2.zero, Vector2.zero, new Vector2(20, 46), new Vector2(64, 88));
+            Place(RequireRect(bottomBar, "Hero"), Vector2.zero, Vector2.zero, new Vector2(12, 20), new Vector2(80, 18));
             Place(RequireRect(bottomBar, "NextWave"), new Vector2(1, 0), new Vector2(1, 0), new Vector2(-8, 8), new Vector2(208, 54));
             foreach (string path in new[] { "PauseOverlay", "MapConfirmation" })
             {

@@ -56,6 +56,7 @@ namespace AllinDefense.Presentation
 
         private void LateUpdate()
         {
+            TickMessageEntrance();
             UpdateTutorialPresentation();
             DismissPausedRadialOnBackground();
             var session = GameSessionController.Instance;

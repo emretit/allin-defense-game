@@ -228,6 +228,7 @@ namespace AllinDefense.Presentation
             CacheReferences();
             ApplyContextAndResultFonts(catalog);
             InitializeFrame(catalog, mainMenu, restart, uiClick);
+            InitializeMessageChrome();
             Bind(archerButton, () => build(OutpostKind.Archer), uiClick);
             Bind(barracksButton, () => build(OutpostKind.Barracks), uiClick);
             Bind(mageButton, () => build(OutpostKind.Mage), uiClick);
@@ -266,17 +267,24 @@ namespace AllinDefense.Presentation
             if (session.Phase != saleConfirmationPhase) CancelSaleConfirmation();
             SetBuildAvailability(session.CanBuildOnSelection, session.Gold);
             RefreshFrame(session);
+            if (keepPlate == null)
+            {
+                keepPlate = gameObject.AddComponent<DefenderKeepPlate>();
+                keepPlate.Initialize(session, frameKit);
+            }
+            keepPlate.Refresh();
         }
 
         public void SetPreview(string value) { }
 
-        public void SetMessage(string value)
+        public void SetMessage(string value, bool warning = false)
         {
             string body = value ?? string.Empty;
             messageText.text = body;
             bool visible = !string.IsNullOrWhiteSpace(body);
             messageText.gameObject.SetActive(visible);
             if (messageChromeImage != null) messageChromeImage.gameObject.SetActive(visible);
+            ShowMessageChrome(body, visible, warning);
         }
         public void SetNextWaveLabel(string value) { }
 

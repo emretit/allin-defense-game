@@ -88,7 +88,7 @@ namespace AllinDefense.Presentation
                     break;
             }
 
-            if (signal.cue == PresentationCue.EnemyDefeated)
+            if (signal.cue == PresentationCue.EnemyDefeated || signal.cue == PresentationCue.UiError && signal.value > 0)
                 rewardPopupPool.Play(signal);
 
             if (signal.cue is PresentationCue.EnemyDefeated or PresentationCue.UnitDefeated)

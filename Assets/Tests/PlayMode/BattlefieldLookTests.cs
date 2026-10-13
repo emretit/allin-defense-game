@@ -38,6 +38,7 @@ namespace AllinDefense.Tests
 #if UNITY_EDITOR
             review = AppDomain.CurrentDomain.GetAssemblies().Select(a => a.GetType("AllinDefense.Editor.FrontendExperienceReview")).First(t => t != null);
             string phase = Environment.GetEnvironmentVariable("STEP6_CAPTURE_PHASE") ?? "after";
+            bool battleUi = Environment.GetEnvironmentVariable("BATTLE_UI_CAPTURE") == "1";
             var report = new Report();
             Directory.CreateDirectory("Builds");
             foreach (var size in new[] { new Vector2Int(1280, 720), new Vector2Int(1560, 720), new Vector2Int(1280, 960) })
@@ -62,6 +63,11 @@ namespace AllinDefense.Tests
                         if (state == "chapter10-boss" && !session.Enemies.Any(e => e.Archetype == EnemyArchetype.Boss))
                             typeof(GameSessionController).GetMethod("SpawnEnemy", Private, null, new[] { typeof(EnemyArchetype), typeof(int) }, null).Invoke(session, new object[] { EnemyArchetype.Boss, 0 });
                         Assert.That(session.Enemies.Count, Is.GreaterThan(0));
+                        if (battleUi)
+                        {
+                            session.Enemies[0].TakeDamage(1);
+                            typeof(GameSessionController).GetMethod("EnemyReachedKeep", Private).Invoke(session, new object[] { session.Enemies[0], 1 });
+                        }
                     }
                     session.GetComponentInChildren<DefenderHudController>().Refresh(session);
                     for (int i = 0; i < 12; i++) yield return null;
@@ -79,7 +85,7 @@ namespace AllinDefense.Tests
                     }
                     Assert.That(sample.drawCalls, Is.GreaterThan(0), "Rendering counters must be live");
                     report.samples.Add(sample);
-                    string path = $"Builds/step6-{phase}-{state}-{size.x}x{size.y}.png";
+                    string path = battleUi ? $"Builds/battle-ui-{phase}-{state}-{size.x}x{size.y}.png" : $"Builds/step6-{phase}-{state}-{size.x}x{size.y}.png";
                     ScreenCapture.CaptureScreenshot(path);
                     for (int i = 0; i < 5; i++) yield return null;
                     Assert.That(File.Exists(path), Is.True);
@@ -87,7 +93,7 @@ namespace AllinDefense.Tests
                     yield return null;
                 }
             }
-            File.WriteAllText($"Builds/step6-{phase}-metrics.json", JsonUtility.ToJson(report, true));
+            File.WriteAllText(battleUi ? $"Builds/battle-ui-{phase}-metrics.json" : $"Builds/step6-{phase}-metrics.json", JsonUtility.ToJson(report, true));
 #else
             yield return null;
 #endif

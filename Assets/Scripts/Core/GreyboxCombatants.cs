@@ -3,6 +3,7 @@ using AllinDefense.Data;
 using AllinDefense.Combat;
 using AllinDefense.Presentation;
 using AllinDefense.UI;
+using AllinDefense.UI.Kit;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,7 +26,12 @@ namespace AllinDefense.Core
         private IReadOnlyList<Vector3> path;
         private Renderer bodyRenderer;
         private PooledActorVisualState visualState;
-        private Transform healthFill;
+        private Transform healthFill, healthTrail, healthCanvas;
+        private Renderer[] bossBarRenderers;
+        private GameObject healthRoot;
+        private bool healthDamaged;
+        private float trailFraction = 1, trailStart = 1, trailElapsed = .4f;
+        public bool HealthBarVisible => healthRoot != null && healthRoot.activeSelf;
         private int targetWaypoint = 1;
         private int health;
         private float attackTimer;
@@ -68,6 +74,9 @@ namespace AllinDefense.Core
             siegeTarget = null;
             removed = false;
             bossPhase = 1;
+            healthDamaged = false;
+            trailFraction = trailStart = 1;
+            trailElapsed = .4f;
             if (healthFill == null) CreateHealthBar();
             if (siegeWarning == null && type is EnemyArchetype.Siege or EnemyArchetype.Boss)
                 siegeWarning = CombatRangeVisual.Create(transform, "Siege warning", new Color(1,.15f,.05f));
@@ -80,6 +89,7 @@ namespace AllinDefense.Core
             if (phaseVisual != null) phaseVisual.SetPhase(1);
             var view = GetComponent<StylizedActorView>();
             if (view != null) view.ResetForReuse();
+            UpdateBossBarPosition();
             State = EnemyCombatState.Moving;
         }
 
@@ -87,6 +97,8 @@ namespace AllinDefense.Core
         {
             if (!IsAlive || session == null || path == null || path.Count < 2) return;
 
+            UpdateBossBarPosition();
+            TickHealthTrail(delta);
             slow.Tick(delta);
             if (stunRemaining > 0f)
             {
@@ -227,6 +239,9 @@ namespace AllinDefense.Core
             if (!IsAlive || amount <= 0) return;
             int resolved = BattleRules.ResolveDamage(amount, type, archetype == EnemyArchetype.Vanguard ? .5f : 0f);
             health = CombatMath.ApplyDamage(health, resolved);
+            healthDamaged = true;
+            trailStart = trailFraction;
+            trailElapsed = 0;
             UpdateHealthBar();
             session?.EmitPresentation(PresentationCue.EnemyHit, transform.position, gameObject,
                 GameSessionController.ActorKind(archetype));
@@ -268,29 +283,31 @@ namespace AllinDefense.Core
                 var canvas = canvasObject.GetComponent<Canvas>();
                 canvas.renderMode = RenderMode.WorldSpace;
                 var rect = canvasObject.GetComponent<RectTransform>();
+                healthCanvas = rect;
+                if (archetype == EnemyArchetype.Boss)
+                    bossBarRenderers = transform.Find("Motion")?.GetComponentsInChildren<Renderer>();
                 rect.localPosition = Vector3.up * (archetype == EnemyArchetype.Boss ? 2.8f : 1.65f);
                 rect.sizeDelta = new Vector2(100f, 10f);
                 rect.localScale = Vector3.one * 0.012f;
                 canvasObject.AddComponent<WorldSpaceBillboard>();
-                var backgroundObject = new GameObject("Background", typeof(RectTransform), typeof(Image));
-                backgroundObject.transform.SetParent(canvasObject.transform, false);
-                var backgroundRect = backgroundObject.GetComponent<RectTransform>();
-                backgroundRect.anchorMin = Vector2.zero;
-                backgroundRect.anchorMax = Vector2.one;
-                backgroundRect.offsetMin = Vector2.zero;
-                backgroundRect.offsetMax = Vector2.zero;
-                backgroundObject.GetComponent<Image>().color = new Color(0.05f, 0.02f, 0.03f, 0.9f);
-                var fillObject = new GameObject("Fill", typeof(RectTransform), typeof(Image));
-                fillObject.transform.SetParent(backgroundObject.transform, false);
-                var fillRect = fillObject.GetComponent<RectTransform>();
-                fillRect.anchorMin = Vector2.zero;
-                fillRect.anchorMax = Vector2.one;
-                fillRect.offsetMin = new Vector2(2f, 2f);
-                fillRect.offsetMax = new Vector2(-2f, -2f);
-                fillObject.GetComponent<Image>().color = archetype == EnemyArchetype.Boss
-                    ? new Color(1f,.5f,.15f) : new Color(.95f,.22f,.25f);
+                rect.sizeDelta = archetype == EnemyArchetype.Boss ? new Vector2(146, 14) : new Vector2(100, 8);
+                var kit = new UiKit(session.PresentationCatalog.frontendTheme.designSystem);
+                var border = kit.Decoration(canvasObject.transform, "Background", kit.Assets.pill, UiTokens.TextSecondary);
+                healthRoot = border.gameObject;
+                var barBacking = kit.Decoration(border.transform, "Health Backing", kit.Assets.pill, UiTokens.GlassStrong);
+                barBacking.rectTransform.offsetMin = Vector2.one * 2;
+                barBacking.rectTransform.offsetMax = -Vector2.one * 2;
+                var trail = kit.Decoration(barBacking.transform, "Damage Trail", kit.Assets.pill, UiTokens.TextPrimary);
+                var barFill = kit.Decoration(barBacking.transform, "Fill", kit.Assets.pill,
+                    archetype == EnemyArchetype.Boss ? UiTokens.Gold : UiTokens.Danger);
+                foreach (var bar in new[] { trail.rectTransform, barFill.rectTransform })
+                {
+                    bar.pivot = new Vector2(.5f, .5f);
+                    bar.offsetMin = bar.offsetMax = Vector2.zero;
+                }
+                healthTrail = trail.transform;
+                healthFill = barFill.transform;
                 if (archetype == EnemyArchetype.Vanguard) ShieldStatusIcon.Attach(canvasObject.transform);
-                healthFill = fillObject.transform;
                 return;
             }
             var background = GameSessionController.CreatePrimitive("Health Background", PrimitiveType.Cube,
@@ -303,18 +320,45 @@ namespace AllinDefense.Core
             var fill = GameSessionController.CreatePrimitive("Health Fill", PrimitiveType.Cube,
                 background.transform.position, new Vector3(0.9f, 0.09f, 0.09f),
                 new Color(0.25f, 0.95f, 0.30f), background.transform, false);
+            healthRoot = background;
             healthFill = fill.transform;
             healthFill.localPosition = Vector3.zero;
             healthFill.localRotation = Quaternion.identity;
             healthFill.localScale = Vector3.one;
         }
 
+        private void UpdateBossBarPosition()
+        {
+            if (bossBarRenderers == null || healthCanvas == null) return;
+            float top = 2.8f;
+            for (int i = 0; i < bossBarRenderers.Length; i++)
+                top = Mathf.Max(top, bossBarRenderers[i].bounds.max.y - transform.position.y);
+            healthCanvas.localPosition = Vector3.up * (top + .8f);
+        }
+
+        private static void SetBarFraction(Transform bar, float fraction)
+        {
+            bar.localScale = new Vector3(fraction, 1, 1);
+            float width = bar is RectTransform rect ? rect.rect.width : 1;
+            bar.localPosition = new Vector3((fraction - 1) * width * .5f, 0, 0);
+        }
+
+        private void TickHealthTrail(float delta)
+        {
+            if (healthTrail == null || trailElapsed >= .4f) return;
+            trailElapsed = Mathf.Min(.4f, trailElapsed + delta);
+            trailFraction = Mathf.Lerp(trailStart, health / (float)Mathf.Max(1, stats.maxHealth), trailElapsed / .4f);
+            SetBarFraction(healthTrail, trailFraction);
+        }
+
         private void UpdateHealthBar()
         {
             if (healthFill == null) return;
             float fraction = Mathf.Clamp01(health / (float)Mathf.Max(1, stats.maxHealth));
-            healthFill.localScale = new Vector3(fraction, 1f, 1f);
-            healthFill.localPosition = new Vector3((fraction - 1f) * 0.5f, 0f, 0f);
+            healthRoot.SetActive(archetype == EnemyArchetype.Boss || healthDamaged);
+            SetBarFraction(healthFill, fraction);
+            if (fraction > trailFraction) trailFraction = trailStart = fraction;
+            if (healthTrail != null) SetBarFraction(healthTrail, trailFraction);
         }
     }
 
