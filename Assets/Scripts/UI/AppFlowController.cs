@@ -59,7 +59,6 @@ namespace AllinDefense.UI
         private TextMeshProUGUI selectedLevelDetails;
         private Button playSelectedButton;
         private TextMeshProUGUI resultTitle;
-        private TextMeshProUGUI resultStars;
         private TextMeshProUGUI resultReward;
         private TextMeshProUGUI briefingReward;
         private FrontendTacticalMapPreview tacticalMapPreview;
@@ -82,7 +81,6 @@ namespace AllinDefense.UI
         private Button orientationRetry;
         private bool orientationReady;
         private Action retryOrientation;
-        private Coroutine starsRoutine;
         private bool hasShownScreen;
         private Coroutine orientationRoutine;
         private int selectedLevel = 1;
@@ -118,6 +116,7 @@ namespace AllinDefense.UI
                 savePath = acceptanceSavePath;
             }
             progress = savePath == null ? CampaignApplication.GetOrCreate().Progress : new CampaignProgressStore(savePath);
+            knownUnlockedLevel = progress.Data.unlockedLevel;
             progress.Changed += HandleProgressChanged;
             if (pendingNavigation != null) { navigationState = pendingNavigation; pendingNavigation = null; }
             selectedLevel = Mathf.Clamp(navigationState.HasMapPosition ? navigationState.SelectedLevel : progress.Data.lastSelectedLevel, 1, MaxPlayableLevel);
@@ -142,6 +141,7 @@ namespace AllinDefense.UI
             ApplyStoredAudioPreferences();
             battlePaused = pauseBattle;
             session.PhaseChanged += HandleSessionPhaseChanged;
+            session.BeforeWaveRequested = ShowNewEnemy;
             progress.SyncStatusChanged += OnSaveStatusChanged;
             progress.ProfileChanged += CloseHeroName;
             MobileOrientationController.Request(HasPendingLevel
@@ -338,45 +338,62 @@ namespace AllinDefense.UI
             StartFrontendAcceptance();
         }
 
+        private UiStarRow resultStarRow;
+        private TMP_Text resultChapter;
+        private RectTransform resultRewardRow, resultAdvice;
+        private TMP_Text resultAdviceText;
+        private Image resultLeakIcon, resultSavedIcon;
+        private RectTransform resultUnlock;
+        private Button resultRetryIcon, resultMapIcon, resultMapText;
+        private int knownUnlockedLevel;
+        private RectTransform resultAccountSuggestion;
+        private UiMotion.Handle resultAccountDelay;
+
         private void BuildResultScreen()
         {
+            menuKit ??= new UiKit(theme.designSystem);
             Transform root = screens[AppScreen.Result].transform;
-            GameObject scrim = CreateImage("Result Scrim", root, UiTokens.ResultScrim);
-            Stretch(scrim.GetComponent<RectTransform>());
-            GameObject card = CreatePanel("Result Chronicle", root, UiTokens.WithAlpha(theme.panel, 0.97f));
-            AddCardAccent(card.transform, theme.commandGold);
-            AddCardWatermark(card.transform, theme.moonEdge);
-            SetRect(card.GetComponent<RectTransform>(), Vector2.zero, new Vector2(1180f, 650f), Center(), Center());
-
-            TextMeshProUGUI badge = CreateText("Result Badge", card.transform, FrontendCopy.BattleResult, 20,
-                catalog.bodyFont, FontStyles.Bold, TextAlignmentOptions.Center, theme.commandGold);
-            SetRect(badge.rectTransform, new Vector2(0f, 245f), new Vector2(720f, 42f), Center(), Center());
-            resultTitle = CreateText("Result Title", card.transform, "", 64, catalog.titleFont, FontStyles.Bold,
-                TextAlignmentOptions.Center, theme.textPrimary);
-            resultTitle.enableAutoSizing = true;
-            resultTitle.fontSizeMin = 40f;
-            resultTitle.fontSizeMax = UiTokens.TypeDisplay;
-            SetRect(resultTitle.rectTransform, new Vector2(0f, 145f), new Vector2(980f, 130f), Center(), Center());
-
-            resultStars = CreateText("Result Stars", card.transform, "", 54, catalog.titleFont, FontStyles.Bold,
-                TextAlignmentOptions.Center, theme.commandGold);
-            SetRect(resultStars.rectTransform, new Vector2(0f, 40f), new Vector2(760f, 78f), Center(), Center());
-
-            resultReward = CreateText("Result Reward", card.transform, "", 25, catalog.bodyFont, FontStyles.Bold,
-                TextAlignmentOptions.Top, theme.moonEdge);
-            SetRect(resultReward.rectTransform, new Vector2(0f, -52f), new Vector2(980f, 100f), Center(), Center());
-
-            retryButton = CreateButton("Retry Level", card.transform, FrontendCopy.TryAgain, new Vector2(310f, 140f),
-                theme.defenderBlue, () => ReloadCampaignLevel(session.CampaignLevelNumber));
-            SetRect(retryButton.GetComponent<RectTransform>(), new Vector2(-350f, -196f), new Vector2(310f, 140f), Center(), Center());
-
-            nextLevelButton = CreateButton("Next Level", card.transform, FrontendCopy.NextLevel, new Vector2(340f, 140f),
-                theme.commandGold, () => ReloadCampaignLevel(session.CampaignLevelNumber + 1));
-            SetRect(nextLevelButton.GetComponent<RectTransform>(), new Vector2(0f, -196f), new Vector2(340f, 140f), Center(), Center());
-
-            Button map = CreateButton("Return To Map", card.transform, FrontendCopy.ReturnToMap, new Vector2(310f, 140f),
-                theme.night, OpenCampaign);
-            SetRect(map.GetComponent<RectTransform>(), new Vector2(350f, -196f), new Vector2(310f, 140f), Center(), Center());
+            var scrim = CreateImage("Result Scrim", root, UiTokens.ResultScrim);
+            Stretch((RectTransform)scrim.transform);
+            var card = menuKit.Card(root, "Result Chronicle");
+            card.gameObject.AddComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+            root.gameObject.AddComponent<FrontendResponsiveLayout>().Configure(size =>
+                SetRect(card, Vector2.zero, new Vector2(Mathf.Min(size.x - 88, 1320), card.sizeDelta.y), Center(), Center()));
+            card.GetComponent<VerticalLayoutGroup>().spacing = 18;
+            resultTitle = MenuText(card, "Result Title", "", 64, true);
+            resultTitle.font = catalog.titleFont; resultTitle.alignment = TextAlignmentOptions.Center;
+            resultChapter = MenuText(card, "Result Chapter", "", 30);
+            resultChapter.alignment = TextAlignmentOptions.Center;
+            resultStarRow = menuKit.StarRow(card, "Result Stars", 0);
+            foreach (var image in resultStarRow.GetComponentsInChildren<Image>()) UiKit.Size(image.rectTransform, 96, 96);
+            resultRewardRow = MenuStack(card, "Result Reward Row", false);
+            resultLeakIcon = menuKit.Icon(resultRewardRow, "Result Reward Icon", catalog.goldIcon, 52);
+            resultReward = MenuText(resultRewardRow, "Result Reward", "", 32, true);
+            resultUnlock = menuKit.Chip(resultRewardRow, "Unlocked Chapter", "", 28);
+            menuKit.Icon(resultUnlock, "Unlocked Icon", menuKit.Assets.iconCheck, 40).transform.SetAsFirstSibling();
+            resultSavedIcon = menuKit.Icon(resultRewardRow, "Result Saved", menuKit.Assets.iconCheck, 32);
+            resultAdvice = menuKit.Card(card, "Defence Advice");
+            resultAdvice.GetComponent<VerticalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
+            var adviceRow = MenuStack(resultAdvice, "Advice Row", false);
+            menuKit.Icon(adviceRow, "Advice Tower", catalog.archerIcon, 64);
+            resultAdviceText = MenuText(adviceRow, "Advice Text", "", 30);
+            resultAdviceText.textWrappingMode = TextWrappingModes.Normal;
+            UiKit.Size(resultAdviceText.rectTransform, height: 90, flex: 1);
+            var actions = MenuStack(card, "Result Actions", false);
+            resultRetryIcon = menuKit.IconButton(actions, "Victory Retry", menuKit.Assets.iconBack,
+                () => ReloadCampaignLevel(session.CampaignLevelNumber));
+            retryButton = MenuButton(actions, "Retry Level", FrontendCopy.TryAgain, null,
+                () => ReloadCampaignLevel(session.CampaignLevelNumber), true);
+            nextLevelButton = MenuButton(actions, "Next Level", FrontendCopy.NextLevel, menuKit.Assets.iconPlay,
+                () => ReloadCampaignLevel(session.CampaignLevelNumber + 1), true);
+            resultMapIcon = menuKit.IconButton(actions, "Victory Map", menuKit.Assets.iconMap, OpenCampaign);
+            foreach (var button in new[] { resultRetryIcon, resultMapIcon }) UiKit.Size((RectTransform)button.transform, 160, 160);
+            resultMapText = PlainTextButton(card, "Return To Map", FrontendCopy.ReturnToMap, OpenCampaign);
+            resultAccountSuggestion = menuKit.Surface(card, "Result Account Suggestion", UiTokens.RadiusMedium, false);
+            resultAccountSuggestion.GetComponent<HorizontalLayoutGroup>().padding = new RectOffset(16, 16, 0, 0);
+            menuKit.Icon(resultAccountSuggestion, "Result Account Shield", menuKit.Assets.iconShield, 44);
+            PlainTextButton(resultAccountSuggestion, "Result Link Account", FrontendCopy.LinkAccount, () => ShowFrontendAfterPortrait(AppScreen.Login));
+            resultAccountSuggestion.gameObject.SetActive(false);
         }
 
         private void SignInAsGuest()
@@ -474,25 +491,19 @@ namespace AllinDefense.UI
             briefingTime.text = FrontendCopy.MenuMinutes.Format(definition.targetMinutes);
             briefingReward.text = LearningObjective(definition.number);
             foreach (Transform chip in enemyChips) { chip.gameObject.SetActive(false); Destroy(chip.gameObject); }
-            foreach (var enemy in CampaignLevelFactory.Create(definition.number).waves.SelectMany(w => w.groups).Select(g => g.enemy).Distinct())
+            foreach (var group in CampaignLevelFactory.Create(definition.number).waves.SelectMany(w => w.groups).GroupBy(g => g.enemy))
             {
-                var chip = menuKit.Surface(enemyChips, "Enemy Chip " + enemy, UiTokens.RadiusPill, false);
-                Sprite icon = enemy switch
-                {
-                    EnemyArchetype.Vanguard => menuKit.Assets.iconShield,
-                    EnemyArchetype.Support => menuKit.Assets.iconUpgrade,
-                    EnemyArchetype.Siege => menuKit.Assets.iconBlast,
-                    EnemyArchetype.Regenerator => menuKit.Assets.iconRapidFire,
-                    EnemyArchetype.Boss => menuKit.Assets.iconAssaultGuard,
-                    _ => menuKit.Assets.iconEnemy
-                };
-                menuKit.Icon(chip, "Enemy Icon " + enemy, icon, 44);
+                var chip = menuKit.Surface(enemyChips, "Enemy Chip " + group.Key, UiTokens.RadiusPill, false);
+                chip.GetComponent<HorizontalLayoutGroup>().padding = new RectOffset(12, 12, 6, 6);
+                menuKit.Icon(chip, "Enemy Icon " + group.Key, EnemyIcon(group.Key), 44);
+                MenuText(chip, "Enemy Count " + group.Key, $"{FirstRegionCampaign.EnemyName(group.Key)} ×{group.Sum(g => g.count)}", 24);
             }
             playSelectedButton.interactable = selectedLevel <= progress.Data.unlockedLevel;
         }
 
         private void HandleProgressChanged()
         {
+            if (CurrentScreen is not (AppScreen.Battle or AppScreen.Result)) knownUnlockedLevel = progress.Data.unlockedLevel;
             progressDirty = true;
             if (CurrentScreen == AppScreen.MainMenu) RefreshProfile();
             if (CurrentScreen == AppScreen.Campaign)
@@ -583,8 +594,10 @@ namespace AllinDefense.UI
                 ? FrontendCopy.GuestDefender.Value
                 : string.IsNullOrWhiteSpace(progress.Data.displayName) ? FrontendCopy.GreenwatchDefender.Value : progress.Data.displayName;
             profileLabel.text = displayName;
-            profileStars.SetValue(progress.Data.TotalStars, false, false);
-            saveErrorIcon.gameObject.SetActive(progress.HasWriteError || progress.SyncStatus == CampaignSyncStatus.Failed);
+            profileStars.text = $"{progress.Data.levels.Where(x => x.level <= 10).Sum(x => x.stars)}/30";
+            bool saveError = progress.HasWriteError || progress.SyncStatus == CampaignSyncStatus.Failed;
+            saveErrorIcon.sprite = saveError ? menuKit.Assets.iconClose : menuKit.Assets.iconCheck;
+            saveErrorIcon.color = saveError ? UiTokens.Danger : UiTokens.Moon;
             int target = progress.NextUnfinishedLevel();
             CampaignLevelDefinition level = CampaignCatalog.Level(target);
             chapterEyebrow.text = GameLocalization.Uppercase(FrontendCopy.MenuChapter.Format(level.region, CampaignCatalog.Regions[level.region - 1].localizedName, level.number));
@@ -624,33 +637,45 @@ namespace AllinDefense.UI
             selectedLevel = victory
                 ? Mathf.Min(FirstRegionCampaign.LevelCount, session.CampaignLevelNumber + 1)
                 : session.CampaignLevelNumber;
-            resultTitle.text = victory
-                ? FrontendCopy.VictoryComplete.Format(GameLocalization.Uppercase(CampaignCatalog.Level(session.CampaignLevelNumber).localizedName))
-                : FrontendCopy.TheDefenceLineHasFallen.Value;
-            resultTitle.color = victory ? theme.textPrimary : theme.enemyRed;
-            resultStars.text = victory
-                ? FrontendCopy.ResultStars.Format(stars)
-                : FrontendCopy.ResultNoStars.Value;
-            resultReward.text = victory ? (string.IsNullOrEmpty(SaveStatus()) ? "" : SaveStatus() + "\n") +
-                (session.CampaignLevelNumber == 1 && progress.Data.authProvider == PlayerAuthProvider.Guest
-                    ? FrontendCopy.ResultGuestAccountHint.Value
-                    : LearningObjective(Mathf.Min(10, selectedLevel)))
-                : FrontendCopy.Wave.Format(session.CurrentWaveIndex + 1) +
-                    FirstRegionCampaign.EnemyName(session.MostDamagingLeak) + "\n" + DefenceAdvice(session.MostDamagingLeak);
-            bool hasNextLevel = victory && session.CampaignLevelNumber < FirstRegionCampaign.LevelCount;
+            stars = Mathf.Clamp(stars, 0, 3);
+            resultTitle.text = victory ? FrontendCopy.VictoryHeading.Value : FrontendCopy.DefeatHeading.Value;
+            resultTitle.color = victory ? UiTokens.Gold : UiTokens.Danger;
+            resultChapter.text = CampaignCatalog.Level(session.CampaignLevelNumber).localizedName;
+            resultStarRow.gameObject.SetActive(victory);
+            resultAdvice.gameObject.SetActive(!victory);
+            resultAdviceText.text = DefenceAdvice(session.MostDamagingLeak);
+            resultLeakIcon.sprite = victory ? catalog.goldIcon : EnemyIcon(session.MostDamagingLeak);
+            resultReward.text = victory ? $"+{reward.Valor} · {FrontendCopy.ResultStars.Format(stars)}"
+                : FrontendCopy.ResultWaveLeak.Format(session.CurrentWaveIndex + 1, session.WaveCount,
+                    FirstRegionCampaign.EnemyName(session.MostDamagingLeak));
+            bool newlyUnlocked = victory && (progress.Data.unlockedLevel > knownUnlockedLevel ||
+                CurrentScreen == AppScreen.Result && resultUnlock.gameObject.activeSelf);
+            resultUnlock.gameObject.SetActive(newlyUnlocked);
+            resultUnlock.GetComponentInChildren<TMP_Text>().text = FrontendCopy.UnlockedChapter.Format(progress.Data.unlockedLevel);
+            knownUnlockedLevel = progress.Data.unlockedLevel;
+            resultSavedIcon.gameObject.SetActive(victory && !progress.HasWriteError);
+            bool hasNextLevel = victory && session.CampaignLevelNumber < MaxPlayableLevel;
             nextLevelButton.gameObject.SetActive(hasNextLevel);
             nextLevelButton.interactable = hasNextLevel;
-            SetRect(retryButton.GetComponent<RectTransform>(), new Vector2(hasNextLevel ? -350f : -180f, -196f), new Vector2(310f, 140f), Center(), Center());
-            Transform map = nextLevelButton.transform.parent.Find("Return To Map");
-            SetRect((RectTransform)map, new Vector2(hasNextLevel ? 350f : 180f, -196f), new Vector2(310f, 140f), Center(), Center());
+            retryButton.gameObject.SetActive(!victory || !hasNextLevel);
+            resultRetryIcon.gameObject.SetActive(victory && hasNextLevel);
+            resultMapIcon.gameObject.SetActive(victory);
+            resultMapText.gameObject.SetActive(!victory);
+            resultAccountDelay?.Cancel();
+            resultAccountSuggestion.gameObject.SetActive(false);
             session.SetBattleHudVisible(false);
-            SetButtonEmphasis(nextLevelButton, victory ? theme.commandGold : theme.night);
-            SetButtonEmphasis(retryButton, victory ? theme.defenderBlue : theme.commandGold);
             canvas.gameObject.SetActive(true);
             battlePaused = true;
             ShowScreen(AppScreen.Result);
-            if (starsRoutine != null) StopCoroutine(starsRoutine);
-            if (victory) starsRoutine = StartCoroutine(AnimateStars(stars));
+            if (victory)
+            {
+                resultStarRow.SetStars(stars);
+                (resultRewardRow.GetComponent<UiMotion>() ?? resultRewardRow.gameObject.AddComponent<UiMotion>()).Count(0, reward.Valor,
+                    value => resultReward.text = $"+{value} · {FrontendCopy.ResultStars.Format(stars)}");
+                if (session.CampaignLevelNumber == 1 && progress.Data.authProvider == PlayerAuthProvider.Guest)
+                    resultAccountDelay = (resultRewardRow.GetComponent<UiMotion>() ?? resultRewardRow.gameObject.AddComponent<UiMotion>())
+                        .Animate(_ => { }, 1.2f, () => resultAccountSuggestion.gameObject.SetActive(CurrentScreen == AppScreen.Result));
+            }
             TriggerHaptic();
         }
 
@@ -803,6 +828,7 @@ namespace AllinDefense.UI
             canvasScaler.referenceResolution = mode == MobileOrientationMode.LandscapeBattle
                 ? new Vector2(1920f, 1080f)
                 : new Vector2(1080f, 1920f);
+            canvasScaler.matchWidthOrHeight = mode == MobileOrientationMode.LandscapeBattle ? .5f : 0f;
         }
 
         public static Vector2 PortraitCampaignPathPosition(int levelIndexInRegion)
@@ -827,13 +853,23 @@ namespace AllinDefense.UI
 
         private void OpenSettings()
         {
-            if (launchingBattle || orientationRoutine != null || (settingsModal != null && settingsModal.activeSelf)) return;
+            if (launchingBattle || orientationRoutine != null || settingsOpen) return;
             performance.Begin("menu-settings");
             if (settingsModal == null) BuildSettingsModal();
             UiId.AssignHierarchy(settingsModal.transform);
             RefreshLanguageButtons();
+            if (settingsAccount != null) settingsAccount.GetComponentInChildren<UiKitText>().Configure(settingsAccount.GetComponentInChildren<TMP_Text>(),
+                progress.Data.authProvider is PlayerAuthProvider.Guest or PlayerAuthProvider.None
+                    ? FrontendCopy.GuestLinkAccount : new LocalizedCopy(
+                        string.Format(FrontendCopy.LinkedAccountRow.Turkish, progress.Data.displayName),
+                        string.Format(FrontendCopy.LinkedAccountRow.English, progress.Data.displayName)));
             navigation.Cancel();
+            settingsFade?.Cancel();
+            settingsOpen = true;
             settingsModal.SetActive(true);
+            settingsGroup.alpha = 0;
+            settingsGroup.interactable = settingsGroup.blocksRaycasts = true;
+            settingsFade = (settingsModal.GetComponent<UiMotion>() ?? settingsModal.AddComponent<UiMotion>()).Fade(settingsGroup, 1);
             settingsModal.transform.SetAsLastSibling();
             screens[CurrentScreen].GetComponent<CanvasGroup>().interactable = false;
             screens[CurrentScreen].GetComponent<CanvasGroup>().alpha = 0;
@@ -842,7 +878,13 @@ namespace AllinDefense.UI
 
         private void CloseSettings()
         {
-            if (settingsModal != null) settingsModal.SetActive(false);
+            settingsOpen = false;
+            if (settingsModal != null && settingsModal.activeSelf)
+            {
+                settingsFade?.Cancel();
+                settingsGroup.interactable = settingsGroup.blocksRaycasts = false;
+                settingsFade = settingsModal.GetComponent<UiMotion>().Fade(settingsGroup, 0, () => settingsModal.SetActive(false));
+            }
             if (screens.TryGetValue(CurrentScreen, out var screen))
             {
                 screen.GetComponent<CanvasGroup>().interactable = true;
@@ -861,7 +903,7 @@ namespace AllinDefense.UI
         {
             if (string.IsNullOrWhiteSpace(url))
             {
-                SetLoginStatus($"{label} bağlantısı yayın yapılandırmasında eklenmelidir.");
+                SetLoginStatus(FrontendCopy.LegalUrlUnavailable.Format(label));
                 return;
             }
             Application.OpenURL(url);
@@ -1070,8 +1112,7 @@ namespace AllinDefense.UI
             }
             SaveMapPosition();
             if (screen == AppScreen.Login) navigationState.AccountReturn =
-                CurrentScreen == AppScreen.Welcome ? AppScreen.Welcome : CurrentScreen;
-            if (screen != AppScreen.Result && starsRoutine != null) { StopCoroutine(starsRoutine); starsRoutine = null; }
+                CurrentScreen == AppScreen.Welcome ? AppScreen.Welcome : CurrentScreen == AppScreen.Result ? AppScreen.Campaign : CurrentScreen;
             bool measure = !launchingBattle && orientationRoutine == null;
             if (measure) performance.Begin(CurrentScreen + "-" + screen);
             EnsureScreen(screen);
@@ -1091,6 +1132,7 @@ namespace AllinDefense.UI
                     for (int i = 0; i < regionScrolls.Count; i++) regionScrolls[i].verticalNormalizedPosition = navigationState.Vertical[i];
                 }
             }
+            if (screen == AppScreen.Login) RefreshAccount();
             if (loginStatus != null && screen != AppScreen.Login) loginStatus.text = string.Empty;
             ApplyScreenBackdrop(screen);
             navigation.Show(screens[screen], screen is not (AppScreen.Battle or AppScreen.Result),
@@ -1260,22 +1302,6 @@ namespace AllinDefense.UI
             if (button?.targetGraphic != null) button.targetGraphic.color = color;
         }
 
-        private IEnumerator AnimateStars(int stars)
-        {
-            if (FrontendPreferences.ReducedMotion)
-            {
-                resultStars.text = FrontendCopy.ResultStars.Format(stars);
-                yield break;
-            }
-            resultStars.text = FrontendCopy.ResultNoStars.Value;
-            for (int index = 1; index <= stars; index++)
-            {
-                yield return new WaitForSecondsRealtime(0.35f);
-                resultStars.text = FrontendCopy.ResultStars.Format(index);
-                PlayFrontendCue(theme.starReveal, PresentationCue.Victory);
-            }
-        }
-
         private void PlayFrontendCue(AudioClip preferred, PresentationCue fallback)
         {
             if (frontendUiSource == null) return;
@@ -1316,8 +1342,7 @@ namespace AllinDefense.UI
 
         private void RefreshLanguageButtons()
         {
-            SetButtonEmphasis(turkishLanguageButton, FrontendPreferences.Language == GameLanguage.Turkish ? theme.commandGold : theme.night);
-            SetButtonEmphasis(englishLanguageButton, FrontendPreferences.Language == GameLanguage.English ? theme.commandGold : theme.night);
+            languageSegments?.Select(FrontendPreferences.Language == GameLanguage.Turkish ? 0 : 1, false);
         }
 
         private void HandleLanguageChanged()
@@ -1382,6 +1407,7 @@ namespace AllinDefense.UI
 
         private void OnDestroy()
         {
+            if (session != null) session.BeforeWaveRequested = null;
             GameLocalization.LanguageChanged -= HandleLanguageChanged;
             if (progress != null) progress.Changed -= HandleProgressChanged;
             if (session != null) session.PhaseChanged -= HandleSessionPhaseChanged;

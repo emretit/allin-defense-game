@@ -116,6 +116,7 @@ namespace AllinDefense.Core
             Mathf.Max(0f, authoredSeconds) / BaselineGameplayPace;
 
         public event Action<GamePhase> PhaseChanged;
+        public Func<WaveDefinition, bool> BeforeWaveRequested { get; set; }
         public event Action<int> GoldChanged;
         public event Action<int> LivesChanged;
         public event Action<PresentationSignal> PresentationSignaled;
@@ -928,6 +929,7 @@ namespace AllinDefense.Core
         {
             if (Phase != GamePhase.Preparing && Phase != GamePhase.Intermission) return;
             if (currentWaveIndex >= waves.Length || spawning) return;
+            if (BeforeWaveRequested?.Invoke(waves[currentWaveIndex]) == true) return;
             SaveWaveCheckpoint();
             if (GuidanceStep == FirstBattleGuidanceStep.StartWave)
                 GuidanceStep = FirstBattleGuidanceStep.Complete;

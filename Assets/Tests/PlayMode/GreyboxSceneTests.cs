@@ -185,7 +185,7 @@ namespace AllinDefense.Tests
             UnityEngine.UI.Image mainMenuLogo = UiQuery.FindById<UnityEngine.UI.Image>(flow, "Brand Logo");
             UnityEngine.UI.Image profileMark = UiQuery.FindById<UnityEngine.UI.Image>(flow, "Profile Brand Mark");
             Assert.That(mainMenuLogo.sprite, Is.SameAs(catalog.frontendTheme.brandLogo));
-            Assert.That(profileMark.sprite, Is.SameAs(catalog.frontendTheme.brandMark));
+            Assert.That(profileMark.sprite, Is.SameAs(catalog.frontendTheme.designSystem.iconShield));
             Assert.That(UiQuery.FindById(flow, "Moonlit Sigil"), Is.Not.Null);
             Assert.That(UiQuery.FindById(flow, "Ember Sigil"), Is.Not.Null);
             Assert.That(UiQuery.FindById(flow, "Continue Chronicle").GetComponent<AllinDefense.UI.Kit.UiVisualState>(), Is.Not.Null);

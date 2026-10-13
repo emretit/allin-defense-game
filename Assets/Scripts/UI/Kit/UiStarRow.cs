@@ -17,13 +17,28 @@ namespace AllinDefense.UI.Kit
             earned = Mathf.Clamp(count, 0, 3); animation?.Cancel();
             var motion = GetComponent<UiMotion>() ?? gameObject.AddComponent<UiMotion>();
             if (!animate || !isActiveAndEnabled) Render(earned);
-            else animation = motion.Animate(t => Render(Mathf.FloorToInt(t * earned)), UiTokens.SlideDuration * 3);
+            else
+            {
+                Render(0);
+                animation = motion.Animate(t =>
+                {
+                    float sequence = t * earned;
+                    Render(Mathf.Min(earned, Mathf.CeilToInt(sequence)));
+                    for (int i = 0; i < earned; i++)
+                    {
+                        float phase = Mathf.Clamp01(sequence - i);
+                        float scale = phase < .7f ? Mathf.Lerp(0, 1.2f, phase / .7f) : Mathf.Lerp(1.2f, 1, (phase - .7f) / .3f);
+                        stars[i].transform.localScale = Vector3.one * scale;
+                    }
+                }, UiTokens.SlideDuration * 3);
+            }
         }
         private void Render(int count)
         {
             VisibleStars = count;
             for (int i = 0; i < stars.Length; i++)
             {
+                stars[i].transform.localScale = Vector3.one;
                 stars[i].sprite = i < count ? assets.iconStarFilled : assets.iconStarEmpty;
                 stars[i].color = i < count ? UiTokens.Gold : UiTokens.TextSecondary;
             }

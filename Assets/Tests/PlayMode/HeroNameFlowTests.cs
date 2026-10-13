@@ -38,8 +38,7 @@ namespace AllinDefense.Tests
             flow.StopAllCoroutines();
             flow.CompleteServiceSignIn(PlayerAuthProvider.Guest, "local-guest", "Player Name");
             yield return null;
-            Click(flow, "Settings");
-            Click(flow, "Settings Hero");
+            Click(flow, "Menu Hero");
             var field = flow.GetComponentInChildren<TMP_InputField>();
             Assert.That(field, Is.Not.Null);
             Assert.That(field.placeholder.GetComponent<TMP_Text>().text, Is.EqualTo("Savaşçı"));
@@ -50,7 +49,7 @@ namespace AllinDefense.Tests
             Assert.That(flow.Progress.Data.displayName, Is.EqualTo("Player Name"));
             field.text = "Unsaved Name";
             Click(flow, "Cancel Hero Name");
-            Click(flow, "Settings Hero");
+            Click(flow, "Menu Hero");
             Assert.That(field.text, Is.EqualTo("Çağrı"));
             field.text = "<b>Name</b>";
             Click(flow, "Save Hero Name");
@@ -63,7 +62,7 @@ namespace AllinDefense.Tests
             field.text = "Should Not Transfer";
             flow.Progress.SignIn(PlayerAuthProvider.PlayerAccount, "second-player", "Second Player");
             Assert.That(field.gameObject.activeInHierarchy, Is.False);
-            Click(flow, "Settings Hero");
+            Click(flow, "Menu Hero");
             Assert.That(field.text, Is.Empty);
             field.text = "AYARLAR";
             Click(flow, "Save Hero Name");

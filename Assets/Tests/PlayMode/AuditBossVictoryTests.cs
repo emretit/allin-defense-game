@@ -137,8 +137,9 @@ namespace AllinDefense.Tests
             Invoke("EnemyReachedKeep", session.Enemies[0], 5);
             yield return new WaitForSecondsRealtime(1.2f);
             Assert.That(flow.CurrentScreen, Is.EqualTo(AppScreen.Result));
-            var stars = (TextMeshProUGUI)typeof(AppFlowController).GetField("resultStars", PrivateInstance).GetValue(flow);
-            Assert.That(stars.text, Is.EqualTo(GameLocalization.Text("1 / 3 YILDIZ", "1 / 3 STARS")));
+            var stars = UiQuery.FindById(flow, "Result Stars").GetComponent<AllinDefense.UI.Kit.UiStarRow>();
+            Assert.That(stars.Earned, Is.EqualTo(1));
+            Assert.That(stars.VisibleStars, Is.EqualTo(1));
         }
 
         [Test]

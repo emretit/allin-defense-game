@@ -130,6 +130,8 @@ namespace AllinDefense.UI
             yield return CaptureAcceptance("specialization");
             hud.CloseSpecializationChoices();
             session.StartNextWave();
+            if (newEnemyModal != null) yield return CaptureAcceptance("new-enemy");
+            while (newEnemyModal != null) AcknowledgeEnemy();
             yield return new WaitForSecondsRealtime(3f);
             yield return CaptureAcceptance("battle-active-wave");
             session.TogglePause();
@@ -139,7 +141,12 @@ namespace AllinDefense.UI
             yield return CaptureAcceptance("pause-map-confirmation");
             hud.GetComponentsInChildren<UiId>(true).First(id => id.Id == "KeepPlaying").GetComponent<Button>().onClick.Invoke();
             session.TogglePause();
-            ShowResult(false, 0, default);
+            foreach (var language in new[] { GameLanguage.Turkish, GameLanguage.English })
+            {
+                FrontendPreferences.Language = language;
+                ShowResult(false, 0, default);
+                yield return CaptureAcceptance("defeat-" + language);
+            }
             yield return CaptureAcceptance("defeat");
             acceptanceStage = 1;
             WriteAcceptance();
@@ -165,7 +172,13 @@ namespace AllinDefense.UI
                 yield return WinAcceptanceBattle();
                 if (session.Phase != GamePhase.Victory || BattleRules.StarsForLives(session.Lives, session.StartingLivesForLevel) != 3)
                     acceptanceReport.errors.Add("victory: battle did not produce a real three-star result");
-                yield return new WaitForSecondsRealtime(1.2f);
+                foreach (var language in new[] { GameLanguage.Turkish, GameLanguage.English })
+                {
+                    FrontendPreferences.Language = language;
+                    ShowResult(true, 3, session.CompletionReward);
+                    yield return new WaitForSecondsRealtime(1.5f);
+                    yield return CaptureAcceptance("victory-" + language);
+                }
                 yield return CaptureAcceptance("victory");
                 acceptanceStage = 2; WriteAcceptance();
                 reloadStarted = Time.realtimeSinceStartupAsDouble;
@@ -305,6 +318,7 @@ namespace AllinDefense.UI
             while (session.Phase != GamePhase.Victory && session.Phase != GamePhase.Defeat && Time.realtimeSinceStartupAsDouble < deadline)
             {
                 if (session.Phase is GamePhase.Preparing or GamePhase.Intermission) session.StartNextWave();
+                while (newEnemyModal != null) AcknowledgeEnemy();
                 for (int i = 0; i < 100 && session.Phase == GamePhase.Wave; i++) session.AdvanceBattle(.05f);
                 yield return null;
             }
@@ -317,10 +331,12 @@ namespace AllinDefense.UI
             while (session.CurrentWaveIndex < session.WaveCount - 1 && session.Phase != GamePhase.Defeat && Time.realtimeSinceStartupAsDouble < deadline)
             {
                 if (session.Phase is GamePhase.Preparing or GamePhase.Intermission) session.StartNextWave();
+                while (newEnemyModal != null) AcknowledgeEnemy();
                 for (int i = 0; i < 100 && session.Phase == GamePhase.Wave; i++) session.AdvanceBattle(.05f);
                 yield return null;
             }
             if (session.Phase is GamePhase.Preparing or GamePhase.Intermission) session.StartNextWave();
+            while (newEnemyModal != null) AcknowledgeEnemy();
             deadline = Time.realtimeSinceStartupAsDouble + 30;
             while (session.Phase == GamePhase.Wave && !session.Enemies.Any(enemy => enemy.IsAlive && enemy.Archetype == EnemyArchetype.Boss) &&
                    Time.realtimeSinceStartupAsDouble < deadline)

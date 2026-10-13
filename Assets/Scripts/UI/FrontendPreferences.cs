@@ -50,6 +50,12 @@ namespace AllinDefense.UI
             set => GameLocalization.SetLanguage(value);
         }
 
+        public static bool HasSeenEnemy(AllinDefense.Data.EnemyArchetype enemy) =>
+            GetBool(Prefix + "EnemySeen." + enemy, false);
+
+        public static void MarkEnemySeen(AllinDefense.Data.EnemyArchetype enemy) =>
+            SetBool(Prefix + "EnemySeen." + enemy, true);
+
         private static bool GetBool(string key, bool fallback) => PlayerPrefs.GetInt(key, fallback ? 1 : 0) != 0;
 
         private static void SetBool(string key, bool value)

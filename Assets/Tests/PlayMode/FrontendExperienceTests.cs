@@ -205,7 +205,8 @@ namespace AllinDefense.Tests
                     Assert.That(UiQuery.FindById(flow, "Settings").GetComponent<AllinDefense.UI.Kit.UiVisualState>().Icon.sprite,
                         Is.EqualTo(Resources.Load<DefenderPresentationCatalog>("Presentation/DefenderPresentationCatalog").frontendTheme.designSystem.iconSettings));
                     Assert.That(UiQuery.FindById(flow, "Chapter Stars").GetComponent<AllinDefense.UI.Kit.UiStarRow>(), Is.Not.Null);
-                    Assert.That(UiQuery.FindById(flow, "Save Error").gameObject.activeSelf, Is.False);
+                    Assert.That(UiQuery.FindById<UnityEngine.UI.Image>(flow, "Save Error").sprite,
+                        Is.EqualTo(Resources.Load<DefenderPresentationCatalog>("Presentation/DefenderPresentationCatalog").frontendTheme.designSystem.iconCheck));
                     UiQuery.FindById<UnityEngine.UI.Button>(flow, "Menu Hero").onClick.Invoke();
                     Assert.That(UiQuery.FindById(flow, "Hero Name Title").gameObject.activeInHierarchy, Is.True);
                     Call(flow, "CloseHeroName");
@@ -288,7 +289,7 @@ namespace AllinDefense.Tests
                     var buttons = flow.GetComponentsInChildren<UnityEngine.UI.Button>();
                     var selected = UiQuery.FindById<UnityEngine.UI.Button>(flow, language == GameLanguage.Turkish ? "Turkish Language" : "English Language");
                     var other = UiQuery.FindById<UnityEngine.UI.Button>(flow, language == GameLanguage.Turkish ? "English Language" : "Turkish Language");
-                    Assert.That(selected.GetComponent<UnityEngine.UI.Image>().color, Is.Not.EqualTo(other.GetComponent<UnityEngine.UI.Image>().color));
+                    Assert.That(selected.GetComponent<AllinDefense.UI.Kit.UiVisualState>().State, Is.Not.EqualTo(other.GetComponent<AllinDefense.UI.Kit.UiVisualState>().State));
                     Call(flow, "CloseSettings");
                 }
             }
@@ -342,5 +343,123 @@ namespace AllinDefense.Tests
             Assert.That(next.gameObject.activeSelf, Is.False);
             Assert.That(UiQuery.FindById<UnityEngine.UI.Button>(flow, "Retry Level").interactable, Is.True);
         }
+        [UnityTest]
+        public IEnumerator SettingsControlsPersistPreferences()
+        {
+            float music = FrontendPreferences.MusicVolume, effects = FrontendPreferences.SfxVolume;
+            bool motion = FrontendPreferences.ReducedMotion, shake = FrontendPreferences.CameraShake, haptics = FrontendPreferences.Haptics;
+            try
+            {
+                Call(flow, "OpenSettings");
+                UiQuery.FindById(flow, "MÜZİK Row").GetComponentInChildren<UnityEngine.UI.Slider>().value = .23f;
+                UiQuery.FindById(flow, "EFEKTLER Row").GetComponentInChildren<UnityEngine.UI.Slider>().value = .41f;
+                UiQuery.FindById(flow, "AZALTILMIŞ HAREKET Row").GetComponentInChildren<AllinDefense.UI.Kit.UiSwitch>().SetValue(!motion);
+                UiQuery.FindById(flow, "KAMERA SARSINTISI Row").GetComponentInChildren<AllinDefense.UI.Kit.UiSwitch>().SetValue(!shake);
+                UiQuery.FindById(flow, "TİTREŞİM Row").GetComponentInChildren<AllinDefense.UI.Kit.UiSwitch>().SetValue(!haptics);
+                Assert.That(FrontendPreferences.MusicVolume, Is.EqualTo(.23f));
+                Assert.That(FrontendPreferences.SfxVolume, Is.EqualTo(.41f));
+                Assert.That(FrontendPreferences.ReducedMotion, Is.EqualTo(!motion));
+                Assert.That(FrontendPreferences.CameraShake, Is.EqualTo(!shake));
+                Assert.That(FrontendPreferences.Haptics, Is.EqualTo(!haptics));
+                Assert.That(flow.GetComponentsInChildren<UiId>(true).Any(id => id.Id == "Settings Hero"), Is.False);
+                yield return null;
+            }
+            finally
+            {
+                FrontendPreferences.MusicVolume = music; FrontendPreferences.SfxVolume = effects;
+                FrontendPreferences.ReducedMotion = motion; FrontendPreferences.CameraShake = shake; FrontendPreferences.Haptics = haptics;
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator ResultStarsMatchRewardAndDefeatHidesCelebration()
+        {
+            foreach (int earned in new[] { 1, 2, 3 })
+            {
+                Call(flow, "ShowResult", true, earned, new CampaignCompletionReward(27, 68));
+                yield return new WaitForSecondsRealtime(1.5f);
+                var row = UiQuery.FindById(flow, "Result Stars").GetComponent<AllinDefense.UI.Kit.UiStarRow>();
+                Assert.That(row.Earned, Is.EqualTo(earned));
+                Assert.That(row.VisibleStars, Is.EqualTo(earned));
+                var assets = Resources.Load<DefenderPresentationCatalog>("Presentation/DefenderPresentationCatalog").frontendTheme.designSystem;
+                Assert.That(row.GetComponentsInChildren<UnityEngine.UI.Image>().Count(image => image.sprite == assets.iconStarFilled), Is.EqualTo(earned));
+            }
+            Call(flow, "ShowResult", false, 0, default(CampaignCompletionReward));
+            Assert.That(UiQuery.FindById(flow, "Result Stars").gameObject.activeSelf, Is.False);
+            Assert.That(UiQuery.FindById(flow, "Next Level").gameObject.activeSelf, Is.False);
+            Assert.That(UiQuery.FindById(flow, "Defence Advice").gameObject.activeSelf, Is.True);
+        }
+
+        [UnityTest]
+        public IEnumerator VictoryAccountSuggestionOpensPortraitAccountAndReturnsToMap()
+        {
+            session.SetCampaignLevel(1);
+            Call(flow, "ShowResult", true, 3, new CampaignCompletionReward(27, 68));
+            yield return new WaitForSecondsRealtime(1.4f);
+            var link = UiQuery.FindById<UnityEngine.UI.Button>(flow, "Result Link Account");
+            Assert.That(link.gameObject.activeInHierarchy, Is.True);
+            link.onClick.Invoke();
+            yield return new WaitForSecondsRealtime(.3f);
+            Assert.That(flow.CurrentScreen, Is.EqualTo(AppScreen.Login));
+            Assert.That(flow.GetComponentInChildren<UnityEngine.UI.CanvasScaler>().referenceResolution, Is.EqualTo(new Vector2(1080, 1920)));
+            Assert.That(UiQuery.FindById(flow, "Guest Sign In").gameObject.activeSelf, Is.False);
+            Call(flow, "ReturnFromAccount");
+            Assert.That(flow.CurrentScreen, Is.EqualTo(AppScreen.Campaign));
+        }
+
+        [UnityTest]
+        public IEnumerator ResultUnlockChipOnlyShowsBattleProgressAfterAccountSwitch()
+        {
+            flow.CompleteServiceSignIn(PlayerAuthProvider.PlayerAccount, "returning-player", "Defender");
+            flow.Progress.Data.unlockedLevel = 5;
+            flow.Progress.Save();
+            session.SetCampaignLevel(4);
+            Call(flow, "ShowResult", true, 3, new CampaignCompletionReward(27, 68));
+            Assert.That(UiQuery.FindById(flow, "Unlocked Chapter").gameObject.activeSelf, Is.False);
+            Call(flow, "ShowScreen", AppScreen.Battle);
+            session.SetCampaignLevel(5);
+            flow.Progress.Data.unlockedLevel = 6;
+            flow.Progress.Save();
+            Call(flow, "ShowResult", true, 3, new CampaignCompletionReward(27, 68));
+            Assert.That(UiQuery.FindById(flow, "Unlocked Chapter").gameObject.activeSelf, Is.True);
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator NewEnemyAppearsOnceAndRestoresPhaseAndSpeed()
+        {
+            const string key = "AllinDefense.Frontend.EnemySeen.Raider";
+            bool existed = PlayerPrefs.HasKey(key); int previous = PlayerPrefs.GetInt(key);
+            try
+            {
+                PlayerPrefs.DeleteKey(key);
+                flow.GetComponent<AudioListener>().enabled = false;
+                session.Initialize();
+                Call(flow, "ShowScreen", AppScreen.Battle);
+                Call(session, "SetPhase", GamePhase.Preparing);
+                Time.timeScale = 2f;
+                var wave = new AllinDefense.Data.WaveDefinition("intro", "", 0, false,
+                    new AllinDefense.Data.SpawnGroupDefinition(AllinDefense.Data.EnemyArchetype.Raider, 1, 0, 1));
+                typeof(GameSessionController).GetField("waves", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(session, new[] { wave });
+                session.StartNextWave();
+                Assert.That(session.Phase, Is.EqualTo(GamePhase.Paused));
+                Assert.That(Time.timeScale, Is.Zero);
+                Assert.That(FrontendPreferences.HasSeenEnemy(AllinDefense.Data.EnemyArchetype.Raider), Is.False);
+                Assert.That(UiQuery.FindById(flow, "New Enemy").gameObject.activeInHierarchy, Is.True);
+                Call(flow, "AcknowledgeEnemy");
+                Assert.That(FrontendPreferences.HasSeenEnemy(AllinDefense.Data.EnemyArchetype.Raider), Is.True);
+                Assert.That(session.Phase, Is.EqualTo(GamePhase.Wave));
+                Assert.That(Time.timeScale, Is.EqualTo(2f));
+                Call(session, "SetPhase", GamePhase.Preparing);
+                Assert.That((bool)Call(flow, "ShowNewEnemy", wave), Is.False);
+                yield return null;
+            }
+            finally
+            {
+                if (existed) PlayerPrefs.SetInt(key, previous); else PlayerPrefs.DeleteKey(key);
+                PlayerPrefs.Save(); Time.timeScale = 1;
+            }
+        }
+
     }
 }
