@@ -46,7 +46,11 @@ namespace AllinDefense.Presentation
                 }
             }
 
-            if (visualPrefab != null)
+            if (visualPrefab != null && catalog != null && visualPrefab == catalog.outpostSlotPrefab)
+            {
+                DefenderSlotVisual.Install(root, catalog);
+            }
+            else if (visualPrefab != null)
             {
                 var motion = new GameObject("Motion");
                 motion.transform.SetParent(root.transform, false);
@@ -58,7 +62,7 @@ namespace AllinDefense.Presentation
                 visual.transform.localRotation = collider == PresentationCollider.Capsule
                     ? visualPrefab.transform.localRotation : Quaternion.identity;
                 visual.transform.localScale = Vector3.one * visualScale;
-                ApplyPalette(visual, catalog, true);
+                ApplyPalette(visual, catalog, true, name);
                 if (collider == PresentationCollider.Capsule)
                 {
                     root.AddComponent<StylizedActorView>().Configure(motion.transform, catalog, actorAnimator,
@@ -204,7 +208,7 @@ namespace AllinDefense.Presentation
             return instance;
         }
 
-        public static void ApplyPalette(GameObject instance, DefenderPresentationCatalog catalog, bool limitToTwoMaterials = false)
+        public static void ApplyPalette(GameObject instance, DefenderPresentationCatalog catalog, bool limitToTwoMaterials = false, string identityName = null)
         {
             if (instance == null || catalog == null) return;
             Renderer[] renderers = instance.GetComponentsInChildren<Renderer>(true);
@@ -213,9 +217,9 @@ namespace AllinDefense.Presentation
             {
                 string allNames = string.Join(" ", renderers.SelectMany(renderer => renderer.sharedMaterials)
                     .Where(material => material != null).Select(material => material.name.ToLowerInvariant()));
-                string identity = instance.name.ToLowerInvariant();
-                teamMaterial = identity.Contains("mage") || identity.Contains("support") ? catalog.magicMaterial
-                    : identity.Contains("regenerator") ? catalog.forestMaterial
+                string identity = (identityName ?? instance.name).ToLowerInvariant();
+                teamMaterial = identity.Contains("mage") ? catalog.magicMaterial
+                    : identity.Contains("regenerator") || identity.Contains("support") ? catalog.enemyMaterial
                     : identity.Contains("archer") || identity.Contains("barracks") || identity.Contains("knight") || identity.Contains("guard")
                         ? catalog.defenderMaterial
                     : identity.Contains("raider") || identity.Contains("vanguard") || identity.Contains("boss") || identity.Contains("siege")

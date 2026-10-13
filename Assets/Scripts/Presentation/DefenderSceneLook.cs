@@ -1,5 +1,6 @@
 using System.Collections;
 using AllinDefense.Data;
+using AllinDefense.UI;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -57,19 +58,20 @@ namespace AllinDefense.Presentation
             cameraData.stopNaN = true;
 
             RenderSettings.ambientMode = AmbientMode.Trilight;
-            RenderSettings.ambientSkyColor = Color.Lerp(new Color(0.21f, 0.30f, 0.44f), palette.keyLightColor, 0.18f);
-            RenderSettings.ambientEquatorColor = Color.Lerp(new Color(0.085f, 0.15f, 0.205f), palette.groundColor, 0.28f);
-            RenderSettings.ambientGroundColor = new Color(0.024f, 0.052f, 0.062f);
+            RenderSettings.ambientSkyColor = Color.Lerp(UiTokens.Moon * 0.48f, palette.keyLightColor, 0.08f);
+            RenderSettings.ambientEquatorColor = Color.Lerp(new Color(0.14f, 0.18f, 0.23f), palette.groundColor, 0.12f);
+            RenderSettings.ambientGroundColor = UiTokens.Night;
             RenderSettings.reflectionIntensity = 0.38f;
             RenderSettings.fog = true;
             RenderSettings.fogMode = FogMode.Linear;
-            RenderSettings.fogColor = palette.fogColor;
-            RenderSettings.fogStartDistance = 25f;
-            RenderSettings.fogEndDistance = 50f;
+            RenderSettings.fogColor = Color.Lerp(UiTokens.Night, palette.fogColor, 0.18f);
+            camera.backgroundColor = RenderSettings.fogColor;
+            RenderSettings.fogStartDistance = 30f;
+            RenderSettings.fogEndDistance = 65f;
 
-            ConfigureSun(quality, palette.keyLightColor, biomeIndex);
-            EnsureFillLight("Moon Fill", new Vector3(11f, 9f, 5.5f), new Color(0.22f, 0.43f, 0.82f), quality, 0.96f, 24f);
-            EnsureFillLight("Gate Ember Fill", new Vector3(-1.2f, 3.4f, 2f), new Color(1f, 0.30f, 0.075f), quality, 1.82f, 7.2f);
+            ConfigureSun(quality, Color.Lerp(UiTokens.Moon, Color.white, 0.52f), biomeIndex);
+            EnsureFillLight("Moon Fill", new Vector3(11f, 9f, 5.5f), UiTokens.Moon, quality, 0.96f, 24f);
+            EnsureFillLight("Gate Ember Fill", new Vector3(-1.2f, 3.4f, 2f), UiTokens.GoldLow, quality, 1.82f, 7.2f);
             ConfigureVolume(quality);
         }
 
@@ -115,7 +117,7 @@ namespace AllinDefense.Presentation
             sun.color = keyColor;
             sun.intensity = 1.58f;
             sun.shadows = (qualityTier == VisualQualityTier.High || qualityTier == VisualQualityTier.Unknown) ? LightShadows.Soft : LightShadows.None;
-            sun.shadowStrength = 0.74f;
+            sun.shadowStrength = 0.60f;
             sun.shadowBias = 0.045f;
             sun.shadowNormalBias = 0.32f;
             sun.transform.rotation = Quaternion.Euler(48f, -38f, 0f);
@@ -179,8 +181,8 @@ namespace AllinDefense.Presentation
 
             colorAdjustments = runtimeProfile.Add<ColorAdjustments>();
             colorAdjustments.postExposure.Override(qualityTier == VisualQualityTier.Low ? 0.05f : 0.08f);
-            colorAdjustments.contrast.Override(19f);
-            colorAdjustments.saturation.Override(8f);
+            colorAdjustments.contrast.Override(12f);
+            colorAdjustments.saturation.Override(-6f);
             baseColorFilter = new Color(0.96f, 0.985f, 1f);
             colorAdjustments.colorFilter.Override(baseColorFilter);
 
@@ -190,7 +192,7 @@ namespace AllinDefense.Presentation
 
             vignette = runtimeProfile.Add<Vignette>();
             vignette.color.Override(new Color(0.01f, 0.025f, 0.055f));
-            baseVignetteIntensity = qualityTier == VisualQualityTier.Low ? 0.15f : 0.18f;
+            baseVignetteIntensity = qualityTier == VisualQualityTier.Low ? 0.10f : 0.13f;
             vignette.intensity.Override(baseVignetteIntensity);
             vignette.smoothness.Override(0.50f);
         }

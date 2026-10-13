@@ -18,6 +18,7 @@ namespace AllinDefense.Presentation
             new(10f, 0f, 3.5f), new(16f, 0f, 3.5f), new(16f, 0f, 9f), new(24f, 0f, 9f)
         };
 
+        private Texture2D groundTexture;
         private readonly List<Mesh> runtimeMeshes = new();
         private readonly List<Material> runtimeMaterials = new();
         private IReadOnlyList<Vector3> roadPath = DefaultRoadPath;
@@ -164,6 +165,22 @@ namespace AllinDefense.Presentation
         private void CreateContinuousGround(Material material)
         {
             const string name = "Continuous Battlefield Ground";
+            material = CreateRuntimeMaterial("DC Moonlit Ground", new Color(0.21f, 0.25f, 0.25f), false, material);
+            const int size = 128;
+            groundTexture = new Texture2D(size, size, TextureFormat.RGBA32, true)
+                { name = "Battlefield Ground Tonal Noise", wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Bilinear };
+            var pixels = new Color[size * size];
+            for (int y = 0; y < size; y++)
+                for (int x = 0; x < size; x++)
+                {
+                    float u = x / (float)(size - 1), v = y / (float)(size - 1);
+                    float edge = Mathf.SmoothStep(0f, 1f, Mathf.Max(Mathf.Abs(u - .5f) * 3.3f, Mathf.Abs(v - .5f) * 4f));
+                    float noise = Mathf.PerlinNoise(u * 75f + 6f, v * 75f + 6f);
+                    pixels[y * size + x] = Color.Lerp(new Color(.79f, .87f, .86f), new Color(.29f, .39f, .48f), edge) * (.92f + noise * .16f);
+                }
+            groundTexture.SetPixels(pixels);
+            groundTexture.Apply(true, true);
+            material.SetTexture("_BaseMap", groundTexture);
             // Extend well beyond all supported camera frames, under the HUD and device insets.
             // Match the authored ground height without adding a collider to the battle path.
             CreateMeshObject(name, new List<Vector3>
@@ -177,8 +194,8 @@ namespace AllinDefense.Presentation
         private void CreateGroundValueFields(Material grassSource, Material earthSource)
         {
             BiomeDefinition palette = CampaignLevelFactory.Biome(biomeIndex);
-            Material coldGrass = CreateRuntimeMaterial("DC Cold Grass Value", Color.Lerp(palette.groundColor, Color.black, 0.28f), false, grassSource);
-            Material moonGrass = CreateRuntimeMaterial("DC Moon Grass Value", Color.Lerp(palette.groundColor, palette.accentColor, 0.22f), false, grassSource);
+            Material coldGrass = CreateRuntimeMaterial("DC Cold Grass Value", Color.Lerp(new Color(.14f, .18f, .18f), palette.groundColor, .12f), false, grassSource);
+            Material moonGrass = CreateRuntimeMaterial("DC Moon Grass Value", Color.Lerp(new Color(.22f, .27f, .25f), palette.groundColor, .12f), false, grassSource);
             Material warmScuff = CreateRuntimeMaterial("DC Gate Ground Scuff", Color.Lerp(palette.groundColor, new Color(0.08f, 0.05f, 0.03f), 0.48f), false, earthSource);
 
             var coldVertices = new List<Vector3>(96);
@@ -252,7 +269,7 @@ namespace AllinDefense.Presentation
         private void CreateRoadSurface()
         {
             BiomeDefinition palette = CampaignLevelFactory.Biome(biomeIndex);
-            Color roadTint = Color.Lerp(new Color(0.455f, 0.355f, 0.245f), palette.accentColor, biomeIndex == 0 ? 0.04f : 0.16f);
+            Color roadTint = Color.Lerp(new Color(0.40f, 0.36f, 0.29f), palette.accentColor, biomeIndex == 0 ? 0.04f : 0.16f);
             Material surface = CreateRuntimeMaterial("DC Organic Road Surface", roadTint, false);
             var vertices = new List<Vector3>(420);
             var triangles = new List<int>(720);
@@ -315,7 +332,7 @@ namespace AllinDefense.Presentation
 
         private void CreateRoadCobbles()
         {
-            Material cobble = CreateRuntimeMaterial("DC Road Cobble", new Color(0.30f, 0.315f, 0.30f), false);
+            Material cobble = CreateRuntimeMaterial("DC Road Cobble", new Color(0.23f, 0.27f, 0.29f), false);
             var vertices = new List<Vector3>(8000);
             var triangles = new List<int>(12000);
             int stoneIndex = 0;
@@ -362,7 +379,7 @@ namespace AllinDefense.Presentation
                                     0.23f - wave * 0.035f));
                             stoneIndex++;
                         }
-                        distance += 0.54f + Mathf.Abs(Mathf.Sin((stoneIndex + segment) * 1.91f)) * 0.22f;
+                        distance += 0.78f + Mathf.Abs(Mathf.Sin((stoneIndex + segment) * 1.91f)) * 0.22f;
                     }
                 }
 
@@ -502,6 +519,8 @@ namespace AllinDefense.Presentation
             var mesh = new Mesh { name = objectName + " Mesh", indexFormat = IndexFormat.UInt32 };
             mesh.SetVertices(vertices);
             mesh.SetTriangles(triangles, 0);
+            if (objectName == "Continuous Battlefield Ground")
+                mesh.uv = new[] { Vector2.zero, Vector2.right, Vector2.one, Vector2.up };
             mesh.RecalculateNormals();
             if (objectName == "Road Organic Earth Surface" || objectName == "Road Surface")
             {
@@ -654,6 +673,7 @@ namespace AllinDefense.Presentation
 
         private void OnDestroy()
         {
+            if (groundTexture != null) Destroy(groundTexture);
             foreach (Mesh mesh in runtimeMeshes)
                 if (mesh != null) Destroy(mesh);
             foreach (Material material in runtimeMaterials)

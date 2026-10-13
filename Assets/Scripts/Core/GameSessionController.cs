@@ -3000,6 +3000,7 @@ namespace AllinDefense.Core
     {
         private GameSessionController session;
         private Renderer cachedRenderer;
+        private DefenderSlotVisual slotVisual;
         private Color normalColor;
         public int Index { get; private set; }
         public GreyboxOutpost Occupant { get; private set; }
@@ -3010,6 +3011,7 @@ namespace AllinDefense.Core
             Index = index;
             normalColor = color;
             cachedRenderer = GetComponent<Renderer>();
+            slotVisual = GetComponent<DefenderSlotVisual>();
         }
 
         public void SetOccupant(GreyboxOutpost value)
@@ -3020,6 +3022,7 @@ namespace AllinDefense.Core
 
         public void SetSelected(bool selected)
         {
+            if (slotVisual != null) slotVisual.SetSelected(selected);
             if (cachedRenderer == null) return;
             cachedRenderer.sharedMaterial.color = selected
                 ? new Color(0.25f, 0.95f, 1f)
