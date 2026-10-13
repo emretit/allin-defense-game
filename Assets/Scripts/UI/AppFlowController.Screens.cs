@@ -341,6 +341,9 @@ namespace AllinDefense.UI
                 () => ShowScreen(AppScreen.Login));
             account.gameObject.SetActive(false);
             SetAnchors((RectTransform)account.transform, Vector2.zero, new Vector2(1, 0), new Vector2(28, 128), new Vector2(-28, 268));
+            deletionWelcomeStatus = CreateText("Account Deleted Status", card.transform, "", 28, catalog.bodyFont,
+                FontStyles.Normal, TextAlignmentOptions.Center, theme.textPrimary);
+            SetAnchors(deletionWelcomeStatus.rectTransform, Vector2.zero, new Vector2(1, 0), new Vector2(28, 160), new Vector2(-28, 260));
             var note = CreateText("Guest Note", card.transform,
                 FrontendCopy.GuestNote, 27, catalog.bodyFont,
                 FontStyles.Normal, TextAlignmentOptions.Center, theme.textMuted);
@@ -383,6 +386,7 @@ namespace AllinDefense.UI
             var links = MenuStack(card, "Legal Links", false);
             LegalLink(links, "Privacy Policy", FrontendCopy.PrivacyPolicy, theme.privacyPolicyUrl);
             LegalLink(links, "Terms Of Service", FrontendCopy.TermsOfService, theme.termsOfServiceUrl);
+            AccountDeleteButton(card, "Delete Account", FrontendCopy.DeleteAccount, ConfirmAccountDeletion);
         }
 
         private void LegalLink(Transform parent, string id, LocalizedCopy copy, string url)

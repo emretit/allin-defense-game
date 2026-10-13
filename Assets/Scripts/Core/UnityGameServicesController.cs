@@ -21,6 +21,8 @@ namespace AllinDefense.Core
         private bool initialized;
         private bool restoring;
         private bool syncing;
+        private bool deletionSuspended;
+        private int authenticationOperations;
         private bool playerAccountsSubscribed;
         private Task initialization;
         private bool syncRequested;
@@ -36,17 +38,19 @@ namespace AllinDefense.Core
             flow = appFlow;
             progress = progressStore;
             flow.AuthenticationRequested += HandleAuthenticationRequested;
+            flow.AccountDeletion = DeleteAccountAsync;
             progress.Changed += HandleProgressChanged;
             RestoreSession();
         }
 
         private async void RestoreSession()
         {
-            if (restoring || progress == null || string.IsNullOrWhiteSpace(Application.cloudProjectId)) return;
+            if (deletionSuspended || restoring || progress == null || string.IsNullOrWhiteSpace(Application.cloudProjectId)) return;
             restoring = true;
             try
             {
                 await EnsureInitializedAsync();
+                if (deletionSuspended) return;
                 if (!AuthenticationService.Instance.IsSignedIn)
                 {
                     if (!AuthenticationService.Instance.SessionTokenExists &&
@@ -63,31 +67,60 @@ namespace AllinDefense.Core
                         auth.SignOut(true);
                         await auth.SignInAnonymouslyAsync();
                     }
+                    if (deletionSuspended) return;
                     progress.SignIn(PlayerAuthProvider.Guest, AuthenticationService.Instance.PlayerId, progress.Data.displayName);
                 }
                 RequestSync();
             }
             catch (Exception error)
             {
-                progress.FailSync();
+                if (!deletionSuspended) progress.FailSync();
                 ScheduleRetry();
                 Debug.LogWarning("Cloud session restore deferred: " + error.Message);
             }
             finally { restoring = false; }
         }
 
-        public void RequestSync() { syncRequested = true; nextAttempt = 0f; }
+        public void RequestSync() { if (deletionSuspended) return; syncRequested = true; nextAttempt = 0f; }
+        public async Task DeleteAccountAsync(bool localOnly)
+        {
+            if (deletionSuspended) throw new InvalidOperationException("Account deletion already in progress.");
+            deletionSuspended = true;
+            syncRequested = false;
+            try
+            {
+                while (syncing || restoring || authenticationOperations > 0) await Task.Yield();
+                if (!localOnly)
+                {
+                    await EnsureInitializedAsync();
+                    await AuthenticationService.Instance.DeleteAccountAsync();
+                }
+                if (initialized)
+                {
+                    try { if (PlayerAccountService.Instance.IsSignedIn) PlayerAccountService.Instance.SignOut(); }
+                    catch (Exception error) { Debug.LogWarning("Player Account sign-out: " + error.Message); }
+                    AuthenticationService.Instance.SignOut(true);
+                }
+            }
+            catch
+            {
+                deletionSuspended = false;
+                throw;
+            }
+        }
+
         public static bool CanRestoreGuestOwner(string localOwner,string sessionOwner,bool registered) =>
             !registered && (string.IsNullOrEmpty(localOwner) || localOwner == "local-guest" || localOwner == sessionOwner);
         private void Update()
         {
-            if (!syncRequested || syncing || Time.realtimeSinceStartup < nextAttempt) return;
+            if (deletionSuspended || !syncRequested || syncing || Time.realtimeSinceStartup < nextAttempt) return;
             syncRequested = false;
             if (!initialized || !AuthenticationService.Instance.IsSignedIn) RestoreSession();
             else _ = SynchronizeCloudAsync();
         }
         private void ScheduleRetry()
         {
+            if (deletionSuspended) return;
             failures = Math.Min(failures + 1, 6);
             nextAttempt = Time.realtimeSinceStartup + Math.Min(60f, (float)Math.Pow(2, failures));
             syncRequested = true;
@@ -99,6 +132,8 @@ namespace AllinDefense.Core
         {
             if ((int)provider is 2 or 3)
                 provider = PlayerAuthProvider.PlayerAccount;
+            if (deletionSuspended && progress.Data.playerId != "local-guest") return;
+            deletionSuspended = false;
             requestedProvider = provider;
             bool wasGuest = progress.Data.authProvider == PlayerAuthProvider.Guest;
             if (provider == PlayerAuthProvider.Guest)
@@ -119,9 +154,11 @@ namespace AllinDefense.Core
                 return;
             }
 
+            authenticationOperations++;
             try
             {
                 await EnsureInitializedAsync();
+                if (deletionSuspended) return;
                 if (provider == PlayerAuthProvider.Guest)
                 {
                     if (AuthenticationService.Instance.IsSignedIn &&
@@ -155,10 +192,13 @@ namespace AllinDefense.Core
             {
                 HandleSignInFailure(provider, exception);
             }
+            finally { authenticationOperations--; }
         }
 
         private async void HandlePlayerAccountSignedIn()
         {
+            if (deletionSuspended) return;
+            authenticationOperations++;
             try
             {
                 await SignInWithPlayerAccountAsync();
@@ -167,10 +207,12 @@ namespace AllinDefense.Core
             {
                 HandleSignInFailure(requestedProvider, exception);
             }
+            finally { authenticationOperations--; }
         }
 
         private async Task SignInWithPlayerAccountAsync()
         {
+            if (deletionSuspended) return;
             // Account sign-in changes identity only. Guest progression needs the separate explicit import action.
             if (AuthenticationService.Instance.IsSignedIn) AuthenticationService.Instance.SignOut();
             await AuthenticationService.Instance.SignInWithUnityAsync(PlayerAccountService.Instance.AccessToken);
@@ -179,9 +221,11 @@ namespace AllinDefense.Core
 
         private async Task CompleteAuthenticationAsync(PlayerAuthProvider provider)
         {
+            if (deletionSuspended) return;
             string displayName = provider == PlayerAuthProvider.PlayerAccount
                 ? await ResolvePlayerNameAsync()
                 : "Misafir Muhafız";
+            if (deletionSuspended) return;
             syncing = true;
             try
             {
@@ -193,6 +237,7 @@ namespace AllinDefense.Core
             }
 
             bool synchronized = await SynchronizeCloudAsync();
+            if (deletionSuspended) return;
             flow?.SetLoginStatus(synchronized
                 ? "İlerleme güvenli bulut kaydıyla eşitlendi."
                 : "Çevrimdışı ilerleme korunuyor; bağlantı gelince eşitlenecek.");
@@ -209,6 +254,7 @@ namespace AllinDefense.Core
 
         private async Task<bool> SynchronizeCloudAsync()
         {
+            if (deletionSuspended) return false;
             if (!initialized || !AuthenticationService.Instance.IsSignedIn) { ScheduleRetry(); return false; }
             if (progress.Data.playerId != AuthenticationService.Instance.PlayerId)
             { progress.FailSync(true); return false; }
@@ -219,13 +265,13 @@ namespace AllinDefense.Core
             try
             {
                 CampaignSyncResult result = await GetStateAsync(progress.Data);
-                if (progress.Data.playerId != owner) return false;
+                if (deletionSuspended || progress.Data.playerId != owner) return false;
                 progress.ApplyServerSync(result);
                 while (progress.PendingClaimCount > 0)
                 {
                     IReadOnlyList<CampaignCompletionClaim> pending = progress.PendingClaims();
                     result = await SubmitPendingAsync(pending);
-                    if (progress.Data.playerId != owner) return false;
+                    if (deletionSuspended || progress.Data.playerId != owner) return false;
                     progress.ApplyServerSync(result);
                 }
                 failures = 0;
@@ -233,7 +279,7 @@ namespace AllinDefense.Core
             }
             catch (Exception exception)
             {
-                progress.FailSync();
+                if (!deletionSuspended) progress.FailSync();
                 ScheduleRetry();
                 Debug.LogWarning($"Campaign sync is pending: {exception.Message}");
                 return false;
@@ -284,6 +330,7 @@ namespace AllinDefense.Core
 
         private void HandleSignInFailure(PlayerAuthProvider provider, Exception exception)
         {
+            if (deletionSuspended) return;
             Debug.LogWarning($"Unity Authentication is unavailable: {exception.Message}");
             if (provider == PlayerAuthProvider.Guest)
             {

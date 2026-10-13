@@ -25,6 +25,13 @@ namespace AllinDefense.Core
             }
         }
 
+        public static void Reset()
+        {
+            foreach (string key in new[] { HighWaveKey, TotalGoldKey, MapIndexKey, UnlockedTowersKey })
+                PlayerPrefs.DeleteKey(key);
+            PlayerPrefs.Save();
+        }
+
         public static void RecordWaveCompleted(int waveNumberCompleted)
         {
             int prev = HighWaveReached;

@@ -32,6 +32,14 @@ namespace AllinDefense.UI
     /// </summary>
     public static class FrontendCopy
     {
+        public static readonly LocalizedCopy DeleteAccount = new("HESABI SİL", "DELETE ACCOUNT");
+        public static readonly LocalizedCopy DeleteAccountTitle = new("Hesap silinsin mi?", "Delete your account?");
+        public static readonly LocalizedCopy DeleteAccountHint = new("Tüm ilerlemen ve bulut kaydın kalıcı olarak silinir. Bu işlem geri alınamaz.", "All your progress and cloud save will be permanently deleted. This cannot be undone.");
+        public static readonly LocalizedCopy DeleteAccountCancel = new("VAZGEÇ", "CANCEL");
+        public static readonly LocalizedCopy DeleteAccountConfirm = new("KALICI OLARAK SİL", "PERMANENTLY DELETE");
+        public static readonly LocalizedCopy DeletingAccount = new("Siliniyor...", "Deleting...");
+        public static readonly LocalizedCopy AccountDeleted = new("Hesabın silindi.", "Your account has been deleted.");
+        public static readonly LocalizedCopy AccountDeleteFailed = new("Hesap silinemedi. Bağlantını kontrol edip tekrar dene.", "Could not delete your account. Check your connection and try again.");
         public static readonly LocalizedCopy PauseRestart = new("YENİDEN BAŞLAT", "RESTART");
         public static readonly LocalizedCopy BattlePhase = new("SAVAŞTA", "IN BATTLE");
         public static readonly LocalizedCopy BossPhase = new("BOSS", "BOSS");

@@ -127,6 +127,29 @@ namespace AllinDefense.Core
 
         private string ProfilePath(string key) => Path.Combine(rootPath + ".profiles", key + ".json");
 
+        public void DeleteLocalAccount()
+        {
+            if (Directory.Exists(rootPath + ".profiles")) Directory.Delete(rootPath + ".profiles", true);
+            foreach (string path in Directory.Exists(Path.GetDirectoryName(rootPath))
+                ? Directory.GetFiles(Path.GetDirectoryName(rootPath), Path.GetFileName(rootPath) + "*")
+                : Array.Empty<string>())
+            {
+                if (Directory.Exists(path)) continue;
+                File.Delete(path);
+            }
+            string legacy = Path.Combine(Application.persistentDataPath, FileName);
+            if (rootPath == Path.Combine(Application.persistentDataPath, "closed-test", FileName))
+                foreach (string suffix in new[] { "", ".bak", ".tmp", ".legacy-v3" })
+                    if (File.Exists(legacy + suffix)) File.Delete(legacy + suffix);
+            Data = Normalize(new CampaignSaveData { playerId = "local-guest" });
+            ProfileKey = "guest";
+            SavePath = ProfilePath(ProfileKey);
+            RecoveredFromBackup = false;
+            Save();
+            SetSyncStatus(CampaignSyncStatus.LocalOnly);
+            ProfileChanged?.Invoke();
+        }
+
         public bool TrySetHeroName(string value)
         {
             if (!HeroIdentity.TryNormalize(value, out string name)) return false;
