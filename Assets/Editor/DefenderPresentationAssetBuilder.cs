@@ -11,6 +11,8 @@ using AllinDefense.UI;
 using AllinDefense.UI.Kit;
 using TMPro;
 using UnityEditor;
+using UnityEditor.U2D;
+using UnityEngine.U2D;
 using UnityEditor.Animations;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -247,6 +249,7 @@ namespace AllinDefense.Editor
             catalog.barracksIcon = Icon("Barracks");
             catalog.mageIcon = Icon("Mage");
             catalog.abilityIcon = Icon("Ability");
+            BindRadialIcons(catalog);
             catalog.actorAnimator = actorAnimator;
             catalog.actorClips = actorClips;
             catalog.navyMaterial = materials["Navy"];
@@ -531,6 +534,22 @@ namespace AllinDefense.Editor
                 TextureImporterCompression.CompressedHQ, TextureImporterFormat.ASTC_4x4);
             ConfigureTextureImport(BrandLaunchPath, TextureImporterType.Default, 2048, false,
                 TextureImporterCompression.CompressedHQ, TextureImporterFormat.ASTC_6x6);
+        }
+
+        private static void BindRadialIcons(DefenderPresentationCatalog catalog)
+        {
+            var atlas = AssetDatabase.LoadAssetAtPath<SpriteAtlas>(UiDesignSystemAssetBuilder.AtlasPath);
+            var existing = SpriteAtlasExtensions.GetPackables(atlas);
+            foreach (string name in new[] { "Upgrade", "Sell", "RapidFire", "Sharpshooter", "ShieldGuard", "AssaultGuard", "Blast", "Frost" })
+            {
+                string path = $"Assets/Art/UI/Radial/Icon{name}.png";
+                var sprite = AssetDatabase.LoadAssetAtPath<Sprite>(path);
+                if (sprite == null) throw new InvalidOperationException("Missing radial icon: " + path);
+                typeof(DefenderPresentationCatalog).GetField($"radial{name}Icon").SetValue(catalog, sprite);
+                var texture = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
+                if (!existing.Contains(texture)) SpriteAtlasExtensions.Add(atlas, new UnityEngine.Object[] { texture });
+            }
+            EditorUtility.SetDirty(atlas);
         }
 
         private static Sprite Icon(string name)
@@ -1294,6 +1313,7 @@ namespace AllinDefense.Editor
                 throw new InvalidOperationException("HUD regeneration requires the existing presentation catalog, sprites and fonts.");
 
             Directory.CreateDirectory(GeneratedRoot);
+            BindRadialIcons(catalog);
             if (catalog.frontendTheme.designSystem.iconEnemy == null) UiDesignSystemAssetBuilder.BuildSystemIcons();
             catalog.hudPrefab = CreateHudPrefab(catalog.panelSprite, catalog.uiFrameSprite,
                 catalog.bodyFont, catalog.titleFont, regenerate: true);

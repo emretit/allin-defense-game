@@ -91,6 +91,18 @@ MonoBehaviour:
   barracksIcon: {fileID: 21300000, guid: dfe5224c4b41048a781beb5c939b5e02, type: 3}
   mageIcon: {fileID: 21300000, guid: 933850c9f3add4fc3b7ba8bca8b39c88, type: 3}
   abilityIcon: {fileID: 21300000, guid: 8ced09abc30be4d1c95a3e67645a4dc4, type: 3}
+  radialUpgradeIcon: {fileID: 21300000, guid: 51fab91d51b345df9d26123caa4f6a43, type: 3}
+  radialSellIcon: {fileID: 21300000, guid: 1542431df7694bbf9822a802d6d87988, type: 3}
+  radialRapidFireIcon: {fileID: 21300000, guid: adab1dfbbcef4a7f913654215f8723f5,
+    type: 3}
+  radialSharpshooterIcon: {fileID: 21300000, guid: 0bbc035017ae479eace44f5caa04a0da,
+    type: 3}
+  radialShieldGuardIcon: {fileID: 21300000, guid: b0ac3a7b8aae4966820db81b686db248,
+    type: 3}
+  radialAssaultGuardIcon: {fileID: 21300000, guid: ea03b450260f4f47897323cd11b0c025,
+    type: 3}
+  radialBlastIcon: {fileID: 21300000, guid: 0e1fa1286b5742daa1f12e66cd8a3edd, type: 3}
+  radialFrostIcon: {fileID: 21300000, guid: cafc872e9d0e47e38f25bac4c4a9b75f, type: 3}
   actorAnimator: {fileID: 9100000, guid: 0288fdeeebb504b70ac1acfc636155f0, type: 2}
   actorClips:
   - {fileID: 7400000, guid: 313b9b992f872421a8fa3908d4fa95c7, type: 2}

@@ -52,8 +52,153 @@ namespace AllinDefense.Tests
             Object.Destroy(session.gameObject); yield return null;
             InputSystem.settings.backgroundBehavior = backgroundBehavior;
             InputSystem.settings.editorInputBehaviorInPlayMode = editorInputBehavior;
+#if UNITY_EDITOR
+            var review = System.AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType("AllinDefense.Editor.FrontendExperienceReview")).FirstOrDefault(type => type != null);
+            review?.GetMethod("RestoreSize").Invoke(null, null);
+#endif
             GameLocalization.SetLanguage(language); Time.timeScale = 1;
         }
+        [UnityTest] public IEnumerator PaintedRadialIconsAreLargeMaskedAndLockedOptionsStayAccessible()
+        {
+            session.SetCampaignLevel(1);
+            Call(session, "SelectSlot", Slot(0)); yield return null; Canvas.ForceUpdateCanvases();
+            foreach (string id in new[] { "Archer", "Barracks", "Mage" })
+            {
+                var button = Choice(id); var state = button.GetComponent<UiVisualState>();
+                Assert.That(state.Icon.rectTransform.rect.width / ((RectTransform)button.transform).rect.width, Is.GreaterThanOrEqualTo(.75f));
+                Assert.That(state.Icon.GetComponentInParent<Mask>(), Is.Not.Null);
+                Assert.That(button.GetComponentsInChildren<Image>().Any(image => image.name == "PriceCoin"), Is.True);
+                Assert.That(button.GetComponentsInChildren<TMP_Text>().Any(text => text.text.Contains(FrontendCopy.Locked.Value)), Is.False);
+                if (!session.CanBuild(System.Enum.Parse<OutpostKind>(id)))
+                {
+                    Assert.That(button.GetComponent<UiAccessibleButton>().Label, Does.Contain(FrontendCopy.Locked.Value));
+                    Assert.That(button.transform.Find("LockBadge").gameObject.activeSelf, Is.True);
+                }
+            }
+            var catalog = Resources.Load<DefenderPresentationCatalog>("Presentation/DefenderPresentationCatalog");
+            foreach (string id in new[] { "Upgrade", "Sell", "RapidFire", "Sharpshooter", "ShieldGuard", "AssaultGuard", "Blast", "Frost" })
+            {
+                var sprite = (Sprite)typeof(DefenderPresentationCatalog).GetField("radial" + id + "Icon").GetValue(catalog);
+                Assert.That(Choice(id).GetComponent<UiVisualState>().Icon.sprite, Is.SameAs(sprite), id);
+                Assert.That(sprite, Is.Not.Null, id);
+            }
+        }
+
+        [UnityTest] public IEnumerator ReducedMotionKeepsSelectionRingAndEmptySiteLightSteady()
+        {
+            bool reduced = FrontendPreferences.ReducedMotion;
+            try
+            {
+                FrontendPreferences.ReducedMotion = true;
+                Call(session, "SelectSlot", Slot(0)); Choice("Archer").onClick.Invoke(); yield return null;
+                Assert.That(Choice("Archer").transform.localScale, Is.EqualTo(Vector3.one));
+                Assert.That(Choice("Archer").transform.Find("ConfirmationMark").gameObject.activeSelf, Is.True);
+                var ring = Slot(1).transform.Find("SlotGoldRing").GetComponent<Renderer>();
+                Assert.That(ring.sharedMaterial.IsKeywordEnabled("_EMISSION"), Is.True);
+                var properties = new MaterialPropertyBlock(); ring.GetPropertyBlock(properties);
+                Color emission = properties.GetColor("_EmissionColor");
+                Assert.That(emission.maxColorComponent, Is.GreaterThan(0));
+                yield return new WaitForSecondsRealtime(.12f); ring.GetPropertyBlock(properties);
+                Assert.That(properties.GetColor("_EmissionColor"), Is.EqualTo(emission));
+                Call(session, "EarnGold", 1000); session.TryBuildOutpost(1, OutpostKind.Archer); Slot(1).SetSelected(false);
+                ring.GetPropertyBlock(properties);
+                Assert.That(properties.GetColor("_EmissionColor"), Is.EqualTo(Color.black));
+                Assert.That(Slot(1).GetComponent<DefenderSlotVisual>().ShowsBuildPlus, Is.False);
+            }
+            finally { FrontendPreferences.ReducedMotion = reduced; }
+        }
+
+        [UnityTest] public IEnumerator VisibleBuildUpgradeAndSpecializeActionsSpendOnlyAfterConfirmation()
+        {
+            Call(session, "EarnGold", 1000); Call(session, "SelectSlot", Slot(0));
+            int gold = session.Gold; Choice("Archer").onClick.Invoke();
+            Assert.That(hud.RadialAction.gameObject.activeInHierarchy, Is.True);
+            Assert.That(hud.RadialAction.GetComponentInChildren<TMP_Text>().text, Is.EqualTo("KUR · 75"));
+            Assert.That(session.Gold, Is.EqualTo(gold)); Assert.That(Slot(0).Occupant, Is.Null);
+            Assert.That(Hint.text, Does.Contain(FrontendCopy.RadialTapBuild.Value));
+            yield return null; Canvas.ForceUpdateCanvases(); AssertActionFits();
+            Choice("Barracks").onClick.Invoke(); Assert.That(hud.RadialAction.GetComponentInChildren<TMP_Text>().text, Is.EqualTo("KUR · 100"));
+            Choice("Archer").onClick.Invoke(); hud.RadialAction.onClick.Invoke();
+            Assert.That(Slot(0).Occupant.Kind, Is.EqualTo(OutpostKind.Archer)); Assert.That(session.Gold, Is.EqualTo(gold - 75));
+            Choice("Upgrade").onClick.Invoke();
+            Assert.That(hud.RadialAction.GetComponentInChildren<TMP_Text>().text, Is.EqualTo("YÜKSELT · 55"));
+            hud.RadialAction.onClick.Invoke(); Assert.That(Slot(0).Occupant.Level, Is.EqualTo(2));
+            Choice("RapidFire").onClick.Invoke();
+            Assert.That(hud.RadialAction.GetComponentInChildren<TMP_Text>().text, Is.EqualTo("SEÇ · 160"));
+            yield return null; Canvas.ForceUpdateCanvases(); AssertActionFits();
+            hud.RadialAction.onClick.Invoke();
+            Assert.That(Slot(0).Occupant.Specialization, Is.EqualTo(OutpostSpecialization.RapidFire));
+            Assert.That(session.Gold, Is.EqualTo(gold - 75 - 55 - 160));
+        }
+
+        [UnityTest] public IEnumerator BuildActionFitsPhoneAspectsAndRendersWithoutTextOverflow()
+        {
+            foreach (var size in new[] { new Vector2Int(800, 450), new Vector2Int(844, 390) })
+            {
+#if UNITY_EDITOR
+                var review = System.AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType("AllinDefense.Editor.FrontendExperienceReview")).First(type => type != null);
+                review.GetMethod("SetSize").Invoke(null, new object[] { size.x, size.y });
+#else
+                Screen.SetResolution(size.x, size.y, FullScreenMode.Windowed);
+#endif
+                yield return null; yield return null;
+                Call(session, "SelectSlot", Slot(0)); Choice("Archer").onClick.Invoke();
+                yield return null; Canvas.ForceUpdateCanvases(); AssertActionFits();
+                var label = hud.RadialAction.GetComponentInChildren<TMP_Text>(); label.ForceMeshUpdate();
+                Assert.That(label.isTextOverflowing, Is.False, label.text);
+                hud.BattleRadial.Close();
+            }
+        }
+
+        private void AssertActionFits()
+        {
+            var action = (RectTransform)hud.RadialAction.transform;
+            var corners = new Vector3[4]; action.GetWorldCorners(corners);
+            var bounds = Rect.MinMaxRect(corners[0].x, corners[0].y, corners[2].x, corners[2].y);
+            Assert.That(bounds.height, Is.GreaterThanOrEqualTo(52));
+            Assert.That(Screen.safeArea.Contains(bounds.min), Is.True); Assert.That(Screen.safeArea.Contains(bounds.max), Is.True);
+            foreach (var obstacle in hud.GetComponent<DefenderHudResponsiveLayout>().FrameScreenRects())
+                Assert.That(bounds.Overlaps(obstacle), Is.False);
+            foreach (var button in hud.BattleRadial.GetComponentsInChildren<Button>().Where(button => button != hud.RadialAction))
+            {
+                ((RectTransform)button.transform).GetWorldCorners(corners);
+                Assert.That(bounds.Overlaps(Rect.MinMaxRect(corners[0].x,corners[0].y,corners[2].x,corners[2].y)), Is.False, button.name);
+            }
+        }
+
+        [UnityTest] public IEnumerator EmptySlotsHavePlusAndNonOverlappingMinimumTouchAreasAcrossPhoneAspects()
+        {
+            var slots = session.GetComponentsInChildren<GreyboxOutpostSlot>();
+            foreach (var slot in slots) Assert.That(slot.GetComponent<DefenderSlotVisual>().ShowsBuildPlus, Is.True);
+            session.TryBuildOutpost(0, OutpostKind.Archer);
+            Assert.That(Slot(0).GetComponent<DefenderSlotVisual>().ShowsBuildPlus, Is.False);
+            foreach (var size in new[] { new Vector2Int(800, 450), new Vector2Int(844, 390) })
+            {
+#if UNITY_EDITOR
+                var review = System.AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType("AllinDefense.Editor.FrontendExperienceReview")).First(type => type != null);
+                review.GetMethod("SetSize").Invoke(null, new object[] { size.x, size.y });
+#else
+                Screen.SetResolution(size.x, size.y, FullScreenMode.Windowed);
+#endif
+                yield return null; yield return null;
+                Assert.That(Screen.width, Is.EqualTo(size.x)); Assert.That(Screen.height, Is.EqualTo(size.y));
+                var rects = slots.Select(slot => DefenderSlotVisual.TouchScreenRect(slot.transform, Camera.main)).ToArray();
+                foreach (var rect in rects)
+                {
+                    Assert.That(rect.width * UiMetrics.LogicalScreenSize.x / Screen.width, Is.GreaterThanOrEqualTo(56));
+                    Assert.That(rect.height * UiMetrics.LogicalScreenSize.y / Screen.height, Is.GreaterThanOrEqualTo(56));
+                }
+                for (int a = 0; a < rects.Length; a++)
+                    for (int b = a + 1; b < rects.Length; b++)
+                    {
+                        Vector2 direction = (rects[b].center - rects[a].center).normalized;
+                        float supportA = Vector2.Scale(rects[a].size / 2, direction).magnitude;
+                        float supportB = Vector2.Scale(rects[b].size / 2, direction).magnitude;
+                        Assert.That(Vector2.Distance(rects[a].center, rects[b].center), Is.GreaterThanOrEqualTo(supportA + supportB), $"{size}/{a}/{b}");
+                    }
+            }
+        }
+
         [UnityTest] public IEnumerator StableRadialPositionDoesNotAllocateAfterWarmup()
         {
             Call(session, "SelectSlot", Slot(0)); yield return null; Canvas.ForceUpdateCanvases();
@@ -217,6 +362,11 @@ namespace AllinDefense.Tests
             int rejects = 0; hud.RadialRejected += _ => rejects++;
             var archer = Choice("Archer"); Assert.That(archer.interactable, Is.True);
             archer.onClick.Invoke(); Assert.That(Hint.text, Does.Contain("25 eksik"));
+            Assert.That(hud.RadialAction.gameObject.activeInHierarchy, Is.True);
+            Assert.That(hud.RadialAction.interactable, Is.False);
+            Assert.That(hud.RadialAction.GetComponentInChildren<TMP_Text>().text, Does.Contain("25 eksik"));
+            hud.RadialAction.GetComponent<UiRadialAction>().OnPointerClick(new PointerEventData(EventSystem.current) { button = PointerEventData.InputButton.Left });
+            Assert.That(rejects, Is.EqualTo(1)); rejects = 0;
             archer.onClick.Invoke(); Assert.That(rejects, Is.EqualTo(1));
             Assert.That(session.Gold, Is.EqualTo(50)); Assert.That(session.Outposts, Is.Empty);
             Assert.That(archer.GetComponent<UiVisualState>().Price.color, Is.EqualTo(UiTokens.Danger));
@@ -257,7 +407,7 @@ namespace AllinDefense.Tests
         }
         [UnityTest] public IEnumerator EdgeRadialStaysOnScreenAndAvoidsFrameAndInformationCard()
         {
-            Call(session, "SelectSlot", Slot(0)); yield return null; Canvas.ForceUpdateCanvases();
+            Call(session, "SelectSlot", Slot(0)); Choice("Archer").onClick.Invoke(); yield return null; Canvas.ForceUpdateCanvases();
             int intersections = 0;
             foreach (var point in new[] { new Vector2(0, 0), new Vector2(Screen.width, Screen.height), new Vector2(Screen.width / 2, 0) })
             {
@@ -317,7 +467,11 @@ namespace AllinDefense.Tests
             UiQuery.FindById<Button>(hud, "TutorialHelp").onClick.Invoke(); yield return null;
             Assert.That(hud.TutorialArrow.gameObject.activeInHierarchy, Is.True);
             Call(session, "SelectSlot", Slot(0)); yield return null;
-            Assert.That(hud.TutorialArrow.gameObject.activeInHierarchy, Is.False, "Guide must not cover radial actions");
+            Assert.That(hud.TutorialArrow.gameObject.activeInHierarchy, Is.True);
+            Assert.That(hud.TutorialTarget, Is.EqualTo(Choice("Archer").transform));
+            Choice("Archer").onClick.Invoke(); yield return null;
+            Assert.That(hud.TutorialTarget, Is.EqualTo(hud.RadialAction.transform));
+            Assert.That(UiQuery.FindById<TMP_Text>(hud, "TutorialCopy").text, Does.Contain(FrontendCopy.TutorialConfirmBuild.Value));
             UiQuery.FindById<Button>(hud, "TutorialHelp").onClick.Invoke(); yield return null;
             Assert.That(hud.BattleRadial.IsOpen, Is.False);
             Assert.That(hud.TutorialArrow.gameObject.activeInHierarchy, Is.True);

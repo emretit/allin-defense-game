@@ -146,6 +146,16 @@ namespace AllinDefense.Presentation
         public Sprite mageIcon;
         public Sprite abilityIcon;
 
+        [Header("Battle Radial Icons")]
+        public Sprite radialUpgradeIcon;
+        public Sprite radialSellIcon;
+        public Sprite radialRapidFireIcon;
+        public Sprite radialSharpshooterIcon;
+        public Sprite radialShieldGuardIcon;
+        public Sprite radialAssaultGuardIcon;
+        public Sprite radialBlastIcon;
+        public Sprite radialFrostIcon;
+
         [Header("Animation")]
         public RuntimeAnimatorController actorAnimator;
         public AnimationClip[] actorClips = Array.Empty<AnimationClip>();

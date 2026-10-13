@@ -12,6 +12,12 @@ namespace AllinDefense.Presentation
 {
     public sealed partial class DefenderHudController
     {
+        private DefenderPresentationCatalog radialCatalog;
+        private Button radialAction;
+        private TMP_Text radialActionLabel;
+        private UiVisualState radialActionState;
+        private readonly Dictionary<string, GameObject> radialLocks = new();
+        public Button RadialAction => radialAction;
         private UiRadialMenu battleRadial;
         private UiRadialLayout battleRadialLayout;
         private readonly Dictionary<string, Button> radialButtons = new();
@@ -48,6 +54,7 @@ namespace AllinDefense.Presentation
             battleRadial = frameKit.RadialMenu(transform, "BattleRadial", new[] { new UiRadialOption("Archer", archerIconSprite, ArcherCost) });
             battleRadial.GetComponent<Image>().raycastTarget = false;
             battleRadialLayout = battleRadial.GetComponent<UiRadialLayout>();
+            battleRadialLayout.MinimumDiameter = 60;
             var first = battleRadial.GetComponentInChildren<Button>();
             first.name = "Archer"; UiId.Assign(first.transform, "Archer");
             radialButtons.Add("Archer", first);
@@ -55,11 +62,22 @@ namespace AllinDefense.Presentation
             archerButton = first;
             barracksButton = MakeRadialButton("Barracks", barracksIconSprite, BarracksCost);
             mageButton = MakeRadialButton("Mage", mageIconSprite, MageCost);
-            upgradeButton = MakeRadialButton("Upgrade", frameKit.Assets.iconUpgrade, 0);
-            sellButton = MakeRadialButton("Sell", frameKit.Assets.iconSell, 0);
+            upgradeButton = MakeRadialButton("Upgrade", radialCatalog.radialUpgradeIcon, 0);
+            sellButton = MakeRadialButton("Sell", radialCatalog.radialSellIcon, 0);
             foreach (OutpostSpecialization branch in Enum.GetValues(typeof(OutpostSpecialization)))
                 if (branch != OutpostSpecialization.None)
                     MakeRadialButton(branch.ToString(), BranchIcon(branch), 0);
+            radialAction = frameKit.Button(battleRadial.transform, "RadialAction", FrontendCopy.RadialBuild, UiButtonVariant.Gold, radialCatalog.goldIcon);
+            radialAction.GetComponent<UiPointSize>().Configure(52);
+            radialAction.GetComponent<LayoutElement>().ignoreLayout = true;
+            radialActionLabel = radialAction.GetComponentInChildren<TMP_Text>(true);
+            radialActionLabel.fontSize = 14;
+            radialActionState = radialAction.GetComponent<UiVisualState>();
+            radialActionState.PaintedIcon = true;
+            radialAction.onClick.AddListener(ConfirmRadialAction);
+            radialAction.gameObject.AddComponent<UiRadialAction>().Configure(() => RejectRadial(previewOption));
+            radialAction.gameObject.AddComponent<UiAccessibleButton>();
+            radialAction.gameObject.SetActive(false);
             battleRadial.CloseOnConfirm = false;
             battleRadial.Previewed += PreviewRadial;
             battleRadial.Confirmed += ConfirmRadial;
@@ -83,12 +101,12 @@ namespace AllinDefense.Presentation
 
         private Sprite BranchIcon(OutpostSpecialization branch) => branch switch
         {
-            OutpostSpecialization.RapidFire => frameKit.Assets.iconRapidFire,
-            OutpostSpecialization.Sharpshooter => frameKit.Assets.iconSharpshooter,
-            OutpostSpecialization.ShieldGuard => frameKit.Assets.iconShield,
-            OutpostSpecialization.AssaultGuard => frameKit.Assets.iconAssaultGuard,
-            OutpostSpecialization.Blast => frameKit.Assets.iconBlast,
-            _ => frameKit.Assets.iconFrost
+            OutpostSpecialization.RapidFire => radialCatalog.radialRapidFireIcon,
+            OutpostSpecialization.Sharpshooter => radialCatalog.radialSharpshooterIcon,
+            OutpostSpecialization.ShieldGuard => radialCatalog.radialShieldGuardIcon,
+            OutpostSpecialization.AssaultGuard => radialCatalog.radialAssaultGuardIcon,
+            OutpostSpecialization.Blast => radialCatalog.radialBlastIcon,
+            _ => radialCatalog.radialFrostIcon
         };
 
         private Button MakeRadialButton(string id, Sprite icon, int price)
@@ -110,22 +128,41 @@ namespace AllinDefense.Presentation
             var state = button.GetComponent<UiVisualState>();
             var icon = state.Icon.rectTransform;
             icon.anchorMin = icon.anchorMax = icon.pivot = new Vector2(.5f, .5f);
-            icon.anchoredPosition = new Vector2(0, 7); icon.sizeDelta = Vector2.one * 27;
+            icon.anchoredPosition = new Vector2(0, 3); icon.sizeDelta = Vector2.one * 48;
             var proportional = icon.GetComponent<UiProportionalIcon>();
             if (proportional != null) proportional.enabled = false;
+            state.PaintedIcon = true;
+            state.SelectedScale = 1.08f;
+            state.GoldBorder = true;
+            var mask = UiKit.Node(content, "IconMask");
+            mask.anchorMin = mask.anchorMax = mask.pivot = new Vector2(.5f, .5f);
+            mask.anchoredPosition = new Vector2(0, 3); mask.sizeDelta = Vector2.one * 48;
+            var maskImage = mask.gameObject.AddComponent<Image>(); maskImage.sprite = frameKit.Assets.filledCircle; maskImage.raycastTarget = false;
+            mask.gameObject.AddComponent<Mask>().showMaskGraphic = false;
+            icon.SetParent(mask, false); UiKit.Stretch(icon);
             var chip = (RectTransform)state.Price.transform.parent;
             chip.anchorMin = chip.anchorMax = chip.pivot = new Vector2(.5f, 0);
-            chip.anchoredPosition = new Vector2(0, 3); chip.sizeDelta = new Vector2(48, 18);
-            UiKit.Stretch(state.Price.rectTransform); state.Price.alignment = TextAlignmentOptions.Center;
+            chip.anchoredPosition = new Vector2(0, -1); chip.sizeDelta = new Vector2(52, 18);
+            var coin = frameKit.Decoration(chip, "PriceCoin", radialCatalog.goldIcon, UiTokens.White);
+            coin.rectTransform.anchorMin = coin.rectTransform.anchorMax = coin.rectTransform.pivot = new Vector2(0, .5f);
+            coin.rectTransform.anchoredPosition = new Vector2(3, 0); coin.rectTransform.sizeDelta = Vector2.one * 14;
+            UiKit.Stretch(state.Price.rectTransform); state.Price.rectTransform.offsetMin = new Vector2(16, 0); state.Price.alignment = TextAlignmentOptions.Center;
+            chip.SetAsLastSibling();
             var label = button.GetComponentInChildren<TMP_Text>(true);
             label.gameObject.SetActive(true);
             var rect = label.rectTransform;
-            rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(.5f, 1);
-            rect.anchoredPosition = Vector2.zero; rect.sizeDelta = new Vector2(62, 18);
+            rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(.5f, 0);
+            rect.anchoredPosition = new Vector2(0, -20); rect.sizeDelta = new Vector2(62, 18);
             label.alignment = TextAlignmentOptions.Center;
-            var mark = frameKit.Decoration(button.transform, "ConfirmationMark", frameKit.Assets.iconCheck, UiTokens.Gold);
-            mark.rectTransform.anchorMin = mark.rectTransform.anchorMax = mark.rectTransform.pivot = Vector2.one;
-            mark.rectTransform.anchoredPosition = new Vector2(-2, -2); mark.rectTransform.sizeDelta = Vector2.one * 18;
+            var mark = frameKit.Decoration(button.transform, "ConfirmationMark", frameKit.Assets.cooldownRing, UiTokens.GoldHigh);
+            UiKit.Stretch(mark.rectTransform);
+            mark.rectTransform.offsetMin = Vector2.one * -3; mark.rectTransform.offsetMax = Vector2.one * 3;
+            mark.transform.SetAsFirstSibling();
+            var lockBadge = frameKit.Decoration(button.transform, "LockBadge", frameKit.Assets.iconLock, UiTokens.GoldHigh);
+            lockBadge.rectTransform.anchorMin = lockBadge.rectTransform.anchorMax = lockBadge.rectTransform.pivot = Vector2.one;
+            lockBadge.rectTransform.anchoredPosition = new Vector2(-1, -1); lockBadge.rectTransform.sizeDelta = Vector2.one * 16;
+            radialLocks.Add(button.name, lockBadge.gameObject);
+            button.gameObject.AddComponent<UiAccessibleButton>();
             mark.gameObject.SetActive(false);
             state.Surface.sprite = frameKit.Assets.filledCircle;
             state.Surface.type = Image.Type.Simple;
@@ -167,6 +204,7 @@ namespace AllinDefense.Presentation
                 if (battleRadial.IsOpen) { closingRadial = true; battleRadial.Close(); closingRadial = false; }
                 CloseSpecializationChoices();
                 radialSlot = null; radialTower = null; previewOption = null;
+                radialAction.gameObject.SetActive(false);
                 radialRange?.Show(Vector3.zero, 1, false);
                 return;
             }
@@ -177,7 +215,7 @@ namespace AllinDefense.Presentation
                 CloseSpecializationChoices();
                 radialSlot = slot; radialTower = tower; radialLevel = tower != null ? tower.Level : 0;
                 radialBranch = tower != null ? tower.Specialization : OutpostSpecialization.None;
-                previewOption = null;
+                previewOption = null; radialAction.gameObject.SetActive(false);
                 radialRange?.Show(Vector3.zero, 1, false);
                 ConfigureRadialOptions();
                 radialPositionDirty = true;
@@ -201,8 +239,8 @@ namespace AllinDefense.Presentation
                         var branch = TowerProgression.Branch(radialTower.Kind, i);
                         choices.Add(new UiRadialOption(branch.ToString(), BranchIcon(branch), TowerProgression.Cost(radialTower.Kind)));
                     }
-                else choices.Add(new UiRadialOption("Upgrade", frameKit.Assets.iconUpgrade, radialTower.UpgradeCost));
-                choices.Add(new UiRadialOption("Sell", frameKit.Assets.iconSell, -radialTower.SellValue));
+                else choices.Add(new UiRadialOption("Upgrade", radialCatalog.radialUpgradeIcon, radialTower.UpgradeCost));
+                choices.Add(new UiRadialOption("Sell", radialCatalog.radialSellIcon, -radialTower.SellValue));
             }
             foreach (var button in radialButtons.Values) { button.gameObject.SetActive(false); button.interactable = false; }
             var buttons = new Button[choices.Count];
@@ -230,21 +268,52 @@ namespace AllinDefense.Presentation
                 battleRadial.SetAvailable(i, enabled);
                 battleRadial.SetAffordable(i, session.Gold >= option.Price);
                 var state = radialButtons[option.Id].GetComponent<UiVisualState>();
+                state.SetPreviewed(previewOption == option.Id && option.Id != "Sell");
                 var label = radialLabels[option.Id];
                 label.text = option.Id == "Sell" ? (saleConfirmationOutpost != null ? FrontendCopy.RadialConfirm.Value : FrontendCopy.RadialSell.Value) :
-                    !enabled ? FrontendCopy.Locked.Value : "";
-                radialMarks[option.Id].SetActive(previewOption == option.Id && session.Gold >= option.Price && option.Id != "Sell");
+                    "";
+                radialMarks[option.Id].SetActive(previewOption == option.Id && option.Id != "Sell");
                 label.fontSize = 10;
                 if (option.Id == "Sell") { label.text = saleConfirmationOutpost != null ? FrontendCopy.RadialConfirm.Value : FrontendCopy.RadialSell.Value; }
+                radialLocks[option.Id].SetActive(!enabled);
+                state.Price.color = !enabled ? UiTokens.TextSecondary : session.Gold < option.Price ? UiTokens.Danger : UiTokens.Gold;
                 state.Price.fontSize = 12;
+                var name = option.Id == "Upgrade" ? FrontendCopy.RadialUpgrade.Value : option.Id == "Sell" ? FrontendCopy.RadialSell.Value :
+                    radialTower == null ? GameSessionController.OutpostDisplayName(Enum.Parse<OutpostKind>(option.Id)) : TowerProgression.Name(Enum.Parse<OutpostSpecialization>(option.Id));
+                radialButtons[option.Id].GetComponent<UiAccessibleButton>().Configure(new LocalizedCopy(
+                    name + (!enabled ? " · " + FrontendCopy.Locked.Value : "") + " · " + state.Price.text,
+                    name + (!enabled ? " · " + FrontendCopy.Locked.Value : "") + " · " + state.Price.text));
             }
+            RefreshRadialAction();
+        }
+
+        private string RadialActionHint => radialTower == null ? FrontendCopy.RadialTapBuild.Value :
+            previewOption == "Upgrade" ? FrontendCopy.RadialTapUpgrade.Value : FrontendCopy.RadialTapSelect.Value;
+
+        private void RefreshRadialAction()
+        {
+            bool visible = previewOption != null && previewOption != "Sell" && radialSlot != null;
+            if (radialAction.gameObject.activeSelf != visible) { radialAction.gameObject.SetActive(visible); radialPositionDirty = true; }
+            if (!visible) return;
+            var option = radialOptions[battleRadial.PreviewIndex];
+            bool affordable = GameSessionController.Instance.Gold >= option.Price;
+            string verb = radialTower == null ? FrontendCopy.RadialBuild.Value : previewOption == "Upgrade" ? FrontendCopy.RadialUpgrade.Value : FrontendCopy.RadialSelect.Value;
+            if (radialAction.interactable != affordable) radialActionState.SetState(affordable ? UiState.Normal : UiState.Disabled);
+            radialActionLabel.text = affordable ? $"{verb} · {option.Price}" : $"{verb} · {FrontendCopy.RadialMissing.Format(option.Price - GameSessionController.Instance.Gold)}";
+            radialAction.GetComponent<UiAccessibleButton>().Configure(new LocalizedCopy(radialActionLabel.text, radialActionLabel.text));
+        }
+
+        private void ConfirmRadialAction()
+        {
+            if (previewOption == null || battleRadial.PreviewIndex < 0) return;
+            ConfirmRadial(radialOptions[battleRadial.PreviewIndex]);
         }
 
         private void PreviewRadial(UiRadialOption option)
         {
             if (radialSlot == null) return;
             if (option.Id != "Sell") CancelSaleConfirmation();
-            previewOption = option.Id;
+            previewOption = option.Id; radialPositionDirty = true;
             if (option.Id == "Sell") { radialRange?.Show(Vector3.zero, 1, false); CloseSpecializationChoices(); SellFromUi(); }
             else if (radialTower != null && Enum.TryParse(option.Id, out OutpostSpecialization branch))
                 BeginRadialSpecialization(GameSessionController.Instance);
@@ -258,6 +327,7 @@ namespace AllinDefense.Presentation
         {
             rejectionMotion?.Cancel();
             if (rejectionTarget != null) rejectionTarget.anchoredPosition = rejectionRest;
+            if (id == null || !radialButtons.ContainsKey(id)) return;
             rejectionTarget = (RectTransform)radialButtons[id].GetComponent<UiVisualState>().Price.transform.parent;
             rejectionRest = rejectionTarget.anchoredPosition;
             rejectionMotion = (GetComponent<UiMotion>() ?? gameObject.AddComponent<UiMotion>()).Shake(rejectionTarget);
@@ -285,7 +355,7 @@ namespace AllinDefense.Presentation
                     session.TrySpecializeOutpost(slot.Index, Enum.Parse<OutpostSpecialization>(option.Id));
                 }
             }
-            previewOption = null;
+            previewOption = null; radialAction.gameObject.SetActive(false);
             battleRadial.ResetPreview();
             radialRange?.Show(Vector3.zero, 1, false);
             UpdateRadialSelection(slot.Occupant, slot, true);
@@ -336,9 +406,9 @@ namespace AllinDefense.Presentation
                 selectedRoleText.text = TowerProgression.Description(radialTower.Specialization);
             }
             string cost = price > 0 ? FrontendCopy.Gold.Format(price) + " · " + (session != null && session.Gold < price
-                ? FrontendCopy.RadialMissing.Format(price - session.Gold) : FrontendCopy.RadialTapAgain.Value) : previewOption == "Sell" ? FrontendCopy.SellingReturnsGold.Format(radialTower.SellValue) : "";
+                ? FrontendCopy.RadialMissing.Format(price - session.Gold) : RadialActionHint) : previewOption == "Sell" ? FrontendCopy.SellingReturnsGold.Format(radialTower.SellValue) : "";
             selectedHintText.text = specializationSession != null && comparing ? FrontendCopy.BattlePaused.Value + " · " +
-                (session.Gold < price ? FrontendCopy.RadialMissing.Format(price - session.Gold) : FrontendCopy.Gold.Format(price)) +
+                (session.Gold < price ? FrontendCopy.RadialMissing.Format(price - session.Gold) : RadialActionHint) +
                 "\n" + FrontendCopy.ChangeBranchHint.Value : specializationSession != null ?
                 FrontendCopy.BattlePaused.Value + "\n" + FrontendCopy.ChangeBranchHint.Value : cost;
             selectedHintText.color = price > 0 && session != null && session.Gold < price ? UiTokens.Danger : UiTokens.TextSecondary;
@@ -389,6 +459,39 @@ namespace AllinDefense.Presentation
             return Rect.MinMaxRect(min.x, min.y, max.x, max.y);
         }
 
+        private void PositionRadialAction(Rect safe, Vector2 center)
+        {
+            if (!radialAction.gameObject.activeSelf || previewOption == null) return;
+            var actionRect = (RectTransform)radialAction.transform;
+            actionRect.anchorMin = actionRect.anchorMax = actionRect.pivot = new Vector2(.5f, .5f);
+            actionRect.sizeDelta = new Vector2(164, 52);
+            var selected = (RectTransform)radialButtons[previewOption].transform;
+            Vector2 origin = ((RectTransform)battleRadial.transform).InverseTransformPoint(selected.TransformPoint(selected.rect.center));
+            Vector2 outward = (origin - center).normalized;
+            float best = float.MaxValue; Vector2 position = safe.center;
+            for (float y = safe.yMin + 26; y <= safe.yMax - 26; y += 4)
+                for (float x = safe.xMin + 82; x <= safe.xMax - 82; x += 4)
+                {
+                    var point = new Vector2(x, y);
+                    var candidate = new Rect(point - actionRect.sizeDelta / 2, actionRect.sizeDelta);
+                    float score = (point - origin - outward * 112).sqrMagnitude;
+                    if (score >= best) continue;
+                    bool clear = true;
+                    foreach (var obstacle in radialObstacles) if (candidate.Overlaps(obstacle)) { clear = false; break; }
+                    if (!clear) continue;
+                    foreach (var button in radialButtons.Values)
+                    {
+                        if (!button.gameObject.activeSelf) continue;
+                        var target = (RectTransform)button.transform;
+                        Vector2 c = ((RectTransform)battleRadial.transform).InverseTransformPoint(target.TransformPoint(target.rect.center));
+                        if (candidate.Overlaps(new Rect(c - new Vector2(37, 53), new Vector2(74, 90)))) { clear = false; break; }
+                    }
+                    if (clear) { position = point; best = score; }
+                }
+            actionRect.anchoredPosition = position;
+            radialAction.transform.SetAsLastSibling();
+        }
+
         private void PositionBattleRadial(Vector2 screenPoint)
         {
             if (battleRadial == null || !battleRadial.IsOpen) return;
@@ -423,6 +526,12 @@ namespace AllinDefense.Presentation
                 Vector2 a = rect.InverseTransformPoint(corners[0]), b = rect.InverseTransformPoint(corners[2]);
                 obstacles.Add(Rect.MinMaxRect(a.x - 4, a.y - 4, b.x + 4, b.y + 4));
             }
+            if (tutorialBubble != null && tutorialBubble.gameObject.activeInHierarchy)
+            {
+                tutorialBubble.GetWorldCorners(radialCorners);
+                Vector2 a = rect.InverseTransformPoint(radialCorners[0]), b = rect.InverseTransformPoint(radialCorners[2]);
+                obstacles.Add(Rect.MinMaxRect(a.x - 4, a.y - 4, b.x + 4, b.y + 4));
+            }
             bool changed = battleRadialLayout.SetObstacles(obstacles);
             var safe = Rect.MinMaxRect(min.x + 6, min.y + 6, max.x - 6, max.y - 6);
             if (!radialPositionDirty && !changed && placedCenter == center && placedSafeArea == safe && placedSize == rect.sizeDelta) return;
@@ -431,6 +540,7 @@ namespace AllinDefense.Presentation
             foreach (var button in radialButtons.Values)
                 if (button.gameObject.activeSelf) button.GetComponent<UiPointSize>().Refresh();
             LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
+            PositionRadialAction(safe, center);
         }
     }
 }

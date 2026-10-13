@@ -135,6 +135,14 @@ namespace AllinDefense.UI
         public static readonly LocalizedCopy SpecializationFrostDescription = new("Düşmanları 2 sn %50 yavaşlatır", "Slows enemies by 50% for 2 sec");
         public static readonly LocalizedCopy RadialMissing = new("{0} eksik", "{0} short");
         public static readonly LocalizedCopy RadialTapAgain = new("Onay için tekrar dokun", "Tap again to confirm");
+        public static readonly LocalizedCopy RadialBuild = new("KUR", "BUILD");
+        public static readonly LocalizedCopy RadialUpgrade = new("YÜKSELT", "UPGRADE");
+        public static readonly LocalizedCopy RadialSelect = new("SEÇ", "SELECT");
+        public static readonly LocalizedCopy RadialTapBuild = new("KUR'a dokun", "Tap BUILD");
+        public static readonly LocalizedCopy RadialTapUpgrade = new("YÜKSELT'e dokun", "Tap UPGRADE");
+        public static readonly LocalizedCopy RadialTapSelect = new("SEÇ'e dokun", "Tap SELECT");
+        public static readonly LocalizedCopy TutorialChooseArcher = new("Okçu ikonuna dokun", "Tap the archer icon");
+        public static readonly LocalizedCopy TutorialConfirmBuild = new("KUR düğmesine dokun", "Tap the BUILD button");
         public static readonly LocalizedCopy RadialSell = new("SAT", "SELL");
         public static readonly LocalizedCopy RadialConfirm = new("ONAYLA", "CONFIRM");
         public static readonly LocalizedCopy RadialStats = new("Hasar {0} · Menzil {1:0.0} · {2:0.0}/sn", "Damage {0} · Range {1:0.0} · {2:0.0}/s");
@@ -148,7 +156,7 @@ namespace AllinDefense.UI
         public static readonly LocalizedCopy ArcherRole = new("Tek hedef · Uzun menzil", "Single target · Long range");
         public static readonly LocalizedCopy BarracksRole = new("Üç asker · Yolu tutar", "Three guards · Blocks the route");
         public static readonly LocalizedCopy MageRole = new("Büyü · Alan hasarı", "Magic · Area damage");
-        public static readonly LocalizedCopy TutorialBuild = new("Yuvaya dokun, okçu seç", "Tap a site, choose archer");
+        public static readonly LocalizedCopy TutorialBuild = new("Boş yuvaya dokun", "Tap an empty site");
         public static readonly LocalizedCopy TutorialSecond = new("Bir okçu daha kur", "Build one more archer");
         public static readonly LocalizedCopy TutorialWave = new("İlk dalgayı başlat", "Start the first wave");
         public static readonly LocalizedCopy TutorialAbility = new("Yetenekle düşmanları sersemlet", "Stun enemies with your ability");

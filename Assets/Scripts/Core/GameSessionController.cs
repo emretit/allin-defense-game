@@ -734,7 +734,7 @@ namespace AllinDefense.Core
             for (int i = 0; i < activeOutpostSlotPositions.Length; i++)
             {
                 GameObject root = StylizedPresentationFactory.CreateRoot($"Outpost Slot {i + 1}",
-                    activeOutpostSlotPositions[i], new Vector3(1.25f, 0.24f, 1.25f),
+                    activeOutpostSlotPositions[i], new Vector3(1.25f * DefenderSlotVisual.VisualScale, 0.24f, 1.25f * DefenderSlotVisual.VisualScale),
                     presentationCatalog.outpostSlotPrefab, presentationCatalog, PresentationCollider.Cylinder);
                 root.transform.SetParent(world, true);
                 AddOutpostSlot(root);
@@ -2225,6 +2225,15 @@ namespace AllinDefense.Core
                     : EventSystem.current.IsPointerOverGameObject()))
                 return;
 
+            GreyboxOutpostSlot nearbySlot = null;
+            float nearestSlotDistance = float.MaxValue;
+            foreach (var candidate in slots)
+            {
+                if (candidate == null || !DefenderSlotVisual.ContainsTouchPoint(candidate.transform, gameCamera, screen)) continue;
+                float distance = ((Vector2)gameCamera.WorldToScreenPoint(candidate.transform.position) - screen).sqrMagnitude;
+                if (distance < nearestSlotDistance) { nearbySlot = candidate; nearestSlotDistance = distance; }
+            }
+            if (nearbySlot != null) { SelectSlot(nearbySlot); return; }
             Ray ray = gameCamera.ScreenPointToRay(screen);
             int selectableMask = LayerMask.GetMask(SelectableLayerName);
             if (selectableMask == 0 || !Physics.Raycast(ray, out RaycastHit hit, 100f,
@@ -3017,6 +3026,7 @@ namespace AllinDefense.Core
         public void SetOccupant(GreyboxOutpost value)
         {
             Occupant = value;
+            if (slotVisual != null) slotVisual.SetOccupied(value != null);
             if (cachedRenderer != null) cachedRenderer.sharedMaterial.color = value == null ? normalColor : new Color(0.18f, 0.22f, 0.25f);
         }
 

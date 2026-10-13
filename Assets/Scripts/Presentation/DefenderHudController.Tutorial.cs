@@ -14,7 +14,7 @@ namespace AllinDefense.Presentation
         private TMP_Text tutorialCopy;
         private Button tutorialHelp, tutorialSkip;
         private Image tutorialAbilityRing;
-        private Transform tutorialTarget;
+        private Transform tutorialTarget, tutorialWorldTarget;
         private Camera tutorialCamera;
         private int tutorialDisplayStep = -1;
         private bool tutorialDismissed;
@@ -40,7 +40,7 @@ namespace AllinDefense.Presentation
             tutorialSkip = frameKit.Button(tutorialBubble, "TutorialSkip", FrontendCopy.TutorialSkip, UiButtonVariant.Glass);
             PlaceTutorialRect((RectTransform)tutorialSkip.transform, new Vector2(212, 0), new Vector2(88, 44));
             tutorialSkip.GetComponentInChildren<TMP_Text>().fontSize = 11;
-            tutorialSkip.onClick.AddListener(() => { tutorialDismissed = true; tutorialBubble.gameObject.SetActive(false); });
+            tutorialSkip.onClick.AddListener(() => { tutorialDismissed = true; tutorialBubble.gameObject.SetActive(false); tutorialArrow.gameObject.SetActive(false); });
             tutorialHelp = frameKit.Button(transform, "TutorialHelp", "?", UiButtonVariant.Glass);
             tutorialHelp.onClick.AddListener(() => { if (battleRadial.IsOpen) battleRadial.Close(); tutorialDismissed = false; tutorialCompletedUntil = Time.unscaledTime + 2; });
             tutorialAbilityRing = frameKit.Decoration(abilityButton.transform, "TutorialAbilityRing", frameKit.Assets.cooldownRing, UiTokens.Gold);
@@ -60,6 +60,7 @@ namespace AllinDefense.Presentation
         public void SetTutorialGuide(int step, Transform worldTarget, Camera camera)
         {
             if (tutorialBubble == null) return;
+            tutorialWorldTarget = worldTarget;
             tutorialTarget = step == 2 ? nextWaveButton.transform : step == 3 ? abilityButton.transform : worldTarget;
             tutorialCamera = camera;
             if (step != tutorialDisplayStep && step >= 6) tutorialCompletedUntil = Time.unscaledTime + 2;
@@ -89,10 +90,18 @@ namespace AllinDefense.Presentation
             helpRect.anchoredPosition = new Vector2(4 / points.x, -60 / points.y); helpRect.sizeDelta = Vector2.one * 44;
             var session = AllinDefense.Core.GameSessionController.Instance;
             bool activeBattle = session == null || session.Phase is not (AllinDefense.Core.GamePhase.Paused or AllinDefense.Core.GamePhase.Victory or AllinDefense.Core.GamePhase.Defeat);
-            bool visible = activeBattle && !tutorialDismissed && !battleRadial.IsOpen && (tutorialDisplayStep < 6 || Time.unscaledTime < tutorialCompletedUntil);
+            bool buildGuide = battleRadial.IsOpen && radialTower == null && tutorialDisplayStep is 0 or 1 or 4;
+            tutorialTarget = tutorialDisplayStep == 2 ? nextWaveButton.transform : tutorialDisplayStep == 3 ? abilityButton.transform : tutorialWorldTarget;
+            if (buildGuide)
+            {
+                tutorialTarget = radialAction.gameObject.activeSelf ? radialAction.transform : archerButton.transform;
+                tutorialCopy.text = $"{tutorialDisplayStep + 1}/6 · " + (radialAction.gameObject.activeSelf ? FrontendCopy.TutorialConfirmBuild.Value : FrontendCopy.TutorialChooseArcher.Value);
+            }
+            bool visible = activeBattle && !tutorialDismissed && (!battleRadial.IsOpen || buildGuide) && (tutorialDisplayStep < 6 || Time.unscaledTime < tutorialCompletedUntil);
             tutorialHelp.gameObject.SetActive(activeBattle);
             tutorialBubble.gameObject.SetActive(visible);
             tutorialAbilityRing.gameObject.SetActive(visible && tutorialDisplayStep == 3);
+            tutorialArrow.gameObject.SetActive(visible && tutorialDisplayStep < 6);
             if (!visible) return;
             tutorialBubble.localScale = scale;
             tutorialBubble.anchorMin = tutorialBubble.anchorMax = new Vector2(.5f, .5f);
@@ -108,6 +117,22 @@ namespace AllinDefense.Presentation
             tutorialBubble.anchoredPosition = new Vector2(Mathf.Clamp(local.x + 45 / points.x, min.x + 150 / points.x, max.x - 150 / points.x),
                 Mathf.Clamp(local.y + 20 / points.y, min.y + 60 / points.y, max.y - 116 / points.y));
             float pulse = FrontendPreferences.ReducedMotion ? 1 : 1 + .12f * Mathf.Sin(Time.unscaledTime * 5);
+            if (buildGuide)
+            {
+                tutorialSkip.gameObject.SetActive(false);
+                tutorialBubble.sizeDelta = new Vector2(217, 29);
+                tutorialBubble.anchoredPosition = new Vector2(0, max.y - 112 / points.y);
+                tutorialArrow.SetParent(transform, false);
+                tutorialArrow.gameObject.SetActive(true);
+                tutorialArrow.anchorMin = tutorialArrow.anchorMax = tutorialArrow.pivot = new Vector2(.5f, .5f);
+                tutorialArrow.localScale = scale * pulse;
+                tutorialArrow.anchoredPosition = local + new Vector2(0, 42 / points.y);
+                tutorialArrow.sizeDelta = Vector2.one * 24;
+                return;
+            }
+            tutorialSkip.gameObject.SetActive(tutorialDisplayStep < 6);
+            tutorialArrow.SetParent(tutorialBubble, false);
+            PlaceTutorialRect(tutorialArrow, new Vector2(105, -42), new Vector2(30, 30));
             tutorialArrow.localScale = Vector3.one * pulse;
             tutorialAbilityRing.transform.localScale = Vector3.one * pulse;
         }

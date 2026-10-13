@@ -8,6 +8,7 @@ namespace AllinDefense.UI.Kit
     {
         [SerializeField] private Vector2 center;
         [SerializeField] private Rect safeArea;
+        public float MinimumDiameter { get; set; } = UiMetrics.AbilityPt;
         private Rect[] obstacles = Array.Empty<Rect>();
         private Vector2[] orbitPositions = Array.Empty<Vector2>();
         public bool UsesFallback { get; private set; }
@@ -32,7 +33,7 @@ namespace AllinDefense.UI.Kit
         private void Arrange()
         {
             if (rectChildren.Count == 0) return;
-            float diameter = UiMetrics.AbilityPt;
+            float diameter = MinimumDiameter;
             foreach (RectTransform child in rectChildren)
                 diameter = Mathf.Max(diameter, LayoutUtility.GetMinWidth(child), LayoutUtility.GetMinHeight(child),
                     LayoutUtility.GetPreferredWidth(child), LayoutUtility.GetPreferredHeight(child));

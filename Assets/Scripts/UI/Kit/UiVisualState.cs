@@ -18,7 +18,11 @@ namespace AllinDefense.UI.Kit
         [SerializeField] private Selectable selectable;
         [SerializeField] private bool circular;
         private UiState resting;
+        private bool previewed;
         private UiMotion.Handle scaleMotion, readyMotion;
+        public float SelectedScale { get; set; } = 1f;
+        public bool PaintedIcon { get; set; }
+        public bool GoldBorder { get; set; }
         public UiState State => state;
         public Image Surface => surface;
         public TMP_Text Price => price;
@@ -38,6 +42,12 @@ namespace AllinDefense.UI.Kit
             label = text; icon = glyph; price = cost; SetState(state);
         }
 
+        public void SetPreviewed(bool value)
+        {
+            if (previewed == value) return;
+            previewed = value; SetState(state);
+        }
+
         public void SetCircular(bool value) { circular = value; SetState(state); }
 
         public void SetState(UiState value)
@@ -48,7 +58,7 @@ namespace AllinDefense.UI.Kit
             bool disabled = value == UiState.Disabled || value == UiState.Unaffordable ||
                 value == UiState.Pressed && resting == UiState.Unaffordable;
             bool gold = variant == UiButtonVariant.Gold && !disabled;
-            bool selected = value == UiState.Selected || value == UiState.Ready;
+            bool selected = previewed || value == UiState.Selected || value == UiState.Ready;
             if (selectable == null) selectable = GetComponent<Selectable>();
             if (selectable != null) selectable.interactable = value != UiState.Disabled;
             if (surface != null) surface.color = disabled ? UiTokens.Surface :
@@ -60,9 +70,9 @@ namespace AllinDefense.UI.Kit
             }
             if (label != null) label.color = disabled ? UiTokens.TextSecondary : gold ? UiTokens.GoldText :
                 variant == UiButtonVariant.Danger ? UiTokens.Danger : UiTokens.TextPrimary;
-            if (icon != null) icon.color = disabled ? UiTokens.TextSecondary : gold ? UiTokens.GoldText : UiTokens.Moon;
+            if (icon != null) icon.color = PaintedIcon ? value == UiState.Disabled ? UiTokens.TextSecondary : UiTokens.White : disabled ? UiTokens.TextSecondary : gold ? UiTokens.GoldText : UiTokens.Moon;
             if (price != null) price.color = disabled ? UiTokens.Danger : UiTokens.Gold;
-            if (outline != null) outline.effectColor = selected ? UiTokens.Gold :
+            if (outline != null) outline.effectColor = selected ? UiTokens.Gold : GoldBorder ? UiTokens.GoldLow :
                 variant == UiButtonVariant.Danger ? UiTokens.Danger : gold ? UiTokens.GoldHigh : UiTokens.HairlineStrong;
             if (glow != null) glow.color = selected ? UiTokens.GoldShadow : UiTokens.Shadow;
             if (ring != null) ring.gameObject.SetActive(value == UiState.Ready && circular);
@@ -74,7 +84,7 @@ namespace AllinDefense.UI.Kit
                 readyMotion?.Cancel();
                 if (ring != null) ring.transform.localScale = Vector3.one;
             }
-            scaleMotion = motion.Scale(transform, Vector3.one * (value == UiState.Pressed ? UiTokens.PressScale : 1f));
+            scaleMotion = motion.Scale(transform, Vector3.one * (value == UiState.Pressed ? UiTokens.PressScale : selected && !FrontendPreferences.ReducedMotion ? SelectedScale : 1f));
             if (enteringReady)
             {
                 ReadyPulseCount = FrontendPreferences.ReducedMotion ? 0 : 2;
@@ -88,7 +98,8 @@ namespace AllinDefense.UI.Kit
         }
         public void OnPointerUp(PointerEventData eventData) { if (state == UiState.Pressed) SetState(resting); }
         public void OnPointerExit(PointerEventData eventData) { if (state == UiState.Pressed) SetState(resting); }
-        private void OnEnable() { if (surface != null) SetState(state); }
-        private void OnDisable() { scaleMotion?.Cancel(); readyMotion?.Cancel(); transform.localScale = Vector3.one; }
+        private void MotionPreferenceChanged() { if (SelectedScale > 1 && previewed) SetState(state); }
+        private void OnEnable() { FrontendPreferences.MotionChanged += MotionPreferenceChanged; if (surface != null) SetState(state); }
+        private void OnDisable() { FrontendPreferences.MotionChanged -= MotionPreferenceChanged; scaleMotion?.Cancel(); readyMotion?.Cancel(); transform.localScale = Vector3.one; }
     }
 }

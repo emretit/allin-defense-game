@@ -221,6 +221,7 @@ namespace AllinDefense.Presentation
             // smeared when stretched across modern HUD controls. The shared medieval 9-slice
             // family now owns both panel shape and state feedback.
             frameSprite = null;
+            radialCatalog = catalog;
             archerIconSprite = catalog.archerIcon;
             barracksIconSprite = catalog.barracksIcon;
             mageIconSprite = catalog.mageIcon;
