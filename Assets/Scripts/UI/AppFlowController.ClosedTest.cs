@@ -9,7 +9,7 @@ namespace AllinDefense.UI
     public sealed partial class AppFlowController
     {
         // Released builds expose only the balanced regions; storage still keeps the full campaign.
-        private const int ReleasedRegionCount = 3;
+        private const int ReleasedRegionCount = 4;
         private static int VisibleRegionCount
         {
             get
@@ -67,7 +67,7 @@ namespace AllinDefense.UI
         {
             var definition = CampaignCatalog.Level(level);
             if (definition.isBoss) return FrontendCopy.ObjectiveBoss.Format(definition.localizedName);
-            if (level > 3 * CampaignCatalog.LevelsPerRegion)
+            if (level > 4 * CampaignCatalog.LevelsPerRegion)
                 return FrontendCopy.ObjectiveRegion.Format(GameLocalization.Translate(CampaignCatalog.Regions[definition.region - 1].subtitle));
             return level switch
             {
@@ -98,6 +98,15 @@ namespace AllinDefense.UI
                 27 => FrontendCopy.ObjectiveSpreadDefence.Value,
                 28 => FrontendCopy.ObjectiveEarlyHealer.Value,
                 29 => FrontendCopy.ObjectivePhaseRehearsal.Value,
+                31 => FrontendCopy.ObjectiveQuietRouteShift.Value,
+                32 => FrontendCopy.ObjectiveMergeCoverage.Value,
+                33 => FrontendCopy.ObjectiveSplitBudget.Value,
+                34 => FrontendCopy.ObjectiveSideSiege.Value,
+                35 => FrontendCopy.ObjectiveQuietUpgrade.Value,
+                36 => FrontendCopy.ObjectiveRoleSwap.Value,
+                37 => FrontendCopy.ObjectiveRegenHealerSplit.Value,
+                38 => FrontendCopy.ObjectiveDoublePush.Value,
+                39 => FrontendCopy.ObjectiveSpecialisationTest.Value,
                 _ => FrontendCopy.ObjectiveLord.Value
             };
         }

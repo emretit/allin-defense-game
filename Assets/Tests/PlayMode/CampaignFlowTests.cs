@@ -100,7 +100,7 @@ namespace AllinDefense.Tests
         }
 
         [UnityTest]
-        public IEnumerator ProductionLimitShowsComingSoonAndNinetyStars()
+        public IEnumerator ProductionLimitShowsComingSoonAndHundredTwentyStars()
         {
             Object.Destroy(flow.gameObject);
             Object.Destroy(session.gameObject);
@@ -113,15 +113,15 @@ namespace AllinDefense.Tests
             yield return new WaitForSecondsRealtime(.95f);
             Call(flow, "ShowScreen", AppScreen.MainMenu);
             flow.Progress.Data.levels.Add(new CampaignLevelProgress { level = 50, stars = 3 });
-            Win(30);
+            Win(40);
             Assert.That(Text("Completion Next"), Is.EqualTo(FrontendCopy.RegionsComingSoon.Value));
             Assert.That(Find<Button>("Completion Continue").gameObject.activeSelf, Is.False);
             Assert.That(Find<RectTransform>("Unlocked Chapter").gameObject.activeSelf, Is.False);
-            Assert.That(Text("Profile Star Count"), Is.EqualTo("1/90"));
+            Assert.That(Text("Profile Star Count"), Is.EqualTo("1/120"));
             Call(flow, "OpenCampaign");
             yield return new WaitForSecondsRealtime(.25f);
-            Assert.That(Find<Button>("Level 31"), Is.Null);
-            Assert.That(flow.GetComponentInChildren<FrontendCampaignPager>(true).PageCount, Is.EqualTo(3));
+            Assert.That(Find<Button>("Level 41"), Is.Null);
+            Assert.That(flow.GetComponentInChildren<FrontendCampaignPager>(true).PageCount, Is.EqualTo(4));
         }
 
         [UnityTest]
@@ -195,8 +195,8 @@ namespace AllinDefense.Tests
             foreach (var current in new[] { GameLanguage.Turkish, GameLanguage.English })
             {
                 GameLocalization.SetLanguage(current);
-                Call(flow, "SelectLevel", 31);
-                Assert.That(Text("Briefing Reward"), Does.Contain(GameLocalization.Translate(CampaignCatalog.Regions[3].subtitle)));
+                Call(flow, "SelectLevel", 41);
+                Assert.That(Text("Briefing Reward"), Does.Contain(GameLocalization.Translate(CampaignCatalog.Regions[4].subtitle)));
                 Call(flow, "SelectLevel", 40);
                 Assert.That(Text("Briefing Reward"), Does.Contain(CampaignCatalog.Level(40).localizedName));
                 Win(40);
@@ -216,7 +216,8 @@ namespace AllinDefense.Tests
             var canvas = flow.GetComponentInChildren<Canvas>();
             var cameraRoot = new GameObject("Campaign Flow Evidence Camera");
             var camera = cameraRoot.AddComponent<Camera>();
-            var target = new RenderTexture(1920, 1080, 24);
+            bool headless = SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Null;
+            var target = headless ? null : new RenderTexture(1920, 1080, 24);
             var texture = new Texture2D(1920, 1080, TextureFormat.RGB24, false);
             var previousTarget = RenderTexture.active;
             var previousMode = canvas.renderMode;
@@ -224,7 +225,7 @@ namespace AllinDefense.Tests
             float previousDistance = canvas.planeDistance;
             try
             {
-                camera.targetTexture = target;
+                if (!headless) camera.targetTexture = target;
                 canvas.renderMode = RenderMode.ScreenSpaceCamera;
                 canvas.worldCamera = camera;
                 canvas.planeDistance = 1;
@@ -238,6 +239,7 @@ namespace AllinDefense.Tests
                     text.ForceMeshUpdate();
                     Assert.That(text.isTextOverflowing, Is.False, id + ": " + text.text);
                 }
+                if (headless) return;
                 camera.Render();
                 RenderTexture.active = target;
                 texture.ReadPixels(new Rect(0, 0, 1920, 1080), 0, 0);
@@ -255,7 +257,7 @@ namespace AllinDefense.Tests
                 camera.targetTexture = null;
                 Object.Destroy(cameraRoot);
                 Object.Destroy(texture);
-                Object.Destroy(target);
+                if (target != null) Object.Destroy(target);
             }
         }
 

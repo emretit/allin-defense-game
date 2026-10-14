@@ -165,6 +165,15 @@ namespace AllinDefense.UI
         public static readonly LocalizedCopy ObjectiveSpreadDefence = new("Tüm gücü tek yola yığma.", "Don't stack everything on one route.");
         public static readonly LocalizedCopy ObjectiveEarlyHealer = new("Şifacı eskortunu erken yakala.", "Catch the healer escort early.");
         public static readonly LocalizedCopy ObjectivePhaseRehearsal = new("Hükümdarın ritmine küçük ölçekte hazırlan.", "Rehearse the sovereign's rhythm on a small scale.");
+        public static readonly LocalizedCopy ObjectiveQuietRouteShift = new("Susan yoldan açılan yola geç.", "Turn to the route that opens as one goes quiet.");
+        public static readonly LocalizedCopy ObjectiveMergeCoverage = new("Kuleleri iki yolun birleştiği yere kur.", "Build towers where the two routes merge.");
+        public static readonly LocalizedCopy ObjectiveSplitBudget = new("Altını iki paket arasında akıllıca böl.", "Split your gold wisely between two packs.");
+        public static readonly LocalizedCopy ObjectiveSideSiege = new("Ana yolu boşaltmadan yan kuşatmayı durdur.", "Stop the side siege; keep the main route held.");
+        public static readonly LocalizedCopy ObjectiveQuietUpgrade = new("Sakin aralarda kulelerini yükselt.", "Upgrade your towers in the quiet gaps.");
+        public static readonly LocalizedCopy ObjectiveRoleSwap = new("Zırhlı ve şifacının yol değiştirmesini izle.", "Track armour and healers as they swap routes.");
+        public static readonly LocalizedCopy ObjectiveRegenHealerSplit = new("Yenilenen ile şifacıyı ayrı ayrı ele al.", "Handle regenerators and healers one at a time.");
+        public static readonly LocalizedCopy ObjectiveDoublePush = new("İki yolun birlikte bastığı ana hazır ol.", "Be ready when both routes push at once.");
+        public static readonly LocalizedCopy ObjectiveSpecialisationTest = new("Lord'dan önce uzmanlaşmanı sına.", "Test your specialisation before the lord.");
         public static readonly LocalizedCopy ObjectiveLord = new("Lordun kırmızı uyarısını darbeyle kes.", "Interrupt the lord's red warning.");
         public static readonly LocalizedCopy SaveRetry = new("Kayıt tekrar denenecek", "Save will retry");
         public static readonly LocalizedCopy SaveRecovery = new("Kayıt kurtarılmayı bekliyor", "Save needs recovery");
