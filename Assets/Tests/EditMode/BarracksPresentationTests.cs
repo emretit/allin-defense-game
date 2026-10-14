@@ -18,10 +18,12 @@ namespace AllinDefense.Tests
                 PresentationActorKind.Guard);
             try
             {
-                var head = root.GetComponentsInChildren<Transform>().First(t => t.name == "Head" && t.GetComponent<Renderer>() != null);
-                var boots = root.GetComponentsInChildren<Transform>().Where(t => t.name.StartsWith("Boot") && t.GetComponent<Renderer>() != null).ToArray();
+                var head = root.GetComponentsInChildren<Transform>().First(t => t.name == "Socket_Head");
+                var boots = root.GetComponentsInChildren<Transform>().Where(t => t.name is "Leg.L" or "Leg.R")
+                    .SelectMany(leg => leg.GetComponentsInChildren<Renderer>()).ToArray();
+                Assert.That(boots, Is.Not.Empty, "Guard legs need rigid-parented geometry.");
                 var animator = root.GetComponentInChildren<Animator>();
-                Debug.Log($"[GUARD_POSE] imported_rotation={prefab.transform.localEulerAngles} initial_head={head.position} boots={string.Join(",", boots.Select(b => b.position.ToString()))}");
+                Debug.Log($"[GUARD_POSE] imported_rotation={prefab.transform.localEulerAngles} initial_head={head.position} boots={string.Join(",", boots.Select(b => b.bounds.min.ToString()))}");
                 animator.Rebind();
                 foreach (var state in new[] { "Idle", "Move", "Attack" })
                 {
@@ -30,7 +32,7 @@ namespace AllinDefense.Tests
                     foreach (float facing in new[] { 0f, 90f, 180f, 270f })
                     {
                         root.transform.rotation = Quaternion.Euler(0, facing, 0);
-                        float feet = boots.Average(b => b.position.y);
+                        float feet = boots.Min(b => b.bounds.min.y);
                         Debug.Log($"[GUARD_POSE] state={state} facing={facing} head_y={head.position.y:F3} feet_y={feet:F3}");
                         Assert.That(head.position.y - feet, Is.GreaterThan(.45f), "Guard must stand above the road regardless of facing or animation.");
                     }

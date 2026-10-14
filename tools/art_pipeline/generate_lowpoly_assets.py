@@ -12,6 +12,7 @@ import bpy
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import tower_v3_kit  # noqa: E402
 import tower_v3_models  # noqa: E402
+import actors_v3  # noqa: E402  (appends the actor swatches to the shared palette atlas)
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
@@ -714,84 +715,6 @@ def build_prop_crystal_cluster_b():
     sphere("PropCrystalClusterB_BaseB", (0.18, 0.09, 0.00), (0.14, 0.10, 0.12), "DC_Metal")
 
 
-def shadow(radius=0.58, mat_name="DC_Dark"):
-    cylinder("BlobShadow", (0, 0.025, 0), radius, 0.025, mat_name, 16)
-
-
-def add_humanoid_rig():
-    """Add the shared lightweight mobile humanoid skeleton to every actor source."""
-    rig_data = bpy.data.armatures.new("DC_HumanoidRig")
-    rig = bpy.data.objects.new("DC_HumanoidRig", rig_data)
-    bpy.context.collection.objects.link(rig)
-    bpy.context.view_layer.objects.active = rig
-    rig.select_set(True)
-    bpy.ops.object.mode_set(mode="EDIT")
-    bones = {
-        "Root": ((0, 0, 0), (0, 0, 0.55)),
-        "Spine": ((0, 0, 0.55), (0, 0, 1.2)),
-        "Head": ((0, 0, 1.2), (0, 0, 1.7)),
-        "Arm.L": ((0, 0, 1.08), (-0.55, 0, 0.9)),
-        "Arm.R": ((0, 0, 1.08), (0.55, 0, 0.9)),
-        "Leg.L": ((-0.13, 0, 0.58), (-0.13, 0, 0.05)),
-        "Leg.R": ((0.13, 0, 0.58), (0.13, 0, 0.05)),
-    }
-    created = {}
-    for name, (head, tail) in bones.items():
-        bone = rig_data.edit_bones.new(name)
-        bone.head = head
-        bone.tail = tail
-        created[name] = bone
-    created["Spine"].parent = created["Root"]
-    for name in ("Head", "Arm.L", "Arm.R"):
-        created[name].parent = created["Spine"]
-    for name in ("Leg.L", "Leg.R"):
-        created[name].parent = created["Root"]
-    bpy.ops.object.mode_set(mode="OBJECT")
-
-    # Rigid-parent the modular low-poly pieces to meaningful bones.  This keeps
-    # the source inexpensive (no skin weights are required) while allowing the
-    # Unity role clips to articulate limbs instead of moving only the actor root.
-    for obj in list(bpy.context.scene.objects):
-        if obj == rig or obj.type not in {"MESH", "EMPTY"}:
-            continue
-
-        name = obj.name
-        x = obj.matrix_world.translation.x
-        z = obj.matrix_world.translation.z
-        bone_name = "Root"
-        if name.startswith("Socket_"):
-            if name in {"Socket_Head"}:
-                bone_name = "Head"
-            elif name in {"Socket_Hand_L"}:
-                bone_name = "Arm.L"
-            elif name in {"Socket_Hand_R", "Socket_Weapon_Tip"}:
-                bone_name = "Arm.R" if x >= 0 else "Arm.L"
-            elif name == "Socket_Muzzle":
-                bone_name = "Arm.R"
-            elif name not in {"Socket_Root", "Socket_Ground"}:
-                bone_name = "Spine"
-        elif name != "BlobShadow":
-            if name.startswith("Ram"):
-                bone_name = "Arm.R"
-            elif name.startswith("SiegeRearCounterweight"):
-                bone_name = "Arm.L"
-            elif z >= 1.25 and abs(x) < 0.30:
-                bone_name = "Head"
-            elif z >= 0.64 and abs(x) >= 0.25:
-                bone_name = "Arm.L" if x < 0 else "Arm.R"
-            elif z < 0.64 and abs(x) >= 0.08:
-                bone_name = "Leg.L" if x < 0 else "Leg.R"
-            else:
-                bone_name = "Spine"
-
-        world_matrix = obj.matrix_world.copy()
-        obj.parent = rig
-        obj.parent_type = "BONE"
-        obj.parent_bone = bone_name
-        obj.matrix_world = world_matrix
-    return rig
-
-
 def banner(prefix, location, color="DC_Defender", scale=1.0):
     cylinder(f"{prefix}_Pole", location, 0.035 * scale, 1.15 * scale, "DC_Stone", 8)
     x, y, z = location
@@ -807,43 +730,6 @@ def socket(name, location, size=0.12):
     empty.empty_display_size = size
     empty.location = unity_location(location)
     return empty
-
-
-def add_actor_sockets(kind, scale):
-    """Add runtime presentation sockets without giving gameplay authority to the mesh."""
-    socket("Socket_Root", (0, 0, 0), 0.14 * scale)
-    socket("Socket_Ground", (0, 0.04 * scale, 0), 0.12 * scale)
-    socket("Socket_Chest", (0, 1.08 * scale, -0.03 * scale), 0.12 * scale)
-    socket("Socket_Head", (0, 1.76 * scale, 0), 0.11 * scale)
-
-    if kind == "vanguard":
-        socket("Socket_Hand_L", (-0.34 * scale, 1.05 * scale, -0.06 * scale), 0.1 * scale)
-        socket("Socket_Hand_R", (0.34 * scale, 1.00 * scale, -0.02 * scale), 0.1 * scale)
-        socket("Socket_Weapon_Tip", (0.72 * scale, 1.70 * scale, -0.04 * scale), 0.1 * scale)
-    elif kind in ("knight", "guard", "boss"):
-        socket("Socket_Hand_L", (-0.42 * scale, 0.94 * scale, -0.08 * scale), 0.1 * scale)
-        socket("Socket_Hand_R", (0.45 * scale, 1.02 * scale, 0), 0.1 * scale)
-        socket("Socket_Weapon_Tip", (0.66 * scale, 1.57 * scale, 0), 0.1 * scale)
-    elif kind == "raider":
-        socket("Socket_Hand_R", (0.36 * scale, 0.92 * scale, -0.03 * scale), 0.1 * scale)
-        socket("Socket_Weapon_Tip", (0.46 * scale, 1.18 * scale, -0.06 * scale), 0.1 * scale)
-    elif kind == "support":
-        socket("Socket_Hand_R", (0.42 * scale, 1.0 * scale, 0), 0.1 * scale)
-        socket("Socket_Cast", (0.42 * scale, 1.65 * scale, 0), 0.11 * scale)
-        socket("Socket_Weapon_Tip", (0.42 * scale, 1.72 * scale, 0), 0.1 * scale)
-
-    if kind in ("regenerator", "boss"):
-        socket("Socket_Back", (0, 1.15 * scale, 0.24 * scale), 0.11 * scale)
-        socket("Socket_Cast", (0, 1.50 * scale, -0.16 * scale), 0.11 * scale)
-        socket("Socket_Core", (0, 1.02 * scale, -0.12 * scale), 0.11 * scale)
-
-
-def add_siege_sockets():
-    socket("Socket_Root", (0, 0, 0), 0.16)
-    socket("Socket_Ground", (0, 0.05, 0), 0.13)
-    socket("Socket_Chest", (0, 0.72, -0.08), 0.13)
-    socket("Socket_Muzzle", (0, 0.78, -1.88), 0.13)
-    socket("Socket_Core", (0, 0.60, 0.18), 0.13)
 
 
 def build_environment():
@@ -1146,242 +1032,9 @@ def build_command():
     banner("CommandBanner", (-0.18, 0.68, 0), "DC_Defender", 0.78)
 
 
-def build_humanoid(kind):
-    specs = {
-        "knight": ("DC_Defender", "DC_Stone", 1.0),
-        "guard": ("DC_Stone", "DC_Defender", 0.78),
-        "raider": ("DC_Enemy", "DC_Dark", 0.72),
-        "vanguard": ("DC_Dark", "DC_Enemy", 1.05),
-        "regenerator": ("DC_Dark", "DC_RegenCore", 1.02),
-        "support": ("DC_SupportCloth", "DC_Magic", 0.88),
-        "boss": ("DC_Enemy", "DC_Fire", 1.55),
-    }
-    body, accent, scale = specs[kind]
-    stone = "DC_Stone"
-    metal = "DC_Metal"
-    fire = "DC_Fire"
-    dark = "DC_Dark"
-
-    if kind == "knight":
-        accent = "DC_Fire"
-        stone = body
-        metal = accent
-        fire = accent
-        dark = body
-    elif kind == "guard":
-        stone = body
-        metal = accent
-        fire = accent
-        dark = body
-    elif kind == "raider":
-        stone = accent
-        metal = accent
-        fire = body
-        dark = accent
-    elif kind == "vanguard":
-        stone = body
-        metal = body
-        fire = accent
-        dark = body
-    elif kind == "regenerator":
-        stone = body
-        metal = accent
-        fire = accent
-        dark = body
-    elif kind == "support":
-        stone = body
-        metal = accent
-        fire = accent
-        dark = body
-    elif kind == "boss":
-        stone = body
-        metal = accent
-        fire = accent
-        dark = body
-
-    shadow(0.48 * scale, dark)
-    body_radius = 0.34 * scale if kind == "vanguard" else 0.28 * scale
-    body_depth = 0.82 * scale if kind == "vanguard" else 0.74 * scale
-    shoulder_width = 0.52 * scale if kind == "vanguard" else 0.42 * scale
-    if kind == "regenerator":
-        body_radius = 0.30 * scale
-        body_depth = 0.78 * scale
-        shoulder_width = 0.36 * scale
-    if kind == "support":
-        body_radius = 0.24 * scale
-        body_depth = 0.82 * scale
-        shoulder_width = 0.34 * scale
-    belt_mat = accent
-    shoulder_mat = accent
-    arm_mat = accent
-    boot_mat = accent
-    visor_mat = metal
-    if kind == "regenerator":
-        belt_mat = body
-        shoulder_mat = body
-        arm_mat = body
-        boot_mat = body
-        visor_mat = accent
-    if kind == "support":
-        belt_mat = accent
-        shoulder_mat = body
-        arm_mat = body
-        boot_mat = body
-        visor_mat = accent
-    cylinder("Body", (0, 0.82 * scale, 0), body_radius, body_depth, body, 8)
-    cylinder("Belt", (0, 0.69 * scale, 0), body_radius + 0.025 * scale, 0.13 * scale, belt_mat, 8)
-    sphere("Shoulders", (0, 1.12 * scale, 0), (shoulder_width, 0.24 * scale, 0.28 * scale), shoulder_mat)
-    sphere("Head", (0, 1.46 * scale, 0), (0.25 * scale, 0.28 * scale, 0.23 * scale), stone)
-    cone("Helmet", (0, 1.7 * scale, 0), 0.3 * scale, 0.06 * scale, 0.38 * scale, body, 8)
-    box("Visor", (0, 1.49 * scale, -0.225 * scale),
-        (0.34 * scale, 0.08 * scale, 0.055 * scale), visor_mat, 0.015 * scale)
-    for side in (-1, 1):
-        cylinder("Arm", (side * 0.36 * scale, 0.92 * scale, 0), 0.09 * scale, 0.58 * scale,
-                 arm_mat, 7, rotation=(0, 0, math.radians(side * 12)))
-        cylinder("Leg", (side * 0.15 * scale, 0.38 * scale, 0), 0.1 * scale, 0.58 * scale, dark, 7)
-        box("Boot", (side * 0.15 * scale, 0.10 * scale, -0.055 * scale),
-            (0.21 * scale, 0.17 * scale, 0.32 * scale), boot_mat, 0.035 * scale)
-
-    if kind == "knight":
-        box("Shield", (-0.42 * scale, 0.88 * scale, -0.08 * scale),
-            (0.12 * scale, 0.66 * scale, 0.52 * scale), accent, 0.05 * scale)
-        cylinder("Weapon", (0.45 * scale, 1.02 * scale, 0), 0.035 * scale, 0.95 * scale, fire, 6,
-                 rotation=(0, 0, math.radians(-22)))
-        cone("WeaponBlade", (0.62 * scale, 1.42 * scale, 0), 0.10 * scale, 0.015,
-             0.34 * scale, metal, 5, rotation=(0, 0, math.radians(-22)))
-    if kind == "guard":
-        # A tall spear line reads before colour at gameplay distance and separates
-        # the guard from the Knight's broad shield-and-sword silhouette.
-        cylinder("GuardSpearShaft", (0.43 * scale, 1.18 * scale, 0),
-                 0.030 * scale, 1.82 * scale, body, 7)
-        cone("GuardSpearTip", (0.43 * scale, 2.18 * scale, 0),
-             0.12 * scale, 0.018 * scale, 0.42 * scale, accent, 5)
-        box("GuardBuckler", (-0.34 * scale, 0.94 * scale, -0.10 * scale),
-            (0.10 * scale, 0.42 * scale, 0.30 * scale), accent, 0.04 * scale)
-    if kind == "raider":
-        # Twin outward blades and a trailing scarf form an agile, forward-pointing
-        # wedge instead of a colour-swapped defender body.
-        for side in (-1, 1):
-            cylinder("RaiderGrip", (side * 0.38 * scale, 0.86 * scale, -0.03 * scale),
-                     0.035 * scale, 0.34 * scale, dark, 6,
-                     rotation=(math.radians(12), 0, math.radians(side * 28)))
-            cone("RaiderBlade", (side * 0.51 * scale, 0.67 * scale, -0.08 * scale),
-                 0.13 * scale, 0.018 * scale, 0.56 * scale, body, 5,
-                 rotation=(math.radians(16), 0, math.radians(side * 28)))
-        scarf = box("RaiderScarf", (0, 1.27 * scale, 0.24 * scale),
-                    (0.20 * scale, 0.12 * scale, 0.72 * scale), body, 0.025 * scale)
-        scarf.rotation_euler[0] = math.radians(-18)
-    if kind == "boss":
-        # The boss base profile is deliberately asymmetric and weapon-heavy; phase
-        # shards then expand it further without scaling the whole actor.
-        box("BossCorePlate", (0, 1.04 * scale, -0.20 * scale),
-            (0.52 * scale, 0.56 * scale, 0.11 * scale), accent, 0.045 * scale)
-        box("BossLeftPauldron", (-0.54 * scale, 1.28 * scale, 0),
-            (0.42 * scale, 0.34 * scale, 0.42 * scale), body, 0.07 * scale)
-        cylinder("BossCleaverHaft", (0.48 * scale, 1.02 * scale, 0),
-                 0.055 * scale, 1.28 * scale, body, 7,
-                 rotation=(0, 0, math.radians(-26)))
-        box("BossCleaverHead", (0.77 * scale, 1.56 * scale, 0),
-            (0.40 * scale, 0.62 * scale, 0.18 * scale), accent, 0.055 * scale)
-        cone("BossCleaverSpike", (0.93 * scale, 1.91 * scale, 0),
-             0.14 * scale, 0.02 * scale, 0.44 * scale, accent, 5,
-             rotation=(0, 0, math.radians(-26)))
-    if kind == "vanguard":
-        box("ChestPlate", (0, 1.03 * scale, -0.03 * scale),
-            (0.56 * scale, 0.42 * scale, 0.10 * scale), accent, 0.035 * scale)
-        cylinder("GreatWeaponHandle", (0.34 * scale, 1.08 * scale, -0.02 * scale),
-                 0.045 * scale, 1.25 * scale, body, 6, rotation=(0, 0, math.radians(-32)))
-        box("GreatWeaponHead", (0.67 * scale, 1.55 * scale, -0.04 * scale),
-            (0.32 * scale, 0.38 * scale, 0.18 * scale), accent, 0.035 * scale)
-        cone("GreatWeaponSpike", (0.82 * scale, 1.78 * scale, -0.04 * scale),
-             0.12 * scale, 0.018 * scale, 0.34 * scale, accent, 5, rotation=(0, 0, math.radians(-32)))
-    if kind == "support":
-        box("OpenMantle", (0, 1.02 * scale, -0.04 * scale),
-            (0.42 * scale, 0.54 * scale, 0.08 * scale), body, 0.025 * scale)
-        cylinder("Staff", (0.42 * scale, 1.0 * scale, 0), 0.04 * scale, 1.34 * scale, body, 7,
-                 rotation=(0, 0, math.radians(-3)))
-        sphere("StaffLantern", (0.42 * scale, 1.66 * scale, 0), (0.16 * scale, 0.20 * scale, 0.16 * scale), accent)
-        cylinder("LanternRing", (0.42 * scale, 1.66 * scale, 0), 0.18 * scale, 0.04 * scale, accent, 10,
-                 rotation=(math.radians(90), 0, 0))
-        cone("StaffBeacon", (0.42 * scale, 1.86 * scale, 0), 0.10 * scale, 0.018 * scale,
-             0.26 * scale, accent, 6)
-        sphere("ChestFocus", (0, 1.08 * scale, -0.25 * scale),
-               (0.10 * scale, 0.12 * scale, 0.05 * scale), accent)
-        for side in (-1, 1):
-            ribbon = box("ClothRibbon", (side * 0.18 * scale, 0.56 * scale, -0.12 * scale),
-                         (0.09 * scale, 0.62 * scale, 0.05 * scale), body, 0.018 * scale)
-            ribbon.rotation_euler[1] = math.radians(side * 5)
-    if kind == "regenerator":
-        sphere("CoreOrb", (-0.09 * scale, 1.03 * scale, -0.255 * scale),
-               (0.18 * scale, 0.22 * scale, 0.07 * scale), accent)
-        cylinder("CoreRibA", (-0.25 * scale, 1.05 * scale, -0.235 * scale),
-                 0.025 * scale, 0.38 * scale, accent, 5, rotation=(0, 0, math.radians(72)))
-        cylinder("CoreRibB", (0.10 * scale, 0.95 * scale, -0.235 * scale),
-                 0.022 * scale, 0.32 * scale, accent, 5, rotation=(0, 0, math.radians(-58)))
-        sphere("BackTotemPod", (-0.24 * scale, 1.22 * scale, 0.28 * scale),
-               (0.20 * scale, 0.42 * scale, 0.18 * scale), accent)
-        cylinder("BackTotemStem", (-0.18 * scale, 1.18 * scale, 0.25 * scale),
-                 0.055 * scale, 0.86 * scale, body, 7, rotation=(math.radians(-10), 0, math.radians(-8)))
-        cone("BackTotemTip", (-0.32 * scale, 1.76 * scale, 0.30 * scale),
-             0.12 * scale, 0.02 * scale, 0.34 * scale, accent, 6, rotation=(math.radians(-12), 0, math.radians(-16)))
-        for index, (side, height, reach) in enumerate(((-1, 1.40, 0.34), (1, 1.22, 0.26), (-1, 0.96, 0.24))):
-            tendril = cylinder(f"BackTendril_{index}", (side * reach * scale, height * scale, 0.20 * scale),
-                               0.035 * scale, 0.54 * scale, body, 6,
-                               rotation=(math.radians(18), 0, math.radians(side * 34)))
-            tendril.scale.x *= 0.72
-        for side in (-1, 1):
-            cone("VineHorn", (side * 0.2 * scale, 1.68 * scale, 0.02 * scale),
-                 0.085 * scale, 0.018 * scale, 0.34 * scale, accent, 6,
-                 rotation=(0, 0, math.radians(side * 18)))
-    if kind in ("raider", "boss"):
-        for side in (-1, 1):
-            cone("Horn", (side * 0.18 * scale, 1.72 * scale, 0), 0.11 * scale, 0.015,
-                 0.36 * scale, fire, 6, rotation=(0, 0, math.radians(side * 20)))
-    if kind == "boss":
-        # Phase pieces are authored as separate silhouette groups. Runtime keeps Phase 2/3
-        # hidden until their health thresholds so the boss changes shape, not only colour/scale.
-        for side in (-1, 1):
-            cone(f"Phase2_ShoulderShard_{'L' if side < 0 else 'R'}",
-                 (side * 0.58 * scale, 1.48 * scale, 0.02 * scale),
-                 0.16 * scale, 0.025 * scale, 0.62 * scale, fire, 6,
-                 rotation=(math.radians(8), 0, math.radians(side * 34)))
-            cone(f"Phase3_BackBlade_{'L' if side < 0 else 'R'}",
-                 (side * 0.42 * scale, 1.28 * scale, 0.30 * scale),
-                 0.20 * scale, 0.025 * scale, 0.90 * scale, "DC_Enemy", 6,
-                 rotation=(math.radians(-18), 0, math.radians(side * 22)))
-        cone("Phase3_Crown", (0, 2.02 * scale, 0.02 * scale),
-             0.24 * scale, 0.03 * scale, 0.72 * scale, fire, 7)
-        sphere("Phase2_Core", (0, 1.12 * scale, -0.31 * scale),
-               (0.26 * scale, 0.31 * scale, 0.09 * scale), fire)
-        cylinder("Phase3_CoreRing", (0, 1.12 * scale, -0.34 * scale),
-                 0.34 * scale, 0.06 * scale, "DC_Magic", 14,
-                 rotation=(math.pi / 2, 0, 0))
-    if kind == "knight":
-        box("Cape", (0, 0.92, 0.23), (0.56, 0.82, 0.08), "DC_Defender", 0.03)
-        sphere("Crest", (0, 1.9, 0), (0.12, 0.2, 0.12), fire)
-    add_actor_sockets(kind, scale)
-    add_humanoid_rig()
-
-
-def build_siege():
-    shadow(0.85)
-    box("SiegeBody", (0, 0.48, 0), (1.25, 0.66, 1.0), "DC_Dark", 0.08)
-    box("SiegeUpperCradle", (0, 0.82, -0.18), (0.92, 0.24, 1.28), "DC_Dark", 0.04)
-    box("SiegeRearCounterweight", (0, 0.86, 0.62), (0.52, 0.30, 0.42), "DC_Dark", 0.03)
-    for x in (-0.58, 0.58):
-        for z in (-0.36, 0.36):
-            cylinder("Wheel", (x, 0.35, z), 0.28, 0.18, "DC_Dark", 10, rotation=(0, 0, math.pi / 2))
-            box("WheelBrace", (x * 0.86, 0.42, z), (0.10, 0.18, 0.18), "DC_Dark", 0.01)
-    box("Ram", (0, 0.78, -0.72), (0.34, 0.34, 1.65), "DC_Enemy", 0.04)
-    box("RamCollar", (0, 0.78, -1.06), (0.42, 0.12, 0.18), "DC_Enemy", 0.02)
-    cone("RamHead", (0, 0.78, -1.62), 0.26, 0.02, 0.55, "DC_Enemy", 6, rotation=(math.pi / 2, 0, 0))
-    for side in (-1, 1):
-        plate = box("SiegeSidePlate", (side * 0.72, 0.64, -0.12), (0.12, 0.42, 0.88), "DC_Enemy", 0.02)
-        plate.rotation_euler[1] = math.radians(side * 6)
-    cylinder("SiegeBanner_Pole", (-0.38, 1.12, 0.2), 0.028, 0.92, "DC_Dark", 8)
-    box("SiegeBanner_Cloth", (-0.22, 1.36, 0.2), (0.30, 0.22, 0.05), "DC_Enemy", 0.02)
-    add_siege_sockets()
-    add_humanoid_rig()
+def build_actor(kind):
+    """Actor v3: per-bone meshes on the shared tower_palette atlas + DC_HumanoidRig (see actors_v3.py)."""
+    actors_v3.build_for_export(kind, tower_v3_kit.palette_material(TOWER_TEXTURE_DIR))
 
 
 def build_outpost(kind, level, branch=None):
@@ -1440,14 +1093,14 @@ ASSETS = {
     "SellVfx_Chips": build_vfx_sell_chips,
     "SellVfx_Glint": build_vfx_sell_glint,
     "CommandPoint": build_command,
-    "Knight": lambda: build_humanoid("knight"),
-    "Guard": lambda: build_humanoid("guard"),
-    "Raider": lambda: build_humanoid("raider"),
-    "Vanguard": lambda: build_humanoid("vanguard"),
-    "Regenerator": lambda: build_humanoid("regenerator"),
-    "Support": lambda: build_humanoid("support"),
-    "Siege": build_siege,
-    "Boss": lambda: build_humanoid("boss"),
+    "Knight": lambda: build_actor("Knight"),
+    "Guard": lambda: build_actor("Guard"),
+    "Raider": lambda: build_actor("Raider"),
+    "Vanguard": lambda: build_actor("Vanguard"),
+    "Regenerator": lambda: build_actor("Regenerator"),
+    "Support": lambda: build_actor("Support"),
+    "Siege": lambda: build_actor("Siege"),
+    "Boss": lambda: build_actor("Boss"),
     "Archer_L1": lambda: build_outpost("archer", 1),
     "Archer_L2": lambda: build_outpost("archer", 2),
     "Barracks_L1": lambda: build_outpost("barracks", 1),

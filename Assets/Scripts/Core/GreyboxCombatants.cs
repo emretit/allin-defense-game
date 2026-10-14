@@ -88,7 +88,11 @@ namespace AllinDefense.Core
             UpdateHealthBar();
             if (siegeWarning != null) siegeWarning.Show(Position, 1f, false);
             var phaseVisual = GetComponent<BossPhaseVisual>();
-            if (phaseVisual != null) phaseVisual.SetPhase(1);
+            if (phaseVisual != null)
+            {
+                phaseVisual.SetPhase(1);
+                phaseVisual.SetOrnament(bossProfile?.id);
+            }
             var view = GetComponent<StylizedActorView>();
             if (view != null) view.ResetForReuse();
             UpdateBossBarPosition();
@@ -286,26 +290,50 @@ namespace AllinDefense.Core
                 canvas.renderMode = RenderMode.WorldSpace;
                 var rect = canvasObject.GetComponent<RectTransform>();
                 healthCanvas = rect;
-                if (archetype == EnemyArchetype.Boss)
-                    bossBarRenderers = transform.Find("Motion")?.GetComponentsInChildren<Renderer>();
-                rect.localPosition = Vector3.up * (archetype == EnemyArchetype.Boss ? 2.8f : 1.65f);
-                rect.sizeDelta = new Vector2(100f, 10f);
+                bool boss = archetype == EnemyArchetype.Boss;
+                if (boss)
+                    bossBarRenderers = transform.Find("Motion")?.GetComponentsInChildren<Renderer>(true);
+                rect.localPosition = Vector3.up * (boss ? 2.8f : VisualTop() + .22f);
                 rect.localScale = Vector3.one * 0.012f;
                 canvasObject.AddComponent<WorldSpaceBillboard>();
-                rect.sizeDelta = archetype == EnemyArchetype.Boss ? new Vector2(146, 14) : new Vector2(100, 8);
+                rect.sizeDelta = boss ? new Vector2(210, 26) : new Vector2(110, 17);
                 var kit = new UiKit(session.PresentationCatalog.frontendTheme.designSystem);
-                var border = kit.Decoration(canvasObject.transform, "Background", kit.Assets.pill, UiTokens.TextSecondary);
-                healthRoot = border.gameObject;
+                var outline = kit.Decoration(canvasObject.transform, "Outline", kit.Assets.pill, UiTokens.NightDeep);
+                healthRoot = outline.gameObject;
+                var border = kit.Decoration(outline.transform, "Background", kit.Assets.pill,
+                    boss ? UiTokens.Gold : UiTokens.TextSecondary);
+                border.rectTransform.offsetMin = Vector2.one * 1.5f;
+                border.rectTransform.offsetMax = -Vector2.one * 1.5f;
                 var barBacking = kit.Decoration(border.transform, "Health Backing", kit.Assets.pill, UiTokens.GlassStrong);
-                barBacking.rectTransform.offsetMin = Vector2.one * 2;
-                barBacking.rectTransform.offsetMax = -Vector2.one * 2;
+                barBacking.rectTransform.offsetMin = Vector2.one * (boss ? 3f : 2f);
+                barBacking.rectTransform.offsetMax = -Vector2.one * (boss ? 3f : 2f);
                 var trail = kit.Decoration(barBacking.transform, "Damage Trail", kit.Assets.pill, UiTokens.TextPrimary);
-                var barFill = kit.Decoration(barBacking.transform, "Fill", kit.Assets.pill,
-                    archetype == EnemyArchetype.Boss ? UiTokens.Gold : UiTokens.Danger);
+                var barFill = kit.Decoration(barBacking.transform, "Fill", kit.Assets.pill, UiTokens.Danger);
                 foreach (var bar in new[] { trail.rectTransform, barFill.rectTransform })
                 {
                     bar.pivot = new Vector2(.5f, .5f);
                     bar.offsetMin = bar.offsetMax = Vector2.zero;
+                }
+                if (boss)
+                {
+                    foreach (float threshold in bossProfile.phaseThresholds)
+                    {
+                        var notch = kit.Decoration(border.transform, "Phase Notch", null, UiTokens.GoldHigh);
+                        notch.rectTransform.anchorMin = new Vector2(threshold, 0);
+                        notch.rectTransform.anchorMax = new Vector2(threshold, 1);
+                        notch.rectTransform.sizeDelta = new Vector2(3, 4);
+                    }
+                    var badge = kit.Decoration(outline.transform, "Boss Badge", kit.Assets.filledCircle, UiTokens.Gold);
+                    badge.rectTransform.anchorMin = badge.rectTransform.anchorMax = new Vector2(0, .5f);
+                    badge.rectTransform.sizeDelta = Vector2.one * 34;
+                    badge.rectTransform.anchoredPosition = new Vector2(-10, 0);
+                    var badgeCore = kit.Decoration(badge.transform, "Boss Badge Core", kit.Assets.filledCircle, UiTokens.NightDeep);
+                    badgeCore.rectTransform.offsetMin = Vector2.one * 3;
+                    badgeCore.rectTransform.offsetMax = -Vector2.one * 3;
+                    var icon = kit.Decoration(badgeCore.transform, "Boss Badge Icon", kit.Assets.iconEnemy, UiTokens.Gold);
+                    icon.preserveAspect = true;
+                    icon.rectTransform.offsetMin = Vector2.one * 4;
+                    icon.rectTransform.offsetMax = -Vector2.one * 4;
                 }
                 healthTrail = trail.transform;
                 healthFill = barFill.transform;
@@ -329,12 +357,23 @@ namespace AllinDefense.Core
             healthFill.localScale = Vector3.one;
         }
 
+        private float VisualTop()
+        {
+            float top = 1.2f;
+            Transform motion = transform.Find("Motion");
+            if (motion == null) return 1.65f;
+            foreach (Renderer renderer in motion.GetComponentsInChildren<Renderer>())
+                top = Mathf.Max(top, renderer.bounds.max.y - transform.position.y);
+            return top;
+        }
+
         private void UpdateBossBarPosition()
         {
             if (bossBarRenderers == null || healthCanvas == null) return;
             float top = 2.8f;
             for (int i = 0; i < bossBarRenderers.Length; i++)
-                top = Mathf.Max(top, bossBarRenderers[i].bounds.max.y - transform.position.y);
+                if (bossBarRenderers[i].gameObject.activeInHierarchy)
+                    top = Mathf.Max(top, bossBarRenderers[i].bounds.max.y - transform.position.y);
             healthCanvas.localPosition = Vector3.up * (top + .8f);
         }
 

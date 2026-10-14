@@ -498,7 +498,10 @@ namespace AllinDefense.Tests
             Assert.That(session.Hero.GetComponentInChildren<Animator>(), Is.Not.Null);
             int heroMaterials = session.Hero.GetComponentsInChildren<Renderer>()
                 .SelectMany(renderer => renderer.sharedMaterials).Where(material => material != null).Distinct().Count();
-            Assert.That(heroMaterials, Is.LessThanOrEqualTo(2));
+            Assert.That(heroMaterials, Is.LessThanOrEqualTo(3), "shared actor atlas + grounding aura + contact shadow");
+            Assert.That(session.Hero.GetComponentsInChildren<Renderer>().Where(renderer => renderer.transform.IsChildOf(
+                    session.Hero.transform.Find("Motion/Art"))).SelectMany(renderer => renderer.sharedMaterials).Distinct(),
+                Is.EquivalentTo(new[] { catalog.towerPaletteMaterial.material }), "hero art draws from the shared atlas");
             LogAssert.NoUnexpectedReceived();
             Object.Destroy(gameObject);
             yield return null;

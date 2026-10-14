@@ -289,30 +289,24 @@ namespace AllinDefense.Presentation
 
     public sealed class BossPhaseVisual : MonoBehaviour
     {
+        // Region dressing groups on the shared boss body: Ornament_<BossEncounterProfile.id>_<bone>.
+        public const string DefaultOrnament = "region-lord";
+        private const string OrnamentPrefix = "Ornament_";
         private GameObject[] phaseTwo = System.Array.Empty<GameObject>();
         private GameObject[] phaseThree = System.Array.Empty<GameObject>();
+        private GameObject[] ornaments = System.Array.Empty<GameObject>();
 
         public int CurrentPhase { get; private set; } = 1;
+        public string Ornament { get; private set; } = DefaultOrnament;
 
         public void Configure(Transform visualRoot, DefenderPresentationCatalog catalog)
         {
             if (visualRoot == null) return;
-            phaseTwo = visualRoot.GetComponentsInChildren<Transform>(true)
-                .Where(child => child != visualRoot && child.name.StartsWith("Phase2_",
-                    System.StringComparison.Ordinal))
-                .Select(child => child.gameObject).ToArray();
-            phaseThree = visualRoot.GetComponentsInChildren<Transform>(true)
-                .Where(child => child != visualRoot && child.name.StartsWith("Phase3_",
-                    System.StringComparison.Ordinal))
-                .Select(child => child.gameObject).ToArray();
-
-            foreach (GameObject part in phaseTwo)
-                SetPhaseMaterial(part, part.name.Contains("Core", System.StringComparison.Ordinal)
-                    ? catalog.fireMaterial : catalog.enemyMaterial);
-            foreach (GameObject part in phaseThree)
-                SetPhaseMaterial(part, part.name.Contains("Core", System.StringComparison.Ordinal)
-                    ? catalog.magicMaterial : catalog.darkMaterial);
+            phaseTwo = Parts(visualRoot, "Phase2_");
+            phaseThree = Parts(visualRoot, "Phase3_");
+            ornaments = Parts(visualRoot, OrnamentPrefix);
             SetPhase(1);
+            SetOrnament(DefaultOrnament);
         }
 
         public void SetPhase(int phase)
@@ -324,12 +318,37 @@ namespace AllinDefense.Presentation
                 if (part != null) part.SetActive(CurrentPhase >= 3);
         }
 
-        private static void SetPhaseMaterial(GameObject part, Material material)
+        public void SetOrnament(string profileId) => Ornament = ShowOrnament(ornaments, profileId);
+
+        // Pooled defeat echoes copy the raw prefab: keep them on the resting silhouette.
+        internal static void ShowRestingParts(Transform visualRoot, string profileId = null)
         {
-            if (part == null || material == null) return;
-            foreach (Renderer renderer in part.GetComponentsInChildren<Renderer>(true))
-                renderer.sharedMaterial = material;
+            foreach (GameObject part in Parts(visualRoot, "Phase2_").Concat(Parts(visualRoot, "Phase3_")))
+                part.SetActive(false);
+            ShowOrnament(Parts(visualRoot, OrnamentPrefix), profileId);
         }
+
+        private static string ShowOrnament(GameObject[] parts, string profileId)
+        {
+            string chosen = !string.IsNullOrEmpty(profileId) && parts.Any(part => HasOrnament(part, profileId))
+                ? profileId : DefaultOrnament;
+            foreach (GameObject part in parts)
+                if (part != null) part.SetActive(HasOrnament(part, chosen));
+            return chosen;
+        }
+
+        private static bool HasOrnament(GameObject part, string id)
+        {
+            string name = part.name;
+            int end = OrnamentPrefix.Length + id.Length;
+            return name.Length > end && name[end] == '_' &&
+                   string.CompareOrdinal(name, OrnamentPrefix.Length, id, 0, id.Length) == 0;
+        }
+
+        private static GameObject[] Parts(Transform visualRoot, string prefix) =>
+            visualRoot.GetComponentsInChildren<Transform>(true)
+                .Where(child => child != visualRoot && child.name.StartsWith(prefix, System.StringComparison.Ordinal))
+                .Select(child => child.gameObject).ToArray();
     }
 
     public sealed class StylizedActorView : MonoBehaviour
@@ -403,6 +422,7 @@ namespace AllinDefense.Presentation
             visual.transform.localRotation = Quaternion.identity;
             visual.transform.localScale = Vector3.one * scale;
             StylizedPresentationFactory.ApplyPalette(visual, catalog, true);
+            BossPhaseVisual.ShowRestingParts(visual.transform);
             var animator = echo.AddComponent<Animator>();
             animator.runtimeAnimatorController = actorAnimatorOverride != null ? actorAnimatorOverride : catalog.actorAnimator;
             var host = echo.AddComponent<DefeatEcho>();

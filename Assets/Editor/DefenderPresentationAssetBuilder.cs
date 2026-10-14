@@ -123,78 +123,8 @@ namespace AllinDefense.Editor
             var actorAnimatorController = actorAnimator as AnimatorController;
             if (actorAnimatorController == null)
                 throw new InvalidOperationException("Shared actor animator was not created as an AnimatorController.");
-            RuntimeAnimatorController knightAnimator = CreateRoleAnimatorOverride(
-                PresentationActorKind.Knight,
-                actorAnimatorController,
-                PresentationActorAnimationContract.IdleState,
-                PresentationActorAnimationContract.MoveState,
-                PresentationActorAnimationContract.AttackState,
-                PresentationActorAnimationContract.HitState,
-                PresentationActorAnimationContract.DefeatState,
-                PresentationActorAnimationContract.AbilityState);
-            RuntimeAnimatorController guardAnimator = CreateRoleAnimatorOverride(
-                PresentationActorKind.Guard,
-                actorAnimatorController,
-                PresentationActorAnimationContract.IdleState,
-                PresentationActorAnimationContract.MoveState,
-                PresentationActorAnimationContract.AttackState,
-                PresentationActorAnimationContract.HitState,
-                PresentationActorAnimationContract.DefeatState,
-                PresentationActorAnimationContract.AbilityState);
-            RuntimeAnimatorController raiderAnimator = CreateRoleAnimatorOverride(
-                PresentationActorKind.Raider,
-                actorAnimatorController,
-                PresentationActorAnimationContract.IdleState,
-                PresentationActorAnimationContract.MoveState,
-                PresentationActorAnimationContract.AttackState,
-                PresentationActorAnimationContract.HitState,
-                PresentationActorAnimationContract.DefeatState);
-            RuntimeAnimatorController vanguardAnimator = CreateRoleAnimatorOverride(
-                PresentationActorKind.Vanguard,
-                actorAnimatorController,
-                PresentationActorAnimationContract.IdleState,
-                PresentationActorAnimationContract.MoveState,
-                PresentationActorAnimationContract.AttackState,
-                PresentationActorAnimationContract.HitState,
-                PresentationActorAnimationContract.DefeatState,
-                PresentationActorAnimationContract.AbilityState);
-            RuntimeAnimatorController regeneratorAnimator = CreateRoleAnimatorOverride(
-                PresentationActorKind.Regenerator,
-                actorAnimatorController,
-                PresentationActorAnimationContract.IdleState,
-                PresentationActorAnimationContract.MoveState,
-                PresentationActorAnimationContract.AttackState,
-                PresentationActorAnimationContract.HitState,
-                PresentationActorAnimationContract.DefeatState,
-                PresentationActorAnimationContract.AbilityState);
-            RuntimeAnimatorController supportAnimator = CreateRoleAnimatorOverride(
-                PresentationActorKind.Support,
-                actorAnimatorController,
-                PresentationActorAnimationContract.IdleState,
-                PresentationActorAnimationContract.MoveState,
-                PresentationActorAnimationContract.AttackState,
-                PresentationActorAnimationContract.HitState,
-                PresentationActorAnimationContract.DefeatState,
-                PresentationActorAnimationContract.AbilityState);
-            RuntimeAnimatorController siegeAnimator = CreateRoleAnimatorOverride(
-                PresentationActorKind.Siege,
-                actorAnimatorController,
-                PresentationActorAnimationContract.IdleState,
-                PresentationActorAnimationContract.MoveState,
-                PresentationActorAnimationContract.AttackState,
-                PresentationActorAnimationContract.HitState,
-                PresentationActorAnimationContract.DefeatState,
-                PresentationActorAnimationContract.AbilityState);
-            RuntimeAnimatorController bossAnimator = CreateRoleAnimatorOverride(
-                PresentationActorKind.Boss,
-                actorAnimatorController,
-                PresentationActorAnimationContract.IdleState,
-                PresentationActorAnimationContract.MoveState,
-                PresentationActorAnimationContract.AttackState,
-                PresentationActorAnimationContract.HitState,
-                PresentationActorAnimationContract.DefeatState,
-                PresentationActorAnimationContract.PhaseState,
-                PresentationActorAnimationContract.BossAttackState);
+            Dictionary<PresentationActorKind, RuntimeAnimatorController> roleAnimators =
+                CreateRoleAnimators(actorAnimatorController);
             UiCopyCatalog copy = CreateCopyCatalog();
             var materials = CreatePaletteMaterials();
             LicensedAtlasMaterialEntry[] licensedMaterials = CreateLicensedAtlasMaterials();
@@ -215,17 +145,7 @@ namespace AllinDefense.Editor
             catalog.environmentPrefab = CreateLicensedEnvironmentPrefab();
             catalog.outpostSlotPrefab = Model("OutpostSlot");
             catalog.commandPointPrefab = Model("CommandPoint");
-            catalog.actorVisuals = new[]
-            {
-                Actor(PresentationActorKind.Knight, "Knight", 0.74f, knightAnimator),
-                Actor(PresentationActorKind.Guard, "Guard", 0.66f, guardAnimator),
-                Actor(PresentationActorKind.Raider, "Raider", 0.64f, raiderAnimator),
-                Actor(PresentationActorKind.Vanguard, "Vanguard", 0.68f, vanguardAnimator),
-                Actor(PresentationActorKind.Regenerator, "Regenerator", 0.60f, regeneratorAnimator),
-                Actor(PresentationActorKind.Support, "Support", 0.62f, supportAnimator),
-                Actor(PresentationActorKind.Siege, "Siege", 0.92f, siegeAnimator),
-                Actor(PresentationActorKind.Boss, "Boss", 1.02f, bossAnimator)
-            };
+            catalog.actorVisuals = ActorVisuals(roleAnimators);
             ApplyTowerVisuals(catalog);
             catalog.hudPrefab = hudPrefab;
             catalog.panelSprite = panelSprite;
@@ -331,6 +251,59 @@ namespace AllinDefense.Editor
                 throw new InvalidOperationException("Presentation asset build is incomplete:\n- " + string.Join("\n- ", errors));
             Debug.Log($"[DC_ART_ASSETS_READY] Artistic presentation catalog built with {catalog.actorVisuals.Length} actors, " +
                       $"{catalog.outpostVisuals.Length} outposts and {catalog.audioCues.Length} audio cues.");
+        }
+
+        // Actor v3: rebuilds only the actor bindings, scales and role clips (models share the tower palette atlas).
+        [MenuItem("ALLIN: Defense/Refresh Actor Visuals")]
+        public static void RefreshActorVisuals()
+        {
+            AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
+            var catalog = AssetDatabase.LoadAssetAtPath<DefenderPresentationCatalog>($"{ResourceRoot}/DefenderPresentationCatalog.asset");
+            if (catalog == null) throw new InvalidOperationException("DefenderPresentationCatalog is missing.");
+            if (catalog.actorAnimator is not AnimatorController shared)
+                throw new InvalidOperationException("Shared actor animator is missing.");
+            catalog.actorVisuals = ActorVisuals(CreateRoleAnimators(shared));
+            EditorUtility.SetDirty(catalog);
+            AssetDatabase.SaveAssets();
+            IReadOnlyList<string> errors = catalog.ValidationErrors();
+            if (errors.Count > 0)
+                throw new InvalidOperationException("Actor visual refresh is incomplete:\n- " + string.Join("\n- ", errors));
+            Debug.Log($"[DC_ACTOR_V3_READY] {catalog.actorVisuals.Length} actors.");
+        }
+
+        private static ActorVisualEntry[] ActorVisuals(
+            IReadOnlyDictionary<PresentationActorKind, RuntimeAnimatorController> animators) => new[]
+        {
+            Actor(PresentationActorKind.Knight, "Knight", 0.92f, animators[PresentationActorKind.Knight]),
+            Actor(PresentationActorKind.Guard, "Guard", 0.82f, animators[PresentationActorKind.Guard]),
+            Actor(PresentationActorKind.Raider, "Raider", 0.90f, animators[PresentationActorKind.Raider]),
+            Actor(PresentationActorKind.Vanguard, "Vanguard", 0.85f, animators[PresentationActorKind.Vanguard]),
+            Actor(PresentationActorKind.Regenerator, "Regenerator", 0.84f, animators[PresentationActorKind.Regenerator]),
+            Actor(PresentationActorKind.Support, "Support", 0.87f, animators[PresentationActorKind.Support]),
+            Actor(PresentationActorKind.Siege, "Siege", 1.15f, animators[PresentationActorKind.Siege]),
+            Actor(PresentationActorKind.Boss, "Boss", 1.20f, animators[PresentationActorKind.Boss])
+        };
+
+        private static Dictionary<PresentationActorKind, RuntimeAnimatorController> CreateRoleAnimators(
+            AnimatorController shared)
+        {
+            string[] combat =
+            {
+                PresentationActorAnimationContract.IdleState, PresentationActorAnimationContract.MoveState,
+                PresentationActorAnimationContract.AttackState, PresentationActorAnimationContract.HitState,
+                PresentationActorAnimationContract.DefeatState
+            };
+            string[] withAbility = combat.Append(PresentationActorAnimationContract.AbilityState).ToArray();
+            string[] boss = combat.Append(PresentationActorAnimationContract.PhaseState)
+                .Append(PresentationActorAnimationContract.BossAttackState).ToArray();
+            return Enum.GetValues(typeof(PresentationActorKind)).Cast<PresentationActorKind>().ToDictionary(
+                kind => kind,
+                kind => CreateRoleAnimatorOverride(kind, shared, kind switch
+                {
+                    PresentationActorKind.Raider => combat,
+                    PresentationActorKind.Boss => boss,
+                    _ => withAbility
+                }));
         }
 
         // Tower v3: rebuilds only the outpost bindings and the shared tower palette material.
@@ -878,6 +851,7 @@ namespace AllinDefense.Editor
                 _ => 1.0f
             };
 
+            clip.ClearCurves();
             clip.name = $"{roleName}_{clipName}";
             clip.frameRate = 30f;
             clip.wrapMode = loopClip ? WrapMode.Loop : WrapMode.Once;
@@ -903,7 +877,7 @@ namespace AllinDefense.Editor
             // The generated actors use a lightweight mobile skeleton. Root curves above preserve
             // gameplay timing, while these curves give limbs, weapons and the torso authored motion
             // without ever moving the gameplay root.
-            const string rig = "Art/DC_HumanoidRig";
+            // Unity folds the single DC_HumanoidRig node into the model root, so bones start at Art/Root.
             float armSwing = clipName switch
             {
                 PresentationActorAnimationContract.MoveState => roleName == "Raider" ? 34f : 24f,
@@ -925,20 +899,49 @@ namespace AllinDefense.Editor
                 _ => 3f
             };
 
-            SetRigRotationCurve(clip, $"{rig}/Spine", "x", duration, torsoLean);
-            SetRigRotationCurve(clip, $"{rig}/Arm.L", "x", duration, -armSwing * 0.72f);
-            SetRigRotationCurve(clip, $"{rig}/Arm.R", "x", duration, armSwing);
-            SetRigRotationCurve(clip, $"{rig}/Leg.L", "x", duration, legSwing);
-            SetRigRotationCurve(clip, $"{rig}/Leg.R", "x", duration, -legSwing);
+            if (roleName == "Siege")
+            {
+                // The cart's "arm" is the ram and its "legs" are wheel pairs: nudge, never swing.
+                armSwing *= 0.15f;
+                legSwing = 0f;
+                torsoLean *= 0.2f;
+            }
+
+            GameObject model = Model(roleName);
+            if (model == null) throw new InvalidOperationException($"Actor model is missing: {roleName}.");
+            // Arms swing the weapon tip toward the target (weapons are held above the shoulder); the Raider's
+            // dagger sits at shoulder height, so its strike drives the hand forward instead.
+            bool handLeads = roleName == "Raider";
+            SetRigSwingCurves(clip, model, "Root/Spine", duration, torsoLean, false);
+            SetRigSwingCurves(clip, model, "Root/Spine/Arm.L", duration, -armSwing * 0.72f, handLeads);
+            SetRigSwingCurves(clip, model, "Root/Spine/Arm.R", duration, armSwing, handLeads);
+            SetRigSwingCurves(clip, model, "Root/Leg.L", duration, legSwing, true);
+            SetRigSwingCurves(clip, model, "Root/Leg.R", duration, -legSwing, true);
         }
 
-        private static void SetRigRotationCurve(AnimationClip clip, string path, string axis, float duration,
-            float peakDegrees)
+        // Swings a bone about the actor's lateral axis (model front is +Z): + moves the part above the joint
+        // forward, or the part below it when hangingLimb. All three Euler channels are keyed from the imported
+        // rest pose, so the rest orientation survives.
+        private static void SetRigSwingCurves(AnimationClip clip, GameObject model, string bonePath, float duration,
+            float forwardDegrees, bool hangingLimb)
         {
-            clip.SetCurve(path, typeof(Transform), $"localEulerAnglesRaw.{axis}", new AnimationCurve(
-                new Keyframe(0f, 0f),
-                new Keyframe(duration * 0.45f, peakDegrees),
-                new Keyframe(duration, 0f)));
+            Transform bone = model.transform.Find(bonePath);
+            if (bone == null) throw new InvalidOperationException($"{model.name} is missing rig bone {bonePath}.");
+            Quaternion parent = bone.parent.rotation;
+            Quaternion rest = bone.localRotation;
+            Vector3 restEuler = rest.eulerAngles;
+            float sign = hangingLimb ? -1f : 1f;
+            var curves = new[] { new AnimationCurve(), new AnimationCurve(), new AnimationCurve() };
+            foreach ((float time, float weight) in new[] { (0f, 0f), (duration * 0.45f, 1f), (duration, 0f) })
+            {
+                Quaternion swing = Quaternion.AngleAxis(sign * forwardDegrees * weight, Vector3.right);
+                Vector3 euler = (Quaternion.Inverse(parent) * swing * parent * rest).eulerAngles;
+                for (int axis = 0; axis < 3; axis++)
+                    curves[axis].AddKey(time, restEuler[axis] + Mathf.DeltaAngle(restEuler[axis], euler[axis]));
+            }
+            string[] names = { "x", "y", "z" };
+            for (int axis = 0; axis < 3; axis++)
+                clip.SetCurve($"Art/{bonePath}", typeof(Transform), $"localEulerAnglesRaw.{names[axis]}", curves[axis]);
         }
 
         private static AnimationClip CreateMotionClip(string clipName)

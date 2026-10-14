@@ -22,35 +22,35 @@ MonoBehaviour:
   - kind: 0
     prefab: {fileID: 919132149155446097, guid: ca86211f0d59c42c3a59ef4012912ecf, type: 3}
     animatorOverride: {fileID: 22100000, guid: 1ee0e4eb24a7341839ff6a3a01a8405e, type: 2}
-    scale: 0.74
+    scale: 0.92
   - kind: 1
     prefab: {fileID: 919132149155446097, guid: 4af9ec369fb8b42e3a8a128f9653dc90, type: 3}
     animatorOverride: {fileID: 22100000, guid: 56157ea9e3c1b457b895396454aed07e, type: 2}
-    scale: 0.66
+    scale: 0.82
   - kind: 2
     prefab: {fileID: 919132149155446097, guid: 35ede50e5d4af46b6b65d0a533522257, type: 3}
     animatorOverride: {fileID: 22100000, guid: cb227477ade444807a11a4f4207d2163, type: 2}
-    scale: 0.64
+    scale: 0.9
   - kind: 3
     prefab: {fileID: 919132149155446097, guid: 92a664c5553364d679574a52bd92676c, type: 3}
     animatorOverride: {fileID: 22100000, guid: dbc725429aea1436cb8ca8d745daae48, type: 2}
-    scale: 0.68
+    scale: 0.85
   - kind: 4
     prefab: {fileID: 919132149155446097, guid: f382a95ee783c4e069f7ecc6ee955d69, type: 3}
     animatorOverride: {fileID: 22100000, guid: f7a02ced2875a408e9a59650976765e4, type: 2}
-    scale: 0.6
+    scale: 0.84
   - kind: 5
     prefab: {fileID: 919132149155446097, guid: af8b985f82eff4928a7e89c9d859c70a, type: 3}
     animatorOverride: {fileID: 22100000, guid: e6c5bf60768a74cb0823c05942f14cd2, type: 2}
-    scale: 0.62
+    scale: 0.87
   - kind: 6
     prefab: {fileID: 919132149155446097, guid: 521a8c7e7877e46029ce3e7c3771366f, type: 3}
     animatorOverride: {fileID: 22100000, guid: 0511d5358967f43f993ecd59e8330431, type: 2}
-    scale: 0.92
+    scale: 1.15
   - kind: 7
     prefab: {fileID: 919132149155446097, guid: ac0cfbb859c1e4699a54973c59f9924b, type: 3}
     animatorOverride: {fileID: 22100000, guid: 85540070a2ceb4598bedc26813b0c7e8, type: 2}
-    scale: 1.02
+    scale: 1.2
   outpostVisuals:
   - kind: 0
     level: 1

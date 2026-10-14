@@ -92,7 +92,14 @@ namespace AllinDefense.Presentation
                 rewardPopupPool.Play(signal);
 
             if (signal.cue is PresentationCue.EnemyDefeated or PresentationCue.UnitDefeated)
-                defeatEchoPool.Play(signal.actor, signal.position);
+                defeatEchoPool.Play(signal.actor, signal.position, BossOrnament(signal.source));
+        }
+
+        private static string BossOrnament(GameObject source)
+        {
+            if (source == null) return null;
+            var phaseVisual = source.GetComponent<BossPhaseVisual>();
+            return phaseVisual != null ? phaseVisual.Ornament : null;
         }
 
         internal void PrewarmDefeatEcho(PresentationActorKind kind, int count)
