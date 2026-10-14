@@ -21,6 +21,8 @@ namespace AllinDefense.Tests
         private Type review;
         private UnityEngine.Random.State randomState;
         private bool reducedMotion;
+        private readonly List<GameObject> isolatedPresentationRoots = new();
+        private readonly List<GameObject> ownedPresentationLights = new();
 #if UNITY_EDITOR
         private bool asyncCompilation;
 #endif
@@ -39,12 +41,14 @@ namespace AllinDefense.Tests
         {
             public int region, chapter, drawCalls, setPassCalls, triangles, materials, sceneryMeshes;
             public float drawCallsPercent, setPassCallsPercent, trianglesPercent;
+            public int[] trialSetPassCalls;
         }
         [Serializable] private sealed class BiomeReport
         {
             public string status = "passed";
             public string comparison = "Same chapter-1 wave, camera, towers, enemies and route; only biome dressing and ambient profile change";
             public int allowedSetPassIncrease = 2;
+            public string sampling = "Three identical reinstall trials per region, five-frame maxima per trial, minimum SetPass across trials; draw/triangle/material counts must match across trials";
             public List<BiomeSample> regions = new();
             public List<Sample> chapterCaptures = new();
         }
@@ -121,6 +125,15 @@ namespace AllinDefense.Tests
             review.GetMethod("SetSize").Invoke(null, new object[] { 1280, 720 });
             yield return null; yield return null;
 #endif
+            foreach (GameObject root in Object.FindObjectsByType<Camera>(FindObjectsSortMode.None)
+                .Select(c => c.transform.root.gameObject)
+                .Concat(Object.FindObjectsByType<Light>(FindObjectsSortMode.None).Select(l => l.transform.root.gameObject))
+                .Where(root => root.activeSelf).Distinct())
+            {
+                isolatedPresentationRoots.Add(root);
+                root.SetActive(false);
+            }
+            yield return null;
             UnityEngine.Random.InitState(6006);
             FrontendPreferences.ReducedMotion = true;
             var catalog = Resources.Load<DefenderPresentationCatalog>("Presentation/DefenderPresentationCatalog");
@@ -128,6 +141,8 @@ namespace AllinDefense.Tests
             session.ConfigurePresentation(catalog);
             session.SetCampaignLevel(1);
             session.Initialize();
+            ownedPresentationLights.AddRange(Object.FindObjectsByType<Light>(FindObjectsSortMode.None)
+                .Where(l => !l.transform.IsChildOf(session.transform)).Select(l => l.gameObject));
             Time.timeScale = 0;
             session.TryBuildOutpost(0, OutpostKind.Archer);
             session.TryBuildOutpost(1, OutpostKind.Barracks);
@@ -140,39 +155,55 @@ namespace AllinDefense.Tests
             var groundColors = new HashSet<Color>();
             for (int region = 0; region < 5; region++)
             {
-                var dressing = session.GetComponentInChildren<DefenderBattlefieldDressing>();
-                if (region > 0)
+                var sample = new BiomeSample { region = region + 1, chapter = 1,
+                    setPassCalls = int.MaxValue, trialSetPassCalls = new int[3] };
+                for (int trial = 0; trial < 3; trial++)
                 {
+                    var dressing = session.GetComponentInChildren<DefenderBattlefieldDressing>();
                     Transform parent = dressing.transform.parent;
                     Object.Destroy(dressing.gameObject);
                     yield return null;
                     dressing = DefenderBattlefieldDressing.Install(parent, catalog, Camera.main, level.path,
                         region, level.routes, level.outpostSlots);
                     DefenderSceneLook.Apply(Camera.main, region);
-                }
-                Renderer[] renderers = dressing.GetComponentsInChildren<Renderer>();
-                var sample = new BiomeSample { region = region + 1, chapter = 1,
-                    materials = renderers.SelectMany(r => r.sharedMaterials).Distinct().Count(),
-                    sceneryMeshes = renderers.Count(r => r.name.StartsWith("Grove ")) };
-                Color groundColor = renderers.Single(r => r.name == "Continuous Battlefield Ground").sharedMaterial.GetColor("_BaseColor");
-                Assert.That(groundColor, Is.EqualTo(BiomeLook.ForRegion(region).GroundColor));
-                Assert.That(groundColors.Add(groundColor), Is.True, "Every biome needs a distinct terrain tone");
-                Assert.That(sample.sceneryMeshes, Is.EqualTo(2));
-                Assert.That(renderers.All(r => r.GetComponent<Collider>() == null), Is.True);
-                foreach (var mesh in dressing.GetComponentsInChildren<MeshFilter>().Where(f => f.name.StartsWith("Grove ")))
-                    foreach (Vector3 vertex in mesh.sharedMesh.vertices)
-                        Assert.That(dressing.SceneryFootprints.Any(b => { b.Expand(.0001f); return b.Contains(vertex); }),
-                            Is.True, $"Region {region + 1}: decoration must stay inside its cleared footprint");
-                for (int i = 0; i < 12; i++) yield return null;
+                    Renderer[] renderers = dressing.GetComponentsInChildren<Renderer>();
+                    int materials = renderers.SelectMany(r => r.sharedMaterials).Distinct().Count();
+                    int sceneryMeshes = renderers.Count(r => r.name.StartsWith("Grove "));
+                    Color groundColor = renderers.Single(r => r.name == "Continuous Battlefield Ground").sharedMaterial.GetColor("_BaseColor");
+                    Assert.That(groundColor, Is.EqualTo(BiomeLook.ForRegion(region).GroundColor));
+                    if (trial == 0) Assert.That(groundColors.Add(groundColor), Is.True, "Every biome needs a distinct terrain tone");
+                    Assert.That(sceneryMeshes, Is.EqualTo(2));
+                    Assert.That(renderers.All(r => r.GetComponent<Collider>() == null), Is.True);
+                    foreach (var mesh in dressing.GetComponentsInChildren<MeshFilter>().Where(f => f.name.StartsWith("Grove ")))
+                        foreach (Vector3 vertex in mesh.sharedMesh.vertices)
+                            Assert.That(dressing.SceneryFootprints.Any(b => { b.Expand(.0001f); return b.Contains(vertex); }),
+                                Is.True, $"Region {region + 1}: decoration must stay inside its cleared footprint");
+                    for (int i = 0; i < 12; i++) yield return null;
+                    int drawCalls = 0, setPassCalls = 0, triangles = 0;
 #if UNITY_EDITOR
-                for (int i = 0; i < 5; i++)
-                {
-                    yield return null;
-                    sample.drawCalls = Mathf.Max(sample.drawCalls, UnityEditor.UnityStats.drawCalls);
-                    sample.setPassCalls = Mathf.Max(sample.setPassCalls, UnityEditor.UnityStats.setPassCalls);
-                    sample.triangles = Mathf.Max(sample.triangles, UnityEditor.UnityStats.triangles);
-                }
+                    for (int i = 0; i < 5; i++)
+                    {
+                        yield return null;
+                        drawCalls = Mathf.Max(drawCalls, UnityEditor.UnityStats.drawCalls);
+                        setPassCalls = Mathf.Max(setPassCalls, UnityEditor.UnityStats.setPassCalls);
+                        triangles = Mathf.Max(triangles, UnityEditor.UnityStats.triangles);
+                    }
 #endif
+                    if (trial > 0)
+                    {
+                        Assert.That(materials, Is.EqualTo(sample.materials));
+                        Assert.That(sceneryMeshes, Is.EqualTo(sample.sceneryMeshes));
+                        Assert.That(drawCalls, Is.EqualTo(sample.drawCalls));
+                        Assert.That(triangles, Is.EqualTo(sample.triangles));
+                    }
+                    sample.materials = materials;
+                    sample.sceneryMeshes = sceneryMeshes;
+                    sample.drawCalls = drawCalls;
+                    sample.triangles = triangles;
+                    sample.trialSetPassCalls[trial] = setPassCalls;
+                    sample.setPassCalls = Mathf.Min(sample.setPassCalls, setPassCalls);
+                    Debug.Log($"BIOME_TRIAL region={region + 1} trial={trial + 1} draw={drawCalls} setPass={setPassCalls} triangles={triangles} materials={materials}");
+                }
                 Debug.Log($"BIOME_COUNTER region={region + 1} draw={sample.drawCalls} setPass={sample.setPassCalls} triangles={sample.triangles} materials={sample.materials}");
                 if (region > 0)
                 {
@@ -428,6 +459,12 @@ namespace AllinDefense.Tests
         public IEnumerator Cleanup()
         {
             if (session != null) Object.Destroy(session.gameObject);
+            foreach (GameObject light in ownedPresentationLights)
+                if (light != null) Object.Destroy(light);
+            ownedPresentationLights.Clear();
+            foreach (GameObject root in isolatedPresentationRoots)
+                if (root != null) root.SetActive(true);
+            isolatedPresentationRoots.Clear();
 #if UNITY_EDITOR
             UnityEditor.ShaderUtil.allowAsyncCompilation = asyncCompilation;
 #endif

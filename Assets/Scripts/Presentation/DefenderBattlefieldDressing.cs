@@ -465,13 +465,13 @@ namespace AllinDefense.Presentation
                         new[] { .35f * size, .42f * size }, yaw);
                     break;
                 case BiomeSilhouette.CitadelBanners:
-                    AddCobble(crown.vertices, crown.indices, p + Vector3.up * .53f * size, yaw,
+                    AddCitadelStone(crown, p + Vector3.up * .53f * size, yaw,
                         new Vector3(.86f, 1.06f, .40f) * size);
                     for (int merlon = 0; merlon < 2; merlon++)
                     {
                         Vector3 offset = new(Mathf.Cos(yaw) * (merlon == 0 ? -.26f : .26f), 1.16f,
                             Mathf.Sin(yaw) * (merlon == 0 ? -.26f : .26f));
-                        AddCobble(crown.vertices, crown.indices, p + offset * size, yaw, new Vector3(.28f, .30f, .42f) * size);
+                        AddCitadelStone(crown, p + offset * size, yaw, new Vector3(.28f, .30f, .42f) * size);
                     }
                     AddLathe(trunks.vertices, trunks.indices, p, new[] { .025f * size, .025f * size },
                         new[] { .9f * size, 2.2f * size }, yaw);
@@ -483,6 +483,14 @@ namespace AllinDefense.Presentation
                     accents.indices.AddRange(new[] { start, start + 1, start + 2, start, start + 2, start + 3 });
                     break;
             }
+        }
+
+        private static void AddCitadelStone(SceneryBatch batch, Vector3 center, float yaw, Vector3 size)
+        {
+            int firstSide = batch.indices.Count + 18;
+            AddCobble(batch.vertices, batch.indices, center, yaw, size);
+            for (int i = firstSide; i < batch.indices.Count; i += 3)
+                (batch.indices[i + 1], batch.indices[i + 2]) = (batch.indices[i + 2], batch.indices[i + 1]);
         }
 
         private static void AddBranch(SceneryBatch batch, Vector3 from, Vector3 to, float radius)
