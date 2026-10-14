@@ -9,6 +9,10 @@ from pathlib import Path
 
 import bpy
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import tower_v3_kit  # noqa: E402
+import tower_v3_models  # noqa: E402
+
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 
@@ -27,6 +31,8 @@ PALETTE = {
     "DC_Grass": (0.169, 0.357, 0.263, 1.0),
     "DC_Metal": (0.349, 0.412, 0.475, 1.0),
 }
+
+TOWER_TEXTURE_DIR = Path(__file__).resolve().parents[2] / "Assets" / "Art" / "Models" / "Generated"
 
 GREENWATCH_PATH = [(-2, 2), (4, 2), (4, 8), (10, 8), (10, 3.5), (16, 3.5), (16, 9), (24, 9)]
 
@@ -1378,90 +1384,11 @@ def build_siege():
     add_humanoid_rig()
 
 
-def build_outpost(kind, level):
-    cylinder("TowerBase", (0, 0.22, 0), 0.58, 0.42, "DC_Stone", 10)
-    cylinder("TowerFoundation", (0, 0.10, 0), 0.69, 0.14, "DC_Stone", 10)
-    socket("Socket_Root", (0, 0, 0), 0.16)
-    socket("Socket_Ground", (0, 0.04, 0), 0.13)
-    socket("Socket_Target", (0, 0.95 + 0.18 * level, 0), 0.13)
-    socket("Socket_VFX", (0, 0.58 + 0.12 * level, 0), 0.13)
-    socket("Socket_Banner", (0.42, 1.45 + 0.18 * level, 0), 0.13)
-    socket("Socket_Upgrade", (0, 1.55 + 0.28 * level, 0), 0.13)
-    if kind == "archer":
-        height = 0.94 if level == 1 else 1.18
-        top_y = 0.62 + height
-        cylinder("ArcherPost", (0, 0.76, 0), 0.35, height, "DC_Stone", 8)
-        cylinder("ArcherPlatform", (0, top_y, 0), 0.58 if level == 1 else 0.68, 0.16, "DC_Defender", 10)
-        cone("ArcherRoof", (0, top_y + 0.34, 0), 0.60 if level == 1 else 0.74,
-             0.08, 0.48 if level == 1 else 0.58, "DC_Defender", 8)
-        crenel_count = 5 if level == 2 else 4
-        for i in range(crenel_count):
-            angle = i * math.pi * 2 / crenel_count
-            box("ArcherCrenel", (math.cos(angle) * (0.47 if level == 2 else 0.39),
-                                 top_y + 0.12,
-                                 math.sin(angle) * (0.47 if level == 2 else 0.39)),
-                (0.18, 0.20, 0.18), "DC_Stone", 0.035)
-        # Readable archer language: bow silhouettes, target board and arrow rack from the gameplay camera.
-        for side in (-1, 1):
-            bow = box("ArcherBow", (side * (0.50 if level == 2 else 0.43), top_y - 0.10, -0.08),
-                      (0.06, 0.66 if level == 2 else 0.54, 0.10), "DC_Fire", 0.02)
-            bow.rotation_euler[2] = math.radians(side * 9)
-        box("ArcherTargetBoard", (0, top_y - 0.05, -0.52), (0.48, 0.36, 0.07), "DC_Defender", 0.035)
-        cylinder("ArcherTarget", (0, top_y - 0.05, -0.57), 0.17, 0.035, "DC_Fire", 12,
-                 rotation=(math.pi / 2, 0, 0))
-        for i in range(3 + level):
-            arrow = cylinder("ArcherArrow", (-0.30 + i * 0.10, top_y - 0.22, -0.45),
-                             0.014, 0.55, "DC_Fire", 5, rotation=(math.radians(72), 0, 0))
-            arrow.rotation_euler[2] = math.radians(-9 + i * 3)
-        socket("Socket_Projectile", (0, top_y + 0.02, -0.64), 0.14)
-        socket("Socket_Muzzle", (0, top_y + 0.02, -0.64), 0.14)
-        if level == 2:
-            banner("ArcherBanner", (0.42, 2.04, 0), "DC_Defender", 0.82)
-            cylinder("ArcherRing", (0, top_y - 0.12, 0), 0.58, 0.14, "DC_Defender", 10)
-            box("ArcherCanopyBrace", (0, top_y + 0.08, -0.54), (0.78, 0.11, 0.10), "DC_Stone", 0.025)
-    elif kind == "barracks":
-        hall_size = (1.04, 0.92, 0.88) if level == 1 else (1.16, 0.98, 0.96)
-        box("BarracksHall", (0, 0.72, 0), hall_size, "DC_Stone", 0.1)
-        if level == 2:
-            box("BarracksUpperHall", (0, 1.22, 0.06), (0.82, 0.42, 0.68), "DC_Stone", 0.08)
-        roof_y = 1.34 if level == 1 else 1.66
-        roof_radius = 0.74 if level == 1 else 0.88
-        roof_depth = 0.58 if level == 1 else 0.70
-        cone("BarracksRoof", (0, roof_y, 0), roof_radius, 0.12, roof_depth, "DC_Defender", 4,
-             rotation=(0, math.radians(45), 0))
-        box("BarracksDoor", (0, 0.58, -0.47), (0.34 if level == 1 else 0.42, 0.58, 0.08), "DC_Dark", 0.04)
-        for side in (-1, 1):
-            box("BarracksShield", (side * 0.34, 0.78, -0.5), (0.24, 0.36, 0.06),
-                "DC_Defender", 0.05)
-        banner("BarracksBanner", (0.35 if level == 1 else 0.54, 1.52 if level == 1 else 1.9, 0),
-               "DC_Defender", 0.72 + 0.12 * level)
-        socket("Socket_Projectile", (0, 1.05, -0.54), 0.13)
-        socket("Socket_Spawn", (0, 0.18, -0.72), 0.13)
-        if level == 2:
-            for side in (-1, 1):
-                cylinder("BarracksTurret", (side * 0.58, 1.05, 0.34), 0.2, 0.92, "DC_Stone", 8)
-                cone("BarracksTurretRoof", (side * 0.58, 1.58, 0.34), 0.28, 0.08, 0.32,
-                     "DC_Defender", 6)
-                cylinder("BarracksSpear", (side * 0.58, 0.86, -0.56), 0.018, 0.88,
-                         "DC_Dark", 5, rotation=(math.radians(8 * -side), 0, 0))
-                box("BarracksWeaponRack", (side * 0.58, 0.52, -0.56), (0.1, 0.42, 0.08),
-                    "DC_Dark", 0.02)
-            box("BarracksFrontBrace", (0, 1.02, -0.56), (0.72, 0.16, 0.1), "DC_Defender", 0.025)
-    else:
-        cylinder("MageSpire", (0, 0.9, 0), 0.42, 1.3, "DC_Navy", 8)
-        for i in range(3 + level):
-            angle = i * math.pi * 2 / (3 + level)
-            cone("MageProng", (math.cos(angle) * 0.37, 1.38, math.sin(angle) * 0.37),
-                 0.14, 0.02, 0.72, "DC_Stone", 6)
-        sphere("MageCrystal", (0, 1.62, 0), (0.27 + level * 0.05,) * 3, "DC_Magic")
-        cylinder("MageRing", (0, 0.5, 0), 0.6, 0.12, "DC_Magic", 12)
-        socket("Socket_Projectile", (0, 1.62, -0.08), 0.13)
-        socket("Socket_Crystal", (0, 1.62, 0), 0.13)
-        socket("Socket_Cast", (0, 1.74, 0), 0.13)
-        for i in range(6):
-            angle = i * math.pi / 3
-            sphere("MageRune", (math.cos(angle) * 0.51, 0.58, math.sin(angle) * 0.51),
-                   (0.07, 0.035, 0.11), "DC_Magic")
+def build_outpost(kind, level, branch=None):
+    """Tower v3: one mesh on the shared tower_palette atlas material (see tower_v3_models.py)."""
+    mat = tower_v3_kit.palette_material(TOWER_TEXTURE_DIR)
+    tower_v3_models.BUILDERS[kind](level, branch)
+    tower_v3_kit.finish_tower(f"{kind.capitalize()}Body", mat)
 
 
 ASSETS = {
@@ -1527,6 +1454,12 @@ ASSETS = {
     "Barracks_L2": lambda: build_outpost("barracks", 2),
     "Mage_L1": lambda: build_outpost("mage", 1),
     "Mage_L2": lambda: build_outpost("mage", 2),
+    "Archer_RapidFire": lambda: build_outpost("archer", 2, "RapidFire"),
+    "Archer_Sharpshooter": lambda: build_outpost("archer", 2, "Sharpshooter"),
+    "Barracks_ShieldGuard": lambda: build_outpost("barracks", 2, "ShieldGuard"),
+    "Barracks_AssaultGuard": lambda: build_outpost("barracks", 2, "AssaultGuard"),
+    "Mage_Blast": lambda: build_outpost("mage", 2, "Blast"),
+    "Mage_Frost": lambda: build_outpost("mage", 2, "Frost"),
 }
 
 

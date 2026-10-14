@@ -2684,15 +2684,21 @@ namespace AllinDefense.Core
             if (presentationCatalog == null || outpost == null) return;
             Transform motion = outpost.transform.Find("Motion");
             Transform art = motion != null ? motion.Find("Art") : outpost.transform.Find("Art");
-            if (art != null) Destroy(art.gameObject);
+            if (art != null)
+            {
+                // Destroy is deferred; renaming keeps a same-frame upgrade + specialization from finding the stale model.
+                art.name = "Art (replaced)";
+                art.gameObject.SetActive(false);
+                Destroy(art.gameObject);
+            }
             GameObject visual = StylizedPresentationFactory.SpawnModel(
-                presentationCatalog.OutpostPrefab(outpost.Kind, 2), motion != null ? motion : outpost.transform,
+                presentationCatalog.OutpostPrefab(outpost.Kind, 2, outpost.Specialization), motion != null ? motion : outpost.transform,
                 presentationCatalog, "Art", true);
             if (visual != null)
             {
                 visual.transform.localPosition = Vector3.zero;
                 visual.transform.localRotation = Quaternion.identity;
-                visual.transform.localScale = Vector3.one * presentationCatalog.OutpostScale(outpost.Kind, 2);
+                visual.transform.localScale = Vector3.one * presentationCatalog.OutpostScale(outpost.Kind, 2, outpost.Specialization);
                 outpost.RefreshPresentationRenderer();
             }
         }

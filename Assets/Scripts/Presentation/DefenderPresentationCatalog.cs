@@ -93,6 +93,14 @@ namespace AllinDefense.Presentation
     }
 
     [Serializable]
+    public sealed class OutpostSpecializationVisualEntry
+    {
+        public OutpostSpecialization specialization;
+        public GameObject prefab;
+        [Min(0.1f)] public float scale = 1f;
+    }
+
+    [Serializable]
     public sealed class LicensedAtlasMaterialEntry
     {
         public string sourceName;
@@ -129,6 +137,7 @@ namespace AllinDefense.Presentation
         [Header("Actors and Outposts")]
         public ActorVisualEntry[] actorVisuals = Array.Empty<ActorVisualEntry>();
         public OutpostVisualEntry[] outpostVisuals = Array.Empty<OutpostVisualEntry>();
+        public OutpostSpecializationVisualEntry[] outpostSpecializationVisuals = Array.Empty<OutpostSpecializationVisualEntry>();
 
         [Header("HUD")]
         public GameObject hudPrefab;
@@ -175,6 +184,7 @@ namespace AllinDefense.Presentation
 
         [Header("Licensed Atlas Materials")]
         public LicensedAtlasMaterialEntry[] licensedAtlasMaterials = Array.Empty<LicensedAtlasMaterialEntry>();
+        public LicensedAtlasMaterialEntry towerPaletteMaterial;
 
         [Header("Audio")]
         public AudioMixerGroup uiMixer;
@@ -225,12 +235,22 @@ namespace AllinDefense.Presentation
             return outpostVisuals.FirstOrDefault(entry => entry != null && entry.kind == kind && entry.level == clamped)?.scale ?? 1f;
         }
 
+        public GameObject OutpostPrefab(OutpostKind kind, int level, OutpostSpecialization specialization) =>
+            Specialization(specialization)?.prefab ?? OutpostPrefab(kind, level);
+
+        public float OutpostScale(OutpostKind kind, int level, OutpostSpecialization specialization) =>
+            Specialization(specialization)?.scale ?? OutpostScale(kind, level);
+
+        private OutpostSpecializationVisualEntry Specialization(OutpostSpecialization specialization) =>
+            specialization == OutpostSpecialization.None ? null : outpostSpecializationVisuals.FirstOrDefault(entry =>
+                entry != null && entry.prefab != null && entry.specialization == specialization);
+
         public Material ResolveLicensedAtlasMaterial(Material source)
         {
             if (source == null) return null;
             string materialName = source.name?.ToLowerInvariant() ?? string.Empty;
             string textureName = source.mainTexture != null ? source.mainTexture.name.ToLowerInvariant() : string.Empty;
-            return licensedAtlasMaterials.FirstOrDefault(entry => entry != null && entry.material != null &&
+            return licensedAtlasMaterials.Append(towerPaletteMaterial).FirstOrDefault(entry => entry != null && entry.material != null &&
                 !string.IsNullOrWhiteSpace(entry.sourceName) &&
                 (materialName.Contains(entry.sourceName.ToLowerInvariant()) ||
                  textureName.Contains(entry.sourceName.ToLowerInvariant())))?.material;

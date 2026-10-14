@@ -55,27 +55,46 @@ MonoBehaviour:
   - kind: 0
     level: 1
     prefab: {fileID: 919132149155446097, guid: 7a9d1afe6007e45cd824beade4c79e1b, type: 3}
-    scale: 0.86
+    scale: 0.8
   - kind: 0
     level: 2
     prefab: {fileID: 919132149155446097, guid: bac5a0bfb001e4ee2adff39969fa0553, type: 3}
-    scale: 0.82
+    scale: 0.8
   - kind: 1
     level: 1
     prefab: {fileID: 919132149155446097, guid: 3a3093b70c9d04e388e1e693c94d264f, type: 3}
-    scale: 0.88
+    scale: 0.8
   - kind: 1
     level: 2
     prefab: {fileID: 919132149155446097, guid: 1499894568b0a4e759da8189b924c1cb, type: 3}
-    scale: 0.84
+    scale: 0.8
   - kind: 2
     level: 1
     prefab: {fileID: 919132149155446097, guid: 7c095fd12c14640bfafb7e9cf5b31cf9, type: 3}
-    scale: 0.86
+    scale: 0.8
   - kind: 2
     level: 2
     prefab: {fileID: 919132149155446097, guid: 1df86af8f5df64309a5cdd53d8b40beb, type: 3}
-    scale: 0.82
+    scale: 0.8
+  outpostSpecializationVisuals:
+  - specialization: 1
+    prefab: {fileID: 919132149155446097, guid: a610c9e6040794cddbefd3f607f96569, type: 3}
+    scale: 0.8
+  - specialization: 2
+    prefab: {fileID: 919132149155446097, guid: d7c905d77badc4e1b901e0367f826633, type: 3}
+    scale: 0.8
+  - specialization: 3
+    prefab: {fileID: 919132149155446097, guid: 18c440245e74644628f42d7afe6167f9, type: 3}
+    scale: 0.8
+  - specialization: 4
+    prefab: {fileID: 919132149155446097, guid: dbdcc698ca0824c43a8eab1eeabe5695, type: 3}
+    scale: 0.8
+  - specialization: 5
+    prefab: {fileID: 919132149155446097, guid: ae3e2ae562047448b951289c20e658ef, type: 3}
+    scale: 0.8
+  - specialization: 6
+    prefab: {fileID: 919132149155446097, guid: 5f50e5085dd2a43928634104c9c75bb5, type: 3}
+    scale: 0.8
   hudPrefab: {fileID: 4932434759920830639, guid: d0eb9a43eadfb4d768c166ba3b9a6beb,
     type: 3}
   frontendTheme: {fileID: 11400000, guid: 04385863704694e25be000a8f280a34d, type: 2}
@@ -136,6 +155,9 @@ MonoBehaviour:
     material: {fileID: 2100000, guid: 0a5b1dd21bf6544b3a1965db70a8e7ea, type: 2}
   - sourceName: hexagons_medieval
     material: {fileID: 2100000, guid: ec2dc588c1e0c4325a64c546f4135fc8, type: 2}
+  towerPaletteMaterial:
+    sourceName: tower_palette
+    material: {fileID: 2100000, guid: 7fbaba55d838240789700069ef9cdf09, type: 2}
   uiMixer: {fileID: -2856758767650484201, guid: 7876f6209d05645a8bf9f4b35a787110,
     type: 2}
   sfxMixer: {fileID: 7947332164907218351, guid: 7876f6209d05645a8bf9f4b35a787110,

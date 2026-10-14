@@ -226,15 +226,7 @@ namespace AllinDefense.Editor
                 Actor(PresentationActorKind.Siege, "Siege", 0.92f, siegeAnimator),
                 Actor(PresentationActorKind.Boss, "Boss", 1.02f, bossAnimator)
             };
-            catalog.outpostVisuals = new[]
-            {
-                Outpost(OutpostKind.Archer, 1, Model("Archer_L1"), 0.86f),
-                Outpost(OutpostKind.Archer, 2, Model("Archer_L2"), 0.82f),
-                Outpost(OutpostKind.Barracks, 1, Model("Barracks_L1"), 0.88f),
-                Outpost(OutpostKind.Barracks, 2, Model("Barracks_L2"), 0.84f),
-                Outpost(OutpostKind.Mage, 1, Model("Mage_L1"), 0.86f),
-                Outpost(OutpostKind.Mage, 2, Model("Mage_L2"), 0.82f)
-            };
+            ApplyTowerVisuals(catalog);
             catalog.hudPrefab = hudPrefab;
             catalog.panelSprite = panelSprite;
             catalog.uiFrameSprite = uiFrameSprite;
@@ -264,6 +256,7 @@ namespace AllinDefense.Editor
             catalog.grassAccentMaterial = materials["Grass"];
             catalog.metalMaterial = materials["Metal"];
             catalog.licensedAtlasMaterials = licensedMaterials;
+            catalog.towerPaletteMaterial = TowerPaletteEntry();
             catalog.uiMixer = mixerGroups["UI"];
             catalog.sfxMixer = mixerGroups["SFX"];
             catalog.musicMixer = mixerGroups["Music"];
@@ -338,6 +331,107 @@ namespace AllinDefense.Editor
                 throw new InvalidOperationException("Presentation asset build is incomplete:\n- " + string.Join("\n- ", errors));
             Debug.Log($"[DC_ART_ASSETS_READY] Artistic presentation catalog built with {catalog.actorVisuals.Length} actors, " +
                       $"{catalog.outpostVisuals.Length} outposts and {catalog.audioCues.Length} audio cues.");
+        }
+
+        // Tower v3: rebuilds only the outpost bindings and the shared tower palette material.
+        [MenuItem("ALLIN: Defense/Refresh Tower Visuals")]
+        public static void RefreshTowerVisuals()
+        {
+            AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
+            var catalog = AssetDatabase.LoadAssetAtPath<DefenderPresentationCatalog>($"{ResourceRoot}/DefenderPresentationCatalog.asset");
+            if (catalog == null) throw new InvalidOperationException("DefenderPresentationCatalog is missing.");
+            ApplyTowerVisuals(catalog);
+            LicensedAtlasMaterialEntry tower = TowerPaletteEntry();
+            catalog.licensedAtlasMaterials = catalog.licensedAtlasMaterials
+                .Where(entry => entry != null && entry.sourceName != tower.sourceName).ToArray();
+            catalog.towerPaletteMaterial = tower;
+            EditorUtility.SetDirty(catalog);
+            AssetDatabase.SaveAssets();
+            IReadOnlyList<string> errors = catalog.ValidationErrors();
+            if (errors.Count > 0)
+                throw new InvalidOperationException("Tower visual refresh is incomplete:\n- " + string.Join("\n- ", errors));
+            Debug.Log($"[DC_TOWER_V3_READY] {catalog.outpostVisuals.Length} outposts, " +
+                      $"{catalog.outpostSpecializationVisuals.Length} specializations, material {tower.material.name}.");
+        }
+
+        private static void ApplyTowerVisuals(DefenderPresentationCatalog catalog)
+        {
+            const float scale = 0.8f;
+            catalog.outpostVisuals = new[]
+            {
+                Outpost(OutpostKind.Archer, 1, Model("Archer_L1"), scale),
+                Outpost(OutpostKind.Archer, 2, Model("Archer_L2"), scale),
+                Outpost(OutpostKind.Barracks, 1, Model("Barracks_L1"), scale),
+                Outpost(OutpostKind.Barracks, 2, Model("Barracks_L2"), scale),
+                Outpost(OutpostKind.Mage, 1, Model("Mage_L1"), scale),
+                Outpost(OutpostKind.Mage, 2, Model("Mage_L2"), scale)
+            };
+            catalog.outpostSpecializationVisuals = new[]
+            {
+                OutpostSpecialization.RapidFire, OutpostSpecialization.Sharpshooter, OutpostSpecialization.ShieldGuard,
+                OutpostSpecialization.AssaultGuard, OutpostSpecialization.Blast, OutpostSpecialization.Frost
+            }.Select(branch => new OutpostSpecializationVisualEntry
+            {
+                specialization = branch,
+                prefab = Model(SpecializationModelName(branch)),
+                scale = scale
+            }).ToArray();
+            foreach (OutpostSpecializationVisualEntry entry in catalog.outpostSpecializationVisuals)
+                if (entry.prefab == null)
+                    throw new InvalidOperationException($"Tower specialization model failed to import: {entry.specialization}.");
+        }
+
+        private static string SpecializationModelName(OutpostSpecialization branch) => branch switch
+        {
+            OutpostSpecialization.RapidFire or OutpostSpecialization.Sharpshooter => $"Archer_{branch}",
+            OutpostSpecialization.ShieldGuard or OutpostSpecialization.AssaultGuard => $"Barracks_{branch}",
+            _ => $"Mage_{branch}"
+        };
+
+        private static LicensedAtlasMaterialEntry TowerPaletteEntry()
+        {
+            Texture2D albedo = TowerPaletteTexture("TowerPalette");
+            Texture2D emission = TowerPaletteTexture("TowerPalette_emission");
+            string path = $"{GeneratedRoot}/TowerPalette.mat";
+            Material material = AssetDatabase.LoadAssetAtPath<Material>(path);
+            if (material == null)
+            {
+                Shader shader = Shader.Find("Universal Render Pipeline/Lit") ?? Shader.Find("Universal Render Pipeline/Unlit");
+                material = new Material(shader) { name = "TowerPalette" };
+                AssetDatabase.CreateAsset(material, path);
+            }
+            material.mainTexture = albedo;
+            material.color = Color.white;
+            if (material.HasProperty("_BaseMap")) material.SetTexture("_BaseMap", albedo);
+            if (material.HasProperty("_BaseColor")) material.SetColor("_BaseColor", Color.white);
+            if (material.HasProperty("_Metallic")) material.SetFloat("_Metallic", 0f);
+            if (material.HasProperty("_Smoothness")) material.SetFloat("_Smoothness", 0.22f);
+            material.EnableKeyword("_EMISSION");
+            if (material.HasProperty("_EmissionMap")) material.SetTexture("_EmissionMap", emission);
+            if (material.HasProperty("_EmissionColor")) material.SetColor("_EmissionColor", new Color(0.85f, 0.85f, 0.85f));
+            material.globalIlluminationFlags = MaterialGlobalIlluminationFlags.BakedEmissive;
+            material.enableInstancing = true;
+            EditorUtility.SetDirty(material);
+            return new LicensedAtlasMaterialEntry { sourceName = "tower_palette", material = material };
+        }
+
+        private static Texture2D TowerPaletteTexture(string name)
+        {
+            string path = $"{ModelRoot}/{name}.png";
+            if (AssetImporter.GetAtPath(path) is TextureImporter importer &&
+                (importer.mipmapEnabled || importer.textureCompression != TextureImporterCompression.Uncompressed ||
+                 importer.wrapMode != TextureWrapMode.Clamp))
+            {
+                importer.mipmapEnabled = false;
+                importer.sRGBTexture = true;
+                importer.wrapMode = TextureWrapMode.Clamp;
+                importer.filterMode = FilterMode.Bilinear;
+                importer.textureCompression = TextureImporterCompression.Uncompressed;
+                importer.SaveAndReimport();
+            }
+            Texture2D texture = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
+            if (texture == null) throw new InvalidOperationException($"Tower palette texture failed to import: {path}");
+            return texture;
         }
 
         [MenuItem("ALLIN: Defense/Apply Mobile Texture Import Profile")]

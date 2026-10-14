@@ -46,7 +46,6 @@ namespace AllinDefense.Core
             SpendGold(TowerProgression.Cost(outpost.Kind));
             telemetry.Record(this,"specialize",branch.ToString(),TowerProgression.Cost(outpost.Kind));
             ReplaceOutpostVisual(outpost);
-            TowerBranchVisual.Apply(outpost);
             RefreshSelectedPanel();
             EmitPresentation(PresentationCue.OutpostUpgraded, outpost.Position, outpost.gameObject, outpost: outpost.Kind);
             return true;
