@@ -56,6 +56,22 @@ namespace AllinDefense.Editor
             BuildXcodeProject("Builds/iOS-Device", options, "iOS Device Development");
         }
 
+        // tools/build_ios_appstore_ipa.sh sets ALLIN_IOS_VERSION / ALLIN_IOS_BUILD; the menu keeps current values.
+        [MenuItem("ALLIN: Defense/Build iOS App Store Xcode Project")]
+        public static void BuildDeviceAppStoreProject()
+        {
+            Apply();
+            string version = System.Environment.GetEnvironmentVariable("ALLIN_IOS_VERSION");
+            string build = System.Environment.GetEnvironmentVariable("ALLIN_IOS_BUILD");
+            if (!string.IsNullOrWhiteSpace(version))
+                PlayerSettings.bundleVersion = version.Trim();
+            if (!string.IsNullOrWhiteSpace(build))
+                PlayerSettings.iOS.buildNumber = build.Trim();
+
+            BuildXcodeProject("Builds/iOS-AppStore", BuildOptions.None,
+                $"iOS App Store {PlayerSettings.bundleVersion} ({PlayerSettings.iOS.buildNumber})");
+        }
+
         private static void BuildSimulator(string relativeOutputPath, bool development)
         {
             ApplySimulator();
@@ -89,7 +105,7 @@ namespace AllinDefense.Editor
 
             var report = BuildPipeline.BuildPlayer(options);
             if (report.summary.result != UnityEditor.Build.Reporting.BuildResult.Succeeded)
-                throw new System.Exception($"iOS Simulator build failed: {report.summary.result}");
+                throw new System.Exception($"{label} build failed: {report.summary.result}");
 
             Debug.Log($"{label} Xcode project built at: {outputPath}");
         }
