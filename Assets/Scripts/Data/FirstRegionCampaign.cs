@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using AllinDefense.UI;
 using UnityEngine;
 
@@ -16,23 +15,14 @@ namespace AllinDefense.Data
     {
         public const int LevelCount = 10;
         public const string Version = "first-region-v2";
-        [Serializable] private sealed class Document { public string version; public FirstRegionLevel[] levels; }
-        private static Document document;
         public static FirstRegionLevel Level(int number)
         {
-            if (document == null)
-            {
-                var resource = Resources.Load<TextAsset>("FirstRegionCampaign");
-                if (resource == null) throw new InvalidOperationException("First-region data missing.");
-                document = JsonUtility.FromJson<Document>(resource.text);
-                if (document.version != Version || document.levels.Length != LevelCount)
-                    throw new InvalidOperationException("Incompatible first-region data.");
-            }
-            return document.levels[Mathf.Clamp(number, 1, LevelCount) - 1];
+            var data = CampaignContent.Level(Mathf.Clamp(number, 1, LevelCount));
+            return new FirstRegionLevel { number = data.level, targetMinSeconds = data.targetMinSeconds,
+                targetMaxSeconds = data.targetMaxSeconds, startingGold = data.startingGold,
+                healthMultiplier = data.healthMultiplier, killRewards = data.killRewards, waves = data.waves };
         }
-        public static WaveDefinition[] CreateWaves(int number) => Level(number).waves.Select(w =>
-            new WaveDefinition(w.id, string.Join(" • ", w.groups.Select(g => $"{EnemyName(g.enemy)} ×{g.count}")),
-                w.clearBonus, w.bossWave, w.groups.Select(g => new SpawnGroupDefinition(g.enemy, g.count, g.startDelay, g.interval)).ToArray())).ToArray();
+        public static WaveDefinition[] CreateWaves(int number) => CampaignContent.CreateWaves(Mathf.Clamp(number, 1, LevelCount));
         public static string EnemyName(EnemyArchetype enemy) => enemy switch
         {
             EnemyArchetype.Raider => GameLocalization.Text("Yağmacı", "Raider"),

@@ -75,7 +75,7 @@ namespace AllinDefense.Data
             { "Kızıl Toprak", "Maden Yolu", "Ağır Adımlar", "İki Cephe", "Kül Yağmuru", "Demir Konvoy", "Yarık Geçit", "Kuşatma Kampı", "Kor Ateşi", "Geçit Efendisi" },
             { "İlk Ayaz", "Donmuş Dere", "Beyaz Sis", "Keskin Rüzgar", "Buz Köprüsü", "Kurtuluş Yolu", "Soğuk Pusu", "Kristal Kapı", "Uzun Gece", "Buz Hükümdarı" },
             { "Kayıp Kıyı", "Batık Yol", "Gelgit", "İkiz Liman", "Derin Sular", "Korsan Baskını", "Yıkık Saray", "Boğaz Savunması", "Son Fener", "Derinliklerin Lordu" },
-            { "Dönüş Yolu", "Kara Ordu", "Üç Koldan", "Son Erzak", "Kırılan Hat", "Şafak Öncesi", "Büyük Kuşatma", "İç Kale", "Son Kapı", "Lordrush" }
+            { "Dönüş Yolu", "Kara Ordu", "Üç Koldan", "Son Erzak", "Kırılan Hat", "Şafak Öncesi", "Büyük Kuşatma", "İç Kale", "Son Kapı", "Son Lord" }
         };
 
         private static IReadOnlyList<CampaignRegionDefinition> regions;
@@ -134,14 +134,13 @@ namespace AllinDefense.Data
                     region.levels[9].startingGold = 200;
                     region.levels[9].startingLives = 20;
                 }
-                if (regionIndex == 0)
-                    foreach (var level in region.levels)
-                    {
-                        var authored = FirstRegionCampaign.Level(level.number);
-                        level.waveCount = authored.waves.Length;
-                        level.startingGold = authored.startingGold;
-                        level.targetMinutes = (authored.targetMinSeconds + authored.targetMaxSeconds) / 120f;
-                    }
+                foreach (var level in region.levels)
+                {
+                    var authored = CampaignContent.Level(level.number);
+                    level.waveCount = authored.waves.Length;
+                    level.startingGold = authored.startingGold;
+                    level.targetMinutes = (authored.targetMinSeconds + authored.targetMaxSeconds) / 120f;
+                }
                 result.Add(region);
             }
             return result;

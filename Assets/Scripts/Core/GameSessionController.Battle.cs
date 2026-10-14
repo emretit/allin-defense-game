@@ -168,12 +168,22 @@ namespace AllinDefense.Core
             return count;
         }
 
+        internal BossEncounterProfile BossProfile => BossEncounterProfile.Resolve(CampaignContent.Level(CampaignLevelNumber).bossProfileId)
+            ?? BossEncounterProfile.Resolve("region-lord");
+
         internal void SpawnBossReinforcements()
         {
-            for (int i = 0; i < 6; i++)
+            var profile = BossProfile;
+            int entrances = routePaths.Count;
+            int batches = profile.reinforcementRoute == "all" ? entrances : 1;
+            for (int batch = 0; batch < batches; batch++)
+            for (int i = 0; i < profile.reinforcementCount + profile.supportCount; i++)
             {
-                scheduledSpawns.Add(new ScheduledSpawn(waveElapsed + .5f + i * .6f, EnemyArchetype.Raider,
-                    scheduledSpawns.Count, 0));
+                int route = profile.reinforcementRoute == "all" ? batch
+                    : profile.reinforcementRoute == "rotate" ? i % entrances : 0;
+                var enemy = i < profile.reinforcementCount ? profile.reinforcementEnemy : EnemyArchetype.Support;
+                scheduledSpawns.Add(new ScheduledSpawn(waveElapsed + profile.reinforcementStartDelay + i * profile.reinforcementInterval,
+                    enemy, scheduledSpawns.Count, route));
                 plannedThisWave++;
             }
             // Only pending entries may move: already spawned entries retain their indices.

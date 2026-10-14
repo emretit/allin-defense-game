@@ -51,6 +51,7 @@ namespace AllinDefense.Core
             if (campaignStore == null || restoringCheckpoint) return;
             campaignStore.Data.checkpoint = new BattleCheckpoint
             {
+                ruleVersion = CampaignContent.ContentVersion(CampaignLevelNumber),
                 owner = campaignStore.ProfileKey, level = CampaignLevelNumber, nextWave = currentWaveIndex,
                 gold = Gold, lives = Lives, elapsed = BattleElapsedSeconds, hero = hero?.CaptureCheckpoint(),
                 outposts = outposts.Where(o => o != null).Select(o => o.CaptureCheckpoint()).ToList()
@@ -63,7 +64,7 @@ namespace AllinDefense.Core
             if (cp == null || cp.level != CampaignLevelNumber) return;
             if (!IsValidCheckpoint(campaignStore, cp))
             {
-                bool balanceUpdated = cp.ruleVersion != FirstRegionCampaign.Version && ValidCheckpointContents(campaignStore, cp);
+                bool balanceUpdated = ValidCheckpointContents(campaignStore, cp) && cp.ruleVersion != CampaignContent.ContentVersion(cp.level);
                 campaignStore.Data.checkpoint = null;
                 campaignStore.Save(); // Campaign progress is deliberately independent of this checkpoint.
                 if (balanceUpdated) StartCoroutine(ShowBalanceUpdateMessage());
@@ -93,7 +94,7 @@ namespace AllinDefense.Core
             (!guard.hasPosition || (guard.formationIndex >= 0 && guard.formationIndex < TowerProgression.BarracksSquadSize &&
              float.IsFinite(guard.position.x) && float.IsFinite(guard.position.y) && float.IsFinite(guard.position.z) && guard.position.sqrMagnitude < 1000000f));
         public static bool IsValidCheckpoint(CampaignProgressStore store, BattleCheckpoint checkpoint) =>
-            checkpoint != null && checkpoint.ruleVersion == FirstRegionCampaign.Version && ValidCheckpointContents(store, checkpoint);
+            ValidCheckpointContents(store, checkpoint) && checkpoint.ruleVersion == CampaignContent.ContentVersion(checkpoint.level);
 
         private IEnumerator ShowBalanceUpdateMessage()
         {
@@ -104,7 +105,7 @@ namespace AllinDefense.Core
         private static bool ValidCheckpointContents(CampaignProgressStore store, BattleCheckpoint cp)
         {
             if (store == null || cp == null || cp.owner != store.ProfileKey ||
-                cp.level < 1 || cp.level > FirstRegionCampaign.LevelCount || cp.level > store.Data.unlockedLevel) return false;
+                cp.level < 1 || cp.level > CampaignCatalog.LevelCount || cp.level > store.Data.unlockedLevel) return false;
             var level = CampaignLevelFactory.Create(cp.level);
             return cp.nextWave >= 0 && cp.nextWave < level.waves.Length &&
             cp.gold >= 0 && cp.lives > 0 && cp.lives <= level.campaign.startingLives && ValidTimer(cp.elapsed) && cp.elapsed >= 0 &&

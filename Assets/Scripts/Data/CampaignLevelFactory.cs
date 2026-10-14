@@ -90,7 +90,6 @@ namespace AllinDefense.Data
         {
             CampaignLevelDefinition campaign = CampaignCatalog.Level(levelNumber);
             MapDefinition map = BuildMap(campaign);
-            bool existingFinal = campaign.number == 10;
             var runtime = new RuntimeCampaignLevel
             {
                 campaign = campaign,
@@ -98,16 +97,14 @@ namespace AllinDefense.Data
                 routes = CloneRoutes(map.routes),
                 outpostSlots = (Vector3[])map.outpostSlots.Clone(),
                 guardianPosition = map.guardianPosition,
-                waves = existingFinal ? BuildExistingBossWaves() : BuildProgressiveWaves(campaign, map.entranceCount),
+                waves = CampaignContent.CreateWaves(campaign.number),
                 entranceCount = map.entranceCount,
                 biomeIndex = map.biomeIndex
             };
-            if (campaign.number <= FirstRegionCampaign.LevelCount)
-            { runtime.waves = FirstRegionCampaign.CreateWaves(campaign.number); return runtime; }
-            foreach (var wave in runtime.waves)
-                foreach (var group in wave.groups) { group.startDelay *= .5f; group.interval *= .5f; }
             return runtime;
         }
+
+        public static int EntranceCount(int level) => level >= 43 ? 3 : level >= 14 ? 2 : 1;
 
         public static MapDefinition Map(string mapId)
         {
@@ -171,7 +168,7 @@ namespace AllinDefense.Data
         private static MapDefinition GenerateMap(CampaignLevelDefinition level)
         {
             bool existingFinal = level.number == 10;
-            int entranceCount = level.number >= 43 ? 3 : level.number >= 14 ? 2 : 1;
+            int entranceCount = EntranceCount(level.number);
             Vector3[][] routes = BuildRoutes(level, entranceCount, existingFinal);
             Vector3[] primary = routes[0];
             return new MapDefinition
@@ -631,7 +628,7 @@ namespace AllinDefense.Data
             return position;
         }
 
-        private static string PreviewFor(EnemyArchetype archetype) => archetype switch
+        internal static string PreviewFor(EnemyArchetype archetype) => archetype switch
         {
             EnemyArchetype.Vanguard => GameLocalization.Text("Zırhlı öncüler", "Armored vanguards"),
             EnemyArchetype.Regenerator => GameLocalization.Text("Yenilenen muhafızlar", "Regenerating guards"),

@@ -424,7 +424,7 @@ namespace AllinDefense.UI
 
         private void ContinueCampaign()
         {
-            if (GameSessionController.IsValidCheckpoint(progress, progress.Data.checkpoint))
+            if (GameSessionController.IsValidCheckpoint(progress, progress.Data.checkpoint) && progress.Data.checkpoint.level <= MaxPlayableLevel)
             {
                 LaunchCampaignLevel(progress.Data.checkpoint.level);
                 return;

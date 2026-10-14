@@ -1,0 +1,2497 @@
+{
+    "contentVersion": "region-04-v1",
+    "levels": [
+        {
+            "level": 31,
+            "startingGold": 185,
+            "targetMinSeconds": 450,
+            "targetMaxSeconds": 450,
+            "healthMultiplier": 2.040816307067871,
+            "speedMultiplier": 1.0979591608047486,
+            "attackMultiplier": 1.5204081535339356,
+            "baseDamageMultiplier": 1.367347002029419,
+            "killRewards": [
+                12,
+                27,
+                47,
+                37,
+                68,
+                274
+            ],
+            "bossProfileId": "",
+            "priorityTargeting": "nearestExit",
+            "waves": [
+                {
+                    "id": "level_31_wave_01",
+                    "preview": "Hızlı yağmacılar",
+                    "clearBonus": 80,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 11,
+                            "startDelay": 0.0,
+                            "interval": 0.36399999260902407,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_31_wave_02",
+                    "preview": "Hızlı yağmacılar",
+                    "clearBonus": 85,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 13,
+                            "startDelay": 0.0,
+                            "interval": 0.351500004529953,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_31_wave_03",
+                    "preview": "Hızlı yağmacılar",
+                    "clearBonus": 90,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 15,
+                            "startDelay": 0.0,
+                            "interval": 0.33900001645088198,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 7,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        }
+                    ]
+                },
+                {
+                    "id": "level_31_wave_04",
+                    "preview": "Zırhlı öncüler",
+                    "clearBonus": 95,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 17,
+                            "startDelay": 0.0,
+                            "interval": 0.3264999985694885,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 8,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 5,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_31_wave_05",
+                    "preview": "Şifacı destek birliği",
+                    "clearBonus": 100,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 19,
+                            "startDelay": 0.0,
+                            "interval": 0.3140000104904175,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 9,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 5,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 3,
+                            "startDelay": 0.550000011920929,
+                            "interval": 0.7749999761581421,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 2,
+                            "startDelay": 0.75,
+                            "interval": 1.100000023841858,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_31_wave_06",
+                    "preview": "Kuşatma birliği",
+                    "clearBonus": 105,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 21,
+                            "startDelay": 0.0,
+                            "interval": 0.30149999260902407,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 10,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 5,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 3,
+                            "startDelay": 0.550000011920929,
+                            "interval": 0.7749999761581421,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 2,
+                            "startDelay": 0.75,
+                            "interval": 1.100000023841858,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 4,
+                            "count": 2,
+                            "startDelay": 1.0,
+                            "interval": 1.25,
+                            "routeId": 0
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "level": 32,
+            "startingGold": 185,
+            "targetMinSeconds": 480,
+            "targetMaxSeconds": 480,
+            "healthMultiplier": 2.075510263442993,
+            "speedMultiplier": 1.101224422454834,
+            "attackMultiplier": 1.5377551317214966,
+            "baseDamageMultiplier": 1.3795918226242066,
+            "killRewards": [
+                13,
+                28,
+                48,
+                38,
+                69,
+                276
+            ],
+            "bossProfileId": "",
+            "priorityTargeting": "nearestExit",
+            "waves": [
+                {
+                    "id": "level_32_wave_01",
+                    "preview": "Hızlı yağmacılar",
+                    "clearBonus": 82,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 12,
+                            "startDelay": 0.0,
+                            "interval": 0.3580000102519989,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_32_wave_02",
+                    "preview": "Hızlı yağmacılar",
+                    "clearBonus": 87,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 14,
+                            "startDelay": 0.0,
+                            "interval": 0.34549999237060549,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_32_wave_03",
+                    "preview": "Hızlı yağmacılar",
+                    "clearBonus": 92,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 16,
+                            "startDelay": 0.0,
+                            "interval": 0.3330000042915344,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 8,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        }
+                    ]
+                },
+                {
+                    "id": "level_32_wave_04",
+                    "preview": "Zırhlı öncüler",
+                    "clearBonus": 97,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 18,
+                            "startDelay": 0.0,
+                            "interval": 0.3205000162124634,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 9,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 5,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_32_wave_05",
+                    "preview": "Şifacı destek birliği",
+                    "clearBonus": 102,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 20,
+                            "startDelay": 0.0,
+                            "interval": 0.30799999833106997,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 10,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 5,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 3,
+                            "startDelay": 0.550000011920929,
+                            "interval": 0.7749999761581421,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 2,
+                            "startDelay": 0.75,
+                            "interval": 1.100000023841858,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_32_wave_06",
+                    "preview": "Kuşatma birliği",
+                    "clearBonus": 107,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 22,
+                            "startDelay": 0.0,
+                            "interval": 0.2955000102519989,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 11,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 5,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 3,
+                            "startDelay": 0.550000011920929,
+                            "interval": 0.7749999761581421,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 2,
+                            "startDelay": 0.75,
+                            "interval": 1.100000023841858,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 4,
+                            "count": 2,
+                            "startDelay": 1.0,
+                            "interval": 1.25,
+                            "routeId": 0
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "level": 33,
+            "startingGold": 180,
+            "targetMinSeconds": 480,
+            "targetMaxSeconds": 480,
+            "healthMultiplier": 2.110203981399536,
+            "speedMultiplier": 1.104489803314209,
+            "attackMultiplier": 1.555101990699768,
+            "baseDamageMultiplier": 1.3918367624282838,
+            "killRewards": [
+                13,
+                28,
+                48,
+                38,
+                69,
+                277
+            ],
+            "bossProfileId": "",
+            "priorityTargeting": "nearestExit",
+            "waves": [
+                {
+                    "id": "level_33_wave_01",
+                    "preview": "Hızlı yağmacılar",
+                    "clearBonus": 84,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 13,
+                            "startDelay": 0.0,
+                            "interval": 0.35199999809265139,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_33_wave_02",
+                    "preview": "Hızlı yağmacılar",
+                    "clearBonus": 89,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 15,
+                            "startDelay": 0.0,
+                            "interval": 0.3395000100135803,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_33_wave_03",
+                    "preview": "Hızlı yağmacılar",
+                    "clearBonus": 94,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 17,
+                            "startDelay": 0.0,
+                            "interval": 0.3269999921321869,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 8,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        }
+                    ]
+                },
+                {
+                    "id": "level_33_wave_04",
+                    "preview": "Zırhlı öncüler",
+                    "clearBonus": 99,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 19,
+                            "startDelay": 0.0,
+                            "interval": 0.31450000405311587,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 9,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 6,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_33_wave_05",
+                    "preview": "Zırhlı öncüler",
+                    "clearBonus": 104,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 21,
+                            "startDelay": 0.0,
+                            "interval": 0.3020000159740448,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 10,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 6,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_33_wave_06",
+                    "preview": "Şifacı destek birliği",
+                    "clearBonus": 109,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 23,
+                            "startDelay": 0.0,
+                            "interval": 0.28949999809265139,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 11,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 6,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 3,
+                            "startDelay": 0.550000011920929,
+                            "interval": 0.7749999761581421,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 2,
+                            "startDelay": 0.75,
+                            "interval": 1.100000023841858,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_33_wave_07",
+                    "preview": "Kuşatma birliği",
+                    "clearBonus": 114,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 25,
+                            "startDelay": 0.0,
+                            "interval": 0.2770000100135803,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 12,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 7,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 3,
+                            "startDelay": 0.550000011920929,
+                            "interval": 0.7749999761581421,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 2,
+                            "startDelay": 0.75,
+                            "interval": 1.100000023841858,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 4,
+                            "count": 2,
+                            "startDelay": 1.0,
+                            "interval": 1.25,
+                            "routeId": 0
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "level": 34,
+            "startingGold": 180,
+            "targetMinSeconds": 480,
+            "targetMaxSeconds": 480,
+            "healthMultiplier": 2.144897937774658,
+            "speedMultiplier": 1.1077550649642945,
+            "attackMultiplier": 1.572448968887329,
+            "baseDamageMultiplier": 1.4040815830230713,
+            "killRewards": [
+                13,
+                28,
+                48,
+                38,
+                70,
+                279
+            ],
+            "bossProfileId": "",
+            "priorityTargeting": "nearestExit",
+            "waves": [
+                {
+                    "id": "level_34_wave_01",
+                    "preview": "Hızlı yağmacılar",
+                    "clearBonus": 86,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 14,
+                            "startDelay": 0.0,
+                            "interval": 0.3460000157356262,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_34_wave_02",
+                    "preview": "Hızlı yağmacılar",
+                    "clearBonus": 91,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 16,
+                            "startDelay": 0.0,
+                            "interval": 0.3334999978542328,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_34_wave_03",
+                    "preview": "Hızlı yağmacılar",
+                    "clearBonus": 96,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 18,
+                            "startDelay": 0.0,
+                            "interval": 0.32100000977516177,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 9,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        }
+                    ]
+                },
+                {
+                    "id": "level_34_wave_04",
+                    "preview": "Zırhlı öncüler",
+                    "clearBonus": 101,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 20,
+                            "startDelay": 0.0,
+                            "interval": 0.3084999918937683,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 10,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 6,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_34_wave_05",
+                    "preview": "Zırhlı öncüler",
+                    "clearBonus": 106,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 22,
+                            "startDelay": 0.0,
+                            "interval": 0.29600000381469729,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 11,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 6,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_34_wave_06",
+                    "preview": "Şifacı destek birliği",
+                    "clearBonus": 111,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 24,
+                            "startDelay": 0.0,
+                            "interval": 0.2835000157356262,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 12,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 6,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 4,
+                            "startDelay": 0.550000011920929,
+                            "interval": 0.7749999761581421,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 2,
+                            "startDelay": 0.75,
+                            "interval": 1.100000023841858,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_34_wave_07",
+                    "preview": "Kuşatma birliği",
+                    "clearBonus": 116,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 26,
+                            "startDelay": 0.0,
+                            "interval": 0.2709999978542328,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 13,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 7,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 4,
+                            "startDelay": 0.550000011920929,
+                            "interval": 0.7749999761581421,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 2,
+                            "startDelay": 0.75,
+                            "interval": 1.100000023841858,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 4,
+                            "count": 2,
+                            "startDelay": 1.0,
+                            "interval": 1.25,
+                            "routeId": 0
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "level": 35,
+            "startingGold": 180,
+            "targetMinSeconds": 480,
+            "targetMaxSeconds": 480,
+            "healthMultiplier": 2.1795918941497804,
+            "speedMultiplier": 1.1110204458236695,
+            "attackMultiplier": 1.5897959470748902,
+            "baseDamageMultiplier": 1.4163265228271485,
+            "killRewards": [
+                13,
+                28,
+                49,
+                38,
+                70,
+                281
+            ],
+            "bossProfileId": "",
+            "priorityTargeting": "nearestExit",
+            "waves": [
+                {
+                    "id": "level_35_wave_01",
+                    "preview": "Hızlı yağmacılar",
+                    "clearBonus": 88,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 15,
+                            "startDelay": 0.0,
+                            "interval": 0.3400000035762787,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_35_wave_02",
+                    "preview": "Hızlı yağmacılar",
+                    "clearBonus": 93,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 17,
+                            "startDelay": 0.0,
+                            "interval": 0.32750001549720766,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_35_wave_03",
+                    "preview": "Hızlı yağmacılar",
+                    "clearBonus": 98,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 19,
+                            "startDelay": 0.0,
+                            "interval": 0.3149999976158142,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 9,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        }
+                    ]
+                },
+                {
+                    "id": "level_35_wave_04",
+                    "preview": "Hızlı yağmacılar",
+                    "clearBonus": 103,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 21,
+                            "startDelay": 0.0,
+                            "interval": 0.30250000953674319,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 10,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        }
+                    ]
+                },
+                {
+                    "id": "level_35_wave_05",
+                    "preview": "Zırhlı öncüler",
+                    "clearBonus": 108,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 23,
+                            "startDelay": 0.0,
+                            "interval": 0.28999999165534975,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 11,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 6,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_35_wave_06",
+                    "preview": "Zırhlı öncüler",
+                    "clearBonus": 113,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 25,
+                            "startDelay": 0.0,
+                            "interval": 0.2775000035762787,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 12,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 6,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_35_wave_07",
+                    "preview": "Şifacı destek birliği",
+                    "clearBonus": 118,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 27,
+                            "startDelay": 0.0,
+                            "interval": 0.26500001549720766,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 13,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 7,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 4,
+                            "startDelay": 0.550000011920929,
+                            "interval": 0.7749999761581421,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 3,
+                            "startDelay": 0.75,
+                            "interval": 1.100000023841858,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_35_wave_08",
+                    "preview": "Kuşatma birliği",
+                    "clearBonus": 123,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 29,
+                            "startDelay": 0.0,
+                            "interval": 0.2524999976158142,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 14,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 7,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 4,
+                            "startDelay": 0.550000011920929,
+                            "interval": 0.7749999761581421,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 3,
+                            "startDelay": 0.75,
+                            "interval": 1.100000023841858,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 4,
+                            "count": 3,
+                            "startDelay": 1.0,
+                            "interval": 1.25,
+                            "routeId": 0
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "level": 36,
+            "startingGold": 175,
+            "targetMinSeconds": 510,
+            "targetMaxSeconds": 510,
+            "healthMultiplier": 2.2142858505249025,
+            "speedMultiplier": 1.1142857074737549,
+            "attackMultiplier": 1.6071429252624512,
+            "baseDamageMultiplier": 1.4285714626312256,
+            "killRewards": [
+                13,
+                28,
+                49,
+                39,
+                71,
+                283
+            ],
+            "bossProfileId": "",
+            "priorityTargeting": "nearestExit",
+            "waves": [
+                {
+                    "id": "level_36_wave_01",
+                    "preview": "Hızlı yağmacılar",
+                    "clearBonus": 90,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 16,
+                            "startDelay": 0.0,
+                            "interval": 0.33399999141693118,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_36_wave_02",
+                    "preview": "Hızlı yağmacılar",
+                    "clearBonus": 95,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 18,
+                            "startDelay": 0.0,
+                            "interval": 0.3215000033378601,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_36_wave_03",
+                    "preview": "Hızlı yağmacılar",
+                    "clearBonus": 100,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 20,
+                            "startDelay": 0.0,
+                            "interval": 0.30900001525878909,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 10,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        }
+                    ]
+                },
+                {
+                    "id": "level_36_wave_04",
+                    "preview": "Hızlı yağmacılar",
+                    "clearBonus": 105,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 22,
+                            "startDelay": 0.0,
+                            "interval": 0.29649999737739565,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 11,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        }
+                    ]
+                },
+                {
+                    "id": "level_36_wave_05",
+                    "preview": "Zırhlı öncüler",
+                    "clearBonus": 110,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 24,
+                            "startDelay": 0.0,
+                            "interval": 0.2840000092983246,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 12,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 7,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_36_wave_06",
+                    "preview": "Zırhlı öncüler",
+                    "clearBonus": 115,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 26,
+                            "startDelay": 0.0,
+                            "interval": 0.27149999141693118,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 13,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 7,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_36_wave_07",
+                    "preview": "Şifacı destek birliği",
+                    "clearBonus": 120,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 28,
+                            "startDelay": 0.0,
+                            "interval": 0.2590000033378601,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 14,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 8,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 4,
+                            "startDelay": 0.550000011920929,
+                            "interval": 0.7749999761581421,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 3,
+                            "startDelay": 0.75,
+                            "interval": 1.100000023841858,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_36_wave_08",
+                    "preview": "Kuşatma birliği",
+                    "clearBonus": 125,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 30,
+                            "startDelay": 0.0,
+                            "interval": 0.24650000035762788,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 15,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 8,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 4,
+                            "startDelay": 0.550000011920929,
+                            "interval": 0.7749999761581421,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 3,
+                            "startDelay": 0.75,
+                            "interval": 1.100000023841858,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 4,
+                            "count": 3,
+                            "startDelay": 1.0,
+                            "interval": 1.25,
+                            "routeId": 0
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "level": 37,
+            "startingGold": 175,
+            "targetMinSeconds": 510,
+            "targetMaxSeconds": 510,
+            "healthMultiplier": 2.2489795684814455,
+            "speedMultiplier": 1.1175509691238404,
+            "attackMultiplier": 1.6244897842407227,
+            "baseDamageMultiplier": 1.4408164024353028,
+            "killRewards": [
+                13,
+                28,
+                49,
+                39,
+                71,
+                285
+            ],
+            "bossProfileId": "",
+            "priorityTargeting": "nearestExit",
+            "waves": [
+                {
+                    "id": "level_37_wave_01",
+                    "preview": "Hızlı yağmacılar",
+                    "clearBonus": 92,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 17,
+                            "startDelay": 0.0,
+                            "interval": 0.328000009059906,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_37_wave_02",
+                    "preview": "Hızlı yağmacılar",
+                    "clearBonus": 97,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 19,
+                            "startDelay": 0.0,
+                            "interval": 0.3154999911785126,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_37_wave_03",
+                    "preview": "Hızlı yağmacılar",
+                    "clearBonus": 102,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 21,
+                            "startDelay": 0.0,
+                            "interval": 0.30300000309944155,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_37_wave_04",
+                    "preview": "Hızlı yağmacılar",
+                    "clearBonus": 107,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 23,
+                            "startDelay": 0.0,
+                            "interval": 0.2905000150203705,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 11,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        }
+                    ]
+                },
+                {
+                    "id": "level_37_wave_05",
+                    "preview": "Zırhlı öncüler",
+                    "clearBonus": 112,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 25,
+                            "startDelay": 0.0,
+                            "interval": 0.27799999713897707,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 12,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 7,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_37_wave_06",
+                    "preview": "Zırhlı öncüler",
+                    "clearBonus": 117,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 27,
+                            "startDelay": 0.0,
+                            "interval": 0.265500009059906,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 13,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 7,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_37_wave_07",
+                    "preview": "Zırhlı öncüler",
+                    "clearBonus": 122,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 29,
+                            "startDelay": 0.0,
+                            "interval": 0.2529999911785126,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 14,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 8,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_37_wave_08",
+                    "preview": "Şifacı destek birliği",
+                    "clearBonus": 127,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 31,
+                            "startDelay": 0.0,
+                            "interval": 0.24050000309944154,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 15,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 8,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 4,
+                            "startDelay": 0.550000011920929,
+                            "interval": 0.7749999761581421,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 3,
+                            "startDelay": 0.75,
+                            "interval": 1.100000023841858,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_37_wave_09",
+                    "preview": "Kuşatma birliği",
+                    "clearBonus": 132,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 33,
+                            "startDelay": 0.0,
+                            "interval": 0.2280000001192093,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 16,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 8,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 4,
+                            "startDelay": 0.550000011920929,
+                            "interval": 0.7749999761581421,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 3,
+                            "startDelay": 0.75,
+                            "interval": 1.100000023841858,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 4,
+                            "count": 3,
+                            "startDelay": 1.0,
+                            "interval": 1.25,
+                            "routeId": 0
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "level": 38,
+            "startingGold": 175,
+            "targetMinSeconds": 510,
+            "targetMaxSeconds": 510,
+            "healthMultiplier": 2.2836735248565676,
+            "speedMultiplier": 1.1208163499832154,
+            "attackMultiplier": 1.6418367624282838,
+            "baseDamageMultiplier": 1.4530612230300904,
+            "killRewards": [
+                13,
+                29,
+                49,
+                39,
+                72,
+                286
+            ],
+            "bossProfileId": "",
+            "priorityTargeting": "nearestExit",
+            "waves": [
+                {
+                    "id": "level_38_wave_01",
+                    "preview": "Hızlı yağmacılar",
+                    "clearBonus": 94,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 18,
+                            "startDelay": 0.0,
+                            "interval": 0.32199999690055849,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_38_wave_02",
+                    "preview": "Hızlı yağmacılar",
+                    "clearBonus": 99,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 20,
+                            "startDelay": 0.0,
+                            "interval": 0.3095000088214874,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_38_wave_03",
+                    "preview": "Hızlı yağmacılar",
+                    "clearBonus": 104,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 22,
+                            "startDelay": 0.0,
+                            "interval": 0.296999990940094,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_38_wave_04",
+                    "preview": "Hızlı yağmacılar",
+                    "clearBonus": 109,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 24,
+                            "startDelay": 0.0,
+                            "interval": 0.28450000286102297,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 12,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        }
+                    ]
+                },
+                {
+                    "id": "level_38_wave_05",
+                    "preview": "Zırhlı öncüler",
+                    "clearBonus": 114,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 26,
+                            "startDelay": 0.0,
+                            "interval": 0.2720000147819519,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 13,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 7,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_38_wave_06",
+                    "preview": "Zırhlı öncüler",
+                    "clearBonus": 119,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 28,
+                            "startDelay": 0.0,
+                            "interval": 0.25949999690055849,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 14,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 7,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_38_wave_07",
+                    "preview": "Zırhlı öncüler",
+                    "clearBonus": 124,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 30,
+                            "startDelay": 0.0,
+                            "interval": 0.24700000882148744,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 15,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 8,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_38_wave_08",
+                    "preview": "Şifacı destek birliği",
+                    "clearBonus": 129,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 32,
+                            "startDelay": 0.0,
+                            "interval": 0.2345000058412552,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 16,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 8,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 5,
+                            "startDelay": 0.550000011920929,
+                            "interval": 0.7749999761581421,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 3,
+                            "startDelay": 0.75,
+                            "interval": 1.100000023841858,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_38_wave_09",
+                    "preview": "Kuşatma birliği",
+                    "clearBonus": 134,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 34,
+                            "startDelay": 0.0,
+                            "interval": 0.22200000286102296,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 17,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 8,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 5,
+                            "startDelay": 0.550000011920929,
+                            "interval": 0.7749999761581421,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 3,
+                            "startDelay": 0.75,
+                            "interval": 1.100000023841858,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 4,
+                            "count": 3,
+                            "startDelay": 1.0,
+                            "interval": 1.25,
+                            "routeId": 0
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "level": 39,
+            "startingGold": 170,
+            "targetMinSeconds": 510,
+            "targetMaxSeconds": 510,
+            "healthMultiplier": 2.3183674812316896,
+            "speedMultiplier": 1.1240816116333008,
+            "attackMultiplier": 1.6591837406158448,
+            "baseDamageMultiplier": 1.4653061628341675,
+            "killRewards": [
+                13,
+                29,
+                50,
+                39,
+                72,
+                288
+            ],
+            "bossProfileId": "",
+            "priorityTargeting": "nearestExit",
+            "waves": [
+                {
+                    "id": "level_39_wave_01",
+                    "preview": "Hızlı yağmacılar",
+                    "clearBonus": 96,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 19,
+                            "startDelay": 0.0,
+                            "interval": 0.3160000145435333,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_39_wave_02",
+                    "preview": "Hızlı yağmacılar",
+                    "clearBonus": 101,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 21,
+                            "startDelay": 0.0,
+                            "interval": 0.3034999966621399,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_39_wave_03",
+                    "preview": "Hızlı yağmacılar",
+                    "clearBonus": 106,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 23,
+                            "startDelay": 0.0,
+                            "interval": 0.29100000858306887,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_39_wave_04",
+                    "preview": "Hızlı yağmacılar",
+                    "clearBonus": 111,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 25,
+                            "startDelay": 0.0,
+                            "interval": 0.2784999907016754,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 12,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        }
+                    ]
+                },
+                {
+                    "id": "level_39_wave_05",
+                    "preview": "Hızlı yağmacılar",
+                    "clearBonus": 116,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 27,
+                            "startDelay": 0.0,
+                            "interval": 0.26600000262260439,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 13,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        }
+                    ]
+                },
+                {
+                    "id": "level_39_wave_06",
+                    "preview": "Zırhlı öncüler",
+                    "clearBonus": 121,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 29,
+                            "startDelay": 0.0,
+                            "interval": 0.2535000145435333,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 14,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 8,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_39_wave_07",
+                    "preview": "Zırhlı öncüler",
+                    "clearBonus": 126,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 31,
+                            "startDelay": 0.0,
+                            "interval": 0.2409999966621399,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 15,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 9,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_39_wave_08",
+                    "preview": "Zırhlı öncüler",
+                    "clearBonus": 131,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 33,
+                            "startDelay": 0.0,
+                            "interval": 0.22850000858306886,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 16,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 9,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_39_wave_09",
+                    "preview": "Şifacı destek birliği",
+                    "clearBonus": 136,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 35,
+                            "startDelay": 0.0,
+                            "interval": 0.2160000056028366,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 17,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 9,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 5,
+                            "startDelay": 0.550000011920929,
+                            "interval": 0.7749999761581421,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 3,
+                            "startDelay": 0.75,
+                            "interval": 1.100000023841858,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_39_wave_10",
+                    "preview": "Kuşatma birliği",
+                    "clearBonus": 141,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 37,
+                            "startDelay": 0.0,
+                            "interval": 0.20999999344348908,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 18,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 10,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 5,
+                            "startDelay": 0.550000011920929,
+                            "interval": 0.7749999761581421,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 3,
+                            "startDelay": 0.75,
+                            "interval": 1.100000023841858,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 4,
+                            "count": 3,
+                            "startDelay": 1.0,
+                            "interval": 1.25,
+                            "routeId": 0
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "level": 40,
+            "startingGold": 170,
+            "targetMinSeconds": 540,
+            "targetMaxSeconds": 540,
+            "healthMultiplier": 2.3530611991882326,
+            "speedMultiplier": 1.1273468732833863,
+            "attackMultiplier": 1.6765305995941163,
+            "baseDamageMultiplier": 1.477550983428955,
+            "killRewards": [
+                13,
+                29,
+                50,
+                40,
+                73,
+                290
+            ],
+            "bossProfileId": "region-lord",
+            "priorityTargeting": "nearestExit",
+            "waves": [
+                {
+                    "id": "level_40_wave_01",
+                    "preview": "Hızlı yağmacılar",
+                    "clearBonus": 98,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 20,
+                            "startDelay": 0.0,
+                            "interval": 0.3100000023841858,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_40_wave_02",
+                    "preview": "Hızlı yağmacılar",
+                    "clearBonus": 103,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 22,
+                            "startDelay": 0.0,
+                            "interval": 0.29750001430511477,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_40_wave_03",
+                    "preview": "Hızlı yağmacılar",
+                    "clearBonus": 108,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 24,
+                            "startDelay": 0.0,
+                            "interval": 0.2849999964237213,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_40_wave_04",
+                    "preview": "Hızlı yağmacılar",
+                    "clearBonus": 113,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 26,
+                            "startDelay": 0.0,
+                            "interval": 0.27250000834465029,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 13,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        }
+                    ]
+                },
+                {
+                    "id": "level_40_wave_05",
+                    "preview": "Hızlı yağmacılar",
+                    "clearBonus": 118,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 28,
+                            "startDelay": 0.0,
+                            "interval": 0.25999999046325686,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 14,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        }
+                    ]
+                },
+                {
+                    "id": "level_40_wave_06",
+                    "preview": "Zırhlı öncüler",
+                    "clearBonus": 123,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 30,
+                            "startDelay": 0.0,
+                            "interval": 0.2475000023841858,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 15,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 8,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_40_wave_07",
+                    "preview": "Zırhlı öncüler",
+                    "clearBonus": 128,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 32,
+                            "startDelay": 0.0,
+                            "interval": 0.23499999940395356,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 16,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 9,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_40_wave_08",
+                    "preview": "Zırhlı öncüler",
+                    "clearBonus": 133,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 34,
+                            "startDelay": 0.0,
+                            "interval": 0.2224999964237213,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 17,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 9,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_40_wave_09",
+                    "preview": "Zırhlı öncüler",
+                    "clearBonus": 138,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 36,
+                            "startDelay": 0.0,
+                            "interval": 0.21000000834465028,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 18,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 9,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_40_wave_10",
+                    "preview": "Şifacı destek birliği",
+                    "clearBonus": 143,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 38,
+                            "startDelay": 0.0,
+                            "interval": 0.20999999344348908,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 19,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 10,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 5,
+                            "startDelay": 0.550000011920929,
+                            "interval": 0.7749999761581421,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 4,
+                            "startDelay": 0.75,
+                            "interval": 1.100000023841858,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_40_wave_11",
+                    "preview": "Bölge lordu ve seçkin muhafızları",
+                    "clearBonus": 148,
+                    "bossWave": true,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 40,
+                            "startDelay": 0.0,
+                            "interval": 0.20999999344348908,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 20,
+                            "startDelay": 0.125,
+                            "interval": 0.36000001430511477,
+                            "routeId": 1
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 10,
+                            "startDelay": 0.3499999940395355,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 5,
+                            "startDelay": 0.550000011920929,
+                            "interval": 0.7749999761581421,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 4,
+                            "startDelay": 0.75,
+                            "interval": 1.100000023841858,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 4,
+                            "count": 4,
+                            "startDelay": 1.0,
+                            "interval": 1.25,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 5,
+                            "count": 1,
+                            "startDelay": 1.2999999523162842,
+                            "interval": 0.5,
+                            "routeId": 0
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

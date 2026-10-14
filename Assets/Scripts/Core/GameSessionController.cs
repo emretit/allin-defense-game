@@ -239,8 +239,7 @@ namespace AllinDefense.Core
             displayedIntermissionSecond = int.MinValue;
             if (Phase == GamePhase.Intermission) RefreshIntermissionLabel();
             if (waves != null)
-                waves = CampaignLevelNumber <= 10 ? FirstRegionCampaign.CreateWaves(CampaignLevelNumber)
-                    : CampaignLevelFactory.Create(CampaignLevelNumber).waves;
+                waves = CampaignContent.CreateWaves(CampaignLevelNumber);
             RefreshThreatPreviewForPhase();
             RefreshUi();
         }
@@ -698,35 +697,6 @@ namespace AllinDefense.Core
                     entry, new Vector3(0.72f, 0.08f, 0.72f),
                     CampaignLevelFactory.Biome(ActiveBiomeIndex).accentColor, world, false);
                 marker.transform.SetParent(world, true);
-            }
-        }
-
-        private void BuildBiomeDressing(Transform world)
-        {
-            BiomeDefinition palette = CampaignLevelFactory.Biome(ActiveBiomeIndex);
-            string[] names = { "Grove", "Basalt", "Frost", "Tide", "Bastion" };
-            PrimitiveType propType = ActiveBiomeIndex switch
-            {
-                1 => PrimitiveType.Cube,
-                2 => PrimitiveType.Cylinder,
-                3 => PrimitiveType.Cylinder,
-                4 => PrimitiveType.Cube,
-                _ => PrimitiveType.Sphere
-            };
-            for (int i = 0; i < 8; i++)
-            {
-                float x = 1.0f + i * 2.85f;
-                float z = i % 2 == 0 ? 11.55f : 0.15f;
-                float height = ActiveBiomeIndex == 2 ? 0.9f + (i % 3) * 0.25f : 0.45f + (i % 2) * 0.18f;
-                Vector3 scale = propType == PrimitiveType.Cube
-                    ? new Vector3(0.42f + (i % 3) * 0.15f, height, 0.42f)
-                    : new Vector3(0.48f, height, 0.48f);
-                Color color = Color.Lerp(palette.groundColor, palette.accentColor, 0.28f + (i % 3) * 0.08f);
-                GameObject prop = CreatePrimitive($"{names[ActiveBiomeIndex]} Landmark {i + 1}", propType,
-                    new Vector3(x, height * 0.5f, z), scale, color, world, false);
-                Renderer renderer = prop.GetComponent<Renderer>();
-                if (DefenderBattlefieldDressing.DecorationOverlapsGameplay(renderer.bounds, activeOutpostSlotPositions, routePaths))
-                    renderer.enabled = false;
             }
         }
 
@@ -2582,10 +2552,11 @@ namespace AllinDefense.Core
             float remaining = float.MaxValue;
             float progress = float.MinValue;
             float sqrRange = range * range;
+            bool furthestProgress = CampaignContent.Level(CampaignLevelNumber).priorityTargeting == "furthestProgress";
             foreach (var enemy in enemies)
             {
                 if (enemy == null || !enemy.IsAlive || (enemy.Position - position).sqrMagnitude > sqrRange) continue;
-                if (CampaignLevelNumber == 10)
+                if (furthestProgress)
                 {
                     if (enemy.RouteProgress <= progress) continue;
                     progress = enemy.RouteProgress;
@@ -2775,23 +2746,13 @@ namespace AllinDefense.Core
         private EnemyStats GetScaledStats(EnemyArchetype archetype)
         {
             EnemyStats baseStats = GetStats(archetype);
-            if (CampaignLevelNumber <= FirstRegionCampaign.LevelCount)
-            {
-                var balance = FirstRegionCampaign.Level(CampaignLevelNumber);
-                return new EnemyStats(Mathf.RoundToInt(baseStats.maxHealth * balance.healthMultiplier),
-                    baseStats.speed * BattleRules.LegacyPace,
-                    balance.killRewards[(int)archetype], baseStats.baseDamage, baseStats.attackDamage, baseStats.color);
-            }
-            float progress = Mathf.Clamp01((CampaignLevelNumber - 1f) / (CampaignCatalog.LevelCount - 1f));
-            float healthMultiplier = Mathf.Lerp(1f, 2.7f, progress);
-            float speedMultiplier = Mathf.Lerp(1f, 1.16f, progress);
-            float attackMultiplier = Mathf.Lerp(1f, 1.85f, progress);
+            var balance = CampaignContent.Level(CampaignLevelNumber);
             return new EnemyStats(
-                Mathf.RoundToInt(baseStats.maxHealth * healthMultiplier),
-                baseStats.speed * speedMultiplier * BattleRules.LegacyPace,
-                Mathf.RoundToInt(baseStats.reward * Mathf.Lerp(1f, 1.4f, progress)),
-                Mathf.Max(1, Mathf.RoundToInt(baseStats.baseDamage * Mathf.Lerp(1f, 1.6f, progress))),
-                Mathf.Max(1, Mathf.RoundToInt(baseStats.attackDamage * attackMultiplier)),
+                Mathf.RoundToInt(baseStats.maxHealth * balance.healthMultiplier),
+                baseStats.speed * balance.speedMultiplier * BattleRules.LegacyPace,
+                balance.killRewards[(int)archetype],
+                Mathf.Max(1, Mathf.RoundToInt(baseStats.baseDamage * balance.baseDamageMultiplier)),
+                Mathf.Max(1, Mathf.RoundToInt(baseStats.attackDamage * balance.attackMultiplier)),
                 baseStats.color);
         }
 

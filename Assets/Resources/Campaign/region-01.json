@@ -1,0 +1,1846 @@
+{
+    "contentVersion": "first-region-v2",
+    "levels": [
+        {
+            "level": 1,
+            "startingGold": 230,
+            "targetMinSeconds": 120,
+            "targetMaxSeconds": 180,
+            "healthMultiplier": 1.0,
+            "speedMultiplier": 1.0,
+            "attackMultiplier": 1.0,
+            "baseDamageMultiplier": 1.0,
+            "killRewards": [
+                2,
+                5,
+                8,
+                6,
+                12,
+                50
+            ],
+            "bossProfileId": "",
+            "priorityTargeting": "nearestExit",
+            "waves": [
+                {
+                    "id": "level_01_wave_01",
+                    "preview": "Yağmacı ×50",
+                    "clearBonus": 15,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 50,
+                            "startDelay": 0.0,
+                            "interval": 0.800000011920929,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_01_wave_02",
+                    "preview": "Yağmacı ×66",
+                    "clearBonus": 15,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 66,
+                            "startDelay": 0.0,
+                            "interval": 0.6600000262260437,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_01_wave_03",
+                    "preview": "Yağmacı ×88",
+                    "clearBonus": 15,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 88,
+                            "startDelay": 0.0,
+                            "interval": 0.550000011920929,
+                            "routeId": 0
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "level": 2,
+            "startingGold": 230,
+            "targetMinSeconds": 120,
+            "targetMaxSeconds": 180,
+            "healthMultiplier": 1.0,
+            "speedMultiplier": 1.0,
+            "attackMultiplier": 1.0,
+            "baseDamageMultiplier": 1.0,
+            "killRewards": [
+                2,
+                5,
+                8,
+                6,
+                12,
+                50
+            ],
+            "bossProfileId": "",
+            "priorityTargeting": "nearestExit",
+            "waves": [
+                {
+                    "id": "level_02_wave_01",
+                    "preview": "Yağmacı ×60",
+                    "clearBonus": 15,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 60,
+                            "startDelay": 0.0,
+                            "interval": 0.7200000286102295,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_02_wave_02",
+                    "preview": "Yağmacı ×66 • Yağmacı ×10",
+                    "clearBonus": 15,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 66,
+                            "startDelay": 0.0,
+                            "interval": 0.6800000071525574,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 10,
+                            "startDelay": 18.0,
+                            "interval": 0.30000001192092898,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_02_wave_03",
+                    "preview": "Yağmacı ×80 • Yağmacı ×12",
+                    "clearBonus": 15,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 80,
+                            "startDelay": 0.0,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 12,
+                            "startDelay": 24.0,
+                            "interval": 0.30000001192092898,
+                            "routeId": 0
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "level": 3,
+            "startingGold": 230,
+            "targetMinSeconds": 180,
+            "targetMaxSeconds": 240,
+            "healthMultiplier": 1.0,
+            "speedMultiplier": 1.0,
+            "attackMultiplier": 1.0,
+            "baseDamageMultiplier": 1.0,
+            "killRewards": [
+                2,
+                5,
+                8,
+                6,
+                12,
+                50
+            ],
+            "bossProfileId": "",
+            "priorityTargeting": "nearestExit",
+            "waves": [
+                {
+                    "id": "level_03_wave_01",
+                    "preview": "Yağmacı ×58 • Yağmacı ×8",
+                    "clearBonus": 15,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 58,
+                            "startDelay": 0.0,
+                            "interval": 0.699999988079071,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 8,
+                            "startDelay": 20.0,
+                            "interval": 0.30000001192092898,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_03_wave_02",
+                    "preview": "Yağmacı ×64 • Yağmacı ×14",
+                    "clearBonus": 15,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 64,
+                            "startDelay": 0.0,
+                            "interval": 0.6600000262260437,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 14,
+                            "startDelay": 16.0,
+                            "interval": 0.25,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_03_wave_03",
+                    "preview": "Yağmacı ×66 • Yağmacı ×12 • Yağmacı ×12",
+                    "clearBonus": 15,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 66,
+                            "startDelay": 0.0,
+                            "interval": 0.6600000262260437,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 12,
+                            "startDelay": 14.0,
+                            "interval": 0.25,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 12,
+                            "startDelay": 30.0,
+                            "interval": 0.25,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_03_wave_04",
+                    "preview": "Yağmacı ×86 • Yağmacı ×20",
+                    "clearBonus": 15,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 86,
+                            "startDelay": 0.0,
+                            "interval": 0.6600000262260437,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 0,
+                            "count": 20,
+                            "startDelay": 18.0,
+                            "interval": 0.25,
+                            "routeId": 0
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "level": 4,
+            "startingGold": 225,
+            "targetMinSeconds": 210,
+            "targetMaxSeconds": 270,
+            "healthMultiplier": 1.0399999618530274,
+            "speedMultiplier": 1.0,
+            "attackMultiplier": 1.0,
+            "baseDamageMultiplier": 1.0,
+            "killRewards": [
+                2,
+                5,
+                8,
+                6,
+                12,
+                50
+            ],
+            "bossProfileId": "",
+            "priorityTargeting": "nearestExit",
+            "waves": [
+                {
+                    "id": "level_04_wave_01",
+                    "preview": "Yağmacı ×66",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 66,
+                            "startDelay": 0.0,
+                            "interval": 0.6399999856948853,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_04_wave_02",
+                    "preview": "Yağmacı ×72 • Öncü ×1",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 72,
+                            "startDelay": 0.0,
+                            "interval": 0.6200000047683716,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 1,
+                            "startDelay": 47.0,
+                            "interval": 1.0,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_04_wave_03",
+                    "preview": "Yağmacı ×76 • Öncü ×2",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 76,
+                            "startDelay": 0.0,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 2,
+                            "startDelay": 20.0,
+                            "interval": 6.0,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_04_wave_04",
+                    "preview": "Yağmacı ×84 • Öncü ×6",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 84,
+                            "startDelay": 0.0,
+                            "interval": 0.5799999833106995,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 6,
+                            "startDelay": 12.0,
+                            "interval": 5.0,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_04_wave_05",
+                    "preview": "Yağmacı ×88 • Öncü ×8",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 88,
+                            "startDelay": 0.0,
+                            "interval": 0.5799999833106995,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 8,
+                            "startDelay": 8.0,
+                            "interval": 4.5,
+                            "routeId": 0
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "level": 5,
+            "startingGold": 225,
+            "targetMinSeconds": 240,
+            "targetMaxSeconds": 360,
+            "healthMultiplier": 1.0800000429153443,
+            "speedMultiplier": 1.0,
+            "attackMultiplier": 1.0,
+            "baseDamageMultiplier": 1.0,
+            "killRewards": [
+                2,
+                5,
+                8,
+                6,
+                12,
+                50
+            ],
+            "bossProfileId": "",
+            "priorityTargeting": "nearestExit",
+            "waves": [
+                {
+                    "id": "level_05_wave_01",
+                    "preview": "Yağmacı ×72 • Öncü ×2",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 72,
+                            "startDelay": 0.0,
+                            "interval": 0.6000000238418579,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 2,
+                            "startDelay": 20.0,
+                            "interval": 6.0,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_05_wave_02",
+                    "preview": "Yağmacı ×78 • Öncü ×5",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 78,
+                            "startDelay": 0.0,
+                            "interval": 0.5799999833106995,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 5,
+                            "startDelay": 10.0,
+                            "interval": 4.0,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_05_wave_03",
+                    "preview": "Yağmacı ×82 • Öncü ×7",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 82,
+                            "startDelay": 0.0,
+                            "interval": 0.5799999833106995,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 7,
+                            "startDelay": 8.0,
+                            "interval": 4.0,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_05_wave_04",
+                    "preview": "Yağmacı ×86 • Öncü ×9",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 86,
+                            "startDelay": 0.0,
+                            "interval": 0.5799999833106995,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 9,
+                            "startDelay": 6.0,
+                            "interval": 4.0,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_05_wave_05",
+                    "preview": "Yağmacı ×88 • Öncü ×10",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 88,
+                            "startDelay": 0.0,
+                            "interval": 0.5799999833106995,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 10,
+                            "startDelay": 5.0,
+                            "interval": 3.5,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_05_wave_06",
+                    "preview": "Yağmacı ×92 • Öncü ×11",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 92,
+                            "startDelay": 0.0,
+                            "interval": 0.5799999833106995,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 11,
+                            "startDelay": 5.0,
+                            "interval": 3.200000047683716,
+                            "routeId": 0
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "level": 6,
+            "startingGold": 300,
+            "targetMinSeconds": 240,
+            "targetMaxSeconds": 360,
+            "healthMultiplier": 1.1200000047683716,
+            "speedMultiplier": 1.0,
+            "attackMultiplier": 1.0,
+            "baseDamageMultiplier": 1.0,
+            "killRewards": [
+                2,
+                5,
+                8,
+                6,
+                12,
+                50
+            ],
+            "bossProfileId": "",
+            "priorityTargeting": "nearestExit",
+            "waves": [
+                {
+                    "id": "level_06_wave_01",
+                    "preview": "Yağmacı ×76 • Öncü ×3",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 76,
+                            "startDelay": 0.0,
+                            "interval": 0.5799999833106995,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 3,
+                            "startDelay": 15.0,
+                            "interval": 5.0,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_06_wave_02",
+                    "preview": "Yağmacı ×78 • Öncü ×4 • Yenilenen ×1",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 78,
+                            "startDelay": 0.0,
+                            "interval": 0.5799999833106995,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 4,
+                            "startDelay": 10.0,
+                            "interval": 5.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 1,
+                            "startDelay": 48.0,
+                            "interval": 1.0,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_06_wave_03",
+                    "preview": "Yağmacı ×80 • Öncü ×5 • Yenilenen ×2",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 80,
+                            "startDelay": 0.0,
+                            "interval": 0.5799999833106995,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 5,
+                            "startDelay": 8.0,
+                            "interval": 5.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 2,
+                            "startDelay": 24.0,
+                            "interval": 8.0,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_06_wave_04",
+                    "preview": "Yağmacı ×84 • Öncü ×6 • Yenilenen ×3",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 84,
+                            "startDelay": 0.0,
+                            "interval": 0.5799999833106995,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 6,
+                            "startDelay": 8.0,
+                            "interval": 4.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 3,
+                            "startDelay": 16.0,
+                            "interval": 7.0,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_06_wave_05",
+                    "preview": "Yağmacı ×88 • Öncü ×8 • Yenilenen ×4",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 88,
+                            "startDelay": 0.0,
+                            "interval": 0.5799999833106995,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 8,
+                            "startDelay": 6.0,
+                            "interval": 4.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 4,
+                            "startDelay": 12.0,
+                            "interval": 6.0,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_06_wave_06",
+                    "preview": "Yağmacı ×92 • Öncü ×10 • Yenilenen ×5",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 92,
+                            "startDelay": 0.0,
+                            "interval": 0.5799999833106995,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 10,
+                            "startDelay": 5.0,
+                            "interval": 4.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 5,
+                            "startDelay": 12.0,
+                            "interval": 6.0,
+                            "routeId": 0
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "level": 7,
+            "startingGold": 300,
+            "targetMinSeconds": 240,
+            "targetMaxSeconds": 360,
+            "healthMultiplier": 1.159999966621399,
+            "speedMultiplier": 1.0,
+            "attackMultiplier": 1.0,
+            "baseDamageMultiplier": 1.0,
+            "killRewards": [
+                2,
+                5,
+                8,
+                6,
+                12,
+                50
+            ],
+            "bossProfileId": "",
+            "priorityTargeting": "nearestExit",
+            "waves": [
+                {
+                    "id": "level_07_wave_01",
+                    "preview": "Yağmacı ×76 • Öncü ×4 • Yenilenen ×1",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 76,
+                            "startDelay": 0.0,
+                            "interval": 0.5799999833106995,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 4,
+                            "startDelay": 12.0,
+                            "interval": 5.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 1,
+                            "startDelay": 30.0,
+                            "interval": 1.0,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_07_wave_02",
+                    "preview": "Yağmacı ×78 • Öncü ×4 • Şifacı ×1",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 78,
+                            "startDelay": 0.0,
+                            "interval": 0.5799999833106995,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 4,
+                            "startDelay": 10.0,
+                            "interval": 4.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 1,
+                            "startDelay": 18.0,
+                            "interval": 1.0,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_07_wave_03",
+                    "preview": "Yağmacı ×80 • Öncü ×6 • Yenilenen ×2 • Şifacı ×2",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 80,
+                            "startDelay": 0.0,
+                            "interval": 0.5799999833106995,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 6,
+                            "startDelay": 8.0,
+                            "interval": 4.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 2,
+                            "startDelay": 22.0,
+                            "interval": 8.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 2,
+                            "startDelay": 14.0,
+                            "interval": 12.0,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_07_wave_04",
+                    "preview": "Yağmacı ×84 • Öncü ×8 • Yenilenen ×3 • Şifacı ×3",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 84,
+                            "startDelay": 0.0,
+                            "interval": 0.5799999833106995,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 8,
+                            "startDelay": 6.0,
+                            "interval": 4.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 3,
+                            "startDelay": 16.0,
+                            "interval": 7.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 3,
+                            "startDelay": 14.0,
+                            "interval": 9.0,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_07_wave_05",
+                    "preview": "Yağmacı ×88 • Öncü ×10 • Yenilenen ×4 • Şifacı ×3",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 88,
+                            "startDelay": 0.0,
+                            "interval": 0.5799999833106995,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 10,
+                            "startDelay": 5.0,
+                            "interval": 4.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 4,
+                            "startDelay": 12.0,
+                            "interval": 6.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 3,
+                            "startDelay": 14.0,
+                            "interval": 9.0,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_07_wave_06",
+                    "preview": "Yağmacı ×92 • Öncü ×12 • Yenilenen ×5 • Şifacı ×4",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 92,
+                            "startDelay": 0.0,
+                            "interval": 0.5799999833106995,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 12,
+                            "startDelay": 5.0,
+                            "interval": 3.5,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 5,
+                            "startDelay": 12.0,
+                            "interval": 6.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 4,
+                            "startDelay": 14.0,
+                            "interval": 8.0,
+                            "routeId": 0
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "level": 8,
+            "startingGold": 325,
+            "targetMinSeconds": 240,
+            "targetMaxSeconds": 360,
+            "healthMultiplier": 1.2000000476837159,
+            "speedMultiplier": 1.0,
+            "attackMultiplier": 1.0,
+            "baseDamageMultiplier": 1.0,
+            "killRewards": [
+                2,
+                5,
+                8,
+                6,
+                12,
+                50
+            ],
+            "bossProfileId": "",
+            "priorityTargeting": "nearestExit",
+            "waves": [
+                {
+                    "id": "level_08_wave_01",
+                    "preview": "Yağmacı ×76 • Öncü ×5 • Yenilenen ×1 • Şifacı ×1",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 76,
+                            "startDelay": 0.0,
+                            "interval": 0.5799999833106995,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 5,
+                            "startDelay": 10.0,
+                            "interval": 5.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 1,
+                            "startDelay": 22.0,
+                            "interval": 1.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 1,
+                            "startDelay": 30.0,
+                            "interval": 1.0,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_08_wave_02",
+                    "preview": "Yağmacı ×78 • Öncü ×5 • Kuşatma ×1",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 78,
+                            "startDelay": 0.0,
+                            "interval": 0.5799999833106995,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 5,
+                            "startDelay": 10.0,
+                            "interval": 4.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 4,
+                            "count": 1,
+                            "startDelay": 46.0,
+                            "interval": 1.0,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_08_wave_03",
+                    "preview": "Yağmacı ×80 • Öncü ×7 • Yenilenen ×2 • Şifacı ×2 • Kuşatma ×1",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 80,
+                            "startDelay": 0.0,
+                            "interval": 0.5799999833106995,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 7,
+                            "startDelay": 8.0,
+                            "interval": 4.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 2,
+                            "startDelay": 20.0,
+                            "interval": 8.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 2,
+                            "startDelay": 14.0,
+                            "interval": 10.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 4,
+                            "count": 1,
+                            "startDelay": 26.0,
+                            "interval": 1.0,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_08_wave_04",
+                    "preview": "Yağmacı ×84 • Öncü ×9 • Yenilenen ×3 • Şifacı ×3 • Kuşatma ×1",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 84,
+                            "startDelay": 0.0,
+                            "interval": 0.5799999833106995,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 9,
+                            "startDelay": 6.0,
+                            "interval": 4.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 3,
+                            "startDelay": 16.0,
+                            "interval": 7.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 3,
+                            "startDelay": 14.0,
+                            "interval": 9.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 4,
+                            "count": 1,
+                            "startDelay": 22.0,
+                            "interval": 1.0,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_08_wave_05",
+                    "preview": "Yağmacı ×88 • Öncü ×11 • Yenilenen ×4 • Şifacı ×3 • Kuşatma ×2",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 88,
+                            "startDelay": 0.0,
+                            "interval": 0.5799999833106995,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 11,
+                            "startDelay": 5.0,
+                            "interval": 3.5,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 4,
+                            "startDelay": 12.0,
+                            "interval": 6.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 3,
+                            "startDelay": 14.0,
+                            "interval": 9.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 4,
+                            "count": 2,
+                            "startDelay": 18.0,
+                            "interval": 10.0,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_08_wave_06",
+                    "preview": "Yağmacı ×92 • Öncü ×13 • Yenilenen ×5 • Şifacı ×4 • Kuşatma ×2",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 92,
+                            "startDelay": 0.0,
+                            "interval": 0.5799999833106995,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 13,
+                            "startDelay": 5.0,
+                            "interval": 3.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 5,
+                            "startDelay": 12.0,
+                            "interval": 6.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 4,
+                            "startDelay": 14.0,
+                            "interval": 8.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 4,
+                            "count": 2,
+                            "startDelay": 18.0,
+                            "interval": 10.0,
+                            "routeId": 0
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "level": 9,
+            "startingGold": 350,
+            "targetMinSeconds": 240,
+            "targetMaxSeconds": 360,
+            "healthMultiplier": 1.2400000095367432,
+            "speedMultiplier": 1.0,
+            "attackMultiplier": 1.0,
+            "baseDamageMultiplier": 1.0,
+            "killRewards": [
+                2,
+                5,
+                8,
+                6,
+                12,
+                50
+            ],
+            "bossProfileId": "",
+            "priorityTargeting": "nearestExit",
+            "waves": [
+                {
+                    "id": "level_09_wave_01",
+                    "preview": "Yağmacı ×74 • Öncü ×4 • Yenilenen ×1 • Şifacı ×1 • Kuşatma ×1",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 74,
+                            "startDelay": 0.0,
+                            "interval": 0.5799999833106995,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 4,
+                            "startDelay": 10.0,
+                            "interval": 5.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 1,
+                            "startDelay": 20.0,
+                            "interval": 1.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 1,
+                            "startDelay": 26.0,
+                            "interval": 1.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 4,
+                            "count": 1,
+                            "startDelay": 34.0,
+                            "interval": 1.0,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_09_wave_02",
+                    "preview": "Yağmacı ×78 • Öncü ×10 • Şifacı ×3",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 78,
+                            "startDelay": 0.0,
+                            "interval": 0.5799999833106995,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 10,
+                            "startDelay": 6.0,
+                            "interval": 3.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 3,
+                            "startDelay": 12.0,
+                            "interval": 6.0,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_09_wave_03",
+                    "preview": "Yağmacı ×80 • Yenilenen ×5 • Kuşatma ×2",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 80,
+                            "startDelay": 0.0,
+                            "interval": 0.5799999833106995,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 5,
+                            "startDelay": 10.0,
+                            "interval": 6.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 4,
+                            "count": 2,
+                            "startDelay": 20.0,
+                            "interval": 10.0,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_09_wave_04",
+                    "preview": "Yağmacı ×84 • Öncü ×12 • Yenilenen ×5 • Şifacı ×3 • Kuşatma ×2",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 84,
+                            "startDelay": 0.0,
+                            "interval": 0.5799999833106995,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 12,
+                            "startDelay": 5.0,
+                            "interval": 3.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 5,
+                            "startDelay": 12.0,
+                            "interval": 6.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 3,
+                            "startDelay": 14.0,
+                            "interval": 8.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 4,
+                            "count": 2,
+                            "startDelay": 18.0,
+                            "interval": 10.0,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_09_wave_05",
+                    "preview": "Yağmacı ×88 • Öncü ×14 • Yenilenen ×6 • Şifacı ×4 • Kuşatma ×2",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 88,
+                            "startDelay": 0.0,
+                            "interval": 0.5799999833106995,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 14,
+                            "startDelay": 5.0,
+                            "interval": 3.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 6,
+                            "startDelay": 12.0,
+                            "interval": 5.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 4,
+                            "startDelay": 14.0,
+                            "interval": 8.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 4,
+                            "count": 2,
+                            "startDelay": 18.0,
+                            "interval": 10.0,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_09_wave_06",
+                    "preview": "Yağmacı ×92 • Öncü ×14 • Yenilenen ×7 • Şifacı ×4 • Kuşatma ×3",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 92,
+                            "startDelay": 0.0,
+                            "interval": 0.5799999833106995,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 14,
+                            "startDelay": 5.0,
+                            "interval": 3.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 7,
+                            "startDelay": 12.0,
+                            "interval": 5.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 4,
+                            "startDelay": 16.0,
+                            "interval": 8.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 4,
+                            "count": 3,
+                            "startDelay": 18.0,
+                            "interval": 9.0,
+                            "routeId": 0
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "level": 10,
+            "startingGold": 400,
+            "targetMinSeconds": 360,
+            "targetMaxSeconds": 480,
+            "healthMultiplier": 1.2799999713897706,
+            "speedMultiplier": 1.0,
+            "attackMultiplier": 1.0,
+            "baseDamageMultiplier": 1.0,
+            "killRewards": [
+                2,
+                5,
+                8,
+                6,
+                12,
+                50
+            ],
+            "bossProfileId": "region-lord",
+            "priorityTargeting": "furthestProgress",
+            "waves": [
+                {
+                    "id": "level_10_wave_01",
+                    "preview": "Yağmacı ×68 • Öncü ×1 • Yenilenen ×1 • Şifacı ×1 • Kuşatma ×1",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 68,
+                            "startDelay": 0.0,
+                            "interval": 0.5600000023841858,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 1,
+                            "startDelay": 32.0,
+                            "interval": 3.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 1,
+                            "startDelay": 32.0,
+                            "interval": 5.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 1,
+                            "startDelay": 32.0,
+                            "interval": 8.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 4,
+                            "count": 1,
+                            "startDelay": 32.0,
+                            "interval": 10.0,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_10_wave_02",
+                    "preview": "Yağmacı ×72 • Öncü ×6 • Yenilenen ×1 • Şifacı ×1 • Kuşatma ×1",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 72,
+                            "startDelay": 0.0,
+                            "interval": 0.5600000023841858,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 6,
+                            "startDelay": 5.0,
+                            "interval": 3.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 1,
+                            "startDelay": 30.0,
+                            "interval": 5.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 1,
+                            "startDelay": 30.0,
+                            "interval": 8.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 4,
+                            "count": 1,
+                            "startDelay": 30.0,
+                            "interval": 10.0,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_10_wave_03",
+                    "preview": "Yağmacı ×76 • Öncü ×8 • Yenilenen ×4 • Şifacı ×3 • Kuşatma ×1",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 76,
+                            "startDelay": 0.0,
+                            "interval": 0.5600000023841858,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 8,
+                            "startDelay": 5.0,
+                            "interval": 3.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 4,
+                            "startDelay": 12.0,
+                            "interval": 5.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 3,
+                            "startDelay": 16.0,
+                            "interval": 8.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 4,
+                            "count": 1,
+                            "startDelay": 18.0,
+                            "interval": 10.0,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_10_wave_04",
+                    "preview": "Yağmacı ×80 • Öncü ×10 • Yenilenen ×5 • Şifacı ×3 • Kuşatma ×2",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 80,
+                            "startDelay": 0.0,
+                            "interval": 0.5600000023841858,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 10,
+                            "startDelay": 5.0,
+                            "interval": 3.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 5,
+                            "startDelay": 12.0,
+                            "interval": 5.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 3,
+                            "startDelay": 16.0,
+                            "interval": 8.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 4,
+                            "count": 2,
+                            "startDelay": 18.0,
+                            "interval": 10.0,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_10_wave_05",
+                    "preview": "Yağmacı ×84 • Öncü ×12 • Yenilenen ×6 • Şifacı ×4 • Kuşatma ×2",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 84,
+                            "startDelay": 0.0,
+                            "interval": 0.5600000023841858,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 12,
+                            "startDelay": 5.0,
+                            "interval": 3.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 6,
+                            "startDelay": 12.0,
+                            "interval": 5.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 4,
+                            "startDelay": 16.0,
+                            "interval": 8.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 4,
+                            "count": 2,
+                            "startDelay": 18.0,
+                            "interval": 10.0,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_10_wave_06",
+                    "preview": "Yağmacı ×88 • Öncü ×14 • Yenilenen ×7 • Şifacı ×4 • Kuşatma ×2",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 88,
+                            "startDelay": 0.0,
+                            "interval": 0.5600000023841858,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 14,
+                            "startDelay": 5.0,
+                            "interval": 3.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 7,
+                            "startDelay": 12.0,
+                            "interval": 5.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 4,
+                            "startDelay": 16.0,
+                            "interval": 8.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 4,
+                            "count": 2,
+                            "startDelay": 18.0,
+                            "interval": 10.0,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_10_wave_07",
+                    "preview": "Yağmacı ×92 • Öncü ×16 • Yenilenen ×8 • Şifacı ×5 • Kuşatma ×3",
+                    "clearBonus": 25,
+                    "bossWave": false,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 92,
+                            "startDelay": 0.0,
+                            "interval": 0.5600000023841858,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 16,
+                            "startDelay": 5.0,
+                            "interval": 3.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 8,
+                            "startDelay": 12.0,
+                            "interval": 5.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 5,
+                            "startDelay": 16.0,
+                            "interval": 8.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 4,
+                            "count": 3,
+                            "startDelay": 18.0,
+                            "interval": 10.0,
+                            "routeId": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "level_10_wave_08",
+                    "preview": "Yağmacı ×96 • Öncü ×18 • Yenilenen ×9 • Şifacı ×5 • Kuşatma ×3 • Bölge Lordu ×1",
+                    "clearBonus": 25,
+                    "bossWave": true,
+                    "groups": [
+                        {
+                            "enemy": 0,
+                            "count": 96,
+                            "startDelay": 0.0,
+                            "interval": 0.5600000023841858,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 1,
+                            "count": 18,
+                            "startDelay": 5.0,
+                            "interval": 3.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 2,
+                            "count": 9,
+                            "startDelay": 12.0,
+                            "interval": 5.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 3,
+                            "count": 5,
+                            "startDelay": 16.0,
+                            "interval": 8.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 4,
+                            "count": 3,
+                            "startDelay": 18.0,
+                            "interval": 10.0,
+                            "routeId": 0
+                        },
+                        {
+                            "enemy": 5,
+                            "count": 1,
+                            "startDelay": 36.0,
+                            "interval": 1.0,
+                            "routeId": 0
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -50,6 +50,7 @@ namespace AllinDefense.Core
         public bool IsWindingUp => siegeTarget != null && siegeWindup > 0f;
         private bool removed;
         private int bossPhase = 1;
+        private BossEncounterProfile bossProfile;
 
         public EnemyCombatState State { get; private set; } = EnemyCombatState.Spawn;
         public int Reward => stats.reward;
@@ -64,6 +65,7 @@ namespace AllinDefense.Core
         {
             session = owner;
             archetype = type;
+            bossProfile = type == EnemyArchetype.Boss ? owner.BossProfile : null;
             stats = definition;
             path = route;
             targetWaypoint = 1;
@@ -164,7 +166,7 @@ namespace AllinDefense.Core
                             GameSessionController.ActorKind(archetype));
                     }
                     siegeTarget = null;
-                    siegeTimer = archetype == EnemyArchetype.Boss ? 4f : 3f;
+                    siegeTimer = archetype == EnemyArchetype.Boss ? bossProfile.silenceInterval : 3f;
                 }
             }
             else if ((archetype == EnemyArchetype.Siege || archetype == EnemyArchetype.Boss) && siegeTimer <= 0f)
@@ -181,7 +183,7 @@ namespace AllinDefense.Core
 
             if (archetype != EnemyArchetype.Boss) return;
             float fraction = health / (float)Mathf.Max(1, stats.maxHealth);
-            int nextPhase = fraction <= 0.33f ? 3 : fraction <= 0.66f ? 2 : 1;
+            int nextPhase = fraction <= bossProfile.phaseThresholds[1] ? 3 : fraction <= bossProfile.phaseThresholds[0] ? 2 : 1;
             while (bossPhase < nextPhase)
             {
                 bossPhase++;
@@ -204,7 +206,7 @@ namespace AllinDefense.Core
             Vector3 target = path[targetWaypoint];
             Vector3 current = transform.position;
             target.y = current.y;
-            float phaseMultiplier = archetype == EnemyArchetype.Boss && bossPhase == 3 ? 1.44f : 1f;
+            float phaseMultiplier = archetype == EnemyArchetype.Boss && bossPhase == 3 ? bossProfile.phase3SpeedMultiplier : 1f;
             transform.position = Vector3.MoveTowards(current, target,
                 stats.speed * phaseMultiplier * slow.Factor * delta);
 
@@ -271,7 +273,7 @@ namespace AllinDefense.Core
             siegeTarget = null;
             if (siegeWarning != null) siegeWarning.Show(Position,1,false);
             siegeWindup = 0f;
-            siegeTimer = archetype == EnemyArchetype.Boss ? 4f : 3f;
+            siegeTimer = archetype == EnemyArchetype.Boss ? bossProfile.silenceInterval : 3f;
         }
 
         private void CreateHealthBar()

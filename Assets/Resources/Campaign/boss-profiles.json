@@ -1,0 +1,79 @@
+{
+  "profiles": [
+    {
+      "id": "region-lord",
+      "reinforcementEnemy": 0,
+      "reinforcementCount": 6,
+      "reinforcementRoute": "first",
+      "phaseThresholds": [
+        0.66,
+        0.33
+      ],
+      "phase3SpeedMultiplier": 1.44,
+      "silenceInterval": 4,
+      "reinforcementStartDelay": 0.5,
+      "reinforcementInterval": 0.6,
+      "supportCount": 0
+    },
+    {
+      "id": "gate-master",
+      "reinforcementEnemy": 1,
+      "reinforcementCount": 6,
+      "reinforcementRoute": "first",
+      "phaseThresholds": [
+        0.66,
+        0.33
+      ],
+      "phase3SpeedMultiplier": 1.44,
+      "silenceInterval": 4,
+      "reinforcementStartDelay": 0.5,
+      "reinforcementInterval": 0.6,
+      "supportCount": 0
+    },
+    {
+      "id": "frost-sovereign",
+      "reinforcementEnemy": 0,
+      "reinforcementCount": 6,
+      "reinforcementRoute": "first",
+      "phaseThresholds": [
+        0.66,
+        0.33
+      ],
+      "phase3SpeedMultiplier": 1.65,
+      "silenceInterval": 4,
+      "reinforcementStartDelay": 0.5,
+      "reinforcementInterval": 0.3,
+      "supportCount": 0
+    },
+    {
+      "id": "deep-lord",
+      "reinforcementEnemy": 0,
+      "reinforcementCount": 6,
+      "reinforcementRoute": "rotate",
+      "phaseThresholds": [
+        0.66,
+        0.33
+      ],
+      "phase3SpeedMultiplier": 1.44,
+      "silenceInterval": 4,
+      "reinforcementStartDelay": 0.5,
+      "reinforcementInterval": 0.6,
+      "supportCount": 2
+    },
+    {
+      "id": "last-lord",
+      "reinforcementEnemy": 0,
+      "reinforcementCount": 6,
+      "reinforcementRoute": "all",
+      "phaseThresholds": [
+        0.66,
+        0.33
+      ],
+      "phase3SpeedMultiplier": 1.44,
+      "silenceInterval": 4,
+      "reinforcementStartDelay": 0.5,
+      "reinforcementInterval": 0.6,
+      "supportCount": 0
+    }
+  ]
+}
