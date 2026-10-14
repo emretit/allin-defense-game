@@ -106,7 +106,13 @@ namespace AllinDefense.UI
         public static readonly LocalizedCopy ResultWaveLeak = new("Dalga {0}/{1} · {2}", "Wave {0}/{1} · {2}");
         public static readonly LocalizedCopy UnlockedChapter = new("Bölüm {0} açıldı", "Chapter {0} unlocked");
         public static readonly LocalizedCopy NewEnemyHeading = new("YENİ DÜŞMAN", "NEW ENEMY");
+        public static readonly LocalizedCopy EnemyInfoHeading = new("DÜŞMAN BİLGİSİ", "ENEMY INTEL");
         public static readonly LocalizedCopy Understood = new("Anladım", "Got it");
+        public static readonly LocalizedCopy EnemyRaiderName = new("Yağmacı", "Raider");
+        public static readonly LocalizedCopy EnemyVanguardName = new("Öncü", "Vanguard");
+        public static readonly LocalizedCopy EnemySupportName = new("Şifacı", "Healer");
+        public static readonly LocalizedCopy EnemySiegeName = new("Kuşatma", "Siege");
+        public static readonly LocalizedCopy EnemyRegeneratorName = new("Yenilenen", "Regenerator");
         public static readonly LocalizedCopy RaiderTrait = new("Hızlı ve hafif zırhlı.", "Fast and lightly armoured.");
         public static readonly LocalizedCopy VanguardTrait = new("Zırhı ok hasarını azaltır.", "Armour reduces arrow damage.");
         public static readonly LocalizedCopy SupportTrait = new("Yakındaki düşmanları iyileştirir.", "Heals nearby enemies.");
@@ -197,6 +203,8 @@ namespace AllinDefense.UI
         public static readonly LocalizedCopy TutorialThird = new("Üçüncü kıvrıma okçu kur", "Build at the third bend");
         public static readonly LocalizedCopy TutorialUpgrade = new("Bir okçu seç, yükselt", "Select an archer, upgrade it");
         public static readonly LocalizedCopy TutorialDone = new("Hazırsın!", "You are ready!");
+        public static readonly LocalizedCopy ReplayGuide = new("Rehberi tekrar göster", "Show the guide again");
+        public static readonly LocalizedCopy ReplayGuideReady = new("Rehber 1. bölümde, düşman kartları sonraki savaşta tekrar gösterilecek.", "The guide will return in level 1, and enemy cards in your next battle.");
         public static readonly LocalizedCopy TutorialSkip = new("Biliyorum", "I know");
         public static readonly LocalizedCopy Returns = new("{0} dönüyor", "{0} returns");
         public static readonly LocalizedCopy BossApproaching = new("YAKLAŞAN BOSS", "BOSS APPROACHING");

@@ -200,7 +200,7 @@ namespace AllinDefense.UI
             preview.GetComponent<Image>().raycastTarget = false;
             tacticalMapPreview = preview.AddComponent<FrontendTacticalMapPreview>();
             var intelScroll = UiKit.Node(body, "Enemy Intel Scroll");
-            UiKit.Size(intelScroll, height: 84);
+            UiKit.Size(intelScroll, height: 140);
             var intelViewport = UiKit.Node(intelScroll, "Enemy Intel Viewport"); UiKit.Stretch(intelViewport);
             intelViewport.gameObject.AddComponent<Image>().color = UiTokens.Clear;
             intelViewport.gameObject.AddComponent<RectMask2D>();
@@ -524,6 +524,14 @@ namespace AllinDefense.UI
             SettingsSwitch(gameplay, "AZALTILMIŞ HAREKET Row", FrontendCopy.ReducedMotion, FrontendPreferences.ReducedMotion, v => FrontendPreferences.ReducedMotion = v);
             SettingsSwitch(gameplay, "KAMERA SARSINTISI Row", FrontendCopy.CameraShake, FrontendPreferences.CameraShake, v => FrontendPreferences.CameraShake = v);
             SettingsSwitch(gameplay, "TİTREŞİM Row", FrontendCopy.Haptics, FrontendPreferences.Haptics, v => FrontendPreferences.Haptics = v);
+            MenuButton(gameplay, "Replay Guide", FrontendCopy.ReplayGuide, menuKit.Assets.iconRestart, () =>
+            {
+                FrontendPreferences.ResetLearningGuide();
+                (replayGuideStatus.GetComponent<UiKitText>() ?? replayGuideStatus.gameObject.AddComponent<UiKitText>()).Configure(replayGuideStatus, FrontendCopy.ReplayGuideReady);
+            });
+            replayGuideStatus = MenuText(gameplay, "Replay Guide Status", "", 26);
+            replayGuideStatus.textWrappingMode = TextWrappingModes.Normal;
+            UiKit.Size(replayGuideStatus.rectTransform, height: 100);
             var language = menuKit.Card(body, "Language Settings");
             MenuText(language, "Language Heading", FrontendCopy.LanguageGroup, 28, true);
             languageSegments = menuKit.SegmentedControl(language, "Language Segments", new LocalizedCopy[] { "TR", "EN" },
@@ -600,10 +608,22 @@ namespace AllinDefense.UI
             UiKit.Size((RectTransform)control.transform, 300, 140);
             control.GetComponentInChildren<TMP_Text>().fontSize = 28;
         }
+        private TMP_Text replayGuideStatus;
         private UiOverlay newEnemyModal;
+        private bool enemyFromBriefing;
         private EnemyArchetype introducedEnemy;
         private float enemyReturnSpeed;
         private bool enemyOwnsPause;
+
+        private LocalizedCopy EnemyNameCopy(EnemyArchetype enemy) => enemy switch
+        {
+            EnemyArchetype.Vanguard => FrontendCopy.EnemyVanguardName,
+            EnemyArchetype.Support => FrontendCopy.EnemySupportName,
+            EnemyArchetype.Siege => FrontendCopy.EnemySiegeName,
+            EnemyArchetype.Regenerator => FrontendCopy.EnemyRegeneratorName,
+            EnemyArchetype.Boss => FrontendCopy.BossName,
+            _ => FrontendCopy.EnemyRaiderName
+        };
 
         private Sprite EnemyIcon(EnemyArchetype enemy) => enemy switch
         {
@@ -638,28 +658,46 @@ namespace AllinDefense.UI
                 enemyReturnSpeed = Time.timeScale;
                 enemyOwnsPause = session.Phase != GamePhase.Paused;
                 if (enemyOwnsPause) session.TogglePause();
-                newEnemyModal = menuKit.Modal(canvas.transform, "New Enemy", FrontendCopy.NewEnemyHeading);
-                newEnemyModal.DismissOnScrim = false;
-                var card = (RectTransform)newEnemyModal.Body.parent;
-                UiKit.Size(card, 1100);
-                var close = card.Find("New Enemy.Close"); close.gameObject.SetActive(false);
-                menuKit.Icon(newEnemyModal.Body, "New Enemy Icon", EnemyIcon(enemy), 96);
-                MenuText(newEnemyModal.Body, "New Enemy Name", FirstRegionCampaign.EnemyName(enemy), 42, true);
-                MenuText(newEnemyModal.Body, "New Enemy Trait", EnemyTrait(enemy), 28);
-                MenuText(newEnemyModal.Body, "New Enemy Tactic", DefenceAdvice(enemy), 28);
-                MenuButton(newEnemyModal.Body, "Acknowledge Enemy", FrontendCopy.Understood, null, AcknowledgeEnemy, true);
-                newEnemyModal.Show();
+                enemyFromBriefing = false;
+                BuildEnemyCard(enemy);
                 return true;
             }
             return false;
         }
 
+        private void ShowBriefingEnemy(EnemyArchetype enemy)
+        {
+            if (newEnemyModal != null || CurrentScreen != AppScreen.Campaign) return;
+            enemyFromBriefing = true;
+            enemyOwnsPause = false;
+            introducedEnemy = enemy;
+            BuildEnemyCard(enemy);
+        }
+
+        private void BuildEnemyCard(EnemyArchetype enemy)
+        {
+            newEnemyModal = menuKit.Modal(canvas.transform, "New Enemy", enemyFromBriefing ? FrontendCopy.EnemyInfoHeading : FrontendCopy.NewEnemyHeading);
+            newEnemyModal.DismissOnScrim = false;
+            var card = (RectTransform)newEnemyModal.Body.parent;
+            UiKit.Size(card, 1000);
+            var close = card.Find("New Enemy.Close"); close.gameObject.SetActive(false);
+            menuKit.Icon(newEnemyModal.Body, "New Enemy Icon", EnemyIcon(enemy), 96);
+            MenuText(newEnemyModal.Body, "New Enemy Name", EnemyNameCopy(enemy), 42, true);
+            MenuText(newEnemyModal.Body, "New Enemy Trait", EnemyTrait(enemy), 28);
+            var tactic = MenuText(newEnemyModal.Body, "New Enemy Tactic", DefenceAdvice(enemy), 28);
+            tactic.textWrappingMode = TextWrappingModes.Normal;
+            UiKit.Size(tactic.rectTransform, height: 120);
+            MenuButton(newEnemyModal.Body, "Acknowledge Enemy", FrontendCopy.Understood, null, AcknowledgeEnemy, true);
+            newEnemyModal.Show();
+        }
+
         private void AcknowledgeEnemy()
         {
             if (newEnemyModal == null) return;
-            FrontendPreferences.MarkEnemySeen(introducedEnemy);
+            if (!enemyFromBriefing) FrontendPreferences.MarkEnemySeen(introducedEnemy);
             var modal = newEnemyModal; newEnemyModal = null;
             modal.Hide(() => Destroy(modal.gameObject));
+            if (enemyFromBriefing) { enemyFromBriefing = false; return; }
             if (enemyOwnsPause && session.Phase == GamePhase.Paused)
             {
                 session.TogglePause();

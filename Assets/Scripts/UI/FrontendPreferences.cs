@@ -57,6 +57,20 @@ namespace AllinDefense.UI
         public static void MarkEnemySeen(AllinDefense.Data.EnemyArchetype enemy) =>
             SetBool(Prefix + "EnemySeen." + enemy, true);
 
+        public static bool ReplayFirstBattleGuide
+        {
+            get => GetBool(Prefix + "ReplayFirstBattleGuide", false);
+            set => SetBool(Prefix + "ReplayFirstBattleGuide", value);
+        }
+
+        public static void ResetLearningGuide()
+        {
+            PlayerPrefs.SetInt(Prefix + "ReplayFirstBattleGuide", 1);
+            foreach (AllinDefense.Data.EnemyArchetype enemy in Enum.GetValues(typeof(AllinDefense.Data.EnemyArchetype)))
+                PlayerPrefs.DeleteKey(Prefix + "EnemySeen." + enemy);
+            PlayerPrefs.Save();
+        }
+
         private static bool GetBool(string key, bool fallback) => PlayerPrefs.GetInt(key, fallback ? 1 : 0) != 0;
 
         private static void SetBool(string key, bool value)

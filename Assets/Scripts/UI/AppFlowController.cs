@@ -495,7 +495,14 @@ namespace AllinDefense.UI
             foreach (Transform chip in enemyChips) { chip.gameObject.SetActive(false); Destroy(chip.gameObject); }
             foreach (var group in CampaignLevelFactory.Create(definition.number).waves.SelectMany(w => w.groups).GroupBy(g => g.enemy))
             {
-                var chip = menuKit.Surface(enemyChips, "Enemy Chip " + group.Key, UiTokens.RadiusPill, false);
+                var enemy = group.Key;
+                var chip = menuKit.Surface(enemyChips, "Enemy Chip " + enemy, UiTokens.RadiusPill, false);
+                var button = chip.gameObject.AddComponent<Button>();
+                button.targetGraphic = chip.GetComponent<Image>();
+                button.onClick.AddListener(() => ShowBriefingEnemy(enemy));
+                chip.gameObject.AddComponent<UiAccessibleButton>().Configure(new LocalizedCopy(
+                    EnemyNameCopy(enemy).Turkish, EnemyNameCopy(enemy).English));
+                chip.gameObject.AddComponent<UiPointSize>().Configure(UiMetrics.MinTouchPt);
                 chip.GetComponent<HorizontalLayoutGroup>().padding = new RectOffset(12, 12, 6, 6);
                 menuKit.Icon(chip, "Enemy Icon " + group.Key, EnemyIcon(group.Key), 44);
                 MenuText(chip, "Enemy Count " + group.Key, $"{FirstRegionCampaign.EnemyName(group.Key)} ×{group.Sum(g => g.count)}", 24);
