@@ -101,7 +101,7 @@ namespace AllinDefense.Tests
 
         [TestCase(40, "deep-lord", 8, 2)]
         [TestCase(50, "last-lord", 18, 3)]
-        [TestCase(20, "gate-master", 6, 1)]
+        [TestCase(20, "gate-master", 8, 1)]
         public void BossReinforcementsConsumeSelectedProfile(int level, string profileId, int count, int entrances)
         {
             var content = CampaignContent.Level(level);

@@ -263,7 +263,7 @@ namespace AllinDefense.Tests
                     var bodyCorners = new Vector3[4]; overlay.Body.GetWorldCorners(bodyCorners);
                     foreach (Vector3 corner in bodyCorners)
                         Assert.That(card.rect.Contains(card.InverseTransformPoint(corner)), Is.True, "Animated briefing stays inside its card.");
-                    Assert.That(UiQuery.FindById(flow, "Region Tabs").gameObject.activeSelf, Is.False);
+                    Assert.That(UiQuery.FindById(flow, "Region Tabs").gameObject.activeSelf, Is.True);
                     Assert.That(UiQuery.FindById(flow, "Level 2/Lock").gameObject.activeSelf, Is.True);
                     Assert.That(UiQuery.FindById(flow, "Level 1/Selection Ring").gameObject.activeSelf, Is.True);
                     Assert.That(UiQuery.FindById(flow, "Level Stars 1").GetComponent<AllinDefense.UI.Kit.UiStarRow>(), Is.Not.Null);

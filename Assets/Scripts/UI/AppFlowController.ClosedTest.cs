@@ -8,15 +8,16 @@ namespace AllinDefense.UI
 {
     public sealed partial class AppFlowController
     {
-        // The closed test exposes only the first region; storage still keeps the full campaign.
+        // Released builds expose only the balanced regions; storage still keeps the full campaign.
+        private const int ReleasedRegionCount = 2;
         private static int VisibleRegionCount
         {
             get
             {
 #if UNITY_EDITOR || UNITY_INCLUDE_TESTS
-                return visibleRegionCountForTests ?? 1;
+                return visibleRegionCountForTests ?? ReleasedRegionCount;
 #else
-                return 1;
+                return ReleasedRegionCount;
 #endif
             }
         }
