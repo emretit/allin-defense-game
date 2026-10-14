@@ -21,7 +21,7 @@ namespace AllinDefense.UI
         {
             var button = menuKit.Button(parent, id, copy, UiButtonVariant.Danger, clicked: () => MenuClick(action));
             button.GetComponentInChildren<TMP_Text>().fontSize = 30;
-            button.gameObject.AddComponent<UiAccessibleButton>().Configure(copy);
+            button.GetComponent<UiAccessibleButton>().Configure(copy);
             UiKit.Size((RectTransform)button.transform, height: TouchHeight, flex: 1);
             return button;
         }
@@ -42,7 +42,7 @@ namespace AllinDefense.UI
             hint.textWrappingMode = TextWrappingModes.Normal;
             UiKit.Size(hint.rectTransform, height: 180);
             var cancel = MenuButton(card, "Cancel Account Deletion", FrontendCopy.DeleteAccountCancel, null, CloseAccountDeletion, true);
-            cancel.gameObject.AddComponent<UiAccessibleButton>().Configure(FrontendCopy.DeleteAccountCancel);
+            cancel.GetComponent<UiAccessibleButton>().Configure(FrontendCopy.DeleteAccountCancel);
             AccountDeleteButton(card, "Confirm Account Deletion Button", FrontendCopy.DeleteAccountConfirm, () => _ = DeleteAccountConfirmedAsync());
             if (EventSystem.current != null) EventSystem.current.SetSelectedGameObject(cancel.gameObject);
             foreach (var button in screens[AppScreen.Login].GetComponentsInChildren<Button>(true)) button.interactable = false;

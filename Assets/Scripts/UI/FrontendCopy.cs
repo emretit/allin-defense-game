@@ -32,6 +32,18 @@ namespace AllinDefense.UI
     /// </summary>
     public static class FrontendCopy
     {
+        public static readonly LocalizedCopy AccessiblePercent = new("yüzde {0}", "{0} percent");
+        public static readonly LocalizedCopy AccessibleSelected = new("Seçili", "Selected");
+        public static readonly LocalizedCopy AccessibleOptions = new("Seçenekler", "Options");
+        public static readonly LocalizedCopy AccessibleSlider = new("Ses düzeyi", "Volume");
+        public static readonly LocalizedCopy AccessibleSwitch = new("Ses anahtarı", "Audio switch");
+        public static readonly LocalizedCopy AccessibleBack = new("Geri", "Back");
+        public static readonly LocalizedCopy AccessibleClose = new("Kapat", "Close");
+        public static readonly LocalizedCopy AccessibleLanguageTurkish = new("Türkçe", "Turkish");
+        public static readonly LocalizedCopy AccessibleLanguageEnglish = new("İngilizce", "English");
+        public static readonly LocalizedCopy AccessibleRegion = new("Bölge {0}, {1}", "Region {0}, {1}");
+        public static readonly LocalizedCopy AccessibleLevel = new("Bölüm {0}, {1}, {2} yıldız", "Level {0}, {1}, {2} stars");
+        public static readonly LocalizedCopy AccessibleLockedLevel = new("Bölüm {0}, {1}, kilitli", "Level {0}, {1}, locked");
         public static readonly LocalizedCopy ContinueWithApple = new("Apple ile devam et", "Continue with Apple");
         public static readonly LocalizedCopy ContinueWithGoogle = new("Google ile devam et", "Continue with Google");
         public static readonly LocalizedCopy LinkWithApple = new("Apple ile bağla", "Link with Apple");

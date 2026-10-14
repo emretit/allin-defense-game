@@ -17,11 +17,13 @@ namespace AllinDefense.UI
             heroNameModal = new GameObject("Hero Name Modal", typeof(RectTransform));
             heroNameModal.transform.SetParent(canvas.transform, false);
             Stretch(heroNameModal.GetComponent<RectTransform>());
+            heroNameModal.AddComponent<AllinDefense.UI.Kit.UiAccessibleButton>().ConfigureModalScope();
             var scrim = CreateImage("Hero Name Scrim", heroNameModal.transform, UiTokens.HeroNameScrim);
             Stretch(scrim.GetComponent<RectTransform>());
             var scrimImage = scrim.GetComponent<UnityEngine.UI.Image>();
             scrimImage.raycastTarget = true;
             var dismiss = scrim.AddComponent<UnityEngine.UI.Button>();
+            scrim.AddComponent<AllinDefense.UI.Kit.UiAccessibleButton>().Configure(FrontendCopy.AccessibleClose);
             dismiss.targetGraphic = scrimImage;
             dismiss.transition = UnityEngine.UI.Selectable.Transition.None;
             dismiss.onClick.AddListener(HideHeroName);
@@ -145,6 +147,7 @@ namespace AllinDefense.UI
 
         private void LateUpdate()
         {
+            RefreshDeletionAccessibilityScope();
             if (heroNameModal == null || !heroNameModal.activeSelf) return;
             var safe = Screen.safeArea;
             float bottom = TouchScreenKeyboard.visible ? Mathf.Max(safe.yMin, TouchScreenKeyboard.area.yMax) : safe.yMin;

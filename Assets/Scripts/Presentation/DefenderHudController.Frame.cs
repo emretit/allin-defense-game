@@ -37,7 +37,19 @@ namespace AllinDefense.Presentation
             pauseMainMenuButton = pauseModal.Body.Find("MainMenu").GetComponent<Button>();
             musicSwitch = pauseModal.Body.Find("MusicRow/MusicSwitch").GetComponent<UiSwitch>();
             effectsSwitch = pauseModal.Body.Find("EffectsRow/EffectsSwitch").GetComponent<UiSwitch>();
+            AccessiblePauseControl(pauseResumeButton, FrontendCopy.HudContinue);
+            AccessiblePauseControl(pauseMainMenuButton, FrontendCopy.ReturnToMap);
+            AccessiblePauseControl(pauseModal.Body.Find("PauseRestart"), FrontendCopy.PauseRestart);
+            AccessiblePauseControl(musicSwitch, FrontendCopy.Music);
+            AccessiblePauseControl(effectsSwitch, FrontendCopy.Effects);
+            AccessiblePauseControl(mapConfirmation.Body.Find("ConfirmMap"), FrontendCopy.ReturnToMap);
+            AccessiblePauseControl(mapConfirmation.Body.Find("KeepPlaying"), FrontendCopy.Cancel);
+            foreach (var modal in new[] { pauseModal, mapConfirmation })
+                (modal.GetComponent<UiAccessibleButton>() ?? modal.gameObject.AddComponent<UiAccessibleButton>()).ConfigureModalScope();
         }
+
+        private static void AccessiblePauseControl(Component control, LocalizedCopy copy) =>
+            (control.GetComponent<UiAccessibleButton>() ?? control.gameObject.AddComponent<UiAccessibleButton>()).Configure(copy);
 
         private void InitializeFrame(DefenderPresentationCatalog catalog, Action map, Action restart, Action click)
         {

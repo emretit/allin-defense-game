@@ -377,13 +377,13 @@ namespace AllinDefense.UI
             var actions = MenuStack(card, "Result Actions", false);
             resultRetryIcon = menuKit.IconButton(actions, "Victory Retry", menuKit.Assets.iconRestart,
                 () => MenuClick(() => ReloadCampaignLevel(session.CampaignLevelNumber)));
-            resultRetryIcon.gameObject.AddComponent<UiAccessibleButton>().Configure(FrontendCopy.TryAgain);
+            resultRetryIcon.GetComponent<UiAccessibleButton>().Configure(FrontendCopy.TryAgain);
             retryButton = MenuButton(actions, "Retry Level", FrontendCopy.TryAgain, null,
                 () => ReloadCampaignLevel(session.CampaignLevelNumber), true);
             nextLevelButton = MenuButton(actions, "Next Level", FrontendCopy.NextLevel, menuKit.Assets.iconPlay,
                 () => ReloadCampaignLevel(session.CampaignLevelNumber + 1), true);
             resultMapIcon = menuKit.IconButton(actions, "Victory Map", menuKit.Assets.iconMap, () => MenuClick(OpenCampaign));
-            resultMapIcon.gameObject.AddComponent<UiAccessibleButton>().Configure(FrontendCopy.ReturnToMap);
+            resultMapIcon.GetComponent<UiAccessibleButton>().Configure(FrontendCopy.ReturnToMap);
             foreach (var button in new[] { resultRetryIcon, resultMapIcon }) UiKit.Size((RectTransform)button.transform, 160, 160);
             resultMapText = PlainTextButton(card, "Return To Map", FrontendCopy.ReturnToMap, OpenCampaign);
             resultAccountSuggestion = menuKit.Surface(card, "Result Account Suggestion", UiTokens.RadiusMedium, false);
@@ -563,7 +563,13 @@ namespace AllinDefense.UI
                 label.text = level.ToString();
                 label.gameObject.SetActive(unlocked);
                 levelLocks[index].gameObject.SetActive(!unlocked);
-                levelStars[index].SetStars(levelProgress?.stars ?? 0, false);
+                int stars = levelProgress?.stars ?? 0;
+                levelStars[index].SetStars(stars, false);
+                var details = CampaignCatalog.Level(level);
+                var copy = unlocked ? FrontendCopy.AccessibleLevel : FrontendCopy.AccessibleLockedLevel;
+                button.GetComponent<UiAccessibleButton>().Configure(new LocalizedCopy(
+                    string.Format(copy.Turkish, level, details.displayName, stars),
+                    string.Format(copy.English, level, GameLocalization.EnglishText(details.displayName), stars)));
                 Transform selectionRing = button.transform.Find("Selection Ring");
                 if (selectionRing != null) selectionRing.gameObject.SetActive(unlocked && selected);
             }
@@ -584,6 +590,10 @@ namespace AllinDefense.UI
             {
                 SetButtonEmphasis(regionTabs[i], i == navigationState.Region ? theme.commandGold : theme.defenderBlue);
                 regionTabLocks[i].gameObject.SetActive(!IsRegionUnlocked(i + 1));
+                var region = CampaignCatalog.Regions[i];
+                regionTabs[i].GetComponent<UiAccessibleButton>().Configure(new LocalizedCopy(
+                    string.Format(FrontendCopy.AccessibleRegion.Turkish, region.number, region.displayName),
+                    string.Format(FrontendCopy.AccessibleRegion.English, region.number, GameLocalization.EnglishText(region.displayName))));
             }
         }
 
@@ -875,11 +885,15 @@ namespace AllinDefense.UI
             if (settingsModal == null) BuildSettingsModal();
             UiId.AssignHierarchy(settingsModal.transform);
             RefreshLanguageButtons();
-            if (settingsAccount != null) settingsAccount.GetComponentInChildren<UiKitText>().Configure(settingsAccount.GetComponentInChildren<TMP_Text>(),
-                progress.Data.authProvider is PlayerAuthProvider.Guest or PlayerAuthProvider.None
+            if (settingsAccount != null)
+            {
+                var copy = progress.Data.authProvider is PlayerAuthProvider.Guest or PlayerAuthProvider.None
                     ? FrontendCopy.GuestLinkAccount : new LocalizedCopy(
                         string.Format(FrontendCopy.LinkedAccountRow.Turkish, progress.Data.displayName),
-                        string.Format(FrontendCopy.LinkedAccountRow.English, progress.Data.displayName)));
+                        string.Format(FrontendCopy.LinkedAccountRow.English, progress.Data.displayName));
+                settingsAccount.GetComponentInChildren<UiKitText>().Configure(settingsAccount.GetComponentInChildren<TMP_Text>(), copy);
+                settingsAccount.GetComponent<UiAccessibleButton>().Configure(copy);
+            }
             navigation.Cancel();
             settingsFade?.Cancel();
             PlayFrontendCue(null, PresentationCue.UiClick);
@@ -1211,6 +1225,7 @@ namespace AllinDefense.UI
         private void CreateHeader(Transform root, LocalizedCopy title, LocalizedCopy subtitle, Action back)
         {
             Button backButton = CreateButton("Back", root, "‹", new Vector2(140f, 140f), theme.night, back);
+            backButton.GetComponent<UiAccessibleButton>().Configure(FrontendCopy.AccessibleBack);
             SetRect(backButton.GetComponent<RectTransform>(), new Vector2(44f, -12f), new Vector2(140f, 140f), TopLeft(), TopLeft());
             TextMeshProUGUI heading = CreateText("Heading", root, title, UiTokens.TypeHeading, catalog.titleFont, FontStyles.Bold,
                 TextAlignmentOptions.Left, theme.textPrimary);
@@ -1230,6 +1245,7 @@ namespace AllinDefense.UI
             image.type = image.sprite != null ? Image.Type.Sliced : Image.Type.Simple;
             image.raycastTarget = true;
             Button button = root.AddComponent<Button>();
+            root.AddComponent<UiAccessibleButton>().Configure(label);
             button.targetGraphic = image;
             ColorBlock colors = button.colors;
             colors.highlightedColor = Color.Lerp(color, Color.white, 0.14f);
@@ -1439,6 +1455,12 @@ namespace AllinDefense.UI
             rect.anchorMax = Vector2.one;
             rect.offsetMin = offsetMin;
             rect.offsetMax = offsetMax;
+        }
+
+        private void RefreshDeletionAccessibilityScope()
+        {
+            if (deleteAccountModal != null && deleteAccountModal.GetComponent<UiAccessibleButton>() == null)
+                deleteAccountModal.AddComponent<UiAccessibleButton>().ConfigureModalScope();
         }
 
         private void OnDestroy()

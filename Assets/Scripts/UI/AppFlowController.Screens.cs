@@ -94,6 +94,7 @@ namespace AllinDefense.UI
             menuKit.Icon(profileScore, "Profile Star Icon", menuKit.Assets.iconStarFilled, 32);
             profileStars = MenuText(profileScore, "Profile Star Count", FrontendCopy.StarCount.Format(0, PlayableLevelCount * 3), 26);
             var profileButton = profile.gameObject.AddComponent<Button>();
+            profile.gameObject.AddComponent<UiAccessibleButton>().Configure(FrontendCopy.ProtectProgress);
             profileButton.targetGraphic = profile.GetComponent<UiVisualState>().Surface;
             profileButton.onClick.AddListener(() => MenuClick(() => ShowScreen(AppScreen.Login)));
             profile.gameObject.AddComponent<UiPointSize>().Configure(UiMetrics.MinTouchPt);
@@ -101,6 +102,7 @@ namespace AllinDefense.UI
             saveErrorIcon.color = UiTokens.Moon;
             var profileSpace = UiKit.Node(top, "Profile Space"); UiKit.Size(profileSpace, flex: 1);
             var settings = menuKit.IconButton(top, "Settings", menuKit.Assets.iconSettings, () => MenuClick(OpenSettings));
+            settings.GetComponent<UiAccessibleButton>().Configure(FrontendCopy.SettingsTitle);
             UiKit.Size((RectTransform)settings.transform, 140, 140);
             var brand = CreateBrandImage("Brand Logo", stack, theme.brandLogo);
             UiKit.Size((RectTransform)brand.transform, height: 360);
@@ -142,6 +144,7 @@ namespace AllinDefense.UI
             UiKit.Stretch(stack);
             var header = MenuStack(stack, "Map Header", false);
             var back = menuKit.IconButton(header, "Back", menuKit.Assets.iconBack, () => MenuClick(() => ShowScreen(AppScreen.MainMenu)));
+            back.GetComponent<UiAccessibleButton>().Configure(FrontendCopy.AccessibleBack);
             UiKit.Size((RectTransform)back.transform, 140, 140);
             UiKit.Size(MenuText(header, "Map Title", FrontendCopy.RealmMap, 40, true).rectTransform, flex: 1);
             var tabs = MenuStack(stack, "Region Tabs", false);
@@ -395,6 +398,7 @@ namespace AllinDefense.UI
             title.textWrappingMode = TextWrappingModes.Normal;
             title.enableAutoSizing = true; title.fontSizeMin = 28; title.fontSizeMax = 40;
             var close = menuKit.IconButton(header, "Back", menuKit.Assets.iconClose, ReturnFromAccount);
+            close.GetComponent<UiAccessibleButton>().Configure(FrontendCopy.AccessibleClose);
             UiKit.Size((RectTransform)close.transform, 140, 140);
             accountIdentity = MenuText(card, "Account Identity", "", 30);
             var explanation = MenuText(card, "Account Explanation", FrontendCopy.AccountDescription, 30);
@@ -469,6 +473,7 @@ namespace AllinDefense.UI
             UiKit.Size(rect, height: 140, flex: 1);
             var label = MenuText(rect, id + " Label", copy, 28);
             UiKit.Stretch(label.rectTransform); label.alignment = TextAlignmentOptions.Center;
+            rect.gameObject.AddComponent<UiAccessibleButton>().Configure(copy);
             button.onClick.AddListener(() => MenuClick(action));
             return button;
         }
@@ -489,11 +494,13 @@ namespace AllinDefense.UI
             menuKit ??= new UiKit(theme.designSystem);
             settingsModal = UiKit.Node(canvas.transform, "Settings Modal").gameObject;
             UiKit.Stretch((RectTransform)settingsModal.transform);
+            settingsModal.AddComponent<UiAccessibleButton>().ConfigureModalScope();
             settingsGroup = settingsModal.AddComponent<CanvasGroup>();
             var scrim = CreateImage("Settings Scrim", settingsModal.transform, UiTokens.SettingsScrim);
             Stretch((RectTransform)scrim.transform);
             scrim.GetComponent<Image>().raycastTarget = true;
             scrim.AddComponent<Button>().onClick.AddListener(CloseSettings);
+            scrim.AddComponent<UiAccessibleButton>().Configure(FrontendCopy.AccessibleClose);
             var card = menuKit.Card(settingsModal.transform, "Settings Chronicle");
             settingsModal.AddComponent<FrontendResponsiveLayout>().Configure(size =>
                 SetRect(card, Vector2.zero, new Vector2(size.x - Edge * 2, Mathf.Min(size.y - 60, 1550)), Center(), Center()));
@@ -501,6 +508,7 @@ namespace AllinDefense.UI
             var title = MenuText(header, "Settings Title", FrontendCopy.SettingsTitle, 44, true);
             UiKit.Size(title.rectTransform, flex: 1);
             var close = menuKit.IconButton(header, "Close Settings", menuKit.Assets.iconClose, CloseSettings);
+            close.GetComponent<UiAccessibleButton>().Configure(FrontendCopy.AccessibleClose);
             UiKit.Size((RectTransform)close.transform, 140, 140);
             var scrollRoot = UiKit.Node(card, "Settings Scroll");
             UiKit.Size(scrollRoot).flexibleHeight = 1;
@@ -538,6 +546,9 @@ namespace AllinDefense.UI
                 FrontendPreferences.Language == GameLanguage.Turkish ? 0 : 1);
             var buttons = languageSegments.GetComponentsInChildren<Button>();
             turkishLanguageButton = buttons[0]; englishLanguageButton = buttons[1];
+            languageSegments.GetComponent<UiAccessibleButton>().Configure(FrontendCopy.LanguageGroup);
+            turkishLanguageButton.GetComponent<UiAccessibleButton>().Configure(FrontendCopy.AccessibleLanguageTurkish);
+            englishLanguageButton.GetComponent<UiAccessibleButton>().Configure(FrontendCopy.AccessibleLanguageEnglish);
             UiId.Assign(turkishLanguageButton.transform, "Turkish Language");
             UiId.Assign(englishLanguageButton.transform, "English Language");
             foreach (var button in buttons)
@@ -559,6 +570,7 @@ namespace AllinDefense.UI
             var label = MenuText(row, "Label", copy, 30, true);
             UiKit.Size(label.rectTransform, width: 230);
             var slider = menuKit.Slider(row, "Slider", icon, value, changed);
+            slider.GetComponent<UiAccessibleButton>().Configure(copy);
             UiKit.Size((RectTransform)slider.transform, height: 140, flex: 1);
             slider.handleRect.sizeDelta = new Vector2(54, 54);
             slider.GetComponent<HorizontalLayoutGroup>().padding.right = 40;
@@ -605,6 +617,7 @@ namespace AllinDefense.UI
             var label = MenuText(row, "Label", copy, 30, true);
             UiKit.Size(label.rectTransform, flex: 1);
             var control = menuKit.Switch(row, "Switch", value, changed);
+            control.GetComponent<UiAccessibleButton>().Configure(copy);
             UiKit.Size((RectTransform)control.transform, 300, 140);
             control.GetComponentInChildren<TMP_Text>().fontSize = 28;
         }

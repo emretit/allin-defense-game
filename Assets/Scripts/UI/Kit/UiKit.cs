@@ -131,6 +131,7 @@ namespace AllinDefense.UI.Kit
             var root = Node(parent, id);
             var button = root.gameObject.AddComponent<UnityEngine.UI.Button>();
             button.transition = Selectable.Transition.None;
+            root.gameObject.AddComponent<UiAccessibleButton>().Configure(copy);
             var pointSize = root.gameObject.AddComponent<UiPointSize>();
             pointSize.Configure(variant == UiButtonVariant.Gold ? UiMetrics.PrimaryCtaPt : UiMetrics.MinTouchPt);
             var content = Node(root, id + ".Content");
@@ -194,6 +195,7 @@ namespace AllinDefense.UI.Kit
             var button = Button(parent, id, FrontendCopy.SwitchOff, UiButtonVariant.Glass, Assets.iconClose);
             var control = button.gameObject.AddComponent<UiSwitch>();
             control.Configure(button, button.GetComponentInChildren<TMP_Text>(), Assets, value);
+            button.GetComponent<UiAccessibleButton>().Configure(FrontendCopy.AccessibleSwitch);
             if (changed != null) control.Changed += changed;
             return control;
         }
@@ -216,6 +218,7 @@ namespace AllinDefense.UI.Kit
             slider.fillRect = fill.rectTransform; slider.handleRect = thumb.rectTransform;
             slider.targetGraphic = thumb; slider.transition = Selectable.Transition.None;
             slider.value = Mathf.Clamp01(value);
+            root.gameObject.AddComponent<UiAccessibleButton>().Configure(FrontendCopy.AccessibleSlider);
             root.GetComponent<UiVisualState>().BindContent(null, glyph);
             if (changed != null) slider.onValueChanged.AddListener(v => changed(v));
             return slider;
@@ -228,6 +231,7 @@ namespace AllinDefense.UI.Kit
             var buttons = new UnityEngine.UI.Button[labels.Length];
             for (int i = 0; i < labels.Length; i++) buttons[i] = Button(root, id + "." + i, labels[i]);
             var control = root.gameObject.AddComponent<UiSegmentedControl>(); control.Configure(buttons, selected);
+            root.gameObject.AddComponent<UiAccessibleButton>().Configure(FrontendCopy.AccessibleOptions);
             return control;
         }
 
@@ -283,6 +287,7 @@ namespace AllinDefense.UI.Kit
         private UiOverlay Overlay(Transform parent, string id, LocalizedCopy title, bool bottom)
         {
             var root = Node(parent, id); Stretch(root);
+            if (!bottom) root.gameObject.AddComponent<UiAccessibleButton>().ConfigureModalScope();
             var scrim = root.gameObject.AddComponent<Image>(); scrim.color = UiTokens.SettingsScrim;
             var group = root.gameObject.AddComponent<CanvasGroup>();
             var layout = root.gameObject.AddComponent<VerticalLayoutGroup>();
