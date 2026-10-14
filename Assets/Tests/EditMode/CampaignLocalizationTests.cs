@@ -49,7 +49,7 @@ namespace AllinDefense.Tests
             Assert.That(CampaignCatalog.Regions[2].subtitle, Is.EqualTo("Hız ve zamanlama"));
         }
 
-        private const int RegionsWithChapterObjectives = 4;
+        private const int RegionsWithChapterObjectives = 5;
 
         [TestCase(GameLanguage.Turkish, 45)]
         [TestCase(GameLanguage.English, 50)]

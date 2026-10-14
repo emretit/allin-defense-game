@@ -100,7 +100,7 @@ namespace AllinDefense.Tests
         }
 
         [UnityTest]
-        public IEnumerator ProductionLimitShowsComingSoonAndHundredTwentyStars()
+        public IEnumerator ProductionReleasesAllFiveRegionsAndHundredFiftyStars()
         {
             Object.Destroy(flow.gameObject);
             Object.Destroy(session.gameObject);
@@ -114,14 +114,12 @@ namespace AllinDefense.Tests
             Call(flow, "ShowScreen", AppScreen.MainMenu);
             flow.Progress.Data.levels.Add(new CampaignLevelProgress { level = 50, stars = 3 });
             Win(40);
-            Assert.That(Text("Completion Next"), Is.EqualTo(FrontendCopy.RegionsComingSoon.Value));
-            Assert.That(Find<Button>("Completion Continue").gameObject.activeSelf, Is.False);
-            Assert.That(Find<RectTransform>("Unlocked Chapter").gameObject.activeSelf, Is.False);
-            Assert.That(Text("Profile Star Count"), Is.EqualTo("1/120"));
+            Assert.That(Text("Completion Next"), Is.EqualTo(FrontendCopy.NextRegion.Format(CampaignCatalog.Regions[4].localizedName)));
+            Assert.That(Find<Button>("Completion Continue").gameObject.activeSelf, Is.True);
+            Assert.That(Text("Profile Star Count"), Is.EqualTo("4/150"));
             Call(flow, "OpenCampaign");
             yield return new WaitForSecondsRealtime(.25f);
-            Assert.That(Find<Button>("Level 41"), Is.Null);
-            Assert.That(flow.GetComponentInChildren<FrontendCampaignPager>(true).PageCount, Is.EqualTo(4));
+            Assert.That(flow.GetComponentInChildren<FrontendCampaignPager>(true).PageCount, Is.EqualTo(5));
         }
 
         [UnityTest]
@@ -185,7 +183,7 @@ namespace AllinDefense.Tests
         }
 
         [UnityTest]
-        public IEnumerator LateObjectivesUseRegionSubtitleAndNamedBossWithoutTextOverflow()
+        public IEnumerator LateObjectivesUseChapterObjectiveAndNamedBossWithoutTextOverflow()
         {
             flow.Progress.Data.unlockedLevel = 50;
             for (int region = 1; region < 5; region++)
@@ -196,7 +194,7 @@ namespace AllinDefense.Tests
             {
                 GameLocalization.SetLanguage(current);
                 Call(flow, "SelectLevel", 41);
-                Assert.That(Text("Briefing Reward"), Does.Contain(GameLocalization.Translate(CampaignCatalog.Regions[4].subtitle)));
+                Assert.That(Text("Briefing Reward"), Does.Contain(FrontendCopy.ObjectiveAllLessons.Value));
                 Call(flow, "SelectLevel", 40);
                 Assert.That(Text("Briefing Reward"), Does.Contain(CampaignCatalog.Level(40).localizedName));
                 Win(40);
