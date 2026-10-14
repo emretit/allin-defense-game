@@ -424,6 +424,11 @@ namespace AllinDefense.UI
 
         private void ContinueCampaign()
         {
+            if (GameSessionController.IsValidCheckpoint(progress, progress.Data.checkpoint))
+            {
+                LaunchCampaignLevel(progress.Data.checkpoint.level);
+                return;
+            }
             if (IsFirstDefence())
             {
                 OpenCampaign();
@@ -637,11 +642,12 @@ namespace AllinDefense.UI
             resultStarRow.gameObject.SetActive(victory);
             resultAdvice.gameObject.SetActive(!victory);
             resultAdviceText.text = DefenceAdvice(session.MostDamagingLeak);
-            resultLeakIcon.sprite = victory ? catalog.goldIcon : EnemyIcon(session.MostDamagingLeak);
-            resultReward.text = victory ? $"+{reward.Valor} · {FrontendCopy.ResultStars.Format(stars)}"
+            resultLeakIcon.gameObject.SetActive(!victory);
+            resultLeakIcon.sprite = victory ? null : EnemyIcon(session.MostDamagingLeak);
+            resultReward.text = victory ? FrontendCopy.ResultStars.Format(stars)
                 : FrontendCopy.ResultWaveLeak.Format(session.CurrentWaveIndex + 1, session.WaveCount,
                     FirstRegionCampaign.EnemyName(session.MostDamagingLeak));
-            bool newlyUnlocked = victory && (progress.Data.unlockedLevel > knownUnlockedLevel ||
+            bool newlyUnlocked = victory && progress.Data.unlockedLevel <= MaxPlayableLevel && (progress.Data.unlockedLevel > knownUnlockedLevel ||
                 CurrentScreen == AppScreen.Result && resultUnlock.gameObject.activeSelf);
             resultUnlock.gameObject.SetActive(newlyUnlocked);
             resultUnlock.GetComponentInChildren<TMP_Text>().text = FrontendCopy.UnlockedChapter.Format(progress.Data.unlockedLevel);
@@ -663,8 +669,6 @@ namespace AllinDefense.UI
             if (victory)
             {
                 resultStarRow.SetStars(stars);
-                (resultRewardRow.GetComponent<UiMotion>() ?? resultRewardRow.gameObject.AddComponent<UiMotion>()).Count(0, reward.Valor,
-                    value => resultReward.text = $"+{value} · {FrontendCopy.ResultStars.Format(stars)}");
                 if (session.CampaignLevelNumber == 1 && progress.Data.authProvider == PlayerAuthProvider.Guest)
                     resultAccountDelay = (resultRewardRow.GetComponent<UiMotion>() ?? resultRewardRow.gameObject.AddComponent<UiMotion>())
                         .Animate(_ => { }, 1.2f, () => resultAccountSuggestion.gameObject.SetActive(CurrentScreen == AppScreen.Result));

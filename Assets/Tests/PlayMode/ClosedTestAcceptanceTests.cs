@@ -4,6 +4,7 @@ using System.Linq;
 using AllinDefense.Core;
 using AllinDefense.Data;
 using AllinDefense.Presentation;
+using AllinDefense.UI;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -96,7 +97,40 @@ namespace AllinDefense.Tests
             Assert.That(store.Data.unlockedLevel,Is.EqualTo(50));
             Assert.That(store.ProgressFor(50).stars,Is.EqualTo(3));
             yield return null;
+            Assert.That(session.GetComponentsInChildren<TMPro.TMP_Text>(true).Any(t =>
+                t.text == FrontendCopy.BalanceUpdatedBattleRestart.Value), Is.True);
+            Object.Destroy(session.gameObject); yield return null;
+            session = Create(1, store);
+            yield return null;
+            Assert.That(session.GetComponentsInChildren<TMPro.TMP_Text>(true).Any(t =>
+                t.text == FrontendCopy.BalanceUpdatedBattleRestart.Value), Is.False);
         }
+        [UnityTest]
+        public IEnumerator VersionMismatchWithOtherInvalidityDoesNotExplainBalanceUpdate()
+        {
+            folder = Path.Combine(Application.temporaryCachePath, "invalid-checkpoint-" + System.Guid.NewGuid());
+            var store = new CampaignProgressStore(Path.Combine(folder, "save.json"));
+            foreach (string reason in new[] { "owner", "locked", "corrupt", "other-level" })
+            {
+                store.Data.unlockedLevel = 1;
+                store.Data.checkpoint = new BattleCheckpoint
+                {
+                    ruleVersion = "first-region-v1", owner = store.ProfileKey, level = 1,
+                    lives = 12, hero = new ActorCheckpoint { health = 240 }
+                };
+                if (reason == "owner") store.Data.checkpoint.owner = "another-profile";
+                if (reason == "locked") store.Data.unlockedLevel = 0;
+                if (reason == "corrupt") store.Data.checkpoint.hero = null;
+                if (reason == "other-level") store.Data.checkpoint.level = 2;
+                var session = Create(1, store);
+                yield return null;
+                Assert.That(session.GetComponentsInChildren<TMPro.TMP_Text>(true).Any(t =>
+                    t.text == FrontendCopy.BalanceUpdatedBattleRestart.Value), Is.False, reason);
+                Assert.That(session.CheckpointRestored, Is.False, reason);
+                Object.Destroy(session.gameObject); yield return null;
+            }
+        }
+
         [UnityTest]
         public IEnumerator FrameRateAndSpeedHaveIdenticalBattleResults()
         {

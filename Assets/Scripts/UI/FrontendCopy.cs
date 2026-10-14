@@ -255,6 +255,7 @@ namespace AllinDefense.UI
         public static readonly LocalizedCopy PrepareYourFirstDefence = new("İLK SAVUNMANA HAZIRLAN  ›", "PREPARE YOUR FIRST DEFENCE  ›");
         public static readonly LocalizedCopy VictoryComplete = new("ZAFER\n{0} TAMAMLANDI", "VICTORY\n{0} COMPLETE");
         public static readonly LocalizedCopy TheDefenceLineHasFallen = new("SAVUNMA HATTI DÜŞTÜ", "THE DEFENCE LINE HAS FALLEN");
+        public static readonly LocalizedCopy BalanceUpdatedBattleRestart = new("Denge güncellendi: bu savaş baştan başlıyor, yıldızların korundu.", "Balance updated: this battle restarts, your stars are kept.");
         public static readonly LocalizedCopy ResultStars = new("{0} / 3 YILDIZ", "{0} / 3 STARS");
         public static readonly LocalizedCopy ResultNoStars = new("0 / 3 YILDIZ", "0 / 3 STARS");
         public static readonly LocalizedCopy ResultGuestAccountHint = new("İlerlemeni korumak için menüden hesabını bağlayabilirsin.", "You can link an account from the menu to protect your progress.");

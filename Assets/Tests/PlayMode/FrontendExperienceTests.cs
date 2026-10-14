@@ -421,6 +421,10 @@ namespace AllinDefense.Tests
                 Call(flow, "ShowResult", true, earned, new CampaignCompletionReward(27, 68));
                 yield return new WaitForSecondsRealtime(1.5f);
                 var row = UiQuery.FindById(flow, "Result Stars").GetComponent<AllinDefense.UI.Kit.UiStarRow>();
+                Assert.That(UiQuery.FindById<TMPro.TMP_Text>(flow, "Result Reward").text, Is.EqualTo(FrontendCopy.ResultStars.Format(earned)));
+                var rewardIcon = UiQuery.FindById<UnityEngine.UI.Image>(flow, "Result Reward Icon");
+                Assert.That(rewardIcon.gameObject.activeSelf, Is.False);
+                Assert.That(rewardIcon.sprite, Is.Null);
                 Assert.That(row.Earned, Is.EqualTo(earned));
                 Assert.That(row.VisibleStars, Is.EqualTo(earned));
                 var assets = Resources.Load<DefenderPresentationCatalog>("Presentation/DefenderPresentationCatalog").frontendTheme.designSystem;
@@ -430,6 +434,67 @@ namespace AllinDefense.Tests
             Assert.That(UiQuery.FindById(flow, "Result Stars").gameObject.activeSelf, Is.False);
             Assert.That(UiQuery.FindById(flow, "Next Level").gameObject.activeSelf, Is.False);
             Assert.That(UiQuery.FindById(flow, "Defence Advice").gameObject.activeSelf, Is.True);
+            Assert.That(UiQuery.FindById(flow, "Result Reward Icon").gameObject.activeSelf, Is.True);
+        }
+
+        [UnityTest]
+        public IEnumerator TenthLevelCompletionDoesNotAnnounceUnplayableChapter()
+        {
+            flow.Progress.Data.unlockedLevel = 10;
+            flow.Progress.Save();
+            flow.GetComponent<AudioListener>().enabled = false;
+            session.SetCampaignLevel(10);
+            session.ConfigureCampaignStore(flow.Progress);
+            session.Initialize();
+            Call(session, "SetPhase", GamePhase.Victory);
+            Assert.That(flow.Progress.Data.unlockedLevel, Is.EqualTo(11));
+            Assert.That(flow.CurrentScreen, Is.EqualTo(AppScreen.Result));
+            Assert.That(UiQuery.FindById(flow, "Unlocked Chapter").gameObject.activeSelf, Is.False);
+            Assert.That(UiQuery.FindById(flow, "Next Level").gameObject.activeSelf, Is.False);
+            yield return null;
+        }
+
+        [Test]
+        public void ContinueCheckpointValidationRejectsWrongVersionOwnerAndLockedLevel()
+        {
+            flow.Progress.Data.unlockedLevel = 8;
+            var checkpoint = new BattleCheckpoint
+            {
+                owner = flow.Progress.ProfileKey, level = 3, gold = 123, lives = 12,
+                hero = new ActorCheckpoint { health = 170 }
+            };
+            Assert.That(GameSessionController.IsValidCheckpoint(flow.Progress, checkpoint), Is.True);
+            checkpoint.ruleVersion = "first-region-v1";
+            Assert.That(GameSessionController.IsValidCheckpoint(flow.Progress, checkpoint), Is.False);
+            checkpoint.ruleVersion = AllinDefense.Data.FirstRegionCampaign.Version;
+            checkpoint.owner = "another-profile";
+            Assert.That(GameSessionController.IsValidCheckpoint(flow.Progress, checkpoint), Is.False);
+            checkpoint.owner = flow.Progress.ProfileKey;
+            checkpoint.level = 9;
+            Assert.That(GameSessionController.IsValidCheckpoint(flow.Progress, checkpoint), Is.False);
+            checkpoint.level = 11;
+            flow.Progress.Data.unlockedLevel = 50;
+            Assert.That(GameSessionController.IsValidCheckpoint(flow.Progress, checkpoint), Is.False);
+        }
+
+        [UnityTest]
+        public IEnumerator ContinuePrioritizesValidLocalCheckpointOverUnlockedProgress()
+        {
+            flow.Progress.Data.unlockedLevel = 8;
+            flow.Progress.Data.checkpoint = new BattleCheckpoint
+            {
+                owner = flow.Progress.ProfileKey, level = 3, gold = 123, lives = 12,
+                hero = new ActorCheckpoint { health = 170 }
+            };
+            flow.Progress.Save();
+            UiQuery.FindById<UnityEngine.UI.Button>(flow, "Continue").onClick.Invoke();
+            double deadline = Time.realtimeSinceStartupAsDouble + 15;
+            while (flow.IsLaunchingBattle && Time.realtimeSinceStartupAsDouble < deadline) yield return null;
+            Assert.That(flow.CurrentScreen, Is.EqualTo(AppScreen.Battle));
+            Assert.That(session.CampaignLevelNumber, Is.EqualTo(3));
+            Assert.That(session.CheckpointRestored, Is.True);
+            Assert.That(session.Gold, Is.EqualTo(123));
+            Assert.That(session.Lives, Is.EqualTo(12));
         }
 
         [UnityTest]

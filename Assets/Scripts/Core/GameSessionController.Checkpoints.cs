@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using AllinDefense.Data;
@@ -60,10 +61,12 @@ namespace AllinDefense.Core
         {
             var cp = campaignStore?.Data.checkpoint;
             if (cp == null || cp.level != CampaignLevelNumber) return;
-            if (!ValidCheckpoint(cp))
+            if (!IsValidCheckpoint(campaignStore, cp))
             {
+                bool balanceUpdated = cp.ruleVersion != FirstRegionCampaign.Version && ValidCheckpointContents(campaignStore, cp);
                 campaignStore.Data.checkpoint = null;
                 campaignStore.Save(); // Campaign progress is deliberately independent of this checkpoint.
+                if (balanceUpdated) StartCoroutine(ShowBalanceUpdateMessage());
                 return;
             }
             restoringCheckpoint = true;
@@ -89,17 +92,30 @@ namespace AllinDefense.Core
         private static bool ValidGuard(ActorCheckpoint guard) => ValidActor(guard,400) && guard.health > 0 &&
             (!guard.hasPosition || (guard.formationIndex >= 0 && guard.formationIndex < TowerProgression.BarracksSquadSize &&
              float.IsFinite(guard.position.x) && float.IsFinite(guard.position.y) && float.IsFinite(guard.position.z) && guard.position.sqrMagnitude < 1000000f));
-        private bool ValidCheckpoint(BattleCheckpoint cp) => cp.owner == campaignStore.ProfileKey &&
-            cp.level >= 1 && cp.level <= FirstRegionCampaign.LevelCount && cp.level <= campaignStore.Data.unlockedLevel &&
-            cp.ruleVersion == FirstRegionCampaign.Version && cp.nextWave >= 0 && cp.nextWave < WaveCount &&
-            cp.gold >= 0 && cp.lives > 0 && cp.lives <= StartingLivesForLevel && ValidTimer(cp.elapsed) && cp.elapsed >= 0 &&
+        public static bool IsValidCheckpoint(CampaignProgressStore store, BattleCheckpoint checkpoint) =>
+            checkpoint != null && checkpoint.ruleVersion == FirstRegionCampaign.Version && ValidCheckpointContents(store, checkpoint);
+
+        private IEnumerator ShowBalanceUpdateMessage()
+        {
+            yield return null;
+            ShowMessage(AllinDefense.UI.FrontendCopy.BalanceUpdatedBattleRestart.Value, 8f);
+        }
+
+        private static bool ValidCheckpointContents(CampaignProgressStore store, BattleCheckpoint cp)
+        {
+            if (store == null || cp == null || cp.owner != store.ProfileKey ||
+                cp.level < 1 || cp.level > FirstRegionCampaign.LevelCount || cp.level > store.Data.unlockedLevel) return false;
+            var level = CampaignLevelFactory.Create(cp.level);
+            return cp.nextWave >= 0 && cp.nextWave < level.waves.Length &&
+            cp.gold >= 0 && cp.lives > 0 && cp.lives <= level.campaign.startingLives && ValidTimer(cp.elapsed) && cp.elapsed >= 0 &&
             ValidActor(cp.hero,240) && (cp.hero.health > 0 || cp.hero.downed) && cp.outposts != null && cp.outposts.All(o=>o!=null) &&
-            cp.outposts.Count <= SlotCount && cp.outposts.Select(o => o.slot).Distinct().Count() == cp.outposts.Count &&
-            cp.outposts.All(o => o.slot >= 0 && o.slot < SlotCount && Enum.IsDefined(typeof(OutpostKind),o.kind) &&
-                CanBuild(o.kind) && ValidTimer(o.attack) && ValidTimer(o.disabled) &&
+            cp.outposts.Count <= level.outpostSlots.Length && cp.outposts.Select(o => o.slot).Distinct().Count() == cp.outposts.Count &&
+            cp.outposts.All(o => o.slot >= 0 && o.slot < level.outpostSlots.Length && Enum.IsDefined(typeof(OutpostKind),o.kind) &&
+                TowerProgression.CanBuild(o.kind, store.Data.unlockedLevel) && ValidTimer(o.attack) && ValidTimer(o.disabled) &&
                 o.guards != null && o.guards.Count <= (o.kind == OutpostKind.Barracks ? TowerProgression.BarracksSquadSize : 0) && o.guards.All(ValidGuard) &&
                 o.guards.Select((g,index) => g.hasPosition ? g.formationIndex : index).Distinct().Count() == o.guards.Count &&
-                o.level >= 1 && o.level <= 3 && (o.level == 3 ? UnlockedCampaignLevel >= TowerProgression.UnlockLevel(o.kind) && TowerProgression.Matches(o.kind, o.specialization) : o.specialization == OutpostSpecialization.None));
+                o.level >= 1 && o.level <= 3 && (o.level == 3 ? store.Data.unlockedLevel >= TowerProgression.UnlockLevel(o.kind) && TowerProgression.Matches(o.kind, o.specialization) : o.specialization == OutpostSpecialization.None));
+        }
         private void ClearCheckpoint()
         {
             if (campaignStore?.Data.checkpoint == null) return;
