@@ -49,26 +49,31 @@ namespace AllinDefense.Tests
             Assert.That(CampaignCatalog.Regions[2].subtitle, Is.EqualTo("Hız ve zamanlama"));
         }
 
+        private const int RegionsWithChapterObjectives = 3;
+
         [TestCase(GameLanguage.Turkish, 45)]
         [TestCase(GameLanguage.English, 50)]
-        public void AshPassBriefingsHaveDistinctSpecificObjectivesWithinLengthLimit(GameLanguage language, int limit)
+        public void AuthoredRegionBriefingsHaveDistinctSpecificObjectivesWithinLengthLimit(GameLanguage language, int limit)
         {
             PlayerPrefs.SetInt(LanguageKey, language == GameLanguage.English ? 1 : 0);
             var objectives = new HashSet<string>();
-            for (int level = 11; level <= 19; level++)
+            for (int region = 2; region <= RegionsWithChapterObjectives; region++)
             {
-                string objective = LearningObjective(level);
-                Assert.That(objective, Is.Not.Null.And.Not.Empty, $"{language} chapter {level}");
-                Assert.That(objective.Length, Is.LessThanOrEqualTo(limit), $"{language} chapter {level}: {objective}");
-                Assert.That(objective, Is.Not.EqualTo(FrontendCopy.ObjectiveRegion.Format(
-                    GameLocalization.Translate(CampaignCatalog.Regions[1].subtitle))), $"Chapter {level} needs a specific objective");
-                Assert.That(objectives.Add(objective), Is.True, $"Duplicate objective at chapter {level}");
-                PlayerPrefs.SetInt(LanguageKey, language == GameLanguage.English ? 0 : 1);
-                Assert.That(LearningObjective(level), Is.Not.EqualTo(objective), $"Chapter {level} needs both languages");
-                PlayerPrefs.SetInt(LanguageKey, language == GameLanguage.English ? 1 : 0);
+                for (int level = (region - 1) * 10 + 1; level < region * 10; level++)
+                {
+                    string objective = LearningObjective(level);
+                    Assert.That(objective, Is.Not.Null.And.Not.Empty, $"{language} chapter {level}");
+                    Assert.That(objective.Length, Is.LessThanOrEqualTo(limit), $"{language} chapter {level}: {objective}");
+                    Assert.That(objective, Is.Not.EqualTo(FrontendCopy.ObjectiveRegion.Format(
+                        GameLocalization.Translate(CampaignCatalog.Regions[region - 1].subtitle))), $"Chapter {level} needs a specific objective");
+                    Assert.That(objectives.Add(objective), Is.True, $"Duplicate objective at chapter {level}");
+                    PlayerPrefs.SetInt(LanguageKey, language == GameLanguage.English ? 0 : 1);
+                    Assert.That(LearningObjective(level), Is.Not.EqualTo(objective), $"Chapter {level} needs both languages");
+                    PlayerPrefs.SetInt(LanguageKey, language == GameLanguage.English ? 1 : 0);
+                }
+                Assert.That(LearningObjective(region * 10), Is.EqualTo(FrontendCopy.ObjectiveBoss.Format(CampaignCatalog.Level(region * 10).localizedName)));
             }
-            Assert.That(LearningObjective(20), Is.EqualTo(FrontendCopy.ObjectiveBoss.Format(CampaignCatalog.Level(20).localizedName)));
-            for (int level = 21; level <= 49; level++)
+            for (int level = RegionsWithChapterObjectives * 10 + 1; level <= 49; level++)
             {
                 var definition = CampaignCatalog.Level(level);
                 string expected = definition.isBoss

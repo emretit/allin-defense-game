@@ -67,7 +67,7 @@ namespace AllinDefense.UI
         {
             var definition = CampaignCatalog.Level(level);
             if (definition.isBoss) return FrontendCopy.ObjectiveBoss.Format(definition.localizedName);
-            if (level > 2 * CampaignCatalog.LevelsPerRegion)
+            if (level > 3 * CampaignCatalog.LevelsPerRegion)
                 return FrontendCopy.ObjectiveRegion.Format(GameLocalization.Translate(CampaignCatalog.Regions[definition.region - 1].subtitle));
             return level switch
             {
@@ -89,6 +89,15 @@ namespace AllinDefense.UI
                 17 => FrontendCopy.ObjectiveShortSidePath.Value,
                 18 => FrontendCopy.ObjectiveSiegeTiming.Value,
                 19 => FrontendCopy.ObjectiveHoldBothRoutes.Value,
+                21 => FrontendCopy.ObjectiveFastPack.Value,
+                22 => FrontendCopy.ObjectiveArrivalTiming.Value,
+                23 => FrontendCopy.ObjectiveFastThenRegen.Value,
+                24 => FrontendCopy.ObjectiveHeroBetweenRoutes.Value,
+                25 => FrontendCopy.ObjectiveRegroup.Value,
+                26 => FrontendCopy.ObjectiveDelayedPack.Value,
+                27 => FrontendCopy.ObjectiveSpreadDefence.Value,
+                28 => FrontendCopy.ObjectiveEarlyHealer.Value,
+                29 => FrontendCopy.ObjectivePhaseRehearsal.Value,
                 _ => FrontendCopy.ObjectiveLord.Value
             };
         }

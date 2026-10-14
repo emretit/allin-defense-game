@@ -156,6 +156,15 @@ namespace AllinDefense.UI
         public static readonly LocalizedCopy ObjectiveShortSidePath = new("Kısa yan yolda birikmeyi önle.", "Prevent crowds on the short side path.");
         public static readonly LocalizedCopy ObjectiveSiegeTiming = new("Kuşatma uyarısında darbeyi zamanla.", "Time your strike during the siege warning.");
         public static readonly LocalizedCopy ObjectiveHoldBothRoutes = new("İki yolu birlikte tut.", "Hold both routes at once.");
+        public static readonly LocalizedCopy ObjectiveFastPack = new("Hızlı yağmacı paketini erken karşıla.", "Meet the fast raider pack early.");
+        public static readonly LocalizedCopy ObjectiveArrivalTiming = new("İki yolun varış zamanını izle.", "Watch when each route's enemies arrive.");
+        public static readonly LocalizedCopy ObjectiveFastThenRegen = new("Hızlı paketten sonra yenilenene yoğunlaş.", "Focus regenerators after the fast pack.");
+        public static readonly LocalizedCopy ObjectiveHeroBetweenRoutes = new("Kahramanı uzun ve kısa yol arasında taşı.", "Move your hero between the long and short routes.");
+        public static readonly LocalizedCopy ObjectiveRegroup = new("Seyrek dalgalarda savunmanı güçlendir.", "Strengthen your defence between sparse waves.");
+        public static readonly LocalizedCopy ObjectiveDelayedPack = new("Öncüden sonra gelen hızlı pakete hazır ol.", "Be ready for the fast pack behind the vanguard.");
+        public static readonly LocalizedCopy ObjectiveSpreadDefence = new("Tüm gücü tek yola yığma.", "Don't stack everything on one route.");
+        public static readonly LocalizedCopy ObjectiveEarlyHealer = new("Şifacı eskortunu erken yakala.", "Catch the healer escort early.");
+        public static readonly LocalizedCopy ObjectivePhaseRehearsal = new("Hükümdarın ritmine küçük ölçekte hazırlan.", "Rehearse the sovereign's rhythm on a small scale.");
         public static readonly LocalizedCopy ObjectiveLord = new("Lordun kırmızı uyarısını darbeyle kes.", "Interrupt the lord's red warning.");
         public static readonly LocalizedCopy SaveRetry = new("Kayıt tekrar denenecek", "Save will retry");
         public static readonly LocalizedCopy SaveRecovery = new("Kayıt kurtarılmayı bekliyor", "Save needs recovery");
