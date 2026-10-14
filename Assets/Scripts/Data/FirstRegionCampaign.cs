@@ -15,7 +15,7 @@ namespace AllinDefense.Data
     public static class FirstRegionCampaign
     {
         public const int LevelCount = 10;
-        public const string Version = "first-region-v1";
+        public const string Version = "first-region-v2";
         [Serializable] private sealed class Document { public string version; public FirstRegionLevel[] levels; }
         private static Document document;
         public static FirstRegionLevel Level(int number)

@@ -50,6 +50,8 @@ namespace AllinDefense.Tests
                 Assert.That(session.PeakEnemyCount, Is.LessThanOrEqualTo(60), "Concurrent enemy budget");
                 var target = FirstRegionCampaign.Level(level);
                 Debug.Log($"[BALANCE] level={level} strategy={strategy} phase={session.Phase} lives={session.Lives} seconds={session.BattleElapsedSeconds:F2} gold={session.Gold} peak={session.PeakEnemyCount} towers={session.Outposts.Count} specialized={session.Outposts.Count(o => o.Specialization != OutpostSpecialization.None)} target={target.targetMinSeconds}-{target.targetMaxSeconds}");
+                int minimumLives = level <= 3 ? 15 : 8;
+                if (session.Lives < minimumLives) failures.Add($"level {level} strategy {strategy}: only {session.Lives} lives, expected >= {minimumLives}");
                 if (session.Phase != GamePhase.Victory || session.BattleElapsedSeconds < target.targetMinSeconds || session.BattleElapsedSeconds > target.targetMaxSeconds) failures.Add($"level {level} strategy {strategy}: {session.Phase}, {session.BattleElapsedSeconds:F2}s");
                 Object.Destroy(session.gameObject); Time.timeScale = 0; yield return null;
             }

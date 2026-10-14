@@ -85,9 +85,14 @@ namespace AllinDefense.Tests
             var store=new CampaignProgressStore(Path.Combine(folder,"save.json"));
             store.Data.unlockedLevel=50;
             store.Data.levels.Add(new CampaignLevelProgress{level=50,stars=3,bestLives=12});
-            store.Data.checkpoint=new BattleCheckpoint{level=1,ruleVersion="old",owner=store.ProfileKey,lives=20,gold=400};store.Save();
+            var previous=Create(1,store);
+            previous.StartNextWave();
+            Assert.That(store.Data.checkpoint,Is.Not.Null);
+            store.Data.checkpoint.ruleVersion="first-region-v1";store.Save();
+            Object.Destroy(previous.gameObject);yield return null;
             var session=Create(1,store);
             Assert.That(session.CheckpointRestored,Is.False);
+            Assert.That(store.Data.checkpoint,Is.Null);
             Assert.That(store.Data.unlockedLevel,Is.EqualTo(50));
             Assert.That(store.ProgressFor(50).stars,Is.EqualTo(3));
             yield return null;
