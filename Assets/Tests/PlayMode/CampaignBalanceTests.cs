@@ -17,7 +17,7 @@ namespace AllinDefense.Tests
     [Category("RegionBalance")]
     public sealed class CampaignBalanceTests
     {
-        internal static readonly int[] ApprovedRegions = { 1, 2, 3, 4 };
+        internal static readonly int[] ApprovedRegions = { 1, 2, 3, 4, 5 };
         private static readonly int[] Regions = { 1, 2, 3, 4, 5 };
         private UnityEngine.Random.State randomState;
 
@@ -77,8 +77,9 @@ namespace AllinDefense.Tests
                     if (plan < 2)
                     {
                         int minimumLives = definition.level <= 3 ? 15 : 8;
-                        if (!outcome.victory || outcome.lives < minimumLives || outcome.seconds < definition.targetMinSeconds || outcome.seconds > definition.targetMaxSeconds)
-                            report.failures.Add($"Level {definition.level}, active {plan}: {outcome.phase}, {outcome.seconds:F2}s, {outcome.lives} lives (>= {minimumLives}), target {definition.targetMinSeconds}-{definition.targetMaxSeconds}.");
+                        float maximumSeconds = definition.targetMaxSeconds - (region == 5 && definition.level == 50 ? 15 : 0);
+                        if (!outcome.victory || outcome.lives < minimumLives || outcome.seconds < definition.targetMinSeconds || outcome.seconds > maximumSeconds)
+                            report.failures.Add($"Level {definition.level}, active {plan}: {outcome.phase}, {outcome.seconds:F2}s, {outcome.lives} lives (>= {minimumLives}), target {definition.targetMinSeconds}-{maximumSeconds}.");
                     }
                     else if (plan == 2 && outcome.stars < 1)
                         report.failures.Add($"Level {definition.level}: slow decisions must earn at least one star.");

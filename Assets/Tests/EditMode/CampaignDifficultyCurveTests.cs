@@ -10,7 +10,7 @@ namespace AllinDefense.Tests
 {
     public sealed class CampaignDifficultyCurveTests
     {
-        private static readonly int[] ApprovedRegions = { 1, 2, 3, 4 };
+        private static readonly int[] ApprovedRegions = { 1, 2, 3, 4, 5 };
         private static readonly MethodInfo BaseStats = typeof(GameSessionController).GetMethod("GetStats", BindingFlags.Static | BindingFlags.NonPublic);
 
         [TestCaseSource(nameof(ApprovedRegions))]
@@ -23,7 +23,7 @@ namespace AllinDefense.Tests
                 if (index > 0)
                 {
                     Assert.That(Pattern(level), Is.Not.EqualTo(Pattern(levels[index - 1])), $"Level {level.level} repeats the previous spawn pattern.");
-                    if (level.level is 15 or 19 or 25 or 29 or 35)
+                    if (level.level is 15 or 19 or 25 or 29 or 35 or 45 or 49)
                     {
                         Assert.That(TotalHealth(level), Is.LessThan(TotalHealth(levels[index - 1])), "Authored recovery chapters must ease pressure.");
                         Assert.That(TotalHealth(level), Is.GreaterThanOrEqualTo(TotalHealth(levels[index - 2])), "Recovery must retain the earlier lesson pressure.");
@@ -142,6 +142,58 @@ namespace AllinDefense.Tests
             foreach (var wave in CampaignContent.Level(37).waves)
                 Assert.That(wave.groups.Any(g => g.enemy == EnemyArchetype.Regenerator) && wave.groups.Any(g => g.enemy == EnemyArchetype.Support), Is.False);
             Assert.That(TotalHealth(CampaignContent.Level(40)) / (double)TotalHealth(CampaignContent.Level(30)), Is.InRange(1.2, 1.4));
+        }
+
+        [Test]
+        public void LastBastionIntroducesItsThirdEntranceBeforeMasteryPackets()
+        {
+            foreach (var level in CampaignContent.Region(5).levels)
+            {
+                Assert.That(CampaignLevelFactory.Create(level.level).entranceCount, Is.EqualTo(level.level < 43 ? 2 : 3));
+                Assert.That(level.speedMultiplier, Is.InRange(1.10f, 1.20f));
+            }
+            long previousBossHealth = TotalHealth(CampaignContent.Level(40));
+            Assert.That(TotalHealth(CampaignContent.Level(41)) / (double)previousBossHealth, Is.InRange(.75, .85));
+            Assert.That(TotalHealth(CampaignContent.Level(50)) / (double)previousBossHealth, Is.InRange(1.2, 1.3));
+            var introduction = CampaignContent.Level(43);
+            Assert.That(TotalHealth(introduction), Is.LessThanOrEqualTo(TotalHealth(CampaignContent.Level(42)) * 1.05));
+            foreach (var wave in introduction.waves)
+            {
+                var third = wave.groups.Where(g => g.routeId == 2).ToArray();
+                Assert.That(third, Is.Not.Empty);
+                Assert.That(third.All(g => (g.enemy is EnemyArchetype.Raider or EnemyArchetype.Vanguard) && g.count <= 9), Is.True);
+                Assert.That(third.Sum(g => g.count), Is.LessThanOrEqualTo(10));
+                Assert.That(third.Where(g => g.enemy == EnemyArchetype.Vanguard).Sum(g => g.count), Is.LessThanOrEqualTo(1));
+            }
+            foreach (int number in new[] { 44, 45 })
+            foreach (var wave in CampaignContent.Level(number).waves)
+            {
+                var packets = wave.groups.Where(g => g.enemy == EnemyArchetype.Raider).GroupBy(g => g.routeId)
+                    .OrderBy(g => g.Min(p => p.startDelay)).ToArray();
+                Assert.That(packets.Length, Is.EqualTo(3));
+                for (int index = 1; index < packets.Length; index++)
+                    Assert.That(packets[index].Min(g => g.startDelay), Is.GreaterThan(packets[index - 1]
+                        .Max(g => g.startDelay + (g.count - 1) * g.interval)), $"Level {number} needs a gap between entrance packets.");
+            }
+            foreach (var wave in CampaignContent.Level(49).waves)
+            {
+                float siegeWarning = wave.groups.Where(g => g.enemy == EnemyArchetype.Siege).Min(g => g.startDelay);
+                float secondArm = wave.groups.Where(g => g.enemy == EnemyArchetype.Raider).GroupBy(g => g.routeId)
+                    .Select(g => g.Min(p => p.startDelay)).OrderBy(t => t).Skip(1).First();
+                Assert.That(siegeWarning, Is.LessThan(secondArm));
+                foreach (var support in wave.groups.Where(g => g.enemy == EnemyArchetype.Support))
+                    Assert.That(support.startDelay, Is.GreaterThan(secondArm));
+            }
+            Assert.That(TotalHealth(CampaignContent.Level(45)), Is.LessThan(TotalHealth(CampaignContent.Level(44))));
+            Assert.That(TotalHealth(CampaignContent.Level(45)), Is.GreaterThanOrEqualTo(TotalHealth(introduction)));
+            foreach (var wave in CampaignContent.Level(47).waves)
+            {
+                var siege = wave.groups.Where(g => g.enemy == EnemyArchetype.Siege).ToArray();
+                Assert.That(siege, Is.Not.Empty);
+                Assert.That(siege.Select(g => g.routeId).Distinct(), Is.EquivalentTo(new[] { 1 }));
+                foreach (int route in new[] { 0, 2 })
+                    Assert.That(wave.groups.Any(g => g.enemy == EnemyArchetype.Raider && g.routeId == route), Is.True);
+            }
         }
 
         private static string Pattern(CampaignLevelContent level) => string.Join("|", level.waves.Select(w =>

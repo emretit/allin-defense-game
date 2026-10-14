@@ -36,6 +36,7 @@ namespace AllinDefense.Tests
             Assert.That(CampaignContent.ContentVersion(11), Is.EqualTo("region-02-v1"));
             Assert.That(CampaignContent.ContentVersion(21), Is.EqualTo("region-03-v1"));
             Assert.That(CampaignContent.ContentVersion(31), Is.EqualTo("region-04-v1"));
+            Assert.That(CampaignContent.ContentVersion(41), Is.EqualTo("region-05-v1"));
             Assert.That(CampaignCatalog.Level(50).displayName, Is.EqualTo("Son Lord"));
         }
 
@@ -109,7 +110,7 @@ namespace AllinDefense.Tests
             Assert.That(BossEncounterProfile.Resolve(""), Is.Null);
             Assert.Throws<InvalidOperationException>(() => BossEncounterProfile.Resolve("unknown"));
             for (int level = 1; level <= 50; level++)
-                Assert.That(CampaignContent.Level(level).bossProfileId, Is.EqualTo(level == 20 ? "gate-master" : level == 30 ? "frost-sovereign" : level == 40 ? "deep-lord" : level % 10 == 0 ? "region-lord" : ""));
+                Assert.That(CampaignContent.Level(level).bossProfileId, Is.EqualTo(level == 20 ? "gate-master" : level == 30 ? "frost-sovereign" : level == 40 ? "deep-lord" : level == 50 ? "last-lord" : level % 10 == 0 ? "region-lord" : ""));
             var gate = BossEncounterProfile.Resolve("gate-master");
             Assert.That(gate.reinforcementEnemy, Is.EqualTo(EnemyArchetype.Vanguard));
             Assert.That(gate.reinforcementRoute, Is.EqualTo("first"));
@@ -139,6 +140,14 @@ namespace AllinDefense.Tests
             Assert.That(deep.reinforcementStartDelay, Is.EqualTo(5f));
             Assert.That(deep.reinforcementInterval, Is.EqualTo(1.1f));
             Assert.That(deep.supportCount, Is.EqualTo(2));
+            var last = BossEncounterProfile.Resolve("last-lord");
+            Assert.That(last.reinforcementEnemy, Is.EqualTo(EnemyArchetype.Raider));
+            Assert.That(last.reinforcementRoute, Is.EqualTo("all"));
+            Assert.That((last.reinforcementCount + last.supportCount) * 3, Is.EqualTo(18));
+            Assert.That(last.supportCount * 3, Is.EqualTo(3));
+            Assert.That(last.reinforcementStartDelay, Is.EqualTo(12f));
+            Assert.That(last.reinforcementInterval, Is.EqualTo(1.8f));
+            Assert.That(last.phase3SpeedMultiplier, Is.EqualTo(1.25f));
         }
     }
 }

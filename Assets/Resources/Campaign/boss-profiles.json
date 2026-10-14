@@ -63,17 +63,17 @@
     {
       "id": "last-lord",
       "reinforcementEnemy": 0,
-      "reinforcementCount": 6,
+      "reinforcementCount": 5,
       "reinforcementRoute": "all",
       "phaseThresholds": [
         0.66,
         0.33
       ],
-      "phase3SpeedMultiplier": 1.44,
-      "silenceInterval": 4,
-      "reinforcementStartDelay": 0.5,
-      "reinforcementInterval": 0.6,
-      "supportCount": 0
+      "phase3SpeedMultiplier": 1.25,
+      "silenceInterval": 5,
+      "reinforcementStartDelay": 12,
+      "reinforcementInterval": 1.8,
+      "supportCount": 1
     }
   ]
 }

@@ -117,7 +117,7 @@ namespace AllinDefense.Tests
             }
 
             Assert.That(CampaignCatalog.Level(50).difficulty, Is.GreaterThan(CampaignCatalog.Level(10).difficulty));
-            Assert.That(CampaignCatalog.Level(50).targetMinutes, Is.EqualTo(10f));
+            Assert.That(CampaignCatalog.Level(50).targetMinutes, Is.EqualTo(8f));
         }
 
         [Test]
