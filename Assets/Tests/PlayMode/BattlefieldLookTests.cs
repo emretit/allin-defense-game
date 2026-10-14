@@ -35,6 +35,20 @@ namespace AllinDefense.Tests
         }
         [Serializable] private sealed class Report { public List<Sample> samples = new(); }
 
+        [Serializable] private sealed class BiomeSample
+        {
+            public int region, chapter, drawCalls, setPassCalls, triangles, materials, sceneryMeshes;
+            public float drawCallsPercent, setPassCallsPercent, trianglesPercent;
+        }
+        [Serializable] private sealed class BiomeReport
+        {
+            public string status = "passed";
+            public string comparison = "Same chapter-1 wave, camera, towers, enemies and route; only biome dressing and ambient profile change";
+            public int allowedSetPassIncrease = 2;
+            public List<BiomeSample> regions = new();
+            public List<Sample> chapterCaptures = new();
+        }
+
         [SetUp]
         public void Setup()
         {
@@ -43,6 +57,144 @@ namespace AllinDefense.Tests
 #if UNITY_EDITOR
             asyncCompilation = UnityEditor.ShaderUtil.allowAsyncCompilation;
             UnityEditor.ShaderUtil.allowAsyncCompilation = false;
+#endif
+        }
+
+        [UnityTest]
+        public IEnumerator BiomeCapturesAndRenderingCounters()
+        {
+#if UNITY_EDITOR
+            if (Environment.GetEnvironmentVariable("BIOME_CAPTURE") != "1") yield break;
+            review = AppDomain.CurrentDomain.GetAssemblies().Select(a => a.GetType("AllinDefense.Editor.FrontendExperienceReview")).First(t => t != null);
+            review.GetMethod("SetSize").Invoke(null, new object[] { 1280, 720 });
+            yield return null; yield return null;
+            string phase = Environment.GetEnvironmentVariable("BIOME_CAPTURE_PHASE") ?? "after";
+            var report = new Report();
+            foreach (int chapter in phase == "before" ? new[] { 1 } : new[] { 1, 11, 21, 31, 41 })
+            {
+                UnityEngine.Random.InitState(6006);
+                FrontendPreferences.ReducedMotion = true;
+                session = new GameObject("Biome look acceptance").AddComponent<GameSessionController>();
+                session.ConfigurePresentation(Resources.Load<DefenderPresentationCatalog>("Presentation/DefenderPresentationCatalog"));
+                session.SetCampaignLevel(chapter);
+                session.Initialize();
+                Time.timeScale = 0;
+                session.TryBuildOutpost(0, OutpostKind.Archer);
+                session.TryBuildOutpost(1, OutpostKind.Barracks);
+                session.StartNextWave();
+                for (int i = 0; i < (chapter == 1 ? 100 : 20); i++) session.AdvanceBattle(.1f);
+                Assert.That(session.Enemies.Count, Is.GreaterThan(0), "Biome capture must show an active wave");
+                yield return new WaitForSecondsRealtime(1f);
+                session.GetComponentInChildren<DefenderHudController>().Refresh(session);
+                for (int i = 0; i < 12; i++) yield return null;
+                var dressing = session.GetComponentInChildren<DefenderBattlefieldDressing>();
+                var sample = new Sample { state = $"ch{chapter:00}-wave", width = Screen.width, height = Screen.height,
+                    cameraPosition = Camera.main.transform.position, cameraSize = Camera.main.orthographicSize,
+                    sceneryCenters = dressing.SceneryFootprints.Select(b => b.center).ToArray() };
+                for (int i = 0; i < 5; i++)
+                {
+                    yield return null;
+                    sample.drawCalls = Mathf.Max(sample.drawCalls, UnityEditor.UnityStats.drawCalls);
+                    sample.setPassCalls = Mathf.Max(sample.setPassCalls, UnityEditor.UnityStats.setPassCalls);
+                    sample.triangles = Mathf.Max(sample.triangles, UnityEditor.UnityStats.triangles);
+                }
+                Assert.That(sample.drawCalls, Is.GreaterThan(0));
+                report.samples.Add(sample);
+                string path = $"Builds/biome-{phase}-ch{chapter:00}-wave-1280x720.png";
+                ScreenCapture.CaptureScreenshot(path);
+                for (int i = 0; i < 5; i++) yield return null;
+                Assert.That(File.Exists(path), Is.True);
+                Object.Destroy(session.gameObject);
+                yield return null;
+            }
+            File.WriteAllText($"Builds/biome-{phase}-chapter-metrics.json", JsonUtility.ToJson(report, true));
+#else
+            yield return null;
+#endif
+        }
+
+        [UnityTest]
+        public IEnumerator BiomeProfilesKeepMaterialAndRenderBudgets()
+        {
+#if UNITY_EDITOR
+            review = AppDomain.CurrentDomain.GetAssemblies().Select(a => a.GetType("AllinDefense.Editor.FrontendExperienceReview")).First(t => t != null);
+            review.GetMethod("SetSize").Invoke(null, new object[] { 1280, 720 });
+            yield return null; yield return null;
+#endif
+            UnityEngine.Random.InitState(6006);
+            FrontendPreferences.ReducedMotion = true;
+            var catalog = Resources.Load<DefenderPresentationCatalog>("Presentation/DefenderPresentationCatalog");
+            session = new GameObject("Biome material and render budget").AddComponent<GameSessionController>();
+            session.ConfigurePresentation(catalog);
+            session.SetCampaignLevel(1);
+            session.Initialize();
+            Time.timeScale = 0;
+            session.TryBuildOutpost(0, OutpostKind.Archer);
+            session.TryBuildOutpost(1, OutpostKind.Barracks);
+            session.StartNextWave();
+            for (int i = 0; i < 100; i++) session.AdvanceBattle(.1f);
+            session.GetComponentInChildren<DefenderHudController>().Refresh(session);
+            yield return new WaitForSecondsRealtime(1f);
+            RuntimeCampaignLevel level = CampaignLevelFactory.Create(1);
+            var report = new BiomeReport();
+            var groundColors = new HashSet<Color>();
+            for (int region = 0; region < 5; region++)
+            {
+                var dressing = session.GetComponentInChildren<DefenderBattlefieldDressing>();
+                if (region > 0)
+                {
+                    Transform parent = dressing.transform.parent;
+                    Object.Destroy(dressing.gameObject);
+                    yield return null;
+                    dressing = DefenderBattlefieldDressing.Install(parent, catalog, Camera.main, level.path,
+                        region, level.routes, level.outpostSlots);
+                    DefenderSceneLook.Apply(Camera.main, region);
+                }
+                Renderer[] renderers = dressing.GetComponentsInChildren<Renderer>();
+                var sample = new BiomeSample { region = region + 1, chapter = 1,
+                    materials = renderers.SelectMany(r => r.sharedMaterials).Distinct().Count(),
+                    sceneryMeshes = renderers.Count(r => r.name.StartsWith("Grove ")) };
+                Color groundColor = renderers.Single(r => r.name == "Continuous Battlefield Ground").sharedMaterial.GetColor("_BaseColor");
+                Assert.That(groundColor, Is.EqualTo(BiomeLook.ForRegion(region).GroundColor));
+                Assert.That(groundColors.Add(groundColor), Is.True, "Every biome needs a distinct terrain tone");
+                Assert.That(sample.sceneryMeshes, Is.EqualTo(2));
+                Assert.That(renderers.All(r => r.GetComponent<Collider>() == null), Is.True);
+                foreach (var mesh in dressing.GetComponentsInChildren<MeshFilter>().Where(f => f.name.StartsWith("Grove ")))
+                    foreach (Vector3 vertex in mesh.sharedMesh.vertices)
+                        Assert.That(dressing.SceneryFootprints.Any(b => { b.Expand(.0001f); return b.Contains(vertex); }),
+                            Is.True, $"Region {region + 1}: decoration must stay inside its cleared footprint");
+                for (int i = 0; i < 12; i++) yield return null;
+#if UNITY_EDITOR
+                for (int i = 0; i < 5; i++)
+                {
+                    yield return null;
+                    sample.drawCalls = Mathf.Max(sample.drawCalls, UnityEditor.UnityStats.drawCalls);
+                    sample.setPassCalls = Mathf.Max(sample.setPassCalls, UnityEditor.UnityStats.setPassCalls);
+                    sample.triangles = Mathf.Max(sample.triangles, UnityEditor.UnityStats.triangles);
+                }
+#endif
+                Debug.Log($"BIOME_COUNTER region={region + 1} draw={sample.drawCalls} setPass={sample.setPassCalls} triangles={sample.triangles} materials={sample.materials}");
+                if (region > 0)
+                {
+                    BiomeSample baseline = report.regions[0];
+                    Assert.That(sample.materials, Is.EqualTo(baseline.materials));
+#if UNITY_EDITOR
+                    Assert.That(sample.drawCalls, Is.LessThanOrEqualTo(baseline.drawCalls), "Biome must not add draw calls");
+                    Assert.That(sample.setPassCalls, Is.LessThanOrEqualTo(baseline.setPassCalls + 2), "Biome SetPass increase must stay inside the +2 acceptance limit");
+                    sample.drawCallsPercent = 100f * (sample.drawCalls - baseline.drawCalls) / Mathf.Max(1, baseline.drawCalls);
+                    sample.setPassCallsPercent = 100f * (sample.setPassCalls - baseline.setPassCalls) / Mathf.Max(1, baseline.setPassCalls);
+                    sample.trianglesPercent = 100f * (sample.triangles - baseline.triangles) / Mathf.Max(1, baseline.triangles);
+#endif
+                }
+                report.regions.Add(sample);
+            }
+#if UNITY_EDITOR
+            if (Environment.GetEnvironmentVariable("BIOME_CAPTURE") == "1")
+            {
+                const string chapterPath = "Builds/biome-after-chapter-metrics.json";
+                if (File.Exists(chapterPath)) report.chapterCaptures = JsonUtility.FromJson<Report>(File.ReadAllText(chapterPath)).samples;
+                File.WriteAllText("Builds/biome-metrics.json", JsonUtility.ToJson(report, true));
+            }
 #endif
         }
 
@@ -194,7 +346,7 @@ namespace AllinDefense.Tests
         [UnityTest]
         public IEnumerator SceneryClustersAreDeterministicAndClearGameplayAndLandmarks()
         {
-            foreach (int levelNumber in new[] { 1, 10, 14, 24, 43 })
+            foreach (int levelNumber in new[] { 1, 10, 14, 24, 34, 43 })
             {
                 Vector3[][] previous = null;
                 for (int repeat = 0; repeat < 2; repeat++)

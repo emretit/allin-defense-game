@@ -28,6 +28,7 @@ namespace AllinDefense.Presentation
         private readonly List<Material> runtimeMaterials = new();
         private IReadOnlyList<Vector3> roadPath = DefaultRoadPath;
         private int biomeIndex;
+        private BiomeLook Look => BiomeLook.ForRegion(biomeIndex);
         private IReadOnlyList<Vector3[]> routes;
         private readonly List<IReadOnlyList<Vector3>> ownedRoadPaths = new();
 
@@ -172,7 +173,7 @@ namespace AllinDefense.Presentation
         private void CreateContinuousGround(Material material)
         {
             const string name = "Continuous Battlefield Ground";
-            material = CreateRuntimeMaterial("DC Moonlit Ground", new Color(0.21f, 0.25f, 0.25f), false, material);
+            material = CreateRuntimeMaterial("DC Moonlit Ground", Look.GroundColor, false, material);
             // Extend well beyond all supported camera frames, under the HUD and device insets.
             // Match the authored ground height without adding a collider to the battle path.
             CreateMeshObject(name, new List<Vector3>
@@ -261,6 +262,7 @@ namespace AllinDefense.Presentation
             var crowns = new[] { new SceneryBatch(), new SceneryBatch(), new SceneryBatch() };
             var trunks = new SceneryBatch(); var rocks = new SceneryBatch();
             var undergrowth = new SceneryBatch(); var glints = new SceneryBatch();
+            var accents = new SceneryBatch();
             var mossPatches = new List<Vector4>();
             void Patch(Vector3 center, float radius, float yaw) => mossPatches.Add(new Vector4(center.x, center.z, radius, yaw));
             bool Clear(Bounds bounds) => !DecorationOverlapsGameplay(bounds, slots, routes) &&
@@ -298,6 +300,8 @@ namespace AllinDefense.Presentation
                 if (small) smallClusters++;
                 int cluster = sceneryFootprints.Count;
                 int treeCount = small ? 0 : random.Next(1, 8);
+                if (Look.Silhouette == BiomeSilhouette.SunkenColumns) treeCount = Mathf.Min(treeCount, 3);
+                if (Look.Silhouette == BiomeSilhouette.CitadelBanners) treeCount = Mathf.Min(treeCount, 2);
                 for (int tree = 0; tree < treeCount; tree++)
                 {
                     float angle = Next(0, Mathf.PI * 2);
@@ -307,6 +311,11 @@ namespace AllinDefense.Presentation
                     float yaw = Next(0, Mathf.PI * 2);
                     AddLathe(trunks.vertices, trunks.indices, p, new[] { .09f * size, .065f * size }, new[] { 0f, .9f * size }, yaw);
                     SceneryBatch crown = crowns[(tree + cluster / 3) % 3];
+                    if (Look.Silhouette != BiomeSilhouette.Forest)
+                    {
+                        AddBiomeTree(crown, trunks, accents, p, size, yaw, (tree + cluster) % 3);
+                        continue;
+                    }
                     switch ((tree + cluster) % 3)
                     {
                         case 0:
@@ -328,7 +337,15 @@ namespace AllinDefense.Presentation
                 {
                     Vector3 p = center + new Vector3(Next(-radius * .35f, radius * .35f), .10f, Next(-radius * .35f, radius * .35f));
                     float size = small ? .3f : Next(.35f, .65f);
-                    AddCobble(rocks.vertices, rocks.indices, p, Next(0, 6.28f), new Vector3(size, size * .65f, size * .8f));
+                    float yaw = Next(0, 6.28f);
+                    if (Look.Silhouette == BiomeSilhouette.FrostPines)
+                        AddLathe(rocks.vertices, rocks.indices, p, new[] { size * .42f, size * .3f, 0f },
+                            new[] { -.1f, size * .65f, size * 1.45f }, yaw);
+                    else if (Look.Silhouette == BiomeSilhouette.AshBranches)
+                        AddLathe(rocks.vertices, rocks.indices, p, new[] { size * .48f, size * .40f, size * .32f, 0f },
+                            new[] { -.1f, size * .2f, size, size * 1.08f }, yaw);
+                    else
+                        AddCobble(rocks.vertices, rocks.indices, p, yaw, new Vector3(size, size * .65f, size * .8f));
                 }
                 for (int bush = 0; bush < (small ? 1 : 2); bush++)
                 {
@@ -336,7 +353,7 @@ namespace AllinDefense.Presentation
                     float size = small ? radius * .34f : Next(.22f, .36f);
                     AddLathe(undergrowth.vertices, undergrowth.indices, p, new[] { 0f, size, size * .75f, 0f },
                         new[] { 0f, size * .3f, size, size * 1.5f }, Next(0, 6.28f));
-                    for (int leaf = 0; leaf < 5; leaf++)
+                    for (int leaf = 0; leaf < (Look.Silhouette == BiomeSilhouette.Forest ? 5 : 0); leaf++)
                     {
                         float angle = leaf * 1.256f + cluster;
                         Vector3 along = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * size;
@@ -386,16 +403,14 @@ namespace AllinDefense.Presentation
                     AddLathe(trunks.vertices, trunks.indices, p + new Vector3(Next(-.35f, .35f), 0, Next(-.2f, .2f)),
                         new[] { .12f, 0f }, new[] { 0f, Next(.25f, .65f) }, Next(0, 6.28f));
             }
-            var colors = new[] { new Color(.26f, .43f, .36f), new Color(.36f, .48f, .34f),
-                new Color(.40f, .56f, .50f), new Color(.32f, .29f, .24f), new Color(.44f, .54f, .57f),
-                new Color(.31f, .46f, .36f), new Color(.55f, .66f, .36f), Color.white };
+            Color[] colors = Look.SceneryPalette();
             sceneryPalette = new Texture2D(8, 1, TextureFormat.RGBA32, false)
                 { name = "Grove Shared Palette", filterMode = FilterMode.Point, wrapMode = TextureWrapMode.Clamp };
             sceneryPalette.SetPixels(colors); sceneryPalette.Apply(false, true);
             Material palette = CreateRuntimeMaterial("DC Grove Shared Palette", Color.white, false);
             palette.SetTexture("_BaseMap", sceneryPalette);
             var combined = new SceneryBatch(); var uvs = new List<Vector2>();
-            var batches = new[] { crowns[0], crowns[1], crowns[2], trunks, rocks, undergrowth };
+            var batches = new[] { crowns[0], crowns[1], crowns[2], trunks, rocks, undergrowth, accents };
             for (int tone = 0; tone < batches.Length; tone++)
             {
                 SceneryBatch batch = batches[tone];
@@ -408,8 +423,75 @@ namespace AllinDefense.Presentation
             }
             CreateMeshObject("Grove Combined Scenery", combined.vertices, combined.indices, palette, false);
             transform.Find("Grove Combined Scenery").GetComponent<MeshFilter>().sharedMesh.SetUVs(0, uvs);
-            CreateMeshObject("Grove Lanterns and Mushrooms", glints.vertices, glints.indices, catalog.fireMaterial, false);
+            Material accentMaterial = biomeIndex == 0 ? catalog.fireMaterial :
+                CreateRuntimeMaterial("DC Biome Shared Accents", Look.DecorativeAccentColor, false);
+            CreateMeshObject("Grove Lanterns and Mushrooms", glints.vertices, glints.indices, accentMaterial, false);
+            // Keep scenery draws together while preserving depth-tested visibility.
+            if (biomeIndex != 0)
+                foreach (string name in new[] { "Grove Combined Scenery", "Grove Lanterns and Mushrooms" })
+                    transform.Find(name).GetComponent<MeshRenderer>().sortingOrder = -10;
             PaintGroundMoss(mossPatches);
+        }
+
+        private void AddBiomeTree(SceneryBatch crown, SceneryBatch trunks, SceneryBatch accents,
+            Vector3 p, float size, float yaw, int variant)
+        {
+            switch (Look.Silhouette)
+            {
+                case BiomeSilhouette.AshBranches:
+                    AddLathe(trunks.vertices, trunks.indices, p, new[] { .07f * size, .025f * size, 0f },
+                        new[] { .8f * size, 1.7f * size, 2.2f * size }, yaw);
+                    for (int branch = 0; branch < 3; branch++)
+                    {
+                        float angle = yaw + branch * 2.1f;
+                        Vector3 from = p + Vector3.up * (1.0f + branch * .24f) * size;
+                        Vector3 to = p + new Vector3(Mathf.Cos(angle) * .43f, 1.65f + branch * .20f,
+                            Mathf.Sin(angle) * .43f) * size;
+                        AddBranch(crown, from, to, .045f * size);
+                    }
+                    break;
+                case BiomeSilhouette.FrostPines:
+                    for (int tier = 0; tier < 3; tier++)
+                        AddLathe(crown.vertices, crown.indices, p,
+                            new[] { (.48f - tier * .12f) * size, 0f },
+                            new[] { (.50f + tier * .52f) * size, (1.45f + tier * .40f) * size }, yaw);
+                    break;
+                case BiomeSilhouette.SunkenColumns:
+                    AddCobble(crown.vertices, crown.indices, p + Vector3.up * .10f * size, yaw,
+                        new Vector3(.86f, .20f, .86f) * size);
+                    AddLathe(crown.vertices, crown.indices, p, new[] { .25f * size, .22f * size, .23f * size, .13f * size },
+                        new[] { .2f * size, .35f * size, (1.45f + variant * .18f) * size, (1.65f + variant * .18f) * size }, yaw);
+                    AddLathe(accents.vertices, accents.indices, p, new[] { .26f * size, .26f * size },
+                        new[] { .35f * size, .42f * size }, yaw);
+                    break;
+                case BiomeSilhouette.CitadelBanners:
+                    AddCobble(crown.vertices, crown.indices, p + Vector3.up * .53f * size, yaw,
+                        new Vector3(.86f, 1.06f, .40f) * size);
+                    for (int merlon = 0; merlon < 2; merlon++)
+                    {
+                        Vector3 offset = new(Mathf.Cos(yaw) * (merlon == 0 ? -.26f : .26f), 1.16f,
+                            Mathf.Sin(yaw) * (merlon == 0 ? -.26f : .26f));
+                        AddCobble(crown.vertices, crown.indices, p + offset * size, yaw, new Vector3(.28f, .30f, .42f) * size);
+                    }
+                    AddLathe(trunks.vertices, trunks.indices, p, new[] { .025f * size, .025f * size },
+                        new[] { .9f * size, 2.2f * size }, yaw);
+                    Vector3 along = new Vector3(Mathf.Cos(yaw), 0, Mathf.Sin(yaw)) * .46f * size;
+                    int start = accents.vertices.Count;
+                    accents.vertices.AddRange(new[] { p + Vector3.up * 2.12f * size,
+                        p + along + Vector3.up * 2.05f * size, p + along + Vector3.up * 1.39f * size,
+                        p + along * .15f + Vector3.up * 1.50f * size });
+                    accents.indices.AddRange(new[] { start, start + 1, start + 2, start, start + 2, start + 3 });
+                    break;
+            }
+        }
+
+        private static void AddBranch(SceneryBatch batch, Vector3 from, Vector3 to, float radius)
+        {
+            int start = batch.vertices.Count;
+            AddLathe(batch.vertices, batch.indices, Vector3.zero, new[] { radius, 0f },
+                new[] { 0f, Vector3.Distance(from, to) }, 0);
+            Quaternion rotation = Quaternion.FromToRotation(Vector3.up, to - from);
+            for (int i = start; i < batch.vertices.Count; i++) batch.vertices[i] = from + rotation * batch.vertices[i];
         }
 
         private void PaintGroundMoss(List<Vector4> patches)
@@ -427,7 +509,7 @@ namespace AllinDefense.Presentation
                     float u = (worldX + 39) / 100, v = (worldZ + 44.5f) / 100;
                     float edge = Mathf.SmoothStep(0f, 1f, Mathf.Max(Mathf.Abs(u - .5f) * 3.3f, Mathf.Abs(v - .5f) * 4f));
                     float noise = Mathf.PerlinNoise(u * 75f + 6f, v * 75f + 6f);
-                    Color color = Color.Lerp(new Color(.79f, .87f, .86f), new Color(.29f, .39f, .48f), edge) * (.92f + noise * .16f);
+                    Color color = Color.Lerp(Look.GroundTextureCenter, Look.GroundTextureEdge, edge) * (.92f + noise * .16f);
                     float moss = 0;
                     for (int patch = 0; patch < patches.Count; patch++)
                     {
@@ -441,7 +523,7 @@ namespace AllinDefense.Presentation
                         float alpha = 1 - Mathf.SmoothStep(0, 1, Mathf.InverseLerp(.15f, 1, radius + noise * .08f));
                         moss = 1 - (1 - moss) * (1 - alpha * .82f);
                     }
-                    pixels[y * size + x] = Color.Lerp(color, new Color(.46f, .91f, .65f) * (.88f + noise * .18f), moss);
+                    pixels[y * size + x] = Color.Lerp(color, Look.MossColor * (.88f + noise * .18f), moss);
                 }
             groundTexture.SetPixels(pixels); groundTexture.Apply(true, true);
             Transform ground = transform.Find("Continuous Battlefield Ground");

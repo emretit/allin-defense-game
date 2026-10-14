@@ -42,7 +42,7 @@ namespace AllinDefense.Presentation
         private void Configure(Camera camera, int biomeIndex)
         {
             var quality = GetQualityTier();
-            BiomeDefinition palette = CampaignLevelFactory.Biome(biomeIndex);
+            BiomeLook palette = BiomeLook.ForRegion(biomeIndex);
 
             camera.allowHDR = true;
             // SMAA gives the fixed isometric scene clean edges without the iOS overlay/subpass
@@ -58,13 +58,13 @@ namespace AllinDefense.Presentation
             cameraData.stopNaN = true;
 
             RenderSettings.ambientMode = AmbientMode.Trilight;
-            RenderSettings.ambientSkyColor = Color.Lerp(UiTokens.Moon * 0.48f, palette.keyLightColor, 0.08f);
-            RenderSettings.ambientEquatorColor = Color.Lerp(new Color(0.14f, 0.18f, 0.23f), palette.groundColor, 0.12f);
+            RenderSettings.ambientSkyColor = Color.Lerp(UiTokens.Moon * 0.48f, palette.KeyLightColor, palette.LightBlend);
+            RenderSettings.ambientEquatorColor = Color.Lerp(new Color(0.14f, 0.18f, 0.23f), palette.AmbientGroundColor, palette.EquatorBlend);
             RenderSettings.ambientGroundColor = UiTokens.Night;
             RenderSettings.reflectionIntensity = 0.38f;
             RenderSettings.fog = true;
             RenderSettings.fogMode = FogMode.Linear;
-            RenderSettings.fogColor = Color.Lerp(UiTokens.Night, palette.fogColor, 0.18f);
+            RenderSettings.fogColor = Color.Lerp(UiTokens.Night, palette.FogColor, palette.FogBlend);
             camera.backgroundColor = RenderSettings.fogColor;
             RenderSettings.fogStartDistance = 30f;
             RenderSettings.fogEndDistance = 65f;
