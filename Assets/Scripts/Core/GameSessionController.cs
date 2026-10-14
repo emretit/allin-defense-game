@@ -2416,6 +2416,20 @@ namespace AllinDefense.Core
             return line;
         }
 
+        internal IReadOnlyList<Vector3> NearestRoute(Vector3 position)
+        {
+            IReadOnlyList<Vector3> nearest = path;
+            float distance = CampaignLevelFactory.DistanceToRoute(position, nearest);
+            foreach (var route in routePaths)
+            {
+                float candidate = CampaignLevelFactory.DistanceToRoute(position, route);
+                if (candidate >= distance) continue;
+                nearest = route;
+                distance = candidate;
+            }
+            return nearest;
+        }
+
         internal Vector3 BarracksRallyPoint(Vector3 position, float routeOffset)
         {
             Vector3 closest = position;
@@ -2584,7 +2598,7 @@ namespace AllinDefense.Core
             {
                 if (unit == null || !unit.CanBlock) continue;
                 float d = (unit.Position - position).sqrMagnitude;
-                if (d > bestDistance) continue;
+                if (d > bestDistance || !unit.CanReach(position)) continue;
                 best = unit;
                 bestDistance = d;
             }

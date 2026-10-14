@@ -590,7 +590,7 @@ namespace AllinDefense.Core
 
         private Vector3 FindBarracksRallyPoint(int index)
         {
-            IReadOnlyList<Vector3> route = session.Path;
+            IReadOnlyList<Vector3> route = session.NearestRoute(Position);
             float progress = CombatMath.ClosestRouteDistance(route, Position);
             float roadLength = 0;
             for (int i = 0; i + 1 < route.Count; i++) roadLength += Vector3.Distance(route[i], route[i + 1]);
@@ -622,6 +622,7 @@ namespace AllinDefense.Core
 
         private GameSessionController session;
         private GreyboxOutpost owner;
+        private IReadOnlyList<Vector3> route;
         private Vector3 rally;
         private int health;
         private int maxHealth;
@@ -644,8 +645,9 @@ namespace AllinDefense.Core
             session = gameSession;
             owner = source;
             rally = rallyPoint;
+            route = session.NearestRoute(rally);
             FormationIndex = formationIndex;
-            rallyProgress = CombatMath.ClosestRouteDistance(session.Path, rally);
+            rallyProgress = CombatMath.ClosestRouteDistance(route, rally);
             SetUpgradeLevel(level);
         }
 
@@ -666,7 +668,7 @@ namespace AllinDefense.Core
             health = data.health; attackTimer = Mathf.Max(0, data.attack);
             transform.position = data.hasPosition ? data.position : rally;
             IsDeployed = !data.hasPosition || data.deployed;
-            routeProgress = CombatMath.ClosestRouteDistance(session.Path, Position);
+            routeProgress = CombatMath.ClosestRouteDistance(route, Position);
         }
         internal void Tick(float delta)
         {
@@ -683,19 +685,19 @@ namespace AllinDefense.Core
                 }
                 return;
             }
-            if (target == null || !target.IsAlive || Mathf.Abs(CombatMath.ClosestRouteDistance(session.Path, target.Position) - rallyProgress) > PatrolRange + .5f)
+            if (target == null || !target.IsAlive || !CanReach(target.Position, true) || Mathf.Abs(CombatMath.ClosestRouteDistance(route, target.Position) - rallyProgress) > PatrolRange + .5f)
                 target = FindTarget();
 
             float destination = rallyProgress;
             float lane = 0f;
             if (target != null)
             {
-                float enemyProgress = CombatMath.ClosestRouteDistance(session.Path, target.Position);
+                float enemyProgress = CombatMath.ClosestRouteDistance(route, target.Position);
                 destination = enemyProgress + (rallyProgress < enemyProgress ? -.55f : .55f);
                 lane = (FormationIndex - 1) * .32f;
             }
             routeProgress = Mathf.MoveTowards(routeProgress, destination, MoveSpeed * delta);
-            Vector3 roadPosition = CombatMath.PointOnRoute(session.Path, routeProgress, out var direction);
+            Vector3 roadPosition = CombatMath.PointOnRoute(route, routeProgress, out var direction);
             roadPosition += Vector3.Cross(Vector3.up, direction) * lane;
             roadPosition.y = Position.y;
             MoveTo(roadPosition, delta);
@@ -720,14 +722,23 @@ namespace AllinDefense.Core
             if (target == enemy) target = null;
         }
 
+        internal bool CanReach(Vector3 position, bool tracking = false)
+        {
+            if (session.EntranceCount <= 1) return true;
+            float reach = PatrolRange + (tracking ? .5f : 0);
+            return (position - rally).sqrMagnitude <= reach * reach &&
+                CampaignLevelFactory.DistanceToRoute(position, route) <= .1f &&
+                Mathf.Abs(CombatMath.ClosestRouteDistance(route, position) - rallyProgress) <= reach;
+        }
+
         private GreyboxEnemy FindTarget()
         {
             GreyboxEnemy best = null;
             float bestScore = float.MaxValue;
             foreach (var enemy in session.Enemies)
             {
-                if (enemy == null || !enemy.IsAlive || (enemy.Position - rally).sqrMagnitude > PatrolRange * PatrolRange) continue;
-                if (Mathf.Abs(CombatMath.ClosestRouteDistance(session.Path, enemy.Position) - rallyProgress) > PatrolRange) continue;
+                if (enemy == null || !enemy.IsAlive || (enemy.Position - rally).sqrMagnitude > PatrolRange * PatrolRange || !CanReach(enemy.Position)) continue;
+                if (Mathf.Abs(CombatMath.ClosestRouteDistance(route, enemy.Position) - rallyProgress) > PatrolRange) continue;
                 float score = (enemy.Position - Position).sqrMagnitude;
                 foreach (var guard in owner.Soldiers)
                     if (guard != null && guard != this && guard.IsAlive && guard.target == enemy) { score += 100; break; }

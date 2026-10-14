@@ -14,11 +14,11 @@ namespace AllinDefense.Tests
     public sealed class BarracksSquadTests
     {
         private string folder;
-        private GameSessionController Create(CampaignProgressStore store = null, bool build = true)
+        private GameSessionController Create(CampaignProgressStore store = null, bool build = true, int level = 5)
         {
             var session = new GameObject("Barracks squad regression").AddComponent<GameSessionController>();
             session.ConfigurePresentation(Resources.Load<DefenderPresentationCatalog>("Presentation/DefenderPresentationCatalog"));
-            session.SetCampaignLevel(5);
+            session.SetCampaignLevel(level);
             if (store != null) session.ConfigureCampaignStore(store);
             session.Initialize();
             Time.timeScale = 0;
@@ -209,6 +209,81 @@ namespace AllinDefense.Tests
             Advance(session, 5);
             Assert.That(session.Outposts[0].Soldiers.Count, Is.EqualTo(3));
             Assert.That(session.Outposts[0].Soldiers.All(g => g.CanBlock), Is.True);
+        }
+
+        [UnityTest]
+        public IEnumerator SecondEntranceSquadFormsOnItsOwnRoadAndDefeatsRaiders()
+        {
+            var session = Create(build: false, level: 22);
+            var slot = Object.FindObjectsByType<GreyboxOutpostSlot>(FindObjectsSortMode.None).Single(s => s.Index == 0);
+            slot.transform.position = session.Routes[1][0] + new Vector3(1.2f, .15f, 1.5f);
+            Assert.That(session.TryBuildOutpost(0, OutpostKind.Barracks), Is.True);
+            Assert.That(session.TryUpgradeOutpost(0), Is.True);
+            Advance(session, 5);
+            foreach (var guard in session.Outposts[0].Soldiers)
+            {
+                Assert.That(CampaignLevelFactory.DistanceToRoute(guard.Position, session.Routes[1]), Is.LessThan(.4f));
+                Assert.That(CampaignLevelFactory.DistanceToRoute(guard.Position, session.Path), Is.GreaterThan(1));
+            }
+            var raiders = SpawnSideRaiders(session, 4);
+            int lives = session.Lives;
+            Advance(session, 30);
+            Assert.That(raiders.All(e => e.Health == 0), Is.True, "A squad beside the second entrance must kill its raiders within a bounded time.");
+            Assert.That(session.Lives, Is.EqualTo(lives));
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator SecondEntranceRaidersCannotStallAgainstMainRoadSquad()
+        {
+            var session = Create(build: false, level: 22);
+            Assert.That(session.TryBuildOutpost(1, OutpostKind.Barracks), Is.True);
+            Assert.That(session.TryUpgradeOutpost(1), Is.True);
+            Advance(session, 5);
+            var raiders = SpawnSideRaiders(session, 4);
+            foreach (var enemy in raiders)
+                enemy.transform.position = session.Routes[1][0] + new Vector3(4.4123f, 0, 0);
+            int lives = session.Lives;
+            Advance(session, 30);
+            Assert.That(raiders.All(e => e.Health == 0), Is.True,
+                "Raiders on the branch must advance into reachable melee instead of attacking a respawning guard forever.");
+            Assert.That(session.Lives, Is.EqualTo(lives));
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator SecondEntranceCheckpointRestoresProgressOnTheSameRoad()
+        {
+            var session = Create(build: false, level: 22);
+            var slot = Object.FindObjectsByType<GreyboxOutpostSlot>(FindObjectsSortMode.None).Single(s => s.Index == 0);
+            slot.transform.position = session.Routes[1][0] + new Vector3(1.2f, .15f, 1.5f);
+            Assert.That(session.TryBuildOutpost(0, OutpostKind.Barracks), Is.True);
+            Advance(session, 5);
+            var guards = session.Outposts[0].Soldiers.ToArray();
+            var saved = guards.Select(g => new ActorCheckpoint
+            {
+                health = 35, attack = .17f, hasPosition = true, position = g.Position,
+                deployed = true, formationIndex = g.FormationIndex
+            }).ToArray();
+            var restore = typeof(GreyboxFriendlyUnit).GetMethod("RestoreCheckpoint", BindingFlags.Instance | BindingFlags.NonPublic);
+            for (int i = 0; i < guards.Length; i++) restore.Invoke(guards[i], new object[] { saved[i] });
+            Advance(session, 1);
+            for (int i = 0; i < guards.Length; i++)
+            {
+                Assert.That(guards[i].Health, Is.EqualTo(35));
+                Assert.That(CampaignLevelFactory.DistanceToRoute(guards[i].Position, session.Routes[1]), Is.LessThan(.4f));
+                Assert.That(Vector3.Distance(guards[i].Position, saved[i].position), Is.LessThan(.05f),
+                    "Restored guards must keep their own road progress instead of using the first road.");
+            }
+            yield return null;
+        }
+
+        private static GreyboxEnemy[] SpawnSideRaiders(GameSessionController session, int count)
+        {
+            var spawn = typeof(GameSessionController).GetMethod("SpawnEnemy", BindingFlags.Instance | BindingFlags.NonPublic,
+                null, new[] { typeof(EnemyArchetype), typeof(int) }, null);
+            for (int i = 0; i < count; i++) spawn.Invoke(session, new object[] { EnemyArchetype.Raider, 1 });
+            return session.Enemies.ToArray();
         }
 
         private CampaignProgressStore CreateStore()
