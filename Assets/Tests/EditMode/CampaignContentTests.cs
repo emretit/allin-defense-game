@@ -48,6 +48,8 @@ namespace AllinDefense.Tests
             {
                 Assert.That(copy[w].groups[g], Is.Not.SameAs(source[w].groups[g]));
                 Assert.That(JsonUtility.ToJson(copy[w].groups[g]), Is.EqualTo(JsonUtility.ToJson(source[w].groups[g])));
+                Assert.That(JsonUtility.ToJson(CampaignLevelFactory.Create(14).waves[w].groups[g]),
+                    Is.EqualTo(JsonUtility.ToJson(source[w].groups[g])), "Factory must not apply a second timing multiplier.");
             }
         }
 
@@ -98,14 +100,21 @@ namespace AllinDefense.Tests
         }
 
         [Test]
-        public void BossProfilesResolveAndOnlyLegacyProfileIsAssigned()
+        public void BossProfilesResolveAndApprovedFinalesUseTheirOwnProfile()
         {
             foreach (string id in new[] { "region-lord", "gate-master", "frost-sovereign", "deep-lord", "last-lord" })
                 BossEncounterProfile.Validate(BossEncounterProfile.Resolve(id));
             Assert.That(BossEncounterProfile.Resolve(""), Is.Null);
             Assert.Throws<InvalidOperationException>(() => BossEncounterProfile.Resolve("unknown"));
             for (int level = 1; level <= 50; level++)
-                Assert.That(CampaignContent.Level(level).bossProfileId, Is.EqualTo(level % 10 == 0 ? "region-lord" : ""));
+                Assert.That(CampaignContent.Level(level).bossProfileId, Is.EqualTo(level == 20 ? "gate-master" : level % 10 == 0 ? "region-lord" : ""));
+            var gate = BossEncounterProfile.Resolve("gate-master");
+            Assert.That(gate.reinforcementEnemy, Is.EqualTo(EnemyArchetype.Vanguard));
+            Assert.That(gate.reinforcementRoute, Is.EqualTo("first"));
+            Assert.That(gate.reinforcementCount, Is.EqualTo(8));
+            Assert.That(gate.reinforcementStartDelay, Is.EqualTo(2f));
+            Assert.That(gate.reinforcementInterval, Is.EqualTo(1.2f));
+            Assert.That(gate.silenceInterval, Is.EqualTo(5f));
             var legacy = BossEncounterProfile.Resolve("region-lord");
             Assert.That(legacy.reinforcementEnemy, Is.EqualTo(EnemyArchetype.Raider));
             Assert.That(legacy.reinforcementCount, Is.EqualTo(6));

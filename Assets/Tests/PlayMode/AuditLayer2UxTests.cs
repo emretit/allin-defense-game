@@ -290,15 +290,17 @@ namespace AllinDefense.Tests
             {
                 GameLocalization.SetLanguage(GameLanguage.English);
                 Create(level); Time.timeScale = 0;
-                Assert.That(CampaignLevelFactory.Create(level).waves[0].preview, Is.EqualTo("Fast raiders"));
+                Assert.That(CampaignLevelFactory.Create(level).waves[0].preview, Is.EqualTo(CampaignContent.CreateWaves(level)[0].preview));
                 Assert.That(Field<TMP_Text>(hud, "previewText").text, Is.EqualTo(FrontendCopy.UpcomingCount.Format(session.UpcomingEnemyCount)));
                 Assert.That(Field<TMP_Text>(hud, "phaseText").text, Is.EqualTo(FrontendCopy.HudPreparing.Value));
                 GameLocalization.SetLanguage(GameLanguage.Turkish);
-                Assert.That(CampaignLevelFactory.Create(level).waves[0].preview, Is.EqualTo("Hızlı yağmacılar"));
-                Assert.That(Field<WaveDefinition[]>(session, "waves")[0].preview, Is.EqualTo("Hızlı yağmacılar"));
+                Assert.That(CampaignLevelFactory.Create(level).waves[0].preview, Is.EqualTo(CampaignContent.CreateWaves(level)[0].preview));
+                Assert.That(Field<WaveDefinition[]>(session, "waves")[0].preview, Is.EqualTo(CampaignContent.CreateWaves(level)[0].preview));
                 Assert.That(Field<TMP_Text>(hud, "previewText").text, Is.EqualTo(FrontendCopy.UpcomingCount.Format(session.UpcomingEnemyCount)));
                 Assert.That(Field<TMP_Text>(hud, "phaseText").text, Is.EqualTo(FrontendCopy.HudPreparing.Value));
+                string turkishPreview = CampaignLevelFactory.Create(level).waves[0].preview;
                 GameLocalization.SetLanguage(GameLanguage.English);
+                Assert.That(CampaignLevelFactory.Create(level).waves[0].preview, Is.Not.EqualTo(turkishPreview));
                 foreach (var wave in Field<WaveDefinition[]>(session, "waves"))
                     Assert.That(wave.preview, Does.Not.Match("[çğıöşüÇĞİÖŞÜ]|yağmac|öncü|birliği|muhafız"));
                 Object.Destroy(session.gameObject); yield return null;

@@ -10,7 +10,7 @@ namespace AllinDefense.Tests
 {
     public sealed class CampaignDifficultyCurveTests
     {
-        private static readonly int[] ApprovedRegions = { 1 };
+        private static readonly int[] ApprovedRegions = { 1, 2 };
         private static readonly MethodInfo BaseStats = typeof(GameSessionController).GetMethod("GetStats", BindingFlags.Static | BindingFlags.NonPublic);
 
         [TestCaseSource(nameof(ApprovedRegions))]
@@ -23,7 +23,13 @@ namespace AllinDefense.Tests
                 if (index > 0)
                 {
                     Assert.That(Pattern(level), Is.Not.EqualTo(Pattern(levels[index - 1])), $"Level {level.level} repeats the previous spawn pattern.");
-                    Assert.That(TotalHealth(level), Is.GreaterThanOrEqualTo(TotalHealth(levels[index - 1])), $"Level {level.level} reduces total incoming health.");
+                    if (level.level is 15 or 19)
+                    {
+                        Assert.That(TotalHealth(level), Is.LessThan(TotalHealth(levels[index - 1])), "Authored recovery chapters must ease pressure.");
+                        Assert.That(TotalHealth(level), Is.GreaterThanOrEqualTo(TotalHealth(levels[index - 2])), "Recovery must retain the earlier lesson pressure.");
+                    }
+                    else
+                        Assert.That(TotalHealth(level), Is.GreaterThanOrEqualTo(TotalHealth(levels[index - 1])), $"Level {level.level} reduces total incoming health.");
                 }
                 // Only the first chapter after a regional boss may reset the health curve.
                 if (index == 0 && region > 1) Assert.That(TotalHealth(level), Is.GreaterThan(0));
@@ -60,6 +66,27 @@ namespace AllinDefense.Tests
                     Assert.That(level.targetMaxSeconds, Is.EqualTo(boss ? 540 : 420));
                 }
             }
+        }
+
+        [Test]
+        public void AshPassTeachesItsSecondEntranceBeforeArmoredConvoys()
+        {
+            foreach (int level in new[] { 11, 12, 13 })
+                Assert.That(CampaignLevelFactory.Create(level).entranceCount, Is.EqualTo(1));
+            var introduction = CampaignContent.Level(14);
+            var sideGroups = introduction.waves.SelectMany(w => w.groups).Where(g => g.routeId == 1).ToArray();
+            Assert.That(sideGroups, Is.Not.Empty);
+            Assert.That(sideGroups.All(g => g.enemy == EnemyArchetype.Raider && g.count <= 9), Is.True);
+            Assert.That(sideGroups[0].startDelay, Is.LessThanOrEqualTo(10));
+            foreach (int level in new[] { 12, 16 })
+                Assert.That(CampaignContent.Level(level).waves.All(w =>
+                    w.groups.Any(g => g.enemy == EnemyArchetype.Vanguard) &&
+                    w.groups.Any(g => g.enemy == EnemyArchetype.Support)), Is.True);
+            Assert.That(CampaignContent.Level(13).waves.All(w => w.groups.Any(g => g.enemy == EnemyArchetype.Regenerator)), Is.True);
+            Assert.That(CampaignContent.Level(18).waves.All(w => w.groups.Any(g => g.enemy == EnemyArchetype.Siege)), Is.True);
+            Assert.That(TotalHealth(CampaignContent.Level(11)), Is.InRange(
+                TotalHealth(CampaignContent.Level(8)) * .8, TotalHealth(CampaignContent.Level(9)) * 1.1));
+            Assert.That(TotalHealth(CampaignContent.Level(20)) / (double)TotalHealth(CampaignContent.Level(10)), Is.InRange(1.2, 1.4));
         }
 
         private static string Pattern(CampaignLevelContent level) => string.Join("|", level.waves.Select(w =>

@@ -17,7 +17,7 @@ namespace AllinDefense.Tests
     [Category("RegionBalance")]
     public sealed class CampaignBalanceTests
     {
-        internal static readonly int[] ApprovedRegions = { 1 };
+        internal static readonly int[] ApprovedRegions = { 1, 2 };
         private static readonly int[] Regions = { 1, 2, 3, 4, 5 };
         private UnityEngine.Random.State randomState;
 

@@ -18,16 +18,16 @@
     {
       "id": "gate-master",
       "reinforcementEnemy": 1,
-      "reinforcementCount": 6,
+      "reinforcementCount": 8,
       "reinforcementRoute": "first",
       "phaseThresholds": [
         0.66,
         0.33
       ],
-      "phase3SpeedMultiplier": 1.44,
-      "silenceInterval": 4,
-      "reinforcementStartDelay": 0.5,
-      "reinforcementInterval": 0.6,
+      "phase3SpeedMultiplier": 1.35,
+      "silenceInterval": 5,
+      "reinforcementStartDelay": 2,
+      "reinforcementInterval": 1.2,
       "supportCount": 0
     },
     {
