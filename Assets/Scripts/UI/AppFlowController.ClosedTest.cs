@@ -9,7 +9,7 @@ namespace AllinDefense.UI
     public sealed partial class AppFlowController
     {
         // Released builds expose only the balanced regions; storage still keeps the full campaign.
-        private const int ReleasedRegionCount = 2;
+        private const int ReleasedRegionCount = 3;
         private static int VisibleRegionCount
         {
             get

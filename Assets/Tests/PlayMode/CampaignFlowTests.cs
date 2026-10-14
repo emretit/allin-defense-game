@@ -100,7 +100,7 @@ namespace AllinDefense.Tests
         }
 
         [UnityTest]
-        public IEnumerator ProductionLimitShowsComingSoonAndSixtyStars()
+        public IEnumerator ProductionLimitShowsComingSoonAndNinetyStars()
         {
             Object.Destroy(flow.gameObject);
             Object.Destroy(session.gameObject);
@@ -113,15 +113,15 @@ namespace AllinDefense.Tests
             yield return new WaitForSecondsRealtime(.95f);
             Call(flow, "ShowScreen", AppScreen.MainMenu);
             flow.Progress.Data.levels.Add(new CampaignLevelProgress { level = 50, stars = 3 });
-            Win(20);
+            Win(30);
             Assert.That(Text("Completion Next"), Is.EqualTo(FrontendCopy.RegionsComingSoon.Value));
             Assert.That(Find<Button>("Completion Continue").gameObject.activeSelf, Is.False);
             Assert.That(Find<RectTransform>("Unlocked Chapter").gameObject.activeSelf, Is.False);
-            Assert.That(Text("Profile Star Count"), Is.EqualTo("1/60"));
+            Assert.That(Text("Profile Star Count"), Is.EqualTo("1/90"));
             Call(flow, "OpenCampaign");
             yield return new WaitForSecondsRealtime(.25f);
-            Assert.That(Find<Button>("Level 21"), Is.Null);
-            Assert.That(flow.GetComponentInChildren<FrontendCampaignPager>(true).PageCount, Is.EqualTo(2));
+            Assert.That(Find<Button>("Level 31"), Is.Null);
+            Assert.That(flow.GetComponentInChildren<FrontendCampaignPager>(true).PageCount, Is.EqualTo(3));
         }
 
         [UnityTest]

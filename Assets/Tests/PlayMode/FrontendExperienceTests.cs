@@ -157,21 +157,45 @@ namespace AllinDefense.Tests
             Call(flow, "OpenCampaign");
             yield return new WaitForSecondsRealtime(.25f);
             var map = UiQuery.FindById<UnityEngine.UI.ScrollRect>(flow, "Campaign Scroll");
-            // The closed test shows a single region page, so there is no horizontal offset to restore.
-            bool multiplePages = map.content.rect.width > map.viewport.rect.width + 1f;
-            if (multiplePages) map.horizontalNormalizedPosition = .5f;
-            float expectedHorizontal = map.horizontalNormalizedPosition;
-            var route = flow.GetComponentsInChildren<FrontendRegionScrollRect>().First();
-            route.verticalNormalizedPosition = .3f;
-            Call(flow, "OpenSettings");
-            yield return new WaitForSecondsRealtime(UiTokens.FadeDuration + .05f);
-            var account = UiQuery.FindById<UnityEngine.UI.Button>(flow, "Settings Account");
-            account.onClick.Invoke();
-            Call(flow, "ReturnFromAccount");
-            yield return new WaitForSecondsRealtime(.25f);
-            Assert.That(flow.CurrentScreen, Is.EqualTo(AppScreen.Campaign));
-            Assert.That(map.horizontalNormalizedPosition, Is.EqualTo(expectedHorizontal).Within(.01));
-            Assert.That(route.verticalNormalizedPosition, Is.EqualTo(.3f).Within(.02));
+            var pages = flow.GetComponentsInChildren<FrontendRegionScrollRect>(true);
+            for (int i = 1; i < pages.Length; i++)
+                flow.Progress.CompleteLevel(i * AllinDefense.Data.CampaignCatalog.LevelsPerRegion, 3, 1);
+            for (int i = 0; i < pages.Length; i++)
+            {
+                UiQuery.FindById<UnityEngine.UI.Button>(flow, $"Region Tab {i + 1}").onClick.Invoke();
+                yield return new WaitForSecondsRealtime(.25f);
+                float expectedHorizontal = pages.Length <= 1 ? 0f : i / (pages.Length - 1f);
+                Assert.That(map.horizontalNormalizedPosition, Is.EqualTo(expectedHorizontal).Within(.01));
+                var route = pages[i];
+                Assert.That(route.content.rect.height, Is.GreaterThan(route.viewport.rect.height), "The visible unlocked route must be scrollable");
+                float expectedVertical = .3f + i * .1f;
+                route.verticalNormalizedPosition = expectedVertical;
+                yield return null;
+                Assert.That(route.verticalNormalizedPosition, Is.EqualTo(expectedVertical).Within(.02), "The player must see the requested scroll position before leaving");
+                Vector2 expectedRoutePosition = route.content.anchoredPosition;
+                Vector2 expectedMapPosition = map.content.anchoredPosition;
+                Call(flow, "OpenSettings");
+                yield return new WaitForSecondsRealtime(UiTokens.FadeDuration + .05f);
+                Call(flow, "CloseSettings");
+                yield return new WaitForSecondsRealtime(UiTokens.FadeDuration + .05f);
+                Assert.That(route.content.anchoredPosition.y, Is.EqualTo(expectedRoutePosition.y).Within(1f));
+                Assert.That(map.content.anchoredPosition.x, Is.EqualTo(expectedMapPosition.x).Within(1f));
+                Call(flow, "OpenSettings");
+                yield return new WaitForSecondsRealtime(UiTokens.FadeDuration + .05f);
+                UiQuery.FindById<UnityEngine.UI.Button>(flow, "Settings Account").onClick.Invoke();
+                yield return new WaitForSecondsRealtime(UiTokens.FadeDuration + .05f);
+                Assert.That(flow.CurrentScreen, Is.EqualTo(AppScreen.Login));
+                Assert.That(route.gameObject.activeInHierarchy, Is.False, "The account transition must finish before returning");
+                UiQuery.FindById<UnityEngine.UI.Button>(UiQuery.FindById(flow, "Account Header"), "Back").onClick.Invoke();
+                yield return new WaitForSecondsRealtime(.25f);
+                Assert.That(flow.CurrentScreen, Is.EqualTo(AppScreen.Campaign));
+                Assert.That(map.horizontalNormalizedPosition, Is.EqualTo(expectedHorizontal).Within(.01));
+                Assert.That(route.verticalNormalizedPosition, Is.EqualTo(expectedVertical).Within(.02));
+                Assert.That(route.content.anchoredPosition.y, Is.EqualTo(expectedRoutePosition.y).Within(1f));
+                Assert.That(map.content.anchoredPosition.x, Is.EqualTo(expectedMapPosition.x).Within(1f));
+            }
+            for (int i = 0; i < pages.Length; i++)
+                Assert.That(pages[i].verticalNormalizedPosition, Is.EqualTo(.3f + i * .1f).Within(.02), $"Region {i + 1} keeps its own route position");
             Call(flow, "OpenBriefing");
             Assert.That(flow.CurrentScreen, Is.EqualTo(AppScreen.Campaign));
         }
