@@ -209,12 +209,26 @@ namespace AllinDefense.Core
             return true;
         }
 
-        public int NextUnfinishedLevel(int available = 10)
+        public int NextUnfinishedLevel(int available = CampaignCatalog.LevelCount)
         {
-            for (int level = 1; level <= Mathf.Min(available, Data.unlockedLevel); level++)
+            int limit = Mathf.Clamp(available, 1, Mathf.Min(CampaignCatalog.LevelCount, Data.unlockedLevel));
+            for (int level = 1; level <= limit; level++)
                 if (ProgressFor(level)?.stars is not > 0) return level;
-            return Mathf.Min(available, Data.unlockedLevel);
+            return LowestStarLevel(limit);
         }
+
+        public int LowestStarLevel(int available = CampaignCatalog.LevelCount) =>
+            Enumerable.Range(1, Mathf.Clamp(available, 1, Mathf.Min(CampaignCatalog.LevelCount, Data.unlockedLevel)))
+                .OrderBy(level => ProgressFor(level)?.stars ?? 0).ThenBy(level => level).First();
+
+        public int StarsInRange(int first, int last) => Data.levels
+            .Where(item => item.level >= first && item.level <= last)
+            .Sum(item => Mathf.Clamp(item.stars, 0, 3));
+
+        public int RegionStars(int region) => StarsInRange(
+            (region - 1) * CampaignCatalog.LevelsPerRegion + 1, region * CampaignCatalog.LevelsPerRegion);
+
+        public int VisibleStars(int available) => StarsInRange(1, Mathf.Clamp(available, 1, CampaignCatalog.LevelCount));
 
         public void SelectLevel(int level)
         {

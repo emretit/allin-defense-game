@@ -92,7 +92,7 @@ namespace AllinDefense.UI
             var profileScore = MenuStack(identity, "Profile Stars", false);
             profileScore.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
             menuKit.Icon(profileScore, "Profile Star Icon", menuKit.Assets.iconStarFilled, 32);
-            profileStars = MenuText(profileScore, "Profile Star Count", "0/30", 26);
+            profileStars = MenuText(profileScore, "Profile Star Count", FrontendCopy.StarCount.Format(0, PlayableLevelCount * 3), 26);
             var profileButton = profile.gameObject.AddComponent<Button>();
             profileButton.targetGraphic = profile.GetComponent<UiVisualState>().Surface;
             profileButton.onClick.AddListener(() => MenuClick(() => ShowScreen(AppScreen.Login)));
@@ -148,7 +148,10 @@ namespace AllinDefense.UI
             for (int i = 0; i < VisibleRegionCount; i++)
             {
                 int region = i;
-                regionTabs.Add(MenuButton(tabs, $"Region Tab {i + 1}", (i + 1).ToString(), null, () => FocusRegion(region)));
+                var tab = MenuButton(tabs, $"Region Tab {i + 1}", (i + 1).ToString(), null, () => FocusRegion(region));
+                regionTabs.Add(tab);
+                var locked = menuKit.Icon(tab.transform, $"Region Tab Lock {i + 1}", menuKit.Assets.iconLock, 32);
+                regionTabLocks.Add(locked);
             }
             tabs.gameObject.SetActive(VisibleRegionCount > 1);
             var scroll = UiKit.Node(stack, "Campaign Scroll");
@@ -281,6 +284,14 @@ namespace AllinDefense.UI
             var heading = MenuText(routeRect, "Region Name",
                 $"{region.number} · {GameLocalization.Uppercase(region.localizedName)}", 32, true);
             heading.color = UiTokens.Gold;
+            var lockedCard = menuKit.Card(routeRect, $"Region Locked {region.number}");
+            menuKit.Icon(lockedCard, "Region Lock Icon", menuKit.Assets.iconLock, 64);
+            var condition = MenuText(lockedCard, "Region Lock Condition", "", 32, true);
+            condition.textWrappingMode = TextWrappingModes.Normal;
+            condition.enableAutoSizing = true; condition.fontSizeMin = 24; condition.fontSizeMax = 32;
+            UiKit.Size(condition.rectTransform, height: 92);
+            regionLockCards[region.number] = lockedCard;
+            regionLockConditions[region.number] = condition;
             var nodes = new RectTransform[region.levels.Count];
             var lines = new RectTransform[region.levels.Count - 1];
             for (int i = 0; i < lines.Length; i++)

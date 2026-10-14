@@ -90,6 +90,17 @@ namespace AllinDefense.UI
         public static readonly LocalizedCopy LinkedAccountRow = new("{0} · Hesap ›", "{0} · Account ›");
         public static readonly LocalizedCopy GuestLinkAccount = new("Misafir · Hesabı bağla ›", "Guest · Link account ›");
         public static readonly LocalizedCopy LegalUrlUnavailable = new("{0} bağlantısı şu anda kullanılamıyor.", "The {0} link is currently unavailable.");
+        public static readonly LocalizedCopy StarCount = new("{0}/{1}", "{0}/{1}");
+        public static readonly LocalizedCopy RegionCompleted = new("{0} tamamlandı · {1}/30 yıldız", "{0} completed · {1}/30 stars");
+        public static readonly LocalizedCopy NextRegion = new("Sıradaki: {0}", "Next: {0}");
+        public static readonly LocalizedCopy GoToNextRegion = new("Sonraki bölgeye geç", "Go to next region");
+        public static readonly LocalizedCopy RegionsComingSoon = new("Yeni bölgeler yakında", "New regions coming soon");
+        public static readonly LocalizedCopy KingdomSafe = new("Krallık savunuldu", "The kingdom is safe");
+        public static readonly LocalizedCopy RegionStars = new("{0} · {1}/30 yıldız", "{0} · {1}/30 stars");
+        public static readonly LocalizedCopy ReturnToMissingStars = new("Eksik yıldızlara dön", "Return to missing stars");
+        public static readonly LocalizedCopy RegionLocked = new("Önce bölüm {0}'i tamamla", "Complete chapter {0} first");
+        public static readonly LocalizedCopy ObjectiveRegion = new("Savunmanı hazırla: {0}.", "Prepare your defence: {0}.");
+        public static readonly LocalizedCopy ObjectiveBoss = new("{0} saldırılarına karşı kaleyi koru.", "Protect the keep against {0}.");
         public static readonly LocalizedCopy VictoryHeading = new("ZAFER", "VICTORY");
         public static readonly LocalizedCopy DefeatHeading = new("Savunma düştü", "Defence fell");
         public static readonly LocalizedCopy ResultWaveLeak = new("Dalga {0}/{1} · {2}", "Wave {0}/{1} · {2}");
@@ -250,7 +261,7 @@ namespace AllinDefense.UI
         public static readonly LocalizedCopy LinkedAccount = new("Bağlı hesap", "Linked account");
         public static readonly LocalizedCopy Guest = new("Misafir", "Guest");
         public static readonly LocalizedCopy GreenwatchDefender = new("Greenwatch Muhafızı", "Greenwatch Defender");
-        public static readonly LocalizedCopy ProfileStars = new("{0}/30 yıldız", "{0}/30 stars");
+        public static readonly LocalizedCopy ProfileStars = new("{0}/{1} yıldız", "{0}/{1} stars");
         public static readonly LocalizedCopy MapNoStars = new("0/3 YILDIZ", "0/3 STARS");
         public static readonly LocalizedCopy PrepareYourFirstDefence = new("İLK SAVUNMANA HAZIRLAN  ›", "PREPARE YOUR FIRST DEFENCE  ›");
         public static readonly LocalizedCopy VictoryComplete = new("ZAFER\n{0} TAMAMLANDI", "VICTORY\n{0} COMPLETE");

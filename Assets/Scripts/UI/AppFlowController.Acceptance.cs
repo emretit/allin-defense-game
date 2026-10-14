@@ -118,7 +118,7 @@ namespace AllinDefense.UI
             hud.BattleRadial.Choose(0);
             yield return CaptureAcceptance("battle-build-preview");
             AcceptanceInvoke("EarnGold", 10000);
-            AcceptanceSet("unlockedCampaignLevel", 10);
+            AcceptanceSet("unlockedCampaignLevel", PlayableLevelCount);
             session.TryBuildOutpost(0, OutpostKind.Archer);
             AcceptanceInvoke("SelectOutpost", session.Outposts[0]);
             yield return CaptureAcceptance("battle-selected-tower");
@@ -313,7 +313,7 @@ namespace AllinDefense.UI
         private void BuildAcceptanceDefense()
         {
             AcceptanceInvoke("EarnGold", 100000);
-            AcceptanceSet("unlockedCampaignLevel", 10);
+            AcceptanceSet("unlockedCampaignLevel", PlayableLevelCount);
             for (int i = 0; i < session.SlotCount; i++)
             {
                 session.TryBuildOutpost(i, OutpostKind.Archer);

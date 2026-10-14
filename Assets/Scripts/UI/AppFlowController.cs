@@ -353,6 +353,9 @@ namespace AllinDefense.UI
             card.GetComponent<VerticalLayoutGroup>().spacing = 18;
             resultTitle = MenuText(card, "Result Title", "", 64, true);
             resultTitle.font = catalog.titleFont; resultTitle.alignment = TextAlignmentOptions.Center;
+            resultTitle.enableAutoSizing = true; resultTitle.fontSizeMin = 32; resultTitle.fontSizeMax = 64;
+            resultTitle.textWrappingMode = TextWrappingModes.Normal;
+            UiKit.Size(resultTitle.rectTransform, height: 100);
             resultChapter = MenuText(card, "Result Chapter", "", 30);
             resultChapter.alignment = TextAlignmentOptions.Center;
             resultStarRow = menuKit.StarRow(card, "Result Stars", 0);
@@ -370,6 +373,7 @@ namespace AllinDefense.UI
             resultAdviceText = MenuText(adviceRow, "Advice Text", "", 30);
             resultAdviceText.textWrappingMode = TextWrappingModes.Normal;
             UiKit.Size(resultAdviceText.rectTransform, height: 90, flex: 1);
+            BuildCampaignCompletionCard(card);
             var actions = MenuStack(card, "Result Actions", false);
             resultRetryIcon = menuKit.IconButton(actions, "Victory Retry", menuKit.Assets.iconRestart,
                 () => MenuClick(() => ReloadCampaignLevel(session.CampaignLevelNumber)));
@@ -434,7 +438,7 @@ namespace AllinDefense.UI
                 OpenCampaign();
                 return;
             }
-            LaunchCampaignLevel(progress.NextUnfinishedLevel());
+            LaunchCampaignLevel(progress.NextUnfinishedLevel(PlayableLevelCount));
         }
 
         private bool IsFirstDefence()
@@ -543,7 +547,7 @@ namespace AllinDefense.UI
             {
                 Button button = levelButtons[index];
                 int level = levelNumbers[index];
-                bool unlocked = level <= progress.Data.unlockedLevel;
+                bool unlocked = level <= MaxPlayableLevel && IsRegionUnlocked(CampaignCatalog.Level(level).region);
                 bool selected = level == selectedLevel;
                 CampaignLevelProgress levelProgress = progress.ProgressFor(level);
                 var state = button.GetComponent<UiVisualState>();
@@ -568,8 +572,12 @@ namespace AllinDefense.UI
 
         private void UpdateRegionTabs()
         {
+            RefreshRegionLocks();
             for (int i = 0; i < regionTabs.Count; i++)
+            {
                 SetButtonEmphasis(regionTabs[i], i == navigationState.Region ? theme.commandGold : theme.defenderBlue);
+                regionTabLocks[i].gameObject.SetActive(!IsRegionUnlocked(i + 1));
+            }
         }
 
         private void FocusRegion(int regionIndex)
@@ -592,11 +600,11 @@ namespace AllinDefense.UI
                 ? FrontendCopy.GuestDefender.Value
                 : string.IsNullOrWhiteSpace(progress.Data.displayName) ? FrontendCopy.GreenwatchDefender.Value : progress.Data.displayName;
             profileLabel.text = displayName;
-            profileStars.text = $"{progress.Data.levels.Where(x => x.level <= 10).Sum(x => x.stars)}/30";
+            profileStars.text = FrontendCopy.StarCount.Format(progress.VisibleStars(PlayableLevelCount), PlayableLevelCount * 3);
             bool saveError = progress.HasWriteError || progress.SyncStatus == CampaignSyncStatus.Failed;
             saveErrorIcon.sprite = saveError ? menuKit.Assets.iconClose : menuKit.Assets.iconCheck;
             saveErrorIcon.color = saveError ? UiTokens.Danger : UiTokens.Moon;
-            int target = progress.NextUnfinishedLevel();
+            int target = progress.NextUnfinishedLevel(PlayableLevelCount);
             CampaignLevelDefinition level = CampaignCatalog.Level(target);
             chapterEyebrow.text = GameLocalization.Uppercase(FrontendCopy.MenuChapter.Format(level.region, CampaignCatalog.Regions[level.region - 1].localizedName, level.number));
             chapterTitle.text = GameLocalization.Uppercase(level.localizedName);
@@ -604,7 +612,7 @@ namespace AllinDefense.UI
             chapterTime.text = FrontendCopy.MenuMinutes.Format(level.targetMinutes);
             chapterGold.text = FrontendCopy.GoldCost.Format(level.startingGold);
             chapterStars.SetStars(progress.ProgressFor(target)?.stars ?? 0, false);
-            int completed = progress.Data.levels.Count(x => x.level >= (level.region - 1) * 10 + 1 && x.level <= level.region * 10 && x.stars > 0);
+            int completed = progress.Data.levels.Count(x => x.level >= (level.region - 1) * CampaignCatalog.LevelsPerRegion + 1 && x.level <= level.region * CampaignCatalog.LevelsPerRegion && x.stars > 0);
             regionProgress.SetProgress(completed);
             chapterProgress.text = FrontendCopy.MenuRegionProgress.Format(completed);
         }
@@ -633,11 +641,12 @@ namespace AllinDefense.UI
             SetCanvasOrientation(MobileOrientationMode.LandscapeBattle);
             RefreshLevelButtons();
             selectedLevel = victory
-                ? Mathf.Min(FirstRegionCampaign.LevelCount, session.CampaignLevelNumber + 1)
+                ? Mathf.Min(PlayableLevelCount, session.CampaignLevelNumber + 1)
                 : session.CampaignLevelNumber;
             stars = Mathf.Clamp(stars, 0, 3);
             resultTitle.text = victory ? FrontendCopy.VictoryHeading.Value : FrontendCopy.DefeatHeading.Value;
             resultTitle.color = victory ? UiTokens.Gold : UiTokens.Danger;
+            resultChapter.gameObject.SetActive(true);
             resultChapter.text = CampaignCatalog.Level(session.CampaignLevelNumber).localizedName;
             resultStarRow.gameObject.SetActive(victory);
             resultAdvice.gameObject.SetActive(!victory);
@@ -653,13 +662,15 @@ namespace AllinDefense.UI
             resultUnlock.GetComponentInChildren<TMP_Text>().text = FrontendCopy.UnlockedChapter.Format(progress.Data.unlockedLevel);
             knownUnlockedLevel = progress.Data.unlockedLevel;
             resultSavedIcon.gameObject.SetActive(victory && !progress.HasWriteError);
-            bool hasNextLevel = victory && session.CampaignLevelNumber < MaxPlayableLevel;
+            bool milestone = victory && stars > 0 && session.CampaignLevelNumber % CampaignCatalog.LevelsPerRegion == 0;
+            bool hasNextLevel = victory && !milestone && session.CampaignLevelNumber < MaxPlayableLevel;
             nextLevelButton.gameObject.SetActive(hasNextLevel);
             nextLevelButton.interactable = hasNextLevel;
-            retryButton.gameObject.SetActive(!victory || !hasNextLevel);
+            retryButton.gameObject.SetActive(!milestone && (!victory || !hasNextLevel));
             resultRetryIcon.gameObject.SetActive(victory && hasNextLevel);
-            resultMapIcon.gameObject.SetActive(victory);
+            resultMapIcon.gameObject.SetActive(victory && !milestone);
             resultMapText.gameObject.SetActive(!victory);
+            RefreshCampaignCompletionCard(victory, stars);
             resultAccountDelay?.Cancel();
             resultAccountSuggestion.gameObject.SetActive(false);
             session.SetBattleHudVisible(false);
@@ -668,7 +679,7 @@ namespace AllinDefense.UI
             ShowScreen(AppScreen.Result);
             if (victory)
             {
-                resultStarRow.SetStars(stars);
+                resultStarRow.SetStars(stars, !milestone);
                 if (session.CampaignLevelNumber == 1 && progress.Data.authProvider == PlayerAuthProvider.Guest)
                     resultAccountDelay = (resultRewardRow.GetComponent<UiMotion>() ?? resultRewardRow.gameObject.AddComponent<UiMotion>())
                         .Animate(_ => { }, 1.2f, () => resultAccountSuggestion.gameObject.SetActive(CurrentScreen == AppScreen.Result));
@@ -681,6 +692,8 @@ namespace AllinDefense.UI
             RefreshSelectedLevelVisuals();
             progressDirty = false;
             RefreshProfile();
+            RefreshRegionLocks();
+            UpdateRegionTabs();
         }
 
         private void BuildOrientationCurtain()
@@ -923,7 +936,7 @@ namespace AllinDefense.UI
             launchingBattle = true;
             SaveMapPosition();
             pendingNavigation = navigationState;
-            pendingLevel = Mathf.Clamp(level, 1, FirstRegionCampaign.LevelCount);
+            pendingLevel = Mathf.Clamp(level, 1, MaxPlayableLevel);
             FrontendLoadingOverlay.Show(catalog.bodyFont);
             FrontendLoadingOverlay.Reload(SceneManager.GetActiveScene().buildIndex, error =>
             {
@@ -1145,7 +1158,16 @@ namespace AllinDefense.UI
             ApplyScreenBackdrop(screen);
             navigation.Show(screens[screen], screen is not (AppScreen.Battle or AppScreen.Result),
                 measure ? performance.Complete : null);
-            if (screen == AppScreen.Campaign) ShowBriefingSheet();
+            if (screen == AppScreen.Campaign)
+            {
+                ShowBriefingSheet();
+                if (campaignDestinationLevel.HasValue)
+                {
+                    int destination = campaignDestinationLevel.Value;
+                    campaignDestinationLevel = null;
+                    StartCoroutine(FocusCampaignDestination(destination));
+                }
+            }
         }
 
         private void EnsureScreen(AppScreen screen)
@@ -1356,6 +1378,7 @@ namespace AllinDefense.UI
             RefreshLanguageButtons();
             progressDirty = true;
             RefreshProfile();
+            if (CurrentScreen == AppScreen.Result) RefreshCampaignCompletionCard(resultWasVictory, resultEarnedStars);
             if (builtScreens.Contains(AppScreen.Campaign))
             {
                 for (int i = 0; i < regionScrolls.Count; i++)

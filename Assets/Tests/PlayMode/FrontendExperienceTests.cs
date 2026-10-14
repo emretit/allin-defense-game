@@ -272,7 +272,7 @@ namespace AllinDefense.Tests
                     {
                         string objective = (string)typeof(AppFlowController).GetMethod("LearningObjective", BindingFlags.Static | BindingFlags.NonPublic)
                             .Invoke(null, new object[] { level });
-                        Assert.That(objective.Length, Is.LessThanOrEqualTo(40), $"{language} level {level} objective");
+                        Assert.That(objective.Length, Is.LessThanOrEqualTo(level == 10 ? 64 : 40), $"{language} level {level} objective");
                     }
                     Assert.That(UiQuery.FindById(flow, "Enemy Intel").GetComponentsInChildren<UnityEngine.UI.Image>().Length, Is.GreaterThan(0));
                     var map = UiQuery.FindById<UnityEngine.UI.ScrollRect>(flow, "Campaign Scroll");
