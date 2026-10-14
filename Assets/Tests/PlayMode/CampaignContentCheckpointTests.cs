@@ -99,7 +99,7 @@ namespace AllinDefense.Tests
             finally { region.contentVersion = previous; }
         }
 
-        [TestCase(40, "deep-lord", 8, 2)]
+        [TestCase(40, "deep-lord", 12, 2)]
         [TestCase(50, "last-lord", 18, 3)]
         [TestCase(20, "gate-master", 8, 1)]
         public void BossReinforcementsConsumeSelectedProfile(int level, string profileId, int count, int entrances)

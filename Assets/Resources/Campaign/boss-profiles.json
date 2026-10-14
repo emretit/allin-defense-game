@@ -48,16 +48,16 @@
     {
       "id": "deep-lord",
       "reinforcementEnemy": 0,
-      "reinforcementCount": 6,
+      "reinforcementCount": 10,
       "reinforcementRoute": "rotate",
       "phaseThresholds": [
         0.66,
         0.33
       ],
-      "phase3SpeedMultiplier": 1.44,
-      "silenceInterval": 4,
-      "reinforcementStartDelay": 0.5,
-      "reinforcementInterval": 0.6,
+      "phase3SpeedMultiplier": 1.4,
+      "silenceInterval": 5,
+      "reinforcementStartDelay": 5,
+      "reinforcementInterval": 1.1,
       "supportCount": 2
     },
     {

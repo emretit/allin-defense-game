@@ -35,6 +35,7 @@ namespace AllinDefense.Tests
             Assert.That(CampaignContent.ContentVersion(10), Is.EqualTo(FirstRegionCampaign.Version));
             Assert.That(CampaignContent.ContentVersion(11), Is.EqualTo("region-02-v1"));
             Assert.That(CampaignContent.ContentVersion(21), Is.EqualTo("region-03-v1"));
+            Assert.That(CampaignContent.ContentVersion(31), Is.EqualTo("region-04-v1"));
             Assert.That(CampaignCatalog.Level(50).displayName, Is.EqualTo("Son Lord"));
         }
 
@@ -108,7 +109,7 @@ namespace AllinDefense.Tests
             Assert.That(BossEncounterProfile.Resolve(""), Is.Null);
             Assert.Throws<InvalidOperationException>(() => BossEncounterProfile.Resolve("unknown"));
             for (int level = 1; level <= 50; level++)
-                Assert.That(CampaignContent.Level(level).bossProfileId, Is.EqualTo(level == 20 ? "gate-master" : level == 30 ? "frost-sovereign" : level % 10 == 0 ? "region-lord" : ""));
+                Assert.That(CampaignContent.Level(level).bossProfileId, Is.EqualTo(level == 20 ? "gate-master" : level == 30 ? "frost-sovereign" : level == 40 ? "deep-lord" : level % 10 == 0 ? "region-lord" : ""));
             var gate = BossEncounterProfile.Resolve("gate-master");
             Assert.That(gate.reinforcementEnemy, Is.EqualTo(EnemyArchetype.Vanguard));
             Assert.That(gate.reinforcementRoute, Is.EqualTo("first"));
@@ -131,7 +132,13 @@ namespace AllinDefense.Tests
             Assert.That(legacy.phaseThresholds, Is.EqualTo(new[] { .66f, .33f }));
             Assert.That(legacy.phase3SpeedMultiplier, Is.EqualTo(1.44f));
             Assert.That(legacy.silenceInterval, Is.EqualTo(4f));
-            Assert.That(BossEncounterProfile.Resolve("deep-lord").supportCount, Is.EqualTo(2));
+            var deep = BossEncounterProfile.Resolve("deep-lord");
+            Assert.That(deep.reinforcementEnemy, Is.EqualTo(EnemyArchetype.Raider));
+            Assert.That(deep.reinforcementRoute, Is.EqualTo("rotate"));
+            Assert.That(deep.reinforcementCount, Is.EqualTo(10));
+            Assert.That(deep.reinforcementStartDelay, Is.EqualTo(5f));
+            Assert.That(deep.reinforcementInterval, Is.EqualTo(1.1f));
+            Assert.That(deep.supportCount, Is.EqualTo(2));
         }
     }
 }
