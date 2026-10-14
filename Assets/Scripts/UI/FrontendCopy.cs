@@ -97,7 +97,7 @@ namespace AllinDefense.UI
         public static readonly LocalizedCopy RegionsComingSoon = new("Yeni bölgeler yakında", "New regions coming soon");
         public static readonly LocalizedCopy KingdomSafe = new("Krallık savunuldu", "The kingdom is safe");
         public static readonly LocalizedCopy RegionStars = new("{0} · {1}/30 yıldız", "{0} · {1}/30 stars");
-        public static readonly LocalizedCopy ReturnToMissingStars = new("Eksik yıldızlara dön", "Return to missing stars");
+        public static readonly LocalizedCopy ReturnToMissingStars = new("EKSİK YILDIZLARA DÖN", "RETURN TO MISSING STARS");
         public static readonly LocalizedCopy RegionLocked = new("Önce bölüm {0}'i tamamla", "Complete chapter {0} first");
         public static readonly LocalizedCopy ObjectiveRegion = new("Savunmanı hazırla: {0}.", "Prepare your defence: {0}.");
         public static readonly LocalizedCopy ObjectiveBoss = new("{0} saldırılarına karşı kaleyi koru.", "Protect the keep against {0}.");
@@ -129,6 +129,15 @@ namespace AllinDefense.UI
         public static readonly LocalizedCopy ObjectiveHealer = new("Önce şifacıyı durdur.", "Stop the healer first.");
         public static readonly LocalizedCopy ObjectiveSiege = new("Kuşatma saldırısını darbeyle kes.", "Interrupt siege attacks with a strike.");
         public static readonly LocalizedCopy ObjectiveMixedPressure = new("Karma düşman baskısına hazırlan.", "Prepare for mixed enemy pressure.");
+        public static readonly LocalizedCopy ObjectiveAshVanguard = new("Yeni bölgede zırhlı öncüyü büyüyle durdur.", "Stop armoured vanguards with magic.");
+        public static readonly LocalizedCopy ObjectiveHealerEscort = new("Şifacıyı eskorttan ayır.", "Separate the healer from its escort.");
+        public static readonly LocalizedCopy ObjectiveLongTurn = new("Uzun dönüşte yenilenene ateşi yoğunlaştır.", "Focus fire on regenerators at the long bend.");
+        public static readonly LocalizedCopy ObjectiveSecondEntrance = new("İkinci girişte yeni yolu izle.", "Watch the new route at the second entrance.");
+        public static readonly LocalizedCopy ObjectiveAlternatingRoutes = new("İki yola dönüşümlü savunma kur.", "Build defences on both routes in turn.");
+        public static readonly LocalizedCopy ObjectiveSupportConvoy = new("Öncü ve şifacı konvoyunu kır.", "Break the vanguard and healer convoy.");
+        public static readonly LocalizedCopy ObjectiveShortSidePath = new("Kısa yan yolda birikmeyi önle.", "Prevent crowds on the short side path.");
+        public static readonly LocalizedCopy ObjectiveSiegeTiming = new("Kuşatma uyarısında darbeyi zamanla.", "Time your strike during the siege warning.");
+        public static readonly LocalizedCopy ObjectiveHoldBothRoutes = new("İki yolu birlikte tut.", "Hold both routes at once.");
         public static readonly LocalizedCopy ObjectiveLord = new("Lordun kırmızı uyarısını darbeyle kes.", "Interrupt the lord's red warning.");
         public static readonly LocalizedCopy SaveRetry = new("Kayıt tekrar denenecek", "Save will retry");
         public static readonly LocalizedCopy SaveRecovery = new("Kayıt kurtarılmayı bekliyor", "Save needs recovery");

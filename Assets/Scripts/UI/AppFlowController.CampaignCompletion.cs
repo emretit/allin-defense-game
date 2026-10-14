@@ -54,6 +54,7 @@ namespace AllinDefense.UI
             campaignCompletionCard.GetComponent<VerticalLayoutGroup>().spacing = UiTokens.Space1;
             completionHeading = CompletionText(campaignCompletionCard, "Completion Heading", 34, true);
             completionHeading.color = UiTokens.Gold;
+            UiKit.Size(completionHeading.rectTransform, height: 88);
             completionNext = CompletionText(campaignCompletionCard, "Completion Next", 28);
             for (int region = 1; region <= CampaignCatalog.RegionCount; region++)
                 completionRegions.Add(CompletionText(campaignCompletionCard, $"Completion Region {region}", 26));

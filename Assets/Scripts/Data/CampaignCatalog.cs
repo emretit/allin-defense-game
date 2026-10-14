@@ -53,7 +53,7 @@ namespace AllinDefense.Data
 
         private static readonly string[] RegionSubtitles =
         {
-            "Savunmanın temelleri", "Zırh ve kuşatma", "Hız ve don etkileri",
+            "Savunmanın temelleri", "Zırh ve kuşatma", "Hız ve zamanlama",
             "Çoklu baskı hatları", "Ustalık sınavı"
         };
 

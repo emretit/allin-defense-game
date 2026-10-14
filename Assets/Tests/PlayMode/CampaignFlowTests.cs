@@ -198,11 +198,11 @@ namespace AllinDefense.Tests
                 Call(flow, "SelectLevel", 31);
                 Assert.That(Text("Briefing Reward"), Does.Contain(GameLocalization.Translate(CampaignCatalog.Regions[3].subtitle)));
                 Call(flow, "SelectLevel", 40);
-                Assert.That(Text("Briefing Reward"), Does.Contain("Derinliklerin Lordu"));
+                Assert.That(Text("Briefing Reward"), Does.Contain(CampaignCatalog.Level(40).localizedName));
                 Win(40);
                 var heading = Find<TMP_Text>("Completion Heading");
                 Canvas.ForceUpdateCanvases(); heading.ForceMeshUpdate();
-                Assert.That(heading.text, Does.Contain("Batık Krallık"));
+                Assert.That(heading.text, Does.Contain(CampaignCatalog.Regions[3].localizedName));
                 Assert.That(heading.isTextOverflowing, Is.False);
                 var chapter = Find<TMP_Text>("Result Chapter"); chapter.ForceMeshUpdate();
                 Assert.That(chapter.isTextOverflowing, Is.False);
