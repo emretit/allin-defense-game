@@ -33,16 +33,16 @@
     {
       "id": "frost-sovereign",
       "reinforcementEnemy": 0,
-      "reinforcementCount": 6,
+      "reinforcementCount": 12,
       "reinforcementRoute": "first",
       "phaseThresholds": [
         0.66,
         0.33
       ],
-      "phase3SpeedMultiplier": 1.65,
-      "silenceInterval": 4,
-      "reinforcementStartDelay": 0.5,
-      "reinforcementInterval": 0.3,
+      "phase3SpeedMultiplier": 1.5,
+      "silenceInterval": 5,
+      "reinforcementStartDelay": 3,
+      "reinforcementInterval": 0.65,
       "supportCount": 0
     },
     {

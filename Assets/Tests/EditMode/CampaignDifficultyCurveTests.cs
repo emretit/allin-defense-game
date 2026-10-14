@@ -10,7 +10,7 @@ namespace AllinDefense.Tests
 {
     public sealed class CampaignDifficultyCurveTests
     {
-        private static readonly int[] ApprovedRegions = { 1, 2 };
+        private static readonly int[] ApprovedRegions = { 1, 2, 3 };
         private static readonly MethodInfo BaseStats = typeof(GameSessionController).GetMethod("GetStats", BindingFlags.Static | BindingFlags.NonPublic);
 
         [TestCaseSource(nameof(ApprovedRegions))]
@@ -23,7 +23,7 @@ namespace AllinDefense.Tests
                 if (index > 0)
                 {
                     Assert.That(Pattern(level), Is.Not.EqualTo(Pattern(levels[index - 1])), $"Level {level.level} repeats the previous spawn pattern.");
-                    if (level.level is 15 or 19)
+                    if (level.level is 15 or 19 or 25 or 29)
                     {
                         Assert.That(TotalHealth(level), Is.LessThan(TotalHealth(levels[index - 1])), "Authored recovery chapters must ease pressure.");
                         Assert.That(TotalHealth(level), Is.GreaterThanOrEqualTo(TotalHealth(levels[index - 2])), "Recovery must retain the earlier lesson pressure.");
@@ -87,6 +87,28 @@ namespace AllinDefense.Tests
             Assert.That(TotalHealth(CampaignContent.Level(11)), Is.InRange(
                 TotalHealth(CampaignContent.Level(8)) * .8, TotalHealth(CampaignContent.Level(9)) * 1.1));
             Assert.That(TotalHealth(CampaignContent.Level(20)) / (double)TotalHealth(CampaignContent.Level(10)), Is.InRange(1.2, 1.4));
+        }
+
+        [Test]
+        public void FrostBorderTeachesArrivalTimingBeforeItsBoss()
+        {
+            foreach (var level in CampaignContent.Region(3).levels)
+            {
+                Assert.That(CampaignLevelFactory.Create(level.level).entranceCount, Is.EqualTo(2));
+                Assert.That(level.speedMultiplier, Is.InRange(1.10f, 1.20f));
+            }
+            var introduction = CampaignContent.Level(21);
+            Assert.That(introduction.waves[0].groups.All(g => g.enemy == EnemyArchetype.Raider && g.routeId == 0), Is.True);
+            Assert.That(TotalHealth(introduction) / (double)TotalHealth(CampaignContent.Level(20)), Is.InRange(.75, .85));
+            foreach (var wave in CampaignContent.Level(23).waves)
+                Assert.That(wave.groups.Where(g => g.enemy == EnemyArchetype.Regenerator).Min(g => g.startDelay),
+                    Is.GreaterThan(wave.groups.Where(g => g.enemy == EnemyArchetype.Raider).Min(g => g.startDelay)));
+            foreach (var wave in CampaignContent.Level(26).waves)
+                Assert.That(wave.groups.Where(g => g.enemy == EnemyArchetype.Vanguard).Min(g => g.startDelay),
+                    Is.LessThan(wave.groups.Where(g => g.enemy == EnemyArchetype.Raider).Min(g => g.startDelay)));
+            Assert.That(CampaignContent.Level(28).waves.All(w =>
+                w.groups.Any(g => g.enemy == EnemyArchetype.Support) && w.groups.Any(g => g.enemy == EnemyArchetype.Vanguard)), Is.True);
+            Assert.That(TotalHealth(CampaignContent.Level(30)) / (double)TotalHealth(CampaignContent.Level(20)), Is.InRange(1.2, 1.4));
         }
 
         private static string Pattern(CampaignLevelContent level) => string.Join("|", level.waves.Select(w =>

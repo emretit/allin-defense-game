@@ -34,6 +34,7 @@ namespace AllinDefense.Tests
             Assert.That(CampaignContent.ContentVersion(1), Is.EqualTo("first-region-v2"));
             Assert.That(CampaignContent.ContentVersion(10), Is.EqualTo(FirstRegionCampaign.Version));
             Assert.That(CampaignContent.ContentVersion(11), Is.EqualTo("region-02-v1"));
+            Assert.That(CampaignContent.ContentVersion(21), Is.EqualTo("region-03-v1"));
             Assert.That(CampaignCatalog.Level(50).displayName, Is.EqualTo("Son Lord"));
         }
 
@@ -107,7 +108,7 @@ namespace AllinDefense.Tests
             Assert.That(BossEncounterProfile.Resolve(""), Is.Null);
             Assert.Throws<InvalidOperationException>(() => BossEncounterProfile.Resolve("unknown"));
             for (int level = 1; level <= 50; level++)
-                Assert.That(CampaignContent.Level(level).bossProfileId, Is.EqualTo(level == 20 ? "gate-master" : level % 10 == 0 ? "region-lord" : ""));
+                Assert.That(CampaignContent.Level(level).bossProfileId, Is.EqualTo(level == 20 ? "gate-master" : level == 30 ? "frost-sovereign" : level % 10 == 0 ? "region-lord" : ""));
             var gate = BossEncounterProfile.Resolve("gate-master");
             Assert.That(gate.reinforcementEnemy, Is.EqualTo(EnemyArchetype.Vanguard));
             Assert.That(gate.reinforcementRoute, Is.EqualTo("first"));
@@ -115,6 +116,14 @@ namespace AllinDefense.Tests
             Assert.That(gate.reinforcementStartDelay, Is.EqualTo(2f));
             Assert.That(gate.reinforcementInterval, Is.EqualTo(1.2f));
             Assert.That(gate.silenceInterval, Is.EqualTo(5f));
+            var frost = BossEncounterProfile.Resolve("frost-sovereign");
+            Assert.That(frost.reinforcementEnemy, Is.EqualTo(EnemyArchetype.Raider));
+            Assert.That(frost.reinforcementRoute, Is.EqualTo("first"));
+            Assert.That(frost.reinforcementCount, Is.EqualTo(12));
+            Assert.That(frost.reinforcementStartDelay, Is.EqualTo(3f));
+            Assert.That(frost.reinforcementInterval, Is.EqualTo(.65f));
+            Assert.That(frost.phaseThresholds, Is.EqualTo(new[] { .66f, .33f }));
+            Assert.That(frost.phase3SpeedMultiplier, Is.EqualTo(1.5f));
             var legacy = BossEncounterProfile.Resolve("region-lord");
             Assert.That(legacy.reinforcementEnemy, Is.EqualTo(EnemyArchetype.Raider));
             Assert.That(legacy.reinforcementCount, Is.EqualTo(6));
