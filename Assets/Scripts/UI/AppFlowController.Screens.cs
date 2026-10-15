@@ -689,6 +689,7 @@ namespace AllinDefense.UI
 
         private void BuildEnemyCard(EnemyArchetype enemy)
         {
+            if (!enemyFromBriefing) canvas.gameObject.SetActive(true);
             newEnemyModal = menuKit.Modal(canvas.transform, "New Enemy", enemyFromBriefing ? FrontendCopy.EnemyInfoHeading : FrontendCopy.NewEnemyHeading);
             newEnemyModal.DismissOnScrim = false;
             var card = (RectTransform)newEnemyModal.Body.parent;
@@ -709,7 +710,12 @@ namespace AllinDefense.UI
             if (newEnemyModal == null) return;
             if (!enemyFromBriefing) FrontendPreferences.MarkEnemySeen(introducedEnemy);
             var modal = newEnemyModal; newEnemyModal = null;
-            modal.Hide(() => Destroy(modal.gameObject));
+            modal.Hide(() =>
+            {
+                Destroy(modal.gameObject);
+                if (CurrentScreen == AppScreen.Battle && newEnemyModal == null)
+                    canvas.gameObject.SetActive(false);
+            });
             if (enemyFromBriefing) { enemyFromBriefing = false; return; }
             if (enemyOwnsPause && session.Phase == GamePhase.Paused)
             {
