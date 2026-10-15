@@ -26,9 +26,11 @@ namespace AllinDefense.Data
             _ => throw new System.ArgumentOutOfRangeException(nameof(kind))
         };
         public static int Cost(OutpostKind kind) => kind == OutpostKind.Archer ? 160 : kind == OutpostKind.Barracks ? 180 : 220;
-        public static int UnlockLevel(OutpostKind kind) => kind == OutpostKind.Archer ? 6 : kind == OutpostKind.Barracks ? 8 : 7;
-        public static bool CanBuild(OutpostKind kind, int unlockedLevel) => kind switch
-        { OutpostKind.Archer => true, OutpostKind.Barracks => unlockedLevel >= 2, OutpostKind.Mage => unlockedLevel >= 3, _ => false };
+        public static int UnlockLevel(OutpostKind kind) => 1;
+        public static int BuildUnlockLevel(OutpostKind kind) => kind switch
+        { OutpostKind.Archer or OutpostKind.Barracks or OutpostKind.Mage => 1, _ => int.MaxValue };
+        public static bool CanBuild(OutpostKind kind, int unlockedLevel) => kind == OutpostKind.Archer ||
+            (kind == OutpostKind.Barracks || kind == OutpostKind.Mage) && unlockedLevel >= BuildUnlockLevel(kind);
         public static OutpostSpecialization Branch(OutpostKind kind, int choice) => kind switch
         {
             OutpostKind.Archer => choice == 0 ? OutpostSpecialization.RapidFire : OutpostSpecialization.Sharpshooter,

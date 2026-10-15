@@ -58,9 +58,9 @@ namespace AllinDefense.Tests
 #endif
             GameLocalization.SetLanguage(language); Time.timeScale = 1;
         }
-        [UnityTest] public IEnumerator PaintedRadialIconsAreLargeMaskedAndLockedOptionsStayAccessible()
+        [UnityTest] public IEnumerator PaintedRadialIconsAreLargeMaskedAndChapterOneOptionsAreUnlocked()
         {
-            session.SetCampaignLevel(1);
+            session.SetCampaignLevel(1); session.ConfigureProgress(1);
             Call(session, "SelectSlot", Slot(0)); yield return null; Canvas.ForceUpdateCanvases();
             foreach (string id in new[] { "Archer", "Barracks", "Mage" })
             {

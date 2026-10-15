@@ -24,7 +24,7 @@ namespace AllinDefense.Tests
                 {
                     var session=new GameObject("Specialization encounter fixture").AddComponent<GameSessionController>();
                     session.ConfigurePresentation(Resources.Load<DefenderPresentationCatalog>("Presentation/DefenderPresentationCatalog"));
-                    session.SetCampaignLevel(10);session.Initialize();Time.timeScale=0;
+                    session.SetCampaignLevel(1);session.ConfigureProgress(1);session.Initialize();Time.timeScale=0;
                     // Funds isolate role mechanics; full campaign affordability is covered by FirstRegionBalanceTests.
                     typeof(GameSessionController).GetMethod("EarnGold",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(session,new object[]{1000});
                     session.TryBuildOutpost(0,kind);session.TryUpgradeOutpost(0);

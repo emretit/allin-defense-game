@@ -112,10 +112,10 @@ namespace AllinDefense.Core
             ValidActor(cp.hero,240) && (cp.hero.health > 0 || cp.hero.downed) && cp.outposts != null && cp.outposts.All(o=>o!=null) &&
             cp.outposts.Count <= level.outpostSlots.Length && cp.outposts.Select(o => o.slot).Distinct().Count() == cp.outposts.Count &&
             cp.outposts.All(o => o.slot >= 0 && o.slot < level.outpostSlots.Length && Enum.IsDefined(typeof(OutpostKind),o.kind) &&
-                TowerProgression.CanBuild(o.kind, store.Data.unlockedLevel) && ValidTimer(o.attack) && ValidTimer(o.disabled) &&
+                ValidTimer(o.attack) && ValidTimer(o.disabled) &&
                 o.guards != null && o.guards.Count <= (o.kind == OutpostKind.Barracks ? TowerProgression.BarracksSquadSize : 0) && o.guards.All(ValidGuard) &&
                 o.guards.Select((g,index) => g.hasPosition ? g.formationIndex : index).Distinct().Count() == o.guards.Count &&
-                o.level >= 1 && o.level <= 3 && (o.level == 3 ? store.Data.unlockedLevel >= TowerProgression.UnlockLevel(o.kind) && TowerProgression.Matches(o.kind, o.specialization) : o.specialization == OutpostSpecialization.None));
+                o.level >= 1 && o.level <= 3 && (o.level == 3 ? TowerProgression.Matches(o.kind, o.specialization) : o.specialization == OutpostSpecialization.None));
         }
         private void ClearCheckpoint()
         {

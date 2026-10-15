@@ -16,6 +16,18 @@ namespace AllinDefense.Tests
 {
     public sealed class CoreRulesTests
     {
+        [TestCase(OutpostKind.Archer)]
+        [TestCase(OutpostKind.Barracks)]
+        [TestCase(OutpostKind.Mage)]
+        public void AllTowersAndTheirBranchesAreAvailableFromChapterOne(OutpostKind kind)
+        {
+            Assert.That(TowerProgression.BuildUnlockLevel(kind), Is.EqualTo(1));
+            Assert.That(TowerProgression.UnlockLevel(kind), Is.EqualTo(1));
+            Assert.That(TowerProgression.CanBuild(kind, 1), Is.True);
+            foreach (int choice in new[] { 0, 1 })
+                Assert.That(TowerProgression.Matches(kind, TowerProgression.Branch(kind, choice)), Is.True);
+        }
+
         [TestCase(100, 25, 75)]
         [TestCase(10, 50, 0)]
         [TestCase(10, -2, 10)]

@@ -80,6 +80,35 @@ namespace AllinDefense.Tests
             Assert.That(session.CurrentWaveIndex,Is.Zero);
         }
         [UnityTest]
+        public IEnumerator ChapterOneCheckpointRestoresEveryTowerAndAllSixBranches()
+        {
+            folder = Path.Combine(Application.temporaryCachePath, "chapter-one-towers-" + System.Guid.NewGuid());
+            var store = new CampaignProgressStore(Path.Combine(folder, "save.json"));
+            foreach (var kind in new[] { OutpostKind.Archer, OutpostKind.Barracks, OutpostKind.Mage })
+            foreach (int choice in new[] { 0, 1 })
+            {
+                var session = Create(1, store);
+                typeof(GameSessionController).GetMethod("EarnGold", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
+                    .Invoke(session, new object[] { 1000 });
+                Assert.That(session.TryBuildOutpost(0, kind), Is.True);
+                Assert.That(session.TryUpgradeOutpost(0), Is.True);
+                var branch = TowerProgression.Branch(kind, choice);
+                Assert.That(session.TrySpecializeOutpost(0, branch), Is.True);
+                session.StartNextWave();
+                Assert.That(GameSessionController.IsValidCheckpoint(store, store.Data.checkpoint), Is.True);
+                Object.Destroy(session.gameObject); yield return null;
+                store = new CampaignProgressStore(store.SavePath);
+                session = Create(1, store);
+                Assert.That(session.CheckpointRestored, Is.True);
+                Assert.That(session.Outposts.Single().Kind, Is.EqualTo(kind));
+                Assert.That(session.Outposts.Single().Specialization, Is.EqualTo(branch));
+                Assert.That(store.Data.unlockedLevel, Is.EqualTo(1));
+                Object.Destroy(session.gameObject); yield return null;
+                store.Data.checkpoint = null; store.Save();
+            }
+        }
+
+        [UnityTest]
         public IEnumerator IncompatibleCheckpointLeavesCampaignFiftyIntact()
         {
             folder = Path.Combine(Application.temporaryCachePath,"checkpoint-test-"+System.Guid.NewGuid());
