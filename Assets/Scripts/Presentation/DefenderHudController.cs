@@ -160,9 +160,7 @@ namespace AllinDefense.Presentation
 
         private UiCopyCatalog copy;
         private TMP_Text goldText;
-        private TMP_Text livesText;
         private TMP_Text waveText;
-        private TMP_Text phaseText;
         private TMP_Text previewText;
         private TMP_Text messageText;
         private TMP_Text heroText;
@@ -392,11 +390,10 @@ namespace AllinDefense.Presentation
         private void CacheReferences()
         {
             goldPill = Find<UiStatPill>("TopBar/Gold");
-            livesPill = Find<UiStatPill>("TopBar/Lives");
+            transform.Find("TopBar/Lives").gameObject.SetActive(false);
             goldText = goldPill.GetComponentInChildren<TMP_Text>();
-            livesText = livesPill.GetComponentInChildren<TMP_Text>();
             waveText = Find<TMP_Text>("TopBar/WavePanel/Wave");
-            phaseText = Find<TMP_Text>("TopBar/WavePanel/PhaseChip/PhaseChip.Label");
+            transform.Find("TopBar/WavePanel/PhaseChip").gameObject.SetActive(false);
             pauseButton = Find<Button>("TopBar/Pause");
             speedButton = Find<Button>("TopBar/Speed");
             speedLabel = speedButton.GetComponentInChildren<TMP_Text>(true);
@@ -409,6 +406,9 @@ namespace AllinDefense.Presentation
             radialCooldown = Find<UiRadialCooldown>("BottomBar/AbilityCooldown");
             abilityButton = radialCooldown.GetComponentInChildren<Button>(true);
             heroText = Find<TMP_Text>("BottomBar/Hero");
+            heroText.enableAutoSizing = true;
+            heroText.fontSizeMin = 10;
+            heroText.fontSizeMax = 12;
             nextWaveButton = Find<Button>("BottomBar/NextWave");
             nextWaveLabel = nextWaveButton.GetComponentInChildren<TMP_Text>(true);
             selectedPanel = transform.Find("SelectedPanel").gameObject;

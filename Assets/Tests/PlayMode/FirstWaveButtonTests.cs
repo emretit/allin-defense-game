@@ -94,11 +94,19 @@ namespace AllinDefense.Tests
                 Assert.That(modal.gameObject.activeInHierarchy, Is.True,
                     "The first wave was intercepted, but its enemy introduction is hidden under the disabled frontend canvas.");
                 yield return new WaitForSecondsRealtime(.3f);
+                Assert.That(session.IntroModalOpen, Is.True);
+                Assert.That(UiQuery.FindById<UiOverlay>(hud, "PauseOverlay").gameObject.activeSelf, Is.False);
+                foreach (string id in new[] { "New Enemy Trait", "New Enemy Tactic" })
+                    Assert.That(UiQuery.FindById<TMPro.TMP_Text>(flow, id).fontSize, Is.EqualTo(32));
+                var tactic = UiQuery.FindById<TMPro.TMP_Text>(flow, "New Enemy Tactic");
+                Assert.That(tactic.overflowMode, Is.EqualTo(TMPro.TextOverflowModes.Overflow));
+                Assert.That(tactic.rectTransform.rect.height, Is.GreaterThanOrEqualTo(tactic.preferredHeight - 1));
                 ClickAtScreenPosition(UiQuery.FindById<Button>(flow, "Acknowledge Enemy"));
                 yield return new WaitForSecondsRealtime(.3f);
                 Assert.That(FrontendPreferences.HasSeenEnemy(EnemyArchetype.Raider), Is.True);
                 Assert.That(UiQuery.FindById<UiOverlay>(flow, "New Enemy"), Is.Null);
             }
+            Assert.That(session.IntroModalOpen, Is.False);
             Assert.That(session.Phase, Is.EqualTo(GamePhase.Wave));
             Assert.That(Time.timeScale, Is.EqualTo(session.CurrentGameSpeed));
             yield return null;
@@ -139,8 +147,11 @@ namespace AllinDefense.Tests
             Time.timeScale = 1;
             if (File.Exists(savePath)) File.Delete(savePath);
 #if UNITY_EDITOR
-            var review = AppDomain.CurrentDomain.GetAssemblies().Select(a => a.GetType("AllinDefense.Editor.FrontendExperienceReview")).First(t => t != null);
-            review.GetMethod("RestoreSize").Invoke(null, null);
+            if (SystemInfo.graphicsDeviceType != UnityEngine.Rendering.GraphicsDeviceType.Null)
+            {
+                var review = AppDomain.CurrentDomain.GetAssemblies().Select(a => a.GetType("AllinDefense.Editor.FrontendExperienceReview")).First(t => t != null);
+                review.GetMethod("RestoreSize").Invoke(null, null);
+            }
 #endif
         }
     }

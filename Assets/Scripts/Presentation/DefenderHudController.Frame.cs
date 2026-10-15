@@ -13,7 +13,7 @@ namespace AllinDefense.Presentation
     public sealed partial class DefenderHudController
     {
         private UiKit frameKit;
-        private UiStatPill goldPill, livesPill;
+        private UiStatPill goldPill;
         private UiRadialCooldown radialCooldown;
         private UiProgressSegments waveProgress;
         private UiOverlay pauseModal, mapConfirmation;
@@ -21,7 +21,7 @@ namespace AllinDefense.Presentation
         private GameObject bossBar;
         private Image bossFill;
         private TMP_Text bossName, bossHealth;
-        private bool criticalLives, frameValuesReady;
+        private bool frameValuesReady;
         private GreyboxEnemy shownBoss;
         private int segmentCount;
         private int countdownSecond = -1, returnSecond = -1;
@@ -93,21 +93,14 @@ namespace AllinDefense.Presentation
         {
             goldPill.SetValue(session.Gold, frameValuesReady, frameValuesReady);
             frameValuesReady = true;
-            livesPill.SetValue(session.Lives, false, false);
-            bool critical = session.Lives <= 5;
-            if (critical && !criticalLives)
-                (livesPill.GetComponent<UiMotion>() ?? livesPill.gameObject.AddComponent<UiMotion>()).Punch(livesPill.transform);
-            criticalLives = critical;
-            livesText.color = critical ? UiTokens.Danger : UiTokens.TextPrimary;
             speedLabel.text = GameSessionController.SpeedLabelForScale(session.CurrentGameSpeed);
-            phaseText.text = FramePhaseLabel(session.UnpausedPhase, session.NextWaveHasBoss);
-            phaseText.color = session.NextWaveHasBoss ? UiTokens.Danger : UiTokens.Moon;
             int count = Mathf.Max(1, session.WaveCount);
             if (count != segmentCount)
             {
                 waveProgress.gameObject.SetActive(false);
                 Destroy(waveProgress.gameObject);
                 waveProgress = frameKit.ProgressSegments(waveText.transform.parent, "WaveProgress", count);
+                waveProgress.GetComponent<HorizontalLayoutGroup>().spacing = count > 8 ? 2 : UiTokens.Space1;
                 segmentCount = count;
                 responsiveLayout?.RefreshLayout();
             }
@@ -117,9 +110,9 @@ namespace AllinDefense.Presentation
             previewText.text = FrontendCopy.UpcomingCount.Format(session.UpcomingEnemyCount);
             RefreshWaveForecast(session);
             RefreshBoss(session);
-            bool canCall = session.Phase is GamePhase.Preparing or GamePhase.Intermission;
+            bool canCall = session.UnpausedPhase is GamePhase.Preparing or GamePhase.Intermission;
             nextWaveButton.gameObject.SetActive(canCall);
-            nextWaveButton.interactable = canCall;
+            nextWaveButton.interactable = canCall && session.Phase != GamePhase.Paused;
             if (session.UnpausedPhase == GamePhase.Intermission)
             {
                 int second = Mathf.CeilToInt(session.IntermissionRemaining);
@@ -149,14 +142,14 @@ namespace AllinDefense.Presentation
                     int second = Mathf.CeilToInt(hero.RespawnRemaining);
                     if (second != returnSecond || returnLanguage != GameLocalization.CurrentLanguage)
                     {
-                        heroText.text = FrontendCopy.WaveHeroReturning.Format(second);
+                        heroText.text = FrontendCopy.SweepHeroReturning.Format(second);
                         returnSecond = second; returnLanguage = GameLocalization.CurrentLanguage;
                     }
                     radialCooldown.SetReturning(true);
                 }
                 abilityButton.interactable = hero.IsAlive && hero.AbilityRemaining <= 0 && session.Phase != GamePhase.Paused;
             }
-            bool paused = session.Phase == GamePhase.Paused && !session.SpecializationModalOpen;
+            bool paused = session.Phase == GamePhase.Paused && !session.SpecializationModalOpen && !session.IntroModalOpen;
             if (paused != pauseOverlayVisible)
             {
                 pauseOverlayVisible = paused;
@@ -176,7 +169,6 @@ namespace AllinDefense.Presentation
             bool visible = boss != null;
             bossBar.SetActive(visible);
             waveText.gameObject.SetActive(!visible);
-            phaseText.transform.parent.gameObject.SetActive(!visible);
             waveProgress.gameObject.SetActive(!visible);
             if (visible)
             {

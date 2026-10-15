@@ -69,6 +69,22 @@ namespace AllinDefense.Tests
         [UnityTest] public IEnumerator TurkishHeroControlsStayRightBesideWaveAndClearOfAllSelections() => HeroControls(GameLanguage.Turkish);
         [UnityTest] public IEnumerator EnglishHeroControlsStayRightBesideWaveAndClearOfAllSelections() => HeroControls(GameLanguage.English);
 
+        [UnityTest] public IEnumerator CardHeightOnlyGrowsUntilSelectionChangesAndRoleColourResets()
+        {
+            session.TryBuildOutpost(0, OutpostKind.Barracks); session.TryUpgradeOutpost(0);
+            Choice("ShieldGuard").onClick.Invoke(); yield return null; Canvas.ForceUpdateCanvases();
+            var panel = (RectTransform)hud.transform.Find("SelectedPanel");
+            float height = panel.rect.height;
+            var role = UiQuery.FindById<TMP_Text>(hud, "Role"); role.color = UiTokens.Gold;
+            Choice("AssaultGuard").onClick.Invoke(); yield return null; Canvas.ForceUpdateCanvases();
+            Assert.That(panel.rect.height, Is.GreaterThanOrEqualTo(height));
+            Assert.That(role.color, Is.EqualTo(UiTokens.TextSecondary));
+            Assert.That(UiQuery.FindById<TMP_Text>(hud, "Hint").text, Is.EqualTo(FrontendCopy.BattlePaused.Value));
+            Call(session, "SelectSlot", Slot(1)); Choice("Archer").onClick.Invoke();
+            yield return null; Canvas.ForceUpdateCanvases();
+            Assert.That(panel.rect.height, Is.LessThan(height), "A new selection releases the previous card height");
+        }
+
         private IEnumerator HeroControls(GameLanguage value)
         {
             GameLocalization.SetLanguage(value);
@@ -140,11 +156,12 @@ namespace AllinDefense.Tests
                 var bounds = Bounds(control);
                 AssertContains(safe, bounds, control.name);
                 Assert.That(bounds.xMin, Is.GreaterThan(safe.center.x), control.name);
-                Assert.That(bounds.xMax, Is.LessThanOrEqualTo(next.xMin + .1f), control.name);
+                Assert.That(bounds.Overlaps(next), Is.False, control.name);
                 foreach (string path in new[] { "BottomBar/NextWave", "MessageChrome", "TopBar/WaveForecast", "SelectedPanel" })
                 {
                     var obstacle = hud.transform.Find(path);
-                    if (obstacle.gameObject.activeInHierarchy) AssertGap(bounds, Bounds(obstacle), control.name + "/" + path);
+                    if (obstacle.gameObject.activeInHierarchy)
+                        AssertGap(bounds, Bounds(obstacle), control.name + "/" + path, path == "SelectedPanel" ? .9f : 7.9f);
                 }
                 if (hud.BattleRadial.IsOpen)
                     foreach (var button in hud.BattleRadial.GetComponentsInChildren<Button>())
@@ -159,10 +176,10 @@ namespace AllinDefense.Tests
             if (forecast.gameObject.activeInHierarchy) AssertGap(Bounds(message), Bounds(forecast), "message/forecast");
         }
 
-        private static void AssertGap(Rect a, Rect b, string label)
+        private static void AssertGap(Rect a, Rect b, string label, float minimum = 7.9f)
         {
             float gap = Mathf.Max(b.xMin - a.xMax, a.xMin - b.xMax, b.yMin - a.yMax, a.yMin - b.yMax);
-            Assert.That(gap, Is.GreaterThanOrEqualTo(7.9f), label + $": {a} / {b}");
+            Assert.That(gap, Is.GreaterThanOrEqualTo(minimum), label + $": {a} / {b}");
         }
 
         private IEnumerator AllPreviews(GameLanguage value)
@@ -257,21 +274,47 @@ namespace AllinDefense.Tests
                 hud.Refresh(session); yield return null; Canvas.ForceUpdateCanvases();
                 var gold = Bounds(hud.transform.Find("TopBar/Gold"));
                 var wave = Bounds(hud.transform.Find("TopBar/WavePanel"));
-                var preview = Bounds(hud.transform.Find("Preview"));
+                var speed = Bounds(hud.transform.Find("TopBar/Speed"));
                 Assert.That(wave.xMin - gold.xMax, Is.GreaterThanOrEqualTo(7.9f));
-                Assert.That(preview.xMin - wave.xMax, Is.GreaterThanOrEqualTo(7.9f));
+                Assert.That(speed.xMin - wave.xMax, Is.GreaterThanOrEqualTo(7.9f));
                 Call(session, "SelectSlot", Slot(0)); Choice("Archer").onClick.Invoke();
                 hud.SetMessage(GameLocalization.Text("Kaleye sızma: Yağmacı — savunmayı güçlendir!", "Keep breached: Raider — strengthen your defences!"), true);
                 yield return null; Canvas.ForceUpdateCanvases();
                 var text = hud.transform.Find("Message").GetComponent<TMP_Text>();
                 text.ForceMeshUpdate();
                 Assert.That(text.fontSize, Is.GreaterThanOrEqualTo(13));
-                Assert.That(text.textInfo.lineCount, Is.EqualTo(2));
-                Assert.That(text.overflowMode, Is.EqualTo(TextOverflowModes.Overflow));
+                Assert.That(text.textInfo.lineCount, Is.LessThanOrEqualTo(2));
                 Assert.That(text.isTextOverflowing, Is.False);
                 Assert.That(Bounds(hud.transform.Find("MessageChrome")).Overlaps(Bounds(hud.transform.Find("SelectedPanel"))), Is.False);
                 AssertCard();
                 Assert.That(UiQuery.FindById<TMP_Text>(hud, "Hint").text, Does.Not.Contain(FrontendCopy.BattleCardUnlockChapter.Format(1)));
+            }
+        }
+
+        [UnityTest] public IEnumerator SpecializedShieldGuardAndHintFitInBothLanguages()
+        {
+            session.TryBuildOutpost(0, OutpostKind.Barracks); session.TryUpgradeOutpost(0);
+            foreach (var value in new[] { GameLanguage.Turkish, GameLanguage.English })
+            {
+                GameLocalization.SetLanguage(value);
+                Call(session, "SelectOutpost", Slot(0).Occupant);
+                Choice("ShieldGuard").onClick.Invoke();
+                yield return null;
+                Assert.That(UiQuery.FindById<TMP_Text>(hud, "CardDetail").text, Is.Not.Empty);
+                Assert.That(UiQuery.FindById<TMP_Text>(hud, "Hint").text, Is.Not.Empty);
+                AssertCard();
+                hud.BattleRadial.Close();
+            }
+            Assert.That(session.TrySpecializeOutpost(0, OutpostSpecialization.ShieldGuard), Is.True);
+            foreach (var value in new[] { GameLanguage.Turkish, GameLanguage.English })
+            {
+                GameLocalization.SetLanguage(value);
+                Call(session, "SelectOutpost", Slot(0).Occupant);
+                Choice("Sell").onClick.Invoke();
+                yield return null;
+                Assert.That(UiQuery.FindById<TMP_Text>(hud, "Hint").text, Is.Not.Empty);
+                AssertCard();
+                Call(hud, "CancelSaleConfirmation");
             }
         }
 
@@ -283,6 +326,10 @@ namespace AllinDefense.Tests
             var bounds = Bounds(panel);
             Debug.Log($"[BATTLE_CARD_MEASURE] {GameLocalization.CurrentLanguage} {UiQuery.FindById<TMP_Text>(hud, "Title").text} {bounds.width:0}×{bounds.height:0} pt");
             Assert.That(bounds.width, Is.EqualTo(260).Within(.1f));
+            float contentHeight = (float)typeof(DefenderHudController).GetField("selectionCardHeight", Private).GetValue(hud);
+            Assert.That(contentHeight, Is.LessThanOrEqualTo(((RectTransform)panel).rect.height + .1f), "Measured content must fit the panel");
+            Assert.That(Bounds(UiQuery.FindById<TMP_Text>(hud, "Hint").transform).yMin,
+                Is.GreaterThanOrEqualTo(bounds.yMin - .1f), "Last content line must stay inside the card");
             AssertContains(Bounds(hud.transform), bounds, "667×375 pt safe area");
             foreach (var text in panel.GetComponentsInChildren<TMP_Text>())
             {

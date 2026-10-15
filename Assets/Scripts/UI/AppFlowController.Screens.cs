@@ -625,8 +625,6 @@ namespace AllinDefense.UI
         private UiOverlay newEnemyModal;
         private bool enemyFromBriefing;
         private EnemyArchetype introducedEnemy;
-        private float enemyReturnSpeed;
-        private bool enemyOwnsPause;
 
         private LocalizedCopy EnemyNameCopy(EnemyArchetype enemy) => enemy switch
         {
@@ -668,9 +666,7 @@ namespace AllinDefense.UI
                 menuKit ??= new UiKit(theme.designSystem);
                 if (newEnemyModal != null) return true;
                 introducedEnemy = enemy;
-                enemyReturnSpeed = Time.timeScale;
-                enemyOwnsPause = session.Phase != GamePhase.Paused;
-                if (enemyOwnsPause) session.TogglePause();
+                if (!session.BeginIntroModal()) return false;
                 enemyFromBriefing = false;
                 BuildEnemyCard(enemy);
                 return true;
@@ -682,7 +678,6 @@ namespace AllinDefense.UI
         {
             if (newEnemyModal != null || CurrentScreen != AppScreen.Campaign) return;
             enemyFromBriefing = true;
-            enemyOwnsPause = false;
             introducedEnemy = enemy;
             BuildEnemyCard(enemy);
         }
@@ -697,10 +692,11 @@ namespace AllinDefense.UI
             var close = card.Find("New Enemy.Close"); close.gameObject.SetActive(false);
             menuKit.Icon(newEnemyModal.Body, "New Enemy Icon", EnemyIcon(enemy), 96);
             MenuText(newEnemyModal.Body, "New Enemy Name", EnemyNameCopy(enemy), 42, true);
-            MenuText(newEnemyModal.Body, "New Enemy Trait", EnemyTrait(enemy), 28);
-            var tactic = MenuText(newEnemyModal.Body, "New Enemy Tactic", DefenceAdvice(enemy), 28);
+            MenuText(newEnemyModal.Body, "New Enemy Trait", EnemyTrait(enemy), 32);
+            var tactic = MenuText(newEnemyModal.Body, "New Enemy Tactic", DefenceAdvice(enemy), 32);
             tactic.textWrappingMode = TextWrappingModes.Normal;
-            UiKit.Size(tactic.rectTransform, height: 120);
+            tactic.overflowMode = TextOverflowModes.Overflow;
+            UiKit.Size(tactic.rectTransform, height: tactic.GetPreferredValues(tactic.text, 936, Mathf.Infinity).y);
             MenuButton(newEnemyModal.Body, "Acknowledge Enemy", FrontendCopy.Understood, null, AcknowledgeEnemy, true);
             newEnemyModal.Show();
         }
@@ -717,12 +713,7 @@ namespace AllinDefense.UI
                     canvas.gameObject.SetActive(false);
             });
             if (enemyFromBriefing) { enemyFromBriefing = false; return; }
-            if (enemyOwnsPause && session.Phase == GamePhase.Paused)
-            {
-                session.TogglePause();
-                Time.timeScale = enemyReturnSpeed;
-            }
-            enemyOwnsPause = false;
+            session.EndIntroModal();
             session.StartNextWave();
         }
 

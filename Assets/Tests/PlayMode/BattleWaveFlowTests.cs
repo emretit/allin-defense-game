@@ -111,7 +111,7 @@ namespace AllinDefense.Tests
             typeof(GreyboxHero).GetField("downed", Private).SetValue(session.Hero, true);
             typeof(GreyboxHero).GetProperty("RespawnRemaining").SetValue(session.Hero, 8f);
             hud.Refresh(session);
-            Assert.That(hud.HeroDisplayLabel, Is.EqualTo("Geri dönüyor · 8 sn"));
+            Assert.That(hud.HeroDisplayLabel, Is.EqualTo(FrontendCopy.SweepHeroReturning.Format(8)));
             Assert.That(UiQuery.FindById<Button>(hud, "Ability").interactable, Is.False);
             yield return null;
         }

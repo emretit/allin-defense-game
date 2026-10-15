@@ -57,7 +57,8 @@ namespace AllinDefense.Tests
 #if UNITY_EDITOR
             typeof(UnityEditor.Editor).Assembly.GetType("UnityEditor.GameView");
             var review = AppDomain.CurrentDomain.GetAssemblies().Select(a => a.GetType("AllinDefense.Editor.FrontendExperienceReview")).FirstOrDefault(t => t != null);
-            review?.GetMethod("RestoreSize").Invoke(null, null);
+            if (SystemInfo.graphicsDeviceType != UnityEngine.Rendering.GraphicsDeviceType.Null)
+                review?.GetMethod("RestoreSize").Invoke(null, null);
 #endif
         }
         [Test] public void ReducedMotionFinishesHudCountersResultsAndWaveBannerImmediately()
@@ -87,7 +88,6 @@ namespace AllinDefense.Tests
             {
                 var button = hud.BattleRadial.GetComponentsInChildren<Button>().First(b => b.name == "Mage");
                 var chip = (RectTransform)button.GetComponent<UiVisualState>().Price.transform.parent;
-                Vector2 rest = chip.anchoredPosition;
                 Assert.That(session.Gold, Is.LessThan(TowerProgression.Base(OutpostKind.Mage).cost));
                 hud.BattleRadial.Choose(2); hud.BattleRadial.Choose(2);
                 Assert.That(errors, Is.EqualTo(1));
@@ -96,18 +96,27 @@ namespace AllinDefense.Tests
                 var rejection = (UiMotion.Handle)typeof(DefenderHudController).GetField("rejectionMotion", Private).GetValue(hud);
                 Assert.That(rejection, Is.Not.Null);
                 Assert.That(rejection.IsComplete, Is.False);
-                Assert.That(typeof(DefenderHudController).GetField("rejectionTarget", Private).GetValue(hud), Is.SameAs(chip));
+                var target = (RectTransform)typeof(DefenderHudController).GetField("rejectionTarget", Private).GetValue(hud);
+                Vector2 rest = (Vector2)typeof(DefenderHudController).GetField("rejectionRest", Private).GetValue(hud);
+                Assert.That(target.gameObject.activeInHierarchy, Is.True);
+                Assert.That(target, Is.SameAs(hud.RadialAction.transform));
                 float deadline = Time.realtimeSinceStartup + 1;
                 bool moved = false;
                 while (!rejection.IsComplete && !moved && Time.realtimeSinceStartup < deadline)
                 {
                     yield return null;
-                    moved = Mathf.Abs(chip.anchoredPosition.x - rest.x) > .01f;
+                    moved = Mathf.Abs(target.anchoredPosition.x - rest.x) > .01f;
                 }
-                Assert.That(moved, Is.True, "Price chip must visibly shake while gameplay time is paused.");
+                Assert.That(moved, Is.True, "The visible rejection target must shake while gameplay time is paused.");
                 FrontendPreferences.ReducedMotion = true;
                 Assert.That(rejection.IsComplete, Is.True);
-                Assert.That(chip.anchoredPosition, Is.EqualTo(rest));
+                Assert.That(target.anchoredPosition, Is.EqualTo(rest));
+                Call(hud, "UpdateRadialSelection", null, null, false);
+                Call(hud, "UpdateRadialSelection", null, slot, true);
+                Assert.That(chip.gameObject.activeInHierarchy, Is.True);
+                Call(hud, "RejectRadial", "Mage");
+                Assert.That(typeof(DefenderHudController).GetField("rejectionTarget", Private).GetValue(hud), Is.SameAs(chip));
+                Assert.That(errors, Is.EqualTo(2), "Each rejection requests exactly one error sound");
                 yield return null;
             }
             finally { UiSounds.Requested -= requested; }
@@ -115,17 +124,24 @@ namespace AllinDefense.Tests
         [UnityTest] public IEnumerator ActualBossWaveControlsPhaseAndLiveBossOwnsNotchedHealthBar()
         {
             Create(1); hud.Refresh(session);
-            Assert.That(UiQuery.FindById<TMP_Text>(hud, "PhaseChip.Label").text, Is.EqualTo(FrontendCopy.HudPreparing.Value));
+            Assert.That(hud.transform.Find("TopBar/WavePanel/PhaseChip").gameObject.activeSelf, Is.False);
+            Assert.That(UiQuery.FindById<Button>(hud, "NextWave").gameObject.activeSelf, Is.True);
             typeof(GameSessionController).GetField("currentWaveIndex", Private).SetValue(session, session.WaveCount - 1);
             Call(session, "SetPhase", GamePhase.Wave); hud.Refresh(session);
             Assert.That(session.NextWaveHasBoss, Is.False);
-            Assert.That(UiQuery.FindById<TMP_Text>(hud, "PhaseChip.Label").text, Does.Not.Contain("BOSS"));
+            Assert.That(hud.transform.Find("TopBar/WavePanel/PhaseChip").gameObject.activeSelf, Is.False);
+            Assert.That(UiQuery.FindById<Button>(hud, "NextWave").gameObject.activeSelf, Is.False);
             Object.Destroy(session.gameObject); yield return null;
             Create(10);
             typeof(GameSessionController).GetField("currentWaveIndex", Private).SetValue(session, session.WaveCount - 1);
+            Call(session, "RefreshThreatPreviewForPhase");
             hud.Refresh(session);
             Assert.That(session.NextWaveHasBoss, Is.True);
-            Assert.That(UiQuery.FindById<TMP_Text>(hud, "PhaseChip.Label").text, Is.EqualTo(FrontendCopy.BossPhase.Value));
+            Assert.That(hud.transform.Find("TopBar/WavePanel/PhaseChip").gameObject.activeSelf, Is.False);
+            var forecast = UiQuery.FindById<TMP_Text>(hud, "WaveForecast.Label");
+            Assert.That(forecast.gameObject.activeInHierarchy, Is.True);
+            Assert.That(forecast.text, Does.Contain(session.BossDisplayName));
+            Assert.That(forecast.color, Is.EqualTo(UiTokens.Danger));
             var bar = UiQuery.FindById(hud, "BossBar"); Assert.That(bar.gameObject.activeSelf, Is.False);
             Call(session, "SpawnEnemy", EnemyArchetype.Boss, 0);
             FrontendPreferences.ReducedMotion = true; hud.Refresh(session);
@@ -262,6 +278,8 @@ namespace AllinDefense.Tests
         }
         [UnityTest] public IEnumerator LandscapeRatiosKeepFrameBelowEighteenPercentAndBattlefieldClear()
         {
+            if (SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Null)
+                Assert.Ignore("Landscape screenshot capture requires a graphics device.");
 #if UNITY_EDITOR
             var review = AppDomain.CurrentDomain.GetAssemblies().Select(a => a.GetType("AllinDefense.Editor.FrontendExperienceReview")).First(t => t != null);
             foreach (var size in new[] { new Vector2Int(800, 450), new Vector2Int(844, 390), new Vector2Int(1024, 768) })

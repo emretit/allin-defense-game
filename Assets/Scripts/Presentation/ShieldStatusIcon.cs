@@ -1,3 +1,4 @@
+using AllinDefense.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,9 +12,9 @@ namespace AllinDefense.Presentation
             var go = new GameObject("Physical armour 50 percent", typeof(RectTransform), typeof(ShieldStatusIcon));
             go.transform.SetParent(healthBar, false);
             var icon = go.GetComponent<ShieldStatusIcon>();
-            icon.color = new Color(.55f,.8f,1); icon.raycastTarget = false;
-            icon.rectTransform.anchoredPosition = new Vector2(-68,4);
-            icon.rectTransform.sizeDelta = new Vector2(24,30);
+            icon.color = UiTokens.TextSecondary; icon.raycastTarget = false;
+            icon.rectTransform.anchoredPosition = new Vector2(-80,4);
+            icon.rectTransform.sizeDelta = new Vector2(44,48);
         }
         protected override void OnPopulateMesh(VertexHelper vh)
         {

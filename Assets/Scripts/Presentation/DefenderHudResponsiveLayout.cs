@@ -47,22 +47,28 @@ namespace AllinDefense.Presentation
             public float MessageY { get; }
         }
 
-        public const float TopContentHeight = 56f;
+        public const float TopContentHeight = 50f;
         public const float BottomContentHeight = 110f;
 
         public const float InformationCardWidth = 260f;
+        public const float InformationCardMaxHeight = 148f;
+        private const float ToastHeight = 64f;
+        private const float HeroRight = 224f;
+        private int informationCardCorner;
+        private float informationCardClearance = UiTokens.Space1;
+        private Vector2 messageRestPosition, messageChromeRestPosition;
+        private float messageEntranceOffset;
+        private LayoutMetrics currentMetrics;
         private float informationCardHeight = 120f;
         private RectTransform root;
         private RectTransform topBar;
         private RectTransform bottomBar;
-        private RectTransform preview;
         private RectTransform message;
         private RectTransform selectedPanel;
         private Rect previousSafeArea;
         private Vector2Int previousScreenSize;
         private bool initialized;
         private bool contextualSelectionActive;
-        private bool contextualSelectionIsEmptySlot;
         private Vector2 contextualTarget;
 
         public void Initialize()
@@ -71,7 +77,6 @@ namespace AllinDefense.Presentation
             root = transform as RectTransform;
             topBar = RequireRect("TopBar");
             bottomBar = RequireRect("BottomBar");
-            preview = RequireRect("Preview");
             message = RequireRect("Message");
             selectedPanel = RequireRect("SelectedPanel");
             initialized = true;
@@ -106,28 +111,94 @@ namespace AllinDefense.Presentation
             }
 
             LayoutMetrics metrics = CalculateLayoutMetrics(root.rect.size, safeArea, previousScreenSize);
-            LayoutFrame(metrics);
+            ApplyLayout(metrics);
+        }
 
+        private void ApplyLayout(LayoutMetrics metrics)
+        {
+            currentMetrics = metrics;
+            LayoutFrame(metrics);
             var points = UiMetrics.PointsPerCanvasUnit(GetComponentInParent<Canvas>());
+            float width = metrics.SafeWidth * points.x;
+            float height = (metrics.SafeMaxY - metrics.SafeMinY) * root.rect.height * points.y;
+            Rect reserve = CardCornerRect(informationCardCorner, width, height, informationCardClearance);
+            bool top = informationCardCorner == 2 || informationCardCorner == 3 || informationCardCorner >= 5;
             selectedPanel.anchorMin = selectedPanel.anchorMax = new Vector2(metrics.SafeMinX, metrics.SafeMinY);
-            selectedPanel.pivot = Vector2.zero;
-            selectedPanel.anchoredPosition = new Vector2(96 / points.x, 8 / points.y);
+            selectedPanel.pivot = new Vector2(0, top ? 1 : 0);
+            selectedPanel.anchoredPosition = new Vector2(reserve.x / points.x, (top ? reserve.yMax : reserve.yMin) / points.y);
             selectedPanel.sizeDelta = new Vector2(InformationCardWidth, informationCardHeight);
             selectedPanel.localScale = new Vector3(1 / points.x, 1 / points.y, 1);
+            // This card contains information only; world slots underneath must remain reachable.
+            foreach (var graphic in selectedPanel.GetComponentsInChildren<Graphic>(true)) graphic.raycastTarget = false;
+        }
+
+        private static float ToastWidth(float width) => Mathf.Min(360, width - 332);
+
+        private static Rect CardCornerRect(int corner, float width, float height, float gap)
+        {
+            bool right = corner % 2 == 1;
+            float x = right ? width - InformationCardWidth - UiTokens.Space1 : UiTokens.Space1;
+            float bottom = corner >= 2 ? height - TopContentHeight - gap - InformationCardMaxHeight :
+                right ? 122 + gap : ToastHeight + UiTokens.Space1 + gap;
+            if (corner == 4) { x = width - HeroRight - 92 - gap - InformationCardWidth; bottom = UiTokens.Space1; }
+            if (corner == 5) x = width * .3f - gap - InformationCardWidth;
+            if (corner == 6) x = width * .7f + gap;
+            return new Rect(x, bottom, InformationCardWidth, InformationCardMaxHeight);
+        }
+
+        private void ChooseInformationCardCorner()
+        {
+            var points = UiMetrics.PointsPerCanvasUnit(GetComponentInParent<Canvas>());
+            float width = currentMetrics.SafeWidth * points.x;
+            float height = (currentMetrics.SafeMaxY - currentMetrics.SafeMinY) * root.rect.height * points.y;
+            Vector2 safeOrigin = root.rect.min + Vector2.Scale(root.rect.size,
+                new Vector2(currentMetrics.SafeMinX, currentMetrics.SafeMinY));
+            Vector2 target = Vector2.Scale(contextualTarget - safeOrigin, points);
+            Rect touch = new(target - Vector2.one * (DefenderSlotVisual.MinimumTouchPoints / 2),
+                Vector2.one * DefenderSlotVisual.MinimumTouchPoints);
+            // Reserve persistent frame slots even when their current content is hidden.
+            Rect[] obstacles = {
+                new(0, height - TopContentHeight, width, TopContentHeight),
+                new(width * .3f, height - TopContentHeight - 40, width * .4f, 32),
+                new(8, 8, ToastWidth(width), ToastHeight),
+                new(width - HeroRight - 64, 8, 64, 88),
+                new(width - HeroRight - 92, 104, 120, 18),
+                new(width - 216, 8, 208, 54)
+            };
+            informationCardCorner = 0;
+            informationCardClearance = UiTokens.Space1;
+            for (int side = 0; side < 2; side++)
+            foreach (float gap in new[] { (float)UiTokens.Space1, 1f })
+            {
+                float bestDistance = -1;
+                for (int corner = 0; corner < 7; corner++)
+                {
+                    Rect candidate = CardCornerRect(corner, width, height, gap);
+                    bool opposite = (candidate.center.x > width / 2) != (target.x > width / 2);
+                    if (opposite != (side == 0)) continue;
+                    if (candidate.Overlaps(touch) || candidate.xMin < 0 || candidate.yMin < 0 ||
+                        candidate.xMax > width || candidate.yMax > height) continue;
+                    bool clear = true;
+                    var clearance = Rect.MinMaxRect(candidate.xMin - gap, candidate.yMin - gap,
+                        candidate.xMax + gap, candidate.yMax + gap);
+                    foreach (var obstacle in obstacles)
+                        if (clearance.Overlaps(obstacle)) { clear = false; break; }
+                    float distance = (candidate.center - target).sqrMagnitude;
+                    if (clear && distance > bestDistance)
+                    {
+                        bestDistance = distance; informationCardCorner = corner; informationCardClearance = gap;
+                    }
+                }
+                if (bestDistance >= 0) return;
+            }
         }
 
         public void SetContextualSelectionFromScreenPoint(Vector2 screenPoint, bool emptySlot)
         {
-            if (!initialized || root == null) return;
-            if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(root, screenPoint, null, out Vector2 localPoint))
-                return;
-
+            if (!initialized || root == null || contextualSelectionActive) return;
+            if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(root, screenPoint, null, out contextualTarget)) return;
             contextualSelectionActive = true;
-            bool presentationChanged = contextualSelectionIsEmptySlot != emptySlot;
-            bool targetMoved = (contextualTarget - localPoint).sqrMagnitude > 0.25f;
-            contextualSelectionIsEmptySlot = emptySlot;
-            contextualTarget = localPoint;
-            if (!presentationChanged && !targetMoved && selectedPanel.gameObject.activeSelf) return;
+            ChooseInformationCardCorner();
             Apply(false);
         }
 
@@ -138,6 +209,7 @@ namespace AllinDefense.Presentation
 
         public void SetInformationCardHeight(float height)
         {
+            height = Mathf.Clamp(height, 120, InformationCardMaxHeight);
             if (Mathf.Approximately(informationCardHeight, height)) return;
             informationCardHeight = height;
             RefreshLayout();
@@ -187,8 +259,8 @@ namespace AllinDefense.Presentation
                 safeCenterX, safeWidth, previewWidth, messageWidth, previewY, messageY);
         }
 
-        private static readonly string[] framePaths = { "TopBar/Lives", "TopBar/Gold", "TopBar/WavePanel", "TopBar/Speed", "TopBar/Pause",
-            "Preview", "TopBar/WaveForecast", "MessageChrome", "Message", "BottomBar/AbilityCooldown", "BottomBar/Hero", "BottomBar/NextWave", "SelectedPanel" };
+        private static readonly string[] framePaths = { "TopBar/Gold", "TopBar/WavePanel", "TopBar/Speed", "TopBar/Pause",
+            "TopBar/WaveForecast", "MessageChrome", "Message", "BottomBar/AbilityCooldown", "BottomBar/Hero", "BottomBar/NextWave", "SelectedPanel" };
         private RectTransform[] frameRects;
         private readonly Vector3[] frameCorners = new Vector3[4];
         public Rect[] FrameScreenRects()
@@ -215,6 +287,18 @@ namespace AllinDefense.Presentation
             }
         }
 
+        public Rect ToastScreenRect()
+        {
+            var points = UiMetrics.PointsPerCanvasUnit(GetComponentInParent<Canvas>());
+            Vector2 origin = root.rect.min + Vector2.Scale(root.rect.size,
+                new Vector2(currentMetrics.SafeMinX, currentMetrics.SafeMinY));
+            Vector2 min = origin + new Vector2(8 / points.x, 8 / points.y);
+            Vector2 max = min + new Vector2(ToastWidth(currentMetrics.SafeWidth * points.x) / points.x, ToastHeight / points.y);
+            min = RectTransformUtility.WorldToScreenPoint(null, root.TransformPoint(min));
+            max = RectTransformUtility.WorldToScreenPoint(null, root.TransformPoint(max));
+            return Rect.MinMaxRect(min.x, min.y, max.x, max.y);
+        }
+
         // Screen area the information card can occupy, shown or hidden, so the radial can reserve it up front.
         public Rect InformationCardScreenRect(float minimumHeight)
         {
@@ -222,7 +306,9 @@ namespace AllinDefense.Presentation
             Vector2 min = RectTransformUtility.WorldToScreenPoint(null, frameCorners[0]);
             Vector2 max = RectTransformUtility.WorldToScreenPoint(null, frameCorners[2]);
             float pixelsPerPoint = (max.y - min.y) / informationCardHeight;
-            return Rect.MinMaxRect(min.x, min.y, max.x, min.y + Mathf.Max(informationCardHeight, minimumHeight) * pixelsPerPoint);
+            float height = Mathf.Max(informationCardHeight, minimumHeight) * pixelsPerPoint;
+            return selectedPanel.pivot.y > .5f ? Rect.MinMaxRect(min.x, max.y - height, max.x, max.y) :
+                Rect.MinMaxRect(min.x, min.y, max.x, min.y + height);
         }
 
         private void LayoutFrame(LayoutMetrics metrics)
@@ -230,61 +316,61 @@ namespace AllinDefense.Presentation
             Vector2 points = UiMetrics.PointsPerCanvasUnit(GetComponentInParent<Canvas>());
             Vector3 scale = new(1 / points.x, 1 / points.y, 1);
             float width = metrics.SafeWidth * points.x;
-            bool compact = width < 760 || selectedPanel.gameObject.activeSelf && width < 900;
             Place(topBar, new Vector2(metrics.SafeCenterX, metrics.SafeMaxY), new Vector2(.5f, 1), Vector2.zero, new Vector2(width, TopContentHeight));
             Place(bottomBar, new Vector2(metrics.SafeCenterX, metrics.SafeMinY), new Vector2(.5f, 0), Vector2.zero, new Vector2(width, BottomContentHeight));
             topBar.localScale = bottomBar.localScale = scale;
-            Place(RequireRect(topBar, "Lives"), new Vector2(0, 1), new Vector2(0, 1), new Vector2(6, -6), new Vector2(76, 44));
-            Place(RequireRect(topBar, "Gold"), new Vector2(0, 1), new Vector2(0, 1), new Vector2(90, -6), new Vector2(compact ? 124 : 148, 44));
+            Place(RequireRect(topBar, "Gold"), new Vector2(0, 1), new Vector2(0, 1), new Vector2(6, -6), new Vector2(96, 44));
             var wave = RequireRect(topBar, "WavePanel");
-            float waveWidth = compact ? 200 : 220;
-            float waveLeft = Mathf.Max(compact ? 222 : 246, width * .5f - waveWidth * .5f);
-            waveLeft = Mathf.Min(waveLeft, width - 140 - 80 - waveWidth);
-            Place(wave, new Vector2(0, 1), new Vector2(0, 1), new Vector2(waveLeft, -6), new Vector2(waveWidth, compact ? 44 : 52));
-            Place(RequireRect(wave, "Wave"), new Vector2(0, 1), new Vector2(0, 1), new Vector2(10, -6), new Vector2(compact ? 86 : 100, 22));
-            Place(RequireRect(wave, "PhaseChip"), new Vector2(1, 1), new Vector2(1, 1), new Vector2(-8, -6), new Vector2(92, 22));
+            const float waveWidth = 164;
+            float waveLeft = Mathf.Max(110, width * .5f - waveWidth * .5f);
+            waveLeft = Mathf.Min(waveLeft, width - 124 - waveWidth);
+            Place(wave, new Vector2(0, 1), new Vector2(0, 1), new Vector2(waveLeft, -6), new Vector2(waveWidth, 44));
+            Place(RequireRect(wave, "Wave"), new Vector2(0, 1), new Vector2(0, 1), new Vector2(10, -6), new Vector2(100, 22));
             foreach (Transform child in wave)
                 if (child.name == "WaveProgress" && child.gameObject.activeSelf)
-                    Place((RectTransform)child, new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(0, compact ? 4 : 8), new Vector2(compact ? 180 : 200, 8));
+                    Place((RectTransform)child, new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(0, 4), new Vector2(waveWidth - 20, 8));
             var boss = RequireRect(wave, "BossBar");
             AllinDefense.UI.Kit.UiKit.Stretch(boss);
-            Place(RequireRect(boss, "BossName"), new Vector2(0, 1), new Vector2(0, 1), new Vector2(10, -5), new Vector2(128, 24));
-            Place(RequireRect(boss, "BossHealth"), new Vector2(1, 1), new Vector2(1, 1), new Vector2(-8, -6), new Vector2(72, 22));
-            Place(RequireRect(boss, "BossTrack"), new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(0, compact ? 4 : 8), new Vector2(compact ? 180 : 200, 8));
-            Place(RequireRect(topBar, "Speed"), Vector2.one, Vector2.one, new Vector2(-56, -6), new Vector2(76, 44));
+            Place(RequireRect(boss, "BossName"), new Vector2(0, 1), new Vector2(0, 1), new Vector2(10, -5), new Vector2(waveWidth - 20, 22));
+            Place(RequireRect(boss, "BossHealth"), new Vector2(1, 0), new Vector2(1, 0), new Vector2(-8, 4), new Vector2(64, 14));
+            Place(RequireRect(boss, "BossTrack"), new Vector2(0, 0), new Vector2(0, 0), new Vector2(10, 7), new Vector2(waveWidth - 92, 8));
+            Place(RequireRect(topBar, "Speed"), Vector2.one, Vector2.one, new Vector2(-56, -6), new Vector2(60, 44));
             Place(RequireRect(topBar, "Pause"), Vector2.one, Vector2.one, new Vector2(-6, -6), new Vector2(44, 44));
-            Place(preview, new Vector2(metrics.SafeMaxX, metrics.SafeMaxY), new Vector2(1, 1), new Vector2(-140 / points.x, -16 / points.y), new Vector2(72, 24));
-            preview.localScale = scale;
-            bool selection = selectedPanel.gameObject.activeSelf;
-            float chromeWidth = Mathf.Min(378, width - (selection ? 372 : 32));
+            float chromeWidth = ToastWidth(width);
             float messageWidth = chromeWidth - 48;
-            float messageHeight = Mathf.Max(36, Mathf.Ceil(message.GetComponent<TMP_Text>().GetPreferredValues(
-                message.GetComponent<TMP_Text>().text, messageWidth, 0).y));
-            Vector2 messageAnchor = new(selection ? metrics.SafeMaxX : metrics.SafeCenterX, metrics.SafeMinY);
-            Vector2 messagePivot = new(selection ? 1 : .5f, 0);
+            float messageHeight = Mathf.Clamp(Mathf.Ceil(message.GetComponent<TMP_Text>().GetPreferredValues(
+                message.GetComponent<TMP_Text>().text, messageWidth, 0).y), 36, ToastHeight - 8);
+            Vector2 messageAnchor = new(metrics.SafeMinX, metrics.SafeMinY);
             const float edge = UiTokens.Space1;
             const float abilityBottom = edge;
             const float heroBottom = abilityBottom + 88 + edge;
-            const float heroRight = edge + 208 + edge;
-            // Reserve clearance throughout the toast's downward entrance motion.
-            float messageBottom = selection ? Mathf.Max(heroBottom + 18, edge + informationCardHeight) + 2 * edge :
-                (width + chromeWidth) * .5f > width - heroRight - 80 - edge ? heroBottom + 18 + 2 * edge : 2 * edge;
-            Vector2 chromePosition = new(selection ? -8 / points.x : 0, messageBottom / points.y);
+            const float heroRight = HeroRight;
+            messageChromeRestPosition = new Vector2(edge / points.x, edge / points.y);
             var messageChrome = RequireRect("MessageChrome");
-            Place(messageChrome, messageAnchor, messagePivot, chromePosition, new Vector2(chromeWidth, messageHeight + 8));
+            Place(messageChrome, messageAnchor, Vector2.zero, messageChromeRestPosition, new Vector2(chromeWidth, messageHeight + 8));
             messageChrome.localScale = scale;
-            Vector2 textPosition = chromePosition + new Vector2((selection ? -10 : 14) / points.x, 4 / points.y);
-            Place(message, messageAnchor, messagePivot, textPosition, new Vector2(messageWidth, messageHeight));
+            messageRestPosition = messageChromeRestPosition + new Vector2(38 / points.x, 4 / points.y);
+            Place(message, messageAnchor, Vector2.zero, messageRestPosition, new Vector2(messageWidth, messageHeight));
             message.localScale = scale;
+            SetMessageEntranceOffset(messageEntranceOffset);
             Place(RequireRect(bottomBar, "AbilityCooldown"), new Vector2(1, 0), new Vector2(1, 0), new Vector2(-heroRight, abilityBottom), new Vector2(64, 88));
-            Place(RequireRect(bottomBar, "Hero"), new Vector2(1, 0), new Vector2(1, 0), new Vector2(-heroRight + edge, heroBottom), new Vector2(80, 18));
+            Place(RequireRect(bottomBar, "Hero"), new Vector2(1, 0), new Vector2(.5f, 0), new Vector2(-heroRight - 32, heroBottom), new Vector2(120, 18));
             Place(RequireRect(bottomBar, "NextWave"), new Vector2(1, 0), new Vector2(1, 0), new Vector2(-8, 8), new Vector2(208, 54));
-            foreach (string path in new[] { "PauseOverlay", "MapConfirmation" })
+            foreach (string path in new[] { "PauseOverlay", "MapConfirmation", "RestartConfirmation" })
             {
                 var modal = RequireRect(path);
                 Place(modal, new Vector2(.5f, .5f), new Vector2(.5f, .5f), Vector2.zero, Vector2.Scale(root.rect.size, points));
                 modal.localScale = scale;
             }
+        }
+
+        public void SetMessageEntranceOffset(float offset)
+        {
+            messageEntranceOffset = offset;
+            if (!initialized) return;
+            float y = offset / UiMetrics.PointsPerCanvasUnit(GetComponentInParent<Canvas>()).y;
+            RequireRect("MessageChrome").anchoredPosition = messageChromeRestPosition + Vector2.up * y;
+            message.anchoredPosition = messageRestPosition + Vector2.up * y;
         }
 
         private static void Place(RectTransform rect, Vector2 anchor, Vector2 pivot, Vector2 position, Vector2 size)

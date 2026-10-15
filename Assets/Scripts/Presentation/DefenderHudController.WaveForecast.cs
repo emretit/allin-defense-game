@@ -50,12 +50,24 @@ namespace AllinDefense.Presentation
 
             restartConfirmation = frameKit.Modal(transform, "RestartConfirmation", FrontendCopy.PauseRestart);
             restartConfirmation.DismissOnScrim = false;
-            var warning = frameKit.Text(restartConfirmation.Body, "RestartWarning", FrontendCopy.WaveRestartWarning, UiTokens.TypeCaption);
+            var restartCard = restartConfirmation.transform.Find("RestartConfirmation.Card");
+            restartCard.Find("RestartConfirmation.Close").gameObject.SetActive(false);
+            var title = restartCard.Find("RestartConfirmation.Title").GetComponent<TMP_Text>();
+            title.fontSize = title.fontSizeMin = title.fontSizeMax = 20;
+            title.enableAutoSizing = false;
+            UiKit.Size(title.rectTransform, height: 30);
+            var warning = frameKit.Text(restartConfirmation.Body, "RestartWarning", FrontendCopy.WaveRestartWarning, 14);
             warning.textWrappingMode = TextWrappingModes.Normal;
             UiKit.Size(warning.rectTransform, height: UiTokens.Space8 * 2);
             returnToGame = frameKit.Button(restartConfirmation.Body, "ReturnToGame", FrontendCopy.WaveReturnToGame, UiButtonVariant.Gold);
             restartConfirmation.SetFirstFocus(returnToGame.GetComponent<UiAccessibleButton>());
             var confirm = frameKit.Button(restartConfirmation.Body, "ConfirmRestart", FrontendCopy.PauseRestart, UiButtonVariant.Glass);
+            foreach (var button in new[] { returnToGame, confirm })
+            {
+                var label = button.GetComponentInChildren<TMP_Text>();
+                label.enableAutoSizing = false;
+                label.fontSize = label.fontSizeMin = label.fontSizeMax = 14;
+            }
             Bind(returnToGame, () => restartConfirmation.Hide(() => pauseResumeButton.onClick.Invoke()), click);
             Bind(confirm, () => { restartConfirmation.Hide(); restart?.Invoke(); }, click);
             Bind(pauseModal.Body.Find("PauseRestart").GetComponent<Button>(), () =>

@@ -568,7 +568,8 @@ namespace AllinDefense.Tests
                 session.Initialize();
                 Call(flow, "ShowScreen", AppScreen.Battle);
                 Call(session, "SetPhase", GamePhase.Preparing);
-                Time.timeScale = 2f;
+                Call(session, "ToggleGameSpeed");
+                Assert.That(session.CurrentGameSpeed, Is.EqualTo(2f));
                 var wave = new AllinDefense.Data.WaveDefinition("intro", "", 0, false,
                     new AllinDefense.Data.SpawnGroupDefinition(AllinDefense.Data.EnemyArchetype.Raider, 1, 0, 1));
                 typeof(GameSessionController).GetField("waves", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(session, new[] { wave });

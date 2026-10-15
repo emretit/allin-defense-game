@@ -21,6 +21,9 @@ namespace AllinDefense.Presentation
         private GameObject plus;
         private bool selected, occupied;
         private MaterialPropertyBlock ringProperties;
+        private Color lastRingColor, lastRingEmission;
+        private bool ringColorApplied;
+        public int RingPropertyWriteCount { get; private set; }
         public bool ShowsBuildPlus => plus != null && plus.activeSelf;
         public const float VisualScale = 1.38f;
         public const float MinimumTouchPoints = 56;
@@ -81,9 +84,15 @@ namespace AllinDefense.Presentation
             bool preparation = session != null && session.UnpausedPhase is GamePhase.Preparing or GamePhase.Intermission;
             float pulse = occupied || !affordable || !preparation || FrontendPreferences.ReducedMotion ? 1 : 1 + .14f * Mathf.Sin(Time.unscaledTime * 1.6f);
             Color color = selected ? UiTokens.GoldHigh : occupied ? UiTokens.GoldLow * .72f : affordable ? UiTokens.Gold : UiTokens.GoldLow;
+            Color emission = selected ? UiTokens.Gold * 1.12f : occupied ? Color.black : color * (affordable ? pulse * (preparation ? .28f : .10f) : .04f);
+            if (ringColorApplied && lastRingColor == color && lastRingEmission == emission) return;
             ringProperties.SetColor("_BaseColor", color);
-            ringProperties.SetColor("_EmissionColor", selected ? UiTokens.Gold * 1.12f : occupied ? Color.black : color * (affordable ? pulse * (preparation ? .28f : .10f) : .04f));
+            ringProperties.SetColor("_EmissionColor", emission);
             ring.SetPropertyBlock(ringProperties);
+            lastRingColor = color;
+            lastRingEmission = emission;
+            ringColorApplied = true;
+            RingPropertyWriteCount++;
         }
 
         public static bool ContainsTouchPoint(Transform slot, Camera camera, Vector2 point)

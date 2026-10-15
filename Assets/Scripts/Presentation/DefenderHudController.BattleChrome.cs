@@ -43,7 +43,12 @@ namespace AllinDefense.Presentation
         {
             messageIcon.color = warning ? UiTokens.Danger : UiTokens.Gold;
             messageText.color = warning ? UiTokens.TextPrimary : UiTokens.TextSecondary;
-            if (visible && body != shownMessage) messageEntrance = 0;
+            if (visible && body != shownMessage)
+            {
+                messageEntrance = FrontendPreferences.ReducedMotion ? 1 : 0;
+                messageGroup.alpha = messageTextGroup.alpha = messageEntrance;
+                responsiveLayout?.SetMessageEntranceOffset(messageEntrance >= 1 ? 0 : -6);
+            }
             shownMessage = body;
             responsiveLayout?.RefreshLayout();
         }
@@ -54,11 +59,8 @@ namespace AllinDefense.Presentation
             messageEntrance = Mathf.Min(1, messageEntrance + Time.unscaledDeltaTime / UiTokens.FadeDuration);
             messageGroup.alpha = messageTextGroup.alpha = messageEntrance;
             float offset = FrontendPreferences.ReducedMotion ? 0 : -6 * (1 - UiTokens.EvaluateEaseOut(messageEntrance));
-            messageChromeImage.rectTransform.localPosition += Vector3.up * (offset - messageOffset);
-            messageText.rectTransform.localPosition += Vector3.up * (offset - messageOffset);
-            messageOffset = offset;
+            responsiveLayout?.SetMessageEntranceOffset(offset);
         }
 
-        private float messageOffset;
     }
 }

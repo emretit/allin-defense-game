@@ -1755,7 +1755,7 @@ namespace AllinDefense.Tests
         [Test]
         public void LandscapeHudRailsLeaveMostOfTheScreenToTheBattlefield()
         {
-            Assert.That(DefenderHudResponsiveLayout.TopContentHeight, Is.EqualTo(56f));
+            Assert.That(DefenderHudResponsiveLayout.TopContentHeight, Is.EqualTo(50f));
             Assert.That(DefenderHudResponsiveLayout.BottomContentHeight, Is.EqualTo(110f));
             Assert.That(DefenderHudResponsiveLayout.TopContentHeight +
                         DefenderHudResponsiveLayout.BottomContentHeight,

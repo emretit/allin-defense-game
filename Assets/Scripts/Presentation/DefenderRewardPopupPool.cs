@@ -64,7 +64,7 @@ namespace AllinDefense.Presentation
             root.transform.SetParent(transform, false);
             canvas = root.GetComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            canvas.sortingOrder = 5;
+            canvas.sortingOrder = -1;
             TMP_FontAsset font = catalog.bodyFont != null ? catalog.bodyFont : TMP_Settings.defaultFontAsset;
             textMaterial = new Material(font.material);
             textMaterial.EnableKeyword("OUTLINE_ON");
@@ -160,7 +160,9 @@ namespace AllinDefense.Presentation
 
         private void LateUpdate()
         {
-            if (canvas == null || ActiveCount == 0) return;
+            if (canvas == null) return;
+            canvas.enabled = owner == null ? Time.timeScale > 0 : owner.Phase != GamePhase.Paused;
+            if (ActiveCount == 0) return;
             for (int i = 0; i < Capacity; i++)
             {
                 Popup popup = pool[i];

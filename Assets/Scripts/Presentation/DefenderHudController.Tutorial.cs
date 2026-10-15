@@ -19,6 +19,9 @@ namespace AllinDefense.Presentation
         private int tutorialDisplayStep = -1;
         private bool tutorialDismissed;
         private float tutorialCompletedUntil;
+        private readonly Vector3[] tutorialCorners = new Vector3[4];
+        private int tutorialBuildCopyStep = -1;
+        private bool tutorialBuildCopyConfirm;
         public Transform TutorialTarget => tutorialTarget;
         public RectTransform TutorialArrow => tutorialArrow;
 
@@ -30,7 +33,7 @@ namespace AllinDefense.Presentation
             tutorialCopy.alignment = TextAlignmentOptions.Center;
             tutorialCopy.color = UiTokens.Gold;
             var balloon = frameKit.Decoration(tutorialBubble, "TutorialBalloon", frameKit.Assets.roundedSmall, UiTokens.KitSurface);
-            PlaceTutorialRect(balloon.rectTransform, new Vector2(-6, 4), new Vector2(217, 29));
+            PlaceTutorialRect(balloon.rectTransform, Vector2.zero, new Vector2(300, 44));
             balloon.transform.SetAsFirstSibling();
             var arrow = frameKit.Icon(tutorialBubble, "TutorialArrow", frameKit.Assets.iconBack, 24);
             tutorialArrow = arrow.rectTransform;
@@ -60,6 +63,7 @@ namespace AllinDefense.Presentation
         public void SetTutorialGuide(int step, Transform worldTarget, Camera camera)
         {
             if (tutorialBubble == null) return;
+            tutorialBuildCopyStep = -1;
             tutorialWorldTarget = worldTarget;
             tutorialTarget = step == 2 ? nextWaveButton.transform : step == 3 ? abilityButton.transform : worldTarget;
             tutorialCamera = camera;
@@ -95,7 +99,13 @@ namespace AllinDefense.Presentation
             if (buildGuide)
             {
                 tutorialTarget = radialAction.gameObject.activeSelf ? radialAction.transform : archerButton.transform;
-                tutorialCopy.text = $"{tutorialDisplayStep + 1}/6 · " + (radialAction.gameObject.activeSelf ? FrontendCopy.TutorialConfirmBuild.Value : FrontendCopy.TutorialChooseArcher.Value);
+                bool confirm = radialAction.gameObject.activeSelf;
+                if (tutorialBuildCopyStep != tutorialDisplayStep || tutorialBuildCopyConfirm != confirm)
+                {
+                    tutorialCopy.text = $"{tutorialDisplayStep + 1}/6 · " + (confirm ? FrontendCopy.TutorialConfirmBuild.Value : FrontendCopy.TutorialChooseArcher.Value);
+                    tutorialBuildCopyStep = tutorialDisplayStep;
+                    tutorialBuildCopyConfirm = confirm;
+                }
             }
             bool visible = activeBattle && !tutorialDismissed && (!battleRadial.IsOpen || buildGuide) && (tutorialDisplayStep < 6 || Time.unscaledTime < tutorialCompletedUntil);
             tutorialHelp.gameObject.SetActive(activeBattle);
@@ -106,7 +116,7 @@ namespace AllinDefense.Presentation
             tutorialBubble.localScale = scale;
             tutorialBubble.anchorMin = tutorialBubble.anchorMax = new Vector2(.5f, .5f);
             tutorialBubble.pivot = new Vector2(.5f, 0);
-            tutorialBubble.sizeDelta = new Vector2(300, 64);
+            tutorialBubble.sizeDelta = new Vector2(300, 44);
             Vector2 screen = tutorialTarget is RectTransform ui
                 ? RectTransformUtility.WorldToScreenPoint(null, ui.TransformPoint(ui.rect.center))
                 : tutorialTarget != null && tutorialCamera != null ? (Vector2)tutorialCamera.WorldToScreenPoint(tutorialTarget.position) : new Vector2(Screen.width * .5f, Screen.height * .5f);
@@ -114,14 +124,25 @@ namespace AllinDefense.Presentation
             RectTransformUtility.ScreenPointToLocalPointInRectangle(root, screen, null, out var local);
             RectTransformUtility.ScreenPointToLocalPointInRectangle(root, Screen.safeArea.min, null, out var min);
             RectTransformUtility.ScreenPointToLocalPointInRectangle(root, Screen.safeArea.max, null, out var max);
+            float desiredY = local.y + 20 / points.y;
+            if (tutorialTarget is RectTransform targetRect)
+                desiredY = TutorialBounds(root, targetRect).yMax + 12 / points.y;
+            float lower = min.y + 60 / points.y;
+            lower = Mathf.Max(lower, TutorialBounds(root, heroText.rectTransform).yMax + 12 / points.y);
+            lower = Mathf.Max(lower, TutorialBounds(root, (RectTransform)radialCooldown.transform).yMax + 12 / points.y);
+            lower = Mathf.Max(lower, TutorialBounds(root, (RectTransform)nextWaveButton.transform).yMax + 12 / points.y);
+            float upper = TutorialBounds(root, forecastStrip).yMin - (12 + 44) / points.y;
             tutorialBubble.anchoredPosition = new Vector2(Mathf.Clamp(local.x + 45 / points.x, min.x + 150 / points.x, max.x - 150 / points.x),
-                Mathf.Clamp(local.y + 20 / points.y, min.y + 60 / points.y, max.y - 116 / points.y));
+                Mathf.Clamp(desiredY, Mathf.Min(lower, upper), upper));
+            var balloon = (RectTransform)tutorialBubble.Find("TutorialBalloon");
+            balloon.sizeDelta = new Vector2(300, 44);
             float pulse = FrontendPreferences.ReducedMotion ? 1 : 1 + .12f * Mathf.Sin(Time.unscaledTime * 5);
             if (buildGuide)
             {
                 tutorialSkip.gameObject.SetActive(false);
-                tutorialBubble.sizeDelta = new Vector2(217, 29);
-                tutorialBubble.anchoredPosition = new Vector2(0, max.y - 112 / points.y);
+                tutorialBubble.sizeDelta = new Vector2(217, 44);
+                balloon.sizeDelta = new Vector2(217, 44);
+                tutorialBubble.anchoredPosition = new Vector2(0, upper);
                 tutorialArrow.SetParent(transform, false);
                 tutorialArrow.gameObject.SetActive(true);
                 tutorialArrow.anchorMin = tutorialArrow.anchorMax = tutorialArrow.pivot = new Vector2(.5f, .5f);
@@ -135,6 +156,15 @@ namespace AllinDefense.Presentation
             PlaceTutorialRect(tutorialArrow, new Vector2(105, -42), new Vector2(30, 30));
             tutorialArrow.localScale = Vector3.one * pulse;
             tutorialAbilityRing.transform.localScale = Vector3.one * pulse;
+        }
+
+        private Rect TutorialBounds(RectTransform root, RectTransform rect)
+        {
+            var corners = tutorialCorners;
+            rect.GetWorldCorners(corners);
+            Vector2 min = root.InverseTransformPoint(corners[0]);
+            Vector2 max = root.InverseTransformPoint(corners[2]);
+            return Rect.MinMaxRect(min.x, min.y, max.x, max.y);
         }
 
         private void DismissPausedRadialOnBackground()

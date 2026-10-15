@@ -487,7 +487,9 @@ namespace AllinDefense.Tests
                 Is.EqualTo(new Vector2(1920f, 1080f)),
                 "Battlefield HUD stays landscape while frontend screens use the portrait reference resolution.");
             Assert.That(defenderHud.GetComponent<DefenderHudResponsiveLayout>(), Is.Not.Null);
-            Assert.That(defenderHud.GetComponentsInChildren<AllinDefense.UI.Kit.UiStatPill>().Length, Is.EqualTo(2));
+            // The keep plate owns lives; the top bar keeps only the gold pill.
+            Assert.That(defenderHud.GetComponentsInChildren<AllinDefense.UI.Kit.UiStatPill>().Length, Is.EqualTo(1));
+            Assert.That(defenderHud.transform.Find("TopBar/Lives").gameObject.activeSelf, Is.False);
             Assert.That(defenderHud.GetComponentInChildren<AllinDefense.UI.Kit.UiRadialCooldown>(), Is.Not.Null);
             Assert.That(UiQuery.FindById(defenderHud.transform, "PhaseChrome"), Is.Null);
             Assert.That(UiQuery.FindById(defenderHud.transform, "PreviewTitle"), Is.Null);

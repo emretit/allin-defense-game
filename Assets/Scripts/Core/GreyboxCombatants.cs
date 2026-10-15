@@ -18,6 +18,66 @@ namespace AllinDefense.Core
         Dead
     }
 
+    internal sealed class WorldHealthBar
+    {
+        public readonly GameObject Root;
+        public readonly Transform Fill, Trail, Canvas;
+
+        public WorldHealthBar(Transform actor, GameSessionController session, float top, Color color)
+        {
+            var canvasObject = new GameObject("Health Bar", typeof(RectTransform), typeof(Canvas));
+            canvasObject.transform.SetParent(actor, false);
+            canvasObject.GetComponent<Canvas>().renderMode = RenderMode.WorldSpace;
+            var rect = canvasObject.GetComponent<RectTransform>();
+            Canvas = rect;
+            rect.localPosition = Vector3.up * top;
+            rect.localScale = Vector3.one * .012f;
+            rect.sizeDelta = new Vector2(110, 17);
+            canvasObject.AddComponent<WorldSpaceBillboard>();
+            UiKit kit = session != null && session.HasProductionPresentation
+                ? new UiKit(session.PresentationCatalog.frontendTheme.designSystem) : null;
+            Image Decorate(Transform parent, string name, Color tint)
+            {
+                if (kit != null) return kit.Decoration(parent, name, kit.Assets.pill, tint);
+                var go = new GameObject(name, typeof(RectTransform), typeof(Image));
+                go.transform.SetParent(parent, false);
+                var image = go.GetComponent<Image>();
+                image.color = tint;
+                image.raycastTarget = false;
+                image.rectTransform.anchorMin = Vector2.zero;
+                image.rectTransform.anchorMax = Vector2.one;
+                image.rectTransform.offsetMin = image.rectTransform.offsetMax = Vector2.zero;
+                return image;
+            }
+            var outline = Decorate(rect, "Outline", UiTokens.NightDeep);
+            Root = outline.gameObject;
+            var border = Decorate(outline.transform, "Background", UiTokens.TextSecondary);
+            border.rectTransform.offsetMin = Vector2.one * 1.5f;
+            border.rectTransform.offsetMax = -Vector2.one * 1.5f;
+            var backing = Decorate(border.transform, "Health Backing", UiTokens.GlassStrong);
+            backing.rectTransform.offsetMin = Vector2.one * 2;
+            backing.rectTransform.offsetMax = -Vector2.one * 2;
+            Trail = Decorate(backing.transform, "Damage Trail", UiTokens.TextPrimary).transform;
+            Fill = Decorate(backing.transform, "Fill", color).transform;
+            Root.SetActive(false);
+        }
+
+        public void Refresh(int health, int maximum, bool alive)
+        {
+            float fraction = Mathf.Clamp01(health / (float)Mathf.Max(1, maximum));
+            Root.SetActive(alive && fraction > 0 && fraction < 1);
+            SetFraction(Fill, fraction);
+            SetFraction(Trail, fraction);
+        }
+
+        private static void SetFraction(Transform bar, float fraction)
+        {
+            bar.localScale = new Vector3(fraction, 1, 1);
+            float width = ((RectTransform)bar).rect.width;
+            bar.localPosition = new Vector3((fraction - 1) * width * .5f, 0, 0);
+        }
+    }
+
     public sealed class GreyboxEnemy : MonoBehaviour, ICombatTarget
     {
         private GameSessionController session;
@@ -284,6 +344,16 @@ namespace AllinDefense.Core
         {
             if (session != null && session.HasProductionPresentation)
             {
+                if (archetype != EnemyArchetype.Boss)
+                {
+                    var bar = new WorldHealthBar(transform, session, VisualTop() + .22f, UiTokens.Danger);
+                    healthRoot = bar.Root;
+                    healthFill = bar.Fill;
+                    healthTrail = bar.Trail;
+                    healthCanvas = bar.Canvas;
+                    if (archetype == EnemyArchetype.Vanguard) ShieldStatusIcon.Attach(healthRoot.transform);
+                    return;
+                }
                 var canvasObject = new GameObject("Health Bar", typeof(RectTransform), typeof(Canvas));
                 canvasObject.transform.SetParent(transform, false);
                 var canvas = canvasObject.GetComponent<Canvas>();
@@ -337,7 +407,7 @@ namespace AllinDefense.Core
                 }
                 healthTrail = trail.transform;
                 healthFill = barFill.transform;
-                if (archetype == EnemyArchetype.Vanguard) ShieldStatusIcon.Attach(canvasObject.transform);
+                if (archetype == EnemyArchetype.Vanguard) ShieldStatusIcon.Attach(healthRoot.transform);
                 return;
             }
             var background = GameSessionController.CreatePrimitive("Health Background", PrimitiveType.Cube,
@@ -656,6 +726,7 @@ namespace AllinDefense.Core
 
     public sealed class GreyboxFriendlyUnit : MonoBehaviour, ICombatTarget
     {
+        private WorldHealthBar healthBar;
         private const float MoveSpeed = 2.8f;
         private const float PatrolRange = 2.6f;
 
@@ -695,6 +766,8 @@ namespace AllinDefense.Core
             maxHealth = owner.CombatStats.guardHealth;
             health = Mathf.Max(health, maxHealth);
             damage = owner.CombatStats.damage;
+            healthBar ??= new WorldHealthBar(transform, session, 1.87f, UiTokens.Gold);
+            healthBar.Refresh(health, maxHealth, IsAlive);
         }
 
         internal ActorCheckpoint CaptureCheckpoint() => new ActorCheckpoint
@@ -708,6 +781,7 @@ namespace AllinDefense.Core
             transform.position = data.hasPosition ? data.position : rally;
             IsDeployed = !data.hasPosition || data.deployed;
             routeProgress = CombatMath.ClosestRouteDistance(route, Position);
+            healthBar?.Refresh(health, maxHealth, IsAlive);
         }
         internal void Tick(float delta)
         {
@@ -803,6 +877,7 @@ namespace AllinDefense.Core
         internal void Dismiss()
         {
             dead = true;
+            healthBar?.Refresh(health, maxHealth, false);
             Destroy(gameObject);
         }
 
@@ -810,6 +885,7 @@ namespace AllinDefense.Core
         {
             if (!IsAlive || amount <= 0) return;
             health = CombatMath.ApplyDamage(health, amount);
+            healthBar?.Refresh(health, maxHealth, IsAlive);
             if (health > 0) return;
             dead = true;
             session?.EmitPresentation(PresentationCue.UnitDefeated, transform.position, gameObject,
@@ -820,6 +896,7 @@ namespace AllinDefense.Core
 
     public sealed class GreyboxHero : MonoBehaviour, ICombatTarget
     {
+        private WorldHealthBar healthBar;
         private const int MaxHealth = 240;
         private const float RespawnSeconds = 5f;
         private const float AbilityCooldown = 6f;
@@ -845,6 +922,8 @@ namespace AllinDefense.Core
             health = MaxHealth;
             bodyRenderer = GetComponentInChildren<Renderer>();
             bodyCollider = GetComponent<Collider>();
+            healthBar ??= new WorldHealthBar(transform, session, 1.87f, UiTokens.Gold);
+            healthBar.Refresh(health, MaxHealth, IsAlive);
         }
 
         internal ActorCheckpoint CaptureCheckpoint() => new ActorCheckpoint
@@ -853,6 +932,7 @@ namespace AllinDefense.Core
         {
             health = data.health; attackTimer = data.attack; AbilityRemaining = data.ability;
             RespawnRemaining = data.respawn; downed = data.downed;
+            healthBar?.Refresh(health, MaxHealth, IsAlive);
             SetVisuals(!downed); if (bodyCollider != null) bodyCollider.enabled = !downed;
         }
         internal void Tick(float delta)
@@ -921,6 +1001,7 @@ namespace AllinDefense.Core
         {
             if (!IsAlive || amount <= 0) return;
             health = CombatMath.ApplyDamage(health, amount);
+            healthBar?.Refresh(health, MaxHealth, IsAlive);
             if (health > 0) return;
             downed = true;
             RespawnRemaining = RespawnSeconds;
@@ -932,6 +1013,7 @@ namespace AllinDefense.Core
         {
             health = MaxHealth;
             downed = false;
+            healthBar?.Refresh(health, MaxHealth, IsAlive);
             transform.position = session != null && session.HasProductionPresentation
                 ? guardianPosition
                 : guardianPosition + Vector3.up;

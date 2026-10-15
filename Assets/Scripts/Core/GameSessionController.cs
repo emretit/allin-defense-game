@@ -2319,6 +2319,8 @@ namespace AllinDefense.Core
             RefreshSelectionPreview();
         }
 
+        public void RefreshRadialSelectionPreview() => RefreshSelectionPreview(force: true);
+
         private void RefreshSelectionPreview(bool force = false)
         {
             if (artHud != null && artHud.HasRadialRangePreview)

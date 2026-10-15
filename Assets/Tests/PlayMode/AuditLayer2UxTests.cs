@@ -289,15 +289,21 @@ namespace AllinDefense.Tests
             foreach (int level in new[] { 11, 50 })
             {
                 GameLocalization.SetLanguage(GameLanguage.English);
-                Create(level); Time.timeScale = 0;
+                Create(level); Time.timeScale = 0; hud.Refresh(session);
                 Assert.That(CampaignLevelFactory.Create(level).waves[0].preview, Is.EqualTo(CampaignContent.CreateWaves(level)[0].preview));
                 Assert.That(Field<TMP_Text>(hud, "previewText").text, Is.EqualTo(FrontendCopy.UpcomingCount.Format(session.UpcomingEnemyCount)));
-                Assert.That(Field<TMP_Text>(hud, "phaseText").text, Is.EqualTo(FrontendCopy.HudPreparing.Value));
-                GameLocalization.SetLanguage(GameLanguage.Turkish);
+                Assert.That(hud.transform.Find("TopBar/WavePanel/PhaseChip").gameObject.activeSelf, Is.False);
+                Assert.That(UiQuery.FindById<Button>(hud, "NextWave").gameObject.activeSelf, Is.True);
+                Assert.That(UiQuery.FindById<TMP_Text>(hud, "WaveForecast.Label").text,
+                    Does.StartWith(GameLocalization.Text("Sıradaki: ", "Next: ")));
+                GameLocalization.SetLanguage(GameLanguage.Turkish); hud.Refresh(session);
                 Assert.That(CampaignLevelFactory.Create(level).waves[0].preview, Is.EqualTo(CampaignContent.CreateWaves(level)[0].preview));
                 Assert.That(Field<WaveDefinition[]>(session, "waves")[0].preview, Is.EqualTo(CampaignContent.CreateWaves(level)[0].preview));
                 Assert.That(Field<TMP_Text>(hud, "previewText").text, Is.EqualTo(FrontendCopy.UpcomingCount.Format(session.UpcomingEnemyCount)));
-                Assert.That(Field<TMP_Text>(hud, "phaseText").text, Is.EqualTo(FrontendCopy.HudPreparing.Value));
+                Assert.That(hud.transform.Find("TopBar/WavePanel/PhaseChip").gameObject.activeSelf, Is.False);
+                Assert.That(UiQuery.FindById<Button>(hud, "NextWave").gameObject.activeSelf, Is.True);
+                Assert.That(UiQuery.FindById<TMP_Text>(hud, "WaveForecast.Label").text,
+                    Does.StartWith(GameLocalization.Text("Sıradaki: ", "Next: ")));
                 string turkishPreview = CampaignLevelFactory.Create(level).waves[0].preview;
                 GameLocalization.SetLanguage(GameLanguage.English);
                 Assert.That(CampaignLevelFactory.Create(level).waves[0].preview, Is.Not.EqualTo(turkishPreview));

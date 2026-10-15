@@ -124,11 +124,14 @@ namespace AllinDefense.Tests
         [UnityTest]
         public IEnumerator BottomChromeAndKeepStayInsideSafeAreaAtAllAcceptanceRatios()
         {
+            if (SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Null)
+                Assert.Ignore("Telefon oranlarını değiştirmek için grafik cihazı gerekir");
 #if UNITY_EDITOR
             var review = AppDomain.CurrentDomain.GetAssemblies().Select(a => a.GetType("AllinDefense.Editor.FrontendExperienceReview")).First(t => t != null);
             foreach (var size in new[] { new Vector2Int(1280, 720), new Vector2Int(1560, 720), new Vector2Int(1280, 960), new Vector2Int(844, 390) })
             {
-                review.GetMethod("SetSize").Invoke(null, new object[] { size.x, size.y });
+                if (SystemInfo.graphicsDeviceType != UnityEngine.Rendering.GraphicsDeviceType.Null)
+                    review.GetMethod("SetSize").Invoke(null, new object[] { size.x, size.y });
                 yield return null; yield return null;
                 Create();
                 hud.SetMessage(GameLocalization.Text("Kaleye sızma: Yağmacı", "Keep breached: Raider"), true);
@@ -173,7 +176,8 @@ namespace AllinDefense.Tests
             FrontendPreferences.ReducedMotion = reducedMotion; Time.timeScale = 1;
 #if UNITY_EDITOR
             var review = AppDomain.CurrentDomain.GetAssemblies().Select(a => a.GetType("AllinDefense.Editor.FrontendExperienceReview")).FirstOrDefault(t => t != null);
-            review?.GetMethod("RestoreSize").Invoke(null, null);
+            if (SystemInfo.graphicsDeviceType != UnityEngine.Rendering.GraphicsDeviceType.Null)
+                review?.GetMethod("RestoreSize").Invoke(null, null);
 #endif
             yield return null;
         }

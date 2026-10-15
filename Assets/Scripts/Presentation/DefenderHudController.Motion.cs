@@ -18,17 +18,19 @@ namespace AllinDefense.Presentation
             if (waveBanner == null)
             {
                 var root = new GameObject("Wave Start Banner", typeof(RectTransform), typeof(CanvasGroup), typeof(Image));
-                root.transform.SetParent(transform, false);
+                root.transform.SetParent(forecastStrip.parent, false);
                 var rect = (RectTransform)root.transform;
-                rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(.5f, 1);
-                rect.anchoredPosition = new Vector2(0, -64);
-                rect.sizeDelta = new Vector2(440, 48);
+                rect.anchorMin = rect.anchorMax = new Vector2(.5f, 0);
+                rect.pivot = new Vector2(.5f, 1);
+                rect.anchoredPosition = new Vector2(0, -UiTokens.Space1);
+                rect.sizeDelta = new Vector2(220, UiTokens.Space4);
                 root.GetComponent<Image>().color = UiTokens.GlassStrong;
                 root.GetComponent<Image>().raycastTarget = false;
                 waveBanner = root.GetComponent<CanvasGroup>();
                 waveBanner.interactable = waveBanner.blocksRaycasts = false;
-                waveBannerText = frameKit.Text(root.transform, "Wave Start Label", "", UiTokens.TypeBody, true);
+                waveBannerText = frameKit.Text(root.transform, "Wave Start Label", "", 16, true);
                 waveBannerText.alignment = TextAlignmentOptions.Center;
+                waveBannerText.gameObject.AddComponent<UiAccessibleText>().Configure(waveBannerText);
                 var textRect = waveBannerText.rectTransform;
                 textRect.anchorMin = Vector2.zero; textRect.anchorMax = Vector2.one;
                 textRect.offsetMin = textRect.offsetMax = Vector2.zero;
