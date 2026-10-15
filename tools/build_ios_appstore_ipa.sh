@@ -99,7 +99,7 @@ failures=()
 [[ "$(plist_value CFBundleVersion)" == "$build_number" ]] || failures+=("build no: $(plist_value CFBundleVersion)")
 [[ "$(plist_value ITSAppUsesNonExemptEncryption)" == "false" ]] || failures+=("şifreleme beyanı: $(plist_value ITSAppUsesNonExemptEncryption)")
 codesign --verify --deep --strict "$apps[1]" 2>/dev/null || failures+=("codesign --verify başarısız")
-authority="$(codesign -dvv "$apps[1]" 2>&1 | awk -F= '/^Authority=/{print $2; exit}')"
+authority="$(codesign -dvv "$apps[1]" 2>&1 | awk -F= '/^Authority=/ && !found++ {print $2}')"  # exit yok: pipefail'de SIGPIPE 141
 [[ "$authority" == "Apple Distribution"* ]] || failures+=("imza: $authority")
 
 if (( ${#failures} )); then
