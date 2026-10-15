@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Accessibility;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 namespace AllinDefense.UI.Kit
 {
@@ -11,6 +12,9 @@ namespace AllinDefense.UI.Kit
         [SerializeField] private bool modalScope;
         private static readonly HashSet<UiAccessibleButton> scopes = new();
         private static readonly List<CanvasGroup> canvasGroups = new();
+        private static readonly HashSet<UiAccessibleButton> controls = new();
+        public static Component FocusedElement { get; private set; }
+        private string explicitValue;
         private AccessibilityHierarchy hierarchy;
         private AccessibilityNode node;
         private readonly Vector3[] corners = new Vector3[4];
@@ -33,6 +37,7 @@ namespace AllinDefense.UI.Kit
         {
             get
             {
+                if (explicitValue != null) return explicitValue;
                 var slider = GetComponent<Slider>();
                 if (slider != null) return FrontendCopy.AccessiblePercent.Format(Mathf.RoundToInt(slider.normalizedValue * 100));
                 var segments = GetComponent<UiSegmentedControl>();
@@ -47,23 +52,78 @@ namespace AllinDefense.UI.Kit
             get
             {
                 if (!isActiveAndEnabled || modalScope || string.IsNullOrWhiteSpace(Label)) return false;
-                UiAccessibleButton top = null;
-                foreach (var scope in scopes)
-                {
-                    if (scope == null || !scope.isActiveAndEnabled) continue;
-                    var scopeCanvas = scope.GetComponentInParent<Canvas>();
-                    var topCanvas = top == null ? null : top.GetComponentInParent<Canvas>();
-                    if (top == null || (scopeCanvas != null && topCanvas != null && scopeCanvas.sortingOrder != topCanvas.sortingOrder
-                        ? scopeCanvas.sortingOrder > topCanvas.sortingOrder : IsAbove(scope.transform, top.transform))) top = scope;
-                }
-                if (top != null && !transform.IsChildOf(top.transform)) return false;
-                GetComponentsInParent(false, canvasGroups);
-                foreach (var group in canvasGroups) if (group.alpha <= 0) return false;
-                return true;
+                return IsInAccessibleScope(transform);
             }
         }
 
-        private static bool IsAbove(Transform candidate, Transform current)
+        public AccessibilityNode Node => node;
+        public bool Focus() => Focus(this);
+        public void SetValue(string value) { explicitValue = value; UpdateLabel(); }
+        public static bool IsInAccessibleScope(Transform target)
+        {
+            UiAccessibleButton top = null;
+            foreach (var scope in scopes)
+            {
+                if (scope == null || !scope.isActiveAndEnabled) continue;
+                var scopeCanvas = scope.GetComponentInParent<Canvas>();
+                var topCanvas = top == null ? null : top.GetComponentInParent<Canvas>();
+                if (top == null || (scopeCanvas != null && topCanvas != null && scopeCanvas.sortingOrder != topCanvas.sortingOrder
+                    ? scopeCanvas.sortingOrder > topCanvas.sortingOrder : IsAbove(scope.transform, top.transform))) top = scope;
+            }
+            if (top != null && !target.IsChildOf(top.transform)) return false;
+            target.GetComponentsInParent(false, canvasGroups);
+            foreach (var group in canvasGroups) if (group.alpha <= 0) return false;
+            return true;
+        }
+
+        internal static void RefreshAll()
+        {
+            foreach (var control in controls) if (control != null) control.RefreshAccessibility();
+            UiAccessibleText.RefreshAll();
+        }
+
+        internal static bool Focus(Component target)
+        {
+            if (target == null || !target.gameObject.activeInHierarchy || !IsInAccessibleScope(target.transform)) return false;
+            var button = target as UiAccessibleButton;
+            var text = target as UiAccessibleText;
+            if (button != null && !button.IsAccessible || text != null && !text.IsAccessible) return false;
+            var selectable = target.GetComponent<Selectable>();
+            if (selectable != null && !selectable.IsInteractable()) return false;
+            FocusedElement = target;
+            Reveal(target.transform);
+            if (EventSystem.current != null) EventSystem.current.SetSelectedGameObject(target.gameObject);
+            button?.RefreshAccessibility(); text?.RefreshAccessibility();
+            var focusNode = button != null ? button.Node : text != null ? text.Node : null;
+            if (Application.platform == RuntimePlatform.IPhonePlayer && AssistiveSupport.isScreenReaderEnabled && focusNode != null)
+                AssistiveSupport.notificationDispatcher.SendScreenChanged(focusNode);
+            return true;
+        }
+
+        internal static void Reveal(Transform target)
+        {
+            var scroll = target.GetComponentInParent<ScrollRect>();
+            if (scroll == null || scroll.content == null || !target.IsChildOf(scroll.content)) return;
+            var viewport = scroll.viewport != null ? scroll.viewport : (RectTransform)scroll.transform;
+            Canvas.ForceUpdateCanvases();
+            var bounds = RectTransformUtility.CalculateRelativeRectTransformBounds(viewport, target);
+            var view = viewport.rect;
+            var offset = Vector3.zero;
+            if (scroll.vertical) offset.y = bounds.min.y < view.yMin ? view.yMin - bounds.min.y : bounds.max.y > view.yMax ? view.yMax - bounds.max.y : 0;
+            if (scroll.horizontal) offset.x = bounds.min.x < view.xMin ? view.xMin - bounds.min.x : bounds.max.x > view.xMax ? view.xMax - bounds.max.x : 0;
+            scroll.StopMovement();
+            scroll.content.position += viewport.TransformVector(offset);
+        }
+
+        internal static void RecordFocus(Component target)
+        {
+            FocusedElement = target; Reveal(target.transform);
+            if (EventSystem.current != null) EventSystem.current.SetSelectedGameObject(target.gameObject);
+        }
+        private void FocusChanged(AccessibilityNode focused, bool hasFocus)
+        { if (hasFocus) RecordFocus(this); }
+
+        internal static bool IsAbove(Transform candidate, Transform current)
         {
             if (candidate.IsChildOf(current)) return true;
             if (current.IsChildOf(candidate)) return false;
@@ -80,6 +140,7 @@ namespace AllinDefense.UI.Kit
 
         public void Configure(LocalizedCopy copy)
         {
+            controls.Add(this);
             turkish = copy.Turkish; english = copy.English;
             UpdateLabel();
         }
@@ -88,27 +149,31 @@ namespace AllinDefense.UI.Kit
             modalScope = true;
             if (isActiveAndEnabled) scopes.Add(this);
             RemoveNode();
+            RefreshAll();
         }
         private void OnEnable()
         {
+            controls.Add(this);
             GameLocalization.LanguageChanged += UpdateLabel;
             if (modalScope) scopes.Add(this);
             RefreshNode();
         }
         private void LateUpdate() => RefreshNode();
-        private void RefreshNode()
+        public void RefreshAccessibility() { controls.Add(this); RefreshNode(true); }
+        private void RefreshNode(bool force = false)
         {
-            if (Application.platform != RuntimePlatform.IPhonePlayer) return;
-            if (!AssistiveSupport.isScreenReaderEnabled || !IsAccessible) { RemoveNode(); return; }
+            if (!force && Application.platform != RuntimePlatform.IPhonePlayer) return;
+            if ((!force && !AssistiveSupport.isScreenReaderEnabled) || !IsAccessible) { RemoveNode(); return; }
             if (node == null)
             {
                 hierarchy = AssistiveSupport.activeHierarchy ?? new AccessibilityHierarchy();
                 node = hierarchy.AddNode(Label, null);
                 node.frameGetter = ScreenFrame;
+                node.focusChanged += FocusChanged;
                 node.invoked += Invoke;
                 node.incremented += Increment;
                 node.decremented += Decrement;
-                AssistiveSupport.activeHierarchy = hierarchy;
+                if (Application.platform == RuntimePlatform.IPhonePlayer) AssistiveSupport.activeHierarchy = hierarchy;
             }
             UpdateLabel();
             node.role = Role;
@@ -171,14 +236,18 @@ namespace AllinDefense.UI.Kit
         private void RemoveNode()
         {
             if (node == null) return;
+            node.focusChanged -= FocusChanged;
             node.invoked -= Invoke; node.incremented -= Increment; node.decremented -= Decrement;
             hierarchy.RemoveNode(node); node = null;
         }
         private void OnDisable()
         {
             GameLocalization.LanguageChanged -= UpdateLabel;
+            controls.Remove(this);
             scopes.Remove(this);
             RemoveNode();
+            if (FocusedElement == this) FocusedElement = null;
+            if (modalScope) RefreshAll();
         }
     }
 }

@@ -217,7 +217,7 @@ namespace AllinDefense.Tests
         {
             Create(); var tower = SelectTower(); session.TryUpgradeOutpost(0);
             session.StartNextWave(); yield return null;
-            foreach (int speedStep in new[] { 0, 1, 2, 3 })
+            foreach (int speedStep in new[] { 0, 1 })
             {
                 while (session.CurrentGameSpeed != GameSessionController.SpeedForStep(speedStep)) Call(session, "ToggleGameSpeed");
                 // Spawn through the normal battle clock, then observe actual frame progression.

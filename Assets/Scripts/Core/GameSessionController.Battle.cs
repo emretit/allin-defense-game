@@ -10,6 +10,9 @@ namespace AllinDefense.Core
     public sealed partial class GameSessionController
     {
         public int EarlyWaveReward => 0;
+        public float IntermissionRemaining => intermissionRemaining;
+        public float IntermissionDuration => IntermissionSeconds;
+        public string BossDisplayName => CampaignCatalog.BossName(CampaignLevelNumber);
         public float CurrentWaveCompletion => UnpausedPhase == GamePhase.Wave && plannedThisWave > 0
             ? Mathf.Clamp01((float)removedThisWave / plannedThisWave) : 0;
         public int UpcomingEnemyCount

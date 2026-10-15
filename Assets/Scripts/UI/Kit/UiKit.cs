@@ -61,6 +61,13 @@ namespace AllinDefense.UI.Kit
             return text;
         }
 
+        public TMP_Text AccessibleText(Transform parent, string id, LocalizedCopy copy, float size = UiTokens.TypeLabel, bool bold = false)
+        {
+            var text = Text(parent, id, copy, size, bold);
+            text.gameObject.AddComponent<UiAccessibleText>().Configure(text);
+            return text;
+        }
+
         public Image Icon(Transform parent, string id, Sprite sprite, float size = UiTokens.Space3)
         {
             var rect = Node(parent, id);

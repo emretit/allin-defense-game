@@ -88,6 +88,25 @@ namespace AllinDefense.Data
             return Regions[clamped / LevelsPerRegion].levels[clamped % LevelsPerRegion];
         }
 
+        public static string BossName(int levelNumber)
+        {
+            int bossLevel = (Mathf.Clamp(levelNumber, 1, LevelCount) - 1) / LevelsPerRegion * LevelsPerRegion + LevelsPerRegion;
+            if (bossLevel == LevelsPerRegion) return FirstRegionCampaign.EnemyName(EnemyArchetype.Boss);
+            foreach (var wave in CampaignContent.Level(bossLevel).waves)
+            {
+                if (!wave.bossWave) continue;
+                string[] entries = wave.preview.Split('•');
+                for (int index = 0; index < wave.groups.Length && index < entries.Length; index++)
+                {
+                    if (wave.groups[index].enemy != EnemyArchetype.Boss) continue;
+                    string entry = entries[index];
+                    int count = entry.IndexOf('×');
+                    if (count > 0) return AllinDefense.UI.GameLocalization.Translate(entry.Substring(0, count).Trim());
+                }
+            }
+            return FirstRegionCampaign.EnemyName(EnemyArchetype.Boss);
+        }
+
         private static IReadOnlyList<CampaignRegionDefinition> Build()
         {
             var result = new List<CampaignRegionDefinition>(RegionCount);

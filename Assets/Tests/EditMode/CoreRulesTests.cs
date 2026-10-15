@@ -105,10 +105,10 @@ namespace AllinDefense.Tests
         {
             Assert.That(GameSessionController.SpeedForStep(0), Is.EqualTo(1f));
             Assert.That(GameSessionController.SpeedForStep(1), Is.EqualTo(2f));
-            Assert.That(GameSessionController.SpeedForStep(2), Is.EqualTo(4f));
-            Assert.That(GameSessionController.SpeedForStep(3), Is.EqualTo(8f));
+            Assert.That(GameSessionController.SpeedForStep(2), Is.EqualTo(2f));
+            Assert.That(GameSessionController.SpeedForStep(3), Is.EqualTo(2f));
             Assert.That(GameSessionController.SpeedLabelForScale(1f), Is.EqualTo("1x"));
-            Assert.That(GameSessionController.SpeedLabelForScale(8f), Is.EqualTo("8x"));
+            Assert.That(GameSessionController.SpeedLabelForScale(8f), Is.EqualTo("2x"));
             Assert.That(GameSessionController.GameplayDelay(2f), Is.EqualTo(2f));
         }
 

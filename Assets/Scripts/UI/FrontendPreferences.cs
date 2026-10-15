@@ -12,6 +12,12 @@ namespace AllinDefense.UI
         private const string CameraShakeKey = Prefix + "CameraShake";
         private const string ReducedMotionKey = Prefix + "ReducedMotion";
 
+        static FrontendPreferences() => UiSystemAccessibility.Changed += SystemMotionChanged;
+        private static void SystemMotionChanged()
+        {
+            if (!PlayerPrefs.HasKey(ReducedMotionKey)) MotionChanged?.Invoke();
+        }
+
         public static event Action AudioVolumesChanged;
         public static event Action MotionChanged;
 
@@ -35,13 +41,13 @@ namespace AllinDefense.UI
 
         public static bool CameraShake
         {
-            get => GetBool(CameraShakeKey, true);
+            get => GetBool(CameraShakeKey, !UiSystemAccessibility.ReducedMotion);
             set => SetBool(CameraShakeKey, value);
         }
 
         public static bool ReducedMotion
         {
-            get => GetBool(ReducedMotionKey, false);
+            get => GetBool(ReducedMotionKey, UiSystemAccessibility.ReducedMotion);
             set { SetBool(ReducedMotionKey, value); MotionChanged?.Invoke(); }
         }
 

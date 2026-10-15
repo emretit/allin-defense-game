@@ -275,7 +275,7 @@ namespace AllinDefense.Presentation
             keepPlate.Refresh();
         }
 
-        public void SetPreview(string value) { }
+        public void SetPreview(string value) { forecastValue = value ?? string.Empty; }
 
         public void SetMessage(string value, bool warning = false)
         {
@@ -286,7 +286,7 @@ namespace AllinDefense.Presentation
             if (messageChromeImage != null) messageChromeImage.gameObject.SetActive(visible);
             ShowMessageChrome(body, visible, warning);
         }
-        public void SetNextWaveLabel(string value) { }
+        public void SetNextWaveLabel(string value) { nextWaveLabel.text = value; }
 
         public void SetSelected(GreyboxOutpost outpost, GreyboxOutpostSlot slot, bool visible)
         {
@@ -313,13 +313,10 @@ namespace AllinDefense.Presentation
                 ApplySelectedEmptyView();
             }
             ApplySaleConfirmationLabel();
-            bool selectionChanged = selectedPanel.activeSelf != visible;
-            selectedPanel.SetActive(visible);
             if (visible)
             {
                 previewText.transform.parent.gameObject.SetActive(false);
             }
-            if (selectionChanged) responsiveLayout?.RefreshLayout();
             UpdateRadialSelection(outpost, slot, visible);
             if (!visible) responsiveLayout?.ClearContextualSelection();
         }

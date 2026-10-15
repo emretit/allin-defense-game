@@ -54,8 +54,8 @@ namespace AllinDefense.Core
         private const string SelectableLayerName = "Selectable";
         private const float IntermissionSeconds = 8f;
         public const float BaselineGameplayPace = 1f;
-        private static readonly float[] SpeedSteps = { 1f, 2f, 4f, 8f };
-        private static readonly string[] SpeedLabels = { "1x", "2x", "4x", "8x" };
+        private static readonly float[] SpeedSteps = { 1f, 2f };
+        private static readonly string[] SpeedLabels = { "1x", "2x" };
         private static readonly Vector3[] OutpostSlotPositions =
         {
             new(2f, 0.15f, 0.42f), new(2.42f, 0.15f, 5f),
@@ -436,14 +436,9 @@ namespace AllinDefense.Core
             int second = Mathf.CeilToInt(intermissionRemaining);
             if (second == displayedIntermissionSecond) return;
             displayedIntermissionSecond = second;
-            if (nextWaveButtonLabel != null)
-                nextWaveButtonLabel.text = intermissionRemaining > 0f
-                    ? GameLocalization.Text($"DALGAYI ERKEN ÇAĞIR  {second}", $"CALL WAVE EARLY  {second}")
-                    : GameLocalization.Text("SONRAKİ DALGA", "NEXT WAVE");
-            if (artHud != null)
-                artHud.SetNextWaveLabel(intermissionRemaining > 0f
-                    ? $"{presentationCatalog.uiCopy.Get(UiTextKey.EarlyWave)}  {second}"
-                    : presentationCatalog.uiCopy.Get(UiTextKey.NextWave));
+            string label = FrontendCopy.WaveCountdown.Format(second);
+            if (nextWaveButtonLabel != null) nextWaveButtonLabel.text = label;
+            artHud?.SetNextWaveLabel(label);
         }
 
         private void RefreshThreatPreviewForPhase()
@@ -1012,7 +1007,7 @@ namespace AllinDefense.Core
             if (bossBreached) damage = Lives - BattleRules.LivesAfterBossBreach(Lives, StartingLivesForLevel, damage);
             telemetry.Record(this,"leak",enemy.Archetype.ToString(),damage);
             ShowMessage(bossBreached
-                ? GameLocalization.Text("Bölge Lordu kaleyi aştı — kale ağır hasar aldı.", "The Region Lord breached the keep — heavy damage.")
+                ? FrontendCopy.WaveBossBreach.Format(GameLocalization.IsEnglish && BossDisplayName.StartsWith("The ", StringComparison.Ordinal) ? BossDisplayName.Substring(4) : BossDisplayName)
                 : GameLocalization.Text("Kaleye sızma: ","Keep breached: ") + FirstRegionCampaign.EnemyName(enemy.Archetype),2, true);
             EmitPresentation(PresentationCue.UiError,path[^1],value:damage);
             leakedLives[(int)enemy.Archetype] += Mathf.Max(1, damage);
@@ -1042,7 +1037,7 @@ namespace AllinDefense.Core
                 if (resultPanel != null)
                 {
                     resultPanel.SetActive(true);
-                    resultTitle.text = "ZAFER\nGREENWATCH KORUNDU";
+                    resultTitle.text = FrontendCopy.HudVictory.Value;
                     resultTitle.color = new Color(0.45f, 1f, 0.58f);
                 }
                 artHud?.ShowResult(true);

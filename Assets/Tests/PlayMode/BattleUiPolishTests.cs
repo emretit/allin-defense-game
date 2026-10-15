@@ -160,7 +160,7 @@ namespace AllinDefense.Tests
                 Assert.That(ScreenRect(hud.GetComponent<DefenderKeepPlate>().Plate).Overlaps(Rect.MinMaxRect(min.x, min.y, max.x, max.y)), Is.False);
                 Assert.That(ScreenRect(cooldown.ActionRect).Overlaps(ScreenRect(cooldown.BadgeRect)), Is.False);
                 Assert.That(ScreenRect(cooldown.ActionRect).width, Is.GreaterThanOrEqualTo(UiMetrics.MinTouchPt));
-                Assert.That(hud.transform.Find("Message").GetComponent<TMP_Text>().textWrappingMode, Is.EqualTo(TextWrappingModes.NoWrap));
+                Assert.That(hud.transform.Find("Message").GetComponent<TMP_Text>().textWrappingMode, Is.EqualTo(TextWrappingModes.Normal));
                 Object.Destroy(session.gameObject); yield return null;
             }
 #else

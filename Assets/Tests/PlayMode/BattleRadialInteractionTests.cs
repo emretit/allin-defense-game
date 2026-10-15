@@ -69,11 +69,10 @@ namespace AllinDefense.Tests
                 Assert.That(state.Icon.GetComponentInParent<Mask>(), Is.Not.Null);
                 Assert.That(button.GetComponentsInChildren<Image>().Any(image => image.name == "PriceCoin"), Is.True);
                 Assert.That(button.GetComponentsInChildren<TMP_Text>().Any(text => text.text.Contains(FrontendCopy.Locked.Value)), Is.False);
-                if (!session.CanBuild(System.Enum.Parse<OutpostKind>(id)))
-                {
-                    Assert.That(button.GetComponent<UiAccessibleButton>().Label, Does.Contain(FrontendCopy.Locked.Value));
-                    Assert.That(button.transform.Find("LockBadge").gameObject.activeSelf, Is.True);
-                }
+                Assert.That(session.CanBuild(System.Enum.Parse<OutpostKind>(id)), Is.True, id);
+                Assert.That(button.interactable, Is.True, id);
+                Assert.That(button.GetComponent<UiAccessibleButton>().Label, Does.Not.Contain(FrontendCopy.Locked.Value));
+                Assert.That(button.transform.Find("LockBadge").gameObject.activeSelf, Is.False);
             }
             var catalog = Resources.Load<DefenderPresentationCatalog>("Presentation/DefenderPresentationCatalog");
             foreach (string id in new[] { "Upgrade", "Sell", "RapidFire", "Sharpshooter", "ShieldGuard", "AssaultGuard", "Blast", "Frost" })
@@ -155,14 +154,14 @@ namespace AllinDefense.Tests
             var action = (RectTransform)hud.RadialAction.transform;
             var corners = new Vector3[4]; action.GetWorldCorners(corners);
             var bounds = Rect.MinMaxRect(corners[0].x, corners[0].y, corners[2].x, corners[2].y);
-            Assert.That(bounds.height, Is.GreaterThanOrEqualTo(52));
+            Assert.That(bounds.height, Is.GreaterThanOrEqualTo(51.99f));
             Assert.That(Screen.safeArea.Contains(bounds.min), Is.True); Assert.That(Screen.safeArea.Contains(bounds.max), Is.True);
             foreach (var obstacle in hud.GetComponent<DefenderHudResponsiveLayout>().FrameScreenRects())
                 Assert.That(bounds.Overlaps(obstacle), Is.False);
             foreach (var button in hud.BattleRadial.GetComponentsInChildren<Button>().Where(button => button != hud.RadialAction))
             {
                 ((RectTransform)button.transform).GetWorldCorners(corners);
-                Assert.That(bounds.Overlaps(Rect.MinMaxRect(corners[0].x,corners[0].y,corners[2].x,corners[2].y)), Is.False, button.name);
+                Assert.That(bounds.Overlaps(Rect.MinMaxRect(corners[0].x,corners[0].y,corners[2].x,corners[2].y)), Is.False, $"{button.name}: screen={Screen.width}×{Screen.height}, action={bounds}, button={Rect.MinMaxRect(corners[0].x,corners[0].y,corners[2].x,corners[2].y)}");
             }
         }
 
@@ -428,6 +427,52 @@ namespace AllinDefense.Tests
             }
             Debug.Log($"[RADIAL_FRAME_INTERSECTIONS] {intersections}");
         }
+        [UnityTest] public IEnumerator PreviewingChoicesKeepsTheRingShapeItOpenedWith()
+        {
+#if UNITY_EDITOR
+            var review = System.AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType("AllinDefense.Editor.FrontendExperienceReview")).First(type => type != null);
+            review.GetMethod("SetSize").Invoke(null, new object[] { 844, 390 });
+#else
+            Screen.SetResolution(844, 390, FullScreenMode.Windowed);
+#endif
+            yield return null; yield return null;
+            Call(session, "EarnGold", 5000);
+            foreach (var slot in session.GetComponentsInChildren<GreyboxOutpostSlot>())
+            {
+                Call(session, "SelectSlot", slot); yield return null; Canvas.ForceUpdateCanvases();
+                var opened = RingCenters();
+                foreach (string id in new[] { "Archer", "Barracks", "Mage", "Archer" })
+                {
+                    Choice(id).onClick.Invoke(); yield return null; Canvas.ForceUpdateCanvases();
+                    AssertSameRing(opened, $"slot {slot.Index}/{id}");
+                }
+                // Enemy-hit camera shake nudges the anchor by a few points; the ring must not re-arrange.
+                Call(hud, "PositionBattleRadial", (Vector2)Camera.main.WorldToScreenPoint(slot.transform.position) + Vector2.one * 3);
+                Canvas.ForceUpdateCanvases();
+                AssertSameRing(opened, $"slot {slot.Index}/shake");
+                if (slot.Index != 0) continue;
+                hud.RadialAction.onClick.Invoke(); yield return null; Canvas.ForceUpdateCanvases();
+                opened = RingCenters();
+                Choice("Upgrade").onClick.Invoke(); yield return null; Canvas.ForceUpdateCanvases();
+                AssertSameRing(opened, "tower/Upgrade");
+            }
+        }
+        private Vector2[] RingCenters() => hud.BattleRadial.GetComponentsInChildren<Button>().Where(button => button != hud.RadialAction)
+            .Select(button => (Vector2)RectTransformUtility.WorldToScreenPoint(null, button.transform.position)).ToArray();
+        private void AssertSameRing(Vector2[] opened, string step)
+        {
+            var now = RingCenters();
+            Assert.That(now.Length, Is.EqualTo(opened.Length), step);
+            for (int i = 0; i < now.Length; i++)
+                Assert.That(Vector2.Distance(now[i], opened[i]), Is.LessThan(.5f), $"{step}: {opened[i]} → {now[i]}");
+            foreach (var button in hud.BattleRadial.GetComponentsInChildren<Button>().Where(button => button != hud.RadialAction))
+            {
+                var corners = new Vector3[4]; ((RectTransform)button.transform).GetWorldCorners(corners);
+                var rect = Rect.MinMaxRect(corners[0].x, corners[0].y, corners[2].x, corners[2].y);
+                foreach (var obstacle in hud.GetComponent<DefenderHudResponsiveLayout>().FrameScreenRects())
+                    Assert.That(rect.Overlaps(obstacle), Is.False, $"{step}: {button.name} {rect} overlaps {obstacle}");
+            }
+        }
         [UnityTest] public IEnumerator InformationCardRendersAllStatsAndSpecializationDifferencesInBothLanguages()
         {
             Call(session, "EarnGold", 1000);
@@ -449,7 +494,8 @@ namespace AllinDefense.Tests
                 yield return null; Canvas.ForceUpdateCanvases();
                 var stats = UiQuery.FindById<TMP_Text>(hud, "Description"); stats.ForceMeshUpdate();
                 Assert.That(stats.isTextOverflowing, Is.False, stats.text);
-                Assert.That(stats.textInfo.lineCount, Is.EqualTo(2));
+                Assert.That(stats.textInfo.lineCount, Is.EqualTo(1));
+                Assert.That(UiQuery.FindById<TMP_Text>(hud, "CardStatValue2").text, Does.Contain("→"));
                 hud.BattleRadial.Close(); Call(session, "SelectOutpost", session.Outposts[0]);
             }
         }

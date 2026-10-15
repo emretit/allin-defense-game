@@ -30,7 +30,7 @@ namespace AllinDefense.UI
     /// Stable frontend copy IDs. Change either language here without changing call sites
     /// or test-visible GameObject names; widgets never infer an ID from displayed text.
     /// </summary>
-    public static class FrontendCopy
+    public static partial class FrontendCopy
     {
         public static readonly LocalizedCopy AccessiblePercent = new("yüzde {0}", "{0} percent");
         public static readonly LocalizedCopy AccessibleSelected = new("Seçili", "Selected");

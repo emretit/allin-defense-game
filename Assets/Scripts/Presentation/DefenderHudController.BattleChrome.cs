@@ -28,10 +28,11 @@ namespace AllinDefense.Presentation
             rect.anchorMin = rect.anchorMax = new Vector2(0, .5f);
             rect.anchoredPosition = new Vector2(20, 0);
             rect.sizeDelta = new Vector2(18, 18);
-            messageText.textWrappingMode = TextWrappingModes.NoWrap;
-            messageText.overflowMode = TextOverflowModes.Ellipsis;
-            messageText.enableAutoSizing = true;
-            messageText.fontSizeMin = 11;
+            messageText.textWrappingMode = TextWrappingModes.Normal;
+            messageText.overflowMode = TextOverflowModes.Overflow;
+            messageText.enableAutoSizing = false;
+            messageText.fontSize = 13;
+            messageText.fontSizeMin = 13;
             messageText.fontSizeMax = 13;
             messageGroup = messageChromeImage.gameObject.AddComponent<CanvasGroup>();
             messageTextGroup = messageText.gameObject.AddComponent<CanvasGroup>();
@@ -44,6 +45,7 @@ namespace AllinDefense.Presentation
             messageText.color = warning ? UiTokens.TextPrimary : UiTokens.TextSecondary;
             if (visible && body != shownMessage) messageEntrance = 0;
             shownMessage = body;
+            responsiveLayout?.RefreshLayout();
         }
 
         private void TickMessageEntrance()

@@ -24,6 +24,8 @@ namespace AllinDefense.Presentation
         private bool criticalLives, frameValuesReady;
         private GreyboxEnemy shownBoss;
         private int segmentCount;
+        private int countdownSecond = -1, returnSecond = -1;
+        private GameLanguage countdownLanguage, returnLanguage, bossLanguage;
         private float musicBeforeMute = 1, effectsBeforeMute = 1;
         public string HeroDisplayLabel => heroText.text;
         public bool MapConfirmationOpen => mapConfirmation != null && mapConfirmation.gameObject.activeSelf;
@@ -64,7 +66,7 @@ namespace AllinDefense.Presentation
             bossName = bossBar.transform.Find("BossName").GetComponent<TMP_Text>();
             bossHealth = bossBar.transform.Find("BossHealth").GetComponent<TMP_Text>();
             Bind(pauseMainMenuButton, () => { mapConfirmation.transform.SetAsLastSibling(); mapConfirmation.Show(); }, click);
-            Bind(pauseModal.Body.Find("PauseRestart").GetComponent<Button>(), restart, click);
+            InitializeWaveForecast(restart, click);
             Bind(mapConfirmation.Body.Find("ConfirmMap").GetComponent<Button>(), () => { mapConfirmation.Hide(); map?.Invoke(); }, click);
             Bind(mapConfirmation.Body.Find("KeepPlaying").GetComponent<Button>(), mapConfirmation.Hide, click);
             musicSwitch.Changed += on =>
@@ -113,17 +115,45 @@ namespace AllinDefense.Presentation
             waveText.text = $"{FrontendCopy.HudWave.Value} {displayed}/{session.WaveCount}";
             waveProgress.SetProgress(session.CurrentWaveIndex + session.CurrentWaveCompletion);
             previewText.text = FrontendCopy.UpcomingCount.Format(session.UpcomingEnemyCount);
-            previewText.transform.parent.gameObject.SetActive(session.UpcomingEnemyCount > 0);
+            RefreshWaveForecast(session);
             RefreshBoss(session);
             bool canCall = session.Phase is GamePhase.Preparing or GamePhase.Intermission;
             nextWaveButton.gameObject.SetActive(canCall);
             nextWaveButton.interactable = canCall;
-            nextWaveLabel.text = WaveActionLabel(session.CurrentWaveIndex == 0, session.EarlyWaveReward);
+            if (session.UnpausedPhase == GamePhase.Intermission)
+            {
+                int second = Mathf.CeilToInt(session.IntermissionRemaining);
+                if (second != countdownSecond || countdownLanguage != GameLocalization.CurrentLanguage)
+                {
+                    nextWaveLabel.text = FrontendCopy.WaveCountdown.Format(second);
+                    countdownSecond = second; countdownLanguage = GameLocalization.CurrentLanguage;
+                }
+            }
+            else
+            {
+                countdownSecond = -1;
+                nextWaveLabel.text = WaveActionLabel(session.CurrentWaveIndex == 0, session.EarlyWaveReward);
+            }
             var hero = session.Hero;
             if (hero != null)
             {
-                heroText.text = session.HeroDisplayName;
-                radialCooldown.SetCooldown(hero.IsAlive ? hero.AbilityRemaining : hero.RespawnRemaining, hero.AbilityCooldownDuration);
+                if (hero.IsAlive)
+                {
+                    returnSecond = -1;
+                    heroText.text = session.HeroDisplayName;
+                    radialCooldown.SetReturning(false);
+                    radialCooldown.SetCooldown(hero.AbilityRemaining, hero.AbilityCooldownDuration);
+                }
+                else
+                {
+                    int second = Mathf.CeilToInt(hero.RespawnRemaining);
+                    if (second != returnSecond || returnLanguage != GameLocalization.CurrentLanguage)
+                    {
+                        heroText.text = FrontendCopy.WaveHeroReturning.Format(second);
+                        returnSecond = second; returnLanguage = GameLocalization.CurrentLanguage;
+                    }
+                    radialCooldown.SetReturning(true);
+                }
                 abilityButton.interactable = hero.IsAlive && hero.AbilityRemaining <= 0 && session.Phase != GamePhase.Paused;
             }
             bool paused = session.Phase == GamePhase.Paused && !session.SpecializationModalOpen;
@@ -136,7 +166,7 @@ namespace AllinDefense.Presentation
                     effectsSwitch.SetValue(FrontendPreferences.SfxVolume > 0, false);
                     pauseModal.transform.SetAsLastSibling(); pauseModal.Show();
                 }
-                else { pauseModal.Hide(); mapConfirmation.Hide(); }
+                else { pauseModal.Hide(); mapConfirmation.Hide(); restartConfirmation.Hide(); }
             }
         }
 
@@ -150,7 +180,11 @@ namespace AllinDefense.Presentation
             waveProgress.gameObject.SetActive(!visible);
             if (visible)
             {
-                bossName.text = FrontendCopy.BossName.Value;
+                if (boss != shownBoss || bossLanguage != GameLocalization.CurrentLanguage)
+                {
+                    bossName.text = session.BossDisplayName;
+                    bossLanguage = GameLocalization.CurrentLanguage;
+                }
                 bossHealth.text = $"{boss.Health}/{boss.MaxHealth}";
                 UiKit.SetHorizontalFill(bossFill, (float)boss.Health / Mathf.Max(1, boss.MaxHealth));
                 if (boss != shownBoss)

@@ -20,7 +20,10 @@ namespace AllinDefense.Tests
     {
         private GameSessionController session;
         private DefenderHudController hud;
-        private bool reducedMotion;
+        private bool reducedMotion, cameraShake;
+        private bool hadReducedMotion, hadCameraShake;
+        private const string ReducedMotionKey = "AllinDefense.Frontend.ReducedMotion";
+        private const string CameraShakeKey = "AllinDefense.Frontend.CameraShake";
         private float music, effects;
         private string checkpointPath;
         private const BindingFlags Private = BindingFlags.Instance | BindingFlags.NonPublic;
@@ -34,12 +37,20 @@ namespace AllinDefense.Tests
             Time.timeScale = 0;
         }
         [SetUp] public void Setup()
-        { reducedMotion = FrontendPreferences.ReducedMotion; music = FrontendPreferences.MusicVolume; effects = FrontendPreferences.SfxVolume; }
+        {
+            hadReducedMotion = PlayerPrefs.HasKey(ReducedMotionKey); hadCameraShake = PlayerPrefs.HasKey(CameraShakeKey);
+            reducedMotion = FrontendPreferences.ReducedMotion; cameraShake = FrontendPreferences.CameraShake;
+            music = FrontendPreferences.MusicVolume; effects = FrontendPreferences.SfxVolume;
+            FrontendPreferences.ReducedMotion = false; FrontendPreferences.CameraShake = true;
+        }
         [UnityTearDown] public IEnumerator Cleanup()
         {
             if (session != null) Object.Destroy(session.gameObject);
             yield return null;
-            FrontendPreferences.ReducedMotion = reducedMotion;
+            if (hadReducedMotion) FrontendPreferences.ReducedMotion = reducedMotion;
+            else PlayerPrefs.DeleteKey(ReducedMotionKey);
+            if (hadCameraShake) FrontendPreferences.CameraShake = cameraShake;
+            else PlayerPrefs.DeleteKey(CameraShakeKey);
             FrontendPreferences.MusicVolume = music; FrontendPreferences.SfxVolume = effects;
             Time.timeScale = 1;
             if (checkpointPath != null && System.IO.File.Exists(checkpointPath)) System.IO.File.Delete(checkpointPath);
@@ -82,10 +93,22 @@ namespace AllinDefense.Tests
                 Assert.That(errors, Is.EqualTo(1));
                 var errorClip = Resources.Load<DefenderPresentationCatalog>("Presentation/DefenderPresentationCatalog").Audio(PresentationCue.UiError).clip;
                 Assert.That(session.GetComponentsInChildren<AudioSource>().Any(source => source.clip == errorClip), Is.True);
-                yield return null; yield return null;
-                Assert.That(chip.anchoredPosition.x, Is.Not.EqualTo(rest.x));
+                var rejection = (UiMotion.Handle)typeof(DefenderHudController).GetField("rejectionMotion", Private).GetValue(hud);
+                Assert.That(rejection, Is.Not.Null);
+                Assert.That(rejection.IsComplete, Is.False);
+                Assert.That(typeof(DefenderHudController).GetField("rejectionTarget", Private).GetValue(hud), Is.SameAs(chip));
+                float deadline = Time.realtimeSinceStartup + 1;
+                bool moved = false;
+                while (!rejection.IsComplete && !moved && Time.realtimeSinceStartup < deadline)
+                {
+                    yield return null;
+                    moved = Mathf.Abs(chip.anchoredPosition.x - rest.x) > .01f;
+                }
+                Assert.That(moved, Is.True, "Price chip must visibly shake while gameplay time is paused.");
                 FrontendPreferences.ReducedMotion = true;
+                Assert.That(rejection.IsComplete, Is.True);
                 Assert.That(chip.anchoredPosition, Is.EqualTo(rest));
+                yield return null;
             }
             finally { UiSounds.Requested -= requested; }
         }
@@ -149,6 +172,8 @@ namespace AllinDefense.Tests
             UiQuery.FindById<UiSwitch>(hud, "EffectsSwitch").SetValue(false);
             Assert.That(FrontendPreferences.MusicVolume, Is.Zero); Assert.That(FrontendPreferences.SfxVolume, Is.Zero);
             UiQuery.FindById<Button>(hud, "PauseRestart").onClick.Invoke();
+            Assert.That(hud.RestartConfirmationOpen, Is.True);
+            UiQuery.FindById<Button>(hud, "ConfirmRestart").onClick.Invoke();
             Assert.That(restart, Is.EqualTo(7));
             UiQuery.FindById<Button>(hud, "MainMenu").onClick.Invoke(); Assert.That(map, Is.Zero);
             Assert.That(hud.MapConfirmationOpen, Is.True);
@@ -180,6 +205,8 @@ namespace AllinDefense.Tests
             session.ConfigureBattleNavigation(() => reloadedLevel = session.CampaignLevelNumber, () => { });
             session.TogglePause(); hud.Refresh(session);
             UiQuery.FindById<Button>(hud, "PauseRestart").onClick.Invoke();
+            Assert.That(hud.RestartConfirmationOpen, Is.True);
+            UiQuery.FindById<Button>(hud, "ConfirmRestart").onClick.Invoke();
             Assert.That(reloadedLevel, Is.EqualTo(7));
             Assert.That(store.Data.checkpoint, Is.Null);
             Assert.That(store.Data.unlockedLevel, Is.EqualTo(7));
@@ -213,7 +240,7 @@ namespace AllinDefense.Tests
             typeof(GameSessionController).GetField("currentWaveIndex", Private).SetValue(session, 1);
             Call(session, "SetPhase", GamePhase.Intermission); hud.Refresh(session);
             Assert.That(session.EarlyWaveReward, Is.Zero);
-            Assert.That(UiQuery.FindById<Button>(hud, "NextWave").GetComponentInChildren<TMP_Text>().text, Is.EqualTo(FrontendCopy.HudNextWave.Value));
+            Assert.That(UiQuery.FindById<Button>(hud, "NextWave").GetComponentInChildren<TMP_Text>().text, Is.EqualTo(FrontendCopy.WaveCountdown.Format(0)));
             Assert.That(DefenderHudController.WaveActionLabel(false, 15), Is.EqualTo(FrontendCopy.EarlyWaveReward.Format(15)));
             yield return null;
             var progress = hud.GetComponentInChildren<UiProgressSegments>();
@@ -246,6 +273,13 @@ namespace AllinDefense.Tests
                 var layout = hud.GetComponent<DefenderHudResponsiveLayout>(); layout.RefreshLayout(); Canvas.ForceUpdateCanvases();
                 Assert.That(((RectTransform)UiQuery.FindById<Button>(hud, "NextWave").transform).sizeDelta, Is.EqualTo(new Vector2(208, 54)));
                 var rects = layout.FrameScreenRects();
+                Debug.Log("[HUD_FRAME_RECTS] " + string.Join("; ", rects.Select(r => r.ToString())));
+                var forecast = UiQuery.FindById<TMP_Text>(hud, "WaveForecast.Label");
+                Assert.That(forecast.gameObject.activeInHierarchy, Is.True);
+                Assert.That(forecast.text, Does.StartWith(GameLocalization.Text("Sıradaki: ", "Next: ")));
+                Assert.That(forecast.rectTransform.rect.height,
+                    Is.GreaterThanOrEqualTo(forecast.GetPreferredValues(forecast.text).y),
+                    "The forecast must reserve a full font line inside its padding");
                 foreach (var text in hud.GetComponentsInChildren<TMP_Text>().Where(t => !string.IsNullOrEmpty(t.text)))
                 {
                     text.ForceMeshUpdate();

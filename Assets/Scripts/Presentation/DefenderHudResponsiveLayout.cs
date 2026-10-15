@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using AllinDefense.UI;
 using UnityEngine.UI;
+using TMPro;
 
 namespace AllinDefense.Presentation
 {
@@ -49,6 +50,8 @@ namespace AllinDefense.Presentation
         public const float TopContentHeight = 56f;
         public const float BottomContentHeight = 110f;
 
+        public const float InformationCardWidth = 260f;
+        private float informationCardHeight = 120f;
         private RectTransform root;
         private RectTransform topBar;
         private RectTransform bottomBar;
@@ -108,8 +111,8 @@ namespace AllinDefense.Presentation
             var points = UiMetrics.PointsPerCanvasUnit(GetComponentInParent<Canvas>());
             selectedPanel.anchorMin = selectedPanel.anchorMax = new Vector2(metrics.SafeMinX, metrics.SafeMinY);
             selectedPanel.pivot = Vector2.zero;
-            selectedPanel.anchoredPosition = new Vector2(90 / points.x, 8 / points.y);
-            selectedPanel.sizeDelta = new Vector2(198, 80);
+            selectedPanel.anchoredPosition = new Vector2(96 / points.x, 8 / points.y);
+            selectedPanel.sizeDelta = new Vector2(InformationCardWidth, informationCardHeight);
             selectedPanel.localScale = new Vector3(1 / points.x, 1 / points.y, 1);
         }
 
@@ -131,6 +134,13 @@ namespace AllinDefense.Presentation
         public void ClearContextualSelection()
         {
             contextualSelectionActive = false;
+        }
+
+        public void SetInformationCardHeight(float height)
+        {
+            if (Mathf.Approximately(informationCardHeight, height)) return;
+            informationCardHeight = height;
+            RefreshLayout();
         }
 
         public void RefreshLayout()
@@ -178,7 +188,7 @@ namespace AllinDefense.Presentation
         }
 
         private static readonly string[] framePaths = { "TopBar/Lives", "TopBar/Gold", "TopBar/WavePanel", "TopBar/Speed", "TopBar/Pause",
-            "Preview", "Message", "BottomBar/AbilityCooldown", "BottomBar/Hero", "BottomBar/NextWave", "SelectedPanel" };
+            "Preview", "TopBar/WaveForecast", "MessageChrome", "Message", "BottomBar/AbilityCooldown", "BottomBar/Hero", "BottomBar/NextWave", "SelectedPanel" };
         private RectTransform[] frameRects;
         private readonly Vector3[] frameCorners = new Vector3[4];
         public Rect[] FrameScreenRects()
@@ -188,7 +198,7 @@ namespace AllinDefense.Presentation
             return result.ToArray();
         }
 
-        public void AppendFrameScreenRects(System.Collections.Generic.List<Rect> result)
+        public void AppendFrameScreenRects(System.Collections.Generic.List<Rect> result, bool includeInformationCard = true)
         {
             if (frameRects == null)
             {
@@ -197,7 +207,7 @@ namespace AllinDefense.Presentation
             }
             foreach (var rect in frameRects)
             {
-                if (rect == null || !rect.gameObject.activeInHierarchy) continue;
+                if (rect == null || !rect.gameObject.activeInHierarchy || !includeInformationCard && rect == selectedPanel) continue;
                 rect.GetWorldCorners(frameCorners);
                 Vector2 min = RectTransformUtility.WorldToScreenPoint(null, frameCorners[0]);
                 Vector2 max = RectTransformUtility.WorldToScreenPoint(null, frameCorners[2]);
@@ -205,19 +215,32 @@ namespace AllinDefense.Presentation
             }
         }
 
+        // Screen area the information card can occupy, shown or hidden, so the radial can reserve it up front.
+        public Rect InformationCardScreenRect(float minimumHeight)
+        {
+            selectedPanel.GetWorldCorners(frameCorners);
+            Vector2 min = RectTransformUtility.WorldToScreenPoint(null, frameCorners[0]);
+            Vector2 max = RectTransformUtility.WorldToScreenPoint(null, frameCorners[2]);
+            float pixelsPerPoint = (max.y - min.y) / informationCardHeight;
+            return Rect.MinMaxRect(min.x, min.y, max.x, min.y + Mathf.Max(informationCardHeight, minimumHeight) * pixelsPerPoint);
+        }
+
         private void LayoutFrame(LayoutMetrics metrics)
         {
             Vector2 points = UiMetrics.PointsPerCanvasUnit(GetComponentInParent<Canvas>());
             Vector3 scale = new(1 / points.x, 1 / points.y, 1);
             float width = metrics.SafeWidth * points.x;
-            bool compact = selectedPanel.gameObject.activeSelf && width < 900;
+            bool compact = width < 760 || selectedPanel.gameObject.activeSelf && width < 900;
             Place(topBar, new Vector2(metrics.SafeCenterX, metrics.SafeMaxY), new Vector2(.5f, 1), Vector2.zero, new Vector2(width, TopContentHeight));
             Place(bottomBar, new Vector2(metrics.SafeCenterX, metrics.SafeMinY), new Vector2(.5f, 0), Vector2.zero, new Vector2(width, BottomContentHeight));
             topBar.localScale = bottomBar.localScale = scale;
             Place(RequireRect(topBar, "Lives"), new Vector2(0, 1), new Vector2(0, 1), new Vector2(6, -6), new Vector2(76, 44));
-            Place(RequireRect(topBar, "Gold"), new Vector2(0, 1), new Vector2(0, 1), new Vector2(88, -6), new Vector2(compact ? 124 : 148, 44));
+            Place(RequireRect(topBar, "Gold"), new Vector2(0, 1), new Vector2(0, 1), new Vector2(90, -6), new Vector2(compact ? 124 : 148, 44));
             var wave = RequireRect(topBar, "WavePanel");
-            Place(wave, new Vector2(.52f, 1), new Vector2(.5f, 1), new Vector2(0, -2), new Vector2(compact ? 200 : 220, compact ? 44 : 52));
+            float waveWidth = compact ? 200 : 220;
+            float waveLeft = Mathf.Max(compact ? 222 : 246, width * .5f - waveWidth * .5f);
+            waveLeft = Mathf.Min(waveLeft, width - 140 - 80 - waveWidth);
+            Place(wave, new Vector2(0, 1), new Vector2(0, 1), new Vector2(waveLeft, -6), new Vector2(waveWidth, compact ? 44 : 52));
             Place(RequireRect(wave, "Wave"), new Vector2(0, 1), new Vector2(0, 1), new Vector2(10, -6), new Vector2(compact ? 86 : 100, 22));
             Place(RequireRect(wave, "PhaseChip"), new Vector2(1, 1), new Vector2(1, 1), new Vector2(-8, -6), new Vector2(92, 22));
             foreach (Transform child in wave)
@@ -230,15 +253,31 @@ namespace AllinDefense.Presentation
             Place(RequireRect(boss, "BossTrack"), new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(0, compact ? 4 : 8), new Vector2(compact ? 180 : 200, 8));
             Place(RequireRect(topBar, "Speed"), Vector2.one, Vector2.one, new Vector2(-56, -6), new Vector2(76, 44));
             Place(RequireRect(topBar, "Pause"), Vector2.one, Vector2.one, new Vector2(-6, -6), new Vector2(44, 44));
-            Place(preview, new Vector2(metrics.SafeMaxX, metrics.SafeMaxY), new Vector2(1, 1), new Vector2(-144 / points.x, -16 / points.y), new Vector2(72, 24));
+            Place(preview, new Vector2(metrics.SafeMaxX, metrics.SafeMaxY), new Vector2(1, 1), new Vector2(-140 / points.x, -16 / points.y), new Vector2(72, 24));
             preview.localScale = scale;
-            Place(message, new Vector2(metrics.SafeCenterX, metrics.SafeMinY), new Vector2(.5f, 0), new Vector2(14 / points.x, 20 / points.y), new Vector2(Mathf.Min(330, width - 340), 32));
-            message.localScale = scale;
+            bool selection = selectedPanel.gameObject.activeSelf;
+            float chromeWidth = Mathf.Min(378, width - (selection ? 372 : 32));
+            float messageWidth = chromeWidth - 48;
+            float messageHeight = Mathf.Max(36, Mathf.Ceil(message.GetComponent<TMP_Text>().GetPreferredValues(
+                message.GetComponent<TMP_Text>().text, messageWidth, 0).y));
+            Vector2 messageAnchor = new(selection ? metrics.SafeMaxX : metrics.SafeCenterX, metrics.SafeMinY);
+            Vector2 messagePivot = new(selection ? 1 : .5f, 0);
+            const float edge = UiTokens.Space1;
+            const float abilityBottom = edge;
+            const float heroBottom = abilityBottom + 88 + edge;
+            const float heroRight = edge + 208 + edge;
+            // Reserve clearance throughout the toast's downward entrance motion.
+            float messageBottom = selection ? Mathf.Max(heroBottom + 18, edge + informationCardHeight) + 2 * edge :
+                (width + chromeWidth) * .5f > width - heroRight - 80 - edge ? heroBottom + 18 + 2 * edge : 2 * edge;
+            Vector2 chromePosition = new(selection ? -8 / points.x : 0, messageBottom / points.y);
             var messageChrome = RequireRect("MessageChrome");
-            Place(messageChrome, message.anchorMin, message.pivot, message.anchoredPosition - new Vector2(14 / points.x, 4 / points.y), message.sizeDelta + new Vector2(48, 8));
+            Place(messageChrome, messageAnchor, messagePivot, chromePosition, new Vector2(chromeWidth, messageHeight + 8));
             messageChrome.localScale = scale;
-            Place(RequireRect(bottomBar, "AbilityCooldown"), Vector2.zero, Vector2.zero, new Vector2(20, 46), new Vector2(64, 88));
-            Place(RequireRect(bottomBar, "Hero"), Vector2.zero, Vector2.zero, new Vector2(12, 20), new Vector2(80, 18));
+            Vector2 textPosition = chromePosition + new Vector2((selection ? -10 : 14) / points.x, 4 / points.y);
+            Place(message, messageAnchor, messagePivot, textPosition, new Vector2(messageWidth, messageHeight));
+            message.localScale = scale;
+            Place(RequireRect(bottomBar, "AbilityCooldown"), new Vector2(1, 0), new Vector2(1, 0), new Vector2(-heroRight, abilityBottom), new Vector2(64, 88));
+            Place(RequireRect(bottomBar, "Hero"), new Vector2(1, 0), new Vector2(1, 0), new Vector2(-heroRight + edge, heroBottom), new Vector2(80, 18));
             Place(RequireRect(bottomBar, "NextWave"), new Vector2(1, 0), new Vector2(1, 0), new Vector2(-8, 8), new Vector2(208, 54));
             foreach (string path in new[] { "PauseOverlay", "MapConfirmation" })
             {
