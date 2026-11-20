@@ -15,6 +15,8 @@ namespace AllinDefense.Presentation
         private UiKit frameKit;
         private UiStatPill goldPill;
         private UiRadialCooldown radialCooldown;
+        private Image abilityReadyGlow;
+        private GameSessionController abilityGlowSession;
         private UiProgressSegments waveProgress;
         private UiOverlay pauseModal, mapConfirmation;
         private UiSwitch musicSwitch, effectsSwitch;
@@ -57,9 +59,15 @@ namespace AllinDefense.Presentation
         {
             frameKit = new UiKit(catalog.frontendTheme.designSystem);
             radialCooldown.ActionRect.SetAsFirstSibling();
-            radialCooldown.ActionRect.GetComponent<UiPointSize>().Configure(64);
-            UiKit.Size(radialCooldown.ActionRect, 64, 64);
+            radialCooldown.ActionRect.GetComponent<UiPointSize>().Configure(DefenderHudResponsiveLayout.AbilityDiameter);
+            UiKit.Size(radialCooldown.ActionRect, DefenderHudResponsiveLayout.AbilityDiameter, DefenderHudResponsiveLayout.AbilityDiameter);
             radialCooldown.GetComponent<VerticalLayoutGroup>().spacing = 2;
+            heroText.alignment = TextAlignmentOptions.Right;
+            abilityReadyGlow = frameKit.Decoration(radialCooldown.ActionRect, "AbilityReadyGlow", frameKit.Assets.cooldownRing, UiTokens.Gold);
+            abilityReadyGlow.rectTransform.offsetMin = new Vector2(-3, -3);
+            abilityReadyGlow.rectTransform.offsetMax = new Vector2(3, 3);
+            abilityReadyGlow.transform.SetAsFirstSibling();
+            abilityReadyGlow.gameObject.SetActive(false);
             waveProgress = Find<UiProgressSegments>("TopBar/WavePanel/WaveProgress");
             bossBar = transform.Find("TopBar/WavePanel/BossBar").gameObject;
             bossFill = bossBar.transform.Find("BossTrack/BossFill").GetComponent<Image>();
@@ -149,6 +157,8 @@ namespace AllinDefense.Presentation
                 }
                 abilityButton.interactable = hero.IsAlive && hero.AbilityRemaining <= 0 && session.Phase != GamePhase.Paused;
             }
+            abilityGlowSession = session;
+            UpdateAbilityReadyGlow();
             bool paused = session.Phase == GamePhase.Paused && !session.SpecializationModalOpen && !session.IntroModalOpen;
             if (paused != pauseOverlayVisible)
             {
@@ -161,6 +171,24 @@ namespace AllinDefense.Presentation
                 }
                 else { pauseModal.Hide(); mapConfirmation.Hide(); restartConfirmation.Hide(); }
             }
+        }
+
+        private void Update() => UpdateAbilityReadyGlow();
+
+        private void UpdateAbilityReadyGlow()
+        {
+            if (abilityReadyGlow == null) return;
+            var session = abilityGlowSession;
+            bool visible = session != null && session.Hero != null && session.Hero.IsAlive && radialCooldown.IsReady &&
+                session.Phase is not (GamePhase.Paused or GamePhase.Victory or GamePhase.Defeat) &&
+                !(tutorialAbilityRing != null && tutorialAbilityRing.gameObject.activeInHierarchy);
+            abilityReadyGlow.gameObject.SetActive(visible);
+            if (!visible) return;
+            float pulse = FrontendPreferences.ReducedMotion ? 0 : .5f + .5f * Mathf.Sin(Time.unscaledTime * (2 * Mathf.PI / 1.2f));
+            abilityReadyGlow.transform.localScale = Vector3.one * (1 + .03f * pulse);
+            Color colour = UiTokens.Gold;
+            colour.a *= FrontendPreferences.ReducedMotion ? .85f : Mathf.Lerp(.55f, 1, pulse);
+            abilityReadyGlow.color = colour;
         }
 
         private void RefreshBoss(GameSessionController session)

@@ -9,6 +9,9 @@ namespace AllinDefense.UI.Kit
         [SerializeField] private Vector2 center;
         [SerializeField] private Rect safeArea;
         public float MinimumDiameter { get; set; } = UiMetrics.AbilityPt;
+        // Opt-in: space children on MinimumDiameter but keep each child's own size, so a larger diameter fixes ring
+        // positions without enlarging the buttons.
+        public bool KeepChildSize { get; set; }
         private Rect[] obstacles = Array.Empty<Rect>();
         private Vector2[] orbitPositions = Array.Empty<Vector2>();
         public bool UsesFallback { get; private set; }
@@ -69,10 +72,15 @@ namespace AllinDefense.UI.Kit
             UsesHalfArc = half;
             for (int i = 0; i < rectChildren.Count; i++)
             {
-                SetChildAlongAxis(rectChildren[i], 0, positions[i].x - rectTransform.rect.xMin - diameter / 2, diameter);
-                SetChildAlongAxis(rectChildren[i], 1, rectTransform.rect.yMax - positions[i].y - diameter / 2, diameter);
+                RectTransform child = rectChildren[i];
+                float width = KeepChildSize ? ChildSize(LayoutUtility.GetPreferredWidth(child), diameter) : diameter;
+                float height = KeepChildSize ? ChildSize(LayoutUtility.GetPreferredHeight(child), diameter) : diameter;
+                SetChildAlongAxis(child, 0, positions[i].x - rectTransform.rect.xMin - width / 2, width);
+                SetChildAlongAxis(child, 1, rectTransform.rect.yMax - positions[i].y - height / 2, height);
             }
         }
+
+        private static float ChildSize(float preferred, float diameter) => preferred > 0 ? Mathf.Min(preferred, diameter) : diameter;
 
         private bool TryOrbit(Rect bounds, float diameter, out bool halfArc)
         {

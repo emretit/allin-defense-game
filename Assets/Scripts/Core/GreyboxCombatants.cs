@@ -900,8 +900,10 @@ namespace AllinDefense.Core
         private const int MaxHealth = 240;
         private const float RespawnSeconds = 5f;
         private const float AbilityCooldown = 6f;
+        private const float TurnDegreesPerSecond = 540f;
         private GameSessionController session;
         private Vector3 guardianPosition;
+        private Vector3 roadFacing;
         private Renderer bodyRenderer;
         private Collider bodyCollider;
         private int health;
@@ -919,6 +921,8 @@ namespace AllinDefense.Core
         {
             session = owner;
             guardianPosition = initialGuardianPosition;
+            roadFacing = RoadFacing();
+            FaceRoad();
             health = MaxHealth;
             bodyRenderer = GetComponentInChildren<Renderer>();
             bodyCollider = GetComponent<Collider>();
@@ -949,6 +953,7 @@ namespace AllinDefense.Core
             GreyboxEnemy enemy = session == null ? null : session.FindFirstEnemy(transform.position, 1.65f);
             if (enemy != null)
             {
+                Turn(enemy.Position - transform.position, delta);
                 if (attackTimer <= 0f)
                 {
                     enemy.TakeDamage(20);
@@ -960,7 +965,47 @@ namespace AllinDefense.Core
             }
 
             // The commander is a stationary keep defender. Player strategy comes from placing
-            // structures, not steering a character around the battlefield.
+            // structures, not steering a character around the battlefield. Idle, he watches the road.
+            Turn(roadFacing, delta);
+        }
+
+        public Vector3 RoadFacingDirection => roadFacing;
+
+        // Faces the nearest stretch of road, turned ~30° upstream so the hero watches incoming enemies rather than the keep.
+        private Vector3 RoadFacing()
+        {
+            var path = session != null ? session.Path : null;
+            if (path == null || path.Count < 2) return Vector3.zero;
+            Vector3 origin = Flat(guardianPosition), nearest = Flat(path[0]);
+            float best = float.MaxValue;
+            int segment = 0;
+            for (int i = 0; i < path.Count - 1; i++)
+            {
+                Vector3 a = Flat(path[i]), ab = Flat(path[i + 1]) - a;
+                float t = ab.sqrMagnitude > 0f ? Mathf.Clamp01(Vector3.Dot(origin - a, ab) / ab.sqrMagnitude) : 0f;
+                Vector3 point = a + ab * t;
+                float distance = (point - origin).sqrMagnitude;
+                if (distance < best) { best = distance; nearest = point; segment = i; }
+            }
+            Vector3 upstream = (Flat(path[segment]) - Flat(path[segment + 1])).normalized;
+            Vector3 toRoad = nearest - origin;
+            if (toRoad.sqrMagnitude < .0025f) return upstream;
+            return (toRoad + upstream * (toRoad.magnitude * .6f)).normalized;
+        }
+
+        private static Vector3 Flat(Vector3 value) => new(value.x, 0f, value.z);
+
+        private void FaceRoad()
+        {
+            if (roadFacing.sqrMagnitude > .0001f) transform.rotation = Quaternion.LookRotation(roadFacing);
+        }
+
+        private void Turn(Vector3 direction, float delta)
+        {
+            direction.y = 0f;
+            if (direction.sqrMagnitude < .0001f) return;
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(direction),
+                TurnDegreesPerSecond * delta);
         }
 
         public bool TryUseShieldBash()
@@ -1017,6 +1062,7 @@ namespace AllinDefense.Core
             transform.position = session != null && session.HasProductionPresentation
                 ? guardianPosition
                 : guardianPosition + Vector3.up;
+            FaceRoad();
             SetVisuals(true);
             if (bodyCollider != null) bodyCollider.enabled = true;
         }

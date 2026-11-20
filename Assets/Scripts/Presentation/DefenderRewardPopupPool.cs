@@ -194,7 +194,7 @@ namespace AllinDefense.Presentation
                 {
                     Vector2 anchor = keepPlate.ScreenAnchor();
                     screen.x = anchor.x;
-                    screen.y = anchor.y + 44 * pixelsPerPoint;
+                    screen.y = anchor.y + 26 * pixelsPerPoint;
                 }
                 Rect safe = Screen.safeArea;
                 screen.x = Mathf.Clamp(screen.x, safe.xMin + 40 * pixelsPerPoint, safe.xMax - 80 * pixelsPerPoint);

@@ -53,7 +53,13 @@ namespace AllinDefense.Presentation
         public const float InformationCardWidth = 260f;
         public const float InformationCardMaxHeight = 148f;
         private const float ToastHeight = 64f;
-        private const float HeroRight = 224f;
+        public const float AbilityDiameter = 76f;
+        private const float AbilityRightInset = UiTokens.Space1;
+        private const float AbilityHeight = AbilityDiameter + 24;
+        private const float NextWaveWidth = 208f;
+        private const float NextWaveRightInset = AbilityRightInset + AbilityDiameter + UiTokens.Space1;
+        private const float HeroLabelBottom = UiTokens.Space1 + AbilityHeight + UiTokens.Space1;
+        private const float BottomClusterWidth = NextWaveRightInset + NextWaveWidth;
         private int informationCardCorner;
         private float informationCardClearance = UiTokens.Space1;
         private Vector2 messageRestPosition, messageChromeRestPosition;
@@ -132,15 +138,15 @@ namespace AllinDefense.Presentation
             foreach (var graphic in selectedPanel.GetComponentsInChildren<Graphic>(true)) graphic.raycastTarget = false;
         }
 
-        private static float ToastWidth(float width) => Mathf.Min(360, width - 332);
+        private static float ToastWidth(float width) => Mathf.Min(360, width - BottomClusterWidth - 3 * UiTokens.Space1);
 
         private static Rect CardCornerRect(int corner, float width, float height, float gap)
         {
             bool right = corner % 2 == 1;
             float x = right ? width - InformationCardWidth - UiTokens.Space1 : UiTokens.Space1;
             float bottom = corner >= 2 ? height - TopContentHeight - gap - InformationCardMaxHeight :
-                right ? 122 + gap : ToastHeight + UiTokens.Space1 + gap;
-            if (corner == 4) { x = width - HeroRight - 92 - gap - InformationCardWidth; bottom = UiTokens.Space1; }
+                right ? HeroLabelBottom + 18 + gap : ToastHeight + UiTokens.Space1 + gap;
+            if (corner == 4) { x = width - AbilityRightInset - 120 - gap - InformationCardWidth; bottom = ToastHeight + UiTokens.Space1 + gap; }
             if (corner == 5) x = width * .3f - gap - InformationCardWidth;
             if (corner == 6) x = width * .7f + gap;
             return new Rect(x, bottom, InformationCardWidth, InformationCardMaxHeight);
@@ -161,9 +167,9 @@ namespace AllinDefense.Presentation
                 new(0, height - TopContentHeight, width, TopContentHeight),
                 new(width * .3f, height - TopContentHeight - 40, width * .4f, 32),
                 new(8, 8, ToastWidth(width), ToastHeight),
-                new(width - HeroRight - 64, 8, 64, 88),
-                new(width - HeroRight - 92, 104, 120, 18),
-                new(width - 216, 8, 208, 54)
+                new(width - AbilityRightInset - AbilityDiameter - 4, 4, AbilityDiameter + 8, AbilityHeight + 4),
+                new(width - AbilityRightInset - 120, HeroLabelBottom, 120, 18),
+                new(width - BottomClusterWidth, 8, NextWaveWidth, 54)
             };
             informationCardCorner = 0;
             informationCardClearance = UiTokens.Space1;
@@ -260,7 +266,7 @@ namespace AllinDefense.Presentation
         }
 
         private static readonly string[] framePaths = { "TopBar/Gold", "TopBar/WavePanel", "TopBar/Speed", "TopBar/Pause",
-            "TopBar/WaveForecast", "MessageChrome", "Message", "BottomBar/AbilityCooldown", "BottomBar/Hero", "BottomBar/NextWave", "SelectedPanel" };
+            "TopBar/WaveForecast", "MessageChrome", "Message", "BottomBar/AbilityCooldown", "BottomBar/AbilityCooldown/AbilityCooldown.Action/AbilityReadyGlow", "BottomBar/Hero", "BottomBar/NextWave", "SelectedPanel" };
         private RectTransform[] frameRects;
         private readonly Vector3[] frameCorners = new Vector3[4];
         public Rect[] FrameScreenRects()
@@ -343,8 +349,6 @@ namespace AllinDefense.Presentation
             Vector2 messageAnchor = new(metrics.SafeMinX, metrics.SafeMinY);
             const float edge = UiTokens.Space1;
             const float abilityBottom = edge;
-            const float heroBottom = abilityBottom + 88 + edge;
-            const float heroRight = HeroRight;
             messageChromeRestPosition = new Vector2(edge / points.x, edge / points.y);
             var messageChrome = RequireRect("MessageChrome");
             Place(messageChrome, messageAnchor, Vector2.zero, messageChromeRestPosition, new Vector2(chromeWidth, messageHeight + 8));
@@ -353,9 +357,9 @@ namespace AllinDefense.Presentation
             Place(message, messageAnchor, Vector2.zero, messageRestPosition, new Vector2(messageWidth, messageHeight));
             message.localScale = scale;
             SetMessageEntranceOffset(messageEntranceOffset);
-            Place(RequireRect(bottomBar, "AbilityCooldown"), new Vector2(1, 0), new Vector2(1, 0), new Vector2(-heroRight, abilityBottom), new Vector2(64, 88));
-            Place(RequireRect(bottomBar, "Hero"), new Vector2(1, 0), new Vector2(.5f, 0), new Vector2(-heroRight - 32, heroBottom), new Vector2(120, 18));
-            Place(RequireRect(bottomBar, "NextWave"), new Vector2(1, 0), new Vector2(1, 0), new Vector2(-8, 8), new Vector2(208, 54));
+            Place(RequireRect(bottomBar, "AbilityCooldown"), new Vector2(1, 0), new Vector2(1, 0), new Vector2(-AbilityRightInset, abilityBottom), new Vector2(AbilityDiameter, AbilityHeight));
+            Place(RequireRect(bottomBar, "Hero"), new Vector2(1, 0), new Vector2(1, 0), new Vector2(-AbilityRightInset, HeroLabelBottom), new Vector2(120, 18));
+            Place(RequireRect(bottomBar, "NextWave"), new Vector2(1, 0), new Vector2(1, 0), new Vector2(-NextWaveRightInset, 8), new Vector2(NextWaveWidth, 54));
             foreach (string path in new[] { "PauseOverlay", "MapConfirmation", "RestartConfirmation" })
             {
                 var modal = RequireRect(path);

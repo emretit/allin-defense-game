@@ -22,6 +22,9 @@ namespace AllinDefense.Presentation
         private UiRadialLayout battleRadialLayout;
         private readonly Dictionary<string, Button> radialButtons = new();
         private UiRadialOption[] radialOptions;
+        // Every ring uses the same three positions (build: three towers; tower: upgrade or branches + sell).
+        private const int RadialRingPositions = 3;
+        private RectTransform radialSpacer;
         private GreyboxOutpostSlot radialSlot;
         private GreyboxOutpost radialTower;
         private int radialLevel;
@@ -37,8 +40,6 @@ namespace AllinDefense.Presentation
         private bool closingRadial;
         private readonly List<Rect> radialObstacles = new(16);
         private readonly List<Rect> radialFrameRects = new(16);
-        private readonly List<Renderer> radialRenderers = new(16);
-        private readonly List<Renderer> radialSlotRenderers = new(16);
         private readonly Vector3[] radialCorners = new Vector3[4];
         private readonly Dictionary<string, TMP_Text> radialLabels = new();
         private readonly Dictionary<string, GameObject> radialMarks = new();
@@ -71,7 +72,9 @@ namespace AllinDefense.Presentation
             battleRadial = frameKit.RadialMenu(transform, "BattleRadial", new[] { new UiRadialOption("Archer", archerIconSprite, ArcherCost) });
             battleRadial.GetComponent<Image>().raycastTarget = false;
             battleRadialLayout = battleRadial.GetComponent<UiRadialLayout>();
-            battleRadialLayout.MinimumDiameter = RadialButtonPt;
+            // Spacing uses the widest button (Sell) on every ring so positions match; buttons keep their own size.
+            battleRadialLayout.MinimumDiameter = Mathf.Max(RadialButtonPt, SellCaptionWidthPt);
+            battleRadialLayout.KeepChildSize = true;
             var first = battleRadial.GetComponentInChildren<Button>();
             first.name = "Archer"; UiId.Assign(first.transform, "Archer");
             radialButtons.Add("Archer", first);
@@ -84,6 +87,8 @@ namespace AllinDefense.Presentation
             foreach (OutpostSpecialization branch in Enum.GetValues(typeof(OutpostSpecialization)))
                 if (branch != OutpostSpecialization.None)
                     MakeRadialButton(branch.ToString(), BranchIcon(branch), 0);
+            radialSpacer = UiKit.Node(battleRadial.transform, "RadialSpacer");
+            radialSpacer.gameObject.SetActive(false);
             radialAction = frameKit.Button(battleRadial.transform, "RadialAction", FrontendCopy.RadialBuild, UiButtonVariant.Gold, radialCatalog.goldIcon);
             radialAction.GetComponent<UiPointSize>().IgnoreOwnScale = true;
             radialAction.GetComponent<UiPointSize>().Configure(UiMetrics.PrimaryCtaPt);
@@ -285,21 +290,37 @@ namespace AllinDefense.Presentation
                 radialBranch != (tower != null ? tower.Specialization : OutpostSpecialization.None);
             if (changed)
             {
-                selectionCardHeight = 0; radialActionPositioned = false;
+                // Upgrading or specialising the open tower keeps its card side and ring; only a new choice set re-lays the ring.
+                bool sameTower = tower != null && radialSlot == slot && radialTower == tower;
+                var previousOptions = radialOptions;
+                radialActionPositioned = false;
                 CloseSpecializationChoices();
+                if (!sameTower)
+                {
+                    selectionCardHeight = 0;
+                    responsiveLayout.ClearContextualSelection();
+                    if (Camera.main != null)
+                        responsiveLayout.SetContextualSelectionFromScreenPoint(Camera.main.WorldToScreenPoint(slot.transform.position), tower == null);
+                }
                 radialSlot = slot; radialTower = tower; radialLevel = tower != null ? tower.Level : 0;
-                responsiveLayout.ClearContextualSelection();
-                if (Camera.main != null)
-                    responsiveLayout.SetContextualSelectionFromScreenPoint(Camera.main.WorldToScreenPoint(slot.transform.position), tower == null);
                 radialBranch = tower != null ? tower.Specialization : OutpostSpecialization.None;
                 previewOption = lockedPreviewOption = null; radialAction.gameObject.SetActive(false);
                 radialRange?.Show(Vector3.zero, 1, false);
                 ConfigureRadialOptions();
-                radialPositionDirty = radialRingDirty = true;
+                radialPositionDirty = true;
+                if (!sameTower || !SameRadialOptionIds(previousOptions, radialOptions)) radialRingDirty = true;
                 battleRadial.gameObject.SetActive(true);
             }
             RefreshRadialAvailability();
             RefreshRadialCard();
+        }
+
+        private static bool SameRadialOptionIds(UiRadialOption[] before, UiRadialOption[] after)
+        {
+            if (before == null || after == null || before.Length != after.Length) return false;
+            for (int i = 0; i < before.Length; i++)
+                if (before[i].Id != after[i].Id) return false;
+            return true;
         }
 
         private void ConfigureRadialOptions()
@@ -320,9 +341,12 @@ namespace AllinDefense.Presentation
                 choices.Add(new UiRadialOption("Sell", radialCatalog.radialSellIcon, -radialTower.SellValue));
             }
             foreach (var button in radialButtons.Values) { button.gameObject.SetActive(false); button.interactable = false; }
+            // A two-choice ring keeps an empty middle so Upgrade, the branches and Sell always open where the build choices were.
+            radialSpacer.gameObject.SetActive(choices.Count == RadialRingPositions - 1);
             var buttons = new Button[choices.Count];
             for (int i = 0; i < choices.Count; i++)
             {
+                if (i == choices.Count - 1 && radialSpacer.gameObject.activeSelf) radialSpacer.SetAsLastSibling();
                 buttons[i] = radialButtons[choices[i].Id];
                 buttons[i].gameObject.SetActive(true); buttons[i].transform.SetAsLastSibling();
                 buttons[i].GetComponent<UiPointSize>().Configure(choices[i].Id == "Sell" ? SellCaptionWidthPt : RadialButtonPt);
@@ -561,33 +585,24 @@ namespace AllinDefense.Presentation
             radialPositionDirty = true;
         }
 
+        // One fixed box per slot that holds the slot stone and every tower level/specialisation, so the ring opens in
+        // the same place on a slot whatever stands there (Emre 2026-10-15). Measured: stone ±0.89, tallest tower 3.58.
+        private const float SlotEnvelopeHalfWidth = .9f, SlotEnvelopeBottom = -.3f, SlotEnvelopeTop = 3.6f;
+
         private Rect SelectionScreenFootprint(Vector2 screenPoint)
         {
             var camera = Camera.main;
-            var target = radialTower != null ? radialTower.transform : radialSlot != null ? radialSlot.transform : null;
-            Vector2 origin = camera != null && target != null ? (Vector2)camera.WorldToScreenPoint(radialSlot.transform.position) : screenPoint;
+            Vector2 origin = camera != null && radialSlot != null ? (Vector2)camera.WorldToScreenPoint(radialSlot.transform.position) : screenPoint;
             Vector2 min = origin - Vector2.one * 12, max = origin + Vector2.one * 12;
-            if (camera != null && target != null)
+            if (camera != null && radialSlot != null)
             {
-                radialRenderers.Clear();
-                target.GetComponentsInChildren(radialRenderers);
-                if (radialTower != null && radialSlot != null)
+                Vector3 slot = radialSlot.transform.position;
+                for (int i = 0; i < 8; i++)
                 {
-                    radialSlotRenderers.Clear();
-                    radialSlot.GetComponentsInChildren(radialSlotRenderers);
-                    radialRenderers.AddRange(radialSlotRenderers);
-                }
-                foreach (var renderer in radialRenderers)
-                {
-                    if (!renderer.enabled || renderer is LineRenderer || !renderer.gameObject.activeInHierarchy) continue;
-                    var bounds = renderer.bounds;
-                    for (int i = 0; i < 8; i++)
-                    {
-                        var point = bounds.center + Vector3.Scale(bounds.extents,
-                            new Vector3((i & 1) == 0 ? -1 : 1, (i & 2) == 0 ? -1 : 1, (i & 4) == 0 ? -1 : 1));
-                        Vector2 screen = camera.WorldToScreenPoint(point);
-                        min = Vector2.Min(min, screen); max = Vector2.Max(max, screen);
-                    }
+                    var point = slot + new Vector3((i & 1) == 0 ? -SlotEnvelopeHalfWidth : SlotEnvelopeHalfWidth,
+                        (i & 2) == 0 ? SlotEnvelopeBottom : SlotEnvelopeTop, (i & 4) == 0 ? -SlotEnvelopeHalfWidth : SlotEnvelopeHalfWidth);
+                    Vector2 screen = camera.WorldToScreenPoint(point);
+                    min = Vector2.Min(min, screen); max = Vector2.Max(max, screen);
                 }
             }
             return Rect.MinMaxRect(min.x, min.y, max.x, max.y);

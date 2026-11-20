@@ -257,15 +257,68 @@ namespace AllinDefense.Tests
             }
         }
 
-        [Test] public void HeroLabelIs120PointsAndCentredOnAbilityAndWaveLabelFitsDoubleDigits()
+        [Test] public void HeroLabelIs120PointsAndRightAlignedInsideSafeAreaAndWaveLabelFitsDoubleDigits()
         {
             ApplyLayout();
             Assert.That(Bounds("BottomBar/Hero").width, Is.EqualTo(120).Within(.1));
-            Assert.That(Bounds("BottomBar/Hero").center.x, Is.EqualTo(Bounds("BottomBar/AbilityCooldown").center.x).Within(.1));
+            Assert.That(Bounds("BottomBar/Hero").xMax, Is.EqualTo(Bounds("BottomBar/AbilityCooldown").xMax).Within(.1));
+            Assert.That(Bounds("BottomBar/Hero").xMin, Is.GreaterThanOrEqualTo(safe.xMin));
+            Assert.That(Bounds("BottomBar/Hero").xMax, Is.LessThanOrEqualTo(safe.xMax));
+            Assert.That(RectAt("BottomBar/Hero").GetComponent<TMP_Text>().alignment, Is.EqualTo(TextAlignmentOptions.Right));
             var wave = RectAt("TopBar/WavePanel/Wave").GetComponent<TMP_Text>();
             wave.text = "DALGA 10/12";
             Assert.That(Bounds(wave.rectTransform).width, Is.GreaterThanOrEqualTo(99.9));
             Assert.That(wave.GetPreferredValues(wave.text).x, Is.LessThanOrEqualTo(wave.rectTransform.rect.width));
+        }
+
+        [Test] public void AbilityStaysAtRightSafeEdgeAcrossPreparationWaveAndPause()
+        {
+            foreach (var viewport in new[] { new Rect(0, 0, 667, 375), new Rect(47, 21, 750, 369), new Rect(59, 21, 814, 409) })
+            {
+                Viewport(new Vector2(viewport.width + 2 * viewport.x, viewport.height + viewport.y), viewport);
+                typeof(GameSessionController).GetProperty("Phase").SetValue(session, GamePhase.Preparing);
+                hud.Refresh(session); ApplyLayout(); Canvas.ForceUpdateCanvases();
+                Rect before = Bounds("BottomBar/AbilityCooldown");
+                var cooldown = hud.GetComponentInChildren<UiRadialCooldown>();
+                Assert.That(before.xMax, Is.EqualTo(safe.xMax - 8).Within(.5));
+                Assert.That(Bounds(cooldown.ActionRect).width, Is.EqualTo(76).Within(.5));
+                Assert.That(Bounds(cooldown.ActionRect).height, Is.EqualTo(76).Within(.5));
+                Assert.That(Bounds("BottomBar/NextWave").xMax, Is.LessThanOrEqualTo(before.xMin - 7.99f));
+                foreach (var phase in new[] { GamePhase.Wave, GamePhase.Paused })
+                {
+                    typeof(GameSessionController).GetProperty("Phase").SetValue(session, phase);
+                    hud.Refresh(session); ApplyLayout(); Canvas.ForceUpdateCanvases();
+                    Same(before, Bounds("BottomBar/AbilityCooldown"), phase.ToString());
+                }
+            }
+        }
+
+        [UnityTest] public IEnumerator AbilityReadyGlowTracksCooldownPauseReturnTutorialAndReducedMotion()
+        {
+            var glow = hud.GetComponentsInChildren<Image>(true).Single(i => i.name == "AbilityReadyGlow");
+            typeof(GreyboxHero).GetProperty("AbilityRemaining").SetValue(session.Hero, 0f);
+            hud.Refresh(session); yield return null;
+            Assert.That(glow.gameObject.activeInHierarchy, Is.True);
+            var scale = glow.transform.localScale; var colour = glow.color;
+            yield return new WaitForSecondsRealtime(.1f);
+            Assert.That(glow.transform.localScale, Is.EqualTo(scale));
+            Assert.That(glow.color, Is.EqualTo(colour));
+            FrontendPreferences.ReducedMotion = false;
+            yield return new WaitForSecondsRealtime(.1f);
+            Assert.That(glow.transform.localScale, Is.Not.EqualTo(scale));
+            typeof(GreyboxHero).GetProperty("AbilityRemaining").SetValue(session.Hero, 4f);
+            hud.Refresh(session);
+            Assert.That(glow.gameObject.activeInHierarchy, Is.False);
+            typeof(GreyboxHero).GetProperty("AbilityRemaining").SetValue(session.Hero, 0f);
+            session.TogglePause(); hud.Refresh(session);
+            Assert.That(glow.gameObject.activeInHierarchy, Is.False);
+            session.TogglePause(); hud.Refresh(session);
+            hud.SetTutorialGuide(3, null, Camera.main); yield return null;
+            Assert.That(glow.gameObject.activeInHierarchy, Is.False);
+            hud.SetTutorialGuide(2, null, Camera.main); yield return null;
+            Assert.That(glow.gameObject.activeInHierarchy, Is.True);
+            session.Hero.TakeDamage(int.MaxValue); hud.Refresh(session);
+            Assert.That(glow.gameObject.activeInHierarchy, Is.False);
         }
 
         [Test] public void RetiredPreviewNeverParticipatesInFrameLayoutOrObstacles()

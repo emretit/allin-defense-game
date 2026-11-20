@@ -13,7 +13,8 @@ namespace AllinDefense.Presentation
         private Camera worldCamera;
         private RectTransform root, plate;
         private Image backing, fill;
-        private TMP_Text amount, label;
+        private const float PlateWidth = 124, PlateHeight = 20, PlateHalfWidth = PlateWidth / 2 + 6;
+        private TMP_Text amount;
         private UiMotion motion;
         private int shownLives = -1, shownMaximum = -1;
         private bool critical;
@@ -31,21 +32,14 @@ namespace AllinDefense.Presentation
             root = (RectTransform)transform;
             var anchor = UiKit.Node(transform, "Keep Anchor");
             plate = UiKit.Node(anchor, "Keep Plate");
-            plate.sizeDelta = new Vector2(146, 48);
-            var border = kit.Decoration(plate, "Keep Border", kit.Assets.roundedSmall, UiTokens.HairlineGold);
-            backing = kit.Decoration(border.transform, "Keep Backing", kit.Assets.roundedSmall, UiTokens.GlassStrong);
-            backing.rectTransform.offsetMin = Vector2.one;
-            backing.rectTransform.offsetMax = -Vector2.one;
-            label = kit.Text(plate, "Keep Label", "", 11, true);
-            Place(label.rectTransform, new Vector2(10, 8), new Vector2(56, 24));
-            amount = kit.Text(plate, "Keep Lives", "", 16, true);
-            amount.alignment = TextAlignmentOptions.MidlineRight;
-            Place(amount.rectTransform, new Vector2(76, 8), new Vector2(60, 28));
+            // Compact health bar above the keep: slim bar with a small "20/20" beside it, no "KEEP" label.
+            plate.sizeDelta = new Vector2(PlateWidth, PlateHeight);
+            backing = kit.Decoration(plate, "Keep Backing", kit.Assets.pill, UiTokens.GlassStrong);
             var track = kit.Decoration(plate, "Keep Track", kit.Assets.pill, UiTokens.HairlineStrong);
-            track.rectTransform.anchorMin = track.rectTransform.anchorMax = new Vector2(.5f, 0);
-            track.rectTransform.sizeDelta = new Vector2(126, 6);
-            track.rectTransform.anchoredPosition = new Vector2(0, 10);
+            Place(track.rectTransform, new Vector2(7, 0), new Vector2(68, 8));
             fill = kit.Decoration(track.transform, "Keep Fill", kit.Assets.pill, UiTokens.Gold);
+            amount = kit.Text(plate, "Keep Lives", "", 12, true);
+            Place(amount.rectTransform, new Vector2(81, 0), new Vector2(38, 18));
             motion = plate.gameObject.AddComponent<UiMotion>();
             foreach (var item in session.GetComponentsInChildren<Transform>())
                 if (item.name == "Defender Keep Licensed")
@@ -67,7 +61,6 @@ namespace AllinDefense.Presentation
         public void Refresh()
         {
             if (session == null) return;
-            label.text = GameLocalization.Text("KALE", "KEEP");
             if (session.Lives == shownLives && session.StartingLivesForLevel == shownMaximum) return;
             shownLives = session.Lives;
             shownMaximum = session.StartingLivesForLevel;
@@ -119,13 +112,13 @@ namespace AllinDefense.Presentation
                     keepLeft = Mathf.Min(keepLeft, projected.x);
                 }
                 keepTop = top;
-                screen.y = top + 32 * pixelsPerPoint.y;
+                screen.y = top + 16 * pixelsPerPoint.y;
             }
             Rect safe = Screen.safeArea;
             if (safe.width <= 0) safe = new Rect(0, 0, Screen.width, Screen.height);
             if (screen.y > safe.yMax - 90 * pixelsPerPoint.y && keepTop > safe.yMax - 122 * pixelsPerPoint.y)
-                screen.x = keepLeft - 83 * pixelsPerPoint.x;
-            screen.x = Mathf.Clamp(screen.x, safe.xMin + 83 * pixelsPerPoint.x, safe.xMax - 83 * pixelsPerPoint.x);
+                screen.x = keepLeft - PlateHalfWidth * pixelsPerPoint.x;
+            screen.x = Mathf.Clamp(screen.x, safe.xMin + PlateHalfWidth * pixelsPerPoint.x, safe.xMax - PlateHalfWidth * pixelsPerPoint.x);
             screen.y = Mathf.Clamp(screen.y, safe.yMin + 40 * pixelsPerPoint.y, safe.yMax - 90 * pixelsPerPoint.y);
             return screen;
         }
